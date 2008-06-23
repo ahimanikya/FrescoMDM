@@ -1,0 +1,1501 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Configuring Master Indexes </title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Master Index Studioprovides a flexible framework that allows you to customize the master index applications you create. Configuring Master Indexes provides instructions for configuring a master index application by either using the Configuration Editor or by modifying the configuration files directly.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+</head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Configuring Master Indexes </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_index-edm-display_p.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-edm-impl_p.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Configuring Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p class="toc level3"><a href="bookoverview.html#cnfg_index-files-about_c">About the Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyau">object.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyav">query.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaw">mefa.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyax">master.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyay">update.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaz2">filter.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaz">validation.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyba">Security</a></p>
+<p class="toc level4"><a href="bookoverview.html#agybb">midm.xml</a></p>
+<p class="toc level3 tocsp"><a href="bookoverview.html#cnfg_index-modxml-about_c">Modifying the Master Index XML Files Directly</a></p>
+<p class="toc level3"><a href="bookoverview.html#cnfg_index-config-ed-about_c">Using the Master Index Master Index Configuration Editor</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxey">object.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxez">query.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfg">master.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfp">mefa.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfl">update.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxds">validation.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxel">midm.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfd">Match Configuration File (matchConfigFile.cfg)</a></p>
+<p class="toc level3 tocsp"><a href="bookoverview.html#cnfg_index-version_c">Maintaining Version Control in the Master Index Configuration Files</a></p>
+<p class="toc level3"><a href="bookoverview.html#agybz">Copying, Cutting, and Pasting Files</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-object_t.html">Configuring the Master Index Object Structure</a></p>
+<p class="toc level3"><a href="cnfg_index-object_t.html#cnfg_object-create_t">Adding an Object to the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-383">To Add an Undefined Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-400">To Add a Predefined Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-425">To Add an Undefined Object (XML editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_object-modify_t">Modifying an Object's Name In the Master Index Object Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-462">To Modify an Object's Name (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-477">To Modify an Object's Name (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_object-delete_t">Deleting an Object From the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-497">To Delete an Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-520">To Delete an Object (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-add_t">Adding a Field to the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-546">To Add a Field (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-570">To Add a Field (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-delete_t">Deleting a Field from the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-600">To Delete a Field (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-623">To Delete a Field (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-props_t">Modifying Master Field Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-644">To Modify Field Properties (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-670">To Modify Field Properties (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_index-object-rel_t">Defining Relationships Between Master Index Objects</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-695">To Define Object Relationships (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldname_r">Master Index Field Name Restrictions</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldeditor_c">Master Index Configuration Editor Field Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldxml_r">Master Index Field Property Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-basic_t.html">Creating a Master Index Basic Query</a></p>
+<p class="toc level4"><a href="cnfg_index-query-basic_t.html#gentextid-1024">To Create a Basic Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-basic_t.html#gentextid-1043">To Create a Basic Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-block_p.html">Creating Master Index Blocking Queries</a></p>
+<p class="toc level4"><a href="cnfg_index-query-block_p.html#gentextid-1192">To Create a Blocking Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-block_p.html#gentextid-1242">To Create a Blocking Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Master Index Query Block Fields and XML Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-mod_p.html">Modifying Master Index Queries</a></p>
+<p class="toc level3"><a href="cnfg_index-query-mod_p.html#cnfg_query-basic_t">Modifying a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1464">To Modify a Basic Query (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1504">To Modify a Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-add-block_t">Adding a Query Block to a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1570">To Add a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1606">To Add a Query Block (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-mod-block_t">Modifying a Query Block for a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1659">To Modify a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1691">To Modify a Query Block (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-del-block_t">Deleting a Query Block From a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1720">To Delete a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1740">To Delete a Query Block (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-del_t.html">Deleting a Master Index Query</a></p>
+<p class="toc level4"><a href="cnfg_index-query-del_t.html#gentextid-1778">To Delete a Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-del_t.html#gentextid-1793">To Delete a Query</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mc_p.html">Configuring Master Index Processing Options</a></p>
+<p class="toc level3"><a href="cnfg_index-mc_p.html#cnfg_index-mc-logic_t">Specifying Master Index Custom Logic Classes</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1836">To Specify Custom Logic for External System Messages</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1849">To Specify Custom Logic for the Master Index Data Manager</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-update_t">Specifying the Master Index Update Mode</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1867">To Specify Potential Duplicates be Reevaluated at Each Update</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1881">To Specify Potential Duplicates not be Reevaluated at Each Update</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-merge_t">Configuring Master Index Merged Record Updates</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1899">To Allow Merged Record Updates</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1913">To Prevent Merged Record Updates</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-query_t">Specifying the Master Index Blocking Query for Matching</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1932">To Specify the Blocking Query for Matching</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-queryopt_t">Setting Master Index Blocking Query Options</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1955">To Set Blocking Query Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-xa_t">Defining Master Index Transactional Support</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1980">To Define Transactional Support (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-2001">To Define Transactional Support (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-dm_p.html">Configuring Matching Parameters</a></p>
+<p class="toc level3"><a href="cnfg_index-dm_p.html#cnfg_index-dm-class_t">Specifying the Master Index Decision Maker Class</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2046">To Specify the Decision Maker Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-1match_t">Defining How to Handle Multiple Assumed Matches (OneExactMatch)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2067">To Create Potential Duplicates When Multiple Records Match</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2084">To Match the Highest Weighted Records When Multiple Records Match</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-samesystem_t">Specifying Whether Same System Matches are Allowed (SameSystemMatch)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2106">To Allow Same System Records to be Automatically Merged</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2123">To Prevent Same System Records From Being Automatically Merged</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-dup_t">Specifying the Master Index Duplicate Threshold</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2143">To Specify the Duplicate Threshold (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2158">To Specify the Duplicate Threshold (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-matchthres_t">Specifying the Master Index Match Threshold</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2179">To Specify the Match Threshold (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2194">To Specify the Match Threshold (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-dmparam_t">Adding and Deleting Master Index Decision Maker Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2215">To Add a New Decision Maker Parameter</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2254">To Delete a Decision Maker Parameter</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-euid_p.html">Configuring Master Index EUIDs</a></p>
+<p class="toc level3"><a href="cnfg_index-euid_p.html#cnfg_index-euid-class_t">Specifying the Master Index EUID Generator Class</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2300">To Specify the EUID Generator Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-euid-lnth_t">Specifying the Master Index EUID Length</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2324">To Specify the EUID Length</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-checksum_t">Specifying a Master Index Checksum Length</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2347">To Specify a Checksum Length</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-chunksize_t">Specifying the Master Index Chunk Size</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2367">To Specify the Chunk Size</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-euid-param_t">Adding and Deleting Master Index EUID Generator Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2386">To Add EUID Generator Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2425">To Delete EUID Generator Parameters</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-norm_p.html">Defining Master Index Normalization Rules</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-def_t">Defining a Master Index Field to be Normalized</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2476">To Define a Field to be Normalized (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2515">To Define a Field to be Normalized (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-norm_p.html#cnfg_index-norm_r">Master Index Normalization and Standardization Structure Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-locale_r">Master Index Variants Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-mod_t">Modifying a Master Index Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2747">To Modify a Normalization Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2775">To Modify a Normalization Structure (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-norm_p.html#cnfg_index-norm-del_t">Deleting a Master Index Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2810">To Delete a Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2826">To Delete a Normalization Structure</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-stand_p.html">Defining Master Index Standardization Rules</a></p>
+<p class="toc level3"><a href="cnfg_index-stand_p.html#cnfg_index-stand-def_t">Defining Master Index Fields to be Standardized</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-2872">To Define Fields to be Standardized (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-2950">To Define Fields to be Standardized (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stand_p.html#cnfg_index-stand_r">Master Index Standardization Source and Target Field Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-stand_p.html#cnfg_index-stand-mod_t">Modifying a Master Index Standardization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3055">To Modify a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-stand_p.html#gentextid-3097">To Modify a Standardization Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stand_p.html#cnfg_index-stand-del_t">Deleting a Master Index Standardization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3143">To Delete a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3161">To Delete a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding for the Master Index</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-def_t">Defining Master Index Fields for Phonetic Encoding</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3219">To Define a Field for Phonetic Encoding (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3243">To Define a Field for Phonetic Encoding (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-field_r">Master Index Phonetic Encoding Fields and Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-mod_t">Modifying a Master Index Phonetic Encoding Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3325">To Modify a Phonetic Encoding Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3342">To Modify a Phonetic Encoding Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-del_t">Deleting a Master Index Phonetic Encoding Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3361">To Delete a Phonetic Encoding Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3378">To Delete a Phonetic Encoding Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-def_t">Defining a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3411">To Define a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3438">To Define a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc_r">Master Index Encoder Elements and Types</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-mod_t">Modifying a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3524">To Modify a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3540">To Modify a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-del_t">Deleting a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3559">To Delete a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3576">To Delete a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-match-string_p.html">Defining the Master Index Match String</a></p>
+<p class="toc level3"><a href="cnfg_index-match-string_p.html#cnfg_index-match-str-create_t">Creating the Master Index Match String</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3609">To Create the Match String (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3631">To Create the Match String (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-match-string_p.html#cnfg-index-match-str-mod_t">Modifying the Master Index Match String</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3671">To Modify the Match String (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3693">To Modify the Match String (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-proc_t.html">Defining how Master Index Query Blocks are Processed</a></p>
+<p class="toc level4"><a href="cnfg_index-query-proc_t.html#gentextid-3756">To Specify the Block Picker</a></p>
+<p class="toc level4"><a href="cnfg_index-query-proc_t.html#gentextid-3775">To Specify the Pass Controller Class</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivor_p.html">Defining the Master Index Survivor Calculator</a></p>
+<p class="toc level3"><a href="cnfg_index-survivor_p.html#cnfg_index-srv-hlpr_t">Specifying the Master Index Survivor Helper</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3820">To Specify the Survivor Helper</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-sur-strat_t">Specifying a Master Index Default Survivor Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3844">To Specify a Default Survivor Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivor_p.html#agyix">Configuring the Default Survivor Strategy</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-surv-calc_r">Master Index Default Survivor Strategy Parameter Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-survivor_p.html#cnfg_index-sbr_t">Defining the Master Index Single Best Record Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3962">To Specify a Candidate Field</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivor_p.html#agyiz">Deleting Candidate Fields</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-surv-field_t">Defining a Master Index Survivor Strategy for a Field or Object</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-4021">To Define a Survivor Strategy for a Field</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-custom-strat_t">Defining Master Index Custom Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyjc">Defining Custom Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#cnfg_index-weight-strat_t">Configuring Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyje">Modifying Weighted Calculator Parameters</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyjf">Deleting Weighted Calculator Parameters</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-weight-calc_r">Master Index Weighted Calculator Parameter Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-sbr-filter_t.html">Filtering Default Values From Master Index Processes</a></p>
+<p class="toc level4"><a href="cnfg_index-sbr-filter_t.html#ggikw">To Filter Default Values From the SBR, Blocking Query, or Match Process</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-sbr-filter_t.html#cnfg_index-filter_r">Filter Definition Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-update-pol_p.html">Configuring Master Index Update Policies</a></p>
+<p class="toc level3"><a href="cnfg_index-update-pol_p.html#cnfg_index-def-update_t">Defining Master Index Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4409">To Define Update Policies</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-update-pol_p.html#cnfg_index-update-flag_t">Setting the Master Index Update Policy Flag</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4467">To Set the Update Policy Flag</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-validation_t.html">Defining Custom Field Validations for the Master Index</a></p>
+<p class="toc level4"><a href="cnfg_index-validation_t.html#gentextid-4501">To Implement a Validation Rule</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-engines_p.html">Configuring the Match Engine</a></p>
+<p class="toc level3"><a href="cnfg_index-engines_p.html#cnfg_index-eng-match_t">Specifying a Match Engine for the Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gentextid-4559">To Configure the Match Engine</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-eng-comp_t">Configuring the Comparison Functions for a Master Index Application</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gfxvt">To Configure the Comparison Functions (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gentextid-4640">To Configure the Comparison Functions (Text Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-engine-comp_r">Match Comparator Configuration Properties for Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-engines_p.html#cnfg_index-match-plug_t">Importing Custom Comparison Functions</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#ggocu">To Import a Comparison Function</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-match-del_t">Deleting a Custom Comparison Function</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#ggoeo">To Delete a Custom Comparison Function</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-stndeng_p.html">Configuring the Standardization Engine</a></p>
+<p class="toc level3"><a href="cnfg_index-stndeng_p.html#cnfg_index-eng-stand_t">Specifying a Standardization Engine for the Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#gentextid-4866">To Specify the Standardization Engine</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#ggoax">Modifying Master Index Standardization Files</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggoac">To Modify Standardization Data Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#cnfg_index-stnd-plug_p">Importing Standardization Data Types and Variants</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggoai">To Import a Data Type or Variant</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#cnfg_index-eng-stnd-del_t">Deleting a Standardization Variant or Data Type</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggobr">To Delete a Variant or Data Type</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-edm-display_p.html">Configuring the Master Index MIDM Appearance</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-objects_t">Adding Objects to the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-4999">To Add an Object to the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-obj-mod_t">Modifying MIDM Objects</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5033">To Modify an MIDM Object</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-obj-del_t">Deleting Objects From the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5053">To Delete an Object</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-add_t">Adding Fields to the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5076">To Define New Fields</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-del_t">Removing Fields From the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5237">To Remove a Field From the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-nm_t">Modifying MIDM Field Display Options</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5256">To Modify a Field's Display Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-ddlist_t">Specifying a Drop-Down List for an MIDM Field</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5298">To Specify a Drop-Down List</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-format_t">Specifying an MIDM Field's Length and Format</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5331">To Modify a Field's Length and Format</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-data_t">Modifying an MIDM Field's Data Type</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5365">To Modify the Data Type</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-key_t">Defining Key Fields for an Object</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5389">To Modify the Key Status</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-mask_t">Masking Field Values on the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5428">To Mask Field Values on the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-relat_t">Defining MIDM Object Relationships</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5459">To Define Relationships</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-local-id_t">Defining MIDM Local ID Labels</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5488">To Define Local ID Labels</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Configuring the Master Index MIDM Pages</a></p>
+<p class="toc level3"><a href="#cnfg_mi-initialview_t">Specifying the Initial View for the MIDM</a></p>
+<p class="toc level5"><a href="#gentextid-5546">To Specify the Initial View</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-duprecords_t">Configuring the MIDM Duplicate Records Page</a></p>
+<p class="toc level4"><a href="#cnfg_dupdisplay_t">Configuring Duplicate Records Display Options</a></p>
+<p class="toc level4"><a href="#cnfg_dupsearch_t">Configuring Duplicate Records Search Pages</a></p>
+<p class="toc level4"><a href="#cnfg_dupresults_t">Configuring the Duplicate Records Results List</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-duprecords_r">Duplicate Records Page Configuration Elements</a></p>
+<p class="toc level4"><a href="#cnfg_duprecords_search_r">Duplicate Records Search Page Elements</a></p>
+<p class="toc level4"><a href="#cnfg_duprecords-results_r">Duplicate Records Search Results List Elements</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-recorddetails_t">Configuring the MIDM Record Details Page</a></p>
+<p class="toc level5"><a href="#ggubl">To Configure Record Details Display Options</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-recdetsearch_t">Creating Search Pages on the Record Details Page</a></p>
+<p class="toc level4"><a href="#definesearch">Step 1: Define the Search Page</a></p>
+<p class="toc level4"><a href="#definefields">Step 2: Define the Search Fields</a></p>
+<p class="toc level4"><a href="#searchoptions">Step 3: Specify Search Options</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a></p>
+<p class="toc level3"><a href="#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a></p>
+<p class="toc level3"><a href="#cnfg_mi-search-opts_r">Record Details Search Option Elements</a></p>
+<p class="toc level3"><a href="#cnfg_index-midm-modsrch_t">Modifying a Search Page on the Record Details Page</a></p>
+<p class="toc level4"><a href="#searchpage">Modifying a Search Page Definition </a></p>
+<p class="toc level4"><a href="#modifyfields">Modifying Search Fields</a></p>
+<p class="toc level4"><a href="#modifyoptions">Modifying Record Details Search Page Options</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-assumedmatch_t">Configuring the MIDM Assumed Matches Page</a></p>
+<p class="toc level5"><a href="#gentextid-6243">To Configure the Assumed Matches Page</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-transactions_t">Configuring the MIDM Transactions Page</a></p>
+<p class="toc level5"><a href="#gentextid-6290">To Configure the Transactions Page</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-reports_t">Configuring the MIDM Reports Page</a></p>
+<p class="toc level4"><a href="#ggtzn">Configuring the Reports Page Definition</a></p>
+<p class="toc level4"><a href="#ggtze">Configuring Production Reports</a></p>
+<p class="toc level4"><a href="#gguam">Configuring Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-reports_r">Production Reports Definition Elements</a></p>
+<p class="toc level3"><a href="#cnfg_mi-activity_r">Activity Reports Definition Elements</a></p>
+<p class="toc level4"><a href="#actvitypagedef">Activity Reports Page Definition Elements</a></p>
+<p class="toc level4"><a href="#activityreports">Activity Reports Search Elements</a></p>
+<p class="toc level4"><a href="#activityresults">Activity Reports Results Elements</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-sourcerecords_t">Configuring the MIDM Source Record Page</a></p>
+<p class="toc level4"><a href="#sourcerecords-page">Configuring the Source Record Page Definition</a></p>
+<p class="toc level4"><a href="#sourcerecord-view">Configuring the Tabbed Pages on the Source Record Page</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-auditlog_t">Configuring the MIDM Audit Log Page</a></p>
+<p class="toc level5"><a href="#gentextid-6639">To Configure the Audit Log Page</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="cnfg_index-edm-impl_p.html">Configuring Master Index MIDM Implementation Information</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-mc_t">Specifying the Master Controller JNDI Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6699">To Specify the Master Controller JNDI Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-report-gen_t">Specifying the Master Index Report Generator JNDI Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6719">To Specify the Report Generator JNDI Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-val-svc_t">Specifying Master Index Validation Services</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6739">To Specify the Validation Service</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-debug_t">Setting Master Index Debug Options</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6766">To Set Debug Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-mask_t">Specifying a Master Index Field Masking Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6799">To Specify a Field Masking Class</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="cnfg_index-midm-page_p"></a>
+
+<h2>Configuring the Master Index MIDM Pages</h2>
+<p><a name="indexterm-446"></a><a name="indexterm-447"></a><a name="indexterm-448"></a><a name="indexterm-449"></a>You can configure certain pages that appear on the MIDM by modifying the
+midm.xml. Each page on the MIDM is configured separately, though many contain the
+same XML elements and attributes. For the Record Details page, you can configure
+and create search pages and search results lists. If you add a new
+query to query.xml and you want to access that query from the MIDM,
+you need to create a new search page for the query on the
+Record Details page. The Dashboard page cannot be configured.</p><p>Perform any of the following actions to configure the pages of the
+MIDM.</p>
+<ul><li><p><a href="#cnfg_mi-initialview_t">Specifying the Initial View for the MIDM</a></p></li>
+<li><p><a href="#cnfg_mi-duprecords_t">Configuring the MIDM Duplicate Records Page</a></p></li>
+<li><p><a href="#cnfg_mi-recorddetails_t">Configuring the MIDM Record Details Page</a></p></li>
+<li><p><a href="#cnfg_mi-recdetsearch_t">Creating Search Pages on the Record Details Page</a></p></li>
+<li><p><a href="#cnfg_index-midm-modsrch_t">Modifying a Search Page on the Record Details Page</a></p></li>
+<li><p><a href="#cnfg_mi-assumedmatch_t">Configuring the MIDM Assumed Matches Page</a></p></li>
+<li><p><a href="#cnfg_mi-transactions_t">Configuring the MIDM Transactions Page</a></p></li>
+<li><p><a href="#cnfg_mi-reports_t">Configuring the MIDM Reports Page</a></p></li>
+<li><p><a href="#cnfg_mi-reports_r">Production Reports Definition Elements</a></p></li>
+<li><p><a href="#cnfg_mi-sourcerecords_t">Configuring the MIDM Source Record Page</a></p></li>
+<li><p><a href="#cnfg_mi-auditlog_t">Configuring the MIDM Audit Log Page</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_mi-initialview_t"></a><h3>Specifying the Initial View for the MIDM</h3>
+<p>By default, the Record Details page appears when a user logs in
+to the Master Index Data Manager. You can specify any of the other
+tabbed pages as the initial view. Each page on the MIDM is identified
+by a screen ID in midm.xml, which is an integer defined in the
+<tt>screen-id</tt> element for each page. Use this ID to specify which page to
+display first when a user logs in.</p>
+
+<a name="gentextid-5546"></a><h5>To Specify the Initial View</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Locate the page definition for the page you want to display first, and
+note the value of its <tt>screen-id</tt> element.</b></li>
+<li><b>Scroll to the <tt>initial-screen-id</tt> element, located in the <tt>gui-definition</tt> element.</b></li>
+<li><b>Enter the value of the <tt>screen-id</tt> element for the page you want to
+display first.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-duprecords_t"></a><h3>Configuring the MIDM Duplicate Records Page</h3>
+<p><a name="indexterm-450"></a>The Duplicate Records page allows you to search for potential duplicate records, view a
+results list, and then view a comparison of the records you select. It
+also provides features to resolve or merge the potential duplicates in question. You
+can configure several aspects of the Duplicate Records page, including display options, search
+pages, and the results list.</p><p>The following topics provide instructions for each type of configuration:</p>
+<ul><li><p><a href="#cnfg_dupdisplay_t">Configuring Duplicate Records Display Options</a></p></li>
+<li><p><a href="#cnfg_dupsearch_t">Configuring Duplicate Records Search Pages</a></p></li>
+<li><p><a href="#cnfg_dupresults_t">Configuring the Duplicate Records Results List</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_dupdisplay_t"></a><h3>Configuring Duplicate Records Display Options</h3>
+<p>You can configure certain display options for the Duplicate Records page, such as
+the name of the tabbed heading and the order in which the
+tab appears on the MIDM. Below is a sample of the display option
+elements for the Duplicate Records page.</p><pre>&lt;duplicate-records>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Duplicate Records&lt;/tab-name>
+   &lt;screen-id>3&lt;/screen-id>
+   &lt;display-order>1&lt;/display-order>
+   ...
+&lt;/duplicate-records></pre><p>You should never need to modify the <tt>root-object</tt> or <tt>screen-id</tt> element for
+the Duplicate Records page.</p>
+
+<a name="gguby"></a><h5>To Configure Duplicate Records Display Options</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>duplicate-records</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>To specify a different name for the Duplicate Record tab, modify the value
+of the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Duplicate Records tab appears on the
+MIDM, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>You might need to renumber the remaining tabs to keep the numbering sequential.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_dupsearch_t"></a><h3>Configuring Duplicate Records Search Pages</h3>
+<p>For the Duplicate Records search pages, you can configure the names of the
+searches that can be performed, the fields to use as search criteria (within
+a limited set of system fields), and instructions for performing a search. Below
+is a sample of the search page configuration for the Duplicate Records page.</p><pre>&lt;duplicate-records>
+   ...
+      &lt;simple-search-page>
+         &lt;screen-title>Advanced Search&lt;/screen-title>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;search-screen-order>0&lt;/search-screen-order>
+         &lt;show-euid>true&lt;/show-euid>
+         &lt;show-lid>true&lt;/show-lid>
+         &lt;show-status>true&lt;/show-status>
+         &lt;show-create-date>true&lt;/show-create-date>
+         &lt;show-create-time>true&lt;/show-create-time>
+         &lt;instruction>&lt;/instruction>
+         &lt;field-group/>
+      &lt;/simple-search-page>
+      ...
+&lt;/duplicate-records></pre>
+
+<a name="ggubh"></a><h5>To Configure the Duplicate Records Search Page</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>duplicate-records</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>Modify any of the elements described in <a href="#cnfg_duprecords_search_r">Duplicate Records Search Page Elements</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_dupresults_t"></a><h3>Configuring the Duplicate Records Results List</h3>
+<p>For the Duplicate Records results list, you can configure the number of results
+to display at one time, the total number of results a search
+can return, and the fields that appear in the results list. Below is
+a sample results list configuration for the Duplicate Records page.</p><pre>&lt;duplicate-records>
+   ...
+   &lt;search-result-pages>
+      &lt;search-result-list-page>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;item-per-page>10&lt;/item-per-page>
+         &lt;max-result-size>100&lt;/max-result-size>
+         &lt;field-group>
+            &lt;description>&lt;/description>
+            &lt;field-ref>Person.FirstName&lt;/field-ref>
+            &lt;field-ref>Person.LastName&lt;/field-ref>
+            &lt;field-ref>Person.SSN&lt;/field-ref>
+            &lt;field-ref>Person.DOB&lt;/field-ref>
+            &lt;field-ref>Person.Gender&lt;/field-ref>
+         &lt;/field-group>
+      &lt;/search-result-list-page>
+   &lt;/search-result-pages>
+&lt;/duplicate-records></pre>
+
+<a name="gguao"></a><h5>To Configure the Duplicate Records Results List</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>duplicate-records</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>Modify any of the elements described in <a href="#cnfg_duprecords-results_r">Duplicate Records Search Results List Elements</a>.</b></li>
+<li><b>To add a field to the results list, create and name a
+new <tt>field-ref</tt> element in the <tt>field-group</tt> element.</b></li>
+<li><b>To delete a field from the results list, delete the <tt>field-ref</tt> element
+defining the field.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-duprecords_r"></a><h3>Duplicate Records Page Configuration Elements</h3>
+<p>The following two tables describe the configuration elements in midm.xml for the Duplicate
+Records search and results pages. The same elements are also used for the
+Source Record View/Edit page.</p>
+
+<div class="indent"><a name="cnfg_duprecords_search_r"></a><h3>Duplicate Records Search Page Elements</h3>
+<p>The following table lists and describes the configurable elements for the Duplicate Records
+and Source Record search pages.</p><a name="ggubj"></a><h6>Table&nbsp;1 Duplicate Records Search Page Configuration</h6><table><col width="35%"><col width="65%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-pages</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that lists and defines the
+searches that are available from the page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-451"></a>simple-search-page</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that defines one type
+of search for the Duplicate Records page. You can define multiple simple search
+pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-452"></a>screen-title</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the search as it appears on the search page.
+MIDM users can select a type of search to perform based on the
+titles you define for the searches here.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-screen-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which the search page
+appears on the MIDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-453"></a>show-euid</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-454"></a>An indicator of whether to display the EUID field
+as search criteria. Specify <tt><b>true</b></tt> to display the EUID; otherwise specify <tt><b>false</b></tt>. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-455"></a><a name="indexterm-456"></a>show-lid</p></td>
+<td align="left" valign="top" scope="row"><p>An
+indicator of whether to display the local ID and system fields as search
+criteria. Specify <tt><b>true</b></tt> to display the fields; otherwise specify <tt><b>false</b></tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-status</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+to display the record status field as search criteria. Specify <tt><b>true</b></tt> to display
+the field; otherwise specify <tt><b>false</b></tt>.  </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-create-date</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the
+create date field to allow searching on the date the potential duplicate flag
+was created. Specify <tt><b>true</b></tt> to display the field; otherwise specify <tt><b>false</b></tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-create-time</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of
+whether to display the create time field to allow searching on the time
+the potential duplicate flag was created. Specify <tt><b>true</b></tt> to display the field; otherwise
+specify <tt><b>false</b></tt>. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-457"></a>instruction</p></td>
+<td align="left" valign="top" scope="row"><p>A short statement to help the user process a search.
+The text you enter here appears above the search fields on the Search
+page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-458"></a>field-group</p></td>
+<td align="left" valign="top" scope="row"><p>A list of fields that appear on the Search page. You can
+define multiple field groups, and each group can be contained in a labelled
+box on the Search page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-459"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>A description of the fields defined for the <tt>field-group</tt>
+element. This value appears as a box label for the area of the
+page that contains the specified fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-460"></a>field-ref</p></td>
+<td align="left" valign="top" scope="row"><p>One field definition for a field in the
+field group. Use the simple field name of the field with their corresponding
+objects as the root. For example, the path to the FirstName field in
+the Person object is &ldquo;Person.FirstName&rdquo;. You can define multiple <tt>field-ref</tt> elements for each
+field group.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_duprecords-results_r"></a><h3>Duplicate Records Search Results List Elements</h3>
+<p>The following table lists and describes the configurable elements for the Duplicate Records
+search results list.</p><a name="gguck"></a><h6>Table&nbsp;2 Duplicate Records Search Results Configuration</h6><table><col width="35%"><col width="65%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-result-pages</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for a list of search result page
+definitions.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-461"></a>search-result-list-page</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for the configuration information for the search results page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-462"></a>item-per-page</p></td>
+<td align="left" valign="top" scope="row"><p>The number
+of resulting records to display on one page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-463"></a>max-result-size</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum number of records
+to return for a search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field-group</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for a list of fields
+that appear in the search results.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>description</p></td>
+<td align="left" valign="top" scope="row"><p>A brief description for the field group.
+This value appears on the MIDM above the fields that are returned from
+a search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-464"></a>field-ref</p></td>
+<td align="left" valign="top" scope="row"><p>A definition for one field that appears in the search results
+list. Use the simple field names with their corresponding objects as the root.
+For example, the path to the FirstName field in the Person object is
+&ldquo;Person.FirstName&rdquo;. You can define multiple <tt>field-ref</tt> elements. </p></td>
+</tr>
+</table></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-recorddetails_t"></a><h3>Configuring the MIDM Record Details Page</h3>
+<p>You can configure certain display options for the Record Details page, such as
+the name of the tabbed heading and the order in which the
+tab appears on the MIDM. You can also create, modify, and delete search
+pages and search results lists. Search configuration is described in <a href="#cnfg_mi-recdetsearch_t">Creating Search Pages on the Record Details Page</a> and <a href="#cnfg_index-midm-modsrch_t">Modifying a Search Page on the Record Details Page</a>.</p><p>Below is a sample of the display option elements for the Record
+Details page.</p><pre>&lt;record-details>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Record Details&lt;/tab-name>
+   &lt;screen-id>1&lt;/screen-id>
+   &lt;display-order>2&lt;/display-order>
+   ...
+&lt;/duplicate-records></pre><p>You should never need to modify the <tt>root-object</tt> or <tt>screen-id</tt> element.</p>
+
+<a name="ggubl"></a><h5>To Configure Record Details Display Options</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>record-details </tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>To specify a different name for the Record Details tab, modify the value
+of the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Record Details tab appears on the
+MIDM, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>You might need to renumber the remaining tabs to keep the numbering sequential.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-recdetsearch_t"></a><h3>Creating Search Pages on the Record Details Page</h3>
+<p>Several search pages are created by the Master Index Wizard based on the
+information you specify. You can create and customize new search pages for the
+Record Details page. Each search you define must use a query that is
+defined in query.xml. </p><p>Follow these steps to create a new search page:</p>
+<ul><li><p><a href="#definesearch">Step 1: Define the Search Page</a></p></li>
+<li><p><a href="#definefields">Step 2: Define the Search Fields</a></p></li>
+<li><p><a href="#searchoptions">Step 3: Specify Search Options</a></p></li></ul>
+
+
+<div class="indent"><a name="definesearch"></a><h3>Step 1: Define the Search Page</h3>
+<p>The first step in creating a search page is to define certain
+properties for the appearance of the page, such as its name, whether to
+display the EUID or local ID field, and general instructions for the search.</p>
+<hr><p><b>Note - </b><a name="indexterm-465"></a><a name="indexterm-466"></a><a name="indexterm-467"></a>If either the EUID field or the local ID and system fields appear
+on a search page, any values entered into these fields take precedence over
+information entered into other search fields. For example, if an invalid EUID is
+entered but valid first and last names are entered, no results are returned
+due to the invalid EUID. The EUID field takes precedence over the local
+ID and system fields.</p>
+<hr>
+
+
+<a name="gentextid-5847"></a><h5>To Define the Search Page</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>record-details</tt> element, and then create a <tt>simple-search-page</tt> element.</b><p>Make sure the new element falls within the <tt>record-details</tt> element, but outside any existing
+<tt>simple-search-page</tt> elements. For example:</p><pre>&lt;record-details>
+   &lt;simple-search-page>
+    ...
+   &lt;/simple-search-page>
+   <b>&lt;simple-search-page></b>
+   <b>&lt;/simple-search-page></b>
+&lt;/record-details></pre></li>
+<li><b>In the new <tt>simple-search-page</tt> element, create the elements listed in <a href="#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a> and enter
+the appropriate value for each element. </b><p>For example:</p><pre>&lt;record-details>
+   &lt;simple-search-page>
+    ...
+   &lt;/simple-search-page>
+   &lt;simple-search-page>
+      &lt;screen-title>Address Search&lt;/screen-title>
+      &lt;search-result-id>1&lt;/search-result-id>
+      &lt;show-euid>true&lt;/show-euid>
+      &lt;show-lid>false&lt;/show-lid>
+      &lt;instruction>Enter address information below.&lt;/instruction>
+   &lt;/simple-search-page>
+&lt;/record-details></pre></li>
+<li><b>Continue to <a href="#definefields">Step 2: Define the Search Fields</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="definefields"></a><h3>Step 2: Define the Search Fields</h3>
+<p>Once you define the search page, you need to specify the fields
+that appear on the page. Fields are specified in field groups, and each
+field group represents an area on the search page. All fields specified for
+a field group appear in the area defined by that group. The label
+for the area is defined by the description of the field group.</p>
+
+<a name="gentextid-5874"></a><h5>To Define Search Fields</h5>
+<ol>
+<li><b>Complete <a href="#definesearch">Step 1: Define the Search Page</a>.</b></li>
+<li><b>In the new <tt>simple-search-page</tt> element, create a <tt>field-group</tt> element. </b><p>For example:</p><pre>&lt;simple-search-page>
+   &lt;screen-title>Simple Person Search&lt;/screen-title>
+   &lt;search-result-id>2&lt;/search-result-id>
+   &lt;search-screen-order>1&lt;/search-screen-order>
+   &lt;show-euid>false&lt;/show-euid>
+   &lt;show-lid>false&lt;/show-lid>
+   <b>&lt;field-group></b>
+   <b>&lt;/field-group></b>
+&lt;/simple-search-page></pre></li>
+<li><b>In the new <tt>field-group</tt> element, create the elements and attributes listed in <a href="#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a>
+and enter the appropriate value for each. </b><p>For example:</p><pre>&lt;simple-search-page>
+   ..
+   &lt;field-group>
+      &lt;description>Address&lt;/description>
+      &lt;field-ref>Address.AddressType&lt;/field-ref>
+      &lt;field-ref>Address.AddressLine1&lt;/field-ref>
+      &lt;field-ref>Address.AddressLine2&lt;/field-ref>
+      &lt;field-ref required=&ldquo;true&rdquo;>Address.City&lt;/field-ref>
+      &lt;field-ref>Address.State&lt;/field-ref>
+   &lt;/field-group>
+&lt;/simple-search-page></pre></li>
+<li><b>Repeat steps 2 and 3 for each field group you want to
+display on the selected search page.</b></li>
+<li><b>Continue to <a href="#searchoptions">Step 3: Specify Search Options</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="searchoptions"></a><h3>Step 3: Specify Search Options</h3>
+<p><a name="indexterm-468"></a><a name="indexterm-469"></a>After you define the criteria fields for the MIDM search, you can specify
+certain options for the search, such as the types of available searches, whether
+each search is weighted, and whether the search allows wildcard characters.</p>
+<hr><p><b>Note - </b>Wildcards should not be allowed for blocking queries or phonetic searches.</p>
+<hr>
+
+
+<a name="gentextid-5905"></a><h5>To Specify Search Options</h5>
+<ol>
+<li><b>Complete <a href="#definefields">Step 2: Define the Search Fields</a>.</b></li>
+<li><b>In the <tt>simple-search-page</tt> element you created, create a <tt>search-option</tt> element. </b><p>For example:</p><pre>&lt;simple-search-page>
+   &lt;screen-title>Simple Person Search&lt;/screen-title>
+   &lt;search-result-id>2&lt;/search-result-id>
+   &lt;search-screen-order>1&lt;/search-screen-order>
+   &lt;show-euid>false&lt;/show-euid>
+   &lt;show-lid>false&lt;/show-lid>
+   &lt;field-group>
+    ...
+   &lt;/field-group>
+   <b>&lt;search-option></b>
+   <b>&lt;/search-option></b>
+&lt;/simple-search-page></pre></li>
+<li><b>In the new <tt>search-option</tt> element, create the elements listed in <a href="#cnfg_mi-search-opts_r">Record Details Search Option Elements</a> and enter
+the appropriate value for each element. </b><p>For example:</p><pre>&lt;search-option>
+   &lt;display-name>Alpha Search&lt;/display-name>
+   &lt;query-builder>ALPHA-SEARCH&lt;/query-builder>
+   &lt;weighted>false&lt;/weighted>
+   &lt;parameter>
+     &lt;name>UseWildCard&lt;/name>
+     &lt;value>true&lt;/value>
+   &lt;/parameter>
+&lt;/search-option></pre></li>
+<li><b>Repeat the previous two steps for each search type you want to make
+available on the selected search page.</b>
+<hr><p><b>Note - </b>If you define multiple search option elements, an option button (labelled by the
+value of the  <tt>display-name</tt> element) appears on the search page for each
+search option. </p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi_search-def_r"></a><h3>Record Details Search Page Definition Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define the search pages on the Record Details page.</p><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-470"></a>screen-title</p></td>
+<td align="left" valign="top" scope="row"><p>The name of
+the search as it appears on the search page. Users can select a
+type of search to perform based on the titles you define for
+the searches here.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-result-id</p></td>
+<td align="left" valign="top" scope="row"><p>The unique identifier for the search results page that appears for
+the search. You can define multiple search results pages for each MIDM page, and
+each results page has a unique ID. You can enter any of
+the search result ID values defined in the <tt>search-results-pages</tt> element.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-screen-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which
+the search page appears on the MIDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-471"></a>show-euid</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display
+the <a name="indexterm-472"></a>EUID. Specify <tt><b>true</b></tt> to display the EUID; otherwise specify <tt><b>false</b></tt>. Only display
+this field if you want it to take precedence over all other
+search criteria.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-473"></a>show-lid</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the <a name="indexterm-474"></a>local ID and system fields. Specify
+<tt><b>true</b></tt> to display the fields; otherwise specify <tt><b>false</b></tt>. Only display these fields if you
+want them to take precedence over all other search criteria (except the EUID
+field).</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-475"></a>instruction</p></td>
+<td align="left" valign="top" scope="row"><p>A short statement to help the user process a search. The text
+you enter here appears above the search fields on the Search page.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_mi-search-fields_r"></a><h3>Record Details Search Field Definition Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define the fields for each search on the Record Details page.</p><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-476"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>A
+description of the fields defined for the <tt>field-group</tt> element. This value appears as
+a box label for the area of the page that contains the specified
+fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-477"></a>field-ref</p></td>
+<td align="left" valign="top" scope="row"><p>One field definition for a field in the field group. Use the
+simple field names of the fields with their corresponding objects as the root.
+For example, the path to the FirstName field in the Person object is
+&ldquo;Person.FirstName&rdquo;. You can define multiple <tt>field-ref</tt> elements for each field group, each of which
+are further configured by the following two optional attributes.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-478"></a>field-ref/required</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the
+field is required in order to perform a search. Specify any of the
+following values:</p>
+<ul><li><p><b>true</b> &ndash; The corresponding field is required to perform the search. These fields are marked with an asterisk (*) on the search page.</p></li>
+<li><p><b>false</b> &ndash; The corresponding field is not required to perform the search. If the <tt>required</tt> attribute is not defined, the default is false.</p></li>
+<li><p><b>one of</b> &ndash; The corresponding fields with this designation are a group of search criteria, at least one of which is required to perform the search. This designation specifies that at least one field in the group of fields with the &ldquo;one of&rdquo; designation is required. If a group of fields is designated as &ldquo;one of&rdquo;, those fields are marked with a dagger (&dagger;) on the search page.</p></li></ul>
+
+<hr><p><b>Tip - </b>If you make a field required for a search, it is
+a good idea to make it required when creating a record as well
+by specifying true for the required property for the field in object.xml. Otherwise,
+searches performed from the MIDM could result in no possible matches even though
+possible matches exist.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-479"></a>field-ref/choice</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field allows you to search by
+a range of values rather than an exact value. Specify any of the
+following values:</p>
+<ul><li><p><b>exact</b> &ndash; The search is performed on the exact value entered (wildcard characters may be allowed). If the <tt>choice</tt> attribute is not specified, this is the default value.</p></li>
+<li><p><b>range</b> &ndash; The search is performed on a range of values based on the entered search criteria. Fields with this designation appear twice on the search page, once with &ldquo;From&rdquo; appended to the field label and once with &ldquo;to&rdquo; appended to the field label. If you specify &ldquo;range&rdquo; for a field in a search that uses a blocking query, be sure to modify the query block in query.xml accordingly.</p></li></ul>
+
+<hr><p><b>Tip - </b>You can specify the same field for both exact and range
+searching by adding it twice to the field list with different attribute values,
+giving the choice of performing an exact search or a range search from
+the MIDM. For more information about range searching, see <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/cnfg_index-query_c.html">Query Configuration</a>.</p>
+<hr>
+</td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_mi-search-opts_r"></a><h3>Record Details Search Option Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define the attributes for each search on the MIDM, such as which
+query to use, whether the search results are weighted, and so on.</p><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-480"></a>display-name</p></td>
+<td align="left" valign="top" scope="row"><p>A
+short phrase describing the type of search to perform, such as &ldquo;Alphanumeric Search&rdquo;
+or &ldquo;Phonetic Search&rdquo;. This appears next to the option button on the search
+page when multiple search options are defined.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-481"></a>query-builder</p></td>
+<td align="left" valign="top" scope="row"><p>The type of query to use
+when this type of search is selected. The value entered here must match
+a <tt>query-builder</tt> name in query.xml.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-482"></a>weighted</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the results of the
+search are assigned matching probability weights. Specify <tt><b>true</b></tt> to assign matching weights; specify <tt><b>false</b></tt>
+to return unweighted results.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-483"></a>candidate-threshold</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum number of records to return for a
+search. This value must be a positive number and can only be used
+for blocking queries. Setting the candidate threshold to zero is equivalent to not
+setting a threshold.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-484"></a>parameter</p></td>
+<td align="left" valign="top" scope="row"><p>A list of optional parameters for the search, specified by
+<tt>name</tt> and <tt>value</tt> elements (described below).</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-485"></a>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parameter. Currently, only
+<tt>UseWildCard</tt> is available.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-486"></a>value</p></td>
+<td align="left" valign="top" scope="row"><p>The value of the parameter. For the <tt>UseWildCard</tt> parameter, this is an
+indicator of whether the parameter is enabled or disabled. Specify <tt><b>true</b></tt> to
+allow wildcard characters; specify <tt><b>false</b></tt> to perform exact-match searches.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-midm-modsrch_t"></a><h3>Modifying a Search Page on the Record Details Page</h3>
+<p><a name="indexterm-487"></a>Once a search page is defined for the Record Details page, it can
+be modified as needed. Be sure to review the search pages automatically generated
+by the wizard to see if any further configuration is required. You can
+perform any of the following actions to customize existing search page elements.</p>
+<ul><li><p><a href="#searchpage">Modifying a Search Page Definition </a></p></li>
+<li><p><a href="#modifyfields">Modifying Search Fields</a></p></li>
+<li><p><a href="#modifyoptions">Modifying Record Details Search Page Options</a></p></li></ul>
+
+
+<div class="indent"><a name="searchpage"></a><h3>Modifying a Search Page Definition </h3>
+<p>Once a search page is defined for the Record Details page, you
+can modify the search page definition. The search page definition includes properties like the
+name of the page, the order of the search, the results list
+to use for the search, and so on.</p>
+
+<a name="gentextid-6128"></a><h5>To Modify a Search Page Definition</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-488"></a>Scroll to the <tt>simple-search-page</tt> element you want to modify in the <tt>record-details</tt> element.</b></li>
+<li><b>In the <tt>simple-search-page</tt> element, change the value of any of the elements listed
+in <a href="#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a>. </b><p>For example:</p><pre>&lt;simple-search-page>
+   &lt;screen-title>Customer Search&lt;/screen-title>
+   &lt;search-result-id>2&lt;/search-result-id>
+   &lt;search-screen-order>2&lt;/search-screen-order>
+   &lt;show-euid>true&lt;/show-euid>
+   &lt;show-lid>false&lt;/show-lid>
+   &lt;instruction>Enter the EUID below.&lt;/instruction>
+&lt;/simple-search-page></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="modifyfields"></a><h3>Modifying Search Fields</h3>
+<p>Once field groups and fields are specified for a Record Details search page,
+you can modify the properties of the group and of the fields
+contained in a group. For more information about the elements that contain the
+search field configuration, see <a href="#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a>.</p>
+
+<a name="gentextid-6150"></a><h5>To Modify Search Fields</h5>
+<ol>
+<li><b><a name="indexterm-489"></a><a name="indexterm-490"></a>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>simple-search-page</tt> element you want to modify in the <tt>record-details</tt> element.</b></li>
+<li><b>In the <tt>field-group</tt> you want to modify, do any of the following:</b><ul>
+<li><b>To modify the name of the area in which the field group
+appears in the MIDM, change the value of the <tt>description</tt> element.</b></li>
+<li><b>To add a new field to a field group, create and name
+a new <tt>field-ref</tt> element in the appropriate <tt>field-group</tt> element.</b></li>
+<li><b>To modify the name of a field defined for a field group,
+change the value of the <tt>field-ref</tt> element.</b></li>
+<li><b>To specify whether a field is required, add a <tt>required</tt> attribute and specify
+a value defined in <a href="#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a>.</b></li>
+<li><b>To specify whether a field is used for range searching, add a
+<tt>choice</tt> attribute and specify a value defined in <a href="#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a>.</b></li>
+<li><b>To delete a field from a field group, delete all text between and
+including the <tt>field-ref</tt> tags that define the field to be deleted.</b></li>
+<li><b>To delete an entire field group, delete all text between and including the
+<tt>field-group</tt> tags that define the field group to be deleted.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="modifyoptions"></a><h3>Modifying Record Details Search Page Options</h3>
+<p>Once search options are defined for a Record Details search page, you can
+modify those options if needed. For more information about the elements that define
+search options, see <a href="#cnfg_mi-search-opts_r">Record Details Search Option Elements</a>.</p>
+
+<a name="gentextid-6195"></a><h5>To Modify Search Page Options</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>simple-search-page</tt> element you want to modify in the <tt>record-details</tt> element.</b></li>
+<li><b>In the <tt>search-option</tt> element, and do any of the following:</b><ul>
+<li><b><a name="indexterm-491"></a><a name="indexterm-492"></a><a name="indexterm-493"></a>To modify the name of the search option button, change the value of
+the <tt>display-name</tt> element.</b></li>
+<li><b>To modify the query type of the selected search, change the value of
+the <tt>query-builder</tt> element. The query you specify must match a query defined in
+query.xml.</b></li>
+<li><b>To specify that a search return weighted results, change the value of the
+<tt>weighted</tt> element to <tt><b>true</b></tt>.</b></li>
+<li><b>To specify that a search return unweighted results, change the value of the
+<tt>weighted</tt> element to <tt><b>false</b></tt>.</b></li>
+<li><b>To specify that wildcard characters can be used in a search, change the
+<tt>UseWildCard</tt> parameter <tt>value</tt> element to <tt><b>true</b></tt>.</b></li>
+<li><b>To specify that wildcard characters cannot be used in a search, change the
+<tt>UseWildCard</tt> parameter <tt>value</tt> element to <tt><b>false</b></tt>.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-assumedmatch_t"></a><h3>Configuring the MIDM Assumed Matches Page</h3>
+<p><a name="indexterm-494"></a>The Assumed Matches page allows you to search for assumed match records, view
+a results list, and then view the details for the record you select.
+You can also undo an assumed match if you think it was
+made in error. You can configure the name of the tabbed heading for
+the page, the display order, the number of records to return and display
+for a search, and the fields to display in the result list. The
+fields on the search page and in the results list are automatically generated
+and cannot be modified.</p><p>Below is a sample Assumed Matches page definition.</p><pre>&lt;assumed-matches>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Assumed Matches&lt;/tab-name>
+   &lt;screen-id>4&lt;/screen-id>
+   &lt;display-order>3&lt;/display-order>
+   &lt;search-pages/>
+   &lt;search-result-pages>
+      &lt;search-result-list-page>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;item-per-page>10&lt;/item-per-page>
+         &lt;max-result-size>100&lt;/max-result-size>
+         &lt;field-group>
+            &lt;description>&lt;/description>
+            &lt;field-ref>Person.FirstName&lt;/field-ref>
+            &lt;field-ref>Person.LastName&lt;/field-ref>
+            &lt;field-ref>Person.SSN&lt;/field-ref>
+            &lt;field-ref>Person.DOB&lt;/field-ref>
+            &lt;field-ref>Person.Gender&lt;/field-ref>
+            &lt;field-ref>Person.Address.AddressLine1&lt;/field-ref>
+            &lt;field-ref>Person.Address.AddressLine2&lt;/field-ref>
+         &lt;/field-group>
+      &lt;/search-result-list-page>
+   &lt;/search-result-pages>
+&lt;/assumed-matches></pre>
+
+<a name="gentextid-6243"></a><h5>To Configure the Assumed Matches Page</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>assumed-matches</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b><a name="indexterm-495"></a><a name="indexterm-496"></a><a name="indexterm-497"></a>Make any of the following configuration changes:</b><ul>
+<li><b>To specify a new name for the Assumed Matches tab, modify the value
+of the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Assumed Matches tab appears on the
+MIDM, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>If you change the order of one tab, make sure to change
+the order of the remaining tabs so no tabs have an identical display
+order value.</p>
+<hr>
+</li>
+<li><b>To specify the number of records to display on the Assumed Matches search
+results list, change the value of the <tt>item-per-page</tt> element. </b></li>
+<li><b>To specify a maximum number of records to return for an Assumed Matches
+search, change the value of the <tt>max-result-size</tt> element. </b></li>
+<li><b>To add a search description, enter the description text into the <tt>description</tt>
+element.</b></li>
+<li><b>To modify the fields that appear in the results list in addition to
+the system fields, change the value of an existing <tt>field-ref</tt> element, create a
+new <tt>field-ref</tt> element, or delete an existing <tt>field-ref</tt> element.</b><p>For example:</p><pre>&lt;field-group>
+            &lt;field-ref>Person.FirstName&lt;/field-ref>
+            &lt;field-ref>Person.LastName&lt;/field-ref>
+            &lt;field-ref>Person.SSN&lt;/field-ref>
+            &lt;field-ref>Person.DOB&lt;/field-ref>
+       &lt;/field-group></pre></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-transactions_t"></a><h3>Configuring the MIDM Transactions Page</h3>
+<p><a name="indexterm-498"></a>The Transactions page allows you to search for transaction records, view a results
+list, and then view the changes for the record you select. You can
+configure the name of the tabbed heading for the page, the display order,
+and the number of records to return and to display in the
+results list. The fields on the search page and results list are automatically
+generated and cannot be modified with the exception of the EUID, system, and
+local ID.</p><p>Below is the default Transactions page definition.</p><pre>&lt;transactions>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Transactions&lt;/tab-name>
+   &lt;screen-id>2&lt;/screen-id>
+   &lt;display-order>4&lt;/display-order>
+   &lt;search-pages>
+      &lt;simple-search-page>
+         &lt;show-euid>true&lt;/show-euid>
+         &lt;show-lid>true&lt;/show-lid>
+      &lt;/simple-search-page>
+   &lt;/search-pages>
+   &lt;search-result-pages>
+      &lt;search-result-list-page
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;item-per-page>10&lt;/item-per-page>
+         &lt;max-result-size>100&lt;/max-result-size>
+         &lt;field-group/>
+      &lt;/search-result-list-page>
+   &lt;/search-result-pages>
+&lt;/transactions></pre>
+
+<a name="gentextid-6290"></a><h5>To Configure the Transactions Page</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>transactions</tt> element  (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b><a name="indexterm-499"></a><a name="indexterm-500"></a><a name="indexterm-501"></a>Make any of the following configuration changes:</b><ul>
+<li><b>To specify a new name for the Transactions tab, modify the value of
+the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Transactions tab appears on the
+MIDM, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>If you change the order of one tab, make sure to change
+the order of the remaining tabs so no tabs have an identical display
+order value.</p>
+<hr>
+</li>
+<li><b>To include the EUID as a Transactions search field, change the value of
+the <tt>show-euid</tt> element to <tt><b>true</b></tt>.</b></li>
+<li><b>To exclude the EUID from the Transactions search fields, change the value of
+the <tt>show-euid</tt> element to <tt><b>false</b></tt>.</b></li>
+<li><b>To include the system and local ID as Transactions search fields, change the
+value of the <tt>show-lid</tt> element to <tt><b>true</b></tt>.</b></li>
+<li><b>To exclude the system and local ID from the Transactions search fields, change
+the value of the <tt>show-euid</tt> element to <tt><b>false</b></tt>.</b></li>
+<li><b>To specify the number of records to display on the Transactions search results
+list, change the value of the <tt>item-per-page</tt> element. </b></li>
+<li><b>To specify a maximum number of records to return for a Transactions search,
+change the value of the <tt>max-result-size</tt> element. </b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-reports_t"></a><h3>Configuring the MIDM Reports Page</h3>
+<p>Configuring the Reports page consists of configuring the page itself and configuring the
+individual reports. Production reports are each configured in the same way in their
+own sub-screen definition element. Activity reports are configured together in one sub-screen definition.
+The sub-screen definitions means there are a series of tabbed pages within the
+Reports page for each different type of report. </p><p>Perform any of the following tasks to configure the reports:</p>
+<ul><li><p><a href="#ggtzn">Configuring the Reports Page Definition</a></p></li>
+<li><p><a href="#ggtze">Configuring Production Reports</a></p></li>
+<li><p><a href="#gguam">Configuring Activity Reports</a></p></li></ul>
+
+
+<div class="indent"><a name="ggtzn"></a><h3>Configuring the Reports Page Definition</h3>
+<p><a name="indexterm-502"></a>For the Reports page, you can configure the name of the tabbed heading
+for the page and the order in which the tab appears on the
+MIDM. The report configuration section defines the appearance of the Reports page, and
+is located within a set of <tt>reports</tt> tags near the end of the
+file. Following is a sample of the Reports page configuration elements.</p><pre>&lt;reports>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Reports&lt;/tab-name>
+   &lt;screen-id>6&lt;/screen-id>
+   &lt;display-order>5&lt;/display-order>
+   &lt;search-pages/>
+   &lt;search-result-pages/></pre>
+
+<a name="gentextid-6356"></a><h5>To Configure the Reports Page Definition</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>reports</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>To specify a different name for the Reports tab, modify the value of
+the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Reports tab appears on the
+MIDM, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>You might need to renumber the remaining tabs to keep the numbering sequential.</p>
+<hr>
+
+<hr><p><b>Note - </b>You might need to renumber the remaining tabs to keep the numbering sequential.</p>
+<hr>
+</li>
+<li><b>When you have finished configuring the Reports page, save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="ggtze"></a><h3>Configuring Production Reports</h3>
+<p><a name="indexterm-503"></a>A sub-screen on the Reports page is defined for each of the
+production reports. Use these sections to configure each production report to display information as
+you want to view it. You can also specify which reports can be
+run from the MIDM. Following is an example of a report configuration stanza.</p><pre>&lt;subscreen>
+   &lt;enable>true&lt;/enable>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Potential Duplicate Report&lt;/tab-name>
+   &lt;report-name>Potential Duplicate&lt;/report-name>
+   &lt;screen-id>0&lt;/screen-id>
+   &lt;display-order>5&lt;/display-order>
+   &lt;search-pages/>
+   &lt;search-result-pages>
+      &lt;search-result-list-page>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;item-per-page>10&lt;/item-per-page>
+         &lt;max-result-size>2000&lt;/max-result-size>
+         &lt;field-group>
+            &lt;description>&lt;/description>
+            &lt;field-ref>Person.FirstName&lt;/field-ref>
+            &lt;field-ref>Person.LastName&lt;/field-ref>
+            &lt;field-ref>Person.SSN&lt;/field-ref>
+            &lt;field-ref>Person.DOB&lt;/field-ref>
+            &lt;field-ref>Person.Address.AddressLine1&lt;/field-ref>
+            &lt;field-ref>Person.Address.AddressLine2&lt;/field-ref>
+            &lt;field-ref>Person.Address.City&lt;/field-ref>
+         &lt;/field-group>
+      &lt;/search-result-list-page>
+   &lt;/search-result-pages>
+&lt;/subscreen></pre>
+
+<a name="gentextid-6382"></a><h5>To Configure Production Reports</h5>
+<p>Perform the following steps for each production report.</p><ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>reports</tt> element (located in the <tt>gui-def</tt> element.</b></li>
+<li><b>For each report, specify values for the elements and attributes listed in <a href="#cnfg_mi-reports_r">Production Reports Definition Elements</a>.</b></li>
+<li><b>When you have finished configuring each report, save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="gguam"></a><h3>Configuring Activity Reports</h3>
+<p><a name="indexterm-504"></a>A sub-screen on the Reports page is defined for all of the
+activity reports. Use this sections to configure each activity report to display information as
+you want to view it. You can also specify which reports can
+be run from the MIDM. Following is an excerpt from the Activity report
+configuration stanza.</p><pre>&lt;subscreen>
+   &lt;enable>true&lt;/enable>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Activity Report&lt;/tab-name>
+   &lt;report-name>Transaction Summary&lt;/report-name>
+   &lt;screen-id>5&lt;/screen-id>
+   &lt;display-order>4&lt;/display-order>
+   &lt;search-pages>
+      &lt;simple-search-page>
+         &lt;screen-title>Weekly Activity&lt;/screen-title>
+         &lt;report-name>Weekly Transaction Summary Report&lt;/report-name>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;search-screen-order>1&lt;/search-screen-order>
+         &lt;field-group/>
+      &lt;/simple-search-page>
+      ...
+   &lt;/search-pages>
+   &lt;search-result-pages>
+      &lt;search-result-list-page>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;item-per-page>10&lt;/item-per-page>
+         &lt;max-result-size>2000&lt;/max-result-size>
+         &lt;field-group/>
+      &lt;/search-result-list-page>
+   &lt;/search-result-pages>
+&lt;/subscreen></pre>
+
+<a name="gentextid-6403"></a><h5>To Configure Activity Reports</h5>
+<p>Perform the following steps for each production and activity report.</p><ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>reports</tt> element. This section is located near the end of
+the file.</b></li>
+<li><b>In the <tt>subscreen</tt> element that defines the activity reports, modify any of the
+elements described in <a href="#actvitypagedef">Activity Reports Page Definition Elements</a> to configure the Activity Reports page:</b></li>
+<li><b>For each activity report, modify any of the elements described in <a href="#activityreports">Activity Reports Search Elements</a>.</b></li>
+<li><b>To specify the size and display of the results returned for the search,
+modify any of the elements described in <a href="#activityresults">Activity Reports Results Elements</a>.</b></li>
+<li><b>When you have finished configuring each report, save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-reports_r"></a><h3>Production Reports Definition Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define the production reports.</p><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>enable</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the report
+search page on the Reports page. Specify <tt><b>true</b></tt> to display the report search
+page and enable the report; specify <tt><b>false</b></tt> to disable the report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>tab-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name to display
+on the tabbed heading for the report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>report-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the report as
+it appears on the generated report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>display-order</p></td>
+<td align="left" valign="top" scope="row"><p>An integer indicating the order in which
+each report tab appears on the Reports page. If you change the display
+order of one report, make sure to change the others to keep the
+numbers consecutive.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>item-per-page</p></td>
+<td align="left" valign="top" scope="row"><p>The number of items to display on one page of the
+report search results.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>max-result-size</p></td>
+<td align="left" valign="top" scope="row"><p>The number of records to display on the report. if
+no value is entered, or if the value is zero (0), the size
+defaults to 1000 records. To retrieve all records for a report, enter a
+very large value for this element.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-505"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>A description of the fields defined for
+the <tt>field-group</tt> element. This value appears as a label for the area of
+the page that contains the specified fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-506"></a>field-ref</p></td>
+<td align="left" valign="top" scope="row"><p>One field definition for a field in
+the field group. Use the simple field names of the fields with their
+corresponding objects as the root. For example, the path to the FirstName field
+in the Person object is &ldquo;Person.FirstName&rdquo;. You can define multiple <tt>field-ref</tt> elements for each
+field group.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_mi-activity_r"></a><h3>Activity Reports Definition Elements</h3>
+<p>The following tables list and describe the elements you can configure for the
+activity reports in midm.xml.</p>
+
+<div class="indent"><a name="actvitypagedef"></a><h3>Activity Reports Page Definition Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define the Activity Reports page.</p><a name="ggucr"></a><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>enable</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the
+Activity Reports search page on the Reports page. Specify <tt><b>true</b></tt> to display the
+report search page and enable the report; specify <tt><b>false</b></tt> to disable the report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>tab-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name
+to display on the tabbed heading for the report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>report-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the
+report as it appears on the generated report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>display-order</p></td>
+<td align="left" valign="top" scope="row"><p>An integer indicating the order
+in which the Activity Reports tab appears on the Reports page. If you
+change the display order of one report, make sure to change the others
+to keep the numbers consecutive.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="activityreports"></a><h3>Activity Reports Search Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define each activity report search.</p><a name="ggubo"></a><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>screen-title</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the  report search
+page as it appears on the Activity Reports page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>report-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the report
+as it appears on the generated report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-screen-order</p></td>
+<td align="left" valign="top" scope="row"><p>An integer indicating the order in
+which each activity report appears on the Activity Reports page. If you change
+the display order of one report, make sure to change the others to
+keep the numbers consecutive.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="activityresults"></a><h3>Activity Reports Results Elements</h3>
+<p>The following table lists and describes the elements you can configure in midm.xml
+to define each activity report search result.</p><a name="ggubo2"></a><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>item-per-page</p></td>
+<td align="left" valign="top" scope="row"><p>The number of items to display
+on one page of the report search results.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>max-result-size</p></td>
+<td align="left" valign="top" scope="row"><p>The number of records to
+display on the report. if no value is entered, or if the value
+is zero (0), the size defaults to 1000 records. To retrieve all records
+for a report, enter a very large value for this element.</p></td>
+</tr>
+</table></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-sourcerecords_t"></a><h3>Configuring the MIDM Source Record Page</h3>
+<p><a name="indexterm-507"></a>The Source Record page is where anMIDM user adds new records to the
+master index database and performs actions against a source record rather than an enterprise
+record. This page includes sub-screen configurations, which means there are a series of
+tabbed pages within the Source Record page. These pages each provide different functions,
+such as view and edit, compare and merge, and create a new record.</p>
+<ul><li><p><a href="#sourcerecords-page">Configuring the Source Record Page Definition</a></p></li>
+<li><p><a href="#sourcerecord-view">Configuring the Tabbed Pages on the Source Record Page</a></p></li></ul>
+
+
+<div class="indent"><a name="sourcerecords-page"></a><h3>Configuring the Source Record Page Definition</h3>
+<p>You can configure certain display options for the main Source Record page, including
+the order in which the tab appears on the MIDM and the name
+of the page.</p>
+
+<a name="ggudb"></a><h5>To Configure the Source Record Page Definition</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>source-record</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>To specify a different name for the Source Record tab, modify the value
+of the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Source Record tab appears on the
+MIDM, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>You might need to renumber the remaining tabs to keep the numbering sequential.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="sourcerecord-view"></a><h3>Configuring the Tabbed Pages on the Source Record Page</h3>
+<p>You can configure any of the pages on the Source Record page
+by changing the tab name and display order and by enabling or disabling
+each page. Do not modify the search page or search results list for
+the sub-screens. Below is a sample configuration for the View/Edit page on the
+Source Record page.</p><pre>&lt;subscreen>
+   &lt;enable>true&lt;/enable>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>View/Edit&lt;/tab-name>
+   &lt;screen-id>0&lt;/screen-id>
+   &lt;display-order>0&lt;/display-order>
+   ...  </pre><p>You should never need to modify the <tt>root-object</tt> or <tt>screen-id</tt> elements.</p>
+
+<a name="ggucl"></a><h5>To Configure the Source Record Tabbed Pages</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>source-records</tt> element, and then to the <tt>subscreen</tt> element containing name
+of the tab you want to modify.</b></li>
+<li><b>To specify a new name for the tab, modify the value of
+the <tt>tab-name</tt> element.</b></li>
+<li><b>To disable the sub-screen, change the value of the <tt>enable</tt> element to <tt><b>false</b></tt>.</b></li>
+<li><b>To enable the sub-screen, change the value of the <tt>enable</tt> element to <tt><b>true</b></tt>.</b></li>
+<li><b>To change the order in which the tab appears on the Source
+Records page, change the value of the <tt>display-order</tt> element.</b>
+<hr><p><b>Note - </b>You might need to renumber the remaining tabs to keep the numbering sequential.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-auditlog_t"></a><h3>Configuring the MIDM Audit Log Page</h3>
+<p><a name="indexterm-508"></a><a name="indexterm-509"></a>When enabled, the audit log stores a history of each instance in which
+information from the object tables in the master index database is accessed. The
+MIDM allows you to search for and view the audit log entries. You
+can enable or disable the audit log, change the display order, and
+customize the size of the results list. Below is the default Audit Log
+page definition.</p><pre>&lt;audit-log>
+   &lt;allow-insert>false&lt;/allow-insert>
+   &lt;root-object>Person&lt;/root-object>
+   &lt;tab-name>Audit Log&lt;/tab-name>
+   &lt;screen-id>7&lt;/screen-id>
+   &lt;display-order>7&lt;/display-order>
+   &lt;search-pages>
+      &lt;simple-search-page>
+         &lt;show-euid>true&lt;/show-euid>
+         &lt;show-lid>true&lt;/show-lid>
+      &lt;/simple-search-page>
+   &lt;/search-pages>
+   &lt;search-result-pages>
+      &lt;search-result-list-page>
+         &lt;search-result-id>0&lt;/search-result-id>
+         &lt;item-per-page>10&lt;/item-per-page>
+         &lt;max-result-size>100&lt;/max-result-size>
+         &lt;field-group/>
+      &lt;/search-result-list-page>
+   &lt;/search-result-pages>
+&lt;/audit-log></pre>
+
+<a name="gentextid-6639"></a><h5>To Configure the Audit Log Page</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-510"></a>Scroll to the <tt>audit-log</tt> element (located in the <tt>gui-definition</tt> element).</b></li>
+<li><b>Make any of the following changes:</b><ul>
+<li><b><a name="indexterm-511"></a>To specify that records be written to the audit log, change the value
+of the <tt>allow-insert</tt> element to <tt><b>true</b></tt>. </b></li>
+<li><b>To specify that records not be written to the audit log, change the
+value of the <tt>allow-insert</tt> element to <tt><b>false</b></tt>. </b></li>
+<li><b>To change the name of the Audit Log tab on the MIDM,
+change the value of the <tt>tab-name</tt> element.</b></li>
+<li><b>To change the order in which the Audit Log appears on the
+MIDM, change the value of the <tt>display-order</tt> parameter to a different integer.</b>
+<hr><p><b>Note - </b>If you change the order of one tab, make sure to change
+the order of the remaining tabs so no tabs have an identical display
+order value.</p>
+<hr>
+</li>
+<li><b>To change the number of Audit Log search results that appear on one
+page, change the value of the <tt>item-per-page</tt> element.</b></li>
+<li><b>To change the maximum number of audit log records that can be returned
+for a search, change the value of the <tt>max-result-size</tt> element.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_index-edm-display_p.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_index-edm-impl_p.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

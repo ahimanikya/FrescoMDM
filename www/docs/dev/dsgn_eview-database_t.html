@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-   <title>Developing Master Indexes With Master Index Studio: DRAFT VERSION</title>
+   <title>Developing Master Indexes With Master Index Studio</title>
 
    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
-   <meta name="date" content="2008-04-01">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -19,15 +19,17 @@
    <!-- Use is subject to license terms. -->
 
    <a name="top"></a>
-   <h1>Developing Master Indexes With Master Index Studio: DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: April 2008</div>
+   <h1>Developing Master Indexes With Master Index Studio</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <div class="cornerTL"><div class="cornerTR"></div></div>
+     <h5><span class="tocpageleft"><a href="dsgn_eview-database_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="dsgn_eview-dbs-delete_t.html">Next</a></span></h5>
 
-     <h5><span class="toctitle">Contents</span></span></h5>
+     <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
-       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes: DRAFT VERSION</a></p>
+       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
 <p class="toc level2"><a href="dsgn_eview-runtime_c.html">The Master Index Framework and the Runtime Environment</a></p>
 <p class="toc level2"><a href="dsgn_eview-prep_c.html">Before You Begin Developing a Master Index</a></p>
@@ -36,13 +38,13 @@
 <p class="toc level3"><a href="dsgn_eview-prep_c.html#dsgn_eview-checklist_c">Master Index Project Initiation Checklist</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
 <p class="toc level3"><a href="dsgn_eview-application_p.html#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-249">To Create a Project and Start the Wizard</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-251">To Create a Project and Start the Wizard</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a></p>
 <p class="toc level5"><a href="dsgn_eview-application_p.html#gftkn">To Name the Master Index Application</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-systems_t">Step 3: Define Source Systems</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-291">To Define Source Systems</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-323">To Define Source Systems</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-336">To Define the Deployment Environment</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-375">To Define the Deployment Environment</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a></p>
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftij">Creating Undefined Objects</a></p>
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftkk">Creating Objects from a Template</a></p>
@@ -52,7 +54,7 @@
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftki">Configuring Field Properties</a></p>
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftix">Deleting a Field</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-561">To Generate the Configuration Files</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-630">To Generate the Configuration Files</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-config-file_t">Step 8: Review the Configuration Files</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
 <p class="toc level3"><a href="dsgn_eview-fields_r.html#dsgn-eview-fieldname_c">Master Index Wizard Field Name Restrictions</a></p>
@@ -83,10 +85,10 @@
 <p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-stand_c">Standardization Engine Plug-ins</a></p>
 <p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-phon_c">Phonetic Encoders Plug-ins for a Master Index</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Master Index Custom Plug-ins</a></p>
-<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1106">To Create Custom Plug-ins</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1175">To Create Custom Plug-ins</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index  Application</a></p>
-<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1148">To Generate the Application for the First Time</a></p>
-<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1160">To Regenerate the Application</a></p>
+<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1217">To Generate the Application for the First Time</a></p>
+<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1229">To Regenerate the Application</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_c.html#dsgn_eview-dbs-scripts_c">Master Index Database Scripts</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_c.html#dsgn_eview-dbs-req_c">Master Index Database Requirements</a></p>
@@ -110,20 +112,20 @@
 <p class="toc level3"><a href="#dsgn_eview-dbs-analyze_t">Step 1: Analyze the Master Index Database Requirements</a></p>
 <p class="toc level3"><a href="#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a></p>
 <p class="toc level3"><a href="#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a></p>
-<p class="toc level5"><a href="#gentextid-1500">To Define an Index</a></p>
+<p class="toc level5"><a href="#gentextid-1569">To Define an Index</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a></p>
-<p class="toc level5"><a href="#gentextid-1536">To Define an External System</a></p>
+<p class="toc level5"><a href="#gentextid-1605">To Define an External System</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-db-systems_r">Master Index Database Table Description for sbyn_systems</a></p>
 <p class="toc level3"><a href="#dsgn_eview-dbs-codelist_t">Step 5: Define Master Index Code Lists</a></p>
-<p class="toc level5"><a href="#gentextid-1684">To Customize Common Table Data for Oracle</a></p>
-<p class="toc level5"><a href="#gentextid-1739">To Customize Common Table Data for SQL Server</a></p>
+<p class="toc level5"><a href="#gentextid-1753">To Customize Common Table Data for Oracle</a></p>
+<p class="toc level5"><a href="#gentextid-1808">To Customize Common Table Data for SQL Server</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-dbs-usercode_t">Step 6: Define Master Index User Code Lists</a></p>
-<p class="toc level5"><a href="#gentextid-1798">To Define a User Code List</a></p>
+<p class="toc level5"><a href="#gentextid-1867">To Define a User Code List</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-user-code_r">Master Index Database Table Description for sbyn_user_code</a></p>
 <p class="toc level3"><a href="#dsgn_eview-dbs-custom_t">Step 7: Create Custom Master Index Database Scripts</a></p>
-<p class="toc level5"><a href="#gentextid-1888">To Create a Custom Script</a></p>
+<p class="toc level5"><a href="#gentextid-1957">To Create a Custom Script</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-dbs-install_t">Step 8: Create the Master Index Database Structure</a></p>
-<p class="toc level5"><a href="#gentextid-1902">To Create the Database Structure</a></p>
+<p class="toc level5"><a href="#gentextid-1971">To Create the Database Structure</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-dbs-euid_t">Step 9: Specify a Starting EUID for a Master Index</a></p>
 </div>
 <p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Master Index Database Tables</a></p>
@@ -131,12 +133,11 @@
 <p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
 <p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-driv_t">Step 1: Add the Oracle Driver to the Application Server</a></p>
 <p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a></p>
-<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-1978">To Create a JDBC Connection Pool</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2047">To Create a JDBC Connection Pool</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-res_t">Step 3: Create a JDBC Resource</a></p>
-<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2031">To Create a JDBC Resource</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2112">To Create a JDBC Resource</a></p>
 
      </div>
-     <div class="cornerBL"><div class="cornerBR"></div></div>
    </div>
 
 
@@ -181,9 +182,9 @@ perform this task. After this task is complete, continue to <a href="#dsgn_eview
 
 
 <div class="indent"><a name="dsgn_eview-dbs-create_t"></a><h3>Step 2: Create a Master Index Database and User</h3>
-<p>Before beginning this step, complete <a href="#dsgn_eview-dbs-analyze_t">Step 1: Analyze the Master Index Database Requirements</a>. After you create the database instance and
-user, continue to <a href="#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a> if you want to define additional database indexes; otherwise
-skip to <a href="#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a>.</p><p>For this step you need to create a database in which the
+<p>Before beginning this step, complete <a href="#dsgn_eview-dbs-analyze_t">Step 1: Analyze the Master Index Database Requirements</a>. After you create the database instance
+and user, continue to <a href="#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a> if you want to define additional database indexes;
+otherwise skip to <a href="#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a>.</p><p>For this step you need to create a database in which the
 master index database instance will be created. Use your Oracle or SQL Server
 tools to create the database. Using these tools, you define tablespaces, including their sizes
 and locations; extents; and dump file, log file, and rollback file sizes and
@@ -285,7 +286,7 @@ indexes for each field used for searching, blocking, or matching. You can define
 these indexes in   file<tt>create.sql</tt> or create a new script. Before
 you begin this step, complete <a href="#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a>.</p>
 
-<a name="gentextid-1500"></a><h5>To Define an Index</h5>
+<a name="gentextid-1569"></a><h5>To Define an Index</h5>
 <ol>
 <li><b>Do one of the following:</b><ul>
 <li><b>Under the master index project in the Projects window, expand Database Scripts and
@@ -303,9 +304,9 @@ master index project files. Open <tt>create.sql</tt> in a text editor.</b></li><
 <div class="indent"><a name="dsgn_eview-dbs-systems_t"></a><h3>Step 4: Define Master Index External Systems</h3>
 <p><a name="indexterm-153"></a><a name="indexterm-154"></a>A SQL script is automatically created to insert the systems you specified in
 the wizard. These statements are provided in<tt>systems.sql</tt> in the master index project.
- Before you begin this step, complete <a href="#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a> and, optionally, <a href="#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a>.</p>
+Before you begin this step, complete <a href="#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a> and, optionally, <a href="#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a>.</p>
 
-<a name="gentextid-1536"></a><h5>To Define an External System</h5>
+<a name="gentextid-1605"></a><h5>To Define an External System</h5>
 <ol>
 <li><b>Do one of the following:</b><ul>
 <li><b>Under the master index project in the Projects window, expand Database Scripts and
@@ -360,43 +361,43 @@ the length of all LID columns in the database.</p>
 <td align="left" valign="top" scope="row"><p><a name="indexterm-171"></a><a name="indexterm-172"></a><a name="indexterm-173"></a><a name="indexterm-174"></a>The required data pattern for the
 local IDs assigned by the system. For more information about possible values and
 using Java patterns, see &ldquo;Patterns&rdquo; in the class list for <tt>java.util.regex</tt> in the
-Javadocs provided with the Java EE Platform. Note that the pattern specified here might
-be further restricted by the input mask described below.</p></td>
+Javadocs provided with Java. Note that the pattern specified here might be further restricted
+by the input mask described below.</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-175"></a><a name="indexterm-176"></a>input_mask</p></td>
-<td align="left" valign="top" scope="row"><p>A mask used by
-the MIDM to add punctuation to the local ID. For example, you can
-add an input mask to display the local IDs with hyphens or constant
-characters. To define an input mask, enter a character type for each character
-in the field and place any necessary punctuation between the types. For example,
-to insert a hyphen after the second and fifth characters in an 8-digit
-ID, the input mask would be <b>DD-DDD-DDD</b>. The following character types can be
-used; any other characters are treated as constants.</p>
+<td align="left" valign="top" scope="row"><p>A mask used by the MIDM to
+add punctuation to the local ID. For example, you can add an input
+mask to display the local IDs with hyphens or constant characters. To define
+an input mask, enter a character type for each character in the field
+and place any necessary punctuation between the types. For example, to insert a
+hyphen after the second and fifth characters in an 8-digit ID, the input
+mask would be <b>DD-DDD-DDD</b>. The following character types can be used; any other
+characters are treated as constants.</p>
 <ul><li><p><b>D</b> - indicates a numeric character.</p></li>
 <li><p><b>L</b> - indicates an alphabetic character.</p></li>
 <li><p><b>A</b> - indicates an alphanumeric character.</p></li></ul>
-<p>If you use an input mask,
-you should also define a value mask to remove the punctuation from the
-stored value.</p></td>
+<p>If you use an input mask, you should also
+define a value mask to remove the punctuation from the stored value.</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-177"></a>value_mask</p></td>
-<td align="left" valign="top" scope="row"><p>A mask used to strip any extra characters that were added
-by the input mask. This mask ensures that data is stored in the
-database in the correct format.</p><p>To specify a value mask, type the same value
-entered for the input mask, but type an &ldquo;x&rdquo; in place of each
-punctuation mark. Using the 8-digit input mask described above, you would specify a
-value mask of <b>DDxDDDxDDD</b>. This strips the hyphens before storing the ID in
-the database.</p></td>
+<td align="left" valign="top" scope="row"><p>A mask
+used to strip any extra characters that were added by the input mask.
+This mask ensures that data is stored in the database in the
+correct format.</p><p>To specify a value mask, type the same value entered for the
+input mask, but type an &ldquo;x&rdquo; in place of each punctuation mark. Using
+the 8-digit input mask described above, you would specify a value mask of
+<b>DDxDDDxDDD</b>. This strips the hyphens before storing the ID in the database.</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-178"></a>create_date</p></td>
-<td align="left" valign="top" scope="row"><p>The date the system information was inserted into the database. You can
-specify &ldquo;sysdate&rdquo; for this column, or use the variables defined in of the
-sample script.</p></td>
+<td align="left" valign="top" scope="row"><p>The date
+the system information was inserted into the database. You can specify &ldquo;sysdate&rdquo; for
+this column, or use the variables defined in of the sample script.</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-179"></a>create_userid</p></td>
-<td align="left" valign="top" scope="row"><p>The logon ID of the user who inserted the system information
-into the database. You can enter the logon ID or use the variables
-defined in of the sample script.</p></td>
+<td align="left" valign="top" scope="row"><p>The logon
+ID of the user who inserted the system information into the database. You
+can enter the logon ID or use the variables defined in of
+the sample script.</p></td>
 </tr>
 </table></div>
 
@@ -417,7 +418,7 @@ each common table data type and data element).</p>
 <hr>
 
 
-<a name="gentextid-1684"></a><h5>To Customize Common Table Data for Oracle</h5>
+<a name="gentextid-1753"></a><h5>To Customize Common Table Data for Oracle</h5>
 <ol>
 <li><b>Do one of the following:</b><ul>
 <li><b>Under the master index project in the Projects window, expand Database Scripts and
@@ -443,7 +444,7 @@ contains a comma at the end. </b><p>For example:</p><p><tt>-- **** ADDRTYPE ****
 <li><b>If you are ready to create the master index database structure, skip to
 <a href="#dsgn_eview-dbs-install_t">Step 8: Create the Master Index Database Structure</a>.</b></li></ul></li></ol>
 
-<a name="gentextid-1739"></a><h5>To Customize Common Table Data for SQL Server</h5>
+<a name="gentextid-1808"></a><h5>To Customize Common Table Data for SQL Server</h5>
 <ol>
 <li><b>Do one of the following:</b><ul>
 <li><b>Under the master index project in the Projects window, expand Database Scripts and
@@ -473,7 +474,7 @@ you must define the user code values for those fields. Below is
 a sample insert statement for the sbyn_user_code table.</p><p><tt>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask) values (&rsquo;AUXIDDEF&rsquo;, &rsquo;CC&rsquo;, &rsquo;CREDIT CARD&rsquo;, &rsquo;[0-9]{16}&rsquo;, &rsquo;DDDD-DDDD-DDDD-DDDD&rsquo;, &rsquo;DDDD^DDDD^DDDD^DDDD&rsquo;);</tt></p><p>To learn more about the sbyn_user_code table, see <a href="#dsgn_eview-user-code_r">Master Index Database Table Description for sbyn_user_code</a>. Complete <a href="#dsgn_eview-dbs-codelist_t">Step 5: Define Master Index Code Lists</a> before
 beginning this step. </p>
 
-<a name="gentextid-1798"></a><h5>To Define a User Code List</h5>
+<a name="gentextid-1867"></a><h5>To Define a User Code List</h5>
 <ol>
 <li><b>Create a new SQL file to contain the user code SQL statements.</b></li>
 <li><b>Use the above sample to define a value for the user code
@@ -509,36 +510,36 @@ the value that appears in the drop-down list.</p></td>
 <td align="left" valign="top" scope="row"><p>The required data pattern for the
 field that is constrained by the user code. For more information about possible
 values and using Java patterns, see &ldquo;Patterns&rdquo; in the class list for <tt>java.util.regex</tt>
-in the Javadocs provided with the J2SE Platform. Note that the pattern might be
-further restricted by the value of the input mask described below.</p></td>
+in the Javadocs provided with Java. Note that the pattern might be further restricted
+by the value of the input mask described below.</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-191"></a><a name="indexterm-192"></a>input-mask</p></td>
-<td align="left" valign="top" scope="row"><p>A mask
-used by the MIDM to add punctuation to the constrained field. For example,
-the input mask <b>DD-DDD-DDD</b> inserts a hyphen after the second and fifth characters
-in an 8-digit ID. If you use an input mask, you should also
-use a value mask to strip the punctuation for database storage (see below).</p><p>The
-following character types can be used.</p>
+<td align="left" valign="top" scope="row"><p>A mask used by
+the MIDM to add punctuation to the constrained field. For example, the input
+mask <b>DD-DDD-DDD</b> inserts a hyphen after the second and fifth characters in an
+8-digit ID. If you use an input mask, you should also use a
+value mask to strip the punctuation for database storage (see below).</p><p>The following character
+types can be used.</p>
 <ul><li><p><b>D</b> &ndash; Numeric character</p></li>
 <li><p><b>L</b> &ndash; Alphabetic character</p></li>
 <li><p><b>A</b> &ndash; Alphanumeric character</p></li></ul>
 </td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-193"></a><a name="indexterm-194"></a>value-mask</p></td>
-<td align="left" valign="top" scope="row"><p>A mask used to strip any extra
-characters that were added by the input mask for database storage. The value
-mask is the same as the input mask, but with an &ldquo;x&rdquo; in
-place of each punctuation mark. Using the input mask described above, the value
-mask is <b>DDxDDDxDDD</b>. This strips the hyphens before storing the ID.</p></td>
+<td align="left" valign="top" scope="row"><p>A mask used to strip any extra characters that
+were added by the input mask for database storage. The value mask is
+the same as the input mask, but with an &ldquo;x&rdquo; in place of
+each punctuation mark. Using the input mask described above, the value mask is
+<b>DDxDDDxDDD</b>. This strips the hyphens before storing the ID.</p></td>
 </tr>
 </table></div>
 
 
 <div class="indent"><a name="dsgn_eview-dbs-custom_t"></a><h3>Step 7: Create Custom Master Index Database Scripts</h3>
 <p><a name="indexterm-195"></a><a name="indexterm-196"></a>You can insert additional information into the database by creating a custom script.
-For information about the structure of the master index database, see <a href="https://open-dm-mi.dev.java.net/docs/process/landingpage.html">Understanding Master Index Processing</a>.</p>
+For information about the structure of the master index database, see <a href="https://open-dm-mi.dev.java.net/docs/ref/landingpage.html">Understanding Master Index Processing</a>.</p>
 
-<a name="gentextid-1888"></a><h5>To Create a Custom Script</h5>
+<a name="gentextid-1957"></a><h5>To Create a Custom Script</h5>
 <ol>
 <li><b>Create a new text file to contain the SQL statements.</b></li>
 <li><b>In the text editor, create the SQL script to insert the custom data.</b></li>
@@ -550,7 +551,7 @@ For information about the structure of the master index database, see <a href="h
 <p>After you create the database instance and customize the database scripts, you can
 create the master index tables and insert the custom data.</p>
 
-<a name="gentextid-1902"></a><h5>To Create the Database Structure</h5>
+<a name="gentextid-1971"></a><h5>To Create the Database Structure</h5>
 <ol>
 <li><b>Open a standard SQL editor and connect to the master index database using
 the user you created in <a href="#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a>.</b></li>

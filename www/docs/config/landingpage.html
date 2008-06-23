@@ -1,164 +1,114 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<head>
+   <title>Configuring Master Indexes </title>
 
- <head>
-
-<title>Developing Master Indexes With Master Index Studio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Master Index Studioprovides a flexible framework that allows you to customize the master index applications you create. Configuring Master Indexes provides instructions for configuring a master index application by either using the Configuration Editor or by modifying the configuration files directly.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
 
    <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
-
-
 </head>
-
 
 <body>
 
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
 
+   <a name="top"></a>
+   <h1>Configuring Master Indexes </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="p1.html">Previous</a></span>
+         <span class="tocpageright"><a href="relatedtopics.html">Next</a></span></h5>
 
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-
-
-
-
-
-<!-- Servlet-Specific template -->
-
-
-
-<p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
-		<table id="floating-contenttable" class="colapse">
-		<td class="valign-top b-right full-width"><!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;"><!-- IE hack-->
-
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-
-<a name="top"></a>
-<h1>Configuring Master Indexes</h1>
-<h1 style="bold">DRAFT VERSION</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
-    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <div class="onpage">
+<p class="toc level1"><a href="">Configuring Master Indexes</a></p>
 </div>
 
+     </div>
+   </div>
 
 
-<a name="landingpage"></a><h3>Configuring Mural Master Indexes</h3><p>This page provides links to task, conceptual, and reference information for configuring a
-master index application. These are the tasks you can perform after you create
-the master index framework.</p><p><a name="whatyouneed"></a><b>What you need to know</b></p><p>These topics provide information you should to know before you start customizing a
+   <div class="maincontent">
+      <a name="landingpage"></a><h3>Configuring Master Indexes</h3><p>The topics listed here provide information about configuring a master index application. You
+can perform the tasks listed on this page after you create the master
+index framework. This document is designed to be used in conjunction with <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>, which
+describes the configuration file structure and explains the configuration options and how they
+affect processing.</p><p><a name="whatyouneed"></a><b>What You Need to Know</b></p><p>These topics provide information you should to know before you start customizing a
 master index application. </p>
-<ul><li><p><a href="bookoverview.html#cnfg_index-files-about_c">About the Configuration Files</a></p></li>
-<li><p><a href="bookoverview.html#cnfg_index-modxml-about_c">Modifying the XML Files Directly</a></p></li>
-<li><p><a href="bookoverview.html#cnfg_index-config-ed-about_c">Using the Configuration Editor</a></p></li>
-<li><p><a href="bookoverview.html#cnfg_index-version_c">Maintaining Version Control in the Configuration Editor</a></p></li></ul>
-<p><b>What you need to do</b></p><p>These topics provide instructions on how to configure the components of a master
+<ul><li><p><a href="bookoverview.html#cnfg_index-files-about_c">About the Master Index Configuration Files</a></p></li>
+<li><p><a href="bookoverview.html#cnfg_index-modxml-about_c">Modifying the Master Index XML Files Directly</a></p></li>
+<li><p><a href="bookoverview.html#cnfg_index-config-ed-about_c">Using the Master Index Master Index Configuration Editor</a></p></li>
+<li><p><a href="bookoverview.html#cnfg_index-version_c">Maintaining Version Control in the Master Index Configuration Files</a></p></li></ul>
+<p><b>What You Need to Do</b></p><p>These topics provide instructions on how to configure the components of a master
 index application, either by modifying the XML files directly or by using the
 graphical Configuration Editor.</p>
-<ul><li><p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p></li>
-<li><p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p></li>
-<li><p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p></li>
-<li><p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p></li>
-<li><p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p></li>
-<li><p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p></li>
-<li><p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p></li>
-<li><p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p></li>
-<li><p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p></li>
-<li><p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p></li>
-<li><p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p></li>
-<li><p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p></li>
-<li><p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p></li>
-<li><p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p></li>
-<li><p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p></li>
-<li><p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p></li>
-<li><p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p></li>
-<li><p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p></li>
-<li><p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p></li>
-<li><p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p></li>
-<li><p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p></li>
-<li><p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p></li>
-<li><p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></li></ul>
-<p><b>More Information</b></p><p>These links provide additional information you should know when configuring a master index
-application. </p>
+<ul><li><p><a href="cnfg_index-object_t.html">Configuring the Master Index Object Structure</a></p></li>
+<li><p><a href="cnfg_index-query-basic_t.html">Creating a Master Index Basic Query</a></p></li>
+<li><p><a href="cnfg_index-query-block_p.html">Creating Master Index Blocking Queries</a></p></li>
+<li><p><a href="cnfg_index-query-mod_p.html">Modifying Master Index Queries</a></p></li>
+<li><p><a href="cnfg_index-query-del_t.html">Deleting a Master Index Query</a></p></li>
+<li><p><a href="cnfg_index-mc_p.html">Configuring Master Index Processing Options</a></p></li>
+<li><p><a href="cnfg_index-dm_p.html">Configuring Matching Parameters</a></p></li>
+<li><p><a href="cnfg_index-euid_p.html">Configuring Master Index EUIDs</a></p></li>
+<li><p><a href="cnfg_index-norm_p.html">Defining Master Index Normalization Rules</a></p></li>
+<li><p><a href="cnfg_index-stand_p.html">Defining Master Index Standardization Rules</a></p></li>
+<li><p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding for the Master Index</a></p></li>
+<li><p><a href="cnfg_index-match-string_p.html">Defining the Master Index Match String</a></p></li>
+<li><p><a href="cnfg_index-query-proc_t.html">Defining how Master Index Query Blocks are Processed</a></p></li>
+<li><p><a href="cnfg_index-survivor_p.html">Defining the Master Index Survivor Calculator</a></p></li>
+<li><p><a href="cnfg_index-sbr-filter_t.html">Filtering Default Values From Master Index Processes</a></p></li>
+<li><p><a href="cnfg_index-update-pol_p.html">Configuring Master Index Update Policies</a></p></li>
+<li><p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations for the Master Index</a></p></li>
+<li><p><a href="cnfg_index-engines_p.html">Configuring the Match Engine</a></p></li>
+<li><p><a href="cnfg_index-stndeng_p.html">Configuring the Standardization Engine</a></p></li>
+<li><p><a href="cnfg_index-edm-display_p.html">Configuring the Master Index MIDM Appearance</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html">Configuring the Master Index MIDM Pages</a></p></li>
+<li><p><a href="cnfg_index-edm-impl_p.html">Configuring Master Index MIDM Implementation Information</a></p></li></ul>
+<p><b>More Information</b></p><p>These topics provide additional information you should know when configuring a master index.
+</p>
 <ul><li><p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p></li>
-<li><p><a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a></p></li>
-<li><p><a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a></p></li>
-<li><p><a href="cnfg_index-norm_p.html#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a></p></li>
-<li><p><a href="cnfg_index-norm_p.html#cnfg_index-norm-locale_r">Locale Codes Fields and Elements</a></p></li>
-<li><p><a href="cnfg_index-phon_p.html#cnfg_index-phon-field_r">Phonetic Encoding Fields and Elements</a></p></li>
-<li><p><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc_r">Encoder Elements and Encoder Types</a></p></li>
-<li><p><a href="cnfg_index-survivor_p.html#cnfg_index-surv-calc_r">Default Survivor Strategy Parameter Elements</a></p></li>
-<li><p><a href="cnfg_index-survivor_p.html#cnfg_index-weight-calc_r">Weighted Calculator Parameter Elements</a></p></li>
-<li><p><a href="cnfg_index-engines_p.html#cnfg_index-engine-comp_r">Match Comparator Configuration Fields and Columns</a></p></li>
-<li><p><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a></p></li>
-<li><p><a href="cnfg_index-edm-search_p.html#cnfg_index-search-def_r">EDM Search Page Definition Elements</a></p></li>
-<li><p><a href="cnfg_index-edm-search_p.html#cnfg_index-search-fields_r">EDM Search Field Definition Elements</a></p></li>
-<li><p><a href="cnfg_index-edm-search_p.html#cnfg_index-search-opts_r">EDM Search Option Elements</a></p></li>
-<li><p><a href="cnfg_index-edm-pages_p.html#cnfg_index-edm-report-pg_r">Reports Page Configuration Elements</a></p></li>
-<li><p><a href="cnfg_index-edm-pages_p.html#cnfg_index-edm-reports_r">Report Configuration Elements</a></p></li></ul>
+<li><p><a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a></p></li>
+<li><p><a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Master Index Query Block Fields and XML Elements</a></p></li>
+<li><p><a href="cnfg_index-norm_p.html#cnfg_index-norm_r">Master Index Normalization and Standardization Structure Properties</a></p></li>
+<li><p><a href="cnfg_index-norm_p.html#cnfg_index-norm-locale_r">Master Index Variants Properties</a></p></li>
+<li><p><a href="cnfg_index-phon_p.html#cnfg_index-phon-field_r">Master Index Phonetic Encoding Fields and Elements</a></p></li>
+<li><p><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc_r">Master Index Encoder Elements and Types</a></p></li>
+<li><p><a href="cnfg_index-survivor_p.html#cnfg_index-surv-calc_r">Master Index Default Survivor Strategy Parameter Elements</a></p></li>
+<li><p><a href="cnfg_index-survivor_p.html#cnfg_index-weight-calc_r">Master Index Weighted Calculator Parameter Elements</a></p></li>
+<li><p><a href="cnfg_index-sbr-filter_t.html#cnfg_index-filter_r">Filter Definition Elements</a></p></li>
+<li><p><a href="cnfg_index-engines_p.html#cnfg_index-engine-comp_r">Match Comparator Configuration Properties for Master Index Studio</a></p></li>
+<li><p><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_duprecords_search_r">Duplicate Records Search Page Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_duprecords-results_r">Duplicate Records Search Results List Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_mi-search-opts_r">Record Details Search Option Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_mi-reports_r">Production Reports Definition Elements</a></p></li>
+<li><p><a href="cnfg_index-midm-page_p.html#cnfg_mi-activity_r">Activity Reports Definition Elements</a></p></li></ul>
 
+   </div>
 
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="p1.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="relatedtopics.html">Next</a>
+            </td>
+         </tr>
+      </table>
 
-<!-- End Content Area -->
+   </div>
 
-<td class="valign-top" >
-	<div id="floating-col-right" width="10px"><!-- right content column -->
-<p class="h1" style="bold">Table of Contents</p>
-<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
-<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
-<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
-<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
-<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
-<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
-<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
-<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
-<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
-<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
-<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
-<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
-<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
-<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
-<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
-<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
-<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
-<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
-<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
-<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
-<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
-<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
-<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
-<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
-<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
-</div>
-					</td></tr></table></div></div>
-	</td></tr></div>
-	</div>
-	<!-- /Servlet-Specific template -->
-
-<!-- end of right navigation -->
-
-
-
-</div>
-</div>
 </body>
 </html>

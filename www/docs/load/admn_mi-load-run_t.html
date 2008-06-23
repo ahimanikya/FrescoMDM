@@ -1,18 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-   <title>Loading the Initial Data Set for a Master Index Application</title>
+   <title>Loading the Initial Data Set for a Master Index</title>
 
    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
-   <meta name="description" content="Loading the Initial Data Set for a Master Index Application provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
-   <meta name="date" content="2008-05-01">
+   <meta name="description" content="Loading the Initial Data Set for a Master Index provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
-
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -21,9 +19,8 @@
    <!-- Use is subject to license terms. -->
 
    <a name="top"></a>
-   <h1>Loading the Initial Data Set for a Master Index Application</h1>
-   <h1>DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+   <h1>Loading the Initial Data Set for a Master Index</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"><a href="admn_mi-load-analysis_p.html">Previous</a></span>
@@ -31,21 +28,23 @@
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
-       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index Application</a></p>
+       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="admn_mi-load-overview_c.html">Initial Bulk Match and Load Overview</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-process_c">Initial Bulk Match and Load Process Overview</a></p>
-<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-procedure_c">Data Cleansing, Matching, and Loading Procedure Overview</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-procedure_c">Data Preparation, Matching, and Loading Procedure Overview</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-dist_c">Distributed Processing</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-match_c">About the Bulk Match Process</a></p>
 <p class="toc level4"><a href="admn_mi-load-overview_c.html#gglab">Block Distribution</a></p>
-<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglcg">Matching Records</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglcg">Record Matching</a></p>
 <p class="toc level4"><a href="admn_mi-load-overview_c.html#gglbz">EUID Assignment</a></p>
 <p class="toc level4"><a href="admn_mi-load-overview_c.html#gglaz">Master Index Image Creation</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#ggvha">Potential Duplicate Creation</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-load-overview_c.html#admn_mi-load-load_c">About the Bulk Load Process</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-cluster_c">About the Cluster Synchronizer</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-files_c">Required Format for Flat Data Files</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-gen_t.html">Generating the Initial Bulk Match and Load Tool</a></p>
-<p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-225">To Generate the Initial Bulk Match and Load Tool</a></p>
+<p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-239">To Generate the Initial Bulk Match and Load Tool</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-envvar_t.html">Configuring the Environment</a></p>
 <p class="toc level4"><a href="admn_mi-load-envvar_t.html#gglre">To Configure the Environment</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-database_t.html">Creating the Cluster Synchronizer Database</a></p>
@@ -113,9 +112,13 @@ and close the file.</b><p>For information about the configurable properties, see
 <li><b>In the master IBML Tool home directory, do one of the following:</b><ul>
 <li><b>On Windows, double-click <tt>run-loader.bat</tt> or type <tt>run-loader.bat</tt> from a command line.</b></li>
 <li><b>On UNIX, type IBML Tool<tt>sh run-loader.sh</tt> at the command line.</b></li></ul></li>
-<li><b>Examine the log files to be sure no errors occurred during the match
-process, and check the files located in the <tt>masterIndex</tt> folder of your working
-directory to be sure all tables were populated.</b></li>
+<li><b>Examine the log files in the <tt>logs</tt> directory of the IBML Tool home
+directory to verify that no errors occurred during the match process. </b></li>
+<li><b>Examine the files located in the <tt>masterIndex</tt> folder of your working directory to
+be sure all tables were populated.</b><a name="ggvgh"></a><h6>Figure&nbsp;4 Master Index Image Files</h6><img src="figures/MasterIndexFiles.gif" alt="Figure shows the master index image files created in the working directory." width="357" height="275"></img></li>
+<li><b>If you configured the IBML Tool to keep the temporary folders in the
+working directory, you can examine the blocking, EUID, and match files for additional
+verification.</b><a name="ggvhj"></a><h6>Figure&nbsp;5 IBML Tool Working Directory</h6><img src="figures/WorkingDirectory.gif" alt="Figure shows the structure of the IBML Tool working directory." width="332" height="194"></img></li>
 <li><b>To load the data into the master index database, do one of
 the following:</b><ul>
 <li><b>To load the data using SQL*Loader, follow the instructions under <a href="admn_mi-load-gensql_p.html">Loading Data Using SQL*Loader</a>.</b></li>

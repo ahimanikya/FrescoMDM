@@ -1,18 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-   <title>Loading the Initial Data Set for a Master Index Application</title>
+   <title>Loading the Initial Data Set for a Master Index</title>
 
    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
-   <meta name="description" content="Loading the Initial Data Set for a Master Index Application provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
-   <meta name="date" content="2008-05-01">
+   <meta name="description" content="Loading the Initial Data Set for a Master Index provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
-
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -21,33 +19,34 @@
    <!-- Use is subject to license terms. -->
 
    <a name="top"></a>
-   <h1>Loading the Initial Data Set for a Master Index Application</h1>
-   <h1>DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+   <h1>Loading the Initial Data Set for a Master Index</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="lidsevseispv.html">Previous</a></span>
+     <h5><span class="tocpageleft"><a href="relatedtopics.html">Previous</a></span>
          <span class="tocpageright"><a href="admn_mi-load-gen_t.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
-       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index Application</a></p>
+       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <div class="onpage">
 <p class="toc level2"><a href="">Initial Bulk Match and Load Overview</a></p>
 <p class="toc level3"><a href="#admn_mi-load-process_c">Initial Bulk Match and Load Process Overview</a></p>
-<p class="toc level3"><a href="#admn_mi-load-procedure_c">Data Cleansing, Matching, and Loading Procedure Overview</a></p>
+<p class="toc level3"><a href="#admn_mi-load-procedure_c">Data Preparation, Matching, and Loading Procedure Overview</a></p>
 <p class="toc level3"><a href="#admn_mi-load-dist_c">Distributed Processing</a></p>
 <p class="toc level3"><a href="#admn_mi-load-match_c">About the Bulk Match Process</a></p>
 <p class="toc level4"><a href="#gglab">Block Distribution</a></p>
-<p class="toc level4"><a href="#gglcg">Matching Records</a></p>
+<p class="toc level4"><a href="#gglcg">Record Matching</a></p>
 <p class="toc level4"><a href="#gglbz">EUID Assignment</a></p>
 <p class="toc level4"><a href="#gglaz">Master Index Image Creation</a></p>
+<p class="toc level4"><a href="#ggvha">Potential Duplicate Creation</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-load-load_c">About the Bulk Load Process</a></p>
 <p class="toc level3"><a href="#admn_mi-load-cluster_c">About the Cluster Synchronizer</a></p>
 <p class="toc level3"><a href="#admn_mi-load-files_c">Required Format for Flat Data Files</a></p>
 </div>
 <p class="toc level2 tocsp"><a href="admn_mi-load-gen_t.html">Generating the Initial Bulk Match and Load Tool</a></p>
-<p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-225">To Generate the Initial Bulk Match and Load Tool</a></p>
+<p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-239">To Generate the Initial Bulk Match and Load Tool</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-envvar_t.html">Configuring the Environment</a></p>
 <p class="toc level4"><a href="admn_mi-load-envvar_t.html#gglre">To Configure the Environment</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-database_t.html">Creating the Cluster Synchronizer Database</a></p>
@@ -101,17 +100,17 @@ at the same time cleansing the data, reducing data duplication, and reducing err
 The IBML Tool provides a scalable solution that standardizes and matches raw data
 and that can be run on multiple processors for better performance.</p><p>The IBML Tool consists of two components, the Bulk Matcher and the
 Bulk Loader. The Bulk Matcher compares records in the input data using probabilistic
-matching algorithms based on the Master Index Match Engine and based on the
-configuration you defined for your master index application. It then creates an image
-of the cleansed and matched data to be loaded into the master index.
-The Bulk Loader uses the output of the Bulk Matcher to load data
-directly into the master index database. Because the Bulk Matcher performs all of
-the match and potential duplicate processing and generates EUIDs for each unique record,
-the data is ready to be loaded with no additional processing from the
-master index application itself.</p><p>The following topics provides additional information about the Initial Bulk Match and
+matching algorithms based on the Mural Match Engine and based on the configuration
+you defined for your master index application. It then creates an image of
+the cleansed and matched data to be loaded into the master index. The
+Bulk Loader uses the output of the Bulk Matcher to load data directly
+into the master index database. Because the Bulk Matcher performs all of the
+match and potential duplicate processing and generates EUIDs for each unique record, the
+data is ready to be loaded with no additional processing from the master
+index application itself.</p><p>The following topics provides additional information about the Initial Bulk Match and
 Load Tool.</p>
 <ul><li><p><a href="#admn_mi-load-process_c">Initial Bulk Match and Load Process Overview</a></p></li>
-<li><p><a href="#admn_mi-load-procedure_c">Data Cleansing, Matching, and Loading Procedure Overview</a></p></li>
+<li><p><a href="#admn_mi-load-procedure_c">Data Preparation, Matching, and Loading Procedure Overview</a></p></li>
 <li><p><a href="#admn_mi-load-dist_c">Distributed Processing</a></p></li>
 <li><p><a href="#admn_mi-load-match_c">About the Bulk Match Process</a></p></li>
 <li><p><a href="#admn_mi-load-load_c">About the Bulk Load Process</a></p></li>
@@ -141,10 +140,10 @@ into the master index database.  The final step in the process is
 loading the data into the master index database. This can be done using
 either Oracle SQL*Loader or the Data Integrator Bulk Loader. Both products can read
 the output of the Bulk Matcher and load the image into the database.
-</p><a name="ggtop"></a><h6>Figure&nbsp;1 Initial Bulk Match and Load Tool Process Flow</h6><img src="figures/IBMLFlow.gif" alt="Figure shows the flow of data through the IBML Tool." width="351" height="511"></img></div>
+</p><a name="ggtop"></a><h6>Figure&nbsp;1 Initial Bulk Match and Load Tool Process Flow</h6><img src="figures/IBMLFlow.gif" alt="Figure shows the flow of data through the IBML Tool." width="253" height="368"></img></div>
 
 
-<div class="indent"><a name="admn_mi-load-procedure_c"></a><h3>Data Cleansing, Matching, and Loading Procedure Overview</h3>
+<div class="indent"><a name="admn_mi-load-procedure_c"></a><h3>Data Preparation, Matching, and Loading Procedure Overview</h3>
 <p>The IBML Tool was designed to build on the features provided by
 the Data Cleanser and Data Profiler tools that are also generated from a
 master index application. These tools help you analyze the quality of your data
@@ -194,10 +193,11 @@ process. </p></div>
 <div class="indent"><a name="admn_mi-load-match_c"></a><h3>About the Bulk Match Process</h3>
 <p>The Bulk Matcher performs the following sequence of tasks: </p>
 <ul><li><p><a href="#gglab">Block Distribution</a></p></li>
-<li><p><a href="#gglcg">Matching Records</a></p></li>
+<li><p><a href="#gglcg">Record Matching</a></p></li>
 <li><p><a href="#gglbz">EUID Assignment</a></p></li>
-<li><p><a href="#gglaz">Master Index Image Creation</a></p></li></ul>
-<p>Block distribution and EUID assignment are both handled by the master Bulk
+<li><p><a href="#gglaz">Master Index Image Creation</a></p></li>
+<li><p><a href="#ggvha">Potential Duplicate Creation</a></p></li></ul>
+<a name="ggvfy"></a><h6>Figure&nbsp;2 Bulk Matcher Internal Process</h6><img src="figures/IBMLProcess.gif" alt="Figure shows the internal process flow of the Bulk Matcher." width="396" height="556"></img><p>Block distribution and EUID assignment are both handled by the master Bulk
 Matcher. Matching and master index image generation are performed by all matchers. At any
 given time, all matchers perform the same task. When that task is
 complete for all matchers, they move on to the next task, obtaining the
@@ -217,7 +217,7 @@ blocks, the cluster synchronizer indicates that the matchers can begin the match
  </p></div>
 
 
-<div class="indent"><a name="gglcg"></a><h3>Matching Records</h3>
+<div class="indent"><a name="gglcg"></a><h3>Record Matching</h3>
 <p>Once the input data is distributed into individual block buckets, each matcher retrieves
 a bucket and proceeds to compare each record to every other record in
 a block and assign a weight that indicates the probability that the records
@@ -244,9 +244,19 @@ can begin.</p></div>
 the master data image files to be loaded into the master index
 database. These images include complete enterprise records with SBRs, system records, and child objects.
 The SBR is determined based on the survivor calculator defined for the master
-index application. The image files also include assumed matches, potential duplicates, and transaction
-information.  Each matcher processes one of the EUID buckets at a time
-until all buckets are processed. Once the Bulk Matcher completes this phase, match
+index application. The image files also include assumed matches and transaction information.
+Each matcher processes one of the EUID buckets at a time until all
+buckets are processed.</p></div>
+
+
+<div class="indent"><a name="ggvha"></a><h3>Potential Duplicate Creation</h3>
+<p>The potential duplicate generator reads from the SBR bucket files created by the
+master index generator and generates any potential duplicate linkages. The potential duplicate generator
+creates block buckets from the SBR records and matches the SBRs of each
+record. If two records have a matching weight that is above the duplicate
+threshold but below the match threshold, they are added to the potential duplicate
+table in the master index image files. This table is loaded directly into
+the master index sbyn_potentialduplicates table. Once the Bulk Matcher completes this phase, match
 processing is complete. </p></div>
 </div>
 
@@ -303,7 +313,7 @@ standard master index Person template, which includes alias, address, and phone 
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="lidsevseispv.html">Previous</a>
+               <a href="relatedtopics.html">Previous</a>
             </td>
             <td class="pageright">
                <a href="admn_mi-load-gen_t.html">Next</a>

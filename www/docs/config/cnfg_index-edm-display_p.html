@@ -1,150 +1,441 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<head>
+   <title>Configuring Master Indexes </title>
 
-
- <head>
-       
-<title>Developing Master Indexes With Master Index Studio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Master Index Studioprovides a flexible framework that allows you to customize the master index applications you create. Configuring Master Indexes provides instructions for configuring a master index application by either using the Configuration Editor or by modifying the configuration files directly.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
 
    <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
-
 </head>
-
 
 <body>
 
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
 
+   <a name="top"></a>
+   <h1>Configuring Master Indexes </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_index-stndeng_p.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-midm-page_p.html">Next</a></span></h5>
 
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-
-
-
-
-
-<!-- Servlet-Specific template -->
-
-
-
-
-
-
-<p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
-		<table id="floating-contenttable" class="colapse">
-		<td class="valign-top b-right full-width"><!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;"><!-- IE hack-->
-
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-
-<a name="top"></a>
-<h1>Configuring Master Indexes</h1>
-<h1 style="bold">DRAFT VERSION</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
-    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Configuring Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p class="toc level3"><a href="bookoverview.html#cnfg_index-files-about_c">About the Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyau">object.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyav">query.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaw">mefa.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyax">master.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyay">update.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaz2">filter.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaz">validation.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyba">Security</a></p>
+<p class="toc level4"><a href="bookoverview.html#agybb">midm.xml</a></p>
+<p class="toc level3 tocsp"><a href="bookoverview.html#cnfg_index-modxml-about_c">Modifying the Master Index XML Files Directly</a></p>
+<p class="toc level3"><a href="bookoverview.html#cnfg_index-config-ed-about_c">Using the Master Index Master Index Configuration Editor</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxey">object.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxez">query.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfg">master.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfp">mefa.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfl">update.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxds">validation.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxel">midm.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfd">Match Configuration File (matchConfigFile.cfg)</a></p>
+<p class="toc level3 tocsp"><a href="bookoverview.html#cnfg_index-version_c">Maintaining Version Control in the Master Index Configuration Files</a></p>
+<p class="toc level3"><a href="bookoverview.html#agybz">Copying, Cutting, and Pasting Files</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-object_t.html">Configuring the Master Index Object Structure</a></p>
+<p class="toc level3"><a href="cnfg_index-object_t.html#cnfg_object-create_t">Adding an Object to the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-383">To Add an Undefined Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-400">To Add a Predefined Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-425">To Add an Undefined Object (XML editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_object-modify_t">Modifying an Object's Name In the Master Index Object Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-462">To Modify an Object's Name (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-477">To Modify an Object's Name (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_object-delete_t">Deleting an Object From the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-497">To Delete an Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-520">To Delete an Object (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-add_t">Adding a Field to the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-546">To Add a Field (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-570">To Add a Field (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-delete_t">Deleting a Field from the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-600">To Delete a Field (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-623">To Delete a Field (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-props_t">Modifying Master Field Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-644">To Modify Field Properties (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-670">To Modify Field Properties (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_index-object-rel_t">Defining Relationships Between Master Index Objects</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-695">To Define Object Relationships (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldname_r">Master Index Field Name Restrictions</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldeditor_c">Master Index Configuration Editor Field Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldxml_r">Master Index Field Property Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-basic_t.html">Creating a Master Index Basic Query</a></p>
+<p class="toc level4"><a href="cnfg_index-query-basic_t.html#gentextid-1024">To Create a Basic Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-basic_t.html#gentextid-1043">To Create a Basic Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-block_p.html">Creating Master Index Blocking Queries</a></p>
+<p class="toc level4"><a href="cnfg_index-query-block_p.html#gentextid-1192">To Create a Blocking Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-block_p.html#gentextid-1242">To Create a Blocking Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Master Index Query Block Fields and XML Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-mod_p.html">Modifying Master Index Queries</a></p>
+<p class="toc level3"><a href="cnfg_index-query-mod_p.html#cnfg_query-basic_t">Modifying a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1464">To Modify a Basic Query (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1504">To Modify a Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-add-block_t">Adding a Query Block to a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1570">To Add a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1606">To Add a Query Block (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-mod-block_t">Modifying a Query Block for a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1659">To Modify a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1691">To Modify a Query Block (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-del-block_t">Deleting a Query Block From a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1720">To Delete a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1740">To Delete a Query Block (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-del_t.html">Deleting a Master Index Query</a></p>
+<p class="toc level4"><a href="cnfg_index-query-del_t.html#gentextid-1778">To Delete a Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-del_t.html#gentextid-1793">To Delete a Query</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mc_p.html">Configuring Master Index Processing Options</a></p>
+<p class="toc level3"><a href="cnfg_index-mc_p.html#cnfg_index-mc-logic_t">Specifying Master Index Custom Logic Classes</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1836">To Specify Custom Logic for External System Messages</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1849">To Specify Custom Logic for the Master Index Data Manager</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-update_t">Specifying the Master Index Update Mode</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1867">To Specify Potential Duplicates be Reevaluated at Each Update</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1881">To Specify Potential Duplicates not be Reevaluated at Each Update</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-merge_t">Configuring Master Index Merged Record Updates</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1899">To Allow Merged Record Updates</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1913">To Prevent Merged Record Updates</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-query_t">Specifying the Master Index Blocking Query for Matching</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1932">To Specify the Blocking Query for Matching</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-queryopt_t">Setting Master Index Blocking Query Options</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1955">To Set Blocking Query Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-xa_t">Defining Master Index Transactional Support</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1980">To Define Transactional Support (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-2001">To Define Transactional Support (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-dm_p.html">Configuring Matching Parameters</a></p>
+<p class="toc level3"><a href="cnfg_index-dm_p.html#cnfg_index-dm-class_t">Specifying the Master Index Decision Maker Class</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2046">To Specify the Decision Maker Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-1match_t">Defining How to Handle Multiple Assumed Matches (OneExactMatch)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2067">To Create Potential Duplicates When Multiple Records Match</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2084">To Match the Highest Weighted Records When Multiple Records Match</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-samesystem_t">Specifying Whether Same System Matches are Allowed (SameSystemMatch)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2106">To Allow Same System Records to be Automatically Merged</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2123">To Prevent Same System Records From Being Automatically Merged</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-dup_t">Specifying the Master Index Duplicate Threshold</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2143">To Specify the Duplicate Threshold (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2158">To Specify the Duplicate Threshold (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-matchthres_t">Specifying the Master Index Match Threshold</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2179">To Specify the Match Threshold (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2194">To Specify the Match Threshold (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-dmparam_t">Adding and Deleting Master Index Decision Maker Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2215">To Add a New Decision Maker Parameter</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2254">To Delete a Decision Maker Parameter</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-euid_p.html">Configuring Master Index EUIDs</a></p>
+<p class="toc level3"><a href="cnfg_index-euid_p.html#cnfg_index-euid-class_t">Specifying the Master Index EUID Generator Class</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2300">To Specify the EUID Generator Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-euid-lnth_t">Specifying the Master Index EUID Length</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2324">To Specify the EUID Length</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-checksum_t">Specifying a Master Index Checksum Length</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2347">To Specify a Checksum Length</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-chunksize_t">Specifying the Master Index Chunk Size</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2367">To Specify the Chunk Size</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-euid-param_t">Adding and Deleting Master Index EUID Generator Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2386">To Add EUID Generator Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2425">To Delete EUID Generator Parameters</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-norm_p.html">Defining Master Index Normalization Rules</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-def_t">Defining a Master Index Field to be Normalized</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2476">To Define a Field to be Normalized (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2515">To Define a Field to be Normalized (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-norm_p.html#cnfg_index-norm_r">Master Index Normalization and Standardization Structure Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-locale_r">Master Index Variants Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-mod_t">Modifying a Master Index Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2747">To Modify a Normalization Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2775">To Modify a Normalization Structure (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-norm_p.html#cnfg_index-norm-del_t">Deleting a Master Index Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2810">To Delete a Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2826">To Delete a Normalization Structure</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-stand_p.html">Defining Master Index Standardization Rules</a></p>
+<p class="toc level3"><a href="cnfg_index-stand_p.html#cnfg_index-stand-def_t">Defining Master Index Fields to be Standardized</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-2872">To Define Fields to be Standardized (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-2950">To Define Fields to be Standardized (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stand_p.html#cnfg_index-stand_r">Master Index Standardization Source and Target Field Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-stand_p.html#cnfg_index-stand-mod_t">Modifying a Master Index Standardization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3055">To Modify a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-stand_p.html#gentextid-3097">To Modify a Standardization Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stand_p.html#cnfg_index-stand-del_t">Deleting a Master Index Standardization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3143">To Delete a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3161">To Delete a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding for the Master Index</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-def_t">Defining Master Index Fields for Phonetic Encoding</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3219">To Define a Field for Phonetic Encoding (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3243">To Define a Field for Phonetic Encoding (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-field_r">Master Index Phonetic Encoding Fields and Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-mod_t">Modifying a Master Index Phonetic Encoding Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3325">To Modify a Phonetic Encoding Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3342">To Modify a Phonetic Encoding Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-del_t">Deleting a Master Index Phonetic Encoding Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3361">To Delete a Phonetic Encoding Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3378">To Delete a Phonetic Encoding Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-def_t">Defining a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3411">To Define a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3438">To Define a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc_r">Master Index Encoder Elements and Types</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-mod_t">Modifying a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3524">To Modify a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3540">To Modify a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-del_t">Deleting a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3559">To Delete a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3576">To Delete a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-match-string_p.html">Defining the Master Index Match String</a></p>
+<p class="toc level3"><a href="cnfg_index-match-string_p.html#cnfg_index-match-str-create_t">Creating the Master Index Match String</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3609">To Create the Match String (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3631">To Create the Match String (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-match-string_p.html#cnfg-index-match-str-mod_t">Modifying the Master Index Match String</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3671">To Modify the Match String (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3693">To Modify the Match String (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-proc_t.html">Defining how Master Index Query Blocks are Processed</a></p>
+<p class="toc level4"><a href="cnfg_index-query-proc_t.html#gentextid-3756">To Specify the Block Picker</a></p>
+<p class="toc level4"><a href="cnfg_index-query-proc_t.html#gentextid-3775">To Specify the Pass Controller Class</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivor_p.html">Defining the Master Index Survivor Calculator</a></p>
+<p class="toc level3"><a href="cnfg_index-survivor_p.html#cnfg_index-srv-hlpr_t">Specifying the Master Index Survivor Helper</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3820">To Specify the Survivor Helper</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-sur-strat_t">Specifying a Master Index Default Survivor Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3844">To Specify a Default Survivor Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivor_p.html#agyix">Configuring the Default Survivor Strategy</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-surv-calc_r">Master Index Default Survivor Strategy Parameter Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-survivor_p.html#cnfg_index-sbr_t">Defining the Master Index Single Best Record Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3962">To Specify a Candidate Field</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivor_p.html#agyiz">Deleting Candidate Fields</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-surv-field_t">Defining a Master Index Survivor Strategy for a Field or Object</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-4021">To Define a Survivor Strategy for a Field</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-custom-strat_t">Defining Master Index Custom Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyjc">Defining Custom Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#cnfg_index-weight-strat_t">Configuring Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyje">Modifying Weighted Calculator Parameters</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyjf">Deleting Weighted Calculator Parameters</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-weight-calc_r">Master Index Weighted Calculator Parameter Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-sbr-filter_t.html">Filtering Default Values From Master Index Processes</a></p>
+<p class="toc level4"><a href="cnfg_index-sbr-filter_t.html#ggikw">To Filter Default Values From the SBR, Blocking Query, or Match Process</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-sbr-filter_t.html#cnfg_index-filter_r">Filter Definition Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-update-pol_p.html">Configuring Master Index Update Policies</a></p>
+<p class="toc level3"><a href="cnfg_index-update-pol_p.html#cnfg_index-def-update_t">Defining Master Index Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4409">To Define Update Policies</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-update-pol_p.html#cnfg_index-update-flag_t">Setting the Master Index Update Policy Flag</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4467">To Set the Update Policy Flag</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-validation_t.html">Defining Custom Field Validations for the Master Index</a></p>
+<p class="toc level4"><a href="cnfg_index-validation_t.html#gentextid-4501">To Implement a Validation Rule</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-engines_p.html">Configuring the Match Engine</a></p>
+<p class="toc level3"><a href="cnfg_index-engines_p.html#cnfg_index-eng-match_t">Specifying a Match Engine for the Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gentextid-4559">To Configure the Match Engine</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-eng-comp_t">Configuring the Comparison Functions for a Master Index Application</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gfxvt">To Configure the Comparison Functions (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gentextid-4640">To Configure the Comparison Functions (Text Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-engine-comp_r">Match Comparator Configuration Properties for Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-engines_p.html#cnfg_index-match-plug_t">Importing Custom Comparison Functions</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#ggocu">To Import a Comparison Function</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-match-del_t">Deleting a Custom Comparison Function</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#ggoeo">To Delete a Custom Comparison Function</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-stndeng_p.html">Configuring the Standardization Engine</a></p>
+<p class="toc level3"><a href="cnfg_index-stndeng_p.html#cnfg_index-eng-stand_t">Specifying a Standardization Engine for the Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#gentextid-4866">To Specify the Standardization Engine</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#ggoax">Modifying Master Index Standardization Files</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggoac">To Modify Standardization Data Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#cnfg_index-stnd-plug_p">Importing Standardization Data Types and Variants</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggoai">To Import a Data Type or Variant</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#cnfg_index-eng-stnd-del_t">Deleting a Standardization Variant or Data Type</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggobr">To Delete a Variant or Data Type</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Configuring the Master Index MIDM Appearance</a></p>
+<p class="toc level3"><a href="#cnfg_index-edm-objects_t">Adding Objects to the MIDM</a></p>
+<p class="toc level5"><a href="#gentextid-4999">To Add an Object to the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-obj-mod_t">Modifying MIDM Objects</a></p>
+<p class="toc level5"><a href="#gentextid-5033">To Modify an MIDM Object</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-obj-del_t">Deleting Objects From the MIDM</a></p>
+<p class="toc level5"><a href="#gentextid-5053">To Delete an Object</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-add_t">Adding Fields to the MIDM</a></p>
+<p class="toc level5"><a href="#gentextid-5076">To Define New Fields</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a></p>
+<p class="toc level3"><a href="#cnfg_index-edm-fld-del_t">Removing Fields From the MIDM</a></p>
+<p class="toc level5"><a href="#gentextid-5237">To Remove a Field From the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-nm_t">Modifying MIDM Field Display Options</a></p>
+<p class="toc level5"><a href="#gentextid-5256">To Modify a Field's Display Options</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-ddlist_t">Specifying a Drop-Down List for an MIDM Field</a></p>
+<p class="toc level5"><a href="#gentextid-5298">To Specify a Drop-Down List</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-format_t">Specifying an MIDM Field's Length and Format</a></p>
+<p class="toc level5"><a href="#gentextid-5331">To Modify a Field's Length and Format</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-data_t">Modifying an MIDM Field's Data Type</a></p>
+<p class="toc level5"><a href="#gentextid-5365">To Modify the Data Type</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-key_t">Defining Key Fields for an Object</a></p>
+<p class="toc level5"><a href="#gentextid-5389">To Modify the Key Status</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-fld-mask_t">Masking Field Values on the MIDM</a></p>
+<p class="toc level5"><a href="#gentextid-5428">To Mask Field Values on the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-relat_t">Defining MIDM Object Relationships</a></p>
+<p class="toc level5"><a href="#gentextid-5459">To Define Relationships</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-edm-local-id_t">Defining MIDM Local ID Labels</a></p>
+<p class="toc level5"><a href="#gentextid-5488">To Define Local ID Labels</a></p>
 </div>
+<p class="toc level2 tocsp"><a href="cnfg_index-midm-page_p.html">Configuring the Master Index MIDM Pages</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-initialview_t">Specifying the Initial View for the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-5546">To Specify the Initial View</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-duprecords_t">Configuring the MIDM Duplicate Records Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_dupdisplay_t">Configuring Duplicate Records Display Options</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_dupsearch_t">Configuring Duplicate Records Search Pages</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_dupresults_t">Configuring the Duplicate Records Results List</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-duprecords_r">Duplicate Records Page Configuration Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_duprecords_search_r">Duplicate Records Search Page Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_duprecords-results_r">Duplicate Records Search Results List Elements</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-recorddetails_t">Configuring the MIDM Record Details Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#ggubl">To Configure Record Details Display Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-recdetsearch_t">Creating Search Pages on the Record Details Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#definesearch">Step 1: Define the Search Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#definefields">Step 2: Define the Search Fields</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#searchoptions">Step 3: Specify Search Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-search-opts_r">Record Details Search Option Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_index-midm-modsrch_t">Modifying a Search Page on the Record Details Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#searchpage">Modifying a Search Page Definition </a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#modifyfields">Modifying Search Fields</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#modifyoptions">Modifying Record Details Search Page Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-assumedmatch_t">Configuring the MIDM Assumed Matches Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-6243">To Configure the Assumed Matches Page</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-transactions_t">Configuring the MIDM Transactions Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-6290">To Configure the Transactions Page</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-reports_t">Configuring the MIDM Reports Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#ggtzn">Configuring the Reports Page Definition</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#ggtze">Configuring Production Reports</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#gguam">Configuring Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-reports_r">Production Reports Definition Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-activity_r">Activity Reports Definition Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#actvitypagedef">Activity Reports Page Definition Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#activityreports">Activity Reports Search Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#activityresults">Activity Reports Results Elements</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-sourcerecords_t">Configuring the MIDM Source Record Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#sourcerecords-page">Configuring the Source Record Page Definition</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#sourcerecord-view">Configuring the Tabbed Pages on the Source Record Page</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-auditlog_t">Configuring the MIDM Audit Log Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-6639">To Configure the Audit Log Page</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-edm-impl_p.html">Configuring Master Index MIDM Implementation Information</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-mc_t">Specifying the Master Controller JNDI Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6699">To Specify the Master Controller JNDI Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-report-gen_t">Specifying the Master Index Report Generator JNDI Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6719">To Specify the Report Generator JNDI Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-val-svc_t">Specifying Master Index Validation Services</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6739">To Specify the Validation Service</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-debug_t">Setting Master Index Debug Options</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6766">To Set Debug Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-mask_t">Specifying a Master Index Field Masking Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6799">To Specify a Field Masking Class</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
 
 <a name="cnfg_index-edm-display_p"></a>
 
-<h2>Configuring the EDM Appearance</h2>
+<h2>Configuring the Master Index MIDM Appearance</h2>
 <p>You can modify the configuration of the fields and objects to specify how
-they appear on the EDM pages by modifying the Enterprise Data Manager file
-(<tt>edm.xml</tt>). You can perform any of the following actions to customize the general
-appearance of the EDM. Though some appearance options can be configured using the
-Configuration Editor, it is best to modify the XML file directly.</p>
-<ul><li><p><a href="#cnfg_index-edm-objects_t">Adding Objects to the EDM</a></p></li>
-<li><p><a href="#cnfg_index-edm-obj-mod_t">Modifying EDM Objects</a></p></li>
-<li><p><a href="#cnfg_index-edm-obj-del_t">Deleting Objects From the EDM</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-add_t">Adding Fields to the EDM</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-del_t">Deleting Fields From the EDM</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-nm_t">Modifying EDM Field Display Options</a></p></li>
-<li><p><a href="#cnfg_index-edm-ddlist_t">Specifying a Drop-down List for an EDM Field</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-format_t">Specifying an EDM Field's Length and Format</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-data_t">Modifying an EDM Field's Data Type</a></p></li>
+they appear on the MIDM pages by modifying midm.xml. You can perform any
+of the following actions to customize the general appearance of the MIDM. Though
+some appearance options can be configured using the Configuration Editor, it is best
+to modify the XML file directly.</p><p>Perform any of the following tasks to configure the appearance of the
+MIDM.</p>
+<ul><li><p><a href="#cnfg_index-edm-objects_t">Adding Objects to the MIDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-obj-mod_t">Modifying MIDM Objects</a></p></li>
+<li><p><a href="#cnfg_index-edm-obj-del_t">Deleting Objects From the MIDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-add_t">Adding Fields to the MIDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-del_t">Removing Fields From the MIDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-nm_t">Modifying MIDM Field Display Options</a></p></li>
+<li><p><a href="#cnfg_index-edm-ddlist_t">Specifying a Drop-Down List for an MIDM Field</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-format_t">Specifying an MIDM Field's Length and Format</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-data_t">Modifying an MIDM Field's Data Type</a></p></li>
 <li><p><a href="#cnfg_index-edm-fld-key_t">Defining Key Fields for an Object</a></p></li>
-<li><p><a href="#cnfg_index-edm-fld-mask_t">Masking Field Values on the EDM</a></p></li>
-<li><p><a href="#cnfg_index-edm-relat_t">Defining Object Relationships</a></p></li>
-<li><p><a href="#cnfg_index-edm-local-id_t">Defining Local ID Labels</a></p></li></ul>
+<li><p><a href="#cnfg_index-edm-fld-mask_t">Masking Field Values on the MIDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-relat_t">Defining MIDM Object Relationships</a></p></li>
+<li><p><a href="#cnfg_index-edm-local-id_t">Defining MIDM Local ID Labels</a></p></li></ul>
 
 
-<div class="indent"><a name="cnfg_index-edm-objects_t"></a><h3>Adding Objects to the EDM</h3>
-<p>You can define additional objects for the EDM as long as those
-objects are defined in the Object Definition. Each object can only contain the
-fields that are also defined for that object in the Object Definition.</p>
+<div class="indent"><a name="cnfg_index-edm-objects_t"></a><h3>Adding Objects to the MIDM</h3>
+<p>You can define additional objects for the MIDM as long as those objects
+are defined in object.xml. Each object can only contain the fields that are
+also defined for that object in object.xml. If you add objects to
+the object structure using the Configuration Editor, the new objects are automatically added to
+the midm.xml and you do not need to perform these steps.</p>
 
-<a name="gentextid-4693"></a><h5>To Add an Object to the EDM</h5>
+<a name="gentextid-4999"></a><h5>To Add an Object to the MIDM</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>In the nodes list of the file, create a new <i>node-</i><i>object</i> element,
-substituting the object name for <b>object</b>, as shown below.</b><pre>&lt;node-Phone>
-&lt;/node-Phone></pre></li>
-<li><b>For any child objects, define the following attributes.</b>
-<ul><li><p><i>display-order</i> &mdash; The order in which the child object types are displayed in the tree view pane on the EDM pages.</p></li>
-<li><p><i>merge-must-delete </i>&mdash; An indicator of whether EDM users must specify which the instances of the child object type to retain during a system record merge. Specify &ldquo;false&rdquo; to allow EDM users to select the child objects to retain or to accept the default objects (the default objects are those in the destination system). Specify &ldquo;true&rdquo; to force the user to select the child objects to retain. This allows you to hide certain child object types on the EDM while forcing the user to specify which visible child objects to retain.</p><p>For example:</p><pre>&lt;node-Phone display-order="3" merge-must-delete="false">
-&lt;/node-Phone></pre></li></ul>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>In the nodes list of the file, create a new <tt>node</tt> element.</b></li>
+<li><b>In the new <tt>node</tt> element, create and define the following elements.</b>
+<ul><li><p><tt>name</tt> &ndash; The name of the object.</p></li>
+<li><p><tt>display-order</tt> &ndash; The order in which the child object types are displayed on the MIDM pages.</p><p>For example:</p><pre>&lt;node>
+    &lt;name>Phone&lt;/name>
+    &lt;display-order>3&lt;/display-order>
+&lt;/node></pre>
+<hr><p><b>Note - </b>You might need to renumber any existing objects to keep the numbering sequential.</p>
+<hr>
+</li></ul>
 </li>
-<li><b>Define fields for the new object, as described in <a href="#cnfg_index-edm-fld-add_t">Adding Fields to the EDM</a>.</b></li>
-<li><b>Define the relationship of the object, as described in <a href="#cnfg_index-edm-relat_t">Defining Object Relationships</a>.</b></li>
+<li><b>Define fields for the new object, as described in <a href="#cnfg_index-edm-fld-add_t">Adding Fields to the MIDM</a>.</b></li>
+<li><b>Define the relationship of the object, as described in <a href="#cnfg_index-edm-relat_t">Defining MIDM Object Relationships</a>.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-obj-mod_t"></a><h3>Modifying EDM Objects</h3>
-<p>Once an <a name="indexterm-386"></a>object is defined in the Enterprise Data Manager file, you can
-modify the name if necessary. Only modify the name of an object if
-you modify the corresponding object name in Object Definition and the remaining configuration
-files. It is not recommended that the parent object name be changed.</p>
+<div class="indent"><a name="cnfg_index-edm-obj-mod_t"></a><h3>Modifying MIDM Objects</h3>
+<p><a name="indexterm-400"></a>Once an object is defined in midm.xml, you can modify the name
+or display order. Only modify the name of an object if you modify
+the corresponding object name in object.xml and the remaining configuration files. Do not
+change the parent object name. If you modify an object in the object
+definition on the Configuration Editor, the midm.xml is automatically updated as well.</p>
 
-<a name="gentextid-4727"></a><h5>To Modify an EDM Object</h5>
+<a name="gentextid-5033"></a><h5>To Modify an MIDM Object</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element naming the object to modify.</b></li>
-<li><b>To modify the object name, change the value of the <a name="indexterm-387"></a><i>node</i> element to
-<i>node-</i><i>object_name</i>, where <i>object_name</i> is the new name for the object.</b><p>For example:</p><pre>&lt;edm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="EDM.xsd">
-   &lt;node-Person></pre></li>
-<li><b>To modify the location of the object in the EDM tree structure, change
-the value of the display-order element.</b><p>For example:</p><pre>&lt;node-Alias display-order="2"></pre></li>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>To modify the object name, change the value of the <tt>name</tt> element to
+the new name for the object.</b>
+<hr><p><b>Note - </b>If you change an object name, modify the name in the relationships section
+as well.</p>
+<hr>
+</li>
+<li><b>To modify the order in which the object appears on the MIDM, change
+the value of the <tt>display-order</tt> element.</b></li>
 <li><b>If necessary, renumber the order of other child objects so they are sequential.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-obj-del_t"></a><h3>Deleting Objects From the EDM</h3>
-<p>Once an object is defined in the Enterprise Data Manager file, you
-can delete the object if necessary. If the object remains defined in the
-Object Definition file, then the object is still a part of the enterprise
-record, but does not appear on the EDM.</p>
+<div class="indent"><a name="cnfg_index-edm-obj-del_t"></a><h3>Deleting Objects From the MIDM</h3>
+<p>Once an object is defined in midm.xml, you can remove the object.
+If the object remains defined in object.xml, then the object is still a
+part of the enterprise record, but does not appear on the MIDM. Before
+removing an object from the midm.xml, make sure none of its fields are
+required in order to create a new record. If you delete an object
+using the Configuration Editor, the object is automatically deleted from midm.xml.</p>
 
-<a name="gentextid-4755"></a><h5>To Delete an Object</h5>
+<a name="gentextid-5053"></a><h5>To Delete an Object</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element naming the object to delete.</b></li>
-<li><b>Delete all text between and including the <i>node</i> element for that object.</b><p>Using the sample below, to delete the Phone object, delete all the text
-in the sample.</p><pre>&lt;node-Phone display-order="3" merge-must-delete="false">
-   &lt;field-PhoneType>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element naming the object to delete.</b></li>
+<li><b>Delete all text between and including the <tt>node</tt> element for that object.</b><p>Using the sample below, to delete the Phone object, delete all the text
+in the sample.</p><pre>&lt;node>
+   &lt;name>Phone&lt;/name>
+   &lt;display-order>3&lt;/display-order>
+   &lt;field>
+      &lt;name>PhoneType&lt;/name>
       &lt;display-name>Phone Type&lt;/display-name>
       &lt;display-order>1&lt;/display-order>
       &lt;max-length>8&lt;/max-length>
@@ -152,94 +443,100 @@ in the sample.</p><pre>&lt;node-Phone display-order="3" merge-must-delete="false
       &lt;value-list>PHONTYPE&lt;/value-list>
       &lt;value-type>string&lt;/value-type>
       &lt;key-type>true&lt;/key-type>
-   &lt;/field-PhoneType>
-   &lt;field-Phone>
-      &lt;display-name>Phone&lt;/display-name>
+   &lt;/field>
+   &lt;field>
+      &lt;name>Phone&lt;/name>
+      &lt;display-name>PhoneNumber&lt;/display-name>
       &lt;display-order>2&lt;/display-order>
       &lt;max-length>20&lt;/max-length>
       &lt;gui-type>TextBox&lt;/gui-type>
       &lt;value-type>string&lt;/value-type>
       &lt;input-mask>(DDD)DDD-DDDD&lt;/input-mask>
       &lt;value-mask>xDDDxDDDxDDDD&lt;/value-mask>
-   &lt;/field-Phone>
-&lt;/node-Phone></pre></li>
+   &lt;/field>
+&lt;/node></pre></li>
 <li><b>If necessary, renumber the order of the remaining objects so they are sequential.</b></li>
-<li><b>Delete the relationship of the object, as described in <a href="cnfg_index-object_t.html#cnfg_index-object-rel_t">Defining Relationships Between Objects</a>.</b></li>
+<li><b>Remove the object from the relationship definition, as described in <a href="cnfg_index-object_t.html#cnfg_index-object-rel_t">Defining Relationships Between Master Index Objects</a>.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-add_t"></a><h3>Adding Fields to the EDM</h3>
-<p>You can define new fields for an object in the Enterprise Data
-Manager file, but the field must correspond with a field defined for that
-object in the Object Definition file. The fields defined in the Enterprise Data
-Manager file appear on the EDM windows.</p>
+<div class="indent"><a name="cnfg_index-edm-fld-add_t"></a><h3>Adding Fields to the MIDM</h3>
+<p>You can define new fields for an object in midm.xml, but the
+field must correspond with a field defined for that object in object.xml. Only
+the fields defined in midm.xml appear on the MIDM windows. If you add
+a field to the object structure using the Configuration Editor, it is automatically
+added to midm.xml.</p>
 
-<a name="gentextid-4778"></a><h5>To Define new Fields</h5>
+<a name="gentextid-5076"></a><h5>To Define New Fields</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object to which you want
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object to which you want
 to add a field.</b></li>
-<li><b>In the <i>node</i> element, create a new element named <i>field-</i><i>field_name</i>, where <i>field_name</i> is the
-name of the <a name="indexterm-388"></a>field as it appears in the Object Definition file. </b><p>For example:</p><pre>&lt;node-Person>
-   <b>&lt;field-LastName></b>
-   <b>&lt;/field-LastName></b>
-&lt;/node></pre></li>
-<li><b>Define and configure the elements listed in<a href="#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a> for the new <i>field-</i><i>field_name</i> element. </b><p>For example:</p><pre>&lt;field-LastName>
+<li><b>In the <tt>node</tt> element, create a new element named <tt>field</tt>. </b></li>
+<li><b>Define and configure the elements listed in<a href="#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a> for the new <tt>field-</tt><i>field_name</i> element. </b><p>For example:</p><pre>&lt;field
+   &lt;name>LastName&lt;/name>
    &lt;display-name>LastName&lt;/display-name>
    &lt;display-order>2&lt;/display-order>
    &lt;max-length>40&lt;/max-length>
    &lt;gui-type>TextBox&lt;/gui-type>
    &lt;value-type>string&lt;/value-type>
+   &lt;is-sensitive>false&lt;/is-sensitive>
    &lt;key-type>false&lt;/key-type>
-&lt;/field-LastName></pre></li>
+&lt;/field></pre></li>
+<li><b>If necessary, renumber any existing fields to keep the numbering sequential.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-props_r"></a><h3>EDM Field Configuration Elements</h3>
+<div class="indent"><a name="cnfg_index-edm-fld-props_r"></a><h3>MIDM Field Configuration Elements</h3>
 <p>The following table lists and describes the XML elements that define the fields
-that appear on the Enterprise Data Manager.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+that appear on the Master Index Data Manager.</p><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-389"></a>display-name</p></td>
+<tr><td align="left" valign="top" scope="row"><p>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the field
+as it appears in the object definition.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-401"></a>display-name</p></td>
 <td align="left" valign="top" scope="row"><p>The name of the field as
-it will appear on the EDM.</p></td>
+it will appear on the MIDM.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-390"></a>display-order</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-402"></a>display-order</p></td>
 <td align="left" valign="top" scope="row"><p>The order in which the field appears
-on the EDM. For example, specify <b>1</b> to indicate this is the
-first field on the EDM pages, <b>2</b> to indicate it is the second
-field, and so on.</p></td>
+in the object on the MIDM. For example, specify <b>1</b> to indicate this is
+the first field on the MIDM pages, <b>2</b> to indicate it is the
+second field, and so on. The display order goes from left to right,</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-391"></a>max-length</p></td>
-<td align="left" valign="top" scope="row"><p>The maximum number of characters displayed on the EDM for
-the field.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-403"></a>max-length</p></td>
+<td align="left" valign="top" scope="row"><p>The
+maximum number of characters displayed on the MIDM for the field.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-392"></a>gui-type</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of the type of display for the field. Specify
-<b>TextBox</b> for a standard data entry field; <b>MenuList</b> for a field that
-must be populated by selecting from a drop-down list; or <b>TextArea</b> for a long
-field that requires a scrollbar, such as a comments field.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-404"></a>gui-type</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of
+the type of display for the field. Specify <b>TextBox</b> for a standard
+data entry field; <b>MenuList</b> for a field that must be populated by
+selecting from a drop-down list; or <b>TextArea</b> for a long field that requires a
+scrollbar, such as a comments field.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-393"></a>value-type</p></td>
-<td align="left" valign="top" scope="row"><p>The Master Index
-Studio data type for the data populated in the field. Enter one of
-the following values:</p>
-<ul><li><p><b>string</b> - Fields of this type contain a string of characters.</p></li>
-<li><p><b>date</b> - Fields of this type contain a date value.</p></li>
-<li><p><b>float</b> - Fields of this type contain a floating point integer.</p></li>
-<li><p><b>int</b> - Fields of this type contain an integer.</p></li>
-<li><p><b>char</b> - Fields of this type contain a single character.</p></li>
-<li><p><b>boolean</b> - Fields of this type can contain either &ldquo;true&rdquo; or &ldquo;false&rdquo;.</p></li></ul>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-405"></a>value-type</p></td>
+<td align="left" valign="top" scope="row"><p>The Master Index Studio data type for
+the data populated in the field. Enter one of the following values:</p>
+<ul><li><p><b>string</b> - Field contains a string of characters.</p></li>
+<li><p><b>date</b> - Field contains a date value.</p></li>
+<li><p><b>float</b> - Field contains a floating point integer.</p></li>
+<li><p><b>int</b> - Field contains an integer.</p></li>
+<li><p><b>char</b> - Field contains a single character.</p></li>
+<li><p><b>boolean</b> - Field contains either &ldquo;true&rdquo; or &ldquo;false&rdquo;.</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-394"></a>input-mask</p></td>
-<td align="left" valign="top" scope="row"><p>A mask used by the EDM to add punctuation to
-a <a name="indexterm-395"></a>field. You can add an input mask to display telephone numbers as
-&ldquo;(123)456-7890&rdquo; even though no punctuation is entered.</p><p>To define an input mask, type a
-character type for each character in the field, and place any necessary punctuation
-between the character types. For example, the input mask for the above telephone
-format is &ldquo;(DDD)DDD-DDDD&rdquo;. The following character types are allowed:</p>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-406"></a>input-mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask
+used by the MIDM to add punctuation to a field. You can add
+an input mask to display telephone numbers as &ldquo;(123)456-7890&rdquo; even though no punctuation
+is entered by the user.</p><p>To define an input mask, type a character
+type for each character in the field, and place any necessary punctuation between
+the character types. For example, the input mask for the above telephone format
+is &ldquo;(DDD)DDD-DDDD&rdquo;. The following character types are allowed:</p>
 <ul><li><p><b>D</b> - indicates a numeric character.</p></li>
 <li><p><b>L</b> - indicates an alphabetic character.</p></li>
 <li><p><b>A</b> - indicates an alphanumeric character.</p>
@@ -248,94 +545,87 @@ format is &ldquo;(DDD)DDD-DDDD&rdquo;. The following character types are allowed
 </li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-396"></a>value-mask</p></td>
-<td align="left" valign="top" scope="row"><p>A mask used by the
-master index application to strip any extra characters that were added by the
-input mask. This mask ensures that data is stored in the database in
-the correct format. This mask must be the same length as the input
-mask.</p><p>To specify a value mask, type the same value as is entered
-for the input mask, but type an &ldquo;x&rdquo; in place of each punctuation
-mark. For example, if an SSN field has an input mask of DDD-DD-DDDD,
-you need to specify a value mask of DDDxDDxDDDD to strip the dashes
-before storing the SSN. A value mask is not required for date fields.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-407"></a>value-mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask used by the master
+index application to strip any extra characters that were added by the input
+mask. This mask ensures that data is stored in the database in the
+correct format. This mask must be the same length as the input mask.</p><p>To
+specify a value mask, type the same value as is entered for
+the input mask, but type an &ldquo;x&rdquo; in place of each punctuation mark.
+For example, if an SSN field has an input mask of DDD-DD-DDDD, you
+need to specify a value mask of DDDxDDxDDDD to strip the dashes before
+storing the SSN. A value mask is not required for date fields.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-397"></a>value-list</p></td>
-<td align="left" valign="top" scope="row"><p>The
-<a name="indexterm-398"></a>name of the menu list used to populate the drop-down list for the
-field. This is required if the <i>gui-type</i> specified is MenuList, and must match a
-code of an element in the sbyn_common_header database table.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-408"></a>value-list</p></td>
+<td align="left" valign="top" scope="row"><p>The <a name="indexterm-409"></a>name
+of the menu list used to populate the drop-down list for the field.
+This is required if the <tt>gui-type</tt> specified for the field is MenuList, and it
+must match a code of an element in the sbyn_common_header database table.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-399"></a><a name="indexterm-400"></a><a name="indexterm-401"></a>key-type</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of whether
-the field (or a combination of key fields) must be unique in an
-enterprise record. Unique key fields identify unique child objects in an enterprise object.
-Specify <b>true</b> to indicate the field is a key field; specify <b>false</b> if it
-is not.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-402"></a><a name="indexterm-403"></a><a name="indexterm-404"></a><a name="indexterm-405"></a>is-sensitive</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of whether the value of the field is hidden
-on the EDM for records with a VIP status of &ldquo;VIP&rdquo;. Only users
-with the eView.Admin or eView.VIP user roles can view the hidden information. Specify
-<b>true</b> to hide the field value; specify <b>false</b> (or remove the <i>is-sensitive</i>
-element) to display the field value.</p>
-<hr><p><b>Note - </b>This element is only used if the <i>object-sensitive-plug-in-class</i>
-in the <i>impl-details</i> section is populated.</p>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-410"></a><a name="indexterm-411"></a><a name="indexterm-412"></a><a name="indexterm-413"></a>is-sensitive</p></td>
+<td align="left" valign="top" scope="row"><p>An
+indicator of whether the value of the field is hidden on the
+MIDM for records with a VIP status of &ldquo;VIP&rdquo;. Only users with the
+required security permissions can view the hidden information. Specify <tt><b>true</b></tt> to hide the field
+value; specify <tt><b>false</b></tt> (or remove the <tt>is-sensitive</tt> element) to display the field
+value.</p>
+<hr><p><b>Note - </b>This element is only used if the <tt>object-sensitive-plug-in-class</tt> in the <tt>impl-details</tt> section
+is populated.</p>
 <hr>
 </td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-414"></a><a name="indexterm-415"></a><a name="indexterm-416"></a>key-type</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field (or a combination of key
+fields) must be unique in an enterprise record. Unique key fields identify unique
+child objects in an enterprise object. For example, if the object structure contains a
+child object for addresses and each record can have only one of
+each type of address (for example, one home address and one work address),
+then the address type field would be a key field. Specify <tt><b>true</b></tt> to indicate
+the field is a key field; specify <tt><b>false</b></tt> if it is not.</p></td>
 </tr>
 </table></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-del_t"></a><h3>Deleting Fields From the EDM</h3>
-<p>If a <a name="indexterm-406"></a>field is defined in an object in the Enterprise Data
-Manager file, that field appears on the EDM windows. If there are any
-fields defined in the object structure that you do not want to display
-on the EDM, you can remove the field definition from the Enterprise Data
-Manager file.</p>
+<div class="indent"><a name="cnfg_index-edm-fld-del_t"></a><h3>Removing Fields From the MIDM</h3>
+<p><a name="indexterm-417"></a>If a field is defined for an object in midm.xml, that field
+appears on the MIDM windows. If there are any fields defined in the
+object structure that you do not want to display on the MIDM, you
+can remove the field definition from midm.xml. If you remove a field from
+the object structure using the Configuration Editor, it is automatically removed from midm.xml.</p>
 <hr><p><b>Note - </b>If you remove a unique key type field, you must write a
 custom plug-in that will automatically populate a value into the field in order
-to meet key field constraints.</p>
+to meet unique key type field constraints.</p>
 <hr>
 
 
-<a name="gentextid-4940"></a><h5>To Hide a Field on the EDM</h5>
+<a name="gentextid-5237"></a><h5>To Remove a Field From the MIDM</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>field</i> element that defines the field you want to remove.</b></li>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>field</tt> element that defines the field you want to remove.</b></li>
 <li><b>Delete the field elements that define the field you want to remove.
-</b><p>For example, to hide the Social Security Number field on the EDM,
-you would delete the bold text in the following excerpt.</p><pre>&lt;node-Person>
-   <b>&lt;field-SSN></b>
-      <b>&lt;display-order>5&lt;/display-order></b>
-      <b>&lt;max-length>15&lt;/max-length></b>
-      <b>&lt;gui-type>TextBox&lt;/gui-type></b>
-      <b>&lt;value-type>string&lt;/value-type></b>
-      <b>&lt;key-type>false&lt;/key-type></b>
-   <b>&lt;/field-SSN></b>
-&lt;/node></pre></li>
-<li><b>If necessary, renumber the remaining fields, as described in <a href="#cnfg_index-edm-fld-nm_t">Modifying EDM Field Display Options</a>.</b></li>
+</b></li>
+<li><b>If necessary, renumber the remaining fields, as described in <a href="#cnfg_index-edm-fld-nm_t">Modifying MIDM Field Display Options</a>.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-nm_t"></a><h3>Modifying EDM Field Display Options</h3>
-<p>Once a <a name="indexterm-407"></a>field is defined for an object in the Enterprise Data
-Manager file, you can change the name that appears on the EDM for
-that field, the location of the field, and the type for the field
-(such as text box, menu list, and so on).</p>
+<div class="indent"><a name="cnfg_index-edm-fld-nm_t"></a><h3>Modifying MIDM Field Display Options</h3>
+<p><a name="indexterm-418"></a>Once a field is defined for an object in midm.xml, you can
+change the name that appears on the MIDM for that field, the location
+of the field, and the type for the field (such as text box,
+menu list, and so on).</p>
 
-<a name="gentextid-4968"></a><h5>To Modify a Field&rsquo;s Display Options</h5>
+<a name="gentextid-5256"></a><h5>To Modify a Field&rsquo;s Display Options</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object that contains the field
+<li><b><a name="indexterm-419"></a><a name="indexterm-420"></a><a name="indexterm-421"></a><a name="indexterm-422"></a>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object that contains the field
 you want to modify.</b></li>
-<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
-name of the field as it appears in the Object Definition file.</b></li>
-<li><b>To modify the field label, change the value of the <a name="indexterm-408"></a><i>display-name</i> element.
+<li><b>Scroll to the <tt>field</tt> element you want to modify, .</b></li>
+<li><b>To modify the field label, change the value of the <tt>display-name</tt> element.
 </b><p>For example:</p><pre>&lt;display-name>Last Name&lt;/display-name></pre></li>
-<li><b>To modify the location of the field on the EDM, change the
-value of the <a name="indexterm-409"></a><a name="indexterm-410"></a><i>display-order</i> element. </b><p>For example:</p><pre>&lt;display-order>1&lt;/display-order></pre>
+<li><b>To modify the location of the field on the MIDM, change the value
+of the <tt>display-order</tt> element. </b><p>For example:</p><pre>&lt;display-order>1&lt;/display-order></pre>
 <hr><p><b>Note - </b>If you change the order of one field, you must change the
 order of at least one other field to maintain sequential numbering. For example, if
 you change a field&rsquo;s location from &ldquo;2&rdquo; to &ldquo;1&rdquo;, you must then change
@@ -343,7 +633,7 @@ the location of the field originally specified for location 1.</p>
 <hr>
 </li>
 <li><b>To modify the type of field to display, change the value of
-the <a name="indexterm-411"></a><i>gui-type</i> element. </b><p>For example:</p><pre>&lt;gui-type>TextBox&lt;/gui-type></pre>
+the <tt>gui-type</tt> element. </b><p>For example:</p><pre>&lt;gui-type>TextBox&lt;/gui-type></pre>
 <hr><p><b>Note - </b>You can enter TextBox (for a standard field), MenuList (for a field whose
 value must be selected from a drop-down list), or TextArea (for a long
 field that requires a scrollbar).</p>
@@ -352,231 +642,193 @@ field that requires a scrollbar).</p>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-ddlist_t"></a><h3>Specifying a Drop-down List for an EDM Field</h3>
-<p>Once a <a name="indexterm-412"></a><a name="indexterm-413"></a>field is defined for an object in the Enterprise Data
-Manager file, you can specify or change the name of the drop-down list
-for the field.</p>
+<div class="indent"><a name="cnfg_index-edm-ddlist_t"></a><h3>Specifying a Drop-Down List for an MIDM Field</h3>
+<p><a name="indexterm-423"></a><a name="indexterm-424"></a><a name="indexterm-425"></a>Once a field is defined for an object in midm.xml, you can specify
+or change the name of the drop-down list for the field. If you
+modify the Code Module for the field in the Configuration Editor, the drop&ndash;down
+list is automatically updated in midm.xml.</p>
 
-<a name="gentextid-5011"></a><h5>To Specify a Drop-Down List</h5>
+<a name="gentextid-5298"></a><h5>To Specify a Drop-Down List</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object containing the field you
 want to modify.</b></li>
-<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
-name of the field as it appears in the Object Definition file.</b></li>
-<li><b>Change the value of the <a name="indexterm-414"></a><i>value-list</i> element.</b><p>If the element does not exist for the field, create a new <i>value-list</i>
-element. For example:</p><pre>&lt;value-list>State&lt;/value-list></pre>
-<hr><p><b>Note - </b>The value of the <i>gui-type</i> element for the field must be &ldquo;MenuList&rdquo; if
-you specify a drop-down list. The <i>value-list</i> element must match a code
+<li><b>Scroll to the <tt>field</tt> element you want to modify.</b></li>
+<li><b>Enter the name of the drop-down list in the <tt>value-list</tt> element.</b><p>If the element does not exist for the field, create a new
+<tt>value-list</tt> element. For example:</p><pre>&lt;value-list>STATE&lt;/value-list></pre>
+<hr><p><b>Note - </b>The value of the <tt>gui-type</tt> element for the field must be &ldquo;MenuList&rdquo; if
+you specify a drop-down list. The <tt>value-list</tt> element must match a code
 column value in the sbyn_common_header database table unless the drop-down list is populated
 by information in the sbyn_user_code table (as they might be for auxiliary IDs).
-In this case, the <i>value-list</i> element must match a code_list column value
+In this case, the <tt>value-list</tt> element must match a code_list column value
 in sbyn_user_code.</p>
 <hr>
 </li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-format_t"></a><h3>Specifying an EDM Field&rsquo;s Length and Format</h3>
-<p>Once a <a name="indexterm-415"></a>field is defined for an object in the Enterprise Data
-Manager file, you can change the number of characters that can be entered
-for the field in the EDM. You can also specify whether to automatically
-enter punctuation into a field on the EDM, but remove the punctuation in
-the database.</p>
-<hr><p><b>Note - </b>Field length is constrained by the length of the database column containing this
-field and the length defined in the Object Definition file.</p>
+<div class="indent"><a name="cnfg_index-edm-fld-format_t"></a><h3>Specifying an MIDM Field&rsquo;s Length and Format</h3>
+<p><a name="indexterm-426"></a><a name="indexterm-427"></a><a name="indexterm-428"></a><a name="indexterm-429"></a>Once a field is defined for an object in midm.xml, you can change
+the number of characters that can be entered for the field in the
+MIDM. You can also specify whether to automatically enter punctuation into a field
+on the MIDM, but remove the punctuation in the database. If you modify
+the field's length and format in the object structure using the Configuration Editor,
+midm.xml is automatically updated as well.</p>
+<hr><p><b>Note - </b>Field length here is constrained by the length of the database column containing
+the field and the length defined in object.xml.</p>
 <hr>
 
 
-<a name="gentextid-5044"></a><h5>To Modify a Field&rsquo;s Length and Format</h5>
+<a name="gentextid-5331"></a><h5>To Modify a Field&rsquo;s Length and Format</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object containing the field you
 want to modify.</b></li>
-<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
-name of the field as it appears in the Object Definition file.</b></li>
+<li><b>Scroll to the <tt>field</tt> element you want to modify.</b></li>
 <li><b>To modify the length of a field, change the value of the
-<a name="indexterm-416"></a><i>max-length</i> element. </b><p>For example:</p><pre>&lt;max-length>100&lt;/max-length></pre></li>
+<tt>max-length</tt> element. </b><p>For example:</p><pre>&lt;max-length>100&lt;/max-length></pre></li>
 <li><b>To modify the format of the field, change the value of the
-<a name="indexterm-417"></a><i>input-mask</i> and <a name="indexterm-418"></a><i>value-mask</i> elements.</b><p>If the element does not exist for the field, create new <i>input-mask</i>
-and <i>value-mask</i> elements. For example:</p><pre>&lt;input-mask>(DDD)DDD-DDDD&lt;/input-mask>
+<tt>input-mask</tt> and <tt>value-mask</tt> elements.</b><p>If these element do not exist for the field, create new <tt>input-mask</tt> and
+<tt>value-mask</tt> elements. For example:</p><pre>&lt;input-mask>(DDD)DDD-DDDD&lt;/input-mask>
 &lt;value-mask>xDDDxDDDxDDDD&lt;/value-mask></pre>
 <hr><p><b>Note - </b>If an input mask is defined, in most cases a value mask
-must also be defined. For information about input and value masks, see <a href="#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a>.</p>
+must also be defined. For information about input and value masks, see <a href="#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a>.</p>
 <hr>
 </li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-data_t"></a><h3>Modifying an EDM Field's Data Type</h3>
-<p>Each <a name="indexterm-419"></a>field on the EDM requires a specific type of data to
-be entered. For example, name fields generally require a data string and date
-fields require a valid date or numeric characters. The type of data defined
-for each field must correspond with the field type defined for that field
-in the Object Definition file and in the database.</p>
+<div class="indent"><a name="cnfg_index-edm-fld-data_t"></a><h3>Modifying an MIDM Field's Data Type</h3>
+<p><a name="indexterm-430"></a><a name="indexterm-431"></a>Each field on the MIDM requires a specific type of data to be
+entered. For example, name fields generally require a data string and date fields
+require a valid date or numeric characters. The type of data defined for
+each field must correspond with the field type defined for that field in
+object.xml and in the database. If you modify a field's data type in
+the object structure using the Configuration Editor, midm.xml is automatically updated as well.</p>
 
-<a name="gentextid-5082"></a><h5>To Modify the Data Type</h5>
+<a name="gentextid-5365"></a><h5>To Modify the Data Type</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object that contains the field
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object that contains the field
 you want to modify.</b></li>
-<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
-name of the field as it appears in the Object Definition file.</b></li>
-<li><b>Change the value of the <a name="indexterm-420"></a><i>value-type</i> element. </b><p>For example:</p><pre>&lt;value-type>string&lt;/value-type></pre></li>
+<li><b>Scroll to the <tt>field</tt> element you want to modify.</b></li>
+<li><b>Change the value of the <tt>value-type</tt> element. </b><p>For example:</p><pre>&lt;value-type>string&lt;/value-type></pre></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
 <div class="indent"><a name="cnfg_index-edm-fld-key_t"></a><h3>Defining Key Fields for an Object</h3>
-<p>You can specify that a certain <a name="indexterm-421"></a><a name="indexterm-422"></a><a name="indexterm-423"></a>field or combination of fields be
-unique in a system object. An example of a unique fields would be
-the address type if only one address of each type is allowed. A
-field&rsquo;s key type status in the Enterprise Data Manager file must match its
-key type status in the Object Definition file.</p>
+<p><a name="indexterm-432"></a><a name="indexterm-433"></a><a name="indexterm-434"></a>You can specify that a certain field or combination of fields be unique
+in a system object or SBR. An example of a unique fields would
+be the address type if only one address of each type is allowed.
+A field&rsquo;s key type status in midm.xml must match its key type status
+in object.xml. If you modify a field's key type status in the
+object structure using the Configuration Editor, midm.xml is automatically updated as well.</p>
 
-<a name="gentextid-5109"></a><h5>To Modify the Key Status</h5>
+<a name="gentextid-5389"></a><h5>To Modify the Key Status</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object containing the field you
 want to modify.</b></li>
-<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
-name of the field as it appears in the Object Definition file.</b></li>
-<li><b>To define a field as a key field, change the value of
-the <a name="indexterm-424"></a><i>key-type</i> element to &ldquo;true&rdquo;.</b></li>
-<li><b>To define a field that is not a key field, change the
-value of the <i>key-type</i> element to &ldquo;false&rdquo;.</b><p>For example:</p><pre>&lt;key-type>false&lt;/key-type></pre>
-<hr><p><b>Note - </b>You can specify that a combination of fields be unique rather than just
-a single field.
-
-   </p>
-<hr>
-</li>
-<li><b>If a combination of fields must be unique for an object rather than
-just one single field, set the <i>key-type</i> element to &ldquo;true&rdquo; for each field.</b></li>
+<li><b>Scroll to the <tt>field</tt> element you want to modify.</b></li>
+<li><b>To specify that a field must be unique in a system object,
+change the value of the <tt><b>key-type</b></tt> element to <tt><b>true</b></tt>.</b></li>
+<li><b>To specify that a field does not need to be unique in
+a system object, change the value of the <tt>key-type</tt> element to <tt><b>false</b></tt>.</b><p>For example:</p><pre>&lt;key-type>false&lt;/key-type></pre></li>
+<li><b>To specify that a combination of fields must be unique for an object
+rather than just one single field, set the <tt>key-type</tt> element to <tt><b>true</b></tt> for
+each field.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-fld-mask_t"></a><h3>Masking Field Values on the EDM</h3>
-<p>You can specify that the values of certain <a name="indexterm-425"></a><a name="indexterm-426"></a><a name="indexterm-427"></a><a name="indexterm-428"></a>fields be hidden on the
-EDM from users without the appropriate access permissions. You can create a custom
+<div class="indent"><a name="cnfg_index-edm-fld-mask_t"></a><h3>Masking Field Values on the MIDM</h3>
+<p><a name="indexterm-435"></a><a name="indexterm-436"></a><a name="indexterm-437"></a><a name="indexterm-438"></a>You can specify that the values of certain fields be hidden on the
+MIDM from users without the appropriate access permissions. You can create a custom
 plug-in that uses the value of the VIP Flag field to determine whether
 the values of specified fields are hidden (typically in records with a VIP
 status of &ldquo;VIP&rdquo; or &ldquo;Employee&rdquo;). In records with any other VIP status, the
 field values would be visible regardless of whether the field is marked for
-masking. </p><p>This option is only available if the <i>object-sensitive-plug-in-class</i> element in the <i>impl-details</i>
-section is populated (by default, it is empty).</p>
-<hr><p><b>Note - </b>To mask field values, you must define a custom plug-in to implement the
-masking rules.
-     </p>
+masking. </p><p>This option is only available if the <tt>object-sensitive-plug-in-class</tt> element in the <tt>impl-details</tt>
+section is populated with the custom plug-in class (by default, this element is
+empty).</p>
+<hr><p><b>Note - </b>To mask field values, you need to define a custom plug-in to
+implement the masking rules.
+      </p>
 <hr>
 
 
-<a name="gentextid-5150"></a><h5>To Mask Field Values on the EDM</h5>
+<a name="gentextid-5428"></a><h5>To Mask Field Values on the MIDM</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>node</tt> element that defines the object containing the field you
 want to modify.</b></li>
-<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
-name of the field as it appears in the Object Definition file.</b></li>
-<li><b>Change the value of the <a name="indexterm-429"></a><i>is-sensitive</i> element to &ldquo;true&rdquo;.</b><p>If the element does not exist for the field, create a new
-<i>is-sensitive</i> element. For example:</p><pre>&lt;is-sensitive>true&lt;/is-sensitive></pre></li>
+<li><b>Scroll to the <tt>field</tt> element you want to modify.</b></li>
+<li><b>Change the value of the <tt>is-sensitive</tt> element to <tt><b>true</b></tt>.</b><p>If the element does not exist for the field, create a new <tt>is-sensitive</tt>
+element. For example:</p><pre>&lt;is-sensitive>true&lt;/is-sensitive></pre>
+<hr><p><b>Note - </b>The <tt>is-sensitive</tt> element must appear before the <tt>key-type</tt> element in the field definition.</p>
+<hr>
+</li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-relat_t"></a><h3>Defining Object Relationships</h3>
-<p>The <a name="indexterm-430"></a>relationships in the Enterprise Data Manager file are predefined based on the
-information you provided when you created the object structure definition (the Object Definition
-file). The relationship structure in the Enterprise Data Manager file should match that
-of the Object Definition file.</p>
+<div class="indent"><a name="cnfg_index-edm-relat_t"></a><h3>Defining MIDM Object Relationships</h3>
+<p><a name="indexterm-439"></a><a name="indexterm-440"></a><a name="indexterm-441"></a><a name="indexterm-442"></a>The relationships in midm.xml are predefined based on the information you provided when
+you created the object structure definition (object.xml). The relationship structure in midm.xml should
+match that of object.xml.</p>
 
-<a name="gentextid-5176"></a><h5>To Define Relationships</h5>
+<a name="gentextid-5459"></a><h5>To Define Relationships</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <a name="indexterm-431"></a><i>relationships</i> element.</b></li>
-<li><b>Specify the name of the parent object in the <a name="indexterm-432"></a><i>name</i> element.</b></li>
-<li><b>Specify the name of the children objects in the <a name="indexterm-433"></a><i>children</i> elements. </b><p>For example:</p><pre>&lt;relationships>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>relationships</tt> element.</b></li>
+<li><b>Specify the name of the parent object in the <tt>name</tt> element.</b></li>
+<li><b>Specify the name of the child objects in the <tt>children</tt> elements. </b><p>For example:</p><pre>&lt;relationships>
    &lt;name>Person&lt;/name>
    &lt;children>Alias&lt;/children>
    &lt;children>Address&lt;/children>
    &lt;children>Phone&lt;/children>
    &lt;children>AuxId&lt;/children>
 &lt;/relationships></pre></li>
-<li><b>To remove a child object from the relationships list, delete the <i>children</i>
+<li><b>To remove a child object from the relationships list, delete the <tt>children</tt>
 element defining the object you want to delete.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
 
-<div class="indent"><a name="cnfg_index-edm-local-id_t"></a><h3>Defining Local ID Labels</h3>
-<p>The <a name="indexterm-434"></a><a name="indexterm-435"></a><a name="indexterm-436"></a><i>system-display-name-overrides</i> element, which is nested in the <i>gui-definition</i> element, defines alternate
-names for the local ID headings and fields. The names defined here replace
-the default local ID heading and field names on all pages, including the
-search result column names. The <i>system-display-name-overrides</i> element is optional, and if it does not
-exist the label names default to &ldquo;Local ID&rdquo;. If the value of either
-of the sub-elements is missing, the label names also default to &ldquo;Local ID&rdquo;.</p>
+<div class="indent"><a name="cnfg_index-edm-local-id_t"></a><h3>Defining MIDM Local ID Labels</h3>
+<p><a name="indexterm-443"></a><a name="indexterm-444"></a><a name="indexterm-445"></a>The <tt>local-id</tt> element, which is nested in the <tt>gui-definition</tt> element, defines alternate names for
+the local ID headings and labels. The name defined here replaces the default
+local ID heading and field names on all pages, including the search result
+column names. This element is optional, and if it does not exist the
+label names default to &ldquo;Local ID&rdquo;. </p>
 
-<a name="gentextid-5209"></a><h5>To Define Local ID Labels</h5>
+<a name="gentextid-5488"></a><h5>To Define Local ID Labels</h5>
 <ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <i>system-display-name-overrides</i> element in the <i>gui-definition</i> element.</b></li>
-<li><b>Modify any of the following elements. </b>
-<ul><li><p><i>local-id-header</i> &mdash; The name to use for the header label of the local ID search section of the EDM Lookup window.</p></li>
-<li><p><i>local-id</i> &mdash; The name to use for all fields and columns containing local IDs. In fields where the local ID label is abbreviated to &ldquo;LID1&rdquo; or &ldquo;LID2&rdquo;, the name becomes <i>local-id</i>1 or <i>local-id</i>2 (where <i>local-id</i> is the value specified for this element).</p></li></ul>
-<p>For example:</p><pre>   &lt;gui-definition>
-      &lt;system-display-name-overrides>
-         &lt;local-id-header>System Identifier&lt;/local-id-header>
-         &lt;local-id>System ID&lt;/local-id>
-      &lt;/system-display-name-overrides>
-      ...</pre></li>
+<li><b>In the Projects window, expand the Configuration node in the project you want
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <tt>local-id</tt> element  in the <tt>gui-definition</tt> element.</b></li>
+<li><b>Enter the name you want to appear on the MIDM for the local
+ID fields and headings.</b></li>
 <li><b>Save and close the file.</b></li></ol></div>
 
+   </div>
 
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_index-stndeng_p.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_index-midm-page_p.html">Next</a>
+            </td>
+         </tr>
+      </table>
 
-<!-- End Content Area -->
-<td class="valign-top" >
-	<div id="floating-col-right" width="10px"><!-- right content column -->
-<p class="h1" style="bold">Table of Contents</p>
-<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
-<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
-<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
-<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
-<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
-<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
-<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
-<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
-<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
-<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
-<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
-<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
-<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
-<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
-<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
-<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
-<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
-<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
-<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
-<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
-<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
-<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
-<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
-<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
-<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
-</div>
-					</td></tr></table></div></div>
-	</td></tr></div>
-	</div>
-	<!-- /Servlet-Specific template -->
+   </div>
 
-<!-- end of right navigation -->
-
-
-
-</div>
-</div>
 </body>
 </html>

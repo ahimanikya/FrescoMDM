@@ -1,100 +1,377 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<head>
+   <title>Configuring Master Indexes </title>
 
-
- <head>
- 
-<title>Developing Master Indexes With Master Index Studio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Master Index Studioprovides a flexible framework that allows you to customize the master index applications you create. Configuring Master Indexes provides instructions for configuring a master index application by either using the Configuration Editor or by modifying the configuration files directly.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
 
    <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 
-
 </head>
-
 
 <body>
 
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
 
+   <a name="top"></a>
+   <h1>Configuring Master Indexes </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_index-fields_r.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-query-block_p.html">Next</a></span></h5>
 
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-
-
-
-
-
-<!-- Servlet-Specific template -->
-
-
-
-
-
-<p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
-		<table id="floating-contenttable" class="colapse">
-		<td class="valign-top b-right full-width"><!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;"><!-- IE hack-->
-
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-
-<a name="top"></a>
-<h1>Configuring Master Indexes</h1>
-<h1 style="bold">DRAFT VERSION</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
-    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Configuring Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p class="toc level3"><a href="bookoverview.html#cnfg_index-files-about_c">About the Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyau">object.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyav">query.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaw">mefa.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyax">master.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyay">update.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaz2">filter.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyaz">validation.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#agyba">Security</a></p>
+<p class="toc level4"><a href="bookoverview.html#agybb">midm.xml</a></p>
+<p class="toc level3 tocsp"><a href="bookoverview.html#cnfg_index-modxml-about_c">Modifying the Master Index XML Files Directly</a></p>
+<p class="toc level3"><a href="bookoverview.html#cnfg_index-config-ed-about_c">Using the Master Index Master Index Configuration Editor</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxey">object.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxez">query.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfg">master.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfp">mefa.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfl">update.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxds">validation.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxel">midm.xml</a></p>
+<p class="toc level4"><a href="bookoverview.html#gfxfd">Match Configuration File (matchConfigFile.cfg)</a></p>
+<p class="toc level3 tocsp"><a href="bookoverview.html#cnfg_index-version_c">Maintaining Version Control in the Master Index Configuration Files</a></p>
+<p class="toc level3"><a href="bookoverview.html#agybz">Copying, Cutting, and Pasting Files</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-object_t.html">Configuring the Master Index Object Structure</a></p>
+<p class="toc level3"><a href="cnfg_index-object_t.html#cnfg_object-create_t">Adding an Object to the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-383">To Add an Undefined Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-400">To Add a Predefined Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-425">To Add an Undefined Object (XML editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_object-modify_t">Modifying an Object's Name In the Master Index Object Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-462">To Modify an Object's Name (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-477">To Modify an Object's Name (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_object-delete_t">Deleting an Object From the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-497">To Delete an Object (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-520">To Delete an Object (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-add_t">Adding a Field to the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-546">To Add a Field (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-570">To Add a Field (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-delete_t">Deleting a Field from the Master Index Object Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-600">To Delete a Field (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-623">To Delete a Field (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_field-props_t">Modifying Master Field Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-644">To Modify Field Properties (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-670">To Modify Field Properties (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_t.html#cnfg_index-object-rel_t">Defining Relationships Between Master Index Objects</a></p>
+<p class="toc level5"><a href="cnfg_index-object_t.html#gentextid-695">To Define Object Relationships (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldname_r">Master Index Field Name Restrictions</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldeditor_c">Master Index Configuration Editor Field Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-fields_r.html#cnfg_index-fieldxml_r">Master Index Field Property Elements</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Creating a Master Index Basic Query</a></p>
+<p class="toc level4"><a href="#gentextid-1024">To Create a Basic Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="#gentextid-1043">To Create a Basic Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a></p>
 </div>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-block_p.html">Creating Master Index Blocking Queries</a></p>
+<p class="toc level4"><a href="cnfg_index-query-block_p.html#gentextid-1192">To Create a Blocking Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-block_p.html#gentextid-1242">To Create a Blocking Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Master Index Query Block Fields and XML Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-mod_p.html">Modifying Master Index Queries</a></p>
+<p class="toc level3"><a href="cnfg_index-query-mod_p.html#cnfg_query-basic_t">Modifying a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1464">To Modify a Basic Query (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1504">To Modify a Query (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-add-block_t">Adding a Query Block to a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1570">To Add a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1606">To Add a Query Block (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-mod-block_t">Modifying a Query Block for a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1659">To Modify a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1691">To Modify a Query Block (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query-mod_p.html#cnfg_index-del-block_t">Deleting a Query Block From a Master Index Query</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1720">To Delete a Query Block (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-query-mod_p.html#gentextid-1740">To Delete a Query Block (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-del_t.html">Deleting a Master Index Query</a></p>
+<p class="toc level4"><a href="cnfg_index-query-del_t.html#gentextid-1778">To Delete a Query (Configuration Editor)</a></p>
+<p class="toc level4"><a href="cnfg_index-query-del_t.html#gentextid-1793">To Delete a Query</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mc_p.html">Configuring Master Index Processing Options</a></p>
+<p class="toc level3"><a href="cnfg_index-mc_p.html#cnfg_index-mc-logic_t">Specifying Master Index Custom Logic Classes</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1836">To Specify Custom Logic for External System Messages</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1849">To Specify Custom Logic for the Master Index Data Manager</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-update_t">Specifying the Master Index Update Mode</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1867">To Specify Potential Duplicates be Reevaluated at Each Update</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1881">To Specify Potential Duplicates not be Reevaluated at Each Update</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-merge_t">Configuring Master Index Merged Record Updates</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1899">To Allow Merged Record Updates</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1913">To Prevent Merged Record Updates</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-query_t">Specifying the Master Index Blocking Query for Matching</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1932">To Specify the Blocking Query for Matching</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-mc-queryopt_t">Setting Master Index Blocking Query Options</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1955">To Set Blocking Query Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mc_p.html#cnfg_index-xa_t">Defining Master Index Transactional Support</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-1980">To Define Transactional Support (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-mc_p.html#gentextid-2001">To Define Transactional Support (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-dm_p.html">Configuring Matching Parameters</a></p>
+<p class="toc level3"><a href="cnfg_index-dm_p.html#cnfg_index-dm-class_t">Specifying the Master Index Decision Maker Class</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2046">To Specify the Decision Maker Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-1match_t">Defining How to Handle Multiple Assumed Matches (OneExactMatch)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2067">To Create Potential Duplicates When Multiple Records Match</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2084">To Match the Highest Weighted Records When Multiple Records Match</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-samesystem_t">Specifying Whether Same System Matches are Allowed (SameSystemMatch)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2106">To Allow Same System Records to be Automatically Merged</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2123">To Prevent Same System Records From Being Automatically Merged</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-dup_t">Specifying the Master Index Duplicate Threshold</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2143">To Specify the Duplicate Threshold (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2158">To Specify the Duplicate Threshold (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-matchthres_t">Specifying the Master Index Match Threshold</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2179">To Specify the Match Threshold (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2194">To Specify the Match Threshold (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-dm_p.html#cnfg_index-dmparam_t">Adding and Deleting Master Index Decision Maker Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2215">To Add a New Decision Maker Parameter</a></p>
+<p class="toc level5"><a href="cnfg_index-dm_p.html#gentextid-2254">To Delete a Decision Maker Parameter</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-euid_p.html">Configuring Master Index EUIDs</a></p>
+<p class="toc level3"><a href="cnfg_index-euid_p.html#cnfg_index-euid-class_t">Specifying the Master Index EUID Generator Class</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2300">To Specify the EUID Generator Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-euid-lnth_t">Specifying the Master Index EUID Length</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2324">To Specify the EUID Length</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-checksum_t">Specifying a Master Index Checksum Length</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2347">To Specify a Checksum Length</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-chunksize_t">Specifying the Master Index Chunk Size</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2367">To Specify the Chunk Size</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-euid_p.html#cnfg_index-euid-param_t">Adding and Deleting Master Index EUID Generator Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2386">To Add EUID Generator Parameters</a></p>
+<p class="toc level5"><a href="cnfg_index-euid_p.html#gentextid-2425">To Delete EUID Generator Parameters</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-norm_p.html">Defining Master Index Normalization Rules</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-def_t">Defining a Master Index Field to be Normalized</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2476">To Define a Field to be Normalized (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2515">To Define a Field to be Normalized (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-norm_p.html#cnfg_index-norm_r">Master Index Normalization and Standardization Structure Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-locale_r">Master Index Variants Properties</a></p>
+<p class="toc level3"><a href="cnfg_index-norm_p.html#cnfg_index-norm-mod_t">Modifying a Master Index Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2747">To Modify a Normalization Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2775">To Modify a Normalization Structure (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-norm_p.html#cnfg_index-norm-del_t">Deleting a Master Index Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2810">To Delete a Normalization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-norm_p.html#gentextid-2826">To Delete a Normalization Structure</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-stand_p.html">Defining Master Index Standardization Rules</a></p>
+<p class="toc level3"><a href="cnfg_index-stand_p.html#cnfg_index-stand-def_t">Defining Master Index Fields to be Standardized</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-2872">To Define Fields to be Standardized (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-2950">To Define Fields to be Standardized (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stand_p.html#cnfg_index-stand_r">Master Index Standardization Source and Target Field Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-stand_p.html#cnfg_index-stand-mod_t">Modifying a Master Index Standardization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3055">To Modify a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-stand_p.html#gentextid-3097">To Modify a Standardization Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stand_p.html#cnfg_index-stand-del_t">Deleting a Master Index Standardization Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3143">To Delete a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-stand_p.html#gentextid-3161">To Delete a Standardization Definition (Configuration Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding for the Master Index</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-def_t">Defining Master Index Fields for Phonetic Encoding</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3219">To Define a Field for Phonetic Encoding (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3243">To Define a Field for Phonetic Encoding (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-field_r">Master Index Phonetic Encoding Fields and Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-mod_t">Modifying a Master Index Phonetic Encoding Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3325">To Modify a Phonetic Encoding Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3342">To Modify a Phonetic Encoding Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-del_t">Deleting a Master Index Phonetic Encoding Definition</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3361">To Delete a Phonetic Encoding Definition (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3378">To Delete a Phonetic Encoding Definition (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-def_t">Defining a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3411">To Define a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3438">To Define a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc_r">Master Index Encoder Elements and Types</a></p>
+<p class="toc level3"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-mod_t">Modifying a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3524">To Modify a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3540">To Modify a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc-del_t">Deleting a Master Index Phonetic Encoder</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3559">To Delete a Phonetic Encoder (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-phon_p.html#gentextid-3576">To Delete a Phonetic Encoder (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-match-string_p.html">Defining the Master Index Match String</a></p>
+<p class="toc level3"><a href="cnfg_index-match-string_p.html#cnfg_index-match-str-create_t">Creating the Master Index Match String</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3609">To Create the Match String (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3631">To Create the Match String (XML Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-match-string_p.html#cnfg-index-match-str-mod_t">Modifying the Master Index Match String</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3671">To Modify the Match String (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-match-string_p.html#gentextid-3693">To Modify the Match String (XML Editor)</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query-proc_t.html">Defining how Master Index Query Blocks are Processed</a></p>
+<p class="toc level4"><a href="cnfg_index-query-proc_t.html#gentextid-3756">To Specify the Block Picker</a></p>
+<p class="toc level4"><a href="cnfg_index-query-proc_t.html#gentextid-3775">To Specify the Pass Controller Class</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivor_p.html">Defining the Master Index Survivor Calculator</a></p>
+<p class="toc level3"><a href="cnfg_index-survivor_p.html#cnfg_index-srv-hlpr_t">Specifying the Master Index Survivor Helper</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3820">To Specify the Survivor Helper</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-sur-strat_t">Specifying a Master Index Default Survivor Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3844">To Specify a Default Survivor Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivor_p.html#agyix">Configuring the Default Survivor Strategy</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-surv-calc_r">Master Index Default Survivor Strategy Parameter Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-survivor_p.html#cnfg_index-sbr_t">Defining the Master Index Single Best Record Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-3962">To Specify a Candidate Field</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivor_p.html#agyiz">Deleting Candidate Fields</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-surv-field_t">Defining a Master Index Survivor Strategy for a Field or Object</a></p>
+<p class="toc level5"><a href="cnfg_index-survivor_p.html#gentextid-4021">To Define a Survivor Strategy for a Field</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-custom-strat_t">Defining Master Index Custom Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyjc">Defining Custom Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#cnfg_index-weight-strat_t">Configuring Weighted Strategies</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyje">Modifying Weighted Calculator Parameters</a></p>
+<p class="toc level4"><a href="cnfg_index-survivor_p.html#agyjf">Deleting Weighted Calculator Parameters</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivor_p.html#cnfg_index-weight-calc_r">Master Index Weighted Calculator Parameter Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-sbr-filter_t.html">Filtering Default Values From Master Index Processes</a></p>
+<p class="toc level4"><a href="cnfg_index-sbr-filter_t.html#ggikw">To Filter Default Values From the SBR, Blocking Query, or Match Process</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-sbr-filter_t.html#cnfg_index-filter_r">Filter Definition Elements</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-update-pol_p.html">Configuring Master Index Update Policies</a></p>
+<p class="toc level3"><a href="cnfg_index-update-pol_p.html#cnfg_index-def-update_t">Defining Master Index Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4409">To Define Update Policies</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-update-pol_p.html#cnfg_index-update-flag_t">Setting the Master Index Update Policy Flag</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4467">To Set the Update Policy Flag</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-validation_t.html">Defining Custom Field Validations for the Master Index</a></p>
+<p class="toc level4"><a href="cnfg_index-validation_t.html#gentextid-4501">To Implement a Validation Rule</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-engines_p.html">Configuring the Match Engine</a></p>
+<p class="toc level3"><a href="cnfg_index-engines_p.html#cnfg_index-eng-match_t">Specifying a Match Engine for the Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gentextid-4559">To Configure the Match Engine</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-eng-comp_t">Configuring the Comparison Functions for a Master Index Application</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gfxvt">To Configure the Comparison Functions (Configuration Editor)</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#gentextid-4640">To Configure the Comparison Functions (Text Editor)</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-engine-comp_r">Match Comparator Configuration Properties for Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-engines_p.html#cnfg_index-match-plug_t">Importing Custom Comparison Functions</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#ggocu">To Import a Comparison Function</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-engines_p.html#cnfg_index-match-del_t">Deleting a Custom Comparison Function</a></p>
+<p class="toc level5"><a href="cnfg_index-engines_p.html#ggoeo">To Delete a Custom Comparison Function</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-stndeng_p.html">Configuring the Standardization Engine</a></p>
+<p class="toc level3"><a href="cnfg_index-stndeng_p.html#cnfg_index-eng-stand_t">Specifying a Standardization Engine for the Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#gentextid-4866">To Specify the Standardization Engine</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#ggoax">Modifying Master Index Standardization Files</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggoac">To Modify Standardization Data Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#cnfg_index-stnd-plug_p">Importing Standardization Data Types and Variants</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggoai">To Import a Data Type or Variant</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-stndeng_p.html#cnfg_index-eng-stnd-del_t">Deleting a Standardization Variant or Data Type</a></p>
+<p class="toc level5"><a href="cnfg_index-stndeng_p.html#ggobr">To Delete a Variant or Data Type</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-edm-display_p.html">Configuring the Master Index MIDM Appearance</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-objects_t">Adding Objects to the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-4999">To Add an Object to the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-obj-mod_t">Modifying MIDM Objects</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5033">To Modify an MIDM Object</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-obj-del_t">Deleting Objects From the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5053">To Delete an Object</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-add_t">Adding Fields to the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5076">To Define New Fields</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-props_r">MIDM Field Configuration Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-del_t">Removing Fields From the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5237">To Remove a Field From the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-nm_t">Modifying MIDM Field Display Options</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5256">To Modify a Field's Display Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-ddlist_t">Specifying a Drop-Down List for an MIDM Field</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5298">To Specify a Drop-Down List</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-format_t">Specifying an MIDM Field's Length and Format</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5331">To Modify a Field's Length and Format</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-data_t">Modifying an MIDM Field's Data Type</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5365">To Modify the Data Type</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-key_t">Defining Key Fields for an Object</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5389">To Modify the Key Status</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-mask_t">Masking Field Values on the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5428">To Mask Field Values on the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-relat_t">Defining MIDM Object Relationships</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5459">To Define Relationships</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-local-id_t">Defining MIDM Local ID Labels</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-display_p.html#gentextid-5488">To Define Local ID Labels</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-midm-page_p.html">Configuring the Master Index MIDM Pages</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-initialview_t">Specifying the Initial View for the MIDM</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-5546">To Specify the Initial View</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-duprecords_t">Configuring the MIDM Duplicate Records Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_dupdisplay_t">Configuring Duplicate Records Display Options</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_dupsearch_t">Configuring Duplicate Records Search Pages</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_dupresults_t">Configuring the Duplicate Records Results List</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-duprecords_r">Duplicate Records Page Configuration Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_duprecords_search_r">Duplicate Records Search Page Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#cnfg_duprecords-results_r">Duplicate Records Search Results List Elements</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-recorddetails_t">Configuring the MIDM Record Details Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#ggubl">To Configure Record Details Display Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-recdetsearch_t">Creating Search Pages on the Record Details Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#definesearch">Step 1: Define the Search Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#definefields">Step 2: Define the Search Fields</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#searchoptions">Step 3: Specify Search Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi_search-def_r">Record Details Search Page Definition Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-search-fields_r">Record Details Search Field Definition Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-search-opts_r">Record Details Search Option Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_index-midm-modsrch_t">Modifying a Search Page on the Record Details Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#searchpage">Modifying a Search Page Definition </a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#modifyfields">Modifying Search Fields</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#modifyoptions">Modifying Record Details Search Page Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-assumedmatch_t">Configuring the MIDM Assumed Matches Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-6243">To Configure the Assumed Matches Page</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-transactions_t">Configuring the MIDM Transactions Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-6290">To Configure the Transactions Page</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-reports_t">Configuring the MIDM Reports Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#ggtzn">Configuring the Reports Page Definition</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#ggtze">Configuring Production Reports</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#gguam">Configuring Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-reports_r">Production Reports Definition Elements</a></p>
+<p class="toc level3"><a href="cnfg_index-midm-page_p.html#cnfg_mi-activity_r">Activity Reports Definition Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#actvitypagedef">Activity Reports Page Definition Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#activityreports">Activity Reports Search Elements</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#activityresults">Activity Reports Results Elements</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-sourcerecords_t">Configuring the MIDM Source Record Page</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#sourcerecords-page">Configuring the Source Record Page Definition</a></p>
+<p class="toc level4"><a href="cnfg_index-midm-page_p.html#sourcerecord-view">Configuring the Tabbed Pages on the Source Record Page</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm-page_p.html#cnfg_mi-auditlog_t">Configuring the MIDM Audit Log Page</a></p>
+<p class="toc level5"><a href="cnfg_index-midm-page_p.html#gentextid-6639">To Configure the Audit Log Page</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-edm-impl_p.html">Configuring Master Index MIDM Implementation Information</a></p>
+<p class="toc level3"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-mc_t">Specifying the Master Controller JNDI Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6699">To Specify the Master Controller JNDI Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-report-gen_t">Specifying the Master Index Report Generator JNDI Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6719">To Specify the Report Generator JNDI Class</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-val-svc_t">Specifying Master Index Validation Services</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6739">To Specify the Validation Service</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-debug_t">Setting Master Index Debug Options</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6766">To Set Debug Options</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-edm-impl_p.html#cnfg_index-edm-mask_t">Specifying a Master Index Field Masking Class</a></p>
+<p class="toc level5"><a href="cnfg_index-edm-impl_p.html#gentextid-6799">To Specify a Field Masking Class</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
 
 
 <a name="cnfg_index-query-basic_t"></a>
 
-<h2>Creating a Basic Query</h2>
-<p>By default, two basic queries are predefined in the Candidate Select file &mdash;
-one phonetic and one exact alphanumeric. If the default queries do not meet
-your query requirements, you can define new queries for the master index application.
-You can either use an existing query builder class or create a custom
-query builder by creating a custom plug-in (for more information, see <a href="https://open-dm-mi.dev.java.net/docs/dev/landingpage.html" target="_blank">Developing Master Indexes</a>). </p><p>The changes you make on the Query page of the Configuration Editor
-are reflected in the Candidate Select file (<tt>query.xml</tt>). For more information about this file
-and the configurable query options, see <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/landingpage.html" target="_blank">Understanding Master Index Configuration Options</a>. If you create a new query
-to use from the EDM, make sure to add that query to one
-of the search definitions in the Enterprise Data Manager file (<tt>edm.xml</tt>). Unless
-specifically defined for range searching in the Enterprise Data Manager file, basic queries
-use exact searching. No configuration is required in the Candidate Select file for
-basic exact or range searching.</p><p>You can create basic queries either through the Configuration Editor or by modifying
+<h2>Creating a Master Index Basic Query</h2>
+<p>By default, two basic queries are predefined in query.xml, one phonetic and one
+exact alphanumeric. If the default queries do not meet your query requirements, you
+can define new queries for the master index application. You can either use
+an existing query builder class or create a custom query builder by creating
+a custom plug-in (for more information, see <a href="https://open-dm-mi.dev.java.net/docs/dev/dsgn_eview-plug-ins2_c.html">Custom Plug-Ins for Master Index Custom Components</a>).</p><p>The changes you make on the Query page of the Configuration Editor
+are reflected in query.xml. For more information about this file and the configurable query
+options, see <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/cnfg_index-query_c.html">Query Configuration</a>. If you create a new query to use from the
+MIDM, make sure to add that query to one of the search definitions
+in midm.xml. Unless specifically defined for range searching in midm.xml, basic queries use
+exact searching. No configuration is required in query.xml for basic exact or range
+searching.</p><p>You can create basic queries either through the Configuration Editor or by modifying
 the XML file directly. Both methods are described here.</p>
 
-<a name="gentextid-1009"></a><h4>To Create a Basic Query (Configuration Editor)</h4><ol>
-<li><b>In the Projects window, right-click the Configuration node in the Project you want
+<a name="gentextid-1024"></a><h4>To Create a Basic Query (Configuration Editor)</h4><ol>
+<li><b>In the Projects window, right-click the Configuration node in the project you want
 to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
-<li><b>Click the Query tab.</b><p>The Query page appears, as shown below.</p></li>
+<li><b>Click the Query tab.</b><p>The Query page appears.</p></li>
 <li><b>In the Basic Queries section, click Add.</b><p>The Basic Query Builder dialog box appears.</p></li>
-<li><b>Enter values and select options for the fields described in <a href="#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>.</b></li>
+<li><b>Enter values and select options for the fields described in <a href="#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a>.</b></li>
 <li><b>On the Configuration Editor toolbar, click Save.   </b></li></ol>
 
-<a name="gentextid-1028"></a><h4>To Create a Basic Query (XML Editor)</h4><ol>
-<li><b>In the Projects window, expand the Configuration node in the Project you want
+<a name="gentextid-1043"></a><h4>To Create a Basic Query (XML Editor)</h4><ol>
+<li><b>In the Projects window, expand the Configuration node in the project you want
 to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b><a name="indexterm-100"></a>Create a new <i>query-builder</i> element in the <i>QueryBuilderConfig</i> element.</b><p>Make sure the new element is created outside of any existing <i>query-builder</i> elements.</p></li>
-<li><b>For the new <i>query-builder</i> element, define the query-builder attributes listed in <a href="#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>. </b><p>For example:</p><pre>&lt;query-builder name="PHONETIC-SEARCH" class=
+<li><b><a name="indexterm-106"></a>Create a new <tt>query-builder</tt> element in the <tt>QueryBuilderConfig</tt> element.</b><p>Make sure the new element is created outside of any existing <tt>query-builder</tt> elements.</p></li>
+<li><b>For the new <tt>query-builder</tt> element, define the attributes listed in <a href="#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a>. </b><p>For example:</p><pre>&lt;query-builder name="PHONETIC-SEARCH" class=
   "com.sun.mdm.index.user.CustomQueryBuilder"
   parser-class=
   "com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration"
@@ -102,7 +379,7 @@ to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans
 &lt;/query-builder></pre></li>
 <li><b>To configure the query to use wildcard characters, do the following:</b><ol style="list-style-type: lower-alpha">
 
-<li><b><a name="indexterm-101"></a>Add a new <i>config</i> element after the opening <i>query-builder</i> element.</b><p>For example:</p><pre>&lt;query-builder name="ALPHA-SEARCH" class=
+<li><b><a name="indexterm-107"></a>Add a new <tt>config</tt> element after the opening <tt>query-builder</tt> element.</b><p>For example:</p><pre>&lt;query-builder name="ALPHA-SEARCH" class=
   "com.sun.mdm.index.querybuilder.BasicQueryBuilder"
   parser-class=
   "com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration"
@@ -110,124 +387,96 @@ to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans
    <b>&lt;config></b>
    <b>&lt;/config></b>
 &lt;/query-builder></pre></li></ol></li>
-<li><b><a name="indexterm-102"></a><a name="indexterm-103"></a><a name="indexterm-104"></a>In the new <i>config</i> element, create an <i>option</i> element and then define <i>key</i> and
-<i>value</i> attributes for the new element. </b><p>For example:</p><pre>&lt;config>
+<li><b><a name="indexterm-108"></a><a name="indexterm-109"></a><a name="indexterm-110"></a>In the new <tt>config</tt> element, create an <tt>option</tt> element and then define
+<tt>key</tt> and <tt>value</tt> attributes for the new element. </b><p>For example:</p><pre>&lt;config>
  &lt;option key="UseWildcard" value="true"/>
 &lt;/config></pre>
-<hr><p><b>Note - </b>For the default basic query, only the <i>UseWildcard</i> parameter is supported, but if
-you create a custom basic query builder, you can use these elements to
-define additional parameters. For more information, see <a href="#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>.</p>
+<hr><p><b>Note - </b>For the default basic query, only the <tt>UseWildcard</tt> parameter is supported. If you
+create a custom basic query builder, you can use these elements to define
+additional parameters. For more information, see <a href="#cnfg_index-query-fields_r">Master Index Query Builder Dialog Box Fields and XML Elements</a>.</p>
 <hr>
 </li>
 <li><b>Save and close the file.</b></li></ol>
 
-<div class="indent"><a name="cnfg_index-query-fields_r"></a><h3>Query Builder Dialog Box Fields and XML Elements</h3>
+<div class="indent"><a name="cnfg_index-query-fields_r"></a><h3>Master Index Query Builder Dialog Box Fields and XML Elements</h3>
 <p>The following table lists and describes the fields on the Basic Query Builder
 and Blocking Query Builder dialog boxes on the Configuration Editor, along with the
-corresponding elements and attributes in the Candidate Select file (<tt>query.xml</tt>).</p><table><col width="20.00*"><col width="20.00*"><col width="60.00*"><tr><th align="left" valign="top" scope="column"><p>Configuration Editor Field</p></th>
+corresponding elements and attributes in query.xml.</p><table><col width="20%"><col width="20%"><col width="60%"><tr><th align="left" valign="top" scope="column"><p>Configuration Editor Field</p></th>
 <th align="left" valign="top" scope="column"><p>XML Element/Attribute</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-105"></a><a name="indexterm-106"></a>Query
-Builder Name</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-111"></a><a name="indexterm-112"></a>Query Builder Name</p></td>
 <td align="left" valign="top" scope="row"><p>query-builder/name</p></td>
-<td align="left" valign="top" scope="row"><p>A unique ID that identifies the Query Builder and is referenced
-from the Enterprise Data Manager file (<tt>edm.xml</tt>) when specifying the query to use on
-a search page. It is also referenced from the Match Field file (<tt>mefa.xml</tt>)
-when specifying the query to use for matching. No spaces are allowed in
-the name.</p></td>
+<td align="left" valign="top" scope="row"><p>A unique
+ID that identifies the Query Builder and is referenced from midm.xml when specifying
+the query to use on a search page. It is also referenced
+from mefa.xml when specifying the query to use for matching. No spaces are
+allowed in the name.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-107"></a>Query Builder Class</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-113"></a>Query Builder Class</p></td>
 <td align="left" valign="top" scope="row"><p>query-builder/class</p></td>
-<td align="left" valign="top" scope="row"><p>The fully qualified name of the query class. Two default
-Query Builder classes are provided.</p>
-<ul><li><p><tt>com.sun.mdm.index.querybuilder.BasicQueryBuilder</tt> &mdash; Builds dynamic queries using all the available input fields. When configured to use normalized and phonetic data, this query performs phonetic searches; when configured to not use normalized and phonetic data, this query is used for exact alphanumeric searches.</p></li>
-<li><p><tt>com.sun.mdm.index.querybuilder.BlockerQueryBuilder</tt> &mdash; Builds queries using the criteria defined in the block definitions defined for the query. When a blocker query is performed, the application searches only on the blocks for which they query has complete data.</p></li></ul>
+<td align="left" valign="top" scope="row"><p>The fully qualified name of the query class.
+Two default Query Builder classes are provided.</p>
+<ul><li><p><tt>com.sun.mdm.index.querybuilder.BasicQueryBuilder</tt> &ndash; Builds dynamic queries using all the available input fields. When configured to use normalized and phonetic data, this query performs phonetic searches; when configured to not use normalized and phonetic data, this query is used for exact alphanumeric searches.</p></li>
+<li><p><tt>com.sun.mdm.index.querybuilder.BlockerQueryBuilder</tt> &ndash; Builds queries using the criteria defined in the block definitions defined for the query. When a blocking query is performed, the application searches only on the blocks for which they query has complete data.</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-108"></a>Parser Class</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-114"></a>Parser Class</p></td>
 <td align="left" valign="top" scope="row"><p>query-builder/ parser-class</p></td>
-<td align="left" valign="top" scope="row"><p>The fully qualified name of the class
-that parses the configuration elements for each query. The default parser class is
-<tt>com.sun.mdm.index.configurator.impl.querybuilder. KeyValueConfiguration</tt>.</p></td>
+<td align="left" valign="top" scope="row"><p>The fully qualified name of
+the class that parses the configuration elements for each query. The default parser
+class is <tt>com.sun.mdm.index.configurator.impl.querybuilder. KeyValueConfiguration</tt>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-109"></a>Standardize</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-115"></a>Standardize</p></td>
 <td align="left" valign="top" scope="row"><p>query-builder/ standardize</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of whether any of the query criteria is standardized
-before being passed to the query. On the Configuration Editor, select this check box
-if any search fields are standardized. In the XML file, enter <b>true</b>
-if any search fields are standardized; otherwise enter <b>false</b>.</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether any of the query criteria
+is standardized before being passed to the query. On the Configuration Editor, select
+this check box if any search fields are standardized. In the XML file,
+enter <tt><b>true</b></tt> if any search fields are standardized; otherwise enter <tt><b>false</b></tt>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-110"></a>Phoneticize</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-116"></a>Phoneticize</p></td>
 <td align="left" valign="top" scope="row"><p>query-builder/ phoneticize</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of whether
-any of the query criteria is phonetically encoded before being passed to the
-query. On the Configuration Editor, select this check box if any search fields
-are phonetically encoded.  In the XML file, enter <b>true</b> if any search
-fields are phonetically encoded; otherwise enter <b>false</b>.</p></td>
+<td align="left" valign="top" scope="row"><p>An
+indicator of whether any of the query criteria is phonetically encoded before being
+passed to the query. On the Configuration Editor, select this check box if
+any search fields are phonetically encoded.  In the XML file, enter <tt><b>true</b></tt>
+if any search fields are phonetically encoded; otherwise enter <tt><b>false</b></tt>.</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>Use Wildcard</p></td>
 <td align="left" valign="top" scope="row"><p>option/key</p><p>option/value</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of whether wildcard characters
-are allowed when executing this search. This parameter is available for basic queries
-only. On the Configuration Editor, select this check box if wildcard characters are
-allowed in any of the search fields. </p><p>In the XML file, each <i>option</i>
-element configures one parameter for the query and contains a <i>key</i> and <i>value</i>
-pair. The <i>key</i> attribute names the parameter. For the default basic query, the
-name is <a name="indexterm-111"></a><i>UseWildCard</i>. The <i>value</i> attribute specifies the value of the corresponding <i>key</i>
-attribute. For the <i>UseWildCard</i> parameter, specify <tt><b>true</b></tt> to allow wildcard characters for that query
-type; otherwise specify <tt><b>false</b></tt>.</p><p>When wildcard characters are enabled, you can enter a
-percent sign (%) into search criteria to represent multiple unknown characters.</p>
-<hr><p><b>Note - </b>If you define
-a custom query, you can use key and value options to define any
-required parameters.</p>
+<td align="left" valign="top" scope="row"><p>An indicator of
+whether wildcard characters are allowed when executing this search. This parameter is available
+for basic queries only. On the Configuration Editor, select this check box if
+wildcard characters are allowed in any of the search fields. </p><p>In the XML
+file, each <tt>option</tt> element configures one parameter for the query and contains a
+<tt>key</tt> and <tt>value</tt> pair. The <tt>key</tt> attribute names the parameter. For the default basic
+query, the name is <a name="indexterm-117"></a><tt>UseWildCard</tt>. The <tt>value</tt> attribute specifies the value of the
+corresponding <tt>key</tt> attribute. For the <tt>UseWildCard</tt> parameter, specify <tt><b>true</b></tt> to allow wildcard characters
+for that query type; otherwise specify <tt><b>false</b></tt>.</p><p>When wildcard characters are enabled, you
+can enter a percent sign (%) into search criteria to represent multiple unknown
+characters.</p>
+<hr><p><b>Note - </b>If you define a custom query, you can use key and value
+options to define any required parameters.</p>
 <hr>
 </td>
 </tr>
 </table></div>
 
+   </div>
 
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_index-fields_r.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_index-query-block_p.html">Next</a>
+            </td>
+         </tr>
+      </table>
 
-<!-- End Content Area -->
-<td class="valign-top" >
-	<div id="floating-col-right" width="10px"><!-- right content column -->
-<p class="h1" style="bold">Table of Contents</p>
-<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
-<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
-<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
-<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
-<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
-<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
-<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
-<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
-<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
-<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
-<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
-<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
-<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
-<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
-<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
-<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
-<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
-<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
-<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
-<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
-<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
-<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
-<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
-<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
-<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
-</div>
-					</td></tr></table></div></div>
-	</td></tr></div>
-	</div>
-	<!-- /Servlet-Specific template -->
+   </div>
 
-<!-- end of right navigation -->
-
-
-
-</div>
-</div>
 </body>
 </html>

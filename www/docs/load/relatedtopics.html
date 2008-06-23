@@ -23,13 +23,15 @@
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="admn_mi-load-gen_t.html">Previous</a></span>
-         <span class="tocpageright"><a href="admn_mi-load-database_t.html">Next</a></span></h5>
+     <h5><span class="tocpageleft"><a href="lidsevseispv.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-load-overview_c.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index</a></p>
-<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<div class="onpage">
+<p class="toc level2"><a href="">Related Topics</a></p>
+</div>
 <p class="toc level2"><a href="admn_mi-load-overview_c.html">Initial Bulk Match and Load Overview</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-process_c">Initial Bulk Match and Load Process Overview</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-procedure_c">Data Preparation, Matching, and Loading Procedure Overview</a></p>
@@ -45,10 +47,8 @@
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-files_c">Required Format for Flat Data Files</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-gen_t.html">Generating the Initial Bulk Match and Load Tool</a></p>
 <p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-239">To Generate the Initial Bulk Match and Load Tool</a></p>
-<div class="onpage">
-<p class="toc level2 tocsp"><a href="">Configuring the Environment</a></p>
-<p class="toc level4"><a href="#gglre">To Configure the Environment</a></p>
-</div>
+<p class="toc level2 tocsp"><a href="admn_mi-load-envvar_t.html">Configuring the Environment</a></p>
+<p class="toc level4"><a href="admn_mi-load-envvar_t.html#gglre">To Configure the Environment</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-database_t.html">Creating the Cluster Synchronizer Database</a></p>
 <p class="toc level4"><a href="admn_mi-load-database_t.html#ggjoo">To Create the Cluster Synchronization Tables</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-config_p.html">Configuring the Initial Bulk Match and Load Tool</a></p>
@@ -88,57 +88,21 @@
    <div class="maincontent">
 
 
-<a name="admn_mi-load-envvar_t"></a>
+<a name="relatedtopics"></a>
 
-<h2>Configuring the Environment</h2>
-<p>Before you start working with the IBML Tool, make sure the environment is
-configured to handle the requirements of the load process.</p>
-
-<a name="gglre"></a><h4>To Configure the Environment</h4><ol>
-<li><b>Complete the steps under <a href="admn_mi-load-gen_t.html">Generating the Initial Bulk Match and Load Tool</a>.</b></li>
-<li><b>If you are using a distributed processing environment, set up an FTP server
-on the master processor using the FTP provider of your choice.</b></li>
-<li><b>Install the Oracle or SQL Server database driver on each processor running the
-IBML Tools.</b></li>
-<li><b>If the master index database is an Oracle database, define an environment variable:</b><ul>
-<li><b>For Windows, create an environment variable named ORACLE_JDBC_JAR. Define the value of the
-variable as the path and name of the driver file, <tt>ojdbc14.jar</tt>; for
-example, <tt>C:\oracle\jdbc\lib\ojdbc14.jar</tt>.</b></li>
-<li><b>For UNIX, run <tt>export ORACLE_JDBC_JAR=<i>oracle_driver_path</i>/ojdbc14.jar</tt>, as shown in the example above.</b></li></ul></li>
-<li><b>If the master index database is a SQL Server database, modify <tt>run-loader.bat</tt>
-as follows:</b><ul>
-<li><b>In the IBML Tool home directory, open the file <tt>run-loader.bat</tt>.</b></li>
-<li><b>Remove %ORACLE_JDBC_JAR% and replace it with the complete path and filename of the
-SQL Server database driver (<tt>sqljdbc.jar</tt>).</b></li>
-<li><b>Save and close the file.</b></li></ul></li>
-<li><b>If you are using the SQL*Loader bulk loader to load the data, install
-SQL*Plus and SQL*Loader on the machines performing the load.</b></li>
-<li><b>If you are using the Data Integrator Bulk Loader instead of SQL*Loader to
-perform the load process, install NetBeans on the machines performing the load.</b>
-<hr><p><b>Note - </b>For information about using the Data Integrator Bulk Loader, see <a href="admn_mi-load-etlbulk_p.html">Loading Data Using the Data Integrator Bulk Loader</a>.</p>
-<hr>
-</li>
-<li><b>Make sure the Java installation you are using matches the Java version used
-by the NetBeans installation that generated the Initial Bulk Match and Load
-Tool.</b>
-<hr><p><b>Tip - </b>To find the Java version for NetBeans, select Tools from the main menu
-and then select Java Platforms. To find the Java version you are
-using, type <tt>Java -version</tt> at a command prompt. If they do not match, either locate
-or install the correct version and change your PATH variable to point to
-the correct version.</p>
-<hr>
-</li>
-<li><b>Continue to <a href="admn_mi-load-database_t.html">Creating the Cluster Synchronizer Database</a>.</b></li></ol>
+<h2>Related Topics</h2>
+<p>For a summary of and links to the user documentation available for the
+Mural subprojects, see <a href="https://mural.dev.java.net/Documents.html">Mural Documentation</a>.</p>
    </div>
 
    <div class="BottomPageControlPane">
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="admn_mi-load-gen_t.html">Previous</a>
+               <a href="lidsevseispv.html">Previous</a>
             </td>
             <td class="pageright">
-               <a href="admn_mi-load-database_t.html">Next</a>
+               <a href="admn_mi-load-overview_c.html">Next</a>
             </td>
          </tr>
       </table>

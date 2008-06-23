@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-   <title>Developing Master Indexes With Master Index Studio: DRAFT VERSION</title>
+   <title>Developing Master Indexes With Master Index Studio</title>
 
    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
-   <meta name="date" content="2008-04-01">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -19,15 +19,17 @@
    <!-- Use is subject to license terms. -->
 
    <a name="top"></a>
-   <h1>Developing Master Indexes With Master Index Studio: DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: April 2008</div>
+   <h1>Developing Master Indexes With Master Index Studio</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <div class="cornerTL"><div class="cornerTR"></div></div>
+     <h5><span class="tocpageleft"><a href="dsgn_eview-prep_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="dsgn_eview-fields_r.html">Next</a></span></h5>
 
-     <h5><span class="toctitle">Contents</span></span></h5>
+     <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
-       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes: DRAFT VERSION</a></p>
+       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
 <p class="toc level2"><a href="dsgn_eview-runtime_c.html">The Master Index Framework and the Runtime Environment</a></p>
 <p class="toc level2"><a href="dsgn_eview-prep_c.html">Before You Begin Developing a Master Index</a></p>
@@ -37,13 +39,13 @@
 <div class="onpage">
 <p class="toc level2 tocsp"><a href="">Creating a Master Index Application</a></p>
 <p class="toc level3"><a href="#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a></p>
-<p class="toc level5"><a href="#gentextid-249">To Create a Project and Start the Wizard</a></p>
+<p class="toc level5"><a href="#gentextid-251">To Create a Project and Start the Wizard</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a></p>
 <p class="toc level5"><a href="#gftkn">To Name the Master Index Application</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-systems_t">Step 3: Define Source Systems</a></p>
-<p class="toc level5"><a href="#gentextid-291">To Define Source Systems</a></p>
+<p class="toc level5"><a href="#gentextid-323">To Define Source Systems</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a></p>
-<p class="toc level5"><a href="#gentextid-336">To Define the Deployment Environment</a></p>
+<p class="toc level5"><a href="#gentextid-375">To Define the Deployment Environment</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a></p>
 <p class="toc level4"><a href="#gftij">Creating Undefined Objects</a></p>
 <p class="toc level4"><a href="#gftkk">Creating Objects from a Template</a></p>
@@ -53,7 +55,7 @@
 <p class="toc level4"><a href="#gftki">Configuring Field Properties</a></p>
 <p class="toc level4"><a href="#gftix">Deleting a Field</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a></p>
-<p class="toc level5"><a href="#gentextid-561">To Generate the Configuration Files</a></p>
+<p class="toc level5"><a href="#gentextid-630">To Generate the Configuration Files</a></p>
 <p class="toc level3 tocsp"><a href="#dsgn_eview-config-file_t">Step 8: Review the Configuration Files</a></p>
 </div>
 <p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
@@ -85,10 +87,10 @@
 <p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-stand_c">Standardization Engine Plug-ins</a></p>
 <p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-phon_c">Phonetic Encoders Plug-ins for a Master Index</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Master Index Custom Plug-ins</a></p>
-<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1106">To Create Custom Plug-ins</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1175">To Create Custom Plug-ins</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index  Application</a></p>
-<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1148">To Generate the Application for the First Time</a></p>
-<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1160">To Regenerate the Application</a></p>
+<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1217">To Generate the Application for the First Time</a></p>
+<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1229">To Regenerate the Application</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_c.html#dsgn_eview-dbs-scripts_c">Master Index Database Scripts</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_c.html#dsgn_eview-dbs-req_c">Master Index Database Requirements</a></p>
@@ -111,32 +113,31 @@
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-analyze_t">Step 1: Analyze the Master Index Database Requirements</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1500">To Define an Index</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1569">To Define an Index</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1536">To Define an External System</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1605">To Define an External System</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-db-systems_r">Master Index Database Table Description for sbyn_systems</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-codelist_t">Step 5: Define Master Index Code Lists</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1684">To Customize Common Table Data for Oracle</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1739">To Customize Common Table Data for SQL Server</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1753">To Customize Common Table Data for Oracle</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1808">To Customize Common Table Data for SQL Server</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-usercode_t">Step 6: Define Master Index User Code Lists</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1798">To Define a User Code List</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1867">To Define a User Code List</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-user-code_r">Master Index Database Table Description for sbyn_user_code</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-custom_t">Step 7: Create Custom Master Index Database Scripts</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1888">To Create a Custom Script</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1957">To Create a Custom Script</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-install_t">Step 8: Create the Master Index Database Structure</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1902">To Create the Database Structure</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1971">To Create the Database Structure</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-euid_t">Step 9: Specify a Starting EUID for a Master Index</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Master Index Database Tables</a></p>
 <p class="toc level4"><a href="dsgn_eview-dbs-delete_t.html#gfrjb">To Delete Database Tables</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
 <p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-driv_t">Step 1: Add the Oracle Driver to the Application Server</a></p>
 <p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a></p>
-<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-1978">To Create a JDBC Connection Pool</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2047">To Create a JDBC Connection Pool</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-res_t">Step 3: Create a JDBC Resource</a></p>
-<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2031">To Create a JDBC Resource</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2112">To Create a JDBC Resource</a></p>
 
      </div>
-     <div class="cornerBL"><div class="cornerBR"></div></div>
    </div>
 
 
@@ -165,15 +166,15 @@ framework, follow these steps.</p>
 <p>When you create a new Master Index project in NetBeans, the wizard for
 creating a master index application automatically appears.</p>
 
-<a name="gentextid-249"></a><h5>To Create a Project and Start the Wizard</h5>
+<a name="gentextid-251"></a><h5>To Create a Project and Start the Wizard</h5>
 <ol>
-<li><b><a name="indexterm-13"></a>On the NetBeans toolbar, click New Project.</b></li>
+<li><b><a name="indexterm-13"></a>On the NetBeans toolbar, click New Project.</b><p>The New Project wizard appears.</p><a name="ggtad"></a><h6>Figure&nbsp;1 New Project Wizard</h6><img src="figures/CreateApp1.gif" alt="Figure shows the wizard that appears when you select New Project." width="510" height="352"></img></li>
 <li><b>Under Categories, select CAPS and then select MDM.</b></li>
-<li><b>Under Projects, select Master Index Application and then click Next.</b></li>
+<li><b>Under Projects, select Master Index Application and then click Next.</b><p>The Project Name page appears.</p><a name="ggtbg"></a><h6>Figure&nbsp;2 Project Name and Location</h6><img src="figures/CreateApp3.gif" alt="Figure shows the Project Name page of the New Project wizard." width="506" height="366"></img></li>
 <li><b>Enter the project name and the path where you want to store
 the project files in the upper portion of the window.</b></li>
-<li><b>Enter the application server and Java EE version you are using in the
-lower portion of the window. </b></li>
+<li><b>Enter the application server and Java version you are using in the lower
+portion of the window. </b></li>
 <li><b>To make the Master Index project a main project, select Set as Main
 Project.</b></li>
 <li><b>Click Next.</b></li>
@@ -182,22 +183,26 @@ Project.</b></li>
 
 <div class="indent"><a name="dsgn_eview-name-app_t"></a><h3>Step 2: Name the Master Index Application</h3>
 <p><a name="indexterm-14"></a>Before you can configure the new master index application, you must give the
-master index application a unique name.</p>
+master index application a unique name.</p><h6>Figure&nbsp;3 Name Application Window</h6><img src="figures/CreateApp4.gif" alt="Figure shows the window of the wizard where you name the application." width="506" height="366"></img>
 
 <a name="gftkn"></a><h5>To Name the Master Index Application</h5>
 <ol>
 <li><b>Complete <a href="#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a>.</b></li>
 <li><b><a name="indexterm-15"></a><a name="indexterm-16"></a>In the Application field of the Name Application window, enter a name for
-the new master index application, and then click Next.</b><p><a name="indexterm-17"></a>The Define Source Systems window appears.</p></li>
+the new master index application, and then click Next.</b>
+<hr><p><b>Note - </b>Give the application the same name you will give to the parent object
+when you define the object structure.</p>
+<hr>
+<p><a name="indexterm-17"></a>The Define Source Systems window appears.</p></li>
 <li><b>Continue to <a href="#dsgn_eview-systems_t">Step 3: Define Source Systems</a>.</b></li></ol></div>
 
 
 <div class="indent"><a name="dsgn_eview-systems_t"></a><h3>Step 3: Define Source Systems</h3>
 <p><a name="indexterm-18"></a><a name="indexterm-19"></a>After you specify a name for the new master index application, you need
 to specify the processing codes for the source systems that will be integrated
-into the master index system.</p>
+into the master index system.</p><h6>Figure&nbsp;4 Define Source Systems</h6><img src="figures/CreateApp5.gif" alt="Figure shows the window on the wizard where you define source systems." width="506" height="366"></img>
 
-<a name="gentextid-291"></a><h5>To Define Source Systems</h5>
+<a name="gentextid-323"></a><h5>To Define Source Systems</h5>
 <ol>
 <li><b>Complete <a href="#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a>.</b></li>
 <li><b><a name="indexterm-20"></a><a name="indexterm-21"></a>In the Name field of the Define Source Systems window, enter the processing
@@ -224,9 +229,9 @@ system in the Systems box, and then click Remove.</b></li>
 
 <div class="indent"><a name="dsgn_eview-deployment_t"></a><h3>Step 4: Define the Deployment Environment</h3>
 <p><a name="indexterm-24"></a>Once you define systems, you must specify information about the deployment environment, including
-the database, match engine, and standardization engine vendors.</p>
+the database, match engine, and standardization engine vendors.</p><h6>Figure&nbsp;5 Define Deployment Environment</h6><img src="figures/CreateApp6.gif" alt="Figure shows the window on the wizard where you define deployment information." width="506" height="366"></img>
 
-<a name="gentextid-336"></a><h5>To Define the Deployment Environment</h5>
+<a name="gentextid-375"></a><h5>To Define the Deployment Environment</h5>
 <ol>
 <li><b>Complete <a href="#dsgn_eview-systems_t">Step 3: Define Source Systems</a>.</b></li>
 <li><b><a name="indexterm-25"></a>On the Define Deployment Environment window, enter the following information:</b>
@@ -258,13 +263,14 @@ object.</p>
 <hr><p><b>Note - </b>The names of database constraints are created based on the parent and child
 object names. Due to database naming restrictions, the length of the parent object
 name plus the length of any of the child object names must be
-21 characters or less.  </p>
+21 characters or less. Give the parent object the same name you
+gave the application earlier in the wizard.</p>
 <hr>
 
 
 <div class="indent"><a name="gftij"></a><h3>Creating Undefined Objects</h3>
 <p><a name="indexterm-36"></a>When you create undefined objects, you create an empty object with no predefined
-fields or child objects.</p>
+fields or child objects.</p><a name="ggtvt"></a><h6>Figure&nbsp;6 Define Enterprise Object</h6><img src="figures/CreateApp7.gif" alt="Figure shows the window on the wizard where you define the object structure." width="506" height="366"></img>
 
 <a name="gfuzk"></a><h5>To Create Undefined Parent and Child Objects</h5>
 <ol>
@@ -284,9 +290,9 @@ press Enter.</b></li>
 <div class="indent"><a name="gftkk"></a><h3>Creating Objects from a Template</h3>
 <p><a name="indexterm-42"></a><a name="indexterm-43"></a>When you create objects from a template, secondary objects and fields are predefined.
 You can modify the objects, fields, and field properties in a template to
-suit your processing needs.</p>
+suit your processing needs.</p><a name="ggtwv"></a><h6>Figure&nbsp;7 Define Enterprise Object</h6><img src="figures/CreateApp8.gif" alt="Figure shows the Person template object structure on the wizard." width="506" height="366"></img>
 
-<a name="gentextid-430"></a><h5>To Create Parent and Child Objects From a Template</h5>
+<a name="gentextid-481"></a><h5>To Create Parent and Child Objects From a Template</h5>
 <ol>
 <li><b><a name="indexterm-44"></a>To create a complete object structure from a template, click Templates on the Define
 Enterprise Object toolbar, and select the template you want to use.</b><p>The objects and fields from the template appear in the tree-view panel in
@@ -310,7 +316,7 @@ to create.</b></li>
 use one of the objects in a predefined template, you can delete the
 object from the structure.</p>
 
-<a name="gentextid-457"></a><h5>To Delete an Object From the Structure</h5>
+<a name="gentextid-508"></a><h5>To Delete an Object From the Structure</h5>
 <ol>
 <li><b>On the Define Enterprise Object window, select the object you want to remove.</b></li>
 <li><b>Do any of the following:</b><ul>
@@ -335,11 +341,11 @@ of the following actions to define the fields for those objects.</p>
 
 
 <div class="indent"><a name="gftjs"></a><h3>Adding a Field</h3>
-<p><a name="indexterm-47"></a>If you created an empty object in <a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a>, you need to create
-each field that belongs to the object. If you created objects using a
-predefined template, you can add new fields to the object if needed.</p>
+<p><a name="indexterm-47"></a>If you created an empty object in <a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a>, you need to create each
+field that belongs to the object. If you created objects using a predefined
+template, you can add new fields to the object if needed.</p>
 
-<a name="gentextid-490"></a><h5>To Add a Field</h5>
+<a name="gentextid-541"></a><h5>To Add a Field</h5>
 <ol>
 <li><b>Complete <a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a>.</b></li>
 <li><b>In the object tree panel of the Define Enterprise Object window, do one
@@ -362,15 +368,15 @@ that field. You can modify the property configuration for each field to suit
 your data processing, storage, and display requirements. After you modify a property value,
 press  <tt>Enter</tt> to apply the change.</p>
 
-<a name="gentextid-522"></a><h5>To Configure Field Properties</h5>
+<a name="gentextid-573"></a><h5>To Configure Field Properties</h5>
 <ol>
 <li><b>Complete the steps under <a href="#gftjs">Adding a Field</a>.</b></li>
 <li><b>In the object tree panel of the Define Enterprise Object window, select the
 field you want to configure.</b></li>
 <li><b>On the Properties page in the right side of the window, modify the
-value of any of the properties listed in <a href="dsgn_eview-fields_r.html#dsgn_eview-field-props_r">Master Index Wizard General Field Properties</a>.</b></li>
+value of any of the properties listed in <a href="dsgn_eview-fields_r.html#dsgn_eview-field-props_r">Master Index Wizard General Field Properties</a>.</b><a name="ggtwe"></a><h6>Figure&nbsp;8 Field Properties</h6><img src="figures/CreateApp9FieldProps.gif" alt="Figure shows the field Properties window." width="506" height="366"></img></li>
 <li><b>On the right side of the window, click the MIDM tab, and then
-modify the value of any of the properties listed in <a href="dsgn_eview-fields_r.html#dsgn_eview-edm-props_r">Master Index Wizard MIDM Field Properties</a>.</b></li>
+modify the value of any of the properties listed in <a href="dsgn_eview-fields_r.html#dsgn_eview-edm-props_r">Master Index Wizard MIDM Field Properties</a>.</b><a name="ggttu"></a><h6>Figure&nbsp;9 Field MIDM Properties</h6><img src="figures/CreateApp9FieldMidm.gif" alt="Figure shows the MIDM Properties page." width="506" height="366"></img></li>
 <li><b>When you have created and configured all of the necessary fields for each
 object, click Next.</b></li>
 <li><b>Continue to <a href="#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a>.</b></li></ol></div>
@@ -380,7 +386,7 @@ object, click Next.</b></li>
 <p><a name="indexterm-51"></a>If you add a field in error, or do not need one
 of the predefined fields from a template, you can delete the field.</p>
 
-<a name="gentextid-544"></a><h5>To Delete a Field</h5>
+<a name="gentextid-607"></a><h5>To Delete a Field</h5>
 <ol>
 <li><b>In the object tree panel of the Define Enterprise Object window, select the
 field you want to delete.</b></li>
@@ -397,9 +403,9 @@ is set up correctly for your data processing environment.</p>
 <hr><p><b>Note - </b>Modifying the configuration files is not covered in this document. For instructions on
 configuring a master index application, see <a href="https://open-dm-mi.dev.java.net/docs/config/landingpage.html">Configuring Master Index Applications</a>.</p>
 <hr>
+<a name="ggtso"></a><h6>Figure&nbsp;10 Generate Project Files</h6><img src="figures/CreateApp9Generate.gif" alt="Figure shows the final window of the wizard." width="545" height="394"></img>
 
-
-<a name="gentextid-561"></a><h5>To Generate the Configuration Files</h5>
+<a name="gentextid-630"></a><h5>To Generate the Configuration Files</h5>
 <ol>
 <li><b>Complete <a href="#dsgn_eview-fields_t">Step 6: Define the Fields for Each Object</a>.</b></li>
 <li><b>Verify that all of the information you have entered is complete and correct.</b></li>

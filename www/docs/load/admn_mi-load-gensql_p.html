@@ -1,18 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-   <title>Loading the Initial Data Set for a Master Index Application</title>
+   <title>Loading the Initial Data Set for a Master Index</title>
 
    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
-   <meta name="description" content="Loading the Initial Data Set for a Master Index Application provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
-   <meta name="date" content="2008-05-01">
+   <meta name="description" content="Loading the Initial Data Set for a Master Index provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
-
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -21,9 +19,8 @@
    <!-- Use is subject to license terms. -->
 
    <a name="top"></a>
-   <h1>Loading the Initial Data Set for a Master Index Application</h1>
-   <h1>DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+   <h1>Loading the Initial Data Set for a Master Index</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"><a href="admn_mi-loadnmatch_t.html">Previous</a></span>
@@ -31,21 +28,23 @@
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
-       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index Application</a></p>
+       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="admn_mi-load-overview_c.html">Initial Bulk Match and Load Overview</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-process_c">Initial Bulk Match and Load Process Overview</a></p>
-<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-procedure_c">Data Cleansing, Matching, and Loading Procedure Overview</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-procedure_c">Data Preparation, Matching, and Loading Procedure Overview</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-dist_c">Distributed Processing</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-match_c">About the Bulk Match Process</a></p>
 <p class="toc level4"><a href="admn_mi-load-overview_c.html#gglab">Block Distribution</a></p>
-<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglcg">Matching Records</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglcg">Record Matching</a></p>
 <p class="toc level4"><a href="admn_mi-load-overview_c.html#gglbz">EUID Assignment</a></p>
 <p class="toc level4"><a href="admn_mi-load-overview_c.html#gglaz">Master Index Image Creation</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#ggvha">Potential Duplicate Creation</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-load-overview_c.html#admn_mi-load-load_c">About the Bulk Load Process</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-cluster_c">About the Cluster Synchronizer</a></p>
 <p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-files_c">Required Format for Flat Data Files</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-gen_t.html">Generating the Initial Bulk Match and Load Tool</a></p>
-<p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-225">To Generate the Initial Bulk Match and Load Tool</a></p>
+<p class="toc level4"><a href="admn_mi-load-gen_t.html#gentextid-239">To Generate the Initial Bulk Match and Load Tool</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-envvar_t.html">Configuring the Environment</a></p>
 <p class="toc level4"><a href="admn_mi-load-envvar_t.html#gglre">To Configure the Environment</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-load-database_t.html">Creating the Cluster Synchronizer Database</a></p>
@@ -117,8 +116,13 @@ index database to drop constraints and indexes.</b></li>
 <li><b>On Windows, double-click <tt>bulk-loader.bat</tt> or type <tt>bulk-loader.bat</tt> from a command line.</b></li>
 <li><b>On UNIX, type <tt>sh bulk-loader.sh</tt> at the command line.</b></li></ul></li>
 <li><b>After the data is loaded, close any command prompts that were left open
-by the process and check the SQL*Loader log files to ensure there were
-no errors during processing.</b></li>
+by the process and examine the SQL*Loader log files located in the
+<tt>sqlldr/log</tt> directory to ensure there were no errors during processing.</b>
+<hr><p><b>Note - </b>Any records that contained bad data and were not inserted into the master
+index database are written to the <tt>sqlldr/bad</tt> directory. Any records that contained bad
+data and were discarded are written to the <tt>sqlldr/discard</tt> directory.</p>
+<hr>
+</li>
 <li><b>In the <tt>sqlldr</tt> directory, run <tt>create.sql</tt> against the master index database to
 reinstate the dropped indexes and constraints.</b></li></ol>
    </div>

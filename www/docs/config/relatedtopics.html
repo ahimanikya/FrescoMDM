@@ -10,7 +10,7 @@
    <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-    <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -23,13 +23,15 @@
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="cnfg_index-sbr-filter_t.html">Previous</a></span>
-         <span class="tocpageright"><a href="cnfg_index-validation_t.html">Next</a></span></h5>
+     <h5><span class="tocpageleft"><a href="landingpage.html">Previous</a></span>
+         <span class="tocpageright"><a href="bookoverview.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="landingpage.html">Configuring Master Indexes</a></p>
-<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<div class="onpage">
+<p class="toc level2"><a href="">Related Topics</a></p>
+</div>
 <p class="toc level2"><a href="bookoverview.html">Master Index Configuration Overview</a></p>
 <p class="toc level3"><a href="bookoverview.html#cnfg_index-files-about_c">About the Master Index Configuration Files</a></p>
 <p class="toc level4"><a href="bookoverview.html#agyau">object.xml</a></p>
@@ -225,13 +227,11 @@
 <p class="toc level2 tocsp"><a href="cnfg_index-sbr-filter_t.html">Filtering Default Values From Master Index Processes</a></p>
 <p class="toc level4"><a href="cnfg_index-sbr-filter_t.html#ggikw">To Filter Default Values From the SBR, Blocking Query, or Match Process</a></p>
 <p class="toc level3 tocsp"><a href="cnfg_index-sbr-filter_t.html#cnfg_index-filter_r">Filter Definition Elements</a></p>
-<div class="onpage">
-<p class="toc level2 tocsp"><a href="">Configuring Master Index Update Policies</a></p>
-<p class="toc level3"><a href="#cnfg_index-def-update_t">Defining Master Index Update Policies</a></p>
-<p class="toc level5"><a href="#gentextid-4409">To Define Update Policies</a></p>
-<p class="toc level3 tocsp"><a href="#cnfg_index-update-flag_t">Setting the Master Index Update Policy Flag</a></p>
-<p class="toc level5"><a href="#gentextid-4467">To Set the Update Policy Flag</a></p>
-</div>
+<p class="toc level2 tocsp"><a href="cnfg_index-update-pol_p.html">Configuring Master Index Update Policies</a></p>
+<p class="toc level3"><a href="cnfg_index-update-pol_p.html#cnfg_index-def-update_t">Defining Master Index Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4409">To Define Update Policies</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-update-pol_p.html#cnfg_index-update-flag_t">Setting the Master Index Update Policy Flag</a></p>
+<p class="toc level5"><a href="cnfg_index-update-pol_p.html#gentextid-4467">To Set the Update Policy Flag</a></p>
 <p class="toc level2 tocsp"><a href="cnfg_index-validation_t.html">Defining Custom Field Validations for the Master Index</a></p>
 <p class="toc level4"><a href="cnfg_index-validation_t.html#gentextid-4501">To Implement a Validation Rule</a></p>
 <p class="toc level2 tocsp"><a href="cnfg_index-engines_p.html">Configuring the Match Engine</a></p>
@@ -342,81 +342,21 @@
    <div class="maincontent">
 
 
-<a name="cnfg_index-update-pol_p"></a>
+<a name="relatedtopics"></a>
 
-<h2>Configuring Master Index Update Policies</h2>
-<p><a name="indexterm-343"></a>When update.xml is generated, no Java classes are defined for the update policies.
-You can create custom update policy classes and specify that the custom classes
-be used instead. Custom update policies must implement <tt>com.sun.mdm.index.update.UpdatePolicy</tt> and must be
-defined as custom classes in the Master Index Studio project to be recognized
-as an update policy. The names of the custom plug-ins you create are
-the values you enter for the update policies. You can also set the
-update policy flag to specify whether the policies are performed when no changes
-are made to an existing record.</p><p>Perform the following tasks to configure the update policies:</p>
-<ul><li><p><a href="#cnfg_index-def-update_t">Defining Master Index Update Policies</a></p></li>
-<li><p><a href="#cnfg_index-update-flag_t">Setting the Master Index Update Policy Flag</a></p></li></ul>
-
-
-<div class="indent"><a name="cnfg_index-def-update_t"></a><h3>Defining Master Index Update Policies</h3>
-<p>You can define update policies for any of the seven update policy
-elements. You do not need to specify a policy for each element.</p>
-
-<a name="gentextid-4409"></a><h5>To Define Update Policies</h5>
-<ol>
-<li><b>In the Projects window, expand the Configuration node in the project you want
-to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <tt>UpdateManagerConfig</tt> section of the file.</b></li>
-<li><b>Do any of the following:</b><ul>
-<li><b>To modify the merge policy for enterprise objects, change the value of the
-<a name="indexterm-344"></a><tt>EnterpriseMergePolicy</tt> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseMergePolicy>com.sun.mdm.index.user.MyEntMergePolicy
-   &lt;/EnterpriseMergePolicy></pre></li>
-<li><b>To modify the unmerge policy for enterprise objects, change the value of the
-<a name="indexterm-345"></a><tt>EnterpriseUnmergePolicy</tt> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseUnmergePolicy>com.sun.mdm.index.user.MyEntUnmergePolicy
-   &lt;/EnterpriseUnmergePolicy></pre></li>
-<li><b>To modify the update policy for enterprise objects, change the value of the
-<a name="indexterm-346"></a><tt>EnterpriseUpdatePolicy</tt> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseUpdatePolicy>com.sun.mdm.index.user.MyEntUpdatePolicy
-   &lt;/EnterpriseUpdatePolicy></pre></li>
-<li><b>To modify the create policy for enterprise objects, change the value of the
-<a name="indexterm-347"></a><tt>EnterpriseCreatePolicy</tt> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseCreatePolicy>com.sun.mdm.index.user.MyCreatePolicy
-   &lt;/EnterpriseCreatePolicy></pre></li>
-<li><b>To modify the merge policy for system objects, change the value of the
-<a name="indexterm-348"></a><tt>SystemMergePolicy</tt> element to the fully qualified name of the new merge policy Java
-class. </b><p>For example:</p><pre>   &lt;SystemMergePolicy>com.sun.mdm.index.user.MySysMergePolicy
-   &lt;/SystemMergePolicy></pre></li>
-<li><b>To modify the unmerge policy for system objects, change the value of the
-<a name="indexterm-349"></a><tt>SystemUnmergePolicy</tt> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;SystemUnmergePolicy>com.sun.mdm.index.user.MySysUnmergePolicy
-   &lt;/SystemUnmergePolicy></pre></li>
-<li><b>To modify the assumed match policy, change the value of the <a name="indexterm-350"></a><tt>UndoAssumeMatchPolicy</tt>
-element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>&lt;UndoAssumeMatchPolicy>com.sun.mdm.index.user.MyUndoAsmMatchPolicy
-   &lt;/UndoAssumeMatchPolicy></pre></li></ul></li>
-<li><b>Save and close the file.</b></li></ol></div>
-
-
-<div class="indent"><a name="cnfg_index-update-flag_t"></a><h3>Setting the Master Index Update Policy Flag</h3>
-<p>The update flag determines whether update policies are performed against a record when
-a transaction does not cause any changes to the record&rsquo;s data.</p>
-
-<a name="gentextid-4467"></a><h5>To Set the Update Policy Flag</h5>
-<ol>
-<li><b>In the Projects window, expand the Configuration node in the project you want
-to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
-<li><b>Scroll to the <tt>UpdateManagerConfig</tt> section of the file.</b></li>
-<li><b>To specify that update policies are not performed when no updates are made,
-set the <tt>SkipUpdateIfNoChange</tt> element to <tt><b>true</b></tt>. </b><p>For example:</p><pre>&lt;SkipUpdateIfNoChange>true&lt;/SkipUpdateIfNoChange></pre></li>
-<li><b>To specify that update policies are performed even though no updates are made,
-set the <tt>SkipUpdateIfNoChange</tt> element to <tt><b>false</b></tt>. </b><p>For example:</p><pre>&lt;SkipUpdateIfNoChange>false&lt;/SkipUpdateIfNoChange></pre></li>
-<li><b>Save and close the file.</b></li></ol></div>
-
+<h2>Related Topics</h2>
+<p>For a summary of the user documentation available for the Mural subprojects and links
+to each topic, see <a href="https://mural.dev.java.net/Documents.html">Mural Documentation</a>.</p>
    </div>
 
    <div class="BottomPageControlPane">
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="cnfg_index-sbr-filter_t.html">Previous</a>
+               <a href="landingpage.html">Previous</a>
             </td>
             <td class="pageright">
-               <a href="cnfg_index-validation_t.html">Next</a>
+               <a href="bookoverview.html">Next</a>
             </td>
          </tr>
       </table>

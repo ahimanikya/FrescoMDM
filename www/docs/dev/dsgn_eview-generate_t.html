@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-   <title>Developing Master Indexes With Master Index Studio: DRAFT VERSION</title>
+   <title>Developing Master Indexes With Master Index Studio</title>
 
    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
-   <meta name="date" content="2008-04-01">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -19,15 +19,17 @@
    <!-- Use is subject to license terms. -->
 
    <a name="top"></a>
-   <h1>Developing Master Indexes With Master Index Studio: DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: April 2008</div>
+   <h1>Developing Master Indexes With Master Index Studio</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <div class="cornerTL"><div class="cornerTR"></div></div>
+     <h5><span class="tocpageleft"><a href="dsgn_eview-plug-ins_t.html">Previous</a></span>
+         <span class="tocpageright"><a href="dsgn_eview-database_c.html">Next</a></span></h5>
 
-     <h5><span class="toctitle">Contents</span></span></h5>
+     <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
-       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes: DRAFT VERSION</a></p>
+       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
 <p class="toc level2"><a href="dsgn_eview-runtime_c.html">The Master Index Framework and the Runtime Environment</a></p>
 <p class="toc level2"><a href="dsgn_eview-prep_c.html">Before You Begin Developing a Master Index</a></p>
@@ -36,13 +38,13 @@
 <p class="toc level3"><a href="dsgn_eview-prep_c.html#dsgn_eview-checklist_c">Master Index Project Initiation Checklist</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
 <p class="toc level3"><a href="dsgn_eview-application_p.html#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-249">To Create a Project and Start the Wizard</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-251">To Create a Project and Start the Wizard</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a></p>
 <p class="toc level5"><a href="dsgn_eview-application_p.html#gftkn">To Name the Master Index Application</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-systems_t">Step 3: Define Source Systems</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-291">To Define Source Systems</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-323">To Define Source Systems</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-336">To Define the Deployment Environment</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-375">To Define the Deployment Environment</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a></p>
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftij">Creating Undefined Objects</a></p>
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftkk">Creating Objects from a Template</a></p>
@@ -52,7 +54,7 @@
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftki">Configuring Field Properties</a></p>
 <p class="toc level4"><a href="dsgn_eview-application_p.html#gftix">Deleting a Field</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a></p>
-<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-561">To Generate the Configuration Files</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-630">To Generate the Configuration Files</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-config-file_t">Step 8: Review the Configuration Files</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
 <p class="toc level3"><a href="dsgn_eview-fields_r.html#dsgn-eview-fieldname_c">Master Index Wizard Field Name Restrictions</a></p>
@@ -83,11 +85,11 @@
 <p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-stand_c">Standardization Engine Plug-ins</a></p>
 <p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-phon_c">Phonetic Encoders Plug-ins for a Master Index</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Master Index Custom Plug-ins</a></p>
-<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1106">To Create Custom Plug-ins</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1175">To Create Custom Plug-ins</a></p>
 <div class="onpage">
 <p class="toc level2 tocsp"><a href="">Generating the Master Index  Application</a></p>
-<p class="toc level4"><a href="#gentextid-1148">To Generate the Application for the First Time</a></p>
-<p class="toc level4"><a href="#gentextid-1160">To Regenerate the Application</a></p>
+<p class="toc level4"><a href="#gentextid-1217">To Generate the Application for the First Time</a></p>
+<p class="toc level4"><a href="#gentextid-1229">To Regenerate the Application</a></p>
 </div>
 <p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_c.html#dsgn_eview-dbs-scripts_c">Master Index Database Scripts</a></p>
@@ -111,32 +113,31 @@
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-analyze_t">Step 1: Analyze the Master Index Database Requirements</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1500">To Define an Index</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1569">To Define an Index</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1536">To Define an External System</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1605">To Define an External System</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-db-systems_r">Master Index Database Table Description for sbyn_systems</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-codelist_t">Step 5: Define Master Index Code Lists</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1684">To Customize Common Table Data for Oracle</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1739">To Customize Common Table Data for SQL Server</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1753">To Customize Common Table Data for Oracle</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1808">To Customize Common Table Data for SQL Server</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-usercode_t">Step 6: Define Master Index User Code Lists</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1798">To Define a User Code List</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1867">To Define a User Code List</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-user-code_r">Master Index Database Table Description for sbyn_user_code</a></p>
 <p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-custom_t">Step 7: Create Custom Master Index Database Scripts</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1888">To Create a Custom Script</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1957">To Create a Custom Script</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-install_t">Step 8: Create the Master Index Database Structure</a></p>
-<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1902">To Create the Database Structure</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1971">To Create the Database Structure</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-euid_t">Step 9: Specify a Starting EUID for a Master Index</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Master Index Database Tables</a></p>
 <p class="toc level4"><a href="dsgn_eview-dbs-delete_t.html#gfrjb">To Delete Database Tables</a></p>
 <p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
 <p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-driv_t">Step 1: Add the Oracle Driver to the Application Server</a></p>
 <p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a></p>
-<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-1978">To Create a JDBC Connection Pool</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2047">To Create a JDBC Connection Pool</a></p>
 <p class="toc level3 tocsp"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-res_t">Step 3: Create a JDBC Resource</a></p>
-<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2031">To Create a JDBC Resource</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2112">To Create a JDBC Resource</a></p>
 
      </div>
-     <div class="cornerBL"><div class="cornerBR"></div></div>
    </div>
 
 
@@ -158,13 +159,13 @@ of the generate process.</p>
 <hr>
 
 
-<a name="gentextid-1148"></a><h4>To Generate the Application for the First Time</h4><ol>
+<a name="gentextid-1217"></a><h4>To Generate the Application for the First Time</h4><ol>
 <li><b>Save any configuration changes to the master index project.</b></li>
 <li><b>Right-click the master index application in the Projects window.</b></li>
 <li><b>Select Generate Master Index Files. </b><p>The project components are generated. This might take a few minutes.</p></li>
 <li><b>On the NetBeans toolbar, click Save.</b></li></ol>
 
-<a name="gentextid-1160"></a><h4>To Regenerate the Application</h4><ol>
+<a name="gentextid-1229"></a><h4>To Regenerate the Application</h4><ol>
 <li><b>Save any configuration changes to the master index project.</b></li>
 <li><b>If you are using the command-line reports, back them up to a
 different directory. Generating the application overwrites the existing report client.</b></li>
