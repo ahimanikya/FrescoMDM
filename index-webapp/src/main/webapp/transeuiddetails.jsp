@@ -344,6 +344,7 @@
                                                                     %>  
                                                                         <tr>
                                                                             <td>
+ 
                                                                                 <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
                                                                                 
                                                                                 <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
@@ -353,16 +354,32 @@
 
                                                                                 %>
                                                                                     <font class="highlight">
-                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
+																				      <%if(fieldConfigMap.isSensitive()){%> 
+																					      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%}else{%>
+                                                                                       <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                     <%}%>
                                                                                     </font>
-                                                                                  <%} else {if(fieldConfigMap.isSensitive()){%>                                                                               
-                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                 <%}else{%>
-                                                                                   <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                                 <%}%>
-                                                                                <%}%>
+                                                                                  <%} else {%>
+ 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
+                                                                                    <font class="highlight">
+																				         <%if(fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                    </font>
+																					 <%}else {%>
+																				         <%if(fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                     <%}%>
+                                                                                   <%}%>
+
                                                                                 <%} else {%>
-                                                                                &nbsp;
+                                                                                &nbsp; 
                                                                                 <%}%>
                                                                                 
                                                                             </td>
@@ -667,18 +684,19 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 										  eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
 
 											   %>
-                                        <% if (countEnt == 0) {%>
+  										<% if (countEnt == 0) {%>
                                         <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
-                                        <% }%>
                                         <!--Displaying view sources and view history-->
+                                        <% }%>
+
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                 <table border="0" cellspacing="0" cellpadding="0" border="1">
                                                     <h:form>
                                                         <tr> 
-                                                         <td valign="top">
+                                                          <td valign="top">
                                                              <a title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
-                                                         </td>                                              
+                                                          </td>                                              
                                                         </tr>
                                                         <%
                                                          boolean isMerge = transactionHandler.isEUIDMerge(transactionId);
@@ -700,8 +718,22 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                 </table>
                                             </div> 
                                         </td>
-                                        
-                                        <%}%>
+										<!--START  Extra tds for the sources-->
+                                        <% for (int sCount = 0; sCount < eoSources.size(); sCount++) {%>
+                                         <td>
+										  <div id="spacer<%=countEnt%><%=sCount%>"  style="visiblity:hidden;display:none;">
+										   <table>
+										     <tr>
+											   <td>
+ 										           <img src="images/spacer.gif" width="172px" height="1px" border="0">
+ 											   </td>
+											   </tr>
+											 </table>
+                                            </div>
+                                        </td>
+										<%}%>
+										<!--END Extra tds for the sources-->
+                                         <%}%>
                                     </table>
                                 </div>
                             </td>

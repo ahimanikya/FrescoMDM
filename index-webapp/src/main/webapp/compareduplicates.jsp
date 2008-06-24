@@ -1241,7 +1241,20 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 											</table>
 											</div>
 											</td> <!-- outer TD-->
-
+                                              <!--START  Extra tds for the sources for -->
+                                                 <% for (int sCount = 0; sCount < eoSources.size(); sCount++) {%>
+												 <td>
+												  <div id="spacer<%=countEnt%><%=sCount%>"  style="visiblity:hidden;display:none;">
+												   <table>
+													 <tr>
+													   <td>
+														   <img src="images/spacer.gif" width="172px" height="1px" border="0">
+													   </td>
+													   </tr>
+													 </table>
+													</div>
+												</td>
+												<%}%>
                                         <% if (countEnt + 1 == eoArrayListObjects.length) {%>
                                         <td> <!--Displaying view sources and view history-->
                                             <div id="mergeEuidsDiv"  style="visibility:hidden;display:none;">
@@ -1288,7 +1301,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                             </div>  
                                            <%}%>       
                                         </td>
-                                        <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
+                                        
                                         <%}%>
 
 										 <%}%>
