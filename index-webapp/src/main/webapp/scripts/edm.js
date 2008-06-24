@@ -1538,34 +1538,47 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
   
     var divLayerMain;
     var divLayerHistory;
-    //hideOther(mainDupSources,count,countEnt);
-    
+ 
+	//Hide/show extra source divs 
     for(var i=0;i<count;i++) {
-    divLayerMain = document.getElementById(mainDupSources+countEnt+i);
-    
-    if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
+     var spacerDiv = document.getElementById('spacer'+countEnt+i);    
+  	 if(spacerDiv != null) {
+	    if (spacerDiv.style.display=="block") {
+          spacerDiv.style.visibility="hidden";
+          spacerDiv.style.display="none";
+	   } else {
+         spacerDiv.style.visibility="visible";
+         spacerDiv.style.display="block";
+ 	   }
+	  }
+	}
+
+    for(var i=0;i<count;i++) {
+      divLayerMain = document.getElementById(mainDupSources+countEnt+i);
+      if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
          divLayerMain.style.visibility="visible";
          divLayerMain.style.display="block";
          
-       if( mainDupSources == 'mainDupSources') {
+         if( mainDupSources == 'mainDupSources') {
             divLayerMain = document.getElementById("mainDupSources"+countEnt+i);
             divLayerMain.style.visibility="visible";
             divLayerMain.style.display="block";
-        }
+         }
          
-       //display or hide preview pane
-       document.getElementById("previewPane").style.visibility="hidden";
-       document.getElementById("previewPane").style.display="none";
-       //display/hide other divs
-       for(var c=0;c<totalColumns;c++) {
-	      //HIDE history divs by default
-           for(var j=0;j<historySize;j++) {
-            divLayerHistory = document.getElementById("mainDupHistory"+c+j);
-            if(divLayerHistory != null) {  
-              divLayerHistory.style.visibility="hidden";
-              divLayerHistory.style.display="none";
-			}
-          }
+         //display or hide preview pane
+         document.getElementById("previewPane").style.visibility="hidden";
+         document.getElementById("previewPane").style.display="none";
+         //display/hide other divs
+         for(var c=0;c<totalColumns;c++) {
+	        //HIDE history divs by default
+             for(var j=0;j<historySize;j++) {
+              divLayerHistory = document.getElementById("mainDupHistory"+c+j);
+              if(divLayerHistory != null) {  
+                divLayerHistory.style.visibility="hidden";
+                divLayerHistory.style.display="none";
+			  }
+            }
+		  /*
           if(c  == countEnt) {
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
@@ -1577,6 +1590,7 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "hidden";
            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "none";
          }
+		 */
        }
     } else if (divLayerMain.style.display=="block" || divLayerMain.style.display!="") {
        divLayerMain.style.visibility="hidden";
