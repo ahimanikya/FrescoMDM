@@ -274,6 +274,7 @@ public class TransactionHandler extends ScreenConfiguration {
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"LID", ts.getTransactionObject().getLID());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"LID2", ts.getTransactionObject().getLID2());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"Function", ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, ts.getTransactionObject().getFunction()) );
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"FunctionCode",ts.getTransactionObject().getFunction());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemCode", ValidationService.getInstance().getSystemDescription(ts.getTransactionObject().getSystemCode()));
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemUser", ts.getTransactionObject().getSystemUser());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"TimeStamp", ts.getTransactionObject().getTimeStamp());
