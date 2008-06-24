@@ -8,8 +8,8 @@
 <ProjectName>MIQuickStart</ProjectName>
 <MediaDir></MediaDir>
 <ShouldCreateMediaDir>0</ShouldCreateMediaDir>
-<MaxTimelineWidth>880</MaxTimelineWidth>
-<MaxTimelineHeight>660</MaxTimelineHeight>
+<MaxTimelineWidth>800</MaxTimelineWidth>
+<MaxTimelineHeight>600</MaxTimelineHeight>
 <MaxTimelineFPS>15.00</MaxTimelineFPS>
 <MaxVideoWidth>950</MaxVideoWidth>
 <MaxVideoHeight>713</MaxVideoHeight>
@@ -21,10 +21,10 @@
 <PIPVideoDuration>0.00</PIPVideoDuration>
 <VideoFPS>30.00</VideoFPS>
 <PIPVideoFPS>30.00</PIPVideoFPS>
-<VideoWidth>880</VideoWidth>
-<VideoHeight>678</VideoHeight>
-<ActualVideoWidth>880</ActualVideoWidth>
-<ActualVideoHeight>660</ActualVideoHeight>
+<VideoWidth>800</VideoWidth>
+<VideoHeight>618</VideoHeight>
+<ActualVideoWidth>800</ActualVideoWidth>
+<ActualVideoHeight>600</ActualVideoHeight>
 <PIPVideoWidth>0</PIPVideoWidth>
 <PIPVideoHeight>0</PIPVideoHeight>
 <TOCWidth>-1</TOCWidth>
@@ -50,7 +50,7 @@
 <DisableTOC>0</DisableTOC>
 <AutoPlay>0</AutoPlay>
 <CancelledProduction>0</CancelledProduction>
-<CancelledProdLength>6690000000</CancelledProdLength>
+<CancelledProdLength>6690666667</CancelledProdLength>
 <Hotspot_Array>
 <Hotspot_Array_Object>
                <array>
@@ -207,7 +207,7 @@
 <CaptionHeight>0</CaptionHeight>
 <CloseCaptions_Array>
 </CloseCaptions_Array>
-<NumMetaDataTypes>32</NumMetaDataTypes>
+<NumMetaDataTypes>35</NumMetaDataTypes>
 <MetaData_Array>
 <MetaData_Object>
 <MetaDataType>Author Email</MetaDataType>
@@ -272,7 +272,7 @@
 <ProducedFiles_Array>
 <ProducedFile_Object>
 <FileName>E:\09.26.07Backup\Camtasia\MuralQuickStart\MIQuickStart\MIQuickStart.swf</FileName>
-<FileSize>29557329</FileSize>
+<FileSize>26577927</FileSize>
 <FileType>Video</FileType>
 <WhichFilesOfCurType>0</WhichFilesOfCurType>
 <TotalFilesOfCurType>1</TotalFilesOfCurType>
@@ -345,7 +345,7 @@
 <ProductionFormat>SWF</ProductionFormat>
 <NumVideoSegments>1</NumVideoSegments>
 <NumHTMLFiles>1</NumHTMLFiles>
-<TotalProductionSize>30322033</TotalProductionSize>
+<TotalProductionSize>27342631</TotalProductionSize>
 <m_cf_rtRenderRangeStart>-1</m_cf_rtRenderRangeStart>
 <m_cf_rtRenderRangeStop>-1</m_cf_rtRenderRangeStop>
 <m_cf_strTempDir>C:\DOCUME~1\CAROLT~1\LOCALS~1\Temp\</m_cf_strTempDir>
@@ -367,7 +367,7 @@
 <m_cf_bJavaScriptQuizResults>0</m_cf_bJavaScriptQuizResults>
 <m_cf_bHTMLOutput>1</m_cf_bHTMLOutput>
 <m_cf_SCORMVersion>0</m_cf_SCORMVersion>
-<m_cf_strManifestID>ID-A7105F25-0EAA-4962-B0F6-E9397DE9797B</m_cf_strManifestID>
+<m_cf_strManifestID>ID-456FD482-03BE-4665-AD18-7B10277D5E47</m_cf_strManifestID>
 <m_cf_strManifestTitle></m_cf_strManifestTitle>
 <m_cf_strDuration>0:11:10.18</m_cf_strDuration>
 <m_cf_strSubject></m_cf_strSubject>
