@@ -12,6 +12,7 @@ begin
     values ('$<system>', '$<system-description>', 'A', 10, '[0-9]{10}', 'DDD-DDD-DDDD', 'DDD^DDD^DDDD', TO_DATE(v_date, 'MM/DD/YYYY'), v_user);
 </repeat>
 <trailer>
+    commit;
 end;
 /
 </trailer>
