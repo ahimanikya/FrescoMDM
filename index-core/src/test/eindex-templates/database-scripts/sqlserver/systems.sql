@@ -12,6 +12,6 @@ begin
     
 
 
-commit
+    commit
 end
 go
