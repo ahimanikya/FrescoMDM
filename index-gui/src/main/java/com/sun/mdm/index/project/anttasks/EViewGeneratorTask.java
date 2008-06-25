@@ -125,7 +125,7 @@ public class EViewGeneratorTask extends Task {
         }
         if (mTemplateDir == null) {
             String modulePath = getProject().getProperty("module.install.dir");
-            mTemplateDir = new File(modulePath + "/ext/mdm");
+            mTemplateDir = new File(modulePath + File.separator + "ext" + File.separator + "mdm");
         }
 
         // need to regenerate if source files have been modified
@@ -133,7 +133,7 @@ public class EViewGeneratorTask extends Task {
             try {
                 File objectFile = new File(mSrcdir,
                         EviewProjectProperties.CONFIGURATION_FOLDER
-                                + "/object.xml");
+                                + File.separator + "object.xml");
                 InputSource source = new InputSource(new FileInputStream(
                         objectFile));
                 EIndexObject eo = Utils.parseEIndexObject(source);
@@ -182,13 +182,13 @@ public class EViewGeneratorTask extends Task {
         //generate create.sql and drop.sql
         String tmpl = getCreateDDLWriterTemplate(eo.getDataBase());
         File outPath = new File(mSrcdir,
-                EviewProjectProperties.DATABASE_SCRIPT_FOLDER + "/create.sql");
+                EviewProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + "create.sql");
         DDLWriter tdw = new DDLWriter(outPath.getAbsolutePath(), eo, tmpl);
         tdw.write(true);
 
         tmpl = getDropDDLWriterTemplate(eo.getDataBase());
         outPath = new File(mSrcdir,
-                EviewProjectProperties.DATABASE_SCRIPT_FOLDER + "/drop.sql");
+                EviewProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + "drop.sql");
         tdw = new DDLWriter(outPath.getAbsolutePath(), eo, tmpl);
         tdw.write(false);
         
@@ -373,6 +373,7 @@ public class EViewGeneratorTask extends Task {
         
         Javac javac = (Javac) getProject().createTask("javac");
         Path srcDir = new Path(getProject(), generatedPath + "/client/java");
+        javac.setEncoding("UTF-8");
         javac.setSrcdir(srcDir);
         javac.setDestdir(destDir);
         Reference ref = new Reference(getProject(), "generate.class.path");

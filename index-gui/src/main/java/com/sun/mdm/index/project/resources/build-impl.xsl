@@ -679,7 +679,7 @@ is divided into following sections:
                 </xsl:variable>
                 <xsl:variable name="script" select="projdeps:script" />
                 <ant target="{$subtarget}" inheritall="false"
-                     antfile="${{project.{$subproj}}}/{$script}">
+                     antfile="{$subproj}/{$script}">
                     <property name="dist.ear.dir" location="${{build.dir}}" />
                 </ant>
             </xsl:for-each>

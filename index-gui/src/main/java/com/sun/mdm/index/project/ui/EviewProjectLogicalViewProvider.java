@@ -119,7 +119,12 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
         public eViewLogicalViewRootNode() {
             super( new EviewProjectViews.LogicalViewChildren( helper, evaluator, project ), createLookup( project ) );
             setIconBaseWithExtension("com/sun/mdm/index/project/ui/resources/eviewproProjectIcon.png" ); // NOI18N
-            setName( ProjectUtils.getInformation( project ).getDisplayName() );
+            String name = this.getDisplayName();
+            name = ProjectUtils.getInformation( project ).getDisplayName();
+            this.setDisplayName(name);
+            name = this.getName();
+            name = ProjectUtils.getInformation( project ).getName();
+            setName( name );
             if (hasBrokenLinks(helper, resolver)) {
                 broken = true;
                 brokenLinksAction = new BrokenLinksAction();

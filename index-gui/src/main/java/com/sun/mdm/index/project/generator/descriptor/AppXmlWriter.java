@@ -75,7 +75,7 @@ public class AppXmlWriter {
                 outFile.delete();
             }
             String templateFileName = "com/sun/mdm/index/project/generator/descriptor/application.xml.tmpl";            
-            Utils.writeFile(mPath +File.separator + mFileName, writeProject(templateFileName));           
+            Utils.writeFile(mPath +File.separator + mFileName, writeProject(templateFileName));
             templateFileName = "com/sun/mdm/index/project/generator/descriptor/sun-application.xml.tmpl";           
             Utils.writeFile(mPath +File.separator + mSunFileName, writeProject(templateFileName));
         } catch (TemplateWriterException e) {
@@ -97,7 +97,7 @@ public class AppXmlWriter {
             TemplateWriter tw = new TemplateWriter(templateFileName);
             ArrayList cons = tw.construct();
             ArrayList values = new ArrayList();
-            values.add(mEIndexObject.getName());
+            values.add(mEIndexObject.getObjectName());
             values.add(mEjbName);
             values.add(mWarName);
             strRet = tw.writeConstruct((String) cons.get(0), values);

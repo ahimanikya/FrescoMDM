@@ -76,7 +76,7 @@ class EnterpriseObjectWriter {
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
             = new RandomAccessFile(mPath + "/" + "Enterprise" + mName + ".java", "rw");
-            foutput.write(res.getBytes());
+            foutput.write(res.getBytes("UTF-8"));
             foutput.close();
         } catch (TemplateWriterException e) {
             throw new ParserException(e.getMessage());

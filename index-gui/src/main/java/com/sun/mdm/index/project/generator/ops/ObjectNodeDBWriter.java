@@ -105,7 +105,7 @@ class ObjectNodeDBWriter {
                                        + "/" 
                                        + CodeGeneratorUtil.makeClassName(mName) 
                                        + "DB.java", "rw");
-            foutput.write(res.getBytes());
+            foutput.write(res.getBytes("UTF-8"));
             foutput.close();
             
 
@@ -126,7 +126,7 @@ class ObjectNodeDBWriter {
                                        + "/" 
                                        + CodeGeneratorUtil.makeClassName(mName) 
                                        + "SBRDB.java", "rw");
-            sbrfoutput.write(res.getBytes());
+            sbrfoutput.write(res.getBytes("UTF-8"));
             sbrfoutput.close();
         } catch (TemplateWriterException e) {
             throw new ParserException(e.getMessage());

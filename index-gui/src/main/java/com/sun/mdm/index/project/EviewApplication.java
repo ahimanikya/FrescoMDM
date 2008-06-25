@@ -1062,7 +1062,7 @@ public class EviewApplication extends EviewProject {
             try {
                 FileLock fileLock = file.lock();
                 OutputStream out = file.getOutputStream(fileLock);
-                OutputStreamWriter writer = new OutputStreamWriter(out);
+                OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
                 writer.write(str);
                 writer.close();
                 fileLock.releaseLock();

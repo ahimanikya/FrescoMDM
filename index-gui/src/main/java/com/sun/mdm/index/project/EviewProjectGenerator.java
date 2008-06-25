@@ -112,7 +112,7 @@ public class EviewProjectGenerator {
     public static AntProjectHelper createProject(WizardDescriptor wDesc) throws IOException {
         File dir = (File) wDesc.getProperty(WizardProperties.PROJECT_DIR);
         FileObject fo = FileUtil.createFolder(dir);
-        AntProjectHelper h = setupProject (fo);
+        AntProjectHelper projHelper = setupProject(fo);
         FileObject srcRoot = fo.createFolder(DEFAULT_SRC_FOLDER); // NOI18N
         String serverInstanceID = (String)wDesc.getProperty("serverInstanceID");
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
@@ -131,10 +131,10 @@ public class EviewProjectGenerator {
         }
 
         //set project properties
-        EditableProperties ep = h.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+        EditableProperties ep = projHelper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         ep.setProperty(EviewProjectProperties.AUTO_GENERATE, autoGenerate);
-        ep.setProperty(EviewProjectProperties.EJB_DIR,mainProjectName + "-ejb");
-        ep.setProperty(EviewProjectProperties.WAR_DIR,mainProjectName + "-war");
+        ep.setProperty(EviewProjectProperties.EJB_DIR, mainProjectName + "-ejb");
+        ep.setProperty(EviewProjectProperties.WAR_DIR, mainProjectName + "-war");
         ep.setProperty("eView.generated.dir", 
                        EviewProjectProperties.EVIEW_GENERATED_FOLDER);
         ep.setProperty(EviewProjectProperties.J2EE_SERVER_TYPE, 
@@ -149,10 +149,10 @@ public class EviewProjectGenerator {
         ep.setProperty(EviewProjectProperties.SRC_DIR,"src");
         ep.setProperty(EviewProjectProperties.EDM_VERSION, edmVersion);
         
-        h.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
+        projHelper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
                
         // set private properties
-        ep = h.getProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH);        
+        ep = projHelper.getProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH);        
         ep.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
         
         File deployAntPropsFile = AntDeploymentHelper.getDeploymentPropertiesFile(serverInstanceID);
@@ -160,19 +160,64 @@ public class EviewProjectGenerator {
             ep.setProperty(EviewProjectProperties.DEPLOY_ANT_PROPS_FILE, deployAntPropsFile.getAbsolutePath());
         }
         
-        h.putProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH, ep);
-        EviewApplication p = (EviewApplication) ProjectManager.getDefault().findProject(h.getProjectDirectory ());
+        projHelper.putProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH, ep);
+        
+        EviewApplication eViewApplication = (EviewApplication) ProjectManager.getDefault().findProject(projHelper.getProjectDirectory ());
         // Set Application name and Object 
-        p.setApplicationName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_TARGET_VIEW_NAME).toString());
-        p.setObjectName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_OBJECT_NAME).toString());
+        eViewApplication.setApplicationName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_TARGET_VIEW_NAME).toString());
+        eViewApplication.setObjectName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_OBJECT_NAME).toString());
         try{
-           createConfigFile(srcRoot, wDesc, p);
+           createConfigFile(srcRoot, wDesc, eViewApplication);
         } catch (EviewRepositoryException ex) {
             throw new IOException(ex.toString());         
         }
 
-        ProjectManager.getDefault().saveProject(p);
-        return h;
+        ProjectManager.getDefault().saveProject(eViewApplication);
+        
+        // do it again to overwrite mysterious garbage unicode
+        ep = projHelper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+        //CLIENT_MODULE_URI
+        ep.setProperty(EviewProjectProperties.CLIENT_MODULE_URI, mainProjectName + "-war");
+        //JAR_NAME
+        ep.setProperty(EviewProjectProperties.JAR_NAME, mainProjectName + ".ear");
+
+        //project.??-ejb=??-ejb
+        ep.setProperty("project." + mainProjectName + "-ejb", mainProjectName + "-ejb");
+        //project.??-war
+        ep.setProperty("project." + mainProjectName + "-war", mainProjectName + "-war");
+        //reference.??-ejb.dist-ear=${project.??-ejb}/dist/??-ejb.jar
+        ep.setProperty("reference." + mainProjectName + "-ejb.dist-ear", "${project." + mainProjectName + "-ejb}" + "/dist/" + mainProjectName + "-ejb.jar");
+        //reference.??-war.dist-ear=${project.??-war}/dist/??-war.war
+        ep.setProperty("reference." + mainProjectName + "-war.dist-ear", "${project." + mainProjectName + "-war}" + "/dist/" + mainProjectName + "-war.war");
+        /*
+        //JAR_CONTENT_ADDITIONAL
+        //jar.content.additional=\
+            //${reference.??-ejb.dist-ear};\
+            //${reference.??-war.dist-ear}
+        ep.setProperty(EviewProjectProperties.JAR_CONTENT_ADDITIONAL, mainProjectName + "\\" + "\n" + "${reference." + mainProjectName + "-ejb.dist-ear};" + "\\" + "\n" +
+                "${reference." + mainProjectName + "-war.dist-ear}");
+         */ 
+
+        projHelper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
+        
+        //JAR_NAME of war
+        String ppath = mainProjectName + "-war" + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
+        ep = projHelper.getProperties(ppath);
+        ep.setProperty("war.ear.name", mainProjectName + "-war.war");
+        ep.setProperty("war.name", mainProjectName + "-war.war");
+        //project.ä¸?æ??-ejb=../ä¸?æ??-ejb
+        ep.setProperty("project." + mainProjectName + "-ejb", ".." + File.separator + mainProjectName + "-ejb");
+        //reference.ä¸?æ??-ejb.dist=${project.ä¸?æ??-ejb}/dist/ä¸?æ??-ejb.jar
+        ep.setProperty("reference." + mainProjectName + "-ejb.dist", "${project." + mainProjectName + "-ejb}" + File.separator + "dist" + File.separator + mainProjectName + "-ejb.jar");
+        
+        projHelper.putProperties(ppath, ep);
+        //JAR_NAME of ejb
+        ppath = mainProjectName + "-ejb" + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
+        ep = projHelper.getProperties(ppath);
+        ep.setProperty(EviewProjectProperties.JAR_NAME, mainProjectName + "-ejb.jar");
+        projHelper.putProperties(ppath, ep);
+        
+        return projHelper;
     }
 
     private static void createConfigFile(FileObject srcRoot, WizardDescriptor wDesc, EviewApplication eviewApplication)
@@ -295,7 +340,7 @@ public class EviewProjectGenerator {
         EviewRepository repository  = EviewRepository.getEviewRepository(); 
         // Unzip -ejb and -war projects from template
         FileObject template = repository.getInstalledFile(EviewProjectProperties.TEMPLATE_ZIP);
-        unZipFile(template.getInputStream(), projectDir);
+        unZipFile(template, projectDir);
         // Rename template directories here
         Enumeration e = projectDir.getFolders(true);
         while (e.hasMoreElements()) {
@@ -424,9 +469,9 @@ public class EviewProjectGenerator {
     }
     
     private static AntProjectHelper setupProject (FileObject dirFO) throws IOException {
-        AntProjectHelper h = ProjectGenerator.createProject(dirFO, EviewProjectType.TYPE);
+        AntProjectHelper projHelper = ProjectGenerator.createProject(dirFO, EviewProjectType.TYPE);
         /*
-        Element data = h.getPrimaryConfigurationData(true);
+        Element data = projHelper.getPrimaryConfigurationData(true);
         Document doc = data.getOwnerDocument();
         Element nameEl = doc.createElementNS(EviewProjectType.PROJECT_CONFIGURATION_NAMESPACE, "name"); // NOI18N
         nameEl.appendChild(doc.createTextNode(name));
@@ -434,12 +479,12 @@ public class EviewProjectGenerator {
         Element minant = doc.createElementNS(EviewProjectType.PROJECT_CONFIGURATION_NAMESPACE, "minimum-ant-version"); // NOI18N
         minant.appendChild(doc.createTextNode("1.6")); // NOI18N
         data.appendChild(minant);
-        h.putPrimaryConfigurationData(data, true);
+        projHelper.putPrimaryConfigurationData(data, true);
          */
         Project p = ProjectManager.getDefault().findProject(dirFO);
         ProjectManager.getDefault().saveProject(p);  
                
-        return h;
+        return projHelper;
     }
 
     private static FileObject getTemplates(FileObject parent, String folderName, String templateLocation) throws IOException {
@@ -455,7 +500,9 @@ public class EviewProjectGenerator {
                     FileObject[] files2 = file.getChildren();
                     for (int j = 0; j < files2.length; j++) {
                         FileObject file2 = files2[j];
-                        FileUtil.copyFile(file2, folder2, file2.getName());
+                        if (file2.isData() && !file2.getExt().equals("xsd")) {
+                            FileUtil.copyFile(file2, folder2, file2.getName());
+                        }
                     }
                 } else {
                     if (file.isData() && !file.getExt().equals("xsd")) {
@@ -508,18 +555,6 @@ public class EviewProjectGenerator {
         }
         return folder;
     }
-
-    /*
-     */
-    private static FileObject getInstalledFile(FileObject folder, String fname) throws IOException {
-        FileObject installedFile = null;
-        File f = InstalledFileLocator.getDefault().locate(fname, "", false);
-        if (f != null) {
-            installedFile = FileUtil.toFileObject(f);
-            FileUtil.copyFile(installedFile, folder, installedFile.getName());
-        }
-        return installedFile;
-    }
     
     /*
      * Not used
@@ -536,7 +571,7 @@ public class EviewProjectGenerator {
             }
             FileLock fileLock = file.lock();
             OutputStream out = file.getOutputStream(fileLock);
-            OutputStreamWriter writer = new OutputStreamWriter(out);
+            OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
             writer.write(data);
             writer.close();
             fileLock.releaseLock();
@@ -548,12 +583,14 @@ public class EviewProjectGenerator {
     }
     
     
-    private static void unZipFile(InputStream source, FileObject projectRoot) throws IOException {
+    private static void unZipFile(FileObject templateFO, FileObject projectRoot) throws IOException {
+        InputStream templateIS = null;
         try {
-            ZipInputStream str = new ZipInputStream(source);
+            templateIS = templateFO.getInputStream();
+            ZipInputStream zipIS = new ZipInputStream(templateIS);
             ZipEntry entry;
             String entryName = null;
-            while ((entry = str.getNextEntry()) != null ) {
+            while ((entry = zipIS.getNextEntry()) != null ) {
                 entryName = entry.getName();
                 if (needCopy(entryName)!=true){
                     continue ;
@@ -566,12 +603,12 @@ public class EviewProjectGenerator {
                     FileLock lock = fo.lock();
                     try {
                         OutputStream out = fo.getOutputStream(lock);
-                        //if (needTranslation(entryName)) {
-                            translateProjectName(str, out, projectRoot.getName(), xlateToken_EEP);
-                        //} 
+                        if (needTranslation(entryName)) {
+                            translateProjectName(zipIS, out, projectRoot.getName(), xlateToken_EEP);
+                        } 
                         
                         try {
-                            FileUtil.copy(str, out);
+                            FileUtil.copy(zipIS, out);
                         } finally {
                             out.close();
                         }
@@ -581,7 +618,9 @@ public class EviewProjectGenerator {
                 }
             }
         } finally {
-            source.close();
+            if (templateIS != null) {
+                templateIS.close();
+            }
         }
     }   
 
@@ -604,17 +643,19 @@ public class EviewProjectGenerator {
         return true;
     }
 
-    static void translateProjectName(InputStream str, OutputStream out, String name, String token) throws IOException {
-        ByteArrayOutputStream bo = new ByteArrayOutputStream();
-        FileUtil.copy(str, bo);
-        String strBo = bo.toString();
-        if (strBo.indexOf("com.sun.mde.index.project") >= 0) {
-            //strBo.replaceAll("com.sun.projects.eviewpro", xlateTo_ProjectType);
+    static void translateProjectName(InputStream zipIS, OutputStream out, String projName, String token) throws IOException {
+        ByteArrayOutputStream baOS = new ByteArrayOutputStream();
+        FileUtil.copy(zipIS, baOS);
+        String strBAOS = baOS.toString();
+        //if (strBAOS.indexOf("com.sun.mde.index.project") >= 0) {
+            //strBAOS.replaceAll("com.sun.mde.index.project", xlateTo_ProjectType);
+        //}
+        //strBAOS.replaceAll(xlateFrom_EarProjectType, xlateTo_ProjectType);
+        //strBAOS.replaceAll(xlateFrom_ProjectTypeNS, xlateTo_ProjectTypeNS);
+        if (strBAOS.indexOf(token) >= 0) {
+            byte[] bytes = strBAOS.replaceAll(token, projName).getBytes("UTF-8");
+            ByteArrayInputStream baIS = new ByteArrayInputStream(bytes);
+            FileUtil.copy(baIS, out);
         }
-        //strBo.replaceAll(xlateFrom_EarProjectType, xlateTo_ProjectType);
-        //strBo.replaceAll(xlateFrom_ProjectTypeNS, xlateTo_ProjectTypeNS);
-
-        ByteArrayInputStream bi = new ByteArrayInputStream(strBo.replaceAll(token, name).getBytes());
-        FileUtil.copy(bi, out);
     }
 }

@@ -72,6 +72,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.apache.tools.ant.module.api.support.ActionUtils;
+import org.netbeans.spi.project.MoveOperationImplementation;
 
 /**
  * Represents one ejb module project
@@ -261,6 +262,7 @@ public class EviewProject implements Project, AntProjectListener {
             new AntArtifactProviderImpl(),
             new ProjectXmlSavedHookImpl(),
             new ProjectOpenedHookImpl(),
+            new EviewProjectOperations(this),
             fileBuilt,
             new RecommendedTemplatesImpl(),
             refHelper,
@@ -313,10 +315,34 @@ public class EviewProject implements Project, AntProjectListener {
                 if (nl.getLength() == 1) {
                     nl = nl.item(0).getChildNodes();
                     if (nl.getLength() == 1 && nl.item(0).getNodeType() == Node.TEXT_NODE) {
+                        Object name = nl.item(0).getNodeValue();
                         return ((Text) nl.item(0)).getNodeValue();
                     }
                 }
                 return "???"; // NOI18N
+            }
+        });
+    }
+    public void setName(final String name) {
+        ProjectManager.mutex().writeAccess(new Mutex.Action() {
+            public Object run() {
+                Element data = helper.getPrimaryConfigurationData(true);
+                // XXX replace by XMLUtil when that has findElement, findText, etc.
+                NodeList nl = data.getElementsByTagNameNS(EviewProjectType.PROJECT_CONFIGURATION_NAMESPACE, "name"); // NOI18N
+                Element nameEl;
+                if (nl.getLength() == 1) {
+                    nameEl = (Element) nl.item(0);
+                    NodeList deadKids = nameEl.getChildNodes();
+                    while (deadKids.getLength() > 0) {
+                        nameEl.removeChild(deadKids.item(0));
+                    }
+                } else {
+                    nameEl = data.getOwnerDocument().createElementNS(EviewProjectType.PROJECT_CONFIGURATION_NAMESPACE, "name"); // NOI18N
+                    data.insertBefore(nameEl, /* OK if null */data.getChildNodes().item(0));
+                }
+                nameEl.appendChild(data.getOwnerDocument().createTextNode(name));
+                helper.putPrimaryConfigurationData(data, true);
+                return null;
             }
         });
     }

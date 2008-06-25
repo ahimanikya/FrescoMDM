@@ -24,6 +24,7 @@ package com.sun.mdm.index.project.generator.validation;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.index.parser.FieldDef;
@@ -153,95 +154,100 @@ public class ObjectDescriptorWriter {
         ArrayList flds;
         StringBuffer sb = new StringBuffer();
 
-        PrintStream outStream = null;
+        //PrintStream outStream = null;
         try {
-            outStream = new PrintStream(new FileOutputStream(mOutPath), true);
+            //outStream = new PrintStream(new FileOutputStream(mOutPath), true);
+            RandomAccessFile outStream = new RandomAccessFile(mOutPath, "rw");
+
+            ArrayList nodeList = mEO.getNodes();
+            outStream.write(CONTENTHEADER.getBytes("UTF-8"));
+            for (int i = 0; i < nodeList.size(); i++) {
+                nd = (NodeDef) nodeList.get(i);
+                objectName = nd.getTag();
+                String str = getObjectHeader(objectName);
+                outStream.write(str.getBytes("UTF-8"));
+                //flds = nd.getFields();
+                flds = nd.createFieldDefs();
+                for (int j = 0; j < flds.size(); j++) {
+                    FieldDef fldDef = (FieldDef) flds.get(j);
+                    String fldName = fldDef.getFieldName();
+                    sb.append(TAB).append(TAB).append(TAB).append(FIELDHEADER);
+                    sb.append(fldName);
+                    sb.append("\", FieldType.").append(convertType(fldDef.getFieldType())).append(", ");
+                    sb.append(LINEFEED).append(TAB).append(TAB).append(TAB).append(TAB);
+                    sb.append(getFieldAttributes(fldDef)).append("));");
+                    str = sb.toString();
+                    outStream.write(str.getBytes("UTF-8"));
+                    sb.setLength(0);
+                    int len = fldDef.getFieldSize();
+                    /**
+                     * added support for maximum value/length
+                     */
+                    String sFieldType = fldDef.getFieldType();
+                    String sMinValue = fldDef.getMinimumValue();
+                    String sMaxValue = fldDef.getMaximumValue();
+                    if (sFieldType.equals("string")) {
+                        if (sMaxValue == null) {
+                            sMaxValue = String.valueOf(len);
+                        }
+                    }
+                    if (sFieldType.equals("date")) {
+                        if (sMaxValue != null) {
+                            sMaxValue = "\"" + sMaxValue + "\"";
+                        }
+                        if (sMinValue != null) {
+                            sMinValue = "\"" + sMinValue + "\"";
+                        }
+                    }
+                    if (sMaxValue != null || sMinValue != null) {
+                        sb.append(TAB).append(TAB).append(TAB).append(VALIDATORHEADER);
+                        sb.append(fldName).append("\", ");
+                        sb.append(getValueValidator(fldDef.getFieldType(),
+                                sMaxValue, sMinValue));
+                    }
+
+                    if (sFieldType.equals("string")) {
+                        String sModule = fldDef.getCodeModule();
+                        if (sModule != null && sModule.trim().length() != 0) {
+                            sb.append(LINEFEED);
+                            sb.append(TAB).append(TAB).append(TAB).append(REFERENCEHEADER);
+                            sb.append(fldName).append("\", new ReferenceDescriptor(\"");
+                            sb.append(sModule).append("\"));");
+                        }
+                        String sPattern = fldDef.getPattern();
+                        if (sPattern != null && sPattern.trim().length() != 0) {
+                            sb.append(LINEFEED);
+                            sb.append(TAB).append(TAB).append(TAB).append(PATTERNHEADER);
+                            sb.append(fldName).append("\", new PatternValidator(\"" + sPattern + "\"));");
+                        }
+                        String sUserCode = fldDef.getUserCode();
+                        if (sUserCode != null && sUserCode.trim().length() != 0) {
+                            sb.append(LINEFEED);
+                            sb.append(TAB).append(TAB).append(TAB).append(USER_REFERENCE_HEADER);
+                            sb.append(fldName).append("\", new UserReferenceDescriptor(\"");
+                            sb.append(sUserCode).append("\"));");
+                        }
+                        String sConstraintByField = fldDef.getConstraintBy();
+                        if (sConstraintByField != null && sConstraintByField.trim().length() != 0) {
+                            sb.append(LINEFEED);
+                            sb.append(TAB).append(TAB).append(TAB).append(USER_CODE_HEADER);
+                            sb.append(fldName).append("\", new UserCodeValidator(\"");
+                            sb.append(sConstraintByField).append("\"));");
+                        }
+                    }
+                    str = sb.toString();
+                    outStream.write(str.getBytes("UTF-8"));
+
+                    sb.setLength(0);
+                }
+                outStream.write(OBJECTTRAILER.getBytes("UTF-8"));
+            }
+            outStream.write(CONTENTTRAILER.getBytes("UTF-8"));
+            //outStream.flush();
+            outStream.close();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
-        ArrayList nodeList = mEO.getNodes();
-        outStream.println(CONTENTHEADER);
-        for (int i = 0; i < nodeList.size(); i++) {
-            nd = (NodeDef) nodeList.get(i);
-            objectName = nd.getTag();
-            outStream.println(getObjectHeader(objectName));
-            //flds = nd.getFields();
-            flds = nd.createFieldDefs();
-            for (int j = 0; j < flds.size(); j++) {
-                FieldDef fldDef = (FieldDef) flds.get(j);
-                String fldName = fldDef.getFieldName();
-                sb.append(TAB).append(TAB).append(TAB).append(FIELDHEADER);
-                sb.append(fldName);
-                sb.append("\", FieldType.").append(convertType(fldDef.getFieldType())).append(", ");
-                sb.append(LINEFEED).append(TAB).append(TAB).append(TAB).append(TAB);
-                sb.append(getFieldAttributes(fldDef)).append("));");
-                outStream.println(sb.toString());
-                sb.setLength(0);
-                int len = fldDef.getFieldSize();
-                /**
-                 * added support for maximum value/length
-                 */
-                String sFieldType = fldDef.getFieldType();
-                String sMinValue = fldDef.getMinimumValue();
-                String sMaxValue = fldDef.getMaximumValue();
-                if (sFieldType.equals("string")) {
-                    if (sMaxValue == null) {
-                        sMaxValue = String.valueOf(len);
-                    }
-                }
-                if (sFieldType.equals("date")) {
-                    if (sMaxValue != null) {
-                        sMaxValue = "\"" + sMaxValue + "\"";
-                    }
-                    if (sMinValue != null) {
-                        sMinValue = "\"" + sMinValue + "\"";
-                    }
-                }
-                if (sMaxValue != null || sMinValue != null) {
-                    sb.append(TAB).append(TAB).append(TAB).append(VALIDATORHEADER);
-                    sb.append(fldName).append("\", ");
-                    sb.append(getValueValidator(fldDef.getFieldType(),
-                            sMaxValue, sMinValue));
-                }
-
-                if (sFieldType.equals("string")) {
-                    String sModule = fldDef.getCodeModule();
-                    if (sModule != null && sModule.trim().length() != 0) {
-                        sb.append(LINEFEED);
-                        sb.append(TAB).append(TAB).append(TAB).append(REFERENCEHEADER);
-                        sb.append(fldName).append("\", new ReferenceDescriptor(\"");
-                        sb.append(sModule).append("\"));");
-                    }
-                    String sPattern = fldDef.getPattern();
-                    if (sPattern != null && sPattern.trim().length() != 0) {
-                        sb.append(LINEFEED);
-                        sb.append(TAB).append(TAB).append(TAB).append(PATTERNHEADER);
-                        sb.append(fldName).append("\", new PatternValidator(\"" + sPattern + "\"));");
-                    }
-                    String sUserCode = fldDef.getUserCode();
-                    if (sUserCode != null && sUserCode.trim().length() != 0) {
-                        sb.append(LINEFEED);
-                        sb.append(TAB).append(TAB).append(TAB).append(USER_REFERENCE_HEADER);
-                        sb.append(fldName).append("\", new UserReferenceDescriptor(\"");
-                        sb.append(sUserCode).append("\"));");
-                    }
-                    String sConstraintByField = fldDef.getConstraintBy();
-                    if (sConstraintByField != null && sConstraintByField.trim().length() != 0) {
-                        sb.append(LINEFEED);
-                        sb.append(TAB).append(TAB).append(TAB).append(USER_CODE_HEADER);
-                        sb.append(fldName).append("\", new UserCodeValidator(\"");
-                        sb.append(sConstraintByField).append("\"));");
-                    }
-                }
-                outStream.println(sb.toString());
-                sb.setLength(0);
-            }
-            outStream.println(OBJECTTRAILER);
-        }
-        outStream.println(CONTENTTRAILER);
-        outStream.flush();
-        outStream.close();
     }
 
 

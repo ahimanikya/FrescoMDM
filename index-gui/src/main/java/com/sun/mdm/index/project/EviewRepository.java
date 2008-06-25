@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 import org.openide.modules.InstalledFileLocator;
 import org.openide.filesystems.FileObject;
@@ -83,7 +84,7 @@ import org.openide.loaders.DataObject;
             }
             FileLock fileLock = file.lock();
             OutputStream out = file.getOutputStream(fileLock);
-            OutputStreamWriter writer = new OutputStreamWriter(out);
+            OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
             writer.write(data);
             writer.close();
             fileLock.releaseLock();
@@ -224,7 +225,7 @@ private methods
         }
       
         if (locale != null) {
-            name = category + "/" + locale;
+            name = category + File.separator + locale;
         }
         File dir = InstalledFileLocator.getDefault().locate(name, "", false);
         FileObject fileObject = FileUtil.toFileObject(dir);
@@ -241,7 +242,7 @@ private methods
         String name = category;
       
         if (locale != null) {
-            name = category + "/" + locale;
+            name = category + File.separator + locale;
         }
         File dir = new File(name);
         FileObject fileObject = FileUtil.toFileObject(dir);

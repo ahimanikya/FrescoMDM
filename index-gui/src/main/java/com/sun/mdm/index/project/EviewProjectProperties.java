@@ -22,21 +22,23 @@
  */
 package com.sun.mdm.index.project;
 
+import java.io.File;
+
 /** Defines constants for properties used in Master Index. 
  */
 public class EviewProjectProperties {
-    public static final String MODULES_EXT_MDM_LOCATION = "modules/ext/mdm";
-    public static final String EVIEW_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/templates";
-    public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";
-    public static final String MATCHER_PLUGIN_LOCATION = MATCH_TEMPLATE_LOCATION + "/lib";
-    public static final String SECURITY_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/security";
-    public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION+ "/standardizer/deployment";
+    public static final String MODULES_EXT_MDM_LOCATION = "modules" + File.separator + "ext" + File.separator + "mdm";
+    public static final String EVIEW_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ File.separator + "repository" + File.separator + "templates";
+    public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + File.separator + "match";
+    public static final String MATCHER_PLUGIN_LOCATION = MATCH_TEMPLATE_LOCATION + File.separator + "lib";
+    public static final String SECURITY_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + File.separator + "security";
+    public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION+ File.separator + "standardizer" + File.separator + "deployment";
     public static final String PLUGIN = "plugin";
-    public static final String STANDARDIZATION_PLUGIN_LOCATION = STANDARDIZATION_DEPLOYMENT_LOCATION + "/plugin";
-    public static final String BUSINESSNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/BusinessName";
-    public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/PersonName";
-    public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/Address";
-    public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/schema";
+    public static final String STANDARDIZATION_PLUGIN_LOCATION = STANDARDIZATION_DEPLOYMENT_LOCATION + File.separator + "plugin";
+    public static final String BUSINESSNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + File.separator + "stand" + File.separator + "BusinessName";
+    public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + File.separator + "stand" + File.separator + "PersonName";
+    public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + File.separator + "stand" + File.separator + "Address";
+    public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ File.separator + "repository" + File.separator + "schema";
     /** Auto Generate */
     public static final String AUTO_GENERATE = "AutoGenerate";
 
@@ -56,7 +58,7 @@ public class EviewProjectProperties {
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
     // Filter Folder
     public static final String FILTER_FOLDER = "Filter"; //NOI18N
-    public static final String FILTER_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/filter";
+    public static final String FILTER_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + File.separator + "filter";
     public static final String FILTER_XSD = "filter.xsd";
     // Master Index Custom Plug-ins Folder
     public static final String CUSTOM_PLUG_INS_FOLDER = "CustomPlug-ins"; //NOI18N
@@ -80,7 +82,7 @@ public class EviewProjectProperties {
     public static final String VALIDATION_XSD = "validation.xsd";
     public static final String UPDATE_XML = "update.xml";
     public static final String UPDATE_XSD = "update.xsd";
-    public static final String MIDM_SECURITY_XML = SECURITY_TEMPLATE_LOCATION + "/midm-security.xml";
+    public static final String MIDM_SECURITY_XML = SECURITY_TEMPLATE_LOCATION + File.separator + "midm-security.xml";
     public static final String MIDM_SECURITY_XSD = "midm-security.xsd";
     
     public static final String MATCH_CONFIG_FILE = "matchConfigFile.cfg";
@@ -90,10 +92,10 @@ public class EviewProjectProperties {
     public static final String SYSTEMS_SQL = "systems.sql";
     public static final String CODELIST_SQL = "codelist.sql";
     
-    public static final String MATCH_ZIP = EVIEW_TEMPLATE_LOCATION + "/match.zip";
-    public static final String STAND_ZIP = EVIEW_TEMPLATE_LOCATION + "/stand.zip";
-    public static final String TEMPLATE_ZIP = EVIEW_TEMPLATE_LOCATION + "/EviewApplicationTemplateProject.zip";
-    public static final String STAND_REPOSITORY_ZIP = MODULES_EXT_MDM_LOCATION+"/standardizer/repositoryImage.zip";
+    public static final String MATCH_ZIP = EVIEW_TEMPLATE_LOCATION + File.separator + "match.zip";
+    public static final String STAND_ZIP = EVIEW_TEMPLATE_LOCATION + File.separator + "stand.zip";
+    public static final String TEMPLATE_ZIP = EVIEW_TEMPLATE_LOCATION + File.separator + "EviewApplicationTemplateProject.zip";
+    public static final String STAND_REPOSITORY_ZIP = MODULES_EXT_MDM_LOCATION + File.separator + "standardizer" + File.separator + "repositoryImage.zip";
     
     public static final String EVIEW_GENERATED_FOLDER = "files-generated";
     public static final String REPORT_CLIENT_FOLDER = "report-client";
@@ -157,7 +159,7 @@ public class EviewProjectProperties {
     public static final String TAG_WEB_MODULE_LIBRARIES = "web-module-libraries"; // NOI18N
     public static final String TAG_WEB_MODULE__ADDITIONAL_LIBRARIES = "web-module-additional-libraries"; //NOI18N
     public static final String DEPLOY_ANT_PROPS_FILE = "deploy.ant.properties.file"; // NOI18N    
-    public static final String ANT_DEPLOY_BUILD_SCRIPT = "nbproject/ant-deploy.xml"; // NOI18N
+    public static final String ANT_DEPLOY_BUILD_SCRIPT = "nbproject" + File.separator + "ant-deploy.xml"; // NOI18N
     public static final String J2EE_PLATFORM_WSGEN_CLASSPATH="j2ee.platform.wsgen.classpath"; //NOI18N
     public static final String J2EE_PLATFORM_WSIMPORT_CLASSPATH="j2ee.platform.wsimport.classpath"; //NOI18N
     public static final String J2EE_PLATFORM_JSR109_SUPPORT = "j2ee.platform.is.jsr109"; //NOI18N
