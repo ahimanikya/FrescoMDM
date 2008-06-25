@@ -344,7 +344,7 @@ public class Utils {
         try {
             RandomAccessFile foutput = new RandomAccessFile(path, "rw");
             foutput.setLength(0);
-            foutput.write(data.getBytes());
+            foutput.write(data.getBytes("UTF-8"));
             foutput.close();
         } catch (IOException e) {
             throw new ParserException(mLocalizer.t("PAR509: Failed to write " +

@@ -36,7 +36,7 @@ import org.w3c.dom.Node;
  */
 public class EIndexObject {
     private final String mTagConfiguration = "Configuration";
-    private final String mTagName = "name";
+    private final String mTagName = "name"; // Application Name
     private final String mTagDatabase = "database";
     private final String mTagAppServer = "appserver";
     private final String mTagDateFormat = "dateformat";
@@ -49,7 +49,8 @@ public class EIndexObject {
     private String strAppServer;
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
-    private String strName;
+    private String strApplicationName;
+    private String strObjectName;
     private boolean mModified = false;
 
 
@@ -121,13 +122,27 @@ public class EIndexObject {
         return strDatabase;
     }
 
+    /** Application Name
+     * It can be different from Primary Object Name
+     * @return String ret String
+     */
+    public String getApplicationName() {
+        return strApplicationName;
+    }
+    
+    /**
+     * @return String ret String
+     */
+    public String getObjectName() {
+        return strObjectName;
+    }
+
     /**
      * @return String ret String
      */
     public String getName() {
-        return strName;
+        return strObjectName;
     }
-
 
     /**
      * @param name node name
@@ -202,7 +217,7 @@ public class EIndexObject {
                 for (int i = 0; i < nl.getLength(); i++) {
                     if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
-                            strName = Utils.getStrElementValue(nl.item(i));
+                            strApplicationName = Utils.getStrElementValue(nl.item(i));
                         }
                         if (mTagDatabase.equals(((Element) nl.item(i)).getTagName())) {
                             strDatabase = Utils.getStrElementValue(nl.item(i));
@@ -237,6 +252,7 @@ public class EIndexObject {
                             RelationDef rt = new RelationDef();
                             rt.parse(nl.item(i));
                             mRelationships.add(rt);
+                            strObjectName = rt.getName();
                         }
                     }
                 }
@@ -264,7 +280,7 @@ public class EIndexObject {
      */
     public String toString() {
         String ret = "";
-        ret += "(" + mTagConfiguration + ")" + mTagName + ": " + strName + ": \n";
+        ret += "(" + mTagConfiguration + ")" + mTagName + ": " + strApplicationName + ": \n";
         ret += "(" 
                + mTagConfiguration 
                + ")" 

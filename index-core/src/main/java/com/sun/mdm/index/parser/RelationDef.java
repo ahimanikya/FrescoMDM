@@ -36,7 +36,7 @@ public class RelationDef {
     private final String mTagRelationships = "relationships";
     private final String mTagName = "name";
     private final String mTagChildren = "children";
-    private final String mTagRelations = "relations";
+    private final String mTagRelations = "relationships";
     private ArrayList mChildren = null;
     private ArrayList mRelations = null;
 

@@ -203,7 +203,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             if (config.getObjectFields() != null) {
                 EPathArrayList fields = config.getObjectFields();
                 EPathArrayList modFields = new EPathArrayList();
-                String objName = ObjectFactory.getObjectDef().getName();
+                String objName = ObjectFactory.getObjectDef().getObjectName();
                 modFields.add("Enterprise.SystemSBR." + objName + "." + objName + "Id");
                 modFields.add("Enterprise.SystemSBR." + objName + ".EUID");
                 EPath[] epaths = fields.toArray();
@@ -263,7 +263,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             if (config.getObjectFields() != null) {
                 EPathArrayList fields = config.getObjectFields();
                 EPathArrayList modFields = new EPathArrayList();
-                String objName = ObjectFactory.getObjectDef().getName();
+                String objName = ObjectFactory.getObjectDef().getObjectName();
                 modFields.add("Enterprise.SystemSBR." + objName + "." + objName + "Id");
                 modFields.add("Enterprise.SystemSBR." + objName + ".EUID");
                 EPath[] epaths = fields.toArray();

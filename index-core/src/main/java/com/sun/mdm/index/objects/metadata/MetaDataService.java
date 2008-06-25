@@ -55,9 +55,9 @@ public class MetaDataService {
     
     public static void registerObjectDefinition(InputStream objectDef) throws ParserException {
         EIndexObject eIndexObject = Utils.parseEIndexObject(new InputSource(objectDef));
-        EINDEX_OBJECTS.put(eIndexObject.getName(), eIndexObject);
+        EINDEX_OBJECTS.put(eIndexObject.getObjectName(), eIndexObject);
         if (mLogger.isLoggable(Level.FINE)) {
-            mLogger.fine("Registered object: " + eIndexObject.getName());
+            mLogger.fine("Registered object: " + eIndexObject.getObjectName());
         }
         ObjectFactory.setObject(eIndexObject);
 
