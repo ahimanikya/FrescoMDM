@@ -7,11 +7,10 @@
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Working With the Master Index Data Manager provides instructions and background information for using the Master Index Data Manager (MIDM) to monitor and maintain data in your master index applications. It includes instructions for searching for object profiles, viewing and editing object profiles, handling potential duplicate profiles, viewing and reversing automatic matches, merging and unmerging profiles, and running reports.">
-   <meta name="date" content="2008-05-01">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -21,8 +20,7 @@
 
    <a name="top"></a>
    <h1>Working With the Master Index Data Manager</h1>
-   <h1>DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"><a href="admn_mi-edm-view_c.html">Previous</a></span>
@@ -31,6 +29,7 @@
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="wedmevsm.html">Working With the Master Index Data Manager</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p>
 <p class="toc level2"><a href="admn_mi-aboutsmi_c.html">About Master Index Studio</a></p>
 <p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-about_c">About Master Index Applications</a></p>
@@ -48,22 +47,22 @@
 <p class="toc level4"><a href="admn_mi-profiles_c.html#ahsbn">Auxiliary ID</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-using_c.html">Working with the Master Index Data Manager</a></p>
 <p class="toc level3"><a href="admn_mi-edm-using_c.html#ggtcp">Requirements</a></p>
-<p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p>
-<p class="toc level5"><a href="admn_mi-edm-using_c.html#gentextid-383">To Log in to the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging in to the Master Index Data Manager</a></p>
+<p class="toc level5"><a href="admn_mi-edm-using_c.html#gentextid-390">To Log in to the MIDM</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p>
 <p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-navigation_c">Master Index Data Manager Navigation Tips</a></p>
 <p class="toc level4"><a href="admn_mi-edm-using_c.html#ahobn">Navigating the MIDM Functions</a></p>
 <p class="toc level4"><a href="admn_mi-edm-using_c.html#ahobs">Navigating the MIDM Detail Pages</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Out of the MIDM</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-dashboard_p.html">Using the MIDM Dashboard</a></p>
 <p class="toc level3"><a href="admn_mi-dashboard_p.html#admn_mi-edm-summary_t">Viewing Summary Information From the Dashboard</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-495">To View Summary Information</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-reports_t">Accessing Reports From the Dashboard</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-516">To Access Reports From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-502">To View Summary Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-reports_t">Accessing Reports and Audit Logs From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-523">To Access Reports and Audit Logs From the Dashboard</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-quick_t">Performing a Quick Search (EUID Lookup)</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-543">To Perform Quick Search</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-550">To Perform Quick Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-search-dash_t">Performing an EUID Comparison Lookup</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-565">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-572">To Perform an EUID Comparison Lookup</a></p>
 <p class="toc level2 tocsp"><a href="admin_mi-edm-search_c.html">Learning About Object Queries on the MIDM</a></p>
 <p class="toc level3"><a href="admin_mi-edm-search_c.html#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p>
 <p class="toc level4"><a href="admin_mi-edm-search_c.html#ahobz">Simple Lookup</a></p>
@@ -75,17 +74,18 @@
 <p class="toc level3"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-euid_t">Performing an EUID Lookup</a></p>
-<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-685">To Perform an EUID Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-692">To Perform an EUID Lookup</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-lid_t">Performing a Local ID Lookup</a></p>
-<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-709">To Perform a Local ID Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-716">To Perform a Local ID Lookup</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-alpha_t">Performing an Alphanumeric Search</a></p>
 <p class="toc level5"><a href="admn_mi-edm-search_p.html#gfyku">To Perform an Alphanumeric Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-phon_t">Performing a Phonetic Search</a></p>
 <p class="toc level5"><a href="admn_mi-edm-search_p.html#gfyke">To Perform a Phonetic Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-comp_t">Performing an EUID Comparison Lookup </a></p>
-<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-789">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-796">To Perform an EUID Comparison Lookup</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-rslt_t">Working with Search Results on the MIDM</a></p>
 <p class="toc level4"><a href="admn_mi-edm-search_p.html#ahodb">Viewing the Results of a Search</a></p>
+<p class="toc level4"><a href="admn_mi-edm-search_p.html#admn_pmi-edm-srch-rslt-slct_t">Selecting a Profile from the Results List</a></p>
 <p class="toc level4"><a href="admn_mi-edm-search_p.html#ahodf">Sorting the Results of Your Search</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-view_c.html">Learning About Object Profile Views on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-prfl_c">Object Profile Details on the MIDM</a></p>
@@ -97,23 +97,23 @@
 <div class="onpage">
 <p class="toc level2 tocsp"><a href="">Viewing Object Information on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-view-prof_t">Viewing Object Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="#gentextid-963">To View an Object Profile</a></p>
+<p class="toc level5"><a href="#gentextid-991">To View an Object Profile</a></p>
 <p class="toc level3 tocsp"><a href="#ggsvw">Viewing a Source Record on the MIDM</a></p>
-<p class="toc level5"><a href="#gentextid-1016">To View a Source Record</a></p>
+<p class="toc level5"><a href="#gentextid-1043">To View a Source Record</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-edm-view-comp_t">Comparing Object Information on the MIDM</a></p>
 <p class="toc level4"><a href="#ahoek">Comparing Two or More Object Profiles</a></p>
 <p class="toc level4"><a href="#ahoen">Comparing Source Records in one Object Profile</a></p>
 <p class="toc level4"><a href="#ahoen2">Comparing Source Records From the Same or Different Object Profiles</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-edm-view-hist_t">Viewing Transaction Histories on the MIDM</a></p>
-<p class="toc level5"><a href="#gentextid-1138">To View a Complete Transaction History For an Object Profile</a></p>
-<p class="toc level5"><a href="#gentextid-1158">To View Transaction History Records from the Transactions Page</a></p>
+<p class="toc level5"><a href="#gentextid-1169">To View a Complete Transaction History For an Object Profile</a></p>
+<p class="toc level5"><a href="#gentextid-1189">To View Transaction History Records from the Transactions Page</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-edm-xhist-fields_r">About Transaction History Search Fields on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-xhist-result_r">About Transaction History Results Fields on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-xhist-types_r">Transaction History Transaction Types on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-view-mrg-hist_t">Viewing a Profile's Merge History on the MIDM</a></p>
 <p class="toc level5"><a href="#gfyfy">To View an Object's Merge History</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-edm-view-audit_t">Viewing the MIDM Audit Log</a></p>
-<p class="toc level5"><a href="#gentextid-1436">To View the Audit Log</a></p>
+<p class="toc level5"><a href="#gentextid-1467">To View the Audit Log</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-edm-audit-fields_r">About Audit Log Search Fields on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-audit-result_r">About Audit Log Results Fields on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p>
@@ -121,11 +121,11 @@
 <p class="toc level2 tocsp"><a href="admn_mi-edm-add_p.html">Adding an Object Profile on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st1_t">Step 1: Obtain Information about the Object</a></p>
 <p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st2_t">Step 2: Specify a System and Local ID</a></p>
-<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1800">To Specify a System and Local ID</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1831">To Specify a System and Local ID</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st3_t">Step 3: Specify Parent Object Information</a></p>
-<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1829">To Specify Parent Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1862">To Specify Parent Object Information</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st4_t">Step 4: Specify Child Object Information</a></p>
-<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1848">To Specify Child Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1881">To Specify Child Object Information</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st5_t">Step 5: Save the Object Profile</a></p>
 <p class="toc level5"><a href="admn_mi-edm-add_p.html#gfyhl">To Save the Object Profile</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-add_c.html">Learning About MIDM Maintenance Tasks</a></p>
@@ -161,7 +161,7 @@
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogp">Linking an SBR Field to a Specific Source Record</a></p>
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogr">Unlinking an SBR Field From a Source Record</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-sys_t">Adding a Source Record to an Object Profile</a></p>
-<p class="toc level5"><a href="admn_mi-edm-mod_p.html#gentextid-2443">To Add a Source Record to an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-mod_p.html#gentextid-2474">To Add a Source Record to an Object Profile</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-deact_t">Deactivating a Profile or Source Record</a></p>
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahoha">Deactivating an Object Profile</a></p>
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogw">Deactivating a Source Record</a></p>
@@ -170,36 +170,37 @@
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogx">Reactivating a Source Record</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-pd_p.html">Working with Potential Duplicate Profiles on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_find_t">Finding Potential Duplicate Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2618">To Find Potential Duplicates</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2647">To Find Potential Duplicates</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_search_r">About Duplicate Records Search Fields on the MIDM</a></p>
-<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-result_r">About Duplicate Records Results Fields</a></p>
 <p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2799">To Combine Potential Duplicate Profiles From the Results List</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2829">To Combine Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2765">To Combine Duplicate Profiles From the Comparison Page</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-res_t">Resolving Potential Duplicate Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2885">To Resolve Potential Duplicate Profiles From the Results List</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2919">To Resolve Potential Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2816">To Resolve Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2850">To Resolve Potential Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#ggweo">Unresolving Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2885">To Unresolve Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2907">To Unresolve Potential Duplicate Profiles From the Comparison Page</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-asmatch_p.html">Working with Assumed Matches on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-find_t">Finding Assumed Matches on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-2962">To Find Assumed Matches</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-2941">To Find Assumed Matches</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p>
 <p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-asmatch_r">About Assumed Match Results Fields on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-rev_t">Reversing an Assumed Match on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-3120">To Reverse an Assumed Match</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-3099">To Reverse an Assumed Match</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-merge_p.html">Combining Object Information on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-merge_p.html#admn_mi-edm-mrg-eo_t">Merging Object Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3151">To Merge Object Profiles</a></p>
+<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3130">To Merge Object Profiles</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-merge_p.html#admn_mi-edm-mrg-so_t">Merging Source Records on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3203">To Merge Source Records</a></p>
+<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3173">To Merge Source Records</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-unmerge_p.html">Unmerging Object Information on the MIDM</a></p>
-<p class="toc level4"><a href="admn_mi-edm-unmerge_p.html#gentextid-3251">To Unmerge Object Profiles</a></p>
+<p class="toc level4"><a href="admn_mi-edm-unmerge_p.html#gentextid-3221">To Unmerge Object Profiles</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-reports_c.html">Learning About MIDM Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-prod-reports_c">MIDM Production Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-report-act_c">MIDM Activity Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-conf_c">Configuring MIDM Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-mask_c">Masked Data and MIDM Reports</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-reports_p.html">Running MIDM Reports</a></p>
-<p class="toc level4"><a href="admn_mi-edm-reports_p.html#gentextid-3383">To Run Reports From the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-reports_p.html#gentextid-3353">To Run Reports From the MIDM</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-reports_p.html#admn_mi-edm-reports_r">About Report Search Fields on the MIDM</a></p>
 
      </div>
@@ -221,6 +222,7 @@ the external systems that share information with the master index application. T
 in a source record might not match the information in the SBR. You
 can view several different types of information about an object, including the following:</p>
 <ul><li><p><a href="#admn_mi-edm-view-prof_t">Viewing Object Profiles on the MIDM</a></p></li>
+<li><p><a href="#ggsvw">Viewing a Source Record on the MIDM</a></p></li>
 <li><p><a href="#admn_mi-edm-view-comp_t">Comparing Object Information on the MIDM</a></p></li>
 <li><p><a href="#admn_mi-edm-view-hist_t">Viewing Transaction Histories on the MIDM</a></p></li>
 <li><p><a href="#admn_mi-edm-view-mrg-hist_t">Viewing a Profile's Merge History on the MIDM</a></p></li>
@@ -228,7 +230,7 @@ can view several different types of information about an object, including the f
 
 
 <div class="indent"><a name="admn_mi-edm-view-prof_t"></a><h3>Viewing Object Profiles on the MIDM</h3>
-<p><a name="indexterm-105"></a><a name="indexterm-106"></a>The Record Details page displays object profiles in a series of pages from
+<p><a name="indexterm-104"></a><a name="indexterm-105"></a>The Record Details page displays object profiles in a series of pages from
 which you can select and view profiles. You can view information associated with any
 of the SBR or source record components in an object profile. The
 SBR contains the information that is determined to be the most current and
@@ -236,7 +238,7 @@ accurate information about that object from all local systems. By default, when 
 Record Details page first appears in view mode, only the information in the
 SBR is visible.</p><a name="ahodx"></a><h6>Figure&nbsp;16 Record Details Page in View Mode</h6><img src="figures/ViewParentObject.gif" alt="Figure shows the Record Details page of the MIDM in view mode." width="512" height="342"></img>
 
-<a name="gentextid-963"></a><h5>To View an Object Profile</h5>
+<a name="gentextid-991"></a><h5>To View an Object Profile</h5>
 <ol>
 <li><b>Using one of the search methods described in <a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a>, display the object profile
 you want to view on the Record Details page.</b></li>
@@ -270,23 +272,23 @@ buttons you click are located at the top of the page.</b><ol style="list-style-t
 
 
 <div class="indent"><a name="ggsvw"></a><h3>Viewing a Source Record on the MIDM</h3>
-<p><a name="indexterm-107"></a><a name="indexterm-108"></a>The Source Record page displays source records in a series of search and
+<p><a name="indexterm-106"></a><a name="indexterm-107"></a>The Source Record page displays source records in a series of search and
 view pages. You can view information associated with any of the SBR or
-source record components in an object profile. The SBR contains the information that
-is determined to be the most current and accurate information about that object from
-all local systems. By default, when the View/Edit page first appears, information in
-the SBR is visible.</p><p>The source records associated with a profile contain the information that is stored
-in the external systems that share information with the master index application. The
-information in an object&rsquo;s source records might not match the information stored in
-the object&rsquo;s SBR.</p><a name="ggssb"></a><h6>Figure&nbsp;17 Source Record Page in View Mode</h6><img src="figures/ViewSourceRecord.gif" alt="Figure shows the Source Record page of the MIDM." width="504" height="339"></img>
+source record components in an object profile. The source records associated with a
+profile contain the information that is stored in the external systems that share information
+with the master index application. The information in an object&rsquo;s source records might
+not match the information stored in the object&rsquo;s SBR.</p><a name="ggssb"></a><h6>Figure&nbsp;17 Source Record Page in View Mode</h6><img src="figures/ViewSourceRecord.gif" alt="Figure shows the Source Record page of the MIDM." width="504" height="339"></img>
 
-<a name="gentextid-1016"></a><h5>To View a Source Record</h5>
+<a name="gentextid-1043"></a><h5>To View a Source Record</h5>
 <ol>
 <li><b>In the tabbed headings, click Source Records.</b></li>
 <li><b>Click the View/Edit sub-tab, if it is not already selected.</b></li>
 <li><b>In the System field, select the system from which the source record originated.</b></li>
 <li><b>In the Local ID field, enter the local ID number for the
-source record you want to view.</b></li>
+source record you want to view.</b>
+<hr><p><b>Note - </b>If the Local ID field allows alphabetic characters, the search is case-sensitive.</p>
+<hr>
+</li>
 <li><b>Click Search.</b><p>If the local ID is found, the source record fields appear in view
 mode.</p></li>
 <li><b>From the Source Record View/Edit page, perform any of the following functions. The
@@ -299,7 +301,7 @@ EUID (for more information, see <a href="#admn_mi-edm-view-prof_t">Viewing Objec
 
 
 <div class="indent"><a name="admn_mi-edm-view-comp_t"></a><h3>Comparing Object Information on the MIDM</h3>
-<p><a name="indexterm-109"></a><a name="indexterm-110"></a><a name="indexterm-111"></a>The MIDM allows you to compare two or more object profiles side-by-side to
+<p><a name="indexterm-108"></a><a name="indexterm-109"></a><a name="indexterm-110"></a>The MIDM allows you to compare two or more object profiles side-by-side to
 check for similarities and differences. You can also compare different components of the
 same object profile and you can compare two or more source records from
 the same or different profiles. </p>
@@ -310,9 +312,9 @@ comparison lookup from the Dashboard, or you can select multiple records from a
 Record Details search. From the resulting comparison page, you can compare the resulting
 profiles and you can view the source records for the displayed profiles.</p><a name="ahoel"></a><h6>Figure&nbsp;18 Record Details Page - Multiple Object Profiles</h6><img src="figures/CompareFromSearch.gif" alt="Figure shows the Records Detail page with three object profiles displayed side-by-side." width="522" height="334"></img>
 
-<a name="gentextid-1052"></a><h5>To Compare Two or More Object Profiles</h5>
+<a name="gentextid-1081"></a><h5>To Compare Two or More Object Profiles</h5>
 <ol>
-<li><b>Perform a search for the object profiles you want to compare, using on
+<li><b>Perform a search for the object profiles you want to compare, using one
 of the following methods:</b><ul>
 <li><b>If you know the EUIDs of the profiles you want to compare,
 lookup the EUIDs from the Dashboard as described in <a href="admn_mi-edm-search_p.html#admn_mi-edm-search-comp_t">Performing an EUID Comparison Lookup </a>.</b></li>
@@ -341,12 +343,12 @@ Record Details page in either view or comparison mode. This page does not
 provide merge functionality for source records. To merge source records, compare the records
 on the Source Record page as described in <a href="#ggsvw">Viewing a Source Record on the MIDM</a>.</p><a name="ahoeo"></a><h6>Figure&nbsp;19 Source Record Comparison From Record Details</h6><img src="figures/ViewSOs.gif" alt="Figure shows a profile on the Record Details page with its source records displayed side-by-side." width="498" height="339"></img>
 
-<a name="gentextid-1085"></a><h5>To Compare Source Records in one Object Profile</h5>
+<a name="gentextid-1114"></a><h5>To Compare Source Records in one Object Profile</h5>
 <ol>
 <li><b>Perform a search for the object profile containing the source records you want
 to view, as described in <a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a>.</b></li>
 <li><b>In the search results list, select the EUID of the profile you want
-to view.</b><p>The Comparison page appears with SBR information displayed.</p></li>
+to view.</b><p>The Record Details page appears with SBR information displayed.</p></li>
 <li><b>Scroll to the bottom of the SBR information, and then click View Sources.</b><p>The source records belonging to the displayed profile appear.</p></li>
 <li><b>To edit any of the displayed source records, click Edit EUID at the
 bottom of the page and follow any of the procedures under <a href="admn_mi-edm-mod_p.html">Modifying Profile Information on the MIDM</a>.</b></li>
@@ -360,15 +362,19 @@ need to know the system and local ID numbers for the records.
 On the Source Record page, you can only compare records that originated from
 the same system.</p><a name="ahoeo2"></a><h6>Figure&nbsp;20 Source Records Comparison</h6><img src="figures/MergeLID1.gif" alt="Figure shows two profiles in a side-by-side comparison with differences between the two highlighted." width="458" height="380"></img>
 
-<a name="gentextid-1111"></a><h5>To Compare Source Records in One or More Object Profiles</h5>
+<a name="gentextid-1140"></a><h5>To Compare Source Records in One or More Object Profiles</h5>
 <ol>
 <li><b>In the tabbed headings, click Source Record.</b></li>
 <li><b>Click the Merge sub-tab.</b></li>
 <li><b>In the Source field, select the name of the source system from which
 the records you want to compare originated.</b></li>
 <li><b>In the Local ID fields, enter at least one and up to
-four local ID numbers.</b></li>
-<li><b>Click View Records.</b><p>Any matching source records side-by-side in a comparison view.</p></li>
+four local IDs.</b>
+<hr><p><b>Note - </b>If any of the Local ID fields allows alphabetic characters, the search is
+case-sensitive.</p>
+<hr>
+</li>
+<li><b>Click View Records.</b><p>Any matching source records appear side-by-side in a comparison view.</p></li>
 <li><b>To view the object profile for one of the source records, click View
 EUID under that source record.</b>
 <hr><p><b>Tip - </b>Clicking View EUID takes you out of the Source Records page and into
@@ -381,7 +387,7 @@ Back on the Record Details page.</p>
 
 
 <div class="indent"><a name="admn_mi-edm-view-hist_t"></a><h3>Viewing Transaction Histories on the MIDM</h3>
-<p><a name="indexterm-112"></a><a name="indexterm-113"></a><a name="indexterm-114"></a>Using the Transactions function, you can view historical information for a specific object
+<p><a name="indexterm-111"></a><a name="indexterm-112"></a><a name="indexterm-113"></a>Using the Transactions function, you can view historical information for a specific object
 and compare the object&rsquo;s profile before and after a specific transaction occurred to determine
 what information was modified as a result of the transaction. You can access
 the transaction history for a profile from the Record Details page, or you
@@ -393,7 +399,7 @@ of the profile as it was prior to the transaction appears on the
 left side of the comparison page. The image on the right reflects
 the object&rsquo;s information after the transaction occurred. </p>
 
-<a name="gentextid-1138"></a><h5>To View a Complete Transaction History For an Object Profile</h5>
+<a name="gentextid-1169"></a><h5>To View a Complete Transaction History For an Object Profile</h5>
 <ol>
 <li><b>Perform a search for the object profile whose history you want to view
 using one of the search procedures described in <a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a>.</b></li>
@@ -402,7 +408,7 @@ using one of the search procedures described in <a href="admn_mi-edm-search_p.ht
 <li><b>Scroll through the profile's history using the window's internal scrollbar at the bottom
 of the profile.</b></li></ol>
 
-<a name="gentextid-1158"></a><h5>To View Transaction History Records from the Transactions Page</h5>
+<a name="gentextid-1189"></a><h5>To View Transaction History Records from the Transactions Page</h5>
 <ol>
 <li><b>Obtain information about the object profile whose history you want to view, such
 as the EUID, a system in which the object was registered, or a
@@ -431,51 +437,51 @@ can unmerge the records here. For more information, see <a href="admn_mi-edm-unm
 
 
 <div class="indent"><a name="admn_mi-edm-xhist-fields_r"></a><h3>About Transaction History Search Fields on the MIDM</h3>
-<p><a name="indexterm-115"></a><a name="indexterm-116"></a>The fields located on the Transaction History Search page allow you to specify search
-criteria for the transactions you want to view. Note that the name of
+<p><a name="indexterm-114"></a><a name="indexterm-115"></a>The fields located on the Transaction History Search page allow you to specify search
+criteria for the transactions you want to view. Note that the label for
 the Local ID field is customizable and might have been changed for
 your implementation. The search page can also be configured to display additional transaction fields.
 The following table lists the fields that are defined by default for a
 transaction history search.</p><a name="ahoeg"></a><h6>Table&nbsp;1 Transaction History Search Fields</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>In this field &hellip;</p></th>
 <th align="left" valign="top" scope="column"><p>type or select ...</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-117"></a>EUID</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-116"></a>EUID</p></td>
 <td align="left" valign="top" scope="row"><p>The object&rsquo;s enterprise-wide unique
 identifier assigned by the master index application.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-118"></a>System</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-117"></a>System</p></td>
 <td align="left" valign="top" scope="row"><p>The system in which the local ID
 is known.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-119"></a>Local ID</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-118"></a>Local ID</p></td>
 <td align="left" valign="top" scope="row"><p>The local ID corresponding to the record you want to
 find and the system selected in the previous field. This field name might
 be different for your implementation.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-120"></a>From Date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-119"></a>From Date</p></td>
 <td align="left" valign="top" scope="row"><p>The beginning date for the search. The query
 is performed for transactions that fall between the From Date and To Date.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-121"></a>From
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-120"></a>From
 Time</p></td>
 <td align="left" valign="top" scope="row"><p>The beginning time for the search using 24-hour notation. The query is performed
 for transactions that fall between the From Time and To Time on the
 specified dates. If no time is entered, the default value is 00:01 (12:01
 A.M.).</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-122"></a>To Date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-121"></a>To Date</p></td>
 <td align="left" valign="top" scope="row"><p>The ending date for the search.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-123"></a>To Time</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-122"></a>To Time</p></td>
 <td align="left" valign="top" scope="row"><p>The ending time for the
 search using 24-hour notation. If no time is entered, the default value is
 24:00.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-124"></a>System User</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-123"></a>System User</p></td>
 <td align="left" valign="top" scope="row"><p>The login ID of the user who performed the transaction for
 which you are searching.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-125"></a>Function</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-124"></a>Function</p></td>
 <td align="left" valign="top" scope="row"><p>The type of transaction that caused the object&rsquo;s profile to change.
 See <a href="#ahoei">Table&nbsp;3</a> for more information about transaction types.</p></td>
 </tr>
@@ -483,42 +489,42 @@ See <a href="#ahoei">Table&nbsp;3</a> for more information about transaction typ
 
 
 <div class="indent"><a name="admn_mi-edm-xhist-result_r"></a><h3>About Transaction History Results Fields on the MIDM</h3>
-<p><a name="indexterm-126"></a><a name="indexterm-127"></a>The fields located in the Transaction History search results list help you identify a
+<p><a name="indexterm-125"></a><a name="indexterm-126"></a>The fields located in the Transaction History search results list help you identify a
 specific object profile and transaction to view. Additional fields might be added to
 this page by the system administrator. The LID field is configurable and might
 have been changed for your implementation.</p><a name="ahoeh"></a><h6>Table&nbsp;2 Transaction History Results Fields</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>This field &hellip;</p></th>
 <th align="left" valign="top" scope="column"><p>displays this information &hellip;</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-128"></a>Transaction Number</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-127"></a>Transaction Number</p></td>
 <td align="left" valign="top" scope="row"><p>The sequential
 identification code of the transaction that caused the transaction history record.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-129"></a>EUID1</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-128"></a>EUID1</p></td>
 <td align="left" valign="top" scope="row"><p>The enterprise-wide unique
 identification number of the first object profile involved in the transaction.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-130"></a>EUID2</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-129"></a>EUID2</p></td>
 <td align="left" valign="top" scope="row"><p>The enterprise-wide unique
 identification number of the second object profile involved in the transaction.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-131"></a>LID</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-130"></a>LID</p></td>
 <td align="left" valign="top" scope="row"><p>The local ID
 of the first source record involved in the transaction.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-132"></a>Function</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-131"></a>Function</p></td>
 <td align="left" valign="top" scope="row"><p>The type of transaction
 that changed the object profile and caused the history record to be written.
 See <a href="#ahoei">Table&nbsp;3</a> for a description of each transaction type.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-133"></a>System Code</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-132"></a>System Code</p></td>
 <td align="left" valign="top" scope="row"><p>The name of the
 system in which the transaction that created the history record occurred.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-134"></a>System User</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-133"></a>System User</p></td>
 <td align="left" valign="top" scope="row"><p>The login
 ID of the user who performed the transaction.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-135"></a>TimeStamp</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-134"></a>TimeStamp</p></td>
 <td align="left" valign="top" scope="row"><p>The date and time the
 transaction occurred.</p></td>
 </tr>
@@ -526,45 +532,45 @@ transaction occurred.</p></td>
 
 
 <div class="indent"><a name="admn_mi-edm-xhist-types_r"></a><h3>Transaction History Transaction Types on the MIDM</h3>
-<p><a name="indexterm-136"></a>Each transaction performed by the master index application is assigned a transaction type, indicating
+<p><a name="indexterm-135"></a>Each transaction performed by the master index application is assigned a transaction type, indicating
 the type of action that was performed against the profile. The following table
 lists and describes each transaction type.</p><a name="ahoei"></a><h6>Table&nbsp;3 Transaction Type Descriptions</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Transaction Type</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-137"></a>Add</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-136"></a>Add</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when
 a new object profile is added to the database, whether it is through
 a direct add or through reversing an assumed match.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-138"></a>EUID Activate</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-137"></a>EUID Activate</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned
 when a deactivated object profile is reactivated.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-139"></a>EUID Deactivate</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-138"></a>EUID Deactivate</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when an
 active object profile is deactivated.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-140"></a>EUID Merge</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-139"></a>EUID Merge</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when two object profiles
 are merged.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-141"></a>EUID Unmerge</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-140"></a>EUID Unmerge</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when two object profiles are unmerged.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-142"></a>System
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-141"></a>System
 Record Merge</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when two source records are merged.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-143"></a>System
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-142"></a>System
 Record Transfer</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when a source record is transferred from
 one object profile to another.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-144"></a>System Record Unmerge</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-143"></a>System Record Unmerge</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when
 two source records are unmerged.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-145"></a>Update</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-144"></a>Update</p></td>
 <td align="left" valign="top" scope="row"><p>This transaction type is assigned when an object
 profile is modified in any way other than those described above. This includes
 such transactions as modifying an object profile, reversing an assumed match, deactivating or reactivating
@@ -575,7 +581,7 @@ address or telephone number).</p></td>
 
 
 <div class="indent"><a name="admn_mi-edm-view-mrg-hist_t"></a><h3>Viewing a Profile's Merge History on the MIDM</h3>
-<p><a name="indexterm-146"></a>When an object profile that is currently merged is displayed on the Record
+<p><a name="indexterm-145"></a>When an object profile that is currently merged is displayed on the Record
 Details page, you can display a history of all merges performed against the
 profile, allowing you to trace the origin of certain information contained in the
 profile. The master index application tracks all merges performed against each object profile
@@ -600,14 +606,14 @@ the EUIDs involved in the transaction.</b><a name="ggssk"></a><h6>Figure&nbsp;26
 
 
 <div class="indent"><a name="admn_mi-edm-view-audit_t"></a><h3>Viewing the MIDM Audit Log</h3>
-<p><a name="indexterm-147"></a>Using the Audit Log function, you can view a record of each instance
+<p><a name="indexterm-146"></a>Using the Audit Log function, you can view a record of each instance
 an MIDM user accessed information about any object in the master index database.
 The audit log includes instances in which an object profile appeared in a
 search results list; was viewed or compared; was added, updated, or deactivated; or was
 merged or unmerged. The audit log can be enabled or disabled by
 the system administrator.</p>
 
-<a name="gentextid-1436"></a><h5>To View the Audit Log</h5>
+<a name="gentextid-1467"></a><h5>To View the Audit Log</h5>
 <ol>
 <li><b>Obtain information about the instances you want to view, such as the EUID,
 a time frame for when they occurred, the type of function that caused
@@ -628,49 +634,49 @@ data was accessed. For information about the fields displayed on this page, see
 
 
 <div class="indent"><a name="admn_mi-edm-audit-fields_r"></a><h3>About Audit Log Search Fields on the MIDM</h3>
-<p><a name="indexterm-148"></a>The fields located on the Audit Log Search page allow you to enter
+<p><a name="indexterm-147"></a>The fields located on the Audit Log Search page allow you to enter
 search criteria about the audit log entries you want to view. These fields
 are configurable. The following table describes the fields that are displayed by default.</p><a name="ahofa"></a><h6>Table&nbsp;4 Audit Log Search Fields</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>In
 this field &hellip;</p></th>
 <th align="left" valign="top" scope="column"><p>type or select ...</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-149"></a>EUID</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-148"></a>EUID</p></td>
 <td align="left" valign="top" scope="row"><p>The object&rsquo;s enterprise-wide unique identifier assigned by the
 master index application.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-150"></a>Local ID</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-149"></a>Local ID</p></td>
 <td align="left" valign="top" scope="row"><p>The local ID corresponding to the record you want
 to find and the system selected in the previous field. This field name
 might be different for your implementation.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-151"></a>System</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-150"></a>System</p></td>
 <td align="left" valign="top" scope="row"><p>The system of the system in which the
 local ID is known.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-152"></a>From Date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-151"></a>From Date</p></td>
 <td align="left" valign="top" scope="row"><p>The beginning date for the search. The query
 is performed for audit log entries that fall between the From Date and
 To Date.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-153"></a>To Date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-152"></a>To Date</p></td>
 <td align="left" valign="top" scope="row"><p>The ending date for the search.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-154"></a>From Time</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-153"></a>From Time</p></td>
 <td align="left" valign="top" scope="row"><p>The beginning time for
 the search using 24-hour notation. The query is performed for audit log entries
 that fall between the From Time and To Time on the specified dates.
 If no time is specified, the default value is 00:01 (12:01 A.M.).</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-155"></a>To Time</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-154"></a>To Time</p></td>
 <td align="left" valign="top" scope="row"><p>The
 ending time for the search using 24-hour notation. If no time is specified,
 the default value is 24:00.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-156"></a>System User</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-155"></a>System User</p></td>
 <td align="left" valign="top" scope="row"><p>The login ID of the user whose
 transactions you want to view.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-157"></a>Function</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-156"></a>Function</p></td>
 <td align="left" valign="top" scope="row"><p>The type of transaction that created the audit
 log entries you want to view. For more information about transaction types, see
 <a href="#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a>.</p></td>
@@ -679,39 +685,39 @@ log entries you want to view. For more information about transaction types, see
 
 
 <div class="indent"><a name="admn_mi-edm-audit-result_r"></a><h3>About Audit Log Results Fields on the MIDM</h3>
-<p><a name="indexterm-158"></a>The fields located on the Audit Log Result page display information about the instances
+<p><a name="indexterm-157"></a>The fields located on the Audit Log Result page display information about the instances
 in which object data was accessed, where those instances match the search criteria
 you entered. These fields are configurable. The following table describes the fields that
 are displayed by default.</p><a name="ahofb"></a><h6>Table&nbsp;5 Audit Log Results Fields</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>This field &hellip;</p></th>
 <th align="left" valign="top" scope="column"><p>displays this information ...</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-159"></a>Audit ID</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-158"></a>Audit ID</p></td>
 <td align="left" valign="top" scope="row"><p>The unique ID
 code in the audit log for the audit log entry.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-160"></a>EUID1</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-159"></a>EUID1</p></td>
 <td align="left" valign="top" scope="row"><p>The EUID of
 the first object profile whose information was accessed.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-161"></a>EUID2</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-160"></a>EUID2</p></td>
 <td align="left" valign="top" scope="row"><p>The EUID of the second
 object profile whose information was accessed in the same transaction (as would occur
 in the case of a profile comparison or merge).</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-162"></a>Function</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-161"></a>Function</p></td>
 <td align="left" valign="top" scope="row"><p>The primary transaction type that
 was used to access information. For more information about transaction types, see <a href="#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-163"></a>Detail</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-162"></a>Detail</p></td>
 <td align="left" valign="top" scope="row"><p>Specific
 information about the actions taken against the profile, such as the MIDM page
 that was accessed or the type of function performed against a profile.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-164"></a>Create Date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-163"></a>Create Date</p></td>
 <td align="left" valign="top" scope="row"><p>The
 date and time that the information was accessed.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-165"></a>Create User</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-164"></a>Create User</p></td>
 <td align="left" valign="top" scope="row"><p>The login ID of
 the user who accessed the information.</p></td>
 </tr>
@@ -719,128 +725,129 @@ the user who accessed the information.</p></td>
 
 
 <div class="indent"><a name="admn_mi-edm-audit-types_r"></a><h3>Audit Log Functions on the MIDM</h3>
-<p><a name="indexterm-166"></a>The audit log creates an audit entry whenever data is accessed through the
+<p><a name="indexterm-165"></a>The audit log creates an audit entry whenever data is accessed through the
 MIDM. The following table lists and describes each audit log function. Some of
 these functions refer to the actual viewing of data on an MIDM page;
 others refer to an action taken against that data, such as clicking the
 merge or unmerge Confirm button or resolving a potential duplicate pair.</p><a name="ahofc"></a><h6>Table&nbsp;6 Audit Log Function Descriptions</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Audit Log Function</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-167"></a>Add</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-166"></a>Add</p></td>
 <td align="left" valign="top" scope="row"><p>A
 user added a new object profile to the database from the Create Source
 Record page or by reversing an assumed match.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-168"></a>Associated Potential Duplicates</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-167"></a>Associated Potential Duplicates</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed
 profile summaries on the Associated Records page of a potential duplicate search.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-169"></a>Assumed Match
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-168"></a>Assumed Match
 Comparison</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed two assumed match profiles on the Assumed Match page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-170"></a>Assumed
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-169"></a>Assumed
 Match Search Result</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed the results of a search for assumed
 matches.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-171"></a>Auto Resolve</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-170"></a>Auto Resolve</p></td>
 <td align="left" valign="top" scope="row"><p>A user permanently resolved two potential duplicate records on the Potential Duplicate Comparison
 page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-172"></a>EO Comparison</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-171"></a>EO Comparison</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed two object profiles on the Comparison page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-173"></a>EO Search Result</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-172"></a>EO Search Result</p></td>
 <td align="left" valign="top" scope="row"><p>A
 user viewed profile summaries on the Search Results page after performing a search
 for object profiles.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-174"></a>EO View/Edit</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-173"></a>EO View/Edit</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed an object profile on the View/Edit page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-175"></a>EUID
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-174"></a>EUID
 Merge Confirm</p></td>
 <td align="left" valign="top" scope="row"><p>A user initiated a merge of two object profiles. This function
 refers to when the user views the merge result prior to clicking Confirm.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-176"></a>EUID Unmerge</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-175"></a>EUID Unmerge</p></td>
 <td align="left" valign="top" scope="row"><p>A
 user finalized an unmerge of two object profiles.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-177"></a>EUID Unmerge Confirm</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-176"></a>EUID Unmerge Confirm</p></td>
 <td align="left" valign="top" scope="row"><p>A user initiated
 an unmerge of two object profiles. This function refers to when the user
 views the unmerge result prior to clicking Confirm.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-178"></a>History Comparison</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-177"></a>History Comparison</p></td>
 <td align="left" valign="top" scope="row"><p>A user compared the
 before and after image of an object profile on the Transaction History Comparison
 page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-179"></a>History Search Result</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-178"></a>History Search Result</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed the results of a transaction history search
 on the Transaction History Search Results page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-180"></a>LID Merge - Selection</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-179"></a>LID Merge - Selection</p></td>
 <td align="left" valign="top" scope="row"><p>A user initiated a
 merge of two source records. This function refers to when the user has
 selected LID Merge but has not finalized the merge.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-181"></a>LID Merge Confirm</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-180"></a>LID Merge Confirm</p></td>
 <td align="left" valign="top" scope="row"><p>A user
 finalized a merge of two source records.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-182"></a>LID Unmerge</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-181"></a>LID Unmerge</p></td>
 <td align="left" valign="top" scope="row"><p>A user finalized an unmerge of
 two source records.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-183"></a>LID Unmerge Confirm</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-182"></a>LID Unmerge Confirm</p></td>
 <td align="left" valign="top" scope="row"><p>A user initiated an unmerge of two source
 records. This function refers to when the user views the unmerge result record
 prior to clicking Confirm.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-184"></a>Matching Review Search Result</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-183"></a>Matching Review Search Result</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed the results of
 a search for potential duplicates.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-185"></a>Merge</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-184"></a>Merge</p></td>
 <td align="left" valign="top" scope="row"><p>A user finalized a merge of two object
 profiles or two source records.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-186"></a>Merge Tree Comparison</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-185"></a>Merge Tree Comparison</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed a merge tree.
 This function appears for each object profile included in the merge tree.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-187"></a>Potential Duplicate
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-186"></a>Potential Duplicate
 Comparison</p></td>
 <td align="left" valign="top" scope="row"><p>A user viewed two object profiles on the Potential Duplicate Comparison page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-188"></a>Resolve</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-187"></a>Resolve</p></td>
 <td align="left" valign="top" scope="row"><p>A user
 resolved two potential duplicate records on the Potential Duplicate Comparison page.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-189"></a>Undo Assumed Match</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-188"></a>Undo Assumed Match</p></td>
 <td align="left" valign="top" scope="row"><p>A
 user reversed an assumed match.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-190"></a>Unmerge Comparison</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-189"></a>Unmerge Comparison</p></td>
 <td align="left" valign="top" scope="row"><p>A user initiated an unmerge of two
 source records or two object profiles. This function refers to when the user
 views the unmerge result record prior to clicking Confirm.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-191"></a>Unresolve</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-190"></a>Unresolve</p></td>
 <td align="left" valign="top" scope="row"><p>A user changed the status
-two object profiles on the Potential Duplicate Comparison page from Resolved to Unresolved.</p></td>
+of two object profiles on the Potential Duplicate Comparison page from Resolved to
+Unresolved.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-192"></a>Update</p></td>
-<td align="left" valign="top" scope="row"><p>A
-user modified a profile on the View/Edit window. Updates include any changes made
-to a profile, including activating and reactivating source records, adding or removing child
-objects, and so on.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-191"></a>Update</p></td>
+<td align="left" valign="top" scope="row"><p>A user modified a profile on the View/Edit window. Updates include any changes
+made to a profile, including activating and reactivating source records, adding or removing
+child objects, and so on.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-193"></a>View Merge Tree</p></td>
-<td align="left" valign="top" scope="row"><p>A user viewed a merge tree. </p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-192"></a>View Merge Tree</p></td>
+<td align="left" valign="top" scope="row"><p>A user viewed a merge tree.
+</p></td>
 </tr>
 </table></div>
 

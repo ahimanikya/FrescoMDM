@@ -23,13 +23,15 @@
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="admn_mi-dashboard_p.html">Previous</a></span>
-         <span class="tocpageright"><a href="admn_mi-edm-search_p.html">Next</a></span></h5>
+     <h5><span class="tocpageleft"><a href="wedmevsm.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-taskoverview_c.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="wedmevsm.html">Working With the Master Index Data Manager</a></p>
-<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<div class="onpage">
+<p class="toc level2"><a href="">Related Topics</a></p>
+</div>
 <p class="toc level2"><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p>
 <p class="toc level2"><a href="admn_mi-aboutsmi_c.html">About Master Index Studio</a></p>
 <p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-about_c">About Master Index Applications</a></p>
@@ -63,17 +65,15 @@
 <p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-550">To Perform Quick Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-search-dash_t">Performing an EUID Comparison Lookup</a></p>
 <p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-572">To Perform an EUID Comparison Lookup</a></p>
-<div class="onpage">
-<p class="toc level2 tocsp"><a href="">Learning About Object Queries on the MIDM</a></p>
-<p class="toc level3"><a href="#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p>
-<p class="toc level4"><a href="#ahobz">Simple Lookup</a></p>
-<p class="toc level4"><a href="#ahoca">Advanced Alphanumeric Lookup</a></p>
-<p class="toc level4"><a href="#ggsor">Advanced Phonetic Lookup</a></p>
-<p class="toc level4"><a href="#ahocb">EUID Comparison Lookup</a></p>
-<p class="toc level4"><a href="#ahocc">The Search Results List</a></p>
-<p class="toc level3 tocsp"><a href="#admn_mi-edm-search-range_c">Searching by Ranges on the MIDM</a></p>
-<p class="toc level3"><a href="#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p>
-</div>
+<p class="toc level2 tocsp"><a href="admin_mi-edm-search_c.html">Learning About Object Queries on the MIDM</a></p>
+<p class="toc level3"><a href="admin_mi-edm-search_c.html#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahobz">Simple Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahoca">Advanced Alphanumeric Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ggsor">Advanced Phonetic Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahocb">EUID Comparison Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahocc">The Search Results List</a></p>
+<p class="toc level3 tocsp"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-range_c">Searching by Ranges on the MIDM</a></p>
+<p class="toc level3"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-euid_t">Performing an EUID Lookup</a></p>
 <p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-692">To Perform an EUID Lookup</a></p>
@@ -210,149 +210,21 @@
    <div class="maincontent">
 
 
-<a name="admin_mi-edm-search_c"></a>
+<a name="relatedtopics"></a>
 
-<h2>Learning About Object Queries on the MIDM</h2>
-<p>Before you can view or update object information, you need to perform a
-search for the object. There are several different search capabilities within the MIDM.
-You can perform lookups for specific object profiles using unique identifiers, such as
-the EUID or local ID, and you can perform broader searches using data
-from the parent or child objects as criteria.</p><p>The following topics provide information about working with general searches that are designed
-to find specific records in the master index database. Most of these searches
-are performed from the Record Details page, but some are performed from the
-Dashboard. Searches for specific functions, such as finding potential duplicates or assumed matches,
-are described in the topics for those functions.</p>
-<ul><li><p><a href="#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p></li>
-<li><p><a href="#admn_mi-edm-search-range_c">Searching by Ranges on the MIDM</a></p></li>
-<li><p><a href="#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p></li></ul>
-
-
-<div class="indent"><a name="admin_mi-edm-search-about_c"></a><h3>About the MIDM Search Function</h3>
-<p><a name="indexterm-56"></a><a name="indexterm-57"></a><a name="indexterm-58"></a><a name="indexterm-59"></a>There are several different methods of searching for objects, depending on the search criteria
-you enter. By default, the Record Details page includes three different search types:
-Advanced Lookup (Alpha), Advanced Lookup (Phonetic), and Simple Lookup. You can also perform
-an EUID lookup from the Dashboard to view record details. The design of
-the search functionality provides flexibility in designing database queries. You can narrow a
-search for a specific object or a range of objects using various fields
-on the search pages and then view your search results in the search
-results list. When you select a specific object from the Search Result page,
-detailed information for that object appears on the Record Details page in view
-mode.</p>
-<hr><p><b>Note - </b>The names of the search types are configurable. Searches are described in the
-following sections by their default names and by their default search criteria. See
-your system administrator if you have questions about how your search pages are
-configured.</p>
-<hr>
-
-
-<div class="indent"><a name="ahobz"></a><h3>Simple Lookup</h3>
-<p>The Simple Lookup on the Record Details page allows you to perform
-lookups using unique identifiers to find a specific object profile. By default, the unique
-identifiers you can use as search criteria include the EUID and the local
-ID and system. When you perform this type of search, the search results
-list is generally bypassed and the Record Details page appears in view mode
-displaying information about the matching profile.</p><p><a name="indexterm-60"></a><a name="indexterm-61"></a><a name="indexterm-62"></a><a name="indexterm-63"></a>You can perform an EUID Lookup from either the Dashboard or the Record
-Details page. Other simple lookups include system and local ID lookups, which can
-be performed from the Record Details page or the Source Record page.
-To increase search accuracy, you can only select a system listed in the
-drop-down list and the Local ID field is case-sensitive.</p></div>
-
-
-<div class="indent"><a name="ahoca"></a><h3>Advanced Alphanumeric Lookup</h3>
-<p><a name="indexterm-64"></a><a name="indexterm-65"></a><a name="indexterm-66"></a><a name="indexterm-67"></a>The Advanced Alphanumeric Lookup on the Record Details page allows you to perform various
-types of searches against the database using a field or combination of fields
-as criteria. This type of search is an exact match search, meaning it
-only returns profiles that exactly match the criteria you specify. You can specify
-any combination of fields as long as any fields that are required for
-the search are entered. Most fields in this search allow wildcard characters if
-the exact value is unknown.</p><p>The fields displayed on the Search page are configured by the system administrator.
-You can enter as much information as needed to narrow down the search
-appropriately.</p></div>
-
-
-<div class="indent"><a name="ggsor"></a><h3>Advanced Phonetic Lookup</h3>
-<p><a name="indexterm-68"></a><a name="indexterm-69"></a><a name="indexterm-70"></a><a name="indexterm-71"></a>The Advanced Phonetic Lookup on the Record Details page allows you to perform various
-types of searches against the database using predefined combinations of fields as criteria.
-This type of search compares the phonetic values of certain fields entered as
-criteria. The object profiles returned by a phonetic search are assigned a matching
-probability weight to indicate how closely they match the search criteria. Phonetic searches
-are not exact match searches and allow for misspellings or data entry errors.</p><p>The fields displayed on the Search page are configured by the system administrator.
-You can enter as much information as needed to narrow down the search
-appropriately. For phonetic searches, certain combinations of criteria are required to perform a
-search. The search is only carried out for the combinations that have complete
-data.</p><p>For example, in a master company index, a blocking search might be
-configured to search on the following combinations:</p>
-<ul><li><p>Company Name and Sales Region</p></li>
-<li><p>Company Name and Address Line1</p></li>
-<li><p>Tax Payor ID</p></li>
-<li><p>Stock Symbol and Address Line1</p></li></ul>
-<p>If Company Name, Address Line1, and Stock Symbol are entered as criteria, only
-the second and fourth combinations are carried out. The returned result set would
-include any records that match on Company Name and Address Line1 <b>or</b>
-that match on Stock Symbol and Address Line1. If only Company Name is
-entered as criterion, no records are returned since it does not fulfill any
-of the combination requirements.</p></div>
-
-
-<div class="indent"><a name="ahocb"></a><h3>EUID Comparison Lookup</h3>
-<p><a name="indexterm-72"></a><a name="indexterm-73"></a><a name="indexterm-74"></a><a name="indexterm-75"></a>The Comparison Lookup function on the Dashboard allows you to perform a search
-for one or more object profiles by entering their EUIDs. The matching records
-for this type of search appear on the Record Details page in a
-side-by-side comparison view. Use this type of search if you want to compare
-object profiles and you know the EUIDs of the object profiles to compare.</p></div>
-
-
-<div class="indent"><a name="ahocc"></a><h3>The Search Results List</h3>
-<p><a name="indexterm-76"></a>The search results list appears under the search fields and displays a list
-of object profiles found in the database that closely match the search criteria
-you entered. The results list appears in a table, with the number of
-profiles returned for the search displayed above the table. This page displays information
-to help you identify the object profile, such as the EUID or address
-information. The search results list appears differently depending on which type of search is
-performed and how the lists are configured. For more information about search results,
-see <a href="admn_mi-edm-search_p.html#admn_mi-edm-search-rslt_t">Working with Search Results on the MIDM</a>.</p></div>
-</div>
-
-
-<div class="indent"><a name="admn_mi-edm-search-range_c"></a><h3>Searching by Ranges on the MIDM</h3>
-<p>Your system administrator can configure the search pages to allow you to enter
-a range by which to search for certain fields. For example, you
-might want to search for profiles with a specific name, but with a
-date that falls within a five-year range. If a field is defined for
-searching by a user-defined range, the MIDM displays a &rdquo;from&rsquo; field and a
-&rdquo;to&rsquo; field so you can specify the range (for example, &ldquo;Date From&rdquo; and
-&ldquo;Date To&rdquo;). If you only enter a value in the &rdquo;from&rsquo; field, the
-MIDM searches for profiles with a value greater than or equal to that
-value. If you only enter a value in the &rdquo;to&rsquo; field, the MIDM
-searches for profiles with a value less than or equal to that value.</p><p>Ranges can also be defined as the entered value plus or minus
-a specific value. For example, a date field can be configured to search
-for dates that fall within a range five years earlier than the date
-you enter and five years later than the date you enter. Finally, ranges
-can be defined as specific upper and lower limits. These limits are used
-when no value is entered. For example, if you perform a search without
-the date, the MIDM searches between the defined lower and upper limits. If
-you enter only a &rdquo;from&rsquo; date, the MIDM searches between the date you
-entered and the defined upper limit. For more information about how your system
-has been configured for range searching, see your system administrator.</p></div>
-
-
-<div class="indent"><a name="admn_mi-edm-search-smbl_c"></a><h3>Required Fields on the MIDM</h3>
-<p>Certain fields might be required for the searches on the MIDM. If a
-field is marked with an asterisk (*), it is required. If multiple
-fields are marked with daggers (&dagger;), at least one of those fields must
-be populated in order to perform the search. The required fields can vary
-depending on the type of search you are performing.</p></div>
-
+<h2>Related Topics</h2>
+<p>For a summary of and links to the user documentation available for the
+Mural subprojects, see <a href="https://mural.dev.java.net/Documents.html">Mural Documentation</a>.</p>
    </div>
 
    <div class="BottomPageControlPane">
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="admn_mi-dashboard_p.html">Previous</a>
+               <a href="wedmevsm.html">Previous</a>
             </td>
             <td class="pageright">
-               <a href="admn_mi-edm-search_p.html">Next</a>
+               <a href="admn_mi-taskoverview_c.html">Next</a>
             </td>
          </tr>
       </table>

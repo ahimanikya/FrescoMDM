@@ -7,12 +7,10 @@
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Working With the Master Index Data Manager provides instructions and background information for using the Master Index Data Manager (MIDM) to monitor and maintain data in your master index applications. It includes instructions for searching for object profiles, viewing and editing object profiles, handling potential duplicate profiles, viewing and reversing automatic matches, merging and unmerging profiles, and running reports.">
-   <meta name="date" content="2008-05-01">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
-
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -22,8 +20,7 @@
 
    <a name="top"></a>
    <h1>Working With the Master Index Data Manager</h1>
-   <h1>DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"><a href="admn_mi-edm-asmatch_p.html">Previous</a></span>
@@ -32,6 +29,7 @@
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="wedmevsm.html">Working With the Master Index Data Manager</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
 <p class="toc level2"><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p>
 <p class="toc level2"><a href="admn_mi-aboutsmi_c.html">About Master Index Studio</a></p>
 <p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-about_c">About Master Index Applications</a></p>
@@ -49,22 +47,22 @@
 <p class="toc level4"><a href="admn_mi-profiles_c.html#ahsbn">Auxiliary ID</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-using_c.html">Working with the Master Index Data Manager</a></p>
 <p class="toc level3"><a href="admn_mi-edm-using_c.html#ggtcp">Requirements</a></p>
-<p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p>
-<p class="toc level5"><a href="admn_mi-edm-using_c.html#gentextid-383">To Log in to the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging in to the Master Index Data Manager</a></p>
+<p class="toc level5"><a href="admn_mi-edm-using_c.html#gentextid-390">To Log in to the MIDM</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p>
 <p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-navigation_c">Master Index Data Manager Navigation Tips</a></p>
 <p class="toc level4"><a href="admn_mi-edm-using_c.html#ahobn">Navigating the MIDM Functions</a></p>
 <p class="toc level4"><a href="admn_mi-edm-using_c.html#ahobs">Navigating the MIDM Detail Pages</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Out of the MIDM</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-dashboard_p.html">Using the MIDM Dashboard</a></p>
 <p class="toc level3"><a href="admn_mi-dashboard_p.html#admn_mi-edm-summary_t">Viewing Summary Information From the Dashboard</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-495">To View Summary Information</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-reports_t">Accessing Reports From the Dashboard</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-516">To Access Reports From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-502">To View Summary Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-reports_t">Accessing Reports and Audit Logs From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-523">To Access Reports and Audit Logs From the Dashboard</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-quick_t">Performing a Quick Search (EUID Lookup)</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-543">To Perform Quick Search</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-550">To Perform Quick Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-search-dash_t">Performing an EUID Comparison Lookup</a></p>
-<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-565">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-572">To Perform an EUID Comparison Lookup</a></p>
 <p class="toc level2 tocsp"><a href="admin_mi-edm-search_c.html">Learning About Object Queries on the MIDM</a></p>
 <p class="toc level3"><a href="admin_mi-edm-search_c.html#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p>
 <p class="toc level4"><a href="admin_mi-edm-search_c.html#ahobz">Simple Lookup</a></p>
@@ -76,17 +74,18 @@
 <p class="toc level3"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-euid_t">Performing an EUID Lookup</a></p>
-<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-685">To Perform an EUID Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-692">To Perform an EUID Lookup</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-lid_t">Performing a Local ID Lookup</a></p>
-<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-709">To Perform a Local ID Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-716">To Perform a Local ID Lookup</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-alpha_t">Performing an Alphanumeric Search</a></p>
 <p class="toc level5"><a href="admn_mi-edm-search_p.html#gfyku">To Perform an Alphanumeric Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-phon_t">Performing a Phonetic Search</a></p>
 <p class="toc level5"><a href="admn_mi-edm-search_p.html#gfyke">To Perform a Phonetic Search</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-comp_t">Performing an EUID Comparison Lookup </a></p>
-<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-789">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-796">To Perform an EUID Comparison Lookup</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-rslt_t">Working with Search Results on the MIDM</a></p>
 <p class="toc level4"><a href="admn_mi-edm-search_p.html#ahodb">Viewing the Results of a Search</a></p>
+<p class="toc level4"><a href="admn_mi-edm-search_p.html#admn_pmi-edm-srch-rslt-slct_t">Selecting a Profile from the Results List</a></p>
 <p class="toc level4"><a href="admn_mi-edm-search_p.html#ahodf">Sorting the Results of Your Search</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-view_c.html">Learning About Object Profile Views on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-prfl_c">Object Profile Details on the MIDM</a></p>
@@ -97,34 +96,34 @@
 <p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-audit_c">The Master Index Audit Log</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-view_p.html">Viewing Object Information on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-prof_t">Viewing Object Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-963">To View an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-991">To View an Object Profile</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#ggsvw">Viewing a Source Record on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1016">To View a Source Record</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1043">To View a Source Record</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-comp_t">Comparing Object Information on the MIDM</a></p>
 <p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoek">Comparing Two or More Object Profiles</a></p>
 <p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoen">Comparing Source Records in one Object Profile</a></p>
 <p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoen2">Comparing Source Records From the Same or Different Object Profiles</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-hist_t">Viewing Transaction Histories on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1138">To View a Complete Transaction History For an Object Profile</a></p>
-<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1158">To View Transaction History Records from the Transactions Page</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1169">To View a Complete Transaction History For an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1189">To View Transaction History Records from the Transactions Page</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-fields_r">About Transaction History Search Fields on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-result_r">About Transaction History Results Fields on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-types_r">Transaction History Transaction Types on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-mrg-hist_t">Viewing a Profile's Merge History on the MIDM</a></p>
 <p class="toc level5"><a href="admn_mi-edm-view_p.html#gfyfy">To View an Object's Merge History</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-audit_t">Viewing the MIDM Audit Log</a></p>
-<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1436">To View the Audit Log</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1467">To View the Audit Log</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-fields_r">About Audit Log Search Fields on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-result_r">About Audit Log Results Fields on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-add_p.html">Adding an Object Profile on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st1_t">Step 1: Obtain Information about the Object</a></p>
 <p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st2_t">Step 2: Specify a System and Local ID</a></p>
-<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1800">To Specify a System and Local ID</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1831">To Specify a System and Local ID</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st3_t">Step 3: Specify Parent Object Information</a></p>
-<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1829">To Specify Parent Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1862">To Specify Parent Object Information</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st4_t">Step 4: Specify Child Object Information</a></p>
-<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1848">To Specify Child Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1881">To Specify Child Object Information</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st5_t">Step 5: Save the Object Profile</a></p>
 <p class="toc level5"><a href="admn_mi-edm-add_p.html#gfyhl">To Save the Object Profile</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-add_c.html">Learning About MIDM Maintenance Tasks</a></p>
@@ -160,7 +159,7 @@
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogp">Linking an SBR Field to a Specific Source Record</a></p>
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogr">Unlinking an SBR Field From a Source Record</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-sys_t">Adding a Source Record to an Object Profile</a></p>
-<p class="toc level5"><a href="admn_mi-edm-mod_p.html#gentextid-2443">To Add a Source Record to an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-mod_p.html#gentextid-2474">To Add a Source Record to an Object Profile</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-deact_t">Deactivating a Profile or Source Record</a></p>
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahoha">Deactivating an Object Profile</a></p>
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogw">Deactivating a Source Record</a></p>
@@ -169,38 +168,39 @@
 <p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogx">Reactivating a Source Record</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-pd_p.html">Working with Potential Duplicate Profiles on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_find_t">Finding Potential Duplicate Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2618">To Find Potential Duplicates</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2647">To Find Potential Duplicates</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_search_r">About Duplicate Records Search Fields on the MIDM</a></p>
-<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-result_r">About Duplicate Records Results Fields</a></p>
 <p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2799">To Combine Potential Duplicate Profiles From the Results List</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2829">To Combine Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2765">To Combine Duplicate Profiles From the Comparison Page</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-res_t">Resolving Potential Duplicate Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2885">To Resolve Potential Duplicate Profiles From the Results List</a></p>
-<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2919">To Resolve Potential Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2816">To Resolve Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2850">To Resolve Potential Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#ggweo">Unresolving Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2885">To Unresolve Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2907">To Unresolve Potential Duplicate Profiles From the Comparison Page</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-asmatch_p.html">Working with Assumed Matches on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-find_t">Finding Assumed Matches on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-2962">To Find Assumed Matches</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-2941">To Find Assumed Matches</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p>
 <p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-asmatch_r">About Assumed Match Results Fields on the MIDM</a></p>
 <p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-rev_t">Reversing an Assumed Match on the MIDM</a></p>
-<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-3120">To Reverse an Assumed Match</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-3099">To Reverse an Assumed Match</a></p>
 <div class="onpage">
 <p class="toc level2 tocsp"><a href="">Combining Object Information on the MIDM</a></p>
 <p class="toc level3"><a href="#admn_mi-edm-mrg-eo_t">Merging Object Profiles on the MIDM</a></p>
-<p class="toc level5"><a href="#gentextid-3151">To Merge Object Profiles</a></p>
+<p class="toc level5"><a href="#gentextid-3130">To Merge Object Profiles</a></p>
 <p class="toc level3 tocsp"><a href="#admn_mi-edm-mrg-so_t">Merging Source Records on the MIDM</a></p>
-<p class="toc level5"><a href="#gentextid-3203">To Merge Source Records</a></p>
+<p class="toc level5"><a href="#gentextid-3173">To Merge Source Records</a></p>
 </div>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-unmerge_p.html">Unmerging Object Information on the MIDM</a></p>
-<p class="toc level4"><a href="admn_mi-edm-unmerge_p.html#gentextid-3251">To Unmerge Object Profiles</a></p>
+<p class="toc level4"><a href="admn_mi-edm-unmerge_p.html#gentextid-3221">To Unmerge Object Profiles</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-reports_c.html">Learning About MIDM Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-prod-reports_c">MIDM Production Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-report-act_c">MIDM Activity Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-conf_c">Configuring MIDM Reports</a></p>
 <p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-mask_c">Masked Data and MIDM Reports</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-edm-reports_p.html">Running MIDM Reports</a></p>
-<p class="toc level4"><a href="admn_mi-edm-reports_p.html#gentextid-3383">To Run Reports From the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-reports_p.html#gentextid-3353">To Run Reports From the MIDM</a></p>
 <p class="toc level3 tocsp"><a href="admn_mi-edm-reports_p.html#admn_mi-edm-reports_r">About Report Search Fields on the MIDM</a></p>
 
      </div>
@@ -213,7 +213,7 @@
 <a name="admn_mi-edm-merge_p"></a>
 
 <h2>Combining Object Information on the MIDM</h2>
-<p><a name="indexterm-300"></a><a name="indexterm-301"></a><a name="indexterm-302"></a>When you determine that two or more profiles represent the same object, you can
+<p><a name="indexterm-294"></a><a name="indexterm-295"></a><a name="indexterm-296"></a>When you determine that two or more profiles represent the same object, you can
 merge the profiles to form one profile that contains the object&rsquo;s most current
 information. You can also merge source records within one profile or from one
 profile to another. The resulting profile of a profile level merge is called
@@ -221,12 +221,12 @@ the Merge Result Record. The SBR for the surviving profile is automatically reca
 based on the source records involved in the merge. In a source record
 merge, the SBRs for all affected profiles are automatically recalculated based on the
 resulting source records in each profile.</p><p>You can display the object profiles to merge using the Search function or
-the Matching Review function. This section describes how to merge records using the
-Search function. For information about merging records using the Matching Review function, see
+the Duplicate Records function. This section describes how to merge records using the
+Search function. For information about merging records using the Duplicate Records function, see
 <a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a>.</p><p>You can merge profiles from either the Duplicate Records page or the Record
 Details page. The following topics provide instructions for merging profiles or source records
-from the Record Details page. For information about merging profiles from the Duplicate
-Records page, see <a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a>.</p>
+from the Record Details or Source Record page. For information about merging profiles
+from the Duplicate Records page, see <a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a>.</p>
 <ul><li><p><a href="#admn_mi-edm-mrg-eo_t">Merging Object Profiles on the MIDM</a></p></li>
 <li><p><a href="#admn_mi-edm-mrg-so_t">Merging Source Records on the MIDM</a></p></li></ul>
 
@@ -241,7 +241,7 @@ the source records in the active profile to determine whether any of them
 should be deactivated or merged.</p><p>Use caution when merging more than two object profiles, as the entire merge
 process cannot be reversed.</p>
 
-<a name="gentextid-3151"></a><h5>To Merge Object Profiles</h5>
+<a name="gentextid-3130"></a><h5>To Merge Object Profiles</h5>
 <ol>
 <li><b>Perform a search for the object profiles you want to merge using any
 of the search procedures described in <a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a>.</b></li>
@@ -257,12 +257,21 @@ Before proceeding, make sure that the profiles should be merged.</p>
 <hr>
 </li>
 <li><b>Determine which of the displayed profiles you want to merge into the profile
-you just selected, and then click their EUIDs.</b><a name="ggswx"></a><h6>Figure&nbsp;62 Comparison Page &ndash; Selecting Profiles to Merge</h6><img src="figures/Merge2.gif" alt="Figure shows two profiles selected for a merge on the Record Details comparison page." width="458" height="392"></img></li>
+you just selected, and then click their EUIDs.</b></li>
 <li><b>Click Preview.</b><p>The merge preview profile appears so you can review the results of the
-merge before finalizing it.</p><a name="ggsyx"></a><h6>Figure&nbsp;63 Comparison Page &ndash; Previewing a Merge</h6><img src="figures/Merge3.gif" alt="Figure shows the merge preview record that will be the final record after a merge." width="471" height="392"></img></li>
+merge before finalizing it.</p></li>
 <li><b>Compare the highlighted field values to determine which to keep in the final
-profile. Select each value to keep that is not already in the merge
-preview profile.</b></li>
+profile. Select each value you want to keep in the merge preview profile.</b>
+<hr><p><b>Note - </b>Selecting a value to keep in the merge result profile creates a link
+from the SBR to the source record field that populated the field.
+For example, if the first name field from Record A is populated from
+Source Record 1, and you merge Record A into Record B and select
+the first name value from Record A, a link is created from the
+first name field in the resulting SBR to the first name field in
+Source Record 1. For more information on linking SBR fields to source record
+fields, see <a href="admn_mi-edm-mod_p.html#admn_mi-edm-sbrlink_t">Overriding the Survivor Calculator's SBR</a>.</p>
+<hr>
+</li>
 <li><b>Click Merge.</b></li>
 <li><b>Click OK on the confirmation dialog box that appears.</b></li>
 <li><b>Review the surviving profile of the merge to be sure no source records
@@ -270,7 +279,7 @@ need to be deactivated or merged.</b></li></ol></div>
 
 
 <div class="indent"><a name="admn_mi-edm-mrg-so_t"></a><h3>Merging Source Records on the MIDM</h3>
-<p><a name="indexterm-303"></a><a name="indexterm-304"></a>You can merge source records from one object profile into a source record
+<p><a name="indexterm-297"></a><a name="indexterm-298"></a>You can merge source records from one object profile into a source record
 from another object profile or you can merge source records within one profile,
 as long as both source records originated from the same system. You can
 also specify which, if any, information to save from the non-surviving source record.
@@ -278,13 +287,13 @@ When you merge source records, the non-surviving source record is transferred in
 object profile of the surviving source record and is given a status of
 merged. The SBRs of the surviving profiles are automatically recalculated.</p>
 
-<a name="gentextid-3203"></a><h5>To Merge Source Records</h5>
+<a name="gentextid-3173"></a><h5>To Merge Source Records</h5>
 <ol>
 <li><b>In the tabbed headings, select Source Record.</b></li>
 <li><b>Click the Merge sub-tab.</b></li>
 <li><b>In the Source Record search fields select the source system for the records,
 enter two local IDs for the source records you want to merge, and
-then click View Records.</b><p>The source record comparison page appears.</p><a name="ahohy"></a><h6>Figure&nbsp;64 Source Record Page&ndash; Merging Source Records</h6><img src="figures/MergeLID1.gif" alt="Figure shows the Source Record Comparison page." width="458" height="380"></img></li>
+then click View Records.</b><p>The source record comparison page appears.</p><a name="ahohy"></a><h6>Figure&nbsp;62 Source Record Page&ndash; Merging Source Records</h6><img src="figures/MergeLID1.gif" alt="Figure shows the Source Record Comparison page." width="458" height="380"></img></li>
 <li><b>Determine which source records you want to merge, and click their local IDs.</b>
 <hr><p><b>Tip - </b>To learn more about the source records by examining the profiles to which
 they belong, click View EUID under the record you want to view.
@@ -293,12 +302,12 @@ Source Record page.</p>
 <hr>
 </li>
 <li><b>Click Keep LID#, where # is the heading number of the source
-record you want to retain after the merge.</b><p>The merge preview record appears.</p><a name="ggsyd"></a><h6>Figure&nbsp;65 Source Record Page &ndash; Merge Preview Record</h6><img src="figures/MergeLID3.gif" alt="Figure shows two source records selected for a merge along with their merge preview record." width="468" height="380"></img></li>
+record you want to retain after the merge.</b><p>The merge preview record appears.</p><a name="ggsyd"></a><h6>Figure&nbsp;63 Source Record Page &ndash; Merge Preview Record</h6><img src="figures/MergeLID3.gif" alt="Figure shows two source records selected for a merge along with their merge preview record." width="468" height="380"></img></li>
 <li><b>Compare the highlighted fields in the source records to determine which value you
 want to keep. Click a highlighted value to add it to the
 merge preview record.</b></li>
 <li><b>At the bottom of the page, click OK.</b></li>
-<li><b>On the configuration dialog box that appears, click OK.</b><p>After you merge two source records, the surviving source record is updated, and the
+<li><b>On the confirmation dialog box that appears, click OK.</b><p>After you merge two source records, the surviving source record is updated, and the
 non-surviving source records are transferred to the &ldquo;merge to&rdquo; profile and is marked
 as merged. The SBRs for the object profiles involved in the merge are
 recalculated. If a &ldquo;merge from&rdquo; profile no longer has any source records, it

@@ -7,11 +7,10 @@
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Working With the Master Index Data Manager provides instructions and background information for using the Master Index Data Manager (MIDM) to monitor and maintain data in your master index applications. It includes instructions for searching for object profiles, viewing and editing object profiles, handling potential duplicate profiles, viewing and reversing automatic matches, merging and unmerging profiles, and running reports.">
-   <meta name="date" content="2008-05-01">
+   <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
 
 <body>
@@ -21,12 +20,11 @@
 
    <a name="top"></a>
    <h1>Working With the Master Index Data Manager</h1>
-   <h1>DRAFT VERSION</h1>
-   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"></span>
-         <span class="tocpageright"><a href="admn_mi-taskoverview_c.html">Next</a></span></h5>
+         <span class="tocpageright"><a href="relatedtopics.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
@@ -41,10 +39,12 @@
    <div class="maincontent">
       <a name="wedmevsm"></a><h3>Working With the Master Index Data Manager</h3><p>The topics listed here provide procedures, conceptual information, and reference information for using
 the Master Index Data Manager (MIDM) to monitor and maintain the data in
-Sun master index applications.</p><p><a name="whatyouneed"></a><b>What You Need to Know</b></p><p>These topics provide information you should to know before you start to work
+Master Index applications.</p><p>For a complete list of Master Index Studio documentation, see <a href="relatedtopics.html">Related Topics</a>.</p><p><a name="whatyouneed"></a><b>What You Need to Know</b></p><p>These topics provide information you should to know before you start to work
 with the MIDM. </p>
 <ul><li><p><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p></li>
+<li><p><a href="admn_mi-aboutsmi_c.html">About Master Index Studio</a></p></li>
 <li><p><a href="admn_mi-profiles_c.html">Learning about MIDM Object Profiles</a></p></li>
+<li><p><a href="admn_mi-profiles_c.html#admn_mi-profile-parts_c">MIDM Object Profile Components</a></p></li>
 <li><p><a href="admn_mi-profiles_c.html#admn_mi-so-sbr_c">Source Record and SBR Components in a Master Index</a></p></li>
 <li><p><a href="admn_mi-profiles_c.html#admn_mi-profile-ids_c">Identification Numbers for each Entity in the Master Index</a></p></li>
 <li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p></li>
@@ -55,8 +55,8 @@ with the MIDM. </p>
 <li><p><a href="admn_mi-edm-reports_c.html">Learning About MIDM Reports</a></p></li></ul>
 <p><b>What You Need to Do</b></p><p>These topics provide instructions on how to use the MIDM to monitor and
 maintain data in master index applications.</p>
-<ul><li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p></li>
-<li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p></li>
+<ul><li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging in to the Master Index Data Manager</a></p></li>
+<li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Out of the MIDM</a></p></li>
 <li><p><a href="admn_mi-dashboard_p.html">Using the MIDM Dashboard</a></p></li>
 <li><p><a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a></p></li>
 <li><p><a href="admn_mi-edm-view_p.html">Viewing Object Information on the MIDM</a></p></li>
@@ -75,8 +75,7 @@ maintain data in master index applications.</p>
 <li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-result_r">About Audit Log Results Fields on the MIDM</a></p></li>
 <li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p></li>
 <li><p><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_search_r">About Duplicate Records Search Fields on the MIDM</a></p></li>
-<li><p><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-result_r">About Duplicate Records Results Fields</a></p></li>
-<li><p> <a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p></li>
+<li><p><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p></li>
 <li><p><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-asmatch_r">About Assumed Match Results Fields on the MIDM</a></p></li>
 <li><p><a href="admn_mi-edm-reports_p.html#admn_mi-edm-reports_r">About Report Search Fields on the MIDM</a></p></li></ul>
 
@@ -89,7 +88,7 @@ maintain data in master index applications.</p>
 
             </td>
             <td class="pageright">
-               <a href="admn_mi-taskoverview_c.html">Next</a>
+               <a href="relatedtopics.html">Next</a>
             </td>
          </tr>
       </table>
