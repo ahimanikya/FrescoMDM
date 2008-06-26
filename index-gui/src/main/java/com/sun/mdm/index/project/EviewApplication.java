@@ -494,6 +494,9 @@ public class EviewApplication extends EviewProject {
         DataTypeDescriptor[] dataTypeDescriptors = standardizationIntrospector.getDataTypes();
         mAlStandDataDataTypes = new ArrayList(dataTypeDescriptors.length);
         for (DataTypeDescriptor dataTypeDescriptor: dataTypeDescriptors) {
+             if (dataTypeDescriptor.getFieldNames() == null) {
+                continue;
+            }
             String strDataType = dataTypeDescriptor.getName();
             mAlStandDataDataTypes.add(strDataType);
             VariantDescriptor[] variantDescriptors = dataTypeDescriptor.getVariants();
@@ -504,7 +507,6 @@ public class EviewApplication extends EviewProject {
                 //}
             }
             mMapStandDataTypeVariants.put(strDataType, alVariants);
-            
             ArrayList alFieldNames = new ArrayList(dataTypeDescriptor.getFieldNames().length);
             for (String fieldName: dataTypeDescriptor.getFieldNames()) {
                 alFieldNames.add(fieldName);
