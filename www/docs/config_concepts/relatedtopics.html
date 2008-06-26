@@ -23,13 +23,15 @@
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="cnfg_index-filters_c.html">Previous</a></span>
-         <span class="tocpageright"><a href="cnfg_index-midm_c.html">Next</a></span></h5>
+     <h5><span class="tocpageleft"><a href="landingpage.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-overview_r.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="landingpage.html">Understanding Master Index Configuration Options</a></p>
-<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<div class="onpage">
+<p class="toc level2"><a href="">Related Topics</a></p>
+</div>
 <p class="toc level2"><a href="cnfg_index-overview_r.html">About Master Index Studio</a></p>
 <p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p>
 <p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-features_c">Features of Master Index Studio</a></p>
@@ -154,13 +156,11 @@
 <p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
 <p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
 <p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-example_c">filter.xml Example</a></p>
-<div class="onpage">
-<p class="toc level2 tocsp"><a href="">Field Validation Configuration</a></p>
-<p class="toc level3"><a href="#cnfg_index-valid-file_c">The validation.xml File</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-ex_c">update.xml Example</a></p>
-</div>
+<p class="toc level2 tocsp"><a href="cnfg_index-validate_c.html">Field Validation Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-validate_c.html#cnfg_index-valid-file_c">The validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-ex_c">update.xml Example</a></p>
 <p class="toc level2 tocsp"><a href="cnfg_index-midm_c.html">Master Index Data Manager Configuration</a></p>
 <p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-abt_c">About the MIDM</a></p>
 <p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p>
@@ -194,92 +194,21 @@
    <div class="maincontent">
 
 
-<a name="cnfg_index-validate_c"></a>
+<a name="relatedtopics"></a>
 
-<h2>Field Validation Configuration</h2>
-<p>You can define custom logic for field validations and then specify them in
-validation.xml to associate the logic with the master index application. The custom logic
-is created as a Java class by defining custom Java classes in the
-Source Package folder of the EJB project. The custom validation classes must implement
-<tt>com.sun.mdm.index.objects.validation.ObjectValidator</tt>. The exception thrown is <tt>com.sun.mdm.index.objects.validation.exception.ValidationException</tt>.</p><p>The following topics describe the structure of validation.xml and provide information about custom
-field validators.</p>
-<ul><li><p><a href="#cnfg_index-valid-file_c">The validation.xml File</a></p></li></ul>
-
-
-<div class="indent"><a name="cnfg_index-valid-file_c"></a><h3>The validation.xml File</h3>
-<p><a name="indexterm-385"></a><a name="indexterm-386"></a><a name="indexterm-387"></a>By default, validation.xml defines one validation rule named <tt>validate-local-id</tt>. This rule defines certain validations
-that are performed against local ID and system fields before they are entered
-into the database. The local ID validator verifies that the system code is
-valid, the local ID format is correct, the local ID is the correct
-length, and that neither field is null.</p><p>The following topics provide information about working with the validation.xml:</p>
-<ul><li><p><a href="#cnfg_index-valid-mod_c">Modifying validation.xml</a></p></li>
-<li><p><a href="#cnfg_index-valid-struct_c">validation.xml File Structure</a></p></li>
-<li><p><a href="#cnfg_index-valid-ex_c">update.xml Example</a></p></li></ul>
-
-
-<div class="indent"><a name="cnfg_index-valid-mod_c"></a><h3>Modifying validation.xml</h3>
-<p>You can modify validation.xml using the XML editor. The possible modifications to this
-file are restricted by the schema definition, so be sure to validate the
-file after making any changes. When you modify this file, you must
-regenerate the application and redeploy the project for the changes to take effect.
-</p></div>
-
-
-<div class="indent"><a name="cnfg_index-valid-struct_c"></a><h3>validation.xml File Structure</h3>
-<p>validation.xml consists primarily of a list of rules. Each rule is defined within
-the <i>ValidationConfig</i> element and is defined by attributes within a <i>rules</i> element.
-<a href="#agyjp">Table&nbsp;13</a> describes the elements and attributes of validation.xml. </p><a name="agyjp"></a><h6>Table&nbsp;13 update.xml File Elements</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element or Attribute</p></th>
-<th align="left" valign="top" scope="column"><p>Description</p></th>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-388"></a>rules</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information
-for the validation rules.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-389"></a>rule</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for a specific validation rule in
-a <i>rules</i> list.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-390"></a>name</p></td>
-<td align="left" valign="top" scope="row"><p>A <i>rule</i> attribute that specifies a name for the validation rule.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-391"></a>object-name</p></td>
-<td align="left" valign="top" scope="row"><p>A
-<i>rule</i> attribute that specifies the name of the class that defines the object
-to which the validation rule is applied, such as <tt>SystemObject</tt> or <tt>ParentNameObject</tt> (where
-<i>ParentName</i> is the name of the parent object in the Object Definition).</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-392"></a>class</p></td>
-<td align="left" valign="top" scope="row"><p>A
-<i>rule</i> attribute that specifies the complete path of the Java class containing the
-validation rule.</p></td>
-</tr>
-</table></div>
-
-
-<div class="indent"><a name="cnfg_index-valid-ex_c"></a><h3>update.xml Example</h3>
-<p>Plug the custom validation classes you create into the master index application by
-specifying the name of the custom plug-in for the class in validation.xml, as
-shown below.</p><pre>&lt;ValidationConfig module-name="Validation"
-parser-class= "com.sun.mdm.index.configurator.impl.validation.ValidationConfiguration"
-   &lt;rules>
-      &lt;rule name="validate-auxiliary-id" object-name="PersonObject"
-       class="com.sun.mdm.index.user.AuxiliaryId"/>
-      &lt;rule name="validate-birth-date" object-name="PersonObject"
-       class="com.sun.mdm.index.user.BirthDate"/>
-   &lt;/rules>
-&lt;/ValidationConfig></pre></div>
-</div>
-
+<h2>Related Topics</h2>
+<p>For a summary of and links to the user documentation available for the
+Mural subprojects, see <a href="https://mural.dev.java.net/Documents.html">Mural Documentation</a>.</p>
    </div>
 
    <div class="BottomPageControlPane">
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="cnfg_index-filters_c.html">Previous</a>
+               <a href="landingpage.html">Previous</a>
             </td>
             <td class="pageright">
-               <a href="cnfg_index-midm_c.html">Next</a>
+               <a href="cnfg_index-overview_r.html">Next</a>
             </td>
          </tr>
       </table>

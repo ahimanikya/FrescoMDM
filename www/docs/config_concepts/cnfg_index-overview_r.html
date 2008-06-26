@@ -23,16 +23,18 @@
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="cnfg_index-filters_c.html">Previous</a></span>
-         <span class="tocpageright"><a href="cnfg_index-midm_c.html">Next</a></span></h5>
+     <h5><span class="tocpageleft"><a href="relatedtopics.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-overview_c.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="landingpage.html">Understanding Master Index Configuration Options</a></p>
 <p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
-<p class="toc level2"><a href="cnfg_index-overview_r.html">About Master Index Studio</a></p>
-<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p>
-<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-features_c">Features of Master Index Studio</a></p>
+<div class="onpage">
+<p class="toc level2"><a href="">About Master Index Studio</a></p>
+<p class="toc level3"><a href="#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p>
+<p class="toc level3"><a href="#cnfg_index-features_c">Features of Master Index Studio</a></p>
+</div>
 <p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html">Configuration Overview for Master Index Studio</a></p>
 <p class="toc level3"><a href="cnfg_index-overview_c.html#cnfg_sme-file-view_c">About the Configuration Files for Master Index Studio</a></p>
 <p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbg">Master Index object.xml File</a></p>
@@ -154,13 +156,11 @@
 <p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
 <p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
 <p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-example_c">filter.xml Example</a></p>
-<div class="onpage">
-<p class="toc level2 tocsp"><a href="">Field Validation Configuration</a></p>
-<p class="toc level3"><a href="#cnfg_index-valid-file_c">The validation.xml File</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-ex_c">update.xml Example</a></p>
-</div>
+<p class="toc level2 tocsp"><a href="cnfg_index-validate_c.html">Field Validation Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-validate_c.html#cnfg_index-valid-file_c">The validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-ex_c">update.xml Example</a></p>
 <p class="toc level2 tocsp"><a href="cnfg_index-midm_c.html">Master Index Data Manager Configuration</a></p>
 <p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-abt_c">About the MIDM</a></p>
 <p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p>
@@ -194,80 +194,46 @@
    <div class="maincontent">
 
 
-<a name="cnfg_index-validate_c"></a>
+<a name="cnfg_index-overview_r"></a>
 
-<h2>Field Validation Configuration</h2>
-<p>You can define custom logic for field validations and then specify them in
-validation.xml to associate the logic with the master index application. The custom logic
-is created as a Java class by defining custom Java classes in the
-Source Package folder of the EJB project. The custom validation classes must implement
-<tt>com.sun.mdm.index.objects.validation.ObjectValidator</tt>. The exception thrown is <tt>com.sun.mdm.index.objects.validation.exception.ValidationException</tt>.</p><p>The following topics describe the structure of validation.xml and provide information about custom
-field validators.</p>
-<ul><li><p><a href="#cnfg_index-valid-file_c">The validation.xml File</a></p></li></ul>
-
-
-<div class="indent"><a name="cnfg_index-valid-file_c"></a><h3>The validation.xml File</h3>
-<p><a name="indexterm-385"></a><a name="indexterm-386"></a><a name="indexterm-387"></a>By default, validation.xml defines one validation rule named <tt>validate-local-id</tt>. This rule defines certain validations
-that are performed against local ID and system fields before they are entered
-into the database. The local ID validator verifies that the system code is
-valid, the local ID format is correct, the local ID is the correct
-length, and that neither field is null.</p><p>The following topics provide information about working with the validation.xml:</p>
-<ul><li><p><a href="#cnfg_index-valid-mod_c">Modifying validation.xml</a></p></li>
-<li><p><a href="#cnfg_index-valid-struct_c">validation.xml File Structure</a></p></li>
-<li><p><a href="#cnfg_index-valid-ex_c">update.xml Example</a></p></li></ul>
+<h2>About Master Index Studio</h2>
+<p>Master Index Studio provides a flexible framework that allows you to create matching
+and indexing applications called <b>enterprise-wide master index applications</b>. It is an application building tool to
+help you design, configure, and create a master index application that will uniquely identify
+and cross-reference the business objects stored in your system databases. Business objects can
+be any type of entity for which you store information, such as customers,
+patients, vendors, businesses, inventory, and so on. </p><p>The following topics provide additional information about Master Index Studio:</p>
+<ul><li><p><a href="#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p></li>
+<li><p><a href="#cnfg_index-features_c">Features of Master Index Studio</a></p></li></ul>
 
 
-<div class="indent"><a name="cnfg_index-valid-mod_c"></a><h3>Modifying validation.xml</h3>
-<p>You can modify validation.xml using the XML editor. The possible modifications to this
-file are restricted by the schema definition, so be sure to validate the
-file after making any changes. When you modify this file, you must
-regenerate the application and redeploy the project for the changes to take effect.
-</p></div>
+<div class="indent"><a name="cnfg_index-cnfg_c"></a><h3>Master Index Studio Configuration</h3>
+<p><a name="indexterm-2"></a><a name="indexterm-3"></a>In Master Index Studio, you define the data structure of the business objects
+to be stored and cross-referenced. In addition, you define the logic that determines
+how data is updated, standardized, weighted, and matched in the master index database.
+The structure and logic you define is located in a group of XML
+configuration files that you create using the wizard. These files are created within
+the context of a NetBeans project, and can be further customized using the
+either the Master Index Configuration Editor  or the NetBeans XML editor. This
+document describes the structure of the XML files and how each configuration option
+affects the master index application.</p></div>
 
 
-<div class="indent"><a name="cnfg_index-valid-struct_c"></a><h3>validation.xml File Structure</h3>
-<p>validation.xml consists primarily of a list of rules. Each rule is defined within
-the <i>ValidationConfig</i> element and is defined by attributes within a <i>rules</i> element.
-<a href="#agyjp">Table&nbsp;13</a> describes the elements and attributes of validation.xml. </p><a name="agyjp"></a><h6>Table&nbsp;13 update.xml File Elements</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element or Attribute</p></th>
-<th align="left" valign="top" scope="column"><p>Description</p></th>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-388"></a>rules</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information
-for the validation rules.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-389"></a>rule</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for a specific validation rule in
-a <i>rules</i> list.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-390"></a>name</p></td>
-<td align="left" valign="top" scope="row"><p>A <i>rule</i> attribute that specifies a name for the validation rule.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-391"></a>object-name</p></td>
-<td align="left" valign="top" scope="row"><p>A
-<i>rule</i> attribute that specifies the name of the class that defines the object
-to which the validation rule is applied, such as <tt>SystemObject</tt> or <tt>ParentNameObject</tt> (where
-<i>ParentName</i> is the name of the parent object in the Object Definition).</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-392"></a>class</p></td>
-<td align="left" valign="top" scope="row"><p>A
-<i>rule</i> attribute that specifies the complete path of the Java class containing the
-validation rule.</p></td>
-</tr>
-</table></div>
-
-
-<div class="indent"><a name="cnfg_index-valid-ex_c"></a><h3>update.xml Example</h3>
-<p>Plug the custom validation classes you create into the master index application by
-specifying the name of the custom plug-in for the class in validation.xml, as
-shown below.</p><pre>&lt;ValidationConfig module-name="Validation"
-parser-class= "com.sun.mdm.index.configurator.impl.validation.ValidationConfiguration"
-   &lt;rules>
-      &lt;rule name="validate-auxiliary-id" object-name="PersonObject"
-       class="com.sun.mdm.index.user.AuxiliaryId"/>
-      &lt;rule name="validate-birth-date" object-name="PersonObject"
-       class="com.sun.mdm.index.user.BirthDate"/>
-   &lt;/rules>
-&lt;/ValidationConfig></pre></div>
+<div class="indent"><a name="cnfg_index-features_c"></a><h3>Features of Master Index Studio</h3>
+<p>Master Index Studio provides features and functions to allow you to create and
+configure master index application for any type of data. The primary function of
+Master Index Studio is to automate the creation of a highly configurable
+master index application. A wizard guides you through the initial setup steps, and the
+Master Index Configuration Editor  allows you to further customize the configuration
+of the master index application. The components you need to implement a master
+index application are automatically generated.</p><p>Master Index Studio provides the following features:</p>
+<ul><li><p><b>Rapid Development</b> - Rapid and intuitive development of a master index application using a wizard to create the master index configuration and using XML documents to configure the attributes of the index. Templates are provided for quick development of person and company object structures.</p></li>
+<li><p><b>Automated Component Generation</b> - Master Index Studio automatically creates the configuration files that define the primary attributes of the master index application, including the configuration of the Master Index Data Manager (MIDM). Master Index Studio also generates scripts that create the appropriate database schemas.</p></li>
+<li><p><a name="indexterm-4"></a><a name="indexterm-5"></a><a name="indexterm-6"></a><b>Configurable Survivor Calculator</b> - Master Index Studio provides predefined strategies for determining which field values to populate in the single best record (SBR). You can define different survivor rules for each field, and you can create a custom survivor strategy to implement in the master index application.</p></li>
+<li><p><a name="indexterm-7"></a><b>Flexible Architecture</b> - Master Index Studio provides a flexible platform that allows you to create a master index application for any business object. You can customize the object structure so the master index application can match and store any type of data, allowing you to design an application that specifically meets your data processing needs.</p></li>
+<li><p><a name="indexterm-8"></a><a name="indexterm-9"></a><b>Configurable Matching Algorithm</b> - Master Index Studio provides standard support for the Mural Match Engine. In addition, you can plug in a custom matching algorithm to the master index application.</p></li>
+<li><p><a name="indexterm-10"></a><b>Custom Java API</b> - Master Index Studio generates a Java API that is customized to the object structure you define.</p></li>
+<li><p><a name="indexterm-11"></a><b>Standard Reports</b> - Master Index Studio provides a set of standard reports with each master index application that can be run from a command line or from the MIDM. The reports help you monitor the state of the data stored in the master index application and help you identify configuration changes that might be required.</p></li></ul>
 </div>
 
    </div>
@@ -276,10 +242,10 @@ parser-class= "com.sun.mdm.index.configurator.impl.validation.ValidationConfigur
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="cnfg_index-filters_c.html">Previous</a>
+               <a href="relatedtopics.html">Previous</a>
             </td>
             <td class="pageright">
-               <a href="cnfg_index-midm_c.html">Next</a>
+               <a href="cnfg_index-overview_c.html">Next</a>
             </td>
          </tr>
       </table>

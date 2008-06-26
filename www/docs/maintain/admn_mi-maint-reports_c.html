@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Maintaining Master Indexes</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Maintaining Master Indexes provides instructions and information for various tasks involved in maintaining a  master index application. These tasks include setting up security for the Master Index Data Manager (MIDM), archiving and backing up the master index database, changing information in the database, running reports, and making changes to the master index files.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+</head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Maintaining Master Indexes</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="admn_mi-ejb-security_t.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-maint-reports_t.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="mevsmi.html">Maintaining Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="admn_mi-maint-security_t.html">Defining Master Index Data Manager Security</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglyo">To Define a User Role</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-usergroup_t">Define EJB User Roles</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglyoejb">To Define an EJB User Role</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglzn">To Create a User Account</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-maint-sec-grps_r">Master Index Data Manager User Role Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-security_r">EJB Security Functions</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-ejb-security_t.html">Defining Web Services Security for Master Index</a></p>
+<p class="toc level3"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-service_t">Secure the Web Service</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwtr">To Secure the Web Service</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-client_t">Secure the Web Client</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwxx">To Secure the Web Client</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-users_t">Create Web Services User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#gglznejb">To Create a User Account</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Learning About Master Index Reports</a></p>
+<p class="toc level3"><a href="#admn_mi-reports-about_c">Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="#ahuas">About Production Reports</a></p>
+<p class="toc level4"><a href="#ahuat">About Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="#ahuav">Master Index Report Configuration</a></p>
+<p class="toc level3"><a href="#ahuaw">Creating Custom Master Index Reports</a></p>
+<p class="toc level3"><a href="#ahuax">Masked Data in Master Index Reports</a></p>
+<p class="toc level3"><a href="#admn_mi-reports-prod_c">Master Index Production Reports</a></p>
+<p class="toc level4"><a href="#ahuaz">Assumed Match Report</a></p>
+<p class="toc level4"><a href="#ahuba">Deactivated Record Report</a></p>
+<p class="toc level4"><a href="#ahubb">Potential Duplicate Report</a></p>
+<p class="toc level4"><a href="#ahubc">Merge Transaction Report</a></p>
+<p class="toc level4"><a href="#ahubd">UnMerge Transaction Report</a></p>
+<p class="toc level4"><a href="#ahube">Update Report</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-reports-activity_c">Master Index Activity Reports</a></p>
+<p class="toc level4"><a href="#ahubg">Weekly Activity Report</a></p>
+<p class="toc level4"><a href="#ahubh">Monthly Activity Report</a></p>
+<p class="toc level4"><a href="#ahubi">Yearly Activity Report</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-reports-index_c">Master Index Database Indexes</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_t.html">Working With Master Index Command Line Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf_c">Configuring the Master Index Report Environment</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#ahucd">To Set up the Environment</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf-rep_c">Configuring Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahucf">Defining the Command Line Report Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahuch">Configuring Command Line Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-maint-reports_r">Master Index Command Line Report Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gfkvq">To Run the Reports Using the Batch File</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gentextid-1437">To Run the Reports Using a Java Command</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-dbs-archive_c.html">Maintaining the Master Index Database</a></p>
+<p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-backup_c">Backing up the Master Index Database</a></p>
+<p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaop">Online Backups</a></p>
+<p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaoq">Offline Backups</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-restore_c">Restoring the Master Index Database</a></p>
+<p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-archive_c">Archiving Master Index Data</a></p>
+<p class="toc level2 tocsp"><a href="admin_mi-maint-project_c.html">Implementing Changes to the Master Index Project</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-cfg_c">Modifying Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapi">Updating the Object Structure</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapj">Updating Normalization and Standardization Structures</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapk">Updating the Match String</a></p>
+<p class="toc level3 tocsp"><a href="admin_mi-maint-project_c.html#admn_mi-project-dbs_c">Modifying the Master Index Database</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-security_c">Modifying Master Index Security</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-lid_c">Modifying the Local ID Format</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="admn_mi-maint-reports_c"></a>
+
+<h2>Learning About Master Index Reports</h2>
+<p>Several standard reports are provided with master index applications that allow you to
+monitor and review the state of the information in the master index database.
+You can either run these reports through the MIDM or from a command
+line. The following topics provide an overview of each report.</p>
+<ul><li><p><a href="#admn_mi-reports-about_c">Master Index Command Line Reports</a></p></li>
+<li><p><a href="#ahuav">Master Index Report Configuration</a></p></li>
+<li><p><a href="#ahuaw">Creating Custom Master Index Reports</a></p></li>
+<li><p><a href="#ahuax">Masked Data in Master Index Reports</a></p></li>
+<li><p><a href="#admn_mi-reports-prod_c">Master Index Production Reports</a></p></li>
+<li><p><a href="#admn_mi-reports-activity_c">Master Index Activity Reports</a></p></li>
+<li><p><a href="#admn_mi-reports-index_c">Master Index Database Indexes</a></p></li></ul>
+
+
+<div class="indent"><a name="admn_mi-reports-about_c"></a><h3>Master Index Command Line Reports</h3>
+<p>Master Index Studio provides a set of production and activity reports that can
+be generated from a command line or from the MIDM. The command line
+report client is created in <tt></tt><i>NetBeans_Projects</i><tt>\</tt><i>Project_Name</i><tt>\report-client</tt> when you generate the master index application.</p><p>The production reports provide information about transactional changes to the data in the
+master index application and about the current state of that data, helping you
+monitor stored data and determine how that data needs to be updated. This
+information also helps verify that the matching logic and weight thresholds are defined
+correctly. Activity reports provide statistical information for transactions over specific periods of time.
+</p><p><a name="indexterm-7"></a><a name="indexterm-8"></a><a name="indexterm-9"></a>In order to run the command line reports, you must have the Java
+Runtime Environment (JRE) 1.5.13 or later installed on the machine where the report
+files reside. For additional reporting needs, the database is accessible using any commercially available
+ODBC-compliant reporting tool. You can also define reports using Java, PL/SQL, or SQL.</p>
+
+<div class="indent"><a name="ahuas"></a><h3>About Production Reports</h3>
+<p><a name="indexterm-10"></a><a name="indexterm-11"></a><a name="indexterm-12"></a><a name="indexterm-13"></a><a name="indexterm-14"></a><a name="indexterm-15"></a><a name="indexterm-16"></a><a name="indexterm-17"></a>Production reports should be run daily and provide information about the transactions that
+are processed through the master index database. These reports provide lists of potential
+duplicate records, merge transactions, unmerge transactions, assumed matches, updates, and deactivated records for a
+specified time period. The information you find in these reports helps you analyze
+your matching threshold configuration, and provides valuable information about how data is being
+processed with your current configuration. In addition to running the production reports daily, you
+should run them against any data that has been loaded from existing
+systems into the master index database in batch format. </p></div>
+
+
+<div class="indent"><a name="ahuat"></a><h3>About Activity Reports</h3>
+<p><a name="indexterm-18"></a><a name="indexterm-19"></a><a name="indexterm-20"></a><a name="indexterm-21"></a><a name="indexterm-22"></a><a name="indexterm-23"></a>Activity reports should be run weekly, monthly, and yearly to obtain statistical data about
+the transactions that are processed through the master index database. These reports give
+the number of each type of transaction performed for the specified week, month,
+or year. They also provide cumulative information for the week, month, or year
+to date. The information you find in these reports helps analyze the matching
+threshold configuration and the condition of your data by giving you the number
+of potential duplicates created, the number of assumed matches, and so on.</p></div>
+</div>
+
+
+<div class="indent"><a name="ahuav"></a><h3>Master Index Report Configuration</h3>
+<p><a name="indexterm-24"></a><a name="indexterm-25"></a>The reports are configured by XML files. For the command line reports, the
+configuration files are located in the report home directory in the <tt>config</tt> subdirectory.
+The file <tt>CompanyReport.xml</tt> provides an example of how the file might be
+configured for a company object; the file <tt>PersonReport.xml</tt> provides an example of how the
+file might be configured for a person object. You can use either file
+for your reports. When you create a new master index application, you can
+specify the fields that appear on reports.</p><p>The configuration files allow you to specify which reports to run, the time
+period of the transactions to include in each report, and the name
+and location of the report files. You can also define various report details, such
+as the name of each report, which fields to include, and the
+names and sizes of the report columns. Most of these changes should only
+need to be made one time, before you first run the reports.</p></div>
+
+
+<div class="indent"><a name="ahuaw"></a><h3>Creating Custom Master Index Reports</h3>
+<p><a name="indexterm-26"></a><a name="indexterm-27"></a><a name="indexterm-28"></a><a name="indexterm-29"></a>If the standard reports do not provide you with all the information you
+need, you can create custom reports using PL/SQL, SQL, or Java (using the
+&ldquo;lookup&rdquo; methods in the MasterController class). You can also access the database using
+any ODBC-compliant report writer (such as Crystal Reports), providing you with the flexibility
+to report on any information contained in the master index database.</p></div>
+
+
+<div class="indent"><a name="ahuax"></a><h3>Masked Data in Master Index Reports</h3>
+<p>The MIDM can be configured to hide certain fields from users who
+do not have the appropriate security permissions. However, reports will display hidden data if
+those fields are configured to appear on the reports. Be sure to only
+give access to users who should be able to view this information, or
+do not include hidden fields in the reports.</p></div>
+
+
+<div class="indent"><a name="admn_mi-reports-prod_c"></a><h3>Master Index Production Reports</h3>
+<p><a name="indexterm-30"></a><a name="indexterm-31"></a><a name="indexterm-32"></a>The standard production reports help you to monitor and analyze the data in
+the master index database. You can view information about the transactions processed and
+about any potential duplicates or assumed matches that result from these transactions.</p><p><a name="indexterm-33"></a>Each report has certain fields that are always displayed and certain fields that
+are configured to display. You can customize the configured fields that appear on
+each report as needed. By default, <tt>CompanyReport.xml</tt> configures all reports to include the
+company name, type, stock symbol, primary contact, street address, city, and telephone number
+fields. <tt>PersonReport.xml</tt> configures all reports to include the first name, last name, date
+of birth, SSN, and address line 1 and 2 fields. The fields that
+are always displayed are described for each report in the following sections.</p><p><a name="indexterm-34"></a>Production reports can be run for the current day, the previous day, or
+for a date range you specify. If you run your daily reports
+in the evening, you should run the current day&rsquo;s reports. If you run
+your daily reports in the morning, you should run the previous day&rsquo;s reports.</p>
+
+<div class="indent"><a name="ahuaz"></a><h3>Assumed Match Report</h3>
+<p>This <a name="indexterm-35"></a><a name="indexterm-36"></a><a name="indexterm-37"></a><a name="indexterm-38"></a><a name="indexterm-39"></a>report displays information about any records that were automatically updated by incoming
+data during the specified time period. The information in this report, in combination with
+data from the potential duplicate report, helps you determine whether the matching threshold
+for assumed matches is accurate. You should review this report daily to ensure
+that no assumed matches were made in error. The master index application provides
+the ability to undo an assumed match that was made in error.</p><p>The assumed match report always includes the following information about the record that
+was updated: enterprise-wide unique identifier (EUID), system code, local ID, and matching weight.
+The report provides the same information for the incoming message that updated the
+existing record with the exception of the EUID. You can configure the report
+to include any additional fields from the defined object structure in object.xml in
+the master index project. </p></div>
+
+
+<div class="indent"><a name="ahuba"></a><h3>Deactivated Record Report</h3>
+<p><a name="indexterm-40"></a><a name="indexterm-41"></a>This report displays a list of all enterprise records that were deactivated during
+the specified time period. This report does not include system records that were
+deactivated. Review this report daily to ensure that no records were deactivated in
+error. The master index application provides the ability to reactivate any deactivated record.
+The deactivated record report always includes the EUID of the deactivated record, and
+you can configure the report to include any additional fields from the defined object
+structure in object.xml in the master index project. </p></div>
+
+
+<div class="indent"><a name="ahubb"></a><h3>Potential Duplicate Report</h3>
+<p><a name="indexterm-42"></a><a name="indexterm-43"></a><a name="indexterm-44"></a><a name="indexterm-45"></a><a name="indexterm-46"></a>This report displays information about records that were marked as potential duplicates of
+one another during the specified time period. The information provided on this report
+can help you determine whether the matching (or upper) threshold and the duplicate threshold
+are configured accurately. The information for each record on the potential duplicate report
+always includes the EUIDs of both records, the system code, and the matching
+weight between each potential duplicate pair. You can configure the report to include
+any additional fields from the defined object structure in object.xml in the master
+index project.</p><p><a name="indexterm-47"></a>If same system matching is not enabled and two duplicate records from the
+same system on this report have a matching weight above the match threshold,
+it is an indication that the records most likely represent the same person.
+Review the potential duplicate report daily to determine if two records need to
+be merged or if they can be resolved. Use this report as a
+work list when working with potential duplicates. </p></div>
+
+
+<div class="indent"><a name="ahubc"></a><h3>Merge Transaction Report</h3>
+<p><a name="indexterm-48"></a><a name="indexterm-49"></a><a name="indexterm-50"></a>This report displays a list of all enterprise records that were merged during
+the specified time period. Review this report daily to ensure that no records
+were merged in error. The master index application provides the ability to unmerge
+any merged records. The merge transaction report always includes the EUID of each
+record affected by the merge. You can also configure the report to include
+any additional fields from the defined object structure in object.xml in the master
+index project. </p></div>
+
+
+<div class="indent"><a name="ahubd"></a><h3>UnMerge Transaction Report</h3>
+<p><a name="indexterm-51"></a><a name="indexterm-52"></a><a name="indexterm-53"></a>This report displays a list of all enterprise records that were unmerged during
+the specified time period. This report always includes the EUIDs of both records
+involved in the unmerge transaction, and you can configure the report to include
+any additional fields from the defined object structure in object.xml in the master
+index project. </p></div>
+
+
+<div class="indent"><a name="ahube"></a><h3>Update Report</h3>
+<p><a name="indexterm-54"></a><a name="indexterm-55"></a><a name="indexterm-56"></a>This report displays records whose information was updated during the specified time period.
+Review this report daily to verify the updates made in a given day.
+This report can help explain why a resolved potential duplicate listing was reinstated
+to the potential duplicate list. The update report always includes the following information
+about the record that was updated: EUID, system code, and local ID. You
+can configure the report to include any additional fields from the defined object
+structure in object.xml in the master index project. The updated fields might not
+necessarily appear on this report. </p></div>
+</div>
+
+
+<div class="indent"><a name="admn_mi-reports-activity_c"></a><h3>Master Index Activity Reports</h3>
+<p><a name="indexterm-57"></a>The activity reports help you to monitor and analyze the transactions in the
+master index database by providing statistical data about each transaction type. Unlike the
+production reports, the information displayed on the activity reports is not configurable. The
+information displayed on these reports is described for each report in the following
+sections. Activity reports can be run for any week, month, or year you
+specify.</p>
+
+<div class="indent"><a name="ahubg"></a><h3>Weekly Activity Report</h3>
+<p><a name="indexterm-58"></a><a name="indexterm-59"></a><a name="indexterm-60"></a>This report displays a summary of transactions that occurred against the database on
+each day for the specified calendar week (always Sunday through Saturday). The information
+provided in this summary includes the number of each of the following transactions
+performed each day.</p>
+<ul><li><p>Add</p></li>
+<li><p>Update</p></li>
+<li><p>EUID Deactivate</p></li>
+<li><p>EUID Merge</p></li>
+<li><p>EUID Unmerge</p></li>
+<li><p>LID Merge</p></li>
+<li><p>LID Unmerge</p></li>
+<li><p>LID Transfer</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahubh"></a><h3>Monthly Activity Report</h3>
+<p>This <a name="indexterm-61"></a><a name="indexterm-62"></a><a name="indexterm-63"></a>report displays a summary of transactions that occurred against the database during
+the specified month. You can run this report for any calendar month. The
+information provided in this summary includes the number of each of the following
+transactions that were performed for the month:</p>
+<ul><li><p>Add</p></li>
+<li><p>EUID Deactivate</p></li>
+<li><p>EUID Merge</p></li>
+<li><p>EUID Unmerge</p></li>
+<li><p>LID Merge</p></li>
+<li><p>LID Unmerge</p></li>
+<li><p>Unresolved Potential Duplicates</p></li>
+<li><p>Resolved Potential Duplicates</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahubi"></a><h3>Yearly Activity Report</h3>
+<p>This <a name="indexterm-64"></a><a name="indexterm-65"></a><a name="indexterm-66"></a>report displays a summary of transactions that occurred against the database for
+the specified calendar year. You can run this report for any calendar year.
+The information provided in this report includes a summary of each transaction listed
+for the monthly activity report above.</p></div>
+</div>
+
+
+<div class="indent"><a name="admn_mi-reports-index_c"></a><h3>Master Index Database Indexes</h3>
+<p>Some of the reports you run can grow quite large, impacting the
+performance of the report client. The following indexes are created in the database
+to improve performance.</p><pre>CREATE INDEX SBYN_POTENTIALDUPLICATES3 ON SBYN_POTENTIALDUPLICATES
+ (TRANSACTIONNUMBER ASC);
+
+CREATE INDEX SBYN_ASSUMEDMATCH2 ON SBYN_ASSUMEDMATCH (TRANSACTIONNUMBER ASC);
+
+CREATE INDEX SBYN_TRANSACTION4 on SBYN_TRANSACTION (EUID2 ASC, TIMESTAMP ASC);
+
+CREATE INDEX SBYN_TRANSACTION3 on SBYN_TRANSACTION (TIMESTAMP ASC,
+ TRANSACTIONNUMBER ASC);</pre>
+<hr><p><b>Note - </b>These indexes should be removed prior to performing an initial load or batch
+load of data.</p>
+<hr>
+</div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="admn_mi-ejb-security_t.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="admn_mi-maint-reports_t.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

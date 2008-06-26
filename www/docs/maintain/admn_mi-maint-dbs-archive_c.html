@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Maintaining Master Indexes</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Maintaining Master Indexes provides instructions and information for various tasks involved in maintaining a  master index application. These tasks include setting up security for the Master Index Data Manager (MIDM), archiving and backing up the master index database, changing information in the database, running reports, and making changes to the master index files.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+</head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Maintaining Master Indexes</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="admn_mi-maint-reports_t.html">Previous</a></span>
+         <span class="tocpageright"><a href="admin_mi-maint-project_c.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="mevsmi.html">Maintaining Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="admn_mi-maint-security_t.html">Defining Master Index Data Manager Security</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglyo">To Define a User Role</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-usergroup_t">Define EJB User Roles</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglyoejb">To Define an EJB User Role</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglzn">To Create a User Account</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-maint-sec-grps_r">Master Index Data Manager User Role Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-security_r">EJB Security Functions</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-ejb-security_t.html">Defining Web Services Security for Master Index</a></p>
+<p class="toc level3"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-service_t">Secure the Web Service</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwtr">To Secure the Web Service</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-client_t">Secure the Web Client</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwxx">To Secure the Web Client</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-users_t">Create Web Services User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#gglznejb">To Create a User Account</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_c.html">Learning About Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-about_c">Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuas">About Production Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuat">About Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#ahuav">Master Index Report Configuration</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#ahuaw">Creating Custom Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#ahuax">Masked Data in Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-prod_c">Master Index Production Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuaz">Assumed Match Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuba">Deactivated Record Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubb">Potential Duplicate Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubc">Merge Transaction Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubd">UnMerge Transaction Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahube">Update Report</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-activity_c">Master Index Activity Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubg">Weekly Activity Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubh">Monthly Activity Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubi">Yearly Activity Report</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-index_c">Master Index Database Indexes</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_t.html">Working With Master Index Command Line Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf_c">Configuring the Master Index Report Environment</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#ahucd">To Set up the Environment</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf-rep_c">Configuring Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahucf">Defining the Command Line Report Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahuch">Configuring Command Line Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-maint-reports_r">Master Index Command Line Report Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gfkvq">To Run the Reports Using the Batch File</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gentextid-1437">To Run the Reports Using a Java Command</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Maintaining the Master Index Database</a></p>
+<p class="toc level3"><a href="#admn_mi-database-backup_c">Backing up the Master Index Database</a></p>
+<p class="toc level4"><a href="#ahaop">Online Backups</a></p>
+<p class="toc level4"><a href="#ahaoq">Offline Backups</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-database-restore_c">Restoring the Master Index Database</a></p>
+<p class="toc level3"><a href="#admn_mi-database-archive_c">Archiving Master Index Data</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="admin_mi-maint-project_c.html">Implementing Changes to the Master Index Project</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-cfg_c">Modifying Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapi">Updating the Object Structure</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapj">Updating Normalization and Standardization Structures</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapk">Updating the Match String</a></p>
+<p class="toc level3 tocsp"><a href="admin_mi-maint-project_c.html#admn_mi-project-dbs_c">Modifying the Master Index Database</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-security_c">Modifying Master Index Security</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-lid_c">Modifying the Local ID Format</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="admn_mi-maint-dbs-archive_c"></a>
+
+<h2>Maintaining the Master Index Database</h2>
+<p>The database requires periodic maintenance tasks, such as backing up information or archiving
+certain tables. Perform backups regularly, and use the standards and policies of your
+organization to determine the best methods for backing up data. The following topics
+provide information about tasks you should perform for standard database maintenance.</p>
+<ul><li><p><a href="#admn_mi-database-backup_c">Backing up the Master Index Database</a></p></li>
+<li><p><a href="#admn_mi-database-restore_c">Restoring the Master Index Database</a></p></li>
+<li><p><a href="#admn_mi-database-archive_c">Archiving Master Index Data</a></p></li></ul>
+
+
+<div class="indent"><a name="admn_mi-database-backup_c"></a><h3>Backing up the Master Index Database</h3>
+<p>The master index database must be backed up on a regular basis.
+Typically, the database should be backed up once a month or once a
+quarter, depending on the size of the database and the volume of data
+being processed. The frequency of your database backups depends on your organization&rsquo;s internal
+policies and practices. Use your normal procedures for backing up a high availability database
+(this procedure should be determined by a database administrator).</p>
+
+<div class="indent"><a name="ahaop"></a><h3>Online Backups</h3>
+<p>The best practice for backing up the master index database is an
+online backup during which the database is not shut down. (Note that this
+does require an offline backup as a starting point to which any online
+changes can be applied in the event the database must be restored). An
+online backup will always take a consistent snapshot, though it might not backup
+all transactions in progress.</p><p>Each transaction in the master index application is saved under one commit command,
+so the state of the database is always consistent when a backup is
+performed. The history tables always match the transactions in the current tables and
+no partial transactions are committed. Even if a transaction is underway at the
+time of the backup, the database is consistent.</p><p>For the most reliable backups for Oracle databases, Oracle recommends running the Oracle
+database in ARCHIVELOG mode. ARCHIVE mode ensures that your database is protected from
+both instance and media failure and, because all changes made to the database
+are saved in a redo log, all database updates are available for recovery
+rather than just the most recent changes. For SQL Server, Microsoft recommends running
+the SQL Server database using the full recovery model, which allows a database
+to be recovered to the point of failure. Online backups are available for
+Oracle and SQL Server databases running in these modes.</p></div>
+
+
+<div class="indent"><a name="ahaoq"></a><h3>Offline Backups</h3>
+<p>If needed, you can perform offline backups of the master index database. In
+this case, you must queue any incoming messages using the JMS IQ
+Manager and undeploy the master index application before beginning the backup. Once the backup
+is complete, restart the database, redeploy the master index application, and then process
+the messages queued by the JMS IQ Manager.</p></div>
+</div>
+
+
+<div class="indent"><a name="admn_mi-database-restore_c"></a><h3>Restoring the Master Index Database</h3>
+<p>In the unlikely event that you need to restore the master index
+database to a previously archived version, you must undeploy the master index application prior
+to performing the restoration to ensure that the application retrieves the correct sequence
+numbers from the database once it is restored. Any new transactions that occurred
+after the archived version was created will be lost, but they can be
+resent if the JMS IQ Manager is configured to journal all messages.</p></div>
+
+
+<div class="indent"><a name="admn_mi-database-archive_c"></a><h3>Archiving Master Index Data</h3>
+<p>In addition to regular database backups, some of the master index database tables
+can grow very large. For performance reasons, you might want to archive the
+information in the sbyn_assumedmatch and the sbyn_audit tables.</p></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="admn_mi-maint-reports_t.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="admin_mi-maint-project_c.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

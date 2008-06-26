@@ -1,172 +1,305 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<head>
+   <title>Understanding Master Index Configuration Options </title>
 
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Understanding Master Index Configuration Options lists and describes the XML files that define the configuration of a master index application. It also provides information about how the configuration options affect the master index application runtime and discusses different ways of configuring the master index application.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
 
- <head>
-
-<title>Developing Master Indexes With Master Index Studio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
-
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
-
-
-</head>
-
-
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   </head>
 
 <body>
 
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
 
+   <a name="top"></a>
+   <h1>Understanding Master Index Configuration Options </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_index-object_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-master_c.html">Next</a></span></h5>
 
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-
-
-
-
-
-<!-- Servlet-Specific template -->
-
-<p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-
-
-		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
-		<table id="floating-contenttable" class="colapse" background-color="#FFFFFF">
-		<td class="valign-top b-right full-width" background-color="#FFFFFF"><!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;"><!-- IE hack-->
-
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-
-
-<a name="top"></a>
-<h1>Understanding Master Index Configuration Options</h1>
-<h1 style="bold">DRAFT VERSION</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
-    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Understanding Master Index Configuration Options</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="cnfg_index-overview_r.html">About Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-features_c">Features of Master Index Studio</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html">Configuration Overview for Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_c.html#cnfg_sme-file-view_c">About the Configuration Files for Master Index Studio</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbg">Master Index object.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbe">Master Index query.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbt">Master Index mefa.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbp">Master Index master.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjax">Master Index update.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-filtering_c">Master Index filter.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-valid_c">Master Index validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-secur_c">Master Index security.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-edm-about_c">Master Index edm.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-engine_c">Match and Standardization Engine Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-overview_c.html#cnfg_index-editors_c">Using the Editors for Master Index Studio</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#gglcd">XML Editors</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-editors-cfg_c">Master Index Configuration Editor </a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybn">The object.xml File</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybo">query.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybp">master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybq">mefa.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybr">update.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybs">update.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybt">edm.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybu">Match Configuration File</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-object_c.html">Master Index Object Definition Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-object_c.html#cnfg_index-objdef-parts_c">Master Index Object Definition Components</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-objects_c">Master Index Object Definition Objects</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-fields_c">Master Index Object Definition Fields</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-relat_c">Master Index Object Definition Relationships</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_c.html#cnfg_index-od-file_c">The Master Index object.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-mod_c">Modifying the Master Index Object Definition</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-structure_c">The object.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_c.html#agyck">object.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-object_c.html#agycm">object.xml Example</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Query Configuration</a></p>
+<p class="toc level3"><a href="#cnfg_index-query-parts_c">Query Builder Components</a></p>
+<p class="toc level4"><a href="#cnfg_index-basic-query_c">Basic Queries in a Master Index</a></p>
+<p class="toc level4"><a href="#cnfg_index-blocking_c">Blocking Queries in a Master Index</a></p>
+<p class="toc level5"><a href="#gentextid-593">Blocking Query Block Processing</a></p>
+<p class="toc level5"><a href="#gentextid-600">Blocking Query for Matching</a></p>
+<p class="toc level4 tocsp"><a href="#cnfg_index-phon-quer_c">Phonetic Queries in a Master Index</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-range-srch_c">Range Searching</a></p>
+<p class="toc level3"><a href="#cnfg_index-query-file_c">The query.xml File</a></p>
+<p class="toc level4"><a href="#cnfg_index-query-cfg_c">Modifying query.xml</a></p>
+<p class="toc level4"><a href="#cnfg_index-query-struct_c">The query.xml File Structure</a></p>
+<p class="toc level5"><a href="#agydg">query.xml File Description</a></p>
+<p class="toc level5"><a href="#agydi">query.xml Example</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-range-proc_c">Range Search Processing</a></p>
+<p class="toc level4"><a href="#cnfg_index-basic-range_c">Basic Query Range Searching</a></p>
+<p class="toc level4"><a href="#cnfg_index-block-range_c">Blocking Query Range Searching</a></p>
+<p class="toc level5"><a href="#cnfg_index-block-off_c">Blocking Query Offset Values</a></p>
+<p class="toc level5"><a href="#agymp">Blocking Query Constants</a></p>
+<p class="toc level5"><a href="#agyms">Blocking Query Offset and Constant Combinations</a></p>
 </div>
+<p class="toc level2 tocsp"><a href="cnfg_index-master_c.html">Manager Service Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-master_c.html#cnfg_index-master-parts_c">Manager Service Components</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-mc-cnfg_c">Master Controller Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyec">Custom Logic Classes in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyed">Update Mode in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyee">Merged Record Updates in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyef">Blocking Query in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#gfxsc">Transactional Support</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-dm-cnfg_c">Decision Maker</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeh">OneExactMatch</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyei">SameSystemMatch</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyej">DuplicateThreshold</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyek">MatchThreshold</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-euid-gen_c">EUID Generator</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyem">IdLength</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyen">ChecksumLength</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeq">ChunkSize</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-master-file_c">The master.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-master-mod_c">Modifying master.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-master-struct_c">The master.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeu">master.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyew">master.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mefa_c.html">Match Field Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-parts_c">Matching Service Components</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-std-cnfg_c">Standardization Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyfy">Data Reformatting</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyfz">Data Normalization</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyga">Phonetic Encoding</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-mtch-cnfg_c">Matching Configuration</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-cnfg_c">MEFA Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygd">Match and Standardization Engines</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyge">Block Picker and Pass Controller</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-phon-cnfg_c">Phonetic Encoders</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-sqnc_c">Sample Standardization and Matching Sequence</a></p>
+<p class="toc level3"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-file_c">The mefa.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-mod_c">Modifying mefa.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-strct_c">The mefa.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygk">mefa.xml Description</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygm">mefa.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivior_c.html">Survivor Strategy Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-survivior_c.html#cnfg_index-mefa-sbr_c">The Survivor Calculator and the SBR</a></p>
+<p class="toc level3"><a href="cnfg_index-survivior_c.html#cnfg_index-updtmgr-parts_c">Update Manager Components</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-srvrhlpr_c">Survivor Helper</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyie">Survivor Helper Default Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyif">Survivor Helper Weighted Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyig">Survivor Helper Union Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivior_c.html#cnfg_index-wghtcalc_c">Weighted Calculator</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3433">Weighted Calculator SourceSystem Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3437">Weighted Calculator SystemAgreement Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3441">Weighted Calculator MostRecentModified Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivior_c.html#agyijcnfg_index-updtpols_c">Update Manager Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyik">Update Manager Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyil">Update Manager Update Policy Flag</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-file_c">The update.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-mod_c">Modifying update.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-strct_c">The update.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyip">update.xmlFile Description</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyir">update.xml Example</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyis">Weighted Calculator Logic</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-filters_c.html">SBR, Matching, and Blocking Filter Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-ovrvw_c">Master Index Field Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter_c">SBR Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-block_c">Blocking Query Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-match_c">Match String Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-listfile_c">Exclusion Lists</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-file_c">The filter.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-example_c">filter.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-validate_c.html">Field Validation Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-validate_c.html#cnfg_index-valid-file_c">The validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-ex_c">update.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-midm_c.html">Master Index Data Manager Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-abt_c">About the MIDM</a></p>
+<p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#cnfg_index-midm-props_c">Object and Field Properties</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#cnfg_index-midm-relat_c">Relationship Properties</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#ggryo">Display Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggrya">Page Display Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggrzt">Audit Log</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggrzk">Local ID Labels</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggryp">Search Page Configuration</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-midm_c.html#cnfg_index-midm-imp_c">Implementation Configuration</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm_c.html#cnfg_index-midm-file_c">The midm.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#cnfg_index-midm-modifying_c">Modifying midm.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#agykg">midm.xml File Description</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#agyki">midm.xml File Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html">Master Index Field Notations</a></p>
+<p class="toc level3"><a href="cnfg_index-epaths_c.html#cnfg_index-epath_c">ePath Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-syntax_c">ePath Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-ex_c">ePath Notation Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qfn_c">Qualified Field Name Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qual_c">Qualified Field Name Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qual-ex_c">Qualified Field Name Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-simple_c">Simple Field Name Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-smpl-syntax_c">Simple Field Notation Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-smpl-ex_c">Simple Field Notation Example</a></p>
 
-<a name="cnfg_index-query_c"></a><h3>Candidate Select Configuration</h3><p><a name="indexterm-87"></a>You can define the characteristics of the searches performed from the Enterprise Data
-Manager and of the queries used by the master index application to search
-for a candidate pool of potential matches for incoming records. This chapter provides
-information about queries and the structure of the Candidate Select file (<tt>query.xml</tt>). It
-includes these topics:</p>
-<ul><li><p><a href="#agycx">About Candidate Select Configuration</a></p></li>
-<li><p><a href="#agycy">Query Builder Components</a></p></li>
-<li><p><a href="#agydc">Range Searching</a></p></li>
-<li><p><a href="#agydd">The Candidate Select File</a></p></li>
-<li><p><a href="#agymf">Range Search Processing</a></p></li></ul>
+     </div>
+   </div>
 
 
-<a name="agycx"></a>
+   <div class="maincontent">
 
-<h2>About Candidate Select Configuration</h2>
-<p><a name="indexterm-88"></a><a name="indexterm-89"></a><a name="indexterm-90"></a><a name="indexterm-91"></a>The Candidate Select file (<tt>query.xml</tt>) configures properties of the Query Builder, which
-is a class that uses defined criteria and options to generate queries and
-query results. The Candidate Select file defines the criteria and options used by
-the Query Builder to create database queries. The criteria must be fields that
-are defined in the Object Definition, and the options are key and value
-pairs that fine-tune the query operation. The Candidate Select file defines the properties
-of queries originating from the EDM as well as queries made for matching
-purposes.</p>
 
-<a name="agycy"></a>
+<a name="cnfg_index-query_c"></a>
 
-<h2>Query Builder Components</h2>
-<p><a name="indexterm-92"></a><a name="indexterm-93"></a><a name="indexterm-94"></a><a name="indexterm-95"></a><a name="indexterm-96"></a>The master index application performs two types of queries. Users perform manual queries
-from the EDM and the index automatically performs queries before processing matches for
-an incoming record. Two types of queries, <b>basic queries</b> and <b>blocking queries</b>, are predefined in the
-Query Builder. By default, basic queries are defined for the EDM and blocking
-queries are defined for match processing, though this is not required. You can
-also use a blocking query for the phonetic searches performed from the EDM.
-Both types of queries are configured by the Candidate Select file, and custom
-queries can be created and implemented with the master index application.</p><p>You can configure certain query properties. Both types of queries can be configured
-to search on standardized or phonetic versions of the search criteria. Basic queries
-can be configured to allow wildcard characters. For the blocking queries, you define
-the criteria to include in each block of query criteria. Both query types
-can be configured for searching on exact values or a range of values.</p>
+<h2>Query Configuration</h2>
+<p><a name="indexterm-90"></a><a name="indexterm-91"></a><a name="indexterm-92"></a><a name="indexterm-93"></a><a name="indexterm-94"></a>In query.xml, you configure properties of the Query Builder, which is a class
+that uses defined criteria and options to generate queries and query results from
+a master index database. The criteria and options used by the Query Builder
+to create database queries are defined in query.xml. The criteria must be fields
+that are defined in the Object Definition, and the options are key and
+value pairs that fine-tune the query operation. You can define the characteristics of
+the searches performed from the Master Index Data Manager and of the queries
+used by the master index application to search for a candidate pool of
+potential matches for incoming records. </p><p>The following topics provide information about queries and the structure of query.xml:</p>
+<ul><li><p><a href="#cnfg_index-query-parts_c">Query Builder Components</a></p></li>
+<li><p><a href="#cnfg_index-range-srch_c">Range Searching</a></p></li>
+<li><p><a href="#cnfg_index-query-file_c">The query.xml File</a></p></li>
+<li><p><a href="#cnfg_index-range-proc_c">Range Search Processing</a></p></li></ul>
 
-<div class="indent"><a name="agycz"></a><h3>Basic Queries</h3>
-<p>By default, searches performed from the EDM follow the logic defined in the
+
+<div class="indent"><a name="cnfg_index-query-parts_c"></a><h3>Query Builder Components</h3>
+<p><a name="indexterm-95"></a><a name="indexterm-96"></a><a name="indexterm-97"></a><a name="indexterm-98"></a><a name="indexterm-99"></a>The master index application performs two types of queries. Users perform manual queries
+from the MIDM and the master index application automatically performs queries before processing
+matches for an incoming record. Two types of queries, <b>basic queries</b> and <b>blocking queries</b>, are
+predefined in the Query Builder. By default, basic queries are defined for the
+MIDM and blocking queries are defined for match processing, though this is not
+required. You can also use a blocking query for the phonetic searches performed
+from the MIDM. Both types of queries are configured by query.xml, and custom
+queries can be created and implemented with the master index application.</p><p>You can configure certain query properties. You can configure both basic and blocking
+queries to search on standardized or phonetic versions of the search criteria, and
+you can also specify that they search on exact values or a range
+of values. Basic queries can be configured to allow wildcard characters. For the
+blocking queries, you define the criteria to include in each block of query
+criteria. </p><p>The following topics provide additional information about the different types of queries:</p>
+<ul><li><p><a href="#cnfg_index-basic-query_c">Basic Queries in a Master Index</a></p></li>
+<li><p><a href="#cnfg_index-blocking_c">Blocking Queries in a Master Index</a></p></li>
+<li><p><a href="#cnfg_index-phon-quer_c">Phonetic Queries in a Master Index</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-basic-query_c"></a><h3>Basic Queries in a Master Index</h3>
+<p>By default, searches performed from the MIDM follow the logic defined in the
 configured basic queries. You can specify which query type to use for each
-search defined for the EDM (this is specified in the Enterprise Data Manager
-file (<tt>edm.xml</tt>). These searches can be weighted, which means that the match engine
-calculates the likelihood that the search results match the actual search criteria and
-assigns a matching weight to each returned record. You can specify whether the
-search is performed on the original or phonetic version of the criteria.</p><p>The basic query uses all supplied search criteria to create a single SQL
+search defined for the MIDM (this is specified in midm.xml). These searches can
+be weighted, which means that the match engine calculates the likelihood that the
+search results match the actual search criteria and assigns a matching weight to
+each returned record. You can specify whether the search is performed on the
+original or phonetic version of the criteria.</p><p>The basic query uses all supplied search criteria to create a single SQL
 query. For this query, each field in the WHERE clause is joined
 by an AND operator, meaning that only records that match on all search
 fields are returned. This query has an option to allow wildcard characters in
 the search criteria (a percent sign (%) indicates multiple unknown characters). When this option
 is set to <b>true</b>, the query uses the LIKE operator rather than EQUALS.
 This option allows you to search by criteria for which you have incomplete
-data.</p><p>The searches performed from the EDM can be further customized in the Enterprise
-Data Manager file (for more information, see <a href="cnfg_index-edm_c.html">Chapter&nbsp;9, Enterprise Data Manager Configuration</a>).</p></div>
+data.</p><p>The searches performed from the MIDM can be further customized in midm.xml (for
+more information, see <a href="cnfg_index-midm_c.html">Master Index Data Manager Configuration</a>).</p></div>
 
 
-<div class="indent"><a name="agyda"></a><h3>Blocking Queries</h3>
-<p><a name="indexterm-97"></a><a name="indexterm-98"></a>When the master index application evaluates possible matches of records sent to the
-index from the external systems and from the EDM, the index performs a
+<div class="indent"><a name="cnfg_index-blocking_c"></a><h3>Blocking Queries in a Master Index</h3>
+<p><a name="indexterm-100"></a><a name="indexterm-101"></a>When the master index application evaluates possible matches of records sent to the
+master index application from external systems and from the MIDM, the index performs a
 set of predefined SQL queries to retrieve a subset of possible matches. These
-queries are known as <b>blocking queries</b>. The matching algorithm processes the input record against the
-profiles retrieved from the blocking query (known as the <b>candidate pool</b>) and assigns them
-matching probability weights.</p><p><a name="indexterm-99"></a><a name="indexterm-100"></a><a name="indexterm-101"></a>The Candidate Select file allows you to define the criteria and conditions for
-querying the database to retrieve the subset of possible matches to the incoming
-record, including Oracle hints and SQL Server OPTION hints. You can define multiple
-queries, known as <b>blocks</b>, for each blocking query, and the master index application
-performs each of these queries in turn when processing records until sufficient records
-are retrieved (called a <b>match pass</b>). Using the default Query Builder, a block is only
-processed if the search criteria include all of the fields defined for that
-block. Each field in a block is joined by an AND operator in
-the WHERE clause, and each block is joined by a UNION operator.
-This type of search can also be used as a phonetic search in
-the EDM.</p><p>The blocking queries you define here are referenced in the Threshold file, which
-specifies which one of the defined blocking queries to use for match processing.
-They might also be referenced in the Enterprise Data Manager file if a
-blocking query is used for phonetic searches from the EDM. To enable extensive
-searching (that is, searching against additional tables, such as an alias table for
-a person index), you must add the fields from that table to the
-blocking query.</p></div>
+queries are known as <b>blocking queries</b>. The matching algorithm processes the input record against
+the profiles retrieved from the blocking query (known as the <b>candidate pool</b>) and assigns them
+matching probability weights.</p>
+
+<div class="indent"><a name="gentextid-593"></a><h3>Blocking Query Block Processing</h3>
+<p><a name="ggjct"></a><a name="indexterm-102"></a><a name="indexterm-103"></a><a name="indexterm-104"></a>In query.xml, you define the criteria and conditions for querying the database to
+retrieve the subset of possible matches to the incoming record, including Oracle hints
+and SQL Server OPTION hints. You can define multiple queries, known as <b>blocks</b>,
+for each blocking query, and the master index application performs each of these
+queries in turn until sufficient records are retrieved (called a <b>match pass</b>). Using the default
+Query Builder, a block is only processed if the search criteria include all
+of the fields defined for that block. Each field in a block
+is joined by an AND operator in the WHERE clause, and each block
+is joined by a UNION operator. This type of search can also be
+used as a phonetic search in the MIDM.</p></div>
 
 
-<div class="indent"><a name="agydb"></a><h3>Phonetic Queries</h3>
-<p><a name="indexterm-102"></a>You can configure either the basic query or the blocking query to perform
-phonetic searches from the EDM. If you use a basic query, then all
-entered criteria must match existing records in order to return results from the
-search. If you use a blocking query, several queries are performed using different
-combinations of data until enough matching records are returned or until all defined
-combinations have been tried.</p><p>For example, if you use a basic query and enter first and
+<div class="indent"><a name="gentextid-600"></a><h3>Blocking Query for Matching</h3>
+<p><a name="ggjed"></a>The blocking queries you define here are referenced in master.xml, which specifies which
+one of the defined blocking queries to use for match processing. They might
+also be referenced in midm.xml if a blocking query is used for phonetic
+searches from the MIDM. To enable extensive searching (that is, searching against additional
+tables, such as an alias table for a person index), you must add
+the fields from that table to the blocking query.</p><p>Certain fields used as criteria in the blocking query might contain known default
+or invalid values. You can define exclusion lists to filter out unwanted or
+invalid values from the blocking query. For more information, see <a href="cnfg_index-filters_c.html">SBR, Matching, and Blocking Filter Configuration</a>.</p></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-phon-quer_c"></a><h3>Phonetic Queries in a Master Index</h3>
+<p><a name="indexterm-105"></a>You can configure both basic queries and blocking queries to perform phonetic searches
+from the MIDM. If you use a basic query, then all entered criteria
+must match existing records in order to return results from the search. If
+you use a blocking query, several queries are performed using different combinations of
+data until enough matching records are returned or until all defined combinations have
+been tried.</p><p>For example, if you use a basic query and enter first and
 last name, date of birth, gender, and SSN for criteria, the basic query
 might not return any matches if any one of those fields does not
 match the criteria. However, if you use a blocking query for the same
 example, it might search on SSN, then on first name and date of
 birth, and then on last name and gender. The query returns any matching
-records from all of the query passes.</p></div>
+records from any of the query passes.</p></div>
+</div>
 
 
-<a name="agydc"></a>
-
-<h2>Range Searching</h2>
-<p><a name="indexterm-103"></a><a name="indexterm-104"></a>Both basic and blocking queries can be configured to perform exact searches or
+<div class="indent"><a name="cnfg_index-range-srch_c"></a><h3>Range Searching</h3>
+<p><a name="indexterm-106"></a><a name="indexterm-107"></a>Both basic and blocking queries can be configured to perform exact searches or
 range searches. An exact search performs a query for the exact value entered
 into a field as search criteria; range searches perform a query on a
 range of values based on the value entered into a field as search
@@ -175,200 +308,201 @@ upper limits of the range is supplied. The blocking query supports standard rang
 searching plus two additional types that use predefined offset values or constants.</p><p>Offset values allow you to specify values to be added to or
 subtracted from the entered value to determine the range on which to search.
 Constants provide a default value to use as a range when no value
-is entered, or when incomplete information is available.</p><p>Range searching is configured in both the Enterprise Data Manager file and the
-Candidate Select file. The processing logic for different types of range searching is
-described in <a href="#agymf">Range Search Processing</a>.</p>
-
-<a name="agydd"></a>
-
-<h2>The Candidate Select File</h2>
-<p>The properties for the predefined queries are defined in the Candidate Select file
-(<tt>query.xml</tt>) in XML format. Some of the information entered into the default configuration
-file is based on the fields you specified for blocking in the wizard,
-and some is standard across all implementations. For most implementations, this file will
-require some customization.</p>
-
-<div class="indent"><a name="agyde"></a><h3>Modifying the Candidate Select File</h3>
-<p><a name="indexterm-105"></a>You can modify the Candidate Select file at any time, but you must
-regenerate the application and redeploy the Project after making any changes to the
-file. The properties of the blocking query used by the match process should
-not be modified after moving into production because it can cause unexpected matching
-weight results. The possible modifications to this file are restricted by the schema
-definition, so be sure to validate the file after making any changes.</p></div>
+is entered or when incomplete information is available.</p><p>Range searching is configured in both midm.xml and query.xml. The processing logic for
+different types of range searching is described in <a href="#cnfg_index-range-proc_c">Range Search Processing</a>.</p></div>
 
 
-<div class="indent"><a name="agydf"></a><h3>Candidate Select File Structure</h3>
-<p><a name="indexterm-106"></a><a name="indexterm-107"></a>This section describes the structure of the XML file, including general requirements and
+<div class="indent"><a name="cnfg_index-query-file_c"></a><h3>The query.xml File</h3>
+<p>The properties for the predefined queries are defined in query.xml. Some of
+the information entered into the default configuration file is based on the fields
+you specified for blocking in the wizard, and some is standard across all
+implementations. For most implementations, this file will require some customization. </p><p>The following topics provide information about working with query.xml:</p>
+<ul><li><p><a href="#cnfg_index-query-cfg_c">Modifying query.xml</a></p></li>
+<li><p><a href="#cnfg_index-query-struct_c">The query.xml File Structure</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-query-cfg_c"></a><h3>Modifying query.xml</h3>
+<p><a name="indexterm-108"></a>You can modify query.xml at any time, but you must regenerate the application
+and redeploy the project after making any changes to the file. The properties
+of the blocking query used by the match process should not be modified
+after moving into production because it can cause unexpected matching weight results. The
+possible modifications to this file are restricted by the schema definition, so be
+sure to validate the file after making any changes. Most of the components
+in this file can be configured using the Configuration Editor, which simplifies the
+process of defining queries by providing a graphical interface to perform the required tasks.</p></div>
+
+
+<div class="indent"><a name="cnfg_index-query-struct_c"></a><h3>The query.xml File Structure</h3>
+<p><a name="indexterm-109"></a><a name="indexterm-110"></a>This topic describes the structure of the XML file, including general requirements and
 constraints, and provides a sample implementation.</p>
 
-<div class="indent"><a name="agydg"></a><h3>Candidate Select File Description</h3>
-<p><a href="#agydh">Table&nbsp;4-1</a> lists each element in the Candidate Select file and provides a description
-of each element along with any requirements or constraints for each element. </p><a name="agydh"></a><h6>Table&nbsp;4-1 Candidate Select File Structure</h6><table><col width="25*"><col width="75*"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<div class="indent"><a name="agydg"></a><h3>query.xml File Description</h3>
+<p><a href="#agydh">Table&nbsp;2</a> lists each element in query.xml and provides a description of each element
+along with any requirements or constraints for each element. </p><a name="agydh"></a><h6>Table&nbsp;2 query.xml File Structure</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-108"></a>QueryBuilderConfig</p></td>
-<td align="left" valign="top" scope="row"><p>The
-configuration class for the query builders. This should not be modified.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-111"></a>QueryBuilderConfig</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration class for
+the query builders. This should not be modified.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-109"></a>query-builder</p></td>
-<td align="left" valign="top" scope="row"><p>A list
-of query definition. This element defines each query and the attributes of each
-query.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-112"></a>query-builder</p></td>
+<td align="left" valign="top" scope="row"><p>A list of query definitions.
+This element defines each query and the attributes of each query.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-110"></a>query-builder/name</p></td>
-<td align="left" valign="top" scope="row"><p>A unique ID for the element. This element is used to identify
-the Query Builder and is referenced from the Enterprise Data Manager file when
-specifying the query to use on a search page. It is also referenced
-from the Match Field file when specifying the query to use for matching.
-No spaces are allowed in this attribute.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-113"></a>query-builder/name</p></td>
+<td align="left" valign="top" scope="row"><p>A unique ID
+for the element. This element is used to identify the Query Builder and
+is referenced from midm.xml when specifying the query to use on a search
+page. It is also referenced from mefa.xml when specifying the query to use
+for matching. No spaces are allowed in this attribute.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-111"></a>query-builder/class</p></td>
-<td align="left" valign="top" scope="row"><p>The fully qualified name of the query
-class. Two default Query Builder classes are provided.</p>
-<ul><li><p><tt>com.sun.mdm.index.querybuilder.BasicQueryBuilder</tt> &mdash; Builds dynamic queries using all the available input fields. When configured to use normalized and phonetic data, this query performs phonetic searches; when configured not to use normalized and phonetic data, this query is used for exact alphanumeric searches.</p></li>
-<li><p><tt>com.sun.mdm.index.querybuilder.BlockerQueryBuilder</tt> &mdash; Builds queries using the criteria defined in the block definitions defined for the query. When a blocker query is performed, the application searches only on the blocks for which they query has complete data.</p></li></ul>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-114"></a>query-builder/class</p></td>
+<td align="left" valign="top" scope="row"><p>The fully qualified name
+of the query class. Two default Query Builder classes are provided.</p>
+<ul><li><p><tt>com.sun.mdm.index.querybuilder.BasicQueryBuilder</tt> &ndash; Builds dynamic queries using all the available input fields. When configured to use normalized and phonetic data, this query performs phonetic searches; when configured not to use normalized and phonetic data, this query is used for exact alphanumeric searches.</p></li>
+<li><p><tt>com.sun.mdm.index.querybuilder.BlockerQueryBuilder</tt> &ndash; Builds queries using the criteria defined in the block definitions defined for the query. When a blocking query is performed, the application searches only on the blocks for which the query has complete data.</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-112"></a>query-builder/parser-class</p></td>
-<td align="left" valign="top" scope="row"><p><a name="indexterm-113"></a>The fully qualified name of the class
-that parses the <i>config</i> elements for each query. This should not be modified
-for the default queries.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-115"></a>query-builder/parser-class</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-116"></a>The fully qualified name
+of the class that parses the <i>config</i> elements for each query. This should
+not be modified for the default queries.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-114"></a>query-builder/standardize</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of whether the query criteria is standardized
-before being passed to the query. Specify <tt><b>true</b></tt> if fields are standardized for the
-query; specify <tt><b>false</b></tt> if no fields are standardized for the query.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-117"></a>query-builder/standardize</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the query
+criteria is standardized before being passed to the query. Specify <tt><b>true</b></tt> if any
+fields are standardized for the query; specify <tt><b>false</b></tt> if no fields are standardized for
+the query.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-115"></a>query-builder/phoneticize</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of
-whether the query criteria is phonetically encoded before being passed to the query.
-Specify <tt><b>true</b></tt> if fields are phonetically encoded for the query specify; <tt><b>false</b></tt> if no
-fields are phonetically encoded for the query.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-118"></a>query-builder/phoneticize</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the query criteria is phonetically encoded before being
+passed to the query. Specify <tt><b>true</b></tt> if any fields are phonetically encoded for
+the query specify; <tt><b>false</b></tt> if no fields are phonetically encoded for the query.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-116"></a>config</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for a query.
-Each <i>query-builder</i> element contains one <i>config</i> element.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-119"></a>config</p></td>
+<td align="left" valign="top" scope="row"><p>The
+configuration information for a query. Each <i>query-builder</i> element contains one <i>config</i> element.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-117"></a>option</p></td>
-<td align="left" valign="top" scope="row"><p>One query parameter, specified by <i>key</i> and
-<i>value</i> attributes, as described below. This is only used by basic queries; blocker
-queries do not use this element.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-120"></a>option</p></td>
+<td align="left" valign="top" scope="row"><p>One query
+parameter, specified by <i>key</i> and <i>value</i> attributes, as described below. This is
+only used by basic queries; blocking queries do not use this element.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>option/<a name="indexterm-118"></a>key</p></td>
-<td align="left" valign="top" scope="row"><p><a name="indexterm-119"></a>A parameter for the query option. For the
-default basic query, only the <i>UseWildCard</i> key is available.</p></td>
+<tr><td align="left" valign="top" scope="row"><p>option/<a name="indexterm-121"></a>key</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-122"></a>A parameter
+for the query option. For the default basic query, only the <i>UseWildCard</i> key is
+available.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>option/<a name="indexterm-120"></a>value</p></td>
-<td align="left" valign="top" scope="row"><p>The value of the key
-specified by the corresponding <i>key</i> attribute. For the default option, <i>UseWildCard</i>, specify <tt><b>true</b></tt>
-to allow wildcard characters for that query type; otherwise specify <tt><b>false</b></tt>. When
-wildcard characters are enabled, you can enter a percent sign (%) to indicate
-multiple unknown characters.</p></td>
+<tr><td align="left" valign="top" scope="row"><p>option/<a name="indexterm-123"></a>value</p></td>
+<td align="left" valign="top" scope="row"><p>The value of the key specified by the corresponding <i>key</i> attribute. For the
+default option, <i>UseWildCard</i>, specify <tt><b>true</b></tt> to allow wildcard characters for that query
+type; otherwise specify <tt><b>false</b></tt>. When wildcard characters are enabled, you can enter
+a percent sign (%) to indicate multiple unknown characters.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-121"></a>block-definition</p></td>
-<td align="left" valign="top" scope="row"><p>A list of Oracle hints or SQL Server OPTION hints
-and defined query criteria blocks, which are identified by unique ID numbers.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-124"></a>block-definition</p></td>
+<td align="left" valign="top" scope="row"><p>A list of Oracle hints
+or SQL Server OPTION hints and defined query criteria blocks, which are identified
+by unique ID numbers.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>block-definition/<a name="indexterm-122"></a>number</p></td>
-<td align="left" valign="top" scope="row"><p>An attribute
-of the <i>block-definition</i> element that specifies the unique ID number of each query
-block. Each block defined for the block query must be identified by a
-unique ID.</p></td>
+<tr><td align="left" valign="top" scope="row"><p>block-definition/<a name="indexterm-125"></a>number</p></td>
+<td align="left" valign="top" scope="row"><p>An attribute of the <i>block-definition</i> element that specifies the unique
+ID number of each query block. Each block defined for the blocking query
+must be identified by a unique ID.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-123"></a>hint</p></td>
-<td align="left" valign="top" scope="row"><p>A <a name="indexterm-124"></a><a name="indexterm-125"></a><a name="indexterm-126"></a>hint to add to the query to help optimize query
-execution. Hints are especially useful when a blocking query uses only child object
-fields; the hint can specify to scan the child object table first. This
-element is optional. For SQL Server, only OPTION hints are supported.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-126"></a>hint</p></td>
+<td align="left" valign="top" scope="row"><p>A <a name="indexterm-127"></a><a name="indexterm-128"></a><a name="indexterm-129"></a>hint to add to the
+query to help optimize query execution. Hints are especially useful when a blocking
+query uses only child object fields; the hint can specify to scan the
+child object table first. This element is optional. For SQL Server, only OPTION
+hints are supported.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-127"></a>block-rule</p></td>
-<td align="left" valign="top" scope="row"><p>A list of
-fields to be included in each query block, including indicators of whether a
-range is to be used and, if so, what type of range
-search to perform.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-130"></a>block-rule</p></td>
+<td align="left" valign="top" scope="row"><p>A list of fields to be included in each query
+block, including indicators of whether a range is to be used and, if
+so, what type of range search to perform.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-128"></a><i>type of search</i></p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of the type of search to perform on the
-field defined in the following elements. Each <i>type of search</i> element defines one field in a
-<i>block-rule</i> element; that is, one field in a query block. This element includes
-a <i>field</i> element, a <i>source</i> or <i>constant</i> element, and, for range searches only, a
-<i>default</i> element that defines lower and upper bounds. </p><p>Specify one of the following
-types.</p>
-<ul><li><p><a name="indexterm-129"></a><a name="indexterm-130"></a><b>equals</b> - Performs an exact search against either the criteria or the value defined for the <i>constant</i> element.</p></li>
-<li><p><b>not-equals</b> - Searches for values that do not equal either the criteria or the value defined for the <i>constant</i> element</p></li>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-131"></a><i>type of search</i></p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of the type of
+search to perform on the field defined in the following elements. Each <i>type of search</i>
+element defines one field in a <i>block-rule</i> element; that is, one field in a
+query block. This element includes a <i>field</i> element, a <i>source</i> or <i>constant</i> element, and,
+for range searches only, a <i>default</i> element that defines lower and upper bounds.
+</p><p>Specify one of the following types.</p>
+<ul><li><p><a name="indexterm-132"></a><a name="indexterm-133"></a><b>equals</b> - Performs an exact search against either the criteria or the value defined for the <i>constant</i> element.</p></li>
+<li><p><b>not-equals</b> - Searches for values that do not equal either the criteria or the value defined for the <i>constant</i> element.</p></li>
 <li><p><b>greater-than-or-equal</b> - Performs a search for values that are greater than or equal to either the criteria or the value defined for the <i>constant</i> element.</p></li>
 <li><p><b>less-than-or-equal</b> - Performs a search for values that are less than or equal to either the criteria or the value defined for the <i>constant</i> element.</p></li>
-<li><p><a name="indexterm-131"></a><b>range</b> - Performs a search against a range of either static or user-defined ranges. If you select this option, you must specify upper and lower bounds in a <i>default</i> element.</p></li></ul>
+<li><p><a name="indexterm-134"></a><b>range</b> - Performs a search against a range of either static or user-defined ranges. If you select this option, you must specify upper and lower bounds in a <i>default</i> element.</p></li></ul>
 
-<hr><p><b>Tip - </b>If a field is to be used for simple range searching (where
-the user or incoming message supplies lower and upper limits of the range
-are supplied) be sure to define that field for range searching in the
-Enterprise Data Manager file (edm.xml) for the searches that use this query. For
-more complex range searches that use offset values or constants instead of user-supplied limits,
-do not define the field for range searching in the Enterprise Data Manager
-file.</p>
+<hr><p><b>Tip - </b>If a field is to be used
+for simple range searching (where the user or incoming message supplies lower and
+upper limits of the range are supplied) be sure to define that field
+for range searching in midm.xml for the searches that use this query. For
+more complex range searches that use offset values or constants instead of user-supplied
+limits, do not define the field for range searching in midm.xml.</p>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-132"></a>field</p></td>
-<td align="left" valign="top" scope="row"><p>The fully qualified field name of the field to be included in
-the query block (for example, Enterprise.Person.Address.AddressLine1).</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-135"></a>field</p></td>
+<td align="left" valign="top" scope="row"><p>The fully qualified
+field name of the field to be included in the query block (for
+example, Enterprise.Person.Address.AddressLine1).</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-133"></a>source</p></td>
-<td align="left" valign="top" scope="row"><p>The qualified field name of the source field
-in the object from which the criteria is obtained (for example, Person.Address.AddressLine1). An
-asterisk (*) can be used as a wildcard character. If the criteria should
-be a constant value instead of being supplied by a user or incoming
-message, define a <i>constant</i> element instead of a <i>source</i> element.</p>
-<hr><p><b>Tip - </b>When a field
-in a child object is defined for a blocking query, use the asterisk
-wildcard character in the ePath to the source field to ensure all instances
-of the child object in an incoming message are used as search criteria.
-Each instance is joined by an OR operator. For example, this configuration:</p><pre>&lt;field>Enterprise.SystemSBR.Person.Alias.FirstName</pre><pre>&lt;/field></pre><pre>&lt;source>Person.Alias[*].FirstName&lt;/source></pre><p>would
-result in a WHERE clause similar to this:</p><pre>WHERE Alias.FirstName=&rdquo;Meg&rdquo; OR Alias.FirstName=&rdquo;Maggie&rdquo;</pre>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-136"></a>source</p></td>
+<td align="left" valign="top" scope="row"><p>The qualified field name of the source field in the object
+from which the criteria is obtained (for example, Person.Address.AddressLine1). An asterisk (*) can be
+used as a wildcard character. If the criteria should be a constant value
+instead of being supplied by a user or incoming message, define a
+<i>constant</i> element instead of a <i>source</i> element.</p>
+<hr><p><b>Tip - </b>When a field in a child
+object is defined for a blocking query, use the asterisk wildcard character in
+the ePath to the source field to ensure all instances of the child
+object in an incoming message are used as search criteria. Each instance is
+joined by an OR operator. For example, this configuration:</p><pre>&lt;field>Enterprise.SystemSBR.Person.Alias.FirstName</pre><pre>&lt;/field></pre><pre>&lt;source>Person.Alias[*].FirstName&lt;/source></pre><p>would result in a
+WHERE clause similar to this:</p><pre>WHERE Alias.FirstName=&rdquo;Meg&rdquo; OR Alias.FirstName=&rdquo;Maggie&rdquo;</pre>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-134"></a>constant</p></td>
-<td align="left" valign="top" scope="row"><p>A constant value that provides
-the criteria for a search. Define this element instead of a source element
-if the criteria is a constant rather than being user defined. You can
-use a constant value with the following types of queries: <i>equals</i>, <i>not-equal</i>s, <i>greater-than-or-equals</i>,
-and <i>less-than-or-equals</i>.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-137"></a>constant</p></td>
+<td align="left" valign="top" scope="row"><p>A constant value that provides the criteria for
+a search. Define this element instead of a source element if the criteria
+is a constant rather than being user defined. You can use a constant
+value with the following types of queries: <i>equals</i>, <i>not-equals</i>, <i>greater-than-or-equals</i>, and <i>less-than-or-equals</i>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-135"></a>default</p></td>
-<td align="left" valign="top" scope="row"><p>A list of upper and lower limits defining a range search.
-If no limits are defined, the search is a simple range search in
-which the upper and lower values are supplied by the user or the
-incoming message (for example, in &ldquo;Date of Birth From&rdquo; and &ldquo;Date of Birth
-To&rdquo; fields).</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-138"></a>default</p></td>
+<td align="left" valign="top" scope="row"><p>A list
+of upper and lower limits defining a range search. If no limits are
+defined, the search is a simple range search in which the upper
+and lower values are supplied by the user or the incoming message (for
+example, in &ldquo;Date of Birth From&rdquo; and &ldquo;Date of Birth To&rdquo; fields).</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-136"></a>lower-bound</p></td>
-<td align="left" valign="top" scope="row"><p>The lower limit of a constant or offset range search. Use
-a negative number for the lower limit of an offset search. This number
-is added to the value supplied for the search to determine the lower
-limit of the range. The value can be numeric, date, or string. See
-<a href="#agymf">Range Search Processing</a> for more information.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-139"></a>lower-bound</p></td>
+<td align="left" valign="top" scope="row"><p>The lower
+limit of a constant or offset range search. Use a negative number for
+the lower limit of an offset search. This number is added to
+the value supplied for the search to determine the lower limit of the
+range. The value can be numeric, date, or string. See <a href="#cnfg_index-range-proc_c">Range Search Processing</a> for more information.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>lower-bound/<a name="indexterm-137"></a>type</p></td>
-<td align="left" valign="top" scope="row"><p>The type of range search. Define the type attribute
-as <tt><b>offset</b></tt> to use an offset value or as <tt><b>constant</b></tt> to define a
-lower constant.</p></td>
+<tr><td align="left" valign="top" scope="row"><p>lower-bound/<a name="indexterm-140"></a>type</p></td>
+<td align="left" valign="top" scope="row"><p>The
+type of range search. Define the type attribute as <tt><b>offset</b></tt> to use an
+offset value or as <tt><b>constant</b></tt> to define a lower constant.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-138"></a>upper-bound</p></td>
-<td align="left" valign="top" scope="row"><p>The upper limit of a constant or offset range search. The value
-can be numeric, date, or string. See <a href="#agymf">Range Search Processing</a> for more information.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-141"></a>upper-bound</p></td>
+<td align="left" valign="top" scope="row"><p>The upper limit of
+a constant or offset range search. The value can be numeric, date, or
+string. See <a href="#cnfg_index-range-proc_c">Range Search Processing</a> or more information.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper-bound/<a name="indexterm-139"></a>type</p></td>
-<td align="left" valign="top" scope="row"><p>The type of
-range search. Define the type attribute as <tt><b>offset</b></tt> to use an offset value
-or as <tt><b>constant</b></tt> to define an upper constant.</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper-bound/<a name="indexterm-142"></a>type</p></td>
+<td align="left" valign="top" scope="row"><p>The type of range search. Define the
+type attribute as <tt><b>offset</b></tt> to use an offset value or as <tt><b>constant</b></tt> to
+define an upper constant.</p></td>
 </tr>
 </table></div>
 
 
-<div class="indent"><a name="agydi"></a><h3>Candidate Select Example</h3>
-<p>Below is a sample illustrating the elements in the Candidate Select file.</p><pre>&lt;QueryBuilderConfig module-name="QueryBuilder" parser-class=
+<div class="indent"><a name="agydi"></a><h3>query.xml Example</h3>
+<p>Below is a sample illustrating the elements in query.xml.</p><pre>&lt;QueryBuilderConfig module-name="QueryBuilder" parser-class=
    "com.sun.mdm.index.configurator.impl.querybuilder.QueryBuilderConfiguration">
    &lt;query-builder name="ALPHA-SEARCH"
     class="com.sun.mdm.index.querybuilder.BasicQueryBuilder"
@@ -439,326 +573,299 @@ or as <tt><b>constant</b></tt> to define an upper constant.</p></td>
    &lt;/query-builder>
 &lt;/QueryBuilderConfig></pre></div>
 </div>
+</div>
 
 
-<a name="agymf"></a>
-
-<h2>Range Search Processing</h2>
+<div class="indent"><a name="cnfg_index-range-proc_c"></a><h3>Range Search Processing</h3>
 <p>Both basic and blocking queries can be configured to perform both exact searches
-and range searches. This section describes how different configurations of exact and range
-searches are processed. It includes the following topics:</p>
-<ul><li><p><a href="#agymh">About Range Searching</a></p></li>
-<li><p><a href="#agymi">Basic Query Range Searching</a></p></li>
-<li><p><a href="#agyml">Blocking Query Range Searching</a></p></li></ul>
+and range searches. The following topics describe how different configurations of exact and
+range searches are processed.</p>
+<ul><li><p><a href="#cnfg_index-basic-range_c">Basic Query Range Searching</a></p></li>
+<li><p><a href="#cnfg_index-block-range_c">Blocking Query Range Searching</a></p></li></ul>
 
 
-<div class="indent"><a name="agymh"></a><h3>About Range Searching</h3>
-<p>When a field is defined for exact searching, the master index application performs
-a query for the exact value entered into the field as search
-criteria. When a field is defined for range searching, the master index application performs
-a query on a range of values based on the values entered
-into the fields as search criteria. The basic query supports standard range searching, where
-both the lower bound and upper bound of the range is user-supplied. The
-blocking query supports standard range searching plus two additional types using offset values
-or constants.</p><p>Offset values allow you to specify values to be added to or
-subtracted from the user-supplied values to determine the range on which to search.
-Constants provide a default value to use as a range when no search
-criteria is entered or when incomplete information is available.</p><p>Range searching is configured in both the Enterprise Data Manager file and the
-Candidate Select file.</p></div>
-
-
-<div class="indent"><a name="agymi"></a><h3>Basic Query Range Searching</h3>
+<div class="indent"><a name="cnfg_index-basic-range_c"></a><h3>Basic Query Range Searching</h3>
 <p>Range searching for basic queries is configured in the search page section of
-the Enterprise Data Manager file by tagging the field with a &ldquo;choice&rdquo; attribute.
-When you specify a field for range searching, two corresponding fields appear on
-the EDM with &ldquo;From&rdquo; and &ldquo;To&rdquo; appended to the name (for example, a
-field named &ldquo;Date of Birth&rdquo; would display two fields: &ldquo;Date of Birth From&rdquo;
-and Date of Birth To&rdquo;). You can also define a field for both
-exact and range searching by defining the field twice for the search page,
-once with the <i>choice</i> attribute set to &ldquo;exact&rdquo; and once with it set
-to &ldquo;range&rdquo;. In this case, three fields appear on the EDM&mdash; one with
-the given field name, one with &ldquo;From&rdquo; appended to the name, and one
-with &ldquo;To&rdquo; appended to the name.</p><p><a href="#agymj">Table&nbsp;4-2</a> describes the queries formed for different exact or range search scenarios. <a href="#agymk">Table&nbsp;4-3</a>
-describes the queries formed for combination exact and range search scenarios. The following
-variables are used in these tables:</p>
-<ul><li><p><i>field_name</i> is the field name as specified in the search page section of the Enterprise Data Manager file (the field named <i>field_name</i> is used for exact searching)</p></li>
+midm.xml by tagging the field with a &ldquo;choice&rdquo; attribute. When you specify a
+field for range searching, two corresponding fields appear on the MIDM with &ldquo;From&rdquo;
+and &ldquo;To&rdquo; appended to the name (for example, a field named &ldquo;Date of
+Birth&rdquo; would display two fields: &ldquo;Date of Birth From&rdquo; and Date of Birth
+To&rdquo;). You can also define a field for both exact and range searching
+by defining the field twice for the search page, once with the <i>choice</i>
+attribute set to &ldquo;exact&rdquo; and once with it set to &ldquo;range&rdquo;. In this case,
+three fields appear on the MIDM: one with the given field name, one
+with &ldquo;From&rdquo; appended to the name, and one with &ldquo;To&rdquo; appended to the
+name.</p><p><a href="#agymj">Table&nbsp;3</a> describes the queries formed for different exact or range search scenarios. <a href="#agymk">Table&nbsp;4</a>
+describes the queries formed for combination exact and range search scenarios.</p><p>The following variables are used in these tables:</p>
+<ul><li><p><i>field_name</i> is the field name as specified in the search page section of midm.xml (the field named <i>field_name</i> is used for exact searching)</p></li>
 <li><p><i>value</i> is the value entered into the exact search field</p></li>
 <li><p><i>value_from</i> is the value entered into the <i>field_name</i> From field</p></li>
 <li><p><i>value_to</i> is the value entered into the <i>field_name</i> To field</p></li></ul>
-<a name="agymj"></a><h6>Table&nbsp;4-2 Standard Range Queries</h6><table><col width="150*"><col width="150*"><col width="150*"><col width="150*"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in Enterprise Data Manager File</p></th>
-<th align="left" valign="top" scope="column"><p>Resulting Fields on EDM</p></th>
+<a name="agymj"></a><h6>Table&nbsp;3 Standard Range Queries</h6><table><col width="23%"><col width="20%"><col width="20%"><col width="36%"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in midm.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Resulting Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Fields Populated for Search</p></th>
+<th align="left" valign="top" scope="column"><p>Where Clause</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute
+set to &ldquo;exact&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> = <b>value</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b>
+From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to
+&ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b>
+To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+</table><p>In the following table, when  <i>field_name</i> is populated but not used in
+the WHERE clause, its value is used for weighting purposes. These cases are
+marked with an asterisk (*). </p><a name="agymk"></a><h6>Table&nbsp;4 Combination Exact and Range Queries</h6><table><col width="23%"><col width="20%"><col width="20%"><col width="36%"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in midm.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Resulting Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Fields
+Populated for Search</p></th>
+<th align="left" valign="top" scope="column"><p>Where Clause</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and
+once with it set to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> = <b>value</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field defined
+once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with it set to
+&ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field
+defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with it set
+to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b>
+attribute set to &ldquo;exact&rdquo; and once with it set to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b>
+To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and
+once with it set to &ldquo;range&rdquo; *</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >=
+<b>value_from</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with it
+set to &ldquo;range&rdquo; *</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field defined once
+with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with it set to &ldquo;range&rdquo;
+*</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-block-range_c"></a><h3>Blocking Query Range Searching</h3>
+<p>Blocking queries are configured in query.xml, and, if the blocking query is used
+on the MIDM, in midm.xml. In order for the fields defined for
+range searching in the blocking query to appear on the MIDM, the fields
+must be configured correctly in midm.xml.</p><p>In addition to the standard range searching (described under <a href="#cnfg_index-basic-range_c">Basic Query Range Searching</a>), blocking queries support
+constant and offset range searches, allowing you to specify default upper and lower
+offset values or to specify upper and lower constant limits. Using offsets adds
+the specified values to the actual field value to determine the range on
+which to search. Note that this means the lower offset value should be
+a negative number and the upper offset value should be a positive number
+in order to create a valid range. You can also define a combination
+of a constant upper limit with lower offset value or a constant lower
+limit with an upper offset value.</p>
+
+<div class="indent"><a name="cnfg_index-block-off_c"></a><h3>Blocking Query Offset Values</h3>
+<p>When upper and lower offset values are defined, the application searches for values
+that are greater than or equal to the field value plus the
+lower offset value (which is typically a negative number) and less than or
+equal to the field value plus the upper offset value. You do not
+need to define both an upper and a lower offset value.</p>
+<hr><p><b>Note - </b>For date fields, the method for adding the offsets is different for numeric
+than for date type fields. For numeric data types, the offset value is
+added to the actual number. For date data types, the offset value is
+added to the day portion of the date (for example, if the
+offsets were -5 and +5 and the date entered is 01/10/2005, then the
+upper and lower bounds would be 01/05/2005 and 01/15/2005). </p>
+<hr>
+<p><a href="#agymn">Table&nbsp;5</a> describes the queries formed for different exact or range offset search scenarios.
+<a href="#agymo">Table&nbsp;6</a> describes the query formed for combination exact and offset range search scenarios.</p><p>The following variables are used in these tables:</p>
+<ul><li><p><i>field_name</i> is the field name as specified in the search page section of midm.xml (the field named <i>field_name</i> is used for exact searching)</p></li>
+<li><p><i>value</i> is the value entered into the exact search field</p></li>
+<li><p><i>value_from</i> is the value entered into the <i>field_name</i> From field</p></li>
+<li><p><i>value_to</i> is the value entered into the <i>field_name</i> To field</p></li>
+<li><p><i>lower</i> is the lower offset value</p></li>
+<li><p><i>upper</i> is the upper offset value</p></li></ul>
+<a name="agymn"></a><h6>Table&nbsp;5 Standard Offset Range Queries</h6><table><col width="16%"><col width="18%"><col width="16%"><col width="18%"><col width="29%"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in midm.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Resulting Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Offset Configuration in query.xml</p></th>
 <th align="left" valign="top" scope="column"><p>Fields Populated for
 Search</p></th>
 <th align="left" valign="top" scope="column"><p>Where Clause</p></th>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;exact&rdquo;</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>both upper and lower offsets defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> = <b>value</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
+>= (<b>value</b> + <b>lower</b>) and <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to
-&ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set
+to &ldquo;exact&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>only lower offset defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b>
-attribute set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set
+to &ldquo;exact&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>only upper offset defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set
 to &ldquo;range&rdquo;</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-</table>
-<hr><p><b>Note - </b>In the following table, when  <i>field_name</i> is populated but not used in
-the WHERE clause, its value is used for weighting purposes. These cases are
-marked with an asterisk (*). </p>
-<hr>
-<a name="agymk"></a><h6>Table&nbsp;4-3 Combination Exact and Range Queries</h6><table><col width="150*"><col width="150*"><col width="150*"><col width="150*"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in Enterprise Data Manager File</p></th>
-<th align="left" valign="top" scope="column"><p>Resulting
-Fields on EDM</p></th>
-<th align="left" valign="top" scope="column"><p>Fields Populated for Search</p></th>
-<th align="left" valign="top" scope="column"><p>Where Clause</p></th>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set
-to &ldquo;exact&rdquo; and once with it set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
-= <b>value</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with
-it set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and
-<b>field_name</b> &lt;= <b>value_to</b></p></td>
+<td align="left" valign="top" scope="row"><p>where
+<b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once
-with it set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b>
+To</p></td>
+<td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined
-once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with it set to
-&ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set
-to &ldquo;exact&rdquo; and once with it set to &ldquo;range&rdquo; *</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and
-once with it set to &ldquo;range&rdquo; *</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;=
-<b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>field defined once with <b>choice</b> attribute set to &ldquo;exact&rdquo; and once with it
-set to &ldquo;range&rdquo; *</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and
-<b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-</table></div>
-
-
-<div class="indent"><a name="agyml"></a><h3>Blocking Query Range Searching</h3>
-<p>Blocking queries are configured in the Candidate Select file, and, if the blocking
-query is used on the EDM, in the Enterprise Data Manager file. In
-order for the fields defined for range searching in the blocking query to
-appear on the EDM, the fields must be configured correctly in the
-Enterprise Data Manager file.</p><p>In addition to the standard range searching (described earlier under <a href="#agymi">Basic Query Range Searching</a>), blocking
-queries support constant and offset range searches, allowing you to specify default upper and
-lower offset values or to specify upper and lower constant limits. Using offsets
-adds the specified values to the actual field value to determine the range
-on which to search. Note that this means the lower offset value
-should be a negative number and the upper offset value should be a
-positive number in order to create a valid range. You can also define
-a combination of a default upper limit with lower offset value or a
-default lower limit with an upper offset value.</p>
-
-<div class="indent"><a name="agymm"></a><h3>Blocking Query Offset Values</h3>
-<p>When upper and lower offset values are defined, the application searches for values
-that are greater than or equal to the field value plus the
-lower offset value (which is typically a negative number) and less than or
-equal to the field value plus the upper offset value. You do not
-need to define both an upper and a lower offset value.</p><p><a href="#agymn">Table&nbsp;4-4</a> describes the queries formed for different exact or range offset search scenarios.
-<a href="#agymo">Table&nbsp;4-5</a> describes the query formed for combination exact and range search scenarios. The
-following variables are used in these tables:</p>
-<ul><li><p><i>field_name</i> is the field name as specified in the search page section of the Enterprise Data Manager file (the field named <i>field_name</i> is used for exact searching)</p></li>
-<li><p><i>value</i> is the value entered into the exact search field</p></li>
-<li><p><i>value_from</i> is the value entered into the <i>field_name</i> From field</p></li>
-<li><p><i>value_to</i> is the value entered into the <i>field_name</i> To field</p></li>
-<li><p><i>lower</i> is the lower offset value</p></li>
-<li><p><i>upper</i> is the upper offset value</p></li></ul>
-<a name="agymn"></a><h6>Table&nbsp;4-4 Standard Offset Range Queries</h6><table><col width="140*"><col width="150*"><col width="150*"><col width="150*"><col width="137*"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in Enterprise Data Manager File</p></th>
-<th align="left" valign="top" scope="column"><p>Resulting Fields on EDM</p></th>
-<th align="left" valign="top" scope="column"><p>Offset Configuration in
-Candidate Select File</p></th>
-<th align="left" valign="top" scope="column"><p>Fields Populated for Search</p></th>
-<th align="left" valign="top" scope="column"><p>Where Clause</p></th>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;exact&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>both upper
-and lower offsets defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> + <b>lower</b>) and <b>field_name</b> &lt;=
-(<b>value</b> + <b>upper</b>)</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;exact&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>only lower offset defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >=
-(<b>value</b> + <b>lower</b>)</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;exact&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>only upper offset defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;=
-(<b>value</b> + <b>upper</b>)</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>upper, lower, or both
-offsets are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b>
-attribute set to &ldquo;range&rdquo;</p></td>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute
+set to &ldquo;range&rdquo;</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where
+<b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+</table><p>In <a href="#agymo">Table&nbsp;6</a>, the field configuration in midm.xml defines the field twice for searching,
+once with the choice attribute set to &ldquo;exact&rdquo; and once with it set
+to &ldquo;range&rdquo;.</p><p>In the following cases, when  <i>field_name</i> is populated but not used in
+the WHERE clause, its value is used for weighting purposes. These cases are
+marked with an asterisk (*). </p><a name="agymo"></a><h6>Table&nbsp;6 Combination Offset Range Queries</h6><table><col width="23%"><col width="20%"><col width="20%"><col width="36%"><tr><th align="left" valign="top" scope="column"><p>Offset Configuration in query.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Fields Populated
+for Search</p></th>
+<th align="left" valign="top" scope="column"><p>Query Result</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>both upper and lower bound offsets are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where
+<b>field_name</b> >= (<b>value</b> + <b>lower</b>) and <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>only a
+lower offset is defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>only an
+upper offset is defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>upper, lower,
+or both offsets are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b>
+and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b>
 From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>upper, lower, or
-both offsets are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-</table><p>In <a href="#agymo">Table&nbsp;4-5</a>, the field configuration in the Enterprise Data Manager file defines the
-field twice for searching, once with the choice attribute set to &ldquo;exact&rdquo; and once
-with it set to &ldquo;range&rdquo;.</p>
-<hr><p><b>Note - </b>In the following cases, when  <i>field_name</i> is populated but not used in
-the WHERE clause, its value is used for weighting purposes. These cases are
-marked with an asterisk (*). </p>
-<hr>
-<a name="agymo"></a><h6>Table&nbsp;4-5 Combination Offset Range Queries</h6><table><col width="150*"><col width="150*"><col width="150*"><col width="150*"><tr><th align="left" valign="top" scope="column"><p>Offset Configuration in Candidate Select File</p></th>
-<th align="left" valign="top" scope="column"><p>Fields on
-EDM</p></th>
-<th align="left" valign="top" scope="column"><p>Fields Populated for Search</p></th>
-<th align="left" valign="top" scope="column"><p>Query Result</p></th>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>both upper and lower bound offsets are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> + <b>lower</b>) and <b>field_name</b> &lt;= (<b>value</b> +
-<b>upper</b>)</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>only a lower offset is defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> +
-<b>lower</b>)</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>only an upper offset is defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> +
-<b>upper</b>)</p></td>
-</tr>
 <tr><td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
->= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>upper, lower, or both offsets are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b>
+To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>both upper and lower offsets are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
+From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= (<b>value</b> + upper)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>only
-a lower offset is defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>only a lower
+offset is defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> +
-<b>lower</b>)</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>only an upper offset is defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>only an
+upper offset is defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b>
-+ <b>upper</b>)</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>both upper and lower offsets are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>both
+upper and lower offsets are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
-&lt;= <b>value_to</b> and <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b>
+and <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>only a lower offset is
-defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<tr><td align="left" valign="top" scope="row"><p>only a lower offset is defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b>
+To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>only an upper offset
-is defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<tr><td align="left" valign="top" scope="row"><p>only an upper offset is defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
+From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>both upper and
-lower offsets are defined*</p></td>
+<tr><td align="left" valign="top" scope="row"><p>both upper and lower offsets
+are defined*</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and
-<b>field_name</b> &lt;= <b>value_to</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;=
+<b>value_to</b></p></td>
 </tr>
-</table>
-<hr><p><b>Note - </b>For date fields, the method for adding the offsets is different for numeric
-versus date type fields. For numeric data types, the offset value is added
-to the actual number. For date data types, the offset value is
-added to the day portion of the date (for example, if the offsets
-were -5 and +5 and the date entered is 01/10/2005, then the upper
-and lower bounds would be 01/05/2005 and 01/15/2005). </p>
-<hr>
-</div>
+</table></div>
 
 
 <div class="indent"><a name="agymp"></a><h3>Blocking Query Constants</h3>
@@ -769,306 +876,257 @@ only one of the &ldquo;from&rdquo; or &ldquo;to&rdquo; fields is populated. You 
 need to define both an upper and a lower constant value. If you
 define only an upper constant value, only a &ldquo;less than or equals&rdquo; clause
 is used in the query; if you define only a lower constant value,
-only a &ldquo;greater than or equals&rdquo; clause is used in the query.</p><p><a href="#agymq">Table&nbsp;4-6</a> describes the queries formed for different exact or range constant search scenarios.
-<a href="#agymr">Table&nbsp;4-7</a> describes the query formed for combination exact and range search scenarios. The
-following variables are used in these tables:</p>
-<ul><li><p><i>field_name</i> is the field name as defined in the search page section of the Enterprise Data Manager file (the field named <i>field_name</i> is used for exact searching)</p></li>
+only a &ldquo;greater than or equals&rdquo; clause is used in the query.</p>
+<hr><p><b>Note - </b>For numeric type fields, the constant must be defined as all digits, with
+one decimal point allowed. For date type fields, the constant must be in
+the standard SQL format of yyyy-mm-dd.</p>
+<hr>
+<p><a href="#agymq">Table&nbsp;7</a> describes the queries formed for different exact or range constant search scenarios.
+<a href="#agymr">Table&nbsp;8</a> describes the query formed for combination exact and range search scenarios.</p><p>The following variables are used in these tables:</p>
+<ul><li><p><i>field_name</i> is the field name as defined in the search page section of midm.xml (the field named <i>field_name</i> is used for exact searching)</p></li>
 <li><p><i>value</i> is the value entered into the exact search field</p></li>
 <li><p><i>value_from</i> is the value entered into the <i>field_name</i> From field</p></li>
 <li><p><i>value_to</i> is the value entered into the <i>field_name</i> To field</p></li>
 <li><p><i>lower</i> is the lower constant value</p></li>
 <li><p><i>upper</i> is the upper constant value</p></li></ul>
-<a name="agymq"></a><h6>Table&nbsp;4-6 Standard Constant Range Queries</h6><table><col width="150*"><col width="150*"><col width="150*"><col width="150*"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in Enterprise Data Manager File</p></th>
-<th align="left" valign="top" scope="column"><p>Resulting Fields on EDM</p></th>
-<th align="left" valign="top" scope="column"><p>Fields Populated for
-Search</p></th>
+<a name="agymq"></a><h6>Table&nbsp;7 Standard Constant Range Queries</h6><table><col width="20%"><col width="20%"><col width="20%"><col width="38%"><tr><th align="left" valign="top" scope="column"><p>Field Configuration in midm.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Resulting Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Fields Populated for Search</p></th>
 <th align="left" valign="top" scope="column"><p>Where Clause</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;exact&rdquo;</p></td>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute
+set to &ldquo;exact&rdquo;</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> = <b>value</b></p></td>
 </tr>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b>
+From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+</tr>
 <tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to
 &ldquo;range&rdquo;</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b>
-attribute set to &ldquo;range&rdquo;</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b>
-&lt;= <b>upper</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>upper</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute set to &ldquo;range&rdquo;</p></td>
+<tr><td align="left" valign="top" scope="row"><p><b>choice</b> attribute
+set to &ldquo;range&rdquo;</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b>
-and <b>field_name</b> >= <b>lower</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b> and <b>field_name</b> >=
+<b>lower</b></p></td>
 </tr>
-</table><p>In <a href="#agymr">Table&nbsp;4-7</a>, the field configuration in the Enterprise Data Manager file defines the
-field twice for searching, once with the choice attribute set to &ldquo;exact&rdquo; and once
-with it set to &ldquo;range&rdquo;.</p>
-<hr><p><b>Note - </b>In the following cases, when  <i>field_name</i> is populated but not used in
+</table><p>In <a href="#agymr">Table&nbsp;8</a>, the field configuration in midm.xml defines the field twice for searching,
+once with the choice attribute set to &ldquo;exact&rdquo; and once with it set
+to &ldquo;range&rdquo;.</p><p>In the following cases, when  <i>field_name</i> is populated but not used in
 the WHERE clause, its value is used for weighting purposes. These cases are
-marked with an asterisk (*).</p>
-<hr>
-<a name="agymr"></a><h6>Table&nbsp;4-7 Combination Constant Range Queries</h6><table><col width="150*"><col width="150*"><col width="150*"><col width="150*"><tr><th align="left" valign="top" scope="column"><p>Offset Configuration in Candidate Select File</p></th>
-<th align="left" valign="top" scope="column"><p>Fields on EDM</p></th>
-<th align="left" valign="top" scope="column"><p>Fields
-Populated for Search</p></th>
+marked with an asterisk (*).</p><a name="agymr"></a><h6>Table&nbsp;8 Combination Constant Range Queries</h6><table><col width="23%"><col width="20%"><col width="20%"><col width="36%"><tr><th align="left" valign="top" scope="column"><p>Offset Configuration in query.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Fields Populated for
+Search</p></th>
 <th align="left" valign="top" scope="column"><p>Query Result</p></th>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper, lower, or both constants are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where
-<b>field_name</b> = <b>value</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> =
+<b>value</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper, lower, or both constants are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b>
-To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
+>= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>either upper or both constants
-are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<tr><td align="left" valign="top" scope="row"><p>either upper or both constants are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
+From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>upper</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>lower
-constant is defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>lower constant is
+defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>either upper or both
-constants are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>either upper or both constants are
+defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;=
-<b>upper</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>upper</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>lower constant is defined *</p></td>
+<tr><td align="left" valign="top" scope="row"><p>lower constant
+is defined *</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>either lower
-or both constants are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>either lower or both
+constants are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b> and
-<b>field_name</b> >= <b>lower</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b> and <b>field_name</b> >=
+<b>lower</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper constant is defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>either
-lower or both constants are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>either lower or
+both constants are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b>
-and <b>field_name</b> >= <b>lower</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b> and <b>field_name</b>
+>= <b>lower</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper constant is defined *</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
-&lt;= <b>value_to</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper, lower, or both constants are defined *</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper,
+lower, or both constants are defined *</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b>
-To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
+>= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-</table>
-<hr><p><b>Note - </b>For numeric type fields, the constant must be defined as all digits, with
-one decimal point allowed. For date type fields, the constant must be in
-the standard SQL format of yyyy-mm-dd.</p>
-<hr>
-</div>
+</table></div>
 
 
 <div class="indent"><a name="agyms"></a><h3>Blocking Query Offset and Constant Combinations</h3>
 <p>You can use a combination of offset and constant values to define
-range searching for a field. <a href="#agymt">Table&nbsp;4-8</a> describes the query formed for combination offset and
-constant search scenarios. The following variables are used in these tables:</p>
-<ul><li><p><i>field_name</i> is the field name as defined in the search page section of the Enterprise Data Manager file (the field named <i>field_name</i> is used for exact searching)</p></li>
+range searching for a field. <a href="#agymt">Table&nbsp;9</a> describes the query formed for combination offset and
+constant search scenarios.</p><p>The following variables are used in these tables:</p>
+<ul><li><p><i>field_name</i> is the field name as defined in the search page section of midm.xml (the field named <i>field_name</i> is used for exact searching)</p></li>
 <li><p><i>value</i> is the value entered into the exact search field</p></li>
 <li><p><i>value_from</i> is the value entered into the <i>field_name</i> From field</p></li>
 <li><p><i>value_to</i> is the value entered into the <i>field_name</i> To field</p></li>
 <li><p><i>lower</i> is the lower constant or offset value</p></li>
 <li><p><i>upper</i> is the upper constant or offset value</p></li></ul>
-<p>In <a href="#agymt">Table&nbsp;4-8</a>, the field configuration in the Enterprise Data Manager file defines the
-field twice for searching, once with the choice attribute set to &ldquo;exact&rdquo; and once
-with it set to &ldquo;range&rdquo;.</p>
-<hr><p><b>Note - </b>In the following cases, when  <i>field_name</i> is populated but not used in
+<p>In <a href="#agymt">Table&nbsp;9</a>, the field configuration in midm.xml defines the field twice for searching,
+once with the choice attribute set to &ldquo;exact&rdquo; and once with it set
+to &ldquo;range&rdquo;.</p><p>In the following cases, when  <i>field_name</i> is populated but not used in
 the WHERE clause, its value is used for weighting purposes. These cases are
-marked with an asterisk (*).</p>
-<hr>
-<a name="agymt"></a><h6>Table&nbsp;4-8 Combination Constant and Offset Range Queries</h6><table><col width="150*"><col width="150*"><col width="150*"><col width="150*"><tr><th align="left" valign="top" scope="column"><p>Offset Configuration in Candidate Select File</p></th>
-<th align="left" valign="top" scope="column"><p>Fields on EDM</p></th>
-<th align="left" valign="top" scope="column"><p>Fields
-Populated for Search</p></th>
+marked with an asterisk (*).</p><a name="agymt"></a><h6>Table&nbsp;9 Combination Constant and Offset Range Queries</h6><table><col width="23%"><col width="20%"><col width="20%"><col width="36%"><tr><th align="left" valign="top" scope="column"><p>Offset Configuration in query.xml</p></th>
+<th align="left" valign="top" scope="column"><p>Fields on MIDM</p></th>
+<th align="left" valign="top" scope="column"><p>Fields Populated for
+Search</p></th>
 <th align="left" valign="top" scope="column"><p>Query Result</p></th>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where
-<b>field_name</b> >= <b>lower</b> and <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >=
+<b>lower</b> and <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper offset and lower
-constant are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are
+defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b>
-&lt;= <b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
->= <b>value_from</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
-&lt;= <b>value_to</b> and <b>field_name</b> >= <b>lower</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>) and <b>field_name</b> >= <b>value_from</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper
 offset and lower constant are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>upper
+offset and lower constant are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b>
 and <b>field_name</b> >= <b>lower</b></p></td>
 </tr>
+<tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
+From</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= (<b>value</b> + <b>upper</b>) and <b>field_name</b> >= <b>value_from</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>upper offset and
+lower constant are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b> and <b>field_name</b>
+>= <b>lower</b></p></td>
+</tr>
 <tr><td align="left" valign="top" scope="row"><p>upper offset and lower constant are defined *</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b>
 To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper constant and
-lower offset are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset
+are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>upper</b> and <b>field_name</b> >=
-(<b>value + lower</b>)</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>upper</b> and <b>field_name</b> >= (<b>value + lower</b>)</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>upper constant
+and lower offset are defined</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b>
+and <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
->= <b>value_from</b> and <b>field_name</b> &lt;= <b>value_to</b></p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset are defined</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b> From</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b>
+From</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b> &lt;= <b>upper</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper constant and
-lower offset are defined</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset
+are defined</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b></p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper constant and
-lower offset are defined *</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset
+are defined *</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>upper</b> and
-<b>field_name</b> >= <b>value_from</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>upper</b> and <b>field_name</b> >=
+<b>value_from</b></p></td>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset are defined *</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b>
-To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> &lt;= <b>value_to</b> and <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
+<td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> To</p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b>
+&lt;= <b>value_to</b> and <b>field_name</b> >= (<b>value</b> + <b>lower</b>)</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>upper constant and
-lower offset are defined +</p></td>
+<tr><td align="left" valign="top" scope="row"><p>upper constant and lower offset
+are defined +</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
 <td align="left" valign="top" scope="row"><p><b>field_name</b></p><p><b>field_name</b> From</p><p><b>field_name</b> To</p></td>
-<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b>
-and <b>field_name</b> &lt;= <b>value_to</b></p></td>
+<td align="left" valign="top" scope="row"><p>where <b>field_name</b> >= <b>value_from</b> and <b>field_name</b>
+&lt;= <b>value_to</b></p></td>
 </tr>
 </table></div>
 </div>
-
-
-
-<!-- End Content Area -->
-<td class="valign-top" >
-	<div id="floating-col-right"><!-- right content column -->
-<p><b><a href="landingpage.html">1.&nbsp;&nbsp;Understanding Master Index Configuration Options</a></b></p>
-<p class="toc level2"><a href="landingpage.html#cnfg_index-overview_r">About Master Index Studio</a></p>
-<p class="toc level2 tocsp"><a href="landingpage.html#cnfg_index-bk-overview_r">About This Document</a></p>
-<p><b><a href="cnfg_index-overview_c.html.">2.&nbsp;&nbsp;Configuration Overview</a></b></p>
-<p class="toc level2"><a href="cnfg_index-overview_c.html#agyat">About the Configuration Files</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html#agybc">Using the Editors</a></p>
-<p><b><a href="cnfg_index-object_c.html">3.&nbsp;&nbsp;Object Definition</a></b></p>
-<p class="toc level2"><a href="cnfg_index-object_c.html#agycc">About the Object Definition</a></p>
-<p class="toc level2"><a href="cnfg_index-object_c.html#agycd">Object Definition Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-object_c.html#agych">The Object Definition File</a></p>
-<p><b><a href="cnfg_index-query_c.html">4.&nbsp;&nbsp;Candidate Select Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-query_c.html#agycx">About Candidate Select Configuration</a></p>
-<p class="toc level2"><a href="cnfg_index-query_c.html#agycy">Query Builder Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html#agydc">Range Searching</a></p>
-<p class="toc level2"><a href="cnfg_index-query_c.html#agydd">The Candidate Select File</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html#agymf">Range Search Processing</a></p>
-<p><b><a href="cnfg_index-master_c.html">5.&nbsp;&nbsp;Threshold Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-master_c.html#agydz">About Threshold Configuration</a></p>
-<p class="toc level2"><a href="cnfg_index-master_c.html#agyea">Manager Service Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-master_c.html#agyer">The Threshold File</a></p>
-<p><b><a href="cnfg_index-mefa_c.html">6.&nbsp;&nbsp;Match Field Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-mefa_c.html#agyfv">About Match Field Configuration</a></p>
-<p class="toc level2"><a href="cnfg_index-mefa_c.html#agyfw">Matching Service Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-mefa_c.html#agygg">Sample Standardization and Matching Sequence</a></p>
-<p class="toc level2"><a href="cnfg_index-mefa_c.html#agygh">The Match Field File</a></p>
-<p><b><a href="cnfg_index-survivior_c.html">7.&nbsp;&nbsp;Best Record Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyia">About the Update Manager</a></p>
-<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyib">The Survivor Calculator and the SBR</a></p>
-<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyic">Update Manager Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-survivior_c.html#agyim">The Best Record File</a></p>
-<p><b><a href="cnfg_index-validate_c.html">8.&nbsp;&nbsp;Field Validation Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-validate_c.html#agyjl">Field Validation Custom Plug-ins</a></p>
-<p class="toc level2"><a href="cnfg_index-validate_c.html#agyjm">The Field Validation File</a></p>
-<p><b><a href="cnfg_index-edm_c.html">9.&nbsp;&nbsp;Enterprise Data Manager Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-edm_c.html#agyjt">About the EDM</a></p>
-<p class="toc level2"><a href="cnfg_index-edm_c.html#agyju">EDM Configuration Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-edm_c.html#agykd">The Enterprise Data Manager File</a></p>
-<p><b><a href="cnfg_index-epaths_c.html">10.&nbsp;&nbsp;Field Notations</a></b></p>
-<p class="toc level2"><a href="cnfg_index-epaths_c.html#agymw">ePath Notation</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html#agymz">Qualified Field Name Notation</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html#agync">Simple Field Name Notation</a></p>
 </div>
-</div>
-					</td></tr></table></div></div>
-	</td></tr></div>
-	</div>
-	<!-- /Servlet-Specific template -->
 
-<!-- end of right navigation -->
+   </div>
 
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_index-object_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_index-master_c.html">Next</a>
+            </td>
+         </tr>
+      </table>
 
+   </div>
 
-</div>
-</div>
 </body>
 </html>

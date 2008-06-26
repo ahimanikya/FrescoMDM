@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Maintaining Master Indexes</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Maintaining Master Indexes provides instructions and information for various tasks involved in maintaining a  master index application. These tasks include setting up security for the Master Index Data Manager (MIDM), archiving and backing up the master index database, changing information in the database, running reports, and making changes to the master index files.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   </head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Maintaining Master Indexes</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="admn_mi-maint-dbs-archive_c.html">Previous</a></span>
+         <span class="tocpageright"></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="mevsmi.html">Maintaining Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="admn_mi-maint-security_t.html">Defining Master Index Data Manager Security</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglyo">To Define a User Role</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-usergroup_t">Define EJB User Roles</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglyoejb">To Define an EJB User Role</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-maint-security_t.html#gglzn">To Create a User Account</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-security_t.html#admn_mi-maint-sec-grps_r">Master Index Data Manager User Role Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-security_r">EJB Security Functions</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-ejb-security_t.html">Defining Web Services Security for Master Index</a></p>
+<p class="toc level3"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-service_t">Secure the Web Service</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwtr">To Secure the Web Service</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-client_t">Secure the Web Client</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwxx">To Secure the Web Client</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-users_t">Create Web Services User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#gglznejb">To Create a User Account</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_c.html">Learning About Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-about_c">Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuas">About Production Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuat">About Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#ahuav">Master Index Report Configuration</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#ahuaw">Creating Custom Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#ahuax">Masked Data in Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-prod_c">Master Index Production Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuaz">Assumed Match Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuba">Deactivated Record Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubb">Potential Duplicate Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubc">Merge Transaction Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubd">UnMerge Transaction Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahube">Update Report</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-activity_c">Master Index Activity Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubg">Weekly Activity Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubh">Monthly Activity Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubi">Yearly Activity Report</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-index_c">Master Index Database Indexes</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_t.html">Working With Master Index Command Line Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf_c">Configuring the Master Index Report Environment</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#ahucd">To Set up the Environment</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf-rep_c">Configuring Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahucf">Defining the Command Line Report Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahuch">Configuring Command Line Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-maint-reports_r">Master Index Command Line Report Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gfkvq">To Run the Reports Using the Batch File</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gentextid-1437">To Run the Reports Using a Java Command</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-dbs-archive_c.html">Maintaining the Master Index Database</a></p>
+<p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-backup_c">Backing up the Master Index Database</a></p>
+<p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaop">Online Backups</a></p>
+<p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaoq">Offline Backups</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-restore_c">Restoring the Master Index Database</a></p>
+<p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-archive_c">Archiving Master Index Data</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Implementing Changes to the Master Index Project</a></p>
+<p class="toc level3"><a href="#admn_mi-project-cfg_c">Modifying Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="#ahapi">Updating the Object Structure</a></p>
+<p class="toc level4"><a href="#ahapj">Updating Normalization and Standardization Structures</a></p>
+<p class="toc level4"><a href="#ahapk">Updating the Match String</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-project-dbs_c">Modifying the Master Index Database</a></p>
+<p class="toc level3"><a href="#admn_mi-project-security_c">Modifying Master Index Security</a></p>
+<p class="toc level3"><a href="#admn_mi-project-lid_c">Modifying the Local ID Format</a></p>
+</div>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="admin_mi-maint-project_c"></a>
+
+<h2>Implementing Changes to the Master Index Project</h2>
+<a name="indexterm-119"></a><p>After a master index application has been in production, you might need to
+make changes to your project. For example, if you add a new
+external system, you need to add that system to the master index database
+and you might need to modify the object structure and OTDs as well
+as update the application files. Changes occur as the needs of your end
+users evolve and as additional external systems are added. Do not make changes
+to the system hastily. Handle changes using the same change management process that
+was originally used to deploy your project. Applying this same process of planning,
+configuration, testing, migration, monitoring, and reevaluation will help ensure successful updates.</p>
+<ul><li><p><a href="#admn_mi-project-cfg_c">Modifying Master Index Configuration Files</a></p></li>
+<li><p><a href="#admn_mi-project-dbs_c">Modifying the Master Index Database</a></p></li>
+<li><p><a href="#admn_mi-project-security_c">Modifying Master Index Security</a></p></li>
+<li><p><a href="#admn_mi-project-lid_c">Modifying the Local ID Format</a></p></li></ul>
+
+
+<div class="indent"><a name="admn_mi-project-cfg_c"></a><h3>Modifying Master Index Configuration Files</h3>
+<p>Over time, you might need to make changes to your configuration files, such
+as adding fields or objects to the object structure, changing queries, or fine-tuning
+the matching process. Whenever you make a change to a master index configuration
+file, you must undeploy the master index server project, regenerate the application, and
+then redeploy the project. </p><p>This section provides tips for updating components of the configuration files. In order
+for any of these changes to take affect, you must regenerate the application
+and rebuild and redeploy the project.</p>
+
+<div class="indent"><a name="ahapi"></a><h3>Updating the Object Structure</h3>
+<p>If you make any changes to the object structure, keep the following in
+mind.</p>
+<ul><li><p>If you want the new fields or objects to appear on the MIDM, make sure to add them to the first section of midm.xml and to any of the page definitions later in the file (this includes search pages).</p></li>
+<li><p>If the new fields require normalization, parsing, or phonetic encoding, define the new structures in mefa.xml.</p></li>
+<li><p>If a new field will be used for matching, add it to the blocking query used for match processing as well as to the match string in mefa.xml.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahapj"></a><h3>Updating Normalization and Standardization Structures</h3>
+<p>If you define normalization, standardization, or phonetic encoding for fields that are not
+currently defined in mefa.xml, or if you change existing standardization structures, make sure
+to do the following.</p>
+<ul><li><p>Use the appropriate standardization type, domain selector, and field IDs.</p></li>
+<li><p><a name="indexterm-120"></a><a name="indexterm-121"></a>Add the new fields that will store the standardized versions of the original field value to the appropriate objects in object.xml.</p></li>
+<li><p>Add new columns to the database to store the standardized field values.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahapk"></a><h3>Updating the Match String</h3>
+<p><a name="indexterm-122"></a>If you make changes to the match string, update the database indexes and
+the blocking query in query.xml accordingly. For example, if you remove a field
+from the match string, you might also want to remove that field from
+the blocking query and database indexes. If you add a field to the
+match string, add the field to the blocking query and to the appropriate
+database index to maintain performance.</p></div>
+</div>
+
+
+<div class="indent"><a name="admn_mi-project-dbs_c"></a><h3>Modifying the Master Index Database</h3>
+<p>There might be times when you need to modify the master index
+database. For example, you might need to add or modify a stored procedure
+or index, or you might need to add new external systems. You must
+modify the database if you add fields or objects to the object structure
+in order to reflect the new structure in the database tables. If you
+make changes to the database, rebuild and redeploy the master index server project
+to ensure the changes are picked up by the application.</p></div>
+
+
+<div class="indent"><a name="admn_mi-project-security_c"></a><h3>Modifying Master Index Security</h3>
+<p>You can define new users for the database at any time using
+standard SQL statements to create the type of user you want to define.
+You can also add new users for the midm.xml through the application server. Neither
+of these procedures require any stoppage of the database or of the master
+index application and redeployment is not required.</p></div>
+
+
+<div class="indent"><a name="admn_mi-project-lid_c"></a><h3>Modifying the Local ID Format</h3>
+<p><a name="indexterm-123"></a><a name="indexterm-124"></a>If you need to modify the local ID format for an external system,
+regenerate the application after you make the changes and then redeploy the project.
+If you extend the length of a local ID past 20 characters, make
+sure to increase the length of any database columns containing local IDs. Local
+ID columns are found in the following tables: sbyn<i>_parent_object</i>, sbyn_assumedmatch, sbyn_enterprise, sbyn_systemobject,
+and sbyn_transaction.</p></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="admn_mi-maint-dbs-archive_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

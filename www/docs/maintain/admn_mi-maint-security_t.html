@@ -1,0 +1,688 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Maintaining Master Indexes</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Maintaining Master Indexes provides instructions and information for various tasks involved in maintaining a  master index application. These tasks include setting up security for the Master Index Data Manager (MIDM), archiving and backing up the master index database, changing information in the database, running reports, and making changes to the master index files.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+</head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Maintaining Master Indexes</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="relatedtopics.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-ejb-security_t.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="mevsmi.html">Maintaining Master Indexes</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<div class="onpage">
+<p class="toc level2"><a href="">Defining Master Index Data Manager Security</a></p>
+<p class="toc level3"><a href="#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a></p>
+<p class="toc level5"><a href="#gglyo">To Define a User Role</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-ejb-usergroup_t">Define EJB User Roles</a></p>
+<p class="toc level5"><a href="#gglyoejb">To Define an EJB User Role</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a></p>
+<p class="toc level5"><a href="#gglzn">To Create a User Account</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-maint-sec-grps_r">Master Index Data Manager User Role Properties</a></p>
+<p class="toc level3"><a href="#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a></p>
+<p class="toc level3"><a href="#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a></p>
+<p class="toc level3"><a href="#admn_mi-ejb-security_r">EJB Security Functions</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="admn_mi-ejb-security_t.html">Defining Web Services Security for Master Index</a></p>
+<p class="toc level3"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-service_t">Secure the Web Service</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwtr">To Secure the Web Service</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-client_t">Secure the Web Client</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwxx">To Secure the Web Client</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-users_t">Create Web Services User Accounts</a></p>
+<p class="toc level5"><a href="admn_mi-ejb-security_t.html#gglznejb">To Create a User Account</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_c.html">Learning About Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-about_c">Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuas">About Production Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuat">About Activity Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#ahuav">Master Index Report Configuration</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#ahuaw">Creating Custom Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#ahuax">Masked Data in Master Index Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-prod_c">Master Index Production Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuaz">Assumed Match Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuba">Deactivated Record Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubb">Potential Duplicate Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubc">Merge Transaction Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubd">UnMerge Transaction Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahube">Update Report</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-activity_c">Master Index Activity Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubg">Weekly Activity Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubh">Monthly Activity Report</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahubi">Yearly Activity Report</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-index_c">Master Index Database Indexes</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-reports_t.html">Working With Master Index Command Line Reports</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf_c">Configuring the Master Index Report Environment</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#ahucd">To Set up the Environment</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-conf-rep_c">Configuring Master Index Command Line Reports</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahucf">Defining the Command Line Report Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-maint-reports_t.html#ahuch">Configuring Command Line Reports</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-maint-reports_r">Master Index Command Line Report Properties</a></p>
+<p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gfkvq">To Run the Reports Using the Batch File</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gentextid-1437">To Run the Reports Using a Java Command</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-maint-dbs-archive_c.html">Maintaining the Master Index Database</a></p>
+<p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-backup_c">Backing up the Master Index Database</a></p>
+<p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaop">Online Backups</a></p>
+<p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaoq">Offline Backups</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-restore_c">Restoring the Master Index Database</a></p>
+<p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-archive_c">Archiving Master Index Data</a></p>
+<p class="toc level2 tocsp"><a href="admin_mi-maint-project_c.html">Implementing Changes to the Master Index Project</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-cfg_c">Modifying Master Index Configuration Files</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapi">Updating the Object Structure</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapj">Updating Normalization and Standardization Structures</a></p>
+<p class="toc level4"><a href="admin_mi-maint-project_c.html#ahapk">Updating the Match String</a></p>
+<p class="toc level3 tocsp"><a href="admin_mi-maint-project_c.html#admn_mi-project-dbs_c">Modifying the Master Index Database</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-security_c">Modifying Master Index Security</a></p>
+<p class="toc level3"><a href="admin_mi-maint-project_c.html#admn_mi-project-lid_c">Modifying the Local ID Format</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="admn_mi-maint-security_t"></a>
+
+<h2>Defining Master Index Data Manager Security</h2>
+<p><a name="indexterm-1"></a><a name="indexterm-2"></a>Master Index Studio supports security for the Master Index Data Manager (MIDM) at
+the user and function level and also supports Secure Sockets Layer (SSL) authentication.
+Security is defined at two levels, the EJB level and the presentation level.
+EJB security provides access at the user and function level to the methods
+of the master controller (<tt>com.sun.mdm.index.ejb.master</tt>). Presentation level security provides access at the function and
+user level for the actions that can be performed from the MIDM.</p><p>A secure user name and password must be defined for each master index
+application user to connect to the database and to log on to the
+MIDM. For each user account you define, you must specify one or more
+roles in order for that user to be able to perform any
+functions in the MIDM. You define roles in <tt>midm-security.xml</tt> in the master index project.
+This is the presentation layer security. In addition, each user must also be
+assigned at least one EJB security role. EJB security roles are defined in
+<tt>security.xml</tt>. A default role that grant access to all functions of the master
+controller is predefined, but is not included in the file. The role is
+named MasterIndex.Admin.</p><p>User permissions for master index applications are granted using the Admin Console. You can
+also define security using a Lightweight Directory Access Protocol (LDAP) server, using the
+roles you define in <a href="#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a>.</p><p>Perform the following tasks to configure security for the master index application:</p>
+<ul><li><p><a href="#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a></p></li>
+<li><p><a href="#admn_mi-ejb-usergroup_t">Define EJB User Roles</a></p></li>
+<li><p><a href="#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a></p></li></ul>
+
+
+<div class="indent"><a name="admn_mi-maint-usergroup_t"></a><h3>Define Master Index Data Manager User Roles</h3>
+<p>Master Index Studio provides sample user roles for giving multiple permissions to a
+user at one time. You can define additional user roles and assign
+combinations of access permissions to each role. This way you can assign a
+user account to one or two user roles instead of assigning them several
+access permissions.</p>
+
+<a name="gglyo"></a><h5>To Define a User Role</h5>
+<ol>
+<li><b>In the NetBeans Project window, expand the master index project and then expand
+Configuration.</b></li>
+<li><b>Open <tt>midm-security.xml</tt> in an XML editor.</b></li>
+<li><b>Define user groups and their permissions using the elements described in <a href="#admn_mi-maint-sec-grps_r">Master Index Data Manager User Role Properties</a>.</b><p>The permissions you can assign are listed and described in <a href="#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a>.</p></li>
+<li><b>Save and close the file.</b><p>You can use these roles when you create the user accounts, as described
+in <a href="#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a>.</p></li>
+<li><b>Continue to <a href="#admn_mi-ejb-usergroup_t">Define EJB User Roles</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-ejb-usergroup_t"></a><h3>Define EJB User Roles</h3>
+<p>EJB user roles control access at the master controller level. Master Index
+Studio provides a sample role for granting multiple permissions at one time without
+giving access to all functions. An additional role is predefined, MasterIndex.Admin, that provides access
+to all functions. You can define additional roles and assign combinations of functional
+permissions to each role. This way you can assign a user account to
+one or two roles instead of assigning them several permissions.</p>
+<hr><p><b>Note - </b>This step is optional. You can use the MasterIndex.Admin role for MIDM users
+if you only need to restrict access at the presentation level.</p>
+<hr>
+
+
+<a name="gglyoejb"></a><h5>To Define an EJB User Role</h5>
+<ol>
+<li><b>In the NetBeans Projects window, expand the master index project and then expand
+Configuration.</b></li>
+<li><b>Open <tt>security.xml</tt> in an XML editor.</b></li>
+<li><b>Define user roles and the permissions that belong to each using the elements
+described in <a href="#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a>.</b><p>The permissions you can assign are listed and described in <a href="#admn_mi-ejb-security_r">EJB Security Functions</a>.</p></li>
+<li><b>Save and close the file.</b><p>You can use these roles when you create the user accounts.</p></li>
+<li><b>Continue to <a href="#admn_mi-maint-users_t">Create Master Index Data Manager User Accounts</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-maint-users_t"></a><h3>Create Master Index Data Manager User Accounts</h3>
+<p>You create user accounts for MIDM access using the application server Admin Console.</p>
+<hr><p><b>Tip - </b>Make sure you give users access to the initial page that appears when
+a user logs in to the MIDM. This page is defined in
+midm.xml. Also verify that the EJB privileges you assign allow the user to
+perform all of the MIDM functions to which they have access.</p>
+<hr>
+
+
+<a name="gglzn"></a><h5>To Create a User Account</h5>
+<h6>Before You Begin</h6><p>Make sure you have created all the user roles and, optionally, EJB
+user roles that need to be assigned to the user account.</p><ol>
+<li><b>Log on to the Admin Console.</b></li>
+<li><b>In the left portion of the page, expand Configuration, expand Security, and then
+expand Realms.</b></li>
+<li><b>Select File.</b></li>
+<li><b>On the Edit Realm page, select Manage Users.</b></li>
+<li><b>On the File Users page, select New.</b></li>
+<li><b>In the User ID field, enter a name for the user.</b></li>
+<li><b>In the Group List field, enter the following. Separate roles with a comma.</b>
+<ul><li><p><tt><b>MasterIndex.Admin</b></tt> or one or more of the EJB user roles you defined in <a href="#admn_mi-ejb-usergroup_t">Define EJB User Roles</a>.</p></li>
+<li><p>One or more of the user roles you defined in <a href="#admn_mi-maint-usergroup_t">Define Master Index Data Manager User Roles</a>. </p></li></ul>
+</li>
+<li><b>After you have added all required user roles and EJB user roles, enter
+a password for the user in the New Password field.</b></li>
+<li><b>In the Confirm New Password field, enter the password again.</b></li>
+<li><b>Click OK.</b></li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-maint-sec-grps_r"></a><h3>Master Index Data Manager User Role Properties</h3>
+<p>You can define user roles for the MIDM in order to assign
+multiple security permissions to a user account at once. Roles are defined in
+an XML file, midm-security.xml. The following table describes the elements of the security configuration
+file.</p><h6>Table&nbsp;1 MIDM User Role Configuration Elements</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>role</p></td>
+<td align="left" valign="top" scope="row"><p>A definition for one user role. Each role element contains a name
+for the user role, a list of security permissions, and, optionally, a user
+role from which permissions are inherited along with any exceptions to the inheritance.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>role-name</p></td>
+<td align="left" valign="top" scope="row"><p>The
+name of the user role, such as Administrator.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>inheritance</p></td>
+<td align="left" valign="top" scope="row"><p>A definition of how permissions
+are inherited from another user role. The definition includes the parent user role
+and any permissions that should not be inherited. This group of elements is
+optional, and a role can inherit from multiple user roles.</p>
+<hr><p><b>Note - </b>The role from which
+permissions are inherited must be defined earlier in the XML file than the
+role that inherits the permissions.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>inherits-from</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the user role from which
+the current role inherits permissions. If permissions are added to this user role
+at any time, the new permissions are also inherited by the current role.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>excluded-operations</p></td>
+<td align="left" valign="top" scope="row"><p>A
+list of permissions assigned to the parent role that the current role should
+not have access to. Any permissions assigned to the parent role that are
+not listed here are assigned to the current role.</p>
+<hr><p><b>Note - </b>If a role inherits
+from multiple parent roles and each parent is assigned an excluded permission, you
+need to specify that the permission be excluded for each parent role.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>excluded-operations/name</p></td>
+<td align="left" valign="top" scope="row"><p>The name
+of a security permission that is not inherited from the parent user role.
+Security permissions are listed under <a href="#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>operation</p></td>
+<td align="left" valign="top" scope="row"><p>A list of security permissions to assign
+to the user role. If the role inherits permissions from another role, the
+permissions listed here are in addition to the inherited permissions.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>operation/name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of a
+security permission to add to the current user role. Security permissions are listed
+under <a href="#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a>.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="admn_mi-maint-security_r"></a><h3>Master Index Data Manager User Permissions</h3>
+<p>The following table lists and describes each user permission for the MIDM. The
+user permission names are case-sensitive.</p><h6>Table&nbsp;2 MIDM User Permissions and Descriptions</h6><table><col width="30%"><col width="70%"><tr><th align="left" valign="top" scope="column"><p>User Permission</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>AssumedMatch_Print </p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to print the
+results of an assumed match search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-3"></a><a name="indexterm-4"></a>AssumedMatch_SearchView</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to search for and
+view records that were automatically matched by the master index application. This permission
+is needed to perform any assumed match functions.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>AssumedMatch_Undo</p></td>
+<td align="left" valign="top" scope="row"><p>Give access permission to reverse an
+assumed match, separating the two records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>AuditLog_Print</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to print an audit log
+search results report. This permission also requires AuditLog_SearchView.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>AuditLog_SearchView</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to search for
+and view audit log entries.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Activate</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to activate enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Compare</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access
+permission to compare enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Create</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to create new enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Deactivate</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to deactivate enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Edit</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to modify the SBR
+in enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_LinkSBRFields</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to link a field in a system
+record with a field in the enterprise record's SBR so the value of
+the SBR field is the same value as the system object field.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_LockSBRFields</p></td>
+<td align="left" valign="top" scope="row"><p>Give access
+permission to modify the SBR directly and to lock SBR fields for overwrite.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Merge</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to merge enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_OverwriteSBR</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to choose an SBR
+field to retain during a merge. After the merge transaction, the field is
+locked for editing.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_PrintComparison</p></td>
+<td align="left" valign="top" scope="row"><p>Reserved for future functionality.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_PrintSBR</p></td>
+<td align="left" valign="top" scope="row"><p>Reserved for future functionality.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_SearchViewSBR</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to
+search for and view single best records, and to generate and print the
+search results report. This permission is needed to perform any functions on the
+details page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_UnlinkSBRFields</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to unlink an SBR field and system record
+field that were previously linked.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_UnlockSBRFields</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to unlock an SBR field that
+was previously locked for editing.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_Unmerge</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to unmerge enterprise records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>EO_ViewMergeTree</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission
+to view a merge history of an enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Field_VIP</p></td>
+<td align="left" valign="top" scope="row"><p>Gives permission to view
+fields masked by any custom masking logic specified by midm.xml.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>PotDup_Print</p></td>
+<td align="left" valign="top" scope="row"><p>Gives permission to print
+the results of a potential duplicate search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>PotDup_ResolvePermanently</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to permanently resolve
+potential duplicate records. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>PotDup_ResolveUntilRecalc</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to resolve potential duplicate records. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>PotDup_SearchView</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to search for and view potential duplicate records. This permission is
+needed in order to perform any functions on the Duplicate Records page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>PotDup_Unresolve</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access
+permission to unresolve potential duplicate records that were previously resolved.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_Activity</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to
+run an activity report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_AssumedMatches</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to run an assumed match report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_DeactivatedEUIDs</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to run a deactivated record report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_Duplicates</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to run
+a potential duplicate report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_MergedRecords</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to run a merge transaction report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_UnmergedRecords</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to run an unmerge transaction report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_Updates</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to run
+an update report.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Reports_View</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to the reports page. This permission is
+needed in order to run any of the production or activity reports.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Activate</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access
+permission to reactivate a deactivated system record.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Add</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to add system
+records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Compare</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to compare system records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Edit</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to modify system
+records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Deactivate</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to deactivate system records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Merge</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to merge system
+records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Print</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to print the results of a system record search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Remove</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to delete system records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_SearchView</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to search for and
+view system records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>SO_Unmerge</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to unmerge system records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>TransLog_Print</p></td>
+<td align="left" valign="top" scope="row"><p>Gives permission to print
+the results of a transaction history search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>TransLog_SearchView</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to search for
+and view the transaction history of enterprise records and to view merged records.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="admn_mi-ejb-sec-grps_r"></a><h3>EJB User Role Properties</h3>
+<p>You can define access roles for the EJB layer in order to
+assign multiple security permissions to a user or web client at once. EJB
+roles can be used to secure MIDM users and other clients accessing the
+master index application, such as web services. Roles are defined in an XML
+file, <tt>security.xml</tt>. The following table describes the elements of the security configuration file. The
+default user, MasterIndex.Admin, is not defined in this file, but it gives access
+to all functions.</p><h6>Table&nbsp;3 EJB User Role Configuration Elements</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>ejbSecurity</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether EJB security is enabled. Enter <tt><b>ON</b></tt>
+to enable web service security; enter <tt><b>OFF</b></tt> to disable web service security.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>role</p></td>
+<td align="left" valign="top" scope="row"><p>A definition for
+one EJB user role. Each role element contains a name for the user
+role and a list of security permissions.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>role-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the EJB user
+role, such as DataProcessor.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>operation</p></td>
+<td align="left" valign="top" scope="row"><p>A list of master controller functions to assign to
+the user role. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of a master controller function to add
+to the current user role. Functions are listed under <a href="#admn_mi-ejb-security_r">EJB Security Functions</a>.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="admn_mi-ejb-security_r"></a><h3>EJB Security Functions</h3>
+<p>The following table lists and describes each security function in the master controller.
+The permission names are case-sensitive. For more information about these functions, see the
+Javadocs provided with Master Index Studio. These functions are defined in <tt>com.sun.mdm.index.ejb.master.MasterController</tt>.</p><h6>Table&nbsp;4 EJB Security Functions and Descriptions</h6><table><col width="30%"><col width="70%"><tr><th align="left" valign="top" scope="column"><p>User Permission</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>activateEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to change the status of a deactivated enterprise object back to
+active.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>activateSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to change the status of a deactivated system object back
+to active.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>addSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Give access permission to add a system object to an enterprise
+object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>calculatePotentialDuplicates</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to calculate potential duplicates for a transaction.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>calculateSBR</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission
+to calculate a new single best record (SBR) for an enterprise object that
+has been updated.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>createEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to create a new enterprise object in
+the master index application.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>deactivateEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to change the status of an enterprise
+object to inactive.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>deactivateSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to change the status of a system object
+to inactive.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>deleteSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to delete a system object from an enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>executeMatch</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to process a system object using the standardization and matching logic
+defined for the master index application.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>executeMatchDupRecalc</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to process a system
+object using the standardization and matching logic defined for the master index application
+and allows you to defer potential duplicate processing.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>executeMatchGui</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to process a
+system object using the standardization and matching logic defined for the master index
+application.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>executeMatchUpdate</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to process a system object using the standardization and matching
+logic defined for the master index application. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>executeMatchUpdateDupRecalc</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to process
+a system object using the standardization and matching logic defined for the master
+index application and allows you to defer potential duplicate processing.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getConfigurationValue</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to
+retrieve the configuration of a master controller parameter.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getDatabaseStatus</p></td>
+<td align="left" valign="top" scope="row"><p>Give access permission to retrieve the
+status of the master index database.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve an enterprise
+object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getEUID</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve the EUID associated with a system and local
+ID.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getMergeHistory</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve a tree structure of the merge transactions associated
+with a specific enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getRevisionNumber</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve the SBR revision
+number for an enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getSBR</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve the SBR for an
+enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>getSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve a system object based on the
+system and local ID information.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>insertAuditLog</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to add an audit log record
+to the master index database.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupAssumedMatches</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve a list of assumed
+matches based on the search criteria specified.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupAuditLog</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve an audit
+log record.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupPotentialDuplicates</p></td>
+<td align="left" valign="top" scope="row"><p>Gives permission to retrieve a list of potential duplicate records.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupSystemDefinition</p></td>
+<td align="left" valign="top" scope="row"><p>Gives permission
+to retrieve the attributes of a source system in the master index database.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupSystemDefinitions</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission retrieve the attributes of multiple source systems in the master index
+database.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupSystemObjectPKs</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve an array of system object keys.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupSystemObjects</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access
+permission to retrieve the active system objects in an enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupTransaction</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission
+to retrieve a transaction summary.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>lookupTransactions</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve an array of
+transaction summaries.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>mergeEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to merge two or more enterprise objects.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>mergeSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access
+permission to merge two or more system objects.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>ResolvePotentialDuplicates</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to flag
+a potential duplicate pair as resolved.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>searchEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to retrieve an iterator
+of enterprise objects based on the specified search criteria.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>transferSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to transfer
+a system object from its current enterprise object to a different enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>UndoAssumedMatch</p></td>
+<td align="left" valign="top" scope="row"><p>Gives
+access permission to reverse an assumed match transaction, unmerging the two objects that
+were matched and creating a new enterprise object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>unmergeEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to unmerge
+two previously merged enterprise objects.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>unmergeSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to unmerge two previously merged system
+objects.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>unresolvePotentialDuplicate</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to mark as unresolved two potential duplicate records that were
+previously flagged as resolved.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>updateEnterpriseDupRecalc</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to update the master index database
+to reflect new values for an enterprise object and optionally to defer potential
+duplicate processing.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>updateEnterpriseObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to modify enterprise objects.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>updateSystemObject</p></td>
+<td align="left" valign="top" scope="row"><p>Gives access permission to modify system
+objects</p></td>
+</tr>
+</table></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="relatedtopics.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="admn_mi-ejb-security_t.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

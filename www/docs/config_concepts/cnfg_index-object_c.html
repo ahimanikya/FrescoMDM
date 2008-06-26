@@ -1,104 +1,229 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<head>
+   <title>Understanding Master Index Configuration Options </title>
 
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Understanding Master Index Configuration Options lists and describes the XML files that define the configuration of a master index application. It also provides information about how the configuration options affect the master index application runtime and discusses different ways of configuring the master index application.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
 
- <head>
-
-
-<title>Developing Master Indexes With Master Index Studio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
-
-  <link rel="stylesheet" type="text/css"
- href="https://mural.dev.java.net/css/muraldoc.css">
-
-
-
-</head>
-
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   </head>
 
 <body>
 
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
 
+   <a name="top"></a>
+   <h1>Understanding Master Index Configuration Options </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_index-overview_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-query_c.html">Next</a></span></h5>
 
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-
-
-
-
-
-<!-- Servlet-Specific template -->
-
-<p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
-		<table id="floating-contenttable" class="colapse" background-color="#FFFFFF">
-		<td class="valign-top b-right full-width" background-color="#FFFFFF"><!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;"><!-- IE hack-->
-
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-
-<a name="top"></a>
-<h1>Understanding Master Index Configuration Options</h1>
-<h1 style="bold">DRAFT VERSION</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
-    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Understanding Master Index Configuration Options</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="cnfg_index-overview_r.html">About Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-features_c">Features of Master Index Studio</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html">Configuration Overview for Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_c.html#cnfg_sme-file-view_c">About the Configuration Files for Master Index Studio</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbg">Master Index object.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbe">Master Index query.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbt">Master Index mefa.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbp">Master Index master.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjax">Master Index update.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-filtering_c">Master Index filter.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-valid_c">Master Index validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-secur_c">Master Index security.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-edm-about_c">Master Index edm.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-engine_c">Match and Standardization Engine Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-overview_c.html#cnfg_index-editors_c">Using the Editors for Master Index Studio</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#gglcd">XML Editors</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-editors-cfg_c">Master Index Configuration Editor </a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybn">The object.xml File</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybo">query.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybp">master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybq">mefa.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybr">update.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybs">update.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybt">edm.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybu">Match Configuration File</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Master Index Object Definition Configuration</a></p>
+<p class="toc level3"><a href="#cnfg_index-objdef-parts_c">Master Index Object Definition Components</a></p>
+<p class="toc level4"><a href="#cnfg_index-od-objects_c">Master Index Object Definition Objects</a></p>
+<p class="toc level4"><a href="#cnfg_index-od-fields_c">Master Index Object Definition Fields</a></p>
+<p class="toc level4"><a href="#cnfg_index-od-relat_c">Master Index Object Definition Relationships</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-od-file_c">The Master Index object.xml File</a></p>
+<p class="toc level4"><a href="#cnfg_index-od-mod_c">Modifying the Master Index Object Definition</a></p>
+<p class="toc level4"><a href="#cnfg_index-od-structure_c">The object.xml File Structure</a></p>
+<p class="toc level5"><a href="#agyck">object.xml File Description</a></p>
+<p class="toc level5"><a href="#agycm">object.xml Example</a></p>
 </div>
+<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html">Query Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-query_c.html#cnfg_index-query-parts_c">Query Builder Components</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-basic-query_c">Basic Queries in a Master Index</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-blocking_c">Blocking Queries in a Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#gentextid-593">Blocking Query Block Processing</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#gentextid-600">Blocking Query for Matching</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-query_c.html#cnfg_index-phon-quer_c">Phonetic Queries in a Master Index</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query_c.html#cnfg_index-range-srch_c">Range Searching</a></p>
+<p class="toc level3"><a href="cnfg_index-query_c.html#cnfg_index-query-file_c">The query.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-query-cfg_c">Modifying query.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-query-struct_c">The query.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agydg">query.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agydi">query.xml Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query_c.html#cnfg_index-range-proc_c">Range Search Processing</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-basic-range_c">Basic Query Range Searching</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-block-range_c">Blocking Query Range Searching</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#cnfg_index-block-off_c">Blocking Query Offset Values</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agymp">Blocking Query Constants</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agyms">Blocking Query Offset and Constant Combinations</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-master_c.html">Manager Service Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-master_c.html#cnfg_index-master-parts_c">Manager Service Components</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-mc-cnfg_c">Master Controller Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyec">Custom Logic Classes in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyed">Update Mode in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyee">Merged Record Updates in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyef">Blocking Query in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#gfxsc">Transactional Support</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-dm-cnfg_c">Decision Maker</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeh">OneExactMatch</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyei">SameSystemMatch</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyej">DuplicateThreshold</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyek">MatchThreshold</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-euid-gen_c">EUID Generator</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyem">IdLength</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyen">ChecksumLength</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeq">ChunkSize</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-master-file_c">The master.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-master-mod_c">Modifying master.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-master-struct_c">The master.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeu">master.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyew">master.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mefa_c.html">Match Field Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-parts_c">Matching Service Components</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-std-cnfg_c">Standardization Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyfy">Data Reformatting</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyfz">Data Normalization</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyga">Phonetic Encoding</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-mtch-cnfg_c">Matching Configuration</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-cnfg_c">MEFA Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygd">Match and Standardization Engines</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyge">Block Picker and Pass Controller</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-phon-cnfg_c">Phonetic Encoders</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-sqnc_c">Sample Standardization and Matching Sequence</a></p>
+<p class="toc level3"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-file_c">The mefa.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-mod_c">Modifying mefa.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-strct_c">The mefa.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygk">mefa.xml Description</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygm">mefa.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivior_c.html">Survivor Strategy Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-survivior_c.html#cnfg_index-mefa-sbr_c">The Survivor Calculator and the SBR</a></p>
+<p class="toc level3"><a href="cnfg_index-survivior_c.html#cnfg_index-updtmgr-parts_c">Update Manager Components</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-srvrhlpr_c">Survivor Helper</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyie">Survivor Helper Default Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyif">Survivor Helper Weighted Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyig">Survivor Helper Union Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivior_c.html#cnfg_index-wghtcalc_c">Weighted Calculator</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3433">Weighted Calculator SourceSystem Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3437">Weighted Calculator SystemAgreement Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3441">Weighted Calculator MostRecentModified Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivior_c.html#agyijcnfg_index-updtpols_c">Update Manager Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyik">Update Manager Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyil">Update Manager Update Policy Flag</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-file_c">The update.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-mod_c">Modifying update.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-strct_c">The update.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyip">update.xmlFile Description</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyir">update.xml Example</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyis">Weighted Calculator Logic</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-filters_c.html">SBR, Matching, and Blocking Filter Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-ovrvw_c">Master Index Field Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter_c">SBR Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-block_c">Blocking Query Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-match_c">Match String Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-listfile_c">Exclusion Lists</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-file_c">The filter.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-example_c">filter.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-validate_c.html">Field Validation Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-validate_c.html#cnfg_index-valid-file_c">The validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-ex_c">update.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-midm_c.html">Master Index Data Manager Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-abt_c">About the MIDM</a></p>
+<p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#cnfg_index-midm-props_c">Object and Field Properties</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#cnfg_index-midm-relat_c">Relationship Properties</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#ggryo">Display Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggrya">Page Display Properties</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggrzt">Audit Log</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggrzk">Local ID Labels</a></p>
+<p class="toc level5"><a href="cnfg_index-midm_c.html#ggryp">Search Page Configuration</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-midm_c.html#cnfg_index-midm-imp_c">Implementation Configuration</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-midm_c.html#cnfg_index-midm-file_c">The midm.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#cnfg_index-midm-modifying_c">Modifying midm.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#agykg">midm.xml File Description</a></p>
+<p class="toc level4"><a href="cnfg_index-midm_c.html#agyki">midm.xml File Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html">Master Index Field Notations</a></p>
+<p class="toc level3"><a href="cnfg_index-epaths_c.html#cnfg_index-epath_c">ePath Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-syntax_c">ePath Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-ex_c">ePath Notation Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qfn_c">Qualified Field Name Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qual_c">Qualified Field Name Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qual-ex_c">Qualified Field Name Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-simple_c">Simple Field Name Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-smpl-syntax_c">Simple Field Notation Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-smpl-ex_c">Simple Field Notation Example</a></p>
 
-<a name="cnfg_index-object_c"></a><h3>Object Definition</h3><p>After you define the master index framework and create the configuration files, you
-can modify the object structure that you defined. This chapter describes the Object
-Definition file (<tt>object.xml</tt>), which defines the object structure. It includes these topics:</p>
-<ul><li><p><a href="#agycc">About the Object Definition</a></p></li>
-<li><p><a href="#agycd">Object Definition Components</a></p></li>
-<li><p><a href="#agych">The Object Definition File</a></p></li></ul>
+     </div>
+   </div>
 
 
-<a name="agycc"></a>
+   <div class="maincontent">
 
-<h2>About the Object Definition</h2>
-<p><a name="indexterm-52"></a><a name="indexterm-53"></a>The properties for the objects you will store in the master index database
-are defined in the Object Definition file. This file defines the parent and
-child objects to be indexed and the fields contained in each object, including
-key properties for each field, such as the field size, unique record identifiers,
-and whether certain fields are required or can be updated.</p><p>The Object Definition is used as a basis for most of the
+
+<a name="cnfg_index-object_c"></a>
+
+<h2>Master Index Object Definition Configuration</h2>
+<p><a name="indexterm-55"></a><a name="indexterm-56"></a>The properties for the objects you will store in the master index database
+are defined in object.xml. This file defines the parent and child objects to
+be indexed and the fields contained in each object, including key properties for
+each field, such as the field size, unique record identifiers, and whether certain
+fields are required or can be updated. After you define the master index
+framework and create the configuration files, you can modify the object structure that
+you defined.</p><p>The Object Definition is used as a basis for most of the
 master index application components. The information you specify for this file defines the dynamic
 Java API and the database structure for the primary tables that store object
-information in the master index application.</p>
+information in the master index application.</p><p>The following topics describe object.xml, which defines the object structure. </p>
+<ul><li><p><a href="#cnfg_index-objdef-parts_c">Master Index Object Definition Components</a></p></li>
+<li><p><a href="#cnfg_index-od-file_c">The Master Index object.xml File</a></p></li></ul>
 
-<a name="agycd"></a>
 
-<h2>Object Definition Components</h2>
-<p>The Object Definition contains three primary components, which are described in the following
-sections.</p>
-<ul><li><p><a href="#agyce">Object Definition Objects</a></p></li>
-<li><p><a href="#agycf">Object Definition Fields</a></p></li>
-<li><p><a href="#agycg">Object Definition Relationships</a></p></li></ul>
-<p>Together, these three components define the structure of the data in the master
-index application, the database structure, and the method OTD. Most configuration files in
-the master index application rely on the objects and fields defined in the
-Object Definition. For example, the fields you specify for the match string, queries,
-standardization, and the survivor calculator must all be defined in the Object Definition.</p>
+<div class="indent"><a name="cnfg_index-objdef-parts_c"></a><h3>Master Index Object Definition Components</h3>
+<p>The object definition includes three primary components that together define the structure of
+the data in the master index application. Most configuration files in the master
+index application rely on the objects and fields defined in the Object Definition.
+For example, the fields you specify for the match string, queries, standardization, and
+the survivor calculator must all be defined in the Object Definition.</p><p>The following topics describe each component of the object definition:</p>
+<ul><li><p><a href="#cnfg_index-od-objects_c">Master Index Object Definition Objects</a></p></li>
+<li><p><a href="#cnfg_index-od-fields_c">Master Index Object Definition Fields</a></p></li>
+<li><p><a href="#cnfg_index-od-relat_c">Master Index Object Definition Relationships</a></p></li></ul>
 
-<div class="indent"><a name="agyce"></a><h3>Object Definition Objects</h3>
-<p><a name="indexterm-54"></a><a name="indexterm-55"></a><a name="indexterm-56"></a><a name="indexterm-57"></a>In the master index application, information is stored in objects. Each object in
+
+<div class="indent"><a name="cnfg_index-od-objects_c"></a><h3>Master Index Object Definition Objects</h3>
+<p><a name="indexterm-57"></a><a name="indexterm-58"></a><a name="indexterm-59"></a><a name="indexterm-60"></a>In a master index application, information is stored in objects. Each object in
 the data structure represents a different type of information. For example, if you
 are indexing businesses, you might have one object type to store general information
 about the business (such as the business name and type), one to store
@@ -117,179 +242,182 @@ record might have several different addresses, each of which is stored in a
 separate Address object.</p></div>
 
 
-<div class="indent"><a name="agycf"></a><h3>Object Definition Fields</h3>
-<a name="indexterm-58"></a><a name="indexterm-59"></a><p>Each object in the object structure contains fields that store each data element
-in the object. You can specify properties for each field in the object
-structure, such as a length, name, data type, formatting rules, and so on.
-The fields you define in the object structure also determine the structure of
-the method OTD and the database tables. You can also specify certain
-properties for each field that determine how the database columns are defined, including the
-length, name, and required data type.</p></div>
+<div class="indent"><a name="cnfg_index-od-fields_c"></a><h3>Master Index Object Definition Fields</h3>
+<a name="indexterm-61"></a><a name="indexterm-62"></a><p>Each object in the object structure contains fields that store the data elements
+of the object. You can specify properties for each field in the
+object structure, such as a length, name, data type, formatting rules, and so
+on. The fields you define in the object structure also determine the structure of
+the database tables. You can also specify certain properties for each field that
+determine how the database columns are defined, including the length, name, and required
+data type.</p></div>
 
 
-<div class="indent"><a name="agycg"></a><h3>Object Definition Relationships</h3>
-<a name="indexterm-60"></a><a name="indexterm-61"></a><p>In the Object Definition, you must specify the parent and child objects. The
+<div class="indent"><a name="cnfg_index-od-relat_c"></a><h3>Master Index Object Definition Relationships</h3>
+<a name="indexterm-63"></a><a name="indexterm-64"></a><p>In the Object Definition, you must specify the parent and child objects. The
 object structure must contain one parent object. All remaining objects defined in the
 structure must be specified as child objects to that parent object.</p></div>
+</div>
 
 
-<a name="agych"></a>
+<div class="indent"><a name="cnfg_index-od-file_c"></a><h3>The Master Index object.xml File</h3>
+<p>The object structure is defined in object.xml. The information entered into the default
+configuration file is based on the objects and fields you defined in the
+wizard. Depending on how completely you defined the object structure in the wizard,
+this file should not require customization. </p><p>The following topics provide information about working with object.xml:</p>
+<ul><li><p><a href="#cnfg_index-od-mod_c">Modifying the Master Index Object Definition</a></p></li>
+<li><p><a href="#cnfg_index-od-structure_c">The object.xml File Structure</a></p></li></ul>
 
-<h2>The Object Definition File</h2>
-<p>The object structure is defined in the Object Definition file (<tt>object.xml</tt>) in
-XML format. The information entered into the default configuration file is based on
-the objects and fields you defined in the wizard. Depending on how completely
-you defined the object structure in the wizard, this file should not require
-customization.</p>
 
-<div class="indent"><a name="agyci"></a><h3>Modifying the Object Definition</h3>
-<p><a name="indexterm-62"></a>When you use the wizard to define the object structure, all the configuration
-files for the master index application are automatically generated, based on the information
-you provide. You can modify the Object Definition file at any time prior
-to deploying the associated Project, but you must update the remaining configuration files,
-regenerate the application, and redeploy the Project after doing so. For example, if
-you delete a field from the Object Definition that also appears on the
-EDM, appears in the SBR, and is defined for standardization and matching, you
-must remove the field from the Enterprise Data Manager file, Best Record file,
-and Match Field file. Any changes made to the file without regenerating the
-Project will not take effect.</p><p>The possible modifications to this file are restricted by the schema definition, so
+<div class="indent"><a name="cnfg_index-od-mod_c"></a><h3>Modifying the Master Index Object Definition</h3>
+<p><a name="indexterm-65"></a>When you use the wizard to define the object structure, all the configuration
+files for the master index application are automatically generated based on the information
+you provide. You can modify object.xml at any time prior to deploying the
+associated project, but you must regenerate the application and redeploy the project after
+doing so. If you modify the object structure using the configuration editor, the
+remaining configuration files are updated accordingly to keep them synchronized. If you update object
+structure by modifying the file directly, you also need to update the remaining
+configuration files. For example, if you modify the file directly and you delete
+a field from the object structure that also appears on the MIDM, appears
+in the SBR, and is defined for standardization and matching, you must remove
+the field from midm.xml, update.xml, and mefa.xml. Any changes made to the file
+without regenerating the project will not take effect.</p><p>The possible modifications to this file are restricted by the schema definition, so
 be sure to validate the file after making any changes.</p></div>
 
 
-<div class="indent"><a name="agycj"></a><h3>Object Definition File Structure</h3>
-<p><a name="indexterm-63"></a><a name="indexterm-64"></a>This section describes the structure of the XML file, general requirements, and constraints.
+<div class="indent"><a name="cnfg_index-od-structure_c"></a><h3>The object.xml File Structure</h3>
+<p><a name="indexterm-66"></a><a name="indexterm-67"></a>This topic describes the structure of the XML file, general requirements, and constraints.
 It also provides a sample implementation.</p>
 
-<div class="indent"><a name="agyck"></a><h3>Object Definition File Description</h3>
-<p><a href="#agycl">Table&nbsp;3-1</a> lists each element in the Object Definition file and provides a description
-of each element along with any requirements or constraints for each element.</p><a name="agycl"></a><h6>Table&nbsp;3-1 Object Definition File Structure</h6><table><col width="25*"><col width="75*"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<div class="indent"><a name="agyck"></a><h3>object.xml File Description</h3>
+<p><a href="#agycl">Table&nbsp;1</a> lists each element in object.xml and provides a description of each element
+along with any requirements or constraints for each element.</p><a name="agycl"></a><h6>Table&nbsp;1 object.xml File Structure</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-65"></a>name</p></td>
-<td align="left" valign="top" scope="row" width="95%"><p>The name
-of the master index application. This name must match the name of the
-parent object.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-68"></a>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the master
+index application. This name must match the name of the parent object.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-66"></a>database</p></td>
-<td align="left" valign="top" scope="row"><p>The database platform used by the master index application. Currently, the only
-values allowed are <tt><b>Oracle</b></tt> and <tt><b>SQL Server</b></tt>.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-69"></a>database</p></td>
+<td align="left" valign="top" scope="row"><p>The database
+platform used by the master index application. Currently, the only values allowed are
+<tt><b>Oracle</b></tt> and <tt><b>SQL Server</b></tt>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-67"></a><a name="indexterm-68"></a><a name="indexterm-69"></a>dateformat</p></td>
-<td align="left" valign="top" scope="row"><p>The date format to use for the
-master index application. Three formats are allowed for the date: MM/dd/yyyy, yyyy/MM/dd, and
-dd/MM/yyyy.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-70"></a><a name="indexterm-71"></a><a name="indexterm-72"></a>dateformat</p></td>
+<td align="left" valign="top" scope="row"><p>The date format to use for the master index application.
+Three formats are allowed for the date: MM/dd/yyyy, yyyy/MM/dd, and dd/MM/yyyy.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-70"></a>nodes</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for an object. There can be multiple <i>nodes</i> elements,
-each defining one parent or child object in the object structure. Each <i>nodes</i>
-element also defines the fields contained in each object along with the fields&rsquo;
-attributes. The object structure must include one parent object and can include several
-child objects or no child objects.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-73"></a>nodes</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration information
+for an object. There can be multiple <i>nodes</i> elements, each defining one
+parent or child object in the object structure. Each <i>nodes</i> element also defines
+the fields contained in each object along with the field attributes. The object structure
+must include one parent object and can include several child objects or no
+child objects.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-71"></a>tag</p></td>
-<td align="left" valign="top" scope="row"><p>The name of the parent or child object
-defined by the <i>nodes</i> element.</p>
-<hr><p><b>Note - </b>Due to database naming constraints, the length of
-the name of the parent object plus the length of any child object
-name must be 21 characters or less.</p>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-74"></a>tag</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parent or child object defined by the
+<i>nodes</i> element.</p>
+<hr><p><b>Note - </b>Due to database naming constraints, the length of the name of the
+parent object plus the length of any child object name must be
+21 characters or less.</p>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-72"></a>fields</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for a field. There
-can be multiple <i>fields</i> elements.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-75"></a>fields</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration information for a field. There can be multiple
+<i>fields</i> elements.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-73"></a>field-name</p></td>
-<td align="left" valign="top" scope="row"><p>The name of the field. Follow these guidelines
-when naming fields.</p>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-76"></a>field-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the field. Follow these guidelines when naming fields.</p>
 <ul><li><p>The name cannot be longer than 30 characters.</p></li>
 <li><p>The name cannot be <i>object</i>Id, where <i>object</i> is the name of an object in the data structure. For example, you cannot create a field named AddressId if there is an Address object in the structure.</p></li>
 <li><p>Field names must conform to Oracle or SQL Server naming conventions, must conform to Java naming standards, and cannot contain XML reserved characters.</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-74"></a>field-type</p></td>
-<td align="left" valign="top" scope="row"><p>The data type for each field. Possible data types are:</p>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-77"></a>field-type</p></td>
+<td align="left" valign="top" scope="row"><p>The
+data type for each field. Possible data types are:</p>
 <ul><li><p><b>string</b> - Fields of this type contain a string of characters.</p></li>
 <li><p><b>date</b> - Fields of this type contain a date value.</p></li>
 <li><p><b>float</b> - Fields of this type contain a floating point integer.</p></li>
 <li><p><b>int</b> - Fields of this type contain an integer.</p></li>
-<li><p><b>char</b> - Fields of this type contain a single character.</p></li>
+<li><p><b>byte</b> - Fields of this type contain a single character.</p></li>
 <li><p><b>boolean</b> - Fields of this type can contain either <tt><b>true</b></tt> or <tt><b>false</b></tt>.</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-75"></a>size</p></td>
-<td align="left" valign="top" scope="row"><p>The
-number of characters allowed in each field. If you modify this value, be
-sure to modify the corresponding database column accordingly.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-78"></a>size</p></td>
+<td align="left" valign="top" scope="row"><p>The number of characters
+allowed in each field. If you modify this value, be sure to modify
+the corresponding database column accordingly.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-76"></a>updateable</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-79"></a>updateable</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field can be
+updated using the MIDM or from back-end messages. Specify <tt><b>true</b></tt> if the field
+can be updated, or specify <tt><b>false</b></tt> if it cannot.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-80"></a>required</p></td>
 <td align="left" valign="top" scope="row"><p>An indicator of whether the
-field can be updated via the EDM or back-end messages. Specify <tt><b>true</b></tt> if
-the field can be updated, or specify <tt><b>false</b></tt> if it cannot.</p></td>
+field is required in order to save an enterprise object in the database.
+Specify <tt><b>true</b></tt> if the field is required, or specify <tt><b>false</b></tt> if it is
+not.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-77"></a>required</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of
-whether the field is required in order to save an enterprise object in
-the database. Specify <tt><b>true</b></tt> if the field is required, or specify <tt><b>false</b></tt> if
-it is not.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-81"></a>code-module</p></td>
+<td align="left" valign="top" scope="row"><p>The identification code for the menu list that appears for this field in
+the MIDM. This must match a value in the code column of
+the sbyn_common_header database table. This element is optional.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-78"></a>code-module</p></td>
-<td align="left" valign="top" scope="row"><p>The identification code for the menu list that appears for
-this field in the EDM. This must match a value in the code
-column of the sbyn_comment_header database table. This element is optional.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-82"></a>maximum-value</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum value allowed in the
+field. To specify a value for a date field, use the format YYYY-MM-DD.
+This element is optional.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-79"></a>maximum-value</p></td>
-<td align="left" valign="top" scope="row"><p>The maximum value allowed
-in the field. To specify a value for a date field, use the
-format YYYY-MM-DD. This element is optional.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-83"></a>minimum-value</p></td>
+<td align="left" valign="top" scope="row"><p>The minimum value allowed in the field. To specify
+a value for a date field, use the format YYYY-MM-DD. This element is
+optional.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-80"></a>minimum-value</p></td>
-<td align="left" valign="top" scope="row"><p>The minimum value allowed in the field.
-To specify a value for a date field, use the format YYYY-MM-DD. This
-element is optional.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-84"></a>pattern</p></td>
+<td align="left" valign="top" scope="row"><p>The required pattern for the field. For more information about possible values and
+using Java patterns, see &ldquo;Patterns&rdquo; in the class list for <tt>java.util.regex</tt> in the
+Javadocs provided with J2SE Platform. This element is optional.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-81"></a>pattern</p></td>
-<td align="left" valign="top" scope="row"><p>The required pattern for the field. For more information about
-possible values and using Java patterns, see &ldquo;Patterns&rdquo; in the class list for <tt>java.util.regex</tt>
-in the Javadocs provided with J2SE Platform. This element is optional.</p></td>
-</tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-82"></a>key-type</p></td>
-<td align="left" valign="top" scope="row"><p>An indicator of
-whether the field is used to identify unique objects. Specify <tt><b>true</b></tt> if the
-element is a unique object identifier; specify <tt><b>false</b></tt> if it is not. This
-element is optional.</p>
-<hr><p><b>Note - </b><a name="indexterm-83"></a>Each child object should contain at least one field that is
-a unique object identifier, but it is not required. If two or
-more fields are unique identifiers, the combined value of these fields must be unique
-in a given enterprise record.</p>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-85"></a>key-type</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the
+field is used to identify unique objects. Specify <tt><b>true</b></tt> if the element is
+a unique object identifier; specify <tt><b>false</b></tt> if it is not. This element is
+optional.</p>
+<hr><p><b>Note - </b><a name="indexterm-86"></a>Each child object should contain at least one field that is a unique
+object identifier, but it is not required. If two or more fields are
+unique identifiers, the combined value of these fields must be unique in a
+given enterprise record.</p>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-84"></a>relationships</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for the hierarchy of the
-objects you defined in the <i>nodes</i> elements. Only one object can be the
-parent object; the remaining objects must be defined as children. The relationship definition allows
-a record to contain multiple instances of each child object. For example, if
-you define Address and Telephone child objects, the record can contain multiple addresses
-and telephone numbers.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-87"></a>relationships</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration information for the hierarchy of the objects you
+defined in the <i>nodes</i> elements. Only one object can be the parent object; the
+remaining objects must be defined as children. The relationship definition allows a record
+to contain multiple instances of each child object. For example, if you define
+Address and Telephone child objects, the record can contain multiple addresses and telephone
+numbers.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-85"></a>name</p></td>
-<td align="left" valign="top" scope="row"><p>The name of the parent object, as defined in the
-<i>nodes</i> elements.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-88"></a>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parent object, as defined in the <i>nodes</i> elements.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-86"></a>children</p></td>
-<td align="left" valign="top" scope="row"><p>The name of a child object, as defined in the <i>nodes</i>
-elements. You can define multiple <i>children</i> elements.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-89"></a>children</p></td>
+<td align="left" valign="top" scope="row"><p>The
+name of a child object, as defined in the <i>nodes</i> elements. You can
+define multiple <i>children</i> elements.</p></td>
 </tr>
 </table></div>
 
 
-<div class="indent"><a name="agycm"></a><h3>Object Definition Example</h3>
-<p>Following is a short sample illustrating the elements in the Object Definition file.
-The DOB field shows usage of the <i>minimum-value</i> element, the SSN field shows
-usage of the <i>pattern</i> element, and the AddressType field illustrates the <i>code-module</i> element. The
-AddressType field also has the <i>key-type</i> set to true, meaning that each record
-can only contain one address of each address type.</p><pre>   &lt;name>Person&lt;/name>
+<div class="indent"><a name="agycm"></a><h3>object.xml Example</h3>
+<p>Following is a short sample illustrating the elements in object.xml. The DOB field
+shows usage of the <i>minimum-value</i> element, the SSN field shows usage of the
+<i>pattern</i> element, and the AddressType field illustrates the <i>code-module</i> element. The AddressType field also
+has the <i>key-type</i> set to true, meaning that each record can only contain
+one address of each address type.</p><pre>   &lt;name>Person&lt;/name>
    &lt;database>oracle&lt;/database>
    &lt;dateformat>MM/dd/yyyy&lt;/dateformat>
    &lt;nodes>
@@ -351,65 +479,23 @@ can only contain one address of each address type.</p><pre>   &lt;name>Person&lt
       &lt;children>Phone&lt;/children>
    &lt;/relationships></pre></div>
 </div>
-
-
-
-<!-- End Content Area -->
-<td class="valign-top" >
-	<div id="floating-col-right"><!-- right content column -->
-<p><b><a href="landingpage.html">1.&nbsp;&nbsp;Understanding Master Index Configuration Options</a></b></p>
-<p class="toc level2"><a href="landingpage.html#cnfg_index-overview_r">About Master Index Studio</a></p>
-<p class="toc level2 tocsp"><a href="landingpage.html#cnfg_index-bk-overview_r">About This Document</a></p>
-<p><b><a href="cnfg_index-overview_c.html.">2.&nbsp;&nbsp;Configuration Overview</a></b></p>
-<p class="toc level2"><a href="cnfg_index-overview_c.html#agyat">About the Configuration Files</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html#agybc">Using the Editors</a></p>
-<p><b><a href="cnfg_index-object_c.html">3.&nbsp;&nbsp;Object Definition</a></b></p>
-<p class="toc level2"><a href="cnfg_index-object_c.html#agycc">About the Object Definition</a></p>
-<p class="toc level2"><a href="cnfg_index-object_c.html#agycd">Object Definition Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-object_c.html#agych">The Object Definition File</a></p>
-<p><b><a href="cnfg_index-query_c.html">4.&nbsp;&nbsp;Candidate Select Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-query_c.html#agycx">About Candidate Select Configuration</a></p>
-<p class="toc level2"><a href="cnfg_index-query_c.html#agycy">Query Builder Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html#agydc">Range Searching</a></p>
-<p class="toc level2"><a href="cnfg_index-query_c.html#agydd">The Candidate Select File</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html#agymf">Range Search Processing</a></p>
-<p><b><a href="cnfg_index-master_c.html">5.&nbsp;&nbsp;Threshold Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-master_c.html#agydz">About Threshold Configuration</a></p>
-<p class="toc level2"><a href="cnfg_index-master_c.html#agyea">Manager Service Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-master_c.html#agyer">The Threshold File</a></p>
-<p><b><a href="cnfg_index-mefa_c.html">6.&nbsp;&nbsp;Match Field Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-mefa_c.html#agyfv">About Match Field Configuration</a></p>
-<p class="toc level2"><a href="cnfg_index-mefa_c.html#agyfw">Matching Service Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-mefa_c.html#agygg">Sample Standardization and Matching Sequence</a></p>
-<p class="toc level2"><a href="cnfg_index-mefa_c.html#agygh">The Match Field File</a></p>
-<p><b><a href="cnfg_index-survivior_c.html">7.&nbsp;&nbsp;Best Record Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyia">About the Update Manager</a></p>
-<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyib">The Survivor Calculator and the SBR</a></p>
-<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyic">Update Manager Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-survivior_c.html#agyim">The Best Record File</a></p>
-<p><b><a href="cnfg_index-validate_c.html">8.&nbsp;&nbsp;Field Validation Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-validate_c.html#agyjl">Field Validation Custom Plug-ins</a></p>
-<p class="toc level2"><a href="cnfg_index-validate_c.html#agyjm">The Field Validation File</a></p>
-<p><b><a href="cnfg_index-edm_c.html">9.&nbsp;&nbsp;Enterprise Data Manager Configuration</a></b></p>
-<p class="toc level2"><a href="cnfg_index-edm_c.html#agyjt">About the EDM</a></p>
-<p class="toc level2"><a href="cnfg_index-edm_c.html#agyju">EDM Configuration Components</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-edm_c.html#agykd">The Enterprise Data Manager File</a></p>
-<p><b><a href="cnfg_index-epaths_c.html">10.&nbsp;&nbsp;Field Notations</a></b></p>
-<p class="toc level2"><a href="cnfg_index-epaths_c.html#agymw">ePath Notation</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html#agymz">Qualified Field Name Notation</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html#agync">Simple Field Name Notation</a></p>
 </div>
-</div>
-					</td></tr></table></div></div>
-	</td></tr></div>
-	</div>
-	<!-- /Servlet-Specific template -->
 
-<!-- end of right navigation -->
+   </div>
 
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_index-overview_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_index-query_c.html">Next</a>
+            </td>
+         </tr>
+      </table>
 
+   </div>
 
-</div>
-</div>
 </body>
 </html>

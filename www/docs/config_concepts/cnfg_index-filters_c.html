@@ -23,8 +23,8 @@
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
 
    <div class="embeddedtocpane">
-     <h5><span class="tocpageleft"><a href="cnfg_index-filters_c.html">Previous</a></span>
-         <span class="tocpageright"><a href="cnfg_index-midm_c.html">Next</a></span></h5>
+     <h5><span class="tocpageleft"><a href="cnfg_index-survivior_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-validate_c.html">Next</a></span></h5>
 
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
@@ -144,23 +144,23 @@
 <p class="toc level5"><a href="cnfg_index-survivior_c.html#agyip">update.xmlFile Description</a></p>
 <p class="toc level5"><a href="cnfg_index-survivior_c.html#agyir">update.xml Example</a></p>
 <p class="toc level5"><a href="cnfg_index-survivior_c.html#agyis">Weighted Calculator Logic</a></p>
-<p class="toc level2 tocsp"><a href="cnfg_index-filters_c.html">SBR, Matching, and Blocking Filter Configuration</a></p>
-<p class="toc level3"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-ovrvw_c">Master Index Field Filters</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter_c">SBR Filters</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-block_c">Blocking Query Filters</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-match_c">Match String Filters</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-listfile_c">Exclusion Lists</a></p>
-<p class="toc level3 tocsp"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-file_c">The filter.xml File</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
-<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-example_c">filter.xml Example</a></p>
 <div class="onpage">
-<p class="toc level2 tocsp"><a href="">Field Validation Configuration</a></p>
-<p class="toc level3"><a href="#cnfg_index-valid-file_c">The validation.xml File</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
-<p class="toc level4"><a href="#cnfg_index-valid-ex_c">update.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="">SBR, Matching, and Blocking Filter Configuration</a></p>
+<p class="toc level3"><a href="#cnfg_mi-filter-ovrvw_c">Master Index Field Filters</a></p>
+<p class="toc level4"><a href="#cnfg_mi-filter_c">SBR Filters</a></p>
+<p class="toc level4"><a href="#cnfg_mi-filter-block_c">Blocking Query Filters</a></p>
+<p class="toc level4"><a href="#cnfg_mi-filter-match_c">Match String Filters</a></p>
+<p class="toc level4"><a href="#cnfg_mi-filter-listfile_c">Exclusion Lists</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-filter-file_c">The filter.xml File</a></p>
+<p class="toc level4"><a href="#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
+<p class="toc level4"><a href="#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
+<p class="toc level4"><a href="#cnfg_mi-filter-example_c">filter.xml Example</a></p>
 </div>
+<p class="toc level2 tocsp"><a href="cnfg_index-validate_c.html">Field Validation Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-validate_c.html#cnfg_index-valid-file_c">The validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-ex_c">update.xml Example</a></p>
 <p class="toc level2 tocsp"><a href="cnfg_index-midm_c.html">Master Index Data Manager Configuration</a></p>
 <p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-abt_c">About the MIDM</a></p>
 <p class="toc level3"><a href="cnfg_index-midm_c.html#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p>
@@ -194,80 +194,209 @@
    <div class="maincontent">
 
 
-<a name="cnfg_index-validate_c"></a>
+<a name="cnfg_index-filters_c"></a>
 
-<h2>Field Validation Configuration</h2>
-<p>You can define custom logic for field validations and then specify them in
-validation.xml to associate the logic with the master index application. The custom logic
-is created as a Java class by defining custom Java classes in the
-Source Package folder of the EJB project. The custom validation classes must implement
-<tt>com.sun.mdm.index.objects.validation.ObjectValidator</tt>. The exception thrown is <tt>com.sun.mdm.index.objects.validation.exception.ValidationException</tt>.</p><p>The following topics describe the structure of validation.xml and provide information about custom
-field validators.</p>
-<ul><li><p><a href="#cnfg_index-valid-file_c">The validation.xml File</a></p></li></ul>
+<h2>SBR, Matching, and Blocking Filter Configuration</h2>
+<p>In filter.xml, you can define values to be excluded during the SBR
+calculation, during the matching process, and during the blocking query. The following topics describe
+the structure of filter.xml and provide information about defining filters.</p>
+<ul><li><p><a href="#cnfg_mi-filter-ovrvw_c">Master Index Field Filters</a></p></li>
+<li><p><a href="#cnfg_mi-filter-file_c">The filter.xml File</a></p></li></ul>
 
 
-<div class="indent"><a name="cnfg_index-valid-file_c"></a><h3>The validation.xml File</h3>
-<p><a name="indexterm-385"></a><a name="indexterm-386"></a><a name="indexterm-387"></a>By default, validation.xml defines one validation rule named <tt>validate-local-id</tt>. This rule defines certain validations
-that are performed against local ID and system fields before they are entered
-into the database. The local ID validator verifies that the system code is
-valid, the local ID format is correct, the local ID is the correct
-length, and that neither field is null.</p><p>The following topics provide information about working with the validation.xml:</p>
-<ul><li><p><a href="#cnfg_index-valid-mod_c">Modifying validation.xml</a></p></li>
-<li><p><a href="#cnfg_index-valid-struct_c">validation.xml File Structure</a></p></li>
-<li><p><a href="#cnfg_index-valid-ex_c">update.xml Example</a></p></li></ul>
+<div class="indent"><a name="cnfg_mi-filter-ovrvw_c"></a><h3>Master Index Field Filters</h3>
+<p>Master Index Studio provides the ability to exclude unwanted values during key processes,
+such as blocking, matching, and SBR calculation. Data coming into a master index
+application frequently contains default values that are used when the actual value is
+unknown. One of the most common examples is using &ldquo;999&ndash;99&ndash;9999&rdquo; or &ldquo;000&ndash;00&ndash;0000&rdquo; for a
+social security number. Another example is the occurrence in patient data when the
+name of a newborn baby is not yet known and the name
+is entered as &ldquo;Baby&rdquo;, &ldquo;Baby Boy&rdquo;, or &ldquo;Baby Girl&rdquo;. Retrieving all of these values
+for a blocking query and performing subsequent matching on these values wastes valuable
+computer resources. Removing invalid or overused values from these key processes can improve
+the performance of the master index application.</p><p>The following topics provide additional information about each type of filter:</p>
+<ul><li><p><a href="#cnfg_mi-filter_c">SBR Filters</a></p></li>
+<li><p><a href="#cnfg_mi-filter-block_c">Blocking Query Filters</a></p></li>
+<li><p><a href="#cnfg_mi-filter-match_c">Match String Filters</a></p></li>
+<li><p><a href="#cnfg_mi-filter-listfile_c">Exclusion Lists</a></p></li></ul>
 
 
-<div class="indent"><a name="cnfg_index-valid-mod_c"></a><h3>Modifying validation.xml</h3>
-<p>You can modify validation.xml using the XML editor. The possible modifications to this
+<div class="indent"><a name="cnfg_mi-filter_c"></a><h3>SBR Filters</h3>
+<p><a name="indexterm-370"></a>When the survivor calculator determines the values to populate in the SBR for
+a record, you want to eliminate any values that obviously do not represent
+the best value for the field. These are most likely default values that
+are used when the actual value of a field is unknown. When
+a filter is defined for a field and a system object contains an
+excluded value in that field, the survivor calculator ignores that value and uses
+a value from a different system record for the survivor calculator. If there
+is only one system record in the enterprise record and that system record
+contains an excluded value, the excluded value is used for the SBR since
+there is no other value to use.</p><p>As an example, if you define a SBR filter for FirstName to
+exclude the value &ldquo;Baby&rdquo; and an enterprise record contains two system records, one with
+a FirstName of &ldquo;Baby&rdquo; and one with a FirstName of &ldquo;Joel&rdquo;, then the
+value populated into the SBR is &ldquo;Joel&rdquo; regardless of how the survivor calculator
+is defined. If you have the same filter definition with an enterprise record
+that contains only one system record and the value of the FirstName is
+&ldquo;Baby&rdquo;, then the value populated into the SBR is &ldquo;Baby&rdquo;.</p></div>
+
+
+<div class="indent"><a name="cnfg_mi-filter-block_c"></a><h3>Blocking Query Filters</h3>
+<p><a name="indexterm-371"></a>When a message comes in to the master index application, values from the
+message are used as criteria for the blocking query used for matching. Several
+queries are created depending on the number of blocks that are defined. If
+the incoming message contains common default values, the query could result in an
+inordinate number of possible matches being returned from the master index database for
+the match process. You can reduce this overhead by excluding known invalid values
+from blocking query fields, thereby reducing the number of non-matching query results.</p><p>As an example, a blocking filter for the Phone field excludes the
+value &ldquo;9999999999&rdquo; and the blocking query contains a block on the FirstName and
+Phone fields. If an incoming record contains &ldquo;9999999999&rdquo; in the Phone field, the blocking
+query returns no matching records for that specific block of the query. Note
+that records containing the excluded value might be returned by other blocks in
+the query that do not include the Phone field.</p></div>
+
+
+<div class="indent"><a name="cnfg_mi-filter-match_c"></a><h3>Match String Filters</h3>
+<p><a name="indexterm-372"></a>When a master index application matches incoming records against records that already exist
+in the master index database, you want to be sure the composite weights
+are not artificially inflated due to matching on default values in certain fields.
+One of the most common problems in matching arises from the SSN (or
+other national identifier) in person data. This field should be one of the
+most reliable identifiers of a person since the number is unique to each
+person and the field is typically required so it should not be
+null. This means that if the SSN of a person is unknown, the
+person entering the data must enter some value that is not a valid
+SSN. Often the numbers &ldquo;999999999&rdquo; or &ldquo;000000000&rdquo; are used. If an incoming record
+contains one of these values, the match process returns the full agreement weight
+for the SSN field against other records containing the default data. We know
+this match value is meaningless in this case. </p><p>You can reduce the number of inaccurate matches and potential matches by defining
+an exclusion list for specific fields in the match string. When a match
+filter is defined against a field and an incoming record contains an excluded
+value, that value is ignored in the match process and does not contribute
+to the composite match weight.</p></div>
+
+
+<div class="indent"><a name="cnfg_mi-filter-listfile_c"></a><h3>Exclusion Lists</h3>
+<p>An exclusion list defines all values to filter out or ignore for
+a specific field. You can define exclusion lists directly in the filter.xml file
+or you can create exclusion lists in text files and reference those files
+from filter.xml. You should create an exclusion list file for each field for
+which filters are defined, and you might need to create separate files for
+a field whose excluded values for SBR processing do not match the excluded
+values for matching or blocking, for example.</p></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_mi-filter-file_c"></a><h3>The filter.xml File</h3>
+<p><a name="indexterm-373"></a><a name="indexterm-374"></a>The filter.xml file provides a template from which you can define filters for
+the SBR, blocking query, or match process. The default version of the file
+does not define any exclusions, so you do not need to modify the
+file if you do not use the filter capability.</p><p>The following topics provide information about the filter.xml file.</p>
+<ul><li><p><a href="#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p></li>
+<li><p><a href="#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p></li>
+<li><p><a href="#cnfg_mi-filter-example_c">filter.xml Example</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-fltr-mod_c"></a><h3>Modifying filter.xml</h3>
+<p>You can modify filter.xml using the XML editor. The possible modifications to this
 file are restricted by the schema definition, so be sure to validate the
 file after making any changes. When you modify this file, you must
 regenerate the application and redeploy the project for the changes to take effect.
 </p></div>
 
 
-<div class="indent"><a name="cnfg_index-valid-struct_c"></a><h3>validation.xml File Structure</h3>
-<p>validation.xml consists primarily of a list of rules. Each rule is defined within
-the <i>ValidationConfig</i> element and is defined by attributes within a <i>rules</i> element.
-<a href="#agyjp">Table&nbsp;13</a> describes the elements and attributes of validation.xml. </p><a name="agyjp"></a><h6>Table&nbsp;13 update.xml File Elements</h6><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element or Attribute</p></th>
+<div class="indent"><a name="cnfg_index-fltr-strct_c"></a><h3>filter.xml File Structure</h3>
+<p>filter.xml consists primarily of a list of fields, each with their own filter
+definitions. Each field is defined within a <i>field</i> element and the filters are
+defined within a <i>value</i> element. The following table describes the elements and attributes
+of filter.xml. </p><table><col width="25%"><col width="25%"><col width="50%"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Attribute</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-388"></a>rules</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information
-for the validation rules.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-375"></a>field</p></td>
+<td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p>A filter definition for one field. The definition includes the
+following elements and attributes. You can define multiple filter definitions, and each can define
+filters for the SBR, blocking, matching, or any combination of the three.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-389"></a>rule</p></td>
-<td align="left" valign="top" scope="row"><p>The configuration information for a specific validation rule in
-a <i>rules</i> list.</p></td>
+<tr><td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-376"></a>sbr</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator
+of whether to apply the filter to the SBR. Specify <tt><b>true</b></tt> to
+apply the filter to the SBR; otherwise specify <tt><b>false</b></tt>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-390"></a>name</p></td>
-<td align="left" valign="top" scope="row"><p>A <i>rule</i> attribute that specifies a name for the validation rule.</p></td>
+<tr><td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-377"></a>matching</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+to apply the filter to the blocking query. Specify <tt><b>true</b></tt> to apply
+the filter to the blocking query; otherwise specify <tt><b>false</b></tt>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-391"></a>object-name</p></td>
-<td align="left" valign="top" scope="row"><p>A
-<i>rule</i> attribute that specifies the name of the class that defines the object
-to which the validation rule is applied, such as <tt>SystemObject</tt> or <tt>ParentNameObject</tt> (where
-<i>ParentName</i> is the name of the parent object in the Object Definition).</p></td>
+<tr><td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-378"></a>blocking</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+to apply the filter to the matching process. Specify <tt><b>true</b></tt> to apply the
+filter to the matching process; otherwise specify <tt><b>false</b></tt>.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p>rule/<a name="indexterm-392"></a>class</p></td>
-<td align="left" valign="top" scope="row"><p>A
-<i>rule</i> attribute that specifies the complete path of the Java class containing the
-validation rule.</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-379"></a>name</p></td>
+<td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p>The qualified name for the field;
+for example, Person.SSN or Person.Address.PostalCode. For more information about qualified field names, see
+<a href="cnfg_index-epaths_c.html#cnfg_index-epath-qfn_c">Qualified Field Name Notation</a>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-380"></a>value</p></td>
+<td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p>A list of <i>field-value</i> elements that specify the values to filter. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-381"></a>field-value</p></td>
+<td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p>A value
+to filter from the SBR, blocking query, or matching process. You can define
+multiple field values. To use values listed in a flat file, define a
+<i>file</i> element instead of a <i>field-value</i> element.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-382"></a>file</p></td>
+<td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p>A definition of the file that
+contains the list of values to filter.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-383"></a>delimiter</p></td>
+<td align="left" valign="top" scope="row"><p>The character that delimits the values
+listed in the exclusion list flat file. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-384"></a>file-name</p></td>
+<td align="left" valign="top" scope="row"></td>
+<td align="left" valign="top" scope="row"><p>The path and name of a
+file that contains the list of values to filter. Be sure the values
+in this file are delimited by the character specified above.</p></td>
 </tr>
 </table></div>
 
 
-<div class="indent"><a name="cnfg_index-valid-ex_c"></a><h3>update.xml Example</h3>
-<p>Plug the custom validation classes you create into the master index application by
-specifying the name of the custom plug-in for the class in validation.xml, as
-shown below.</p><pre>&lt;ValidationConfig module-name="Validation"
-parser-class= "com.sun.mdm.index.configurator.impl.validation.ValidationConfiguration"
-   &lt;rules>
-      &lt;rule name="validate-auxiliary-id" object-name="PersonObject"
-       class="com.sun.mdm.index.user.AuxiliaryId"/>
-      &lt;rule name="validate-birth-date" object-name="PersonObject"
-       class="com.sun.mdm.index.user.BirthDate"/>
-   &lt;/rules>
-&lt;/ValidationConfig></pre></div>
+<div class="indent"><a name="cnfg_mi-filter-example_c"></a><h3>filter.xml Example</h3>
+<p>The following example defines a filter for the SSN field for the
+SBR only, filtering out the values &ldquo;999&ndash;99&ndash;9999&rdquo; and &ldquo;000&ndash;00&ndash;0000&rdquo;. When the survivor calculator determines
+that the field value for the SBR should be &ldquo;999&ndash;99&ndash;9999&rdquo; or &rdquo;000&ndash;00&ndash;0000&rdquo;, the survivor
+calculator ignores that value and either chooses a different value or ignores the
+field altogether, depending on how survivorship is defined.</p><pre>&lt;field sbr="true" matching="false" blocking="false">
+  &lt;name>Person.SSN&lt;/name>
+  &lt;value>
+    &lt;field-value>"999-99-9999"&lt;/field-value>
+    &lt;field-value>"000-00-0000"&lt;/field-value>
+  &lt;/value>
+&lt;/field></pre><p>The following example defines an exclusion list for matching and blocking, but not
+for the SBR. When a blocking query executes a query block that
+includes the DOB, it checks the values in the exclusion list and ignores
+any records where the DOB matches one of the values. When match weights
+are being generated, DOB fields that contain values found in the exclusion list
+are ignored.</p><pre>&lt;field sbr="false" matching="true" blocking="true">
+  &lt;name>Person.DOB&lt;/name>
+  &lt;value>
+    &lt;file delimter=";">
+      &lt;file-name>"./filters/DOB.txt"&lt;/file-name>
+    &lt;/file>
+  &lt;/value>
+&lt;/field></pre><p>The exclusion list file for the above example would look similar to the
+following:</p><pre>0000000000;2222222222;3333333333;...</pre></div>
 </div>
 
    </div>
@@ -276,10 +405,10 @@ parser-class= "com.sun.mdm.index.configurator.impl.validation.ValidationConfigur
       <table class="pagecontrol">
          <tr>
             <td class="pageleft">
-               <a href="cnfg_index-filters_c.html">Previous</a>
+               <a href="cnfg_index-survivior_c.html">Previous</a>
             </td>
             <td class="pageright">
-               <a href="cnfg_index-midm_c.html">Next</a>
+               <a href="cnfg_index-validate_c.html">Next</a>
             </td>
          </tr>
       </table>

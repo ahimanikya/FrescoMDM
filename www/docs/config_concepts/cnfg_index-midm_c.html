@@ -1,0 +1,1076 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Understanding Master Index Configuration Options </title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Understanding Master Index Configuration Options lists and describes the XML files that define the configuration of a master index application. It also provides information about how the configuration options affect the master index application runtime and discusses different ways of configuring the master index application.">
+   <meta name="date" content="2008-06-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   </head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Understanding Master Index Configuration Options </h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_index-validate_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_index-epaths_c.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Understanding Master Index Configuration Options</a></p>
+<p class="toc level2"><a href="relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="cnfg_index-overview_r.html">About Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-cnfg_c">Master Index Studio Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_r.html#cnfg_index-features_c">Features of Master Index Studio</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html">Configuration Overview for Master Index Studio</a></p>
+<p class="toc level3"><a href="cnfg_index-overview_c.html#cnfg_sme-file-view_c">About the Configuration Files for Master Index Studio</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbg">Master Index object.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbe">Master Index query.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbt">Master Index mefa.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjbp">Master Index master.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#ggjax">Master Index update.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-filtering_c">Master Index filter.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-valid_c">Master Index validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-secur_c">Master Index security.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-edm-about_c">Master Index edm.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-engine_c">Match and Standardization Engine Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-overview_c.html#cnfg_index-editors_c">Using the Editors for Master Index Studio</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#gglcd">XML Editors</a></p>
+<p class="toc level4"><a href="cnfg_index-overview_c.html#cnfg_index-editors-cfg_c">Master Index Configuration Editor </a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybn">The object.xml File</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybo">query.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybp">master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybq">mefa.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybr">update.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybs">update.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybt">edm.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-overview_c.html#agybu">Match Configuration File</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-object_c.html">Master Index Object Definition Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-object_c.html#cnfg_index-objdef-parts_c">Master Index Object Definition Components</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-objects_c">Master Index Object Definition Objects</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-fields_c">Master Index Object Definition Fields</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-relat_c">Master Index Object Definition Relationships</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-object_c.html#cnfg_index-od-file_c">The Master Index object.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-mod_c">Modifying the Master Index Object Definition</a></p>
+<p class="toc level4"><a href="cnfg_index-object_c.html#cnfg_index-od-structure_c">The object.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-object_c.html#agyck">object.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-object_c.html#agycm">object.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html">Query Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-query_c.html#cnfg_index-query-parts_c">Query Builder Components</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-basic-query_c">Basic Queries in a Master Index</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-blocking_c">Blocking Queries in a Master Index</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#gentextid-593">Blocking Query Block Processing</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#gentextid-600">Blocking Query for Matching</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-query_c.html#cnfg_index-phon-quer_c">Phonetic Queries in a Master Index</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query_c.html#cnfg_index-range-srch_c">Range Searching</a></p>
+<p class="toc level3"><a href="cnfg_index-query_c.html#cnfg_index-query-file_c">The query.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-query-cfg_c">Modifying query.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-query-struct_c">The query.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agydg">query.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agydi">query.xml Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-query_c.html#cnfg_index-range-proc_c">Range Search Processing</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-basic-range_c">Basic Query Range Searching</a></p>
+<p class="toc level4"><a href="cnfg_index-query_c.html#cnfg_index-block-range_c">Blocking Query Range Searching</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#cnfg_index-block-off_c">Blocking Query Offset Values</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agymp">Blocking Query Constants</a></p>
+<p class="toc level5"><a href="cnfg_index-query_c.html#agyms">Blocking Query Offset and Constant Combinations</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-master_c.html">Manager Service Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-master_c.html#cnfg_index-master-parts_c">Manager Service Components</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-mc-cnfg_c">Master Controller Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyec">Custom Logic Classes in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyed">Update Mode in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyee">Merged Record Updates in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyef">Blocking Query in master.xml</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#gfxsc">Transactional Support</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-dm-cnfg_c">Decision Maker</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeh">OneExactMatch</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyei">SameSystemMatch</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyej">DuplicateThreshold</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyek">MatchThreshold</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-euid-gen_c">EUID Generator</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyem">IdLength</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyen">ChecksumLength</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeq">ChunkSize</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-master_c.html#cnfg_index-master-file_c">The master.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-master-mod_c">Modifying master.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-master_c.html#cnfg_index-master-struct_c">The master.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyeu">master.xml File Description</a></p>
+<p class="toc level5"><a href="cnfg_index-master_c.html#agyew">master.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mefa_c.html">Match Field Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-parts_c">Matching Service Components</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-std-cnfg_c">Standardization Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyfy">Data Reformatting</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyfz">Data Normalization</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyga">Phonetic Encoding</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-mtch-cnfg_c">Matching Configuration</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-cnfg_c">MEFA Configuration</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygd">Match and Standardization Engines</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agyge">Block Picker and Pass Controller</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-phon-cnfg_c">Phonetic Encoders</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-sqnc_c">Sample Standardization and Matching Sequence</a></p>
+<p class="toc level3"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-file_c">The mefa.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-mod_c">Modifying mefa.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-mefa_c.html#cnfg_index-mefa-strct_c">The mefa.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygk">mefa.xml Description</a></p>
+<p class="toc level5"><a href="cnfg_index-mefa_c.html#agygm">mefa.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivior_c.html">Survivor Strategy Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-survivior_c.html#cnfg_index-mefa-sbr_c">The Survivor Calculator and the SBR</a></p>
+<p class="toc level3"><a href="cnfg_index-survivior_c.html#cnfg_index-updtmgr-parts_c">Update Manager Components</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-srvrhlpr_c">Survivor Helper</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyie">Survivor Helper Default Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyif">Survivor Helper Weighted Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyig">Survivor Helper Union Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivior_c.html#cnfg_index-wghtcalc_c">Weighted Calculator</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3433">Weighted Calculator SourceSystem Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3437">Weighted Calculator SystemAgreement Strategy</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#gentextid-3441">Weighted Calculator MostRecentModified Strategy</a></p>
+<p class="toc level4 tocsp"><a href="cnfg_index-survivior_c.html#agyijcnfg_index-updtpols_c">Update Manager Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyik">Update Manager Update Policies</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyil">Update Manager Update Policy Flag</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-file_c">The update.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-mod_c">Modifying update.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-survivior_c.html#cnfg_index-updt-strct_c">The update.xml File Structure</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyip">update.xmlFile Description</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyir">update.xml Example</a></p>
+<p class="toc level5"><a href="cnfg_index-survivior_c.html#agyis">Weighted Calculator Logic</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-filters_c.html">SBR, Matching, and Blocking Filter Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-ovrvw_c">Master Index Field Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter_c">SBR Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-block_c">Blocking Query Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-match_c">Match String Filters</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-listfile_c">Exclusion Lists</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-file_c">The filter.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-mod_c">Modifying filter.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_index-fltr-strct_c">filter.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-filters_c.html#cnfg_mi-filter-example_c">filter.xml Example</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-validate_c.html">Field Validation Configuration</a></p>
+<p class="toc level3"><a href="cnfg_index-validate_c.html#cnfg_index-valid-file_c">The validation.xml File</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-mod_c">Modifying validation.xml</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-struct_c">validation.xml File Structure</a></p>
+<p class="toc level4"><a href="cnfg_index-validate_c.html#cnfg_index-valid-ex_c">update.xml Example</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Master Index Data Manager Configuration</a></p>
+<p class="toc level3"><a href="#cnfg_index-midm-abt_c">About the MIDM</a></p>
+<p class="toc level3"><a href="#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p>
+<p class="toc level4"><a href="#cnfg_index-midm-props_c">Object and Field Properties</a></p>
+<p class="toc level4"><a href="#cnfg_index-midm-relat_c">Relationship Properties</a></p>
+<p class="toc level4"><a href="#ggryo">Display Properties</a></p>
+<p class="toc level5"><a href="#ggrya">Page Display Properties</a></p>
+<p class="toc level5"><a href="#ggrzt">Audit Log</a></p>
+<p class="toc level5"><a href="#ggrzk">Local ID Labels</a></p>
+<p class="toc level5"><a href="#ggryp">Search Page Configuration</a></p>
+<p class="toc level4 tocsp"><a href="#cnfg_index-midm-imp_c">Implementation Configuration</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_index-midm-file_c">The midm.xml File Structure</a></p>
+<p class="toc level4"><a href="#cnfg_index-midm-modifying_c">Modifying midm.xml</a></p>
+<p class="toc level4"><a href="#agykg">midm.xml File Description</a></p>
+<p class="toc level4"><a href="#agyki">midm.xml File Example</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html">Master Index Field Notations</a></p>
+<p class="toc level3"><a href="cnfg_index-epaths_c.html#cnfg_index-epath_c">ePath Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-syntax_c">ePath Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-ex_c">ePath Notation Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qfn_c">Qualified Field Name Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qual_c">Qualified Field Name Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-qual-ex_c">Qualified Field Name Example</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-simple_c">Simple Field Name Notation</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-smpl-syntax_c">Simple Field Notation Syntax</a></p>
+<p class="toc level4"><a href="cnfg_index-epaths_c.html#cnfg_index-epath-smpl-ex_c">Simple Field Notation Example</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="cnfg_index-midm_c"></a>
+
+<h2>Master Index Data Manager Configuration</h2>
+<p><a name="indexterm-393"></a><a name="indexterm-394"></a>The Master Index Data Manager (MIDM) is the web-based user interface for the
+master index application that allows you to monitor and modify data in the
+index. This interface is highly configurable, and can be customized by modifying midm.xml
+in the master index project.</p><p>The following topics describe the MIDM and the midm.xml structure, and provide a
+sample of the file structure.</p>
+<ul><li><p><a href="#cnfg_index-midm-abt_c">About the MIDM</a></p></li>
+<li><p><a href="#cnfg_index-midm-parts_c">MIDM Configuration Components</a></p></li>
+<li><p><a href="#cnfg_index-midm-file_c">The midm.xml File Structure</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-midm-abt_c"></a><h3>About the MIDM</h3>
+<p>The MIDM is a web-based interface that allows you to manage and monitor
+the data in your master index database. Using the MIDM, you can search
+for records; add, update, deactivate, and reactivate records; review and resolve potential duplicate
+records; compare records; and merge and unmerge records. You can also view a
+transaction history for each record, view an audit log of access to the
+database, and run reports on the state of the data and the transactions
+that have been performed. This interface is configurable, allowing you to customize certain
+processing properties as well as the appearance of the windows.</p><p><a name="indexterm-395"></a><a name="indexterm-396"></a><a name="indexterm-397"></a>The MIDM facilitates the use of screen readers and other assistive technology by
+providing information through HTML tags. It also provides tooltips when the cursor is
+placed over links and images on the MIDM pages.</p></div>
+
+
+<div class="indent"><a name="cnfg_index-midm-parts_c"></a><h3>MIDM Configuration Components</h3>
+<p><a name="indexterm-398"></a>You can configure several properties of the MIDM to display the information you
+want in the way you want, to define the way searches can be
+processed, and to define the criteria that can be used for each
+search. Certain implementation options are also configured in midm.xml, such as application server information,
+debug options, and security information. </p><p>The configurable properties of the user interface fall into these categories:</p>
+<ul><li><p><a href="#cnfg_index-midm-props_c">Object and Field Properties</a></p></li>
+<li><p><a href="#cnfg_index-midm-relat_c">Relationship Properties</a></p></li>
+<li><p><a href="#ggryo">Display Properties</a></p></li>
+<li><p><a href="#cnfg_index-midm-imp_c">Implementation Configuration</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-midm-props_c"></a><h3>Object and Field Properties</h3>
+<p><a name="indexterm-399"></a><a name="indexterm-400"></a>In midm.xml, you specify which objects appear on the MIDM windows and the
+order in which they appear. You can also specify the fields displayed in
+each object and configure properties for each field. This file controls the configuration
+of a field&rsquo;s name, length, order of appearance on the MIDM, required data
+type, whether text can be entered into a field or if it must
+be selected from a predefined value, whether a field or combination of fields
+must be unique to a parent or child object, and whether the
+value of the field is hidden under certain circumstances. You can also specify
+whether the format of a field is dependent on the value of a
+related field (for example, the format of a credit card number field could
+be dependent on the type of credit card specified).</p></div>
+
+
+<div class="indent"><a name="cnfg_index-midm-relat_c"></a><h3>Relationship Properties</h3>
+<p><a name="indexterm-401"></a>In midm.xml, relationships define the hierarchy of the object types listed on the
+MIDM. By specifying relationships, you define parent and child nodes. The parent and
+child nodes you specify in the <i>relationships</i> element must also be defined
+in the <i>node</i> elements of the file. You can specify one parent object;
+the remaining objects must be child objects to the parent you define. The
+relationships section is dependent on the relationships section in object.xml, and should only
+be changed if corresponding changes are made to object.xml.</p></div>
+
+
+<div class="indent"><a name="ggryo"></a><h3>Display Properties</h3>
+<p><a name="indexterm-402"></a>You can configure these display options for the MIDM: the appearance of pages,
+audit log availability, local ID field labels, and the configuration of the search
+pages.</p>
+
+<div class="indent"><a name="ggrya"></a><h3>Page Display Properties</h3>
+<p>You can configure several display properties for the pages that appear on the
+MIDM. For example, you can specify whether certain system fields are visible, the
+type of object to display on a page, and the name of
+the tabbed headings. You can also rearrange the order of pages or sub-pages.</p></div>
+
+
+<div class="indent"><a name="ggrzt"></a><h3>Audit Log</h3>
+<p><a name="indexterm-403"></a>In the display configuration, you can specify whether an audit log is maintained
+of all instances in which object information was accessed from the MIDM. If
+the log is maintained, then information about each instance of access can be
+viewed on the MIDM. This is especially useful in healthcare implementations, where privacy
+of information is mandated.</p></div>
+
+
+<div class="indent"><a name="ggrzk"></a><h3>Local ID Labels</h3>
+<p><a name="indexterm-404"></a>A local ID is a unique identification code assigned to a record by
+the system in which the record originated. By default, the fields that display
+the local IDs are named &ldquo;Local ID&rdquo; on the MIDM pages. This name
+can be modified to a name more recognizable by MIDM users.</p></div>
+
+
+<div class="indent"><a name="ggryp"></a><h3>Search Page Configuration</h3>
+<p><a name="indexterm-405"></a><a name="indexterm-406"></a>Of the configurable pages, the pages that might require the most configuration are
+the search pages. In addition to defining the number of records to display
+in the search results list, you can also specify the search criteria that
+appear and the types of searches allowed from the MIDM.</p><p><a name="indexterm-407"></a>You can define and name several search pages for each primary MIDM window,
+each with their own configuration. For each search page, you specify groups of
+fields that are displayed in boxed areas. Each boxed area can represent a
+different type of search, such as a demographic search, address search, EUID search, and
+so on. For the Records Details page searches, you must also specify
+the search types available for each search you define, such as alphanumeric or phonetic.
+You can configure searches by specifying a name for the search, the maximum
+number of records to return, whether the results are weighted, and whether wildcard
+characters can be used. </p><p>When you define the search types for the Records Details page of
+the MIDM, you must specify a query for each type you define. The
+queries you specify must already be defined in query.xml.</p></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-midm-imp_c"></a><h3>Implementation Configuration</h3>
+<p>The midm.xml file defines certain information about the application server for the master
+index implementation, such as the names of certain validation and management components, and
+debug parameters. Most of the implementation information is predefined.</p></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-midm-file_c"></a><h3>The midm.xml File Structure</h3>
+<p><a name="indexterm-408"></a><a name="indexterm-409"></a>MIDM properties are defined in midm.xml. Some of the information entered into
+the default configuration file is based on the fields you defined in the
+wizard, and some is standard across all implementations. For most implementations, this file
+will require customization.</p><p>The following topics provide information about working with midm.xml:</p>
+<ul><li><p><a href="#cnfg_index-midm-modifying_c">Modifying midm.xml</a></p></li>
+<li><p><a href="#agykg">midm.xml File Description</a></p></li>
+<li><p><a href="#agyki">midm.xml File Example</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-midm-modifying_c"></a><h3>Modifying midm.xml</h3>
+<p><a name="indexterm-410"></a>You can modify midm.xml at any time, but you must regenerate the application
+and redeploy the project after making any changes to the file. Changes made
+to this file do not affect match processing. The possible modifications to this
+file are restricted by the schema definition, so be sure to validate the
+file after making any changes. Certain properties of this file can be modified
+using the Configuration Editor, such as whether a field appears on a search
+page and is required for that search. Most MIDM properties need to be
+modified directly in this file.</p></div>
+
+
+<div class="indent"><a name="agykg"></a><h3>midm.xml File Description</h3>
+<p>The following table lists each element in midm.xml and provides a description of
+each element along with any requirements or constraints. Note that not all elements
+can be used on all predefined pages.</p><a name="agykh"></a><h6>Table&nbsp;14 midm.xml File Structure</h6><table><col width="35%"><col width="65%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>Object and Field Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-411"></a>node</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for a list
+of fields for one object along with their configuration information. Each object that
+appears on the MIDM must be defined in a node element. Most of
+the information you need to specify in the node elements is generated by
+the wizard, but you can modify the information as needed.</p>
+<hr><p><b>Note - </b>All fields defined in
+midm.xml must also be defined in object.xml; however, not all fields defined in
+object.xml need to be defined for the MIDM. Any fields or objects not
+listed in midm.xml will not appear on the MIDM.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the
+object defined by the node.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-412"></a>display-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which the child object types
+appear in the enterprise records on the MIDM pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-413"></a>field</p></td>
+<td align="left" valign="top" scope="row"><p>A container element defining the
+configuration information for a field on the MIDM. Each field that appears on
+the MIDM must be defined in a field element. A field element can
+contain the eleven configuration elements listed below.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the field as it
+appears in the object definition file.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-414"></a>display-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the field as it
+appears on the MIDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-415"></a>display-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which the field appears on the
+MIDM. For example, specify <tt><b>1</b></tt> to indicate this is the first field on
+the MIDM pages, <tt><b>2</b></tt> to indicate it is the second field, and
+so on.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-416"></a>max-length</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum number of characters displayed on the MIDM for the field.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-417"></a>gui-type</p></td>
+<td align="left" valign="top" scope="row"><p>The
+type of display for the field. Specify one of the following options.</p>
+<ul><li><p><b>TextBox</b> - A standard data entry field</p></li>
+<li><p><b>MenuList</b> - A field that must be populated by selecting from a drop-down list</p></li>
+<li><p><b>TextArea</b> - A long field that requires a scrollbar, such as a comments field</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-418"></a>value-type</p></td>
+<td align="left" valign="top" scope="row"><p>The
+master index data type for the data populated in the field. The following
+data types are supported:</p>
+<ul><li><p><b>string</b> - Contains a string of characters.</p></li>
+<li><p><b>date</b> - Contains a date value.</p></li>
+<li><p><b>float</b> - Contains a floating point integer.</p></li>
+<li><p><b>int</b> - Contains an integer.</p></li>
+<li><p><b>char</b> - Contains a single character.</p></li>
+<li><p><b>boolean</b> - Contains either true or false.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-419"></a>input-mask</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-420"></a>A mask used by the MIDM to add punctuation
+to a field. You can add an input mask to display telephone numbers
+as &ldquo;(123)456-7890&rdquo; even though the database might store them as &ldquo;1234567890&rdquo; and the user
+enters the numbers with no punctuation. The following character types are allowed:</p>
+<ul><li><p><b>D</b> - indicates a numeric character.</p></li>
+<li><p><b>L</b> - indicates an alphabetic character.</p></li>
+<li><p><b>A</b> - indicates an alphanumeric character.</p><p>For example, the input mask for the above telephone format is &ldquo;(DDD)DDD-DDDD&rdquo;.</p>
+<hr><p><b>Note - </b>If the length of the input mask is greater than the value specified for the <i>max-length</i> element, the length of the input mask is used.</p>
+<hr>
+</li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-421"></a>value-mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask
+used by the master index application to strip any extra characters that were
+added by the input mask to ensure that data is stored in
+the database in the correct format. This mask must be the same length
+as the input mask.</p><p>To specify a value mask, type the same value
+as is entered for the input mask, but type an &ldquo;x&rdquo; in place
+of each punctuation mark. For example, using the above phone number example, you
+need to specify a value mask of xDDDxDDDxDDDD. A value mask is not
+required for date fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-422"></a>value-list</p></td>
+<td align="left" valign="top" scope="row"><p>The <a name="indexterm-423"></a>name of the menu list used to populate the
+drop-down list for the field. This is required if the <i>gui-type</i> specified is
+MenuList, and it must match a code of an element in the sbyn_common_header
+database table.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-424"></a><a name="indexterm-425"></a><a name="indexterm-426"></a><a name="indexterm-427"></a>is-sensitive</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the value of the field is hidden
+on the MIDM for records with a certain VIP status. Only users with
+the Administrator or Field_VIP user roles can view the hidden information. Specify <tt><b>true</b></tt>
+to hide the field value; specify <tt><b>false</b></tt> (or remove the <i>is-sensitive</i> element) to
+display the field value.</p>
+<hr><p><b>Note - </b>This element is only used if the <i>object-sensitive-plug-in-class</i> in
+the <i>impl-details</i> section is populated. It must precede the <i>key-type</i> element described below.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-428"></a><a name="indexterm-429"></a><a name="indexterm-430"></a>key-type</p></td>
+<td align="left" valign="top" scope="row"><p>An
+indicator of whether the field (or a combination of key fields) must be
+unique in an enterprise record. Unique key fields identify unique child objects in
+an enterprise object. Specify <tt><b>true</b></tt> to indicate the field is a key field;
+specify <tt><b>false</b></tt> if it is not.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>Relationship Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-431"></a>relationships</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that defines the hierarchy
+of the parent and child objects displayed on the MIDM. This element contains
+the following two elements.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-432"></a>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parent object.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-433"></a>children</p></td>
+<td align="left" valign="top" scope="row"><p>The name of a child
+object. There should be one <i>children</i> element for each child object defined in
+the previous section of the file.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>Implementation Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-434"></a>impl-details</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that defines the configuration
+information for certain classes that are required for the MIDM to connect to
+the server. This section also defines debug and security options.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-435"></a>master-controller-jndi-name</p></td>
+<td align="left" valign="top" scope="row"><p>The JNDI name for
+the Master Controller. The default name is ejb/<i>app-name</i>MasterController, where <i>app-name</i> is the name
+of the master index application.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-436"></a>validation-service-jndi-name</p></td>
+<td align="left" valign="top" scope="row"><p>The JNDI name for the processing code validator.
+The default name is ejb/<i>app-name</i>CodeLookup.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-437"></a>usercode-jndi-name</p></td>
+<td align="left" valign="top" scope="row"><p>The JNDI name for the user code validator (used
+for non-unique IDs). The default name is ejb/<i>app-name</i>UserCodeLookup.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-438"></a>report-generator-jndi-name</p></td>
+<td align="left" valign="top" scope="row"><p>The JNDI name for the MIDM
+report generator. The default name is ejb/<i>app-name</i>ReportGenerator.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-439"></a>debug-flag</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether debug information is
+logged. Specify <tt><b>true</b></tt> to log debug information.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-440"></a>debug-dest</p></td>
+<td align="left" valign="top" scope="row"><p>The destination to which debug information
+is written. Specify <tt><b>console</b></tt> to log debug information to a monitor; specify
+<tt><b>file</b></tt> to print to a file.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-441"></a>object-sensitive-plug-in-class</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the class that contains logic
+for masking the data in certain fields from certain users. For example, certain
+sensitive information should only be viewed by administrators. If you specify field masking,
+you must define a custom plug-in to handle the process and specify it
+here.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>MIDM Page Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-442"></a>gui-definition</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that defines the configuration information for the pages that appear
+on the MIDM, including the types of searches available and any sub-screens contained
+on those pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>page-definition</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for the configuration elements that define the
+individual MIDM pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-443"></a>initial-screen-id</p></td>
+<td align="left" valign="top" scope="row"><p>The screen ID of the first page to appear when
+you log in to the MIDM. Enter the value defined in the <i>screen-id</i>
+element of the page you want to display (described later in this table).</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-444"></a>local-id</p></td>
+<td align="left" valign="top" scope="row"><p>The
+name to use for all fields and columns containing local IDs. If you
+want to change the field label from &ldquo;Local ID&rdquo; to a name
+that is more relevant to your implementation, define that name here. In fields where
+the local ID label is abbreviated to &ldquo;LID1&rdquo; or &ldquo;LID2&rdquo;, the name becomes
+<i>local-id</i>1 or <i>local-id</i>2 (where <i>local-id</i> is the value specified for this element). This name
+is also perpetuated to heading labels on search pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><i>page-name</i></p></td>
+<td align="left" valign="top" scope="row"><p>A name that identifies
+the page to the MIDM. Each page is defined by a <i>page-name</i> element
+that contains all of the configuration information for the page. The name of
+this element is specific to the page being defined, and the allowed values
+for the default MIDM include the following:</p>
+<ul><li><p>dashboard</p></li>
+<li><p>record-details</p></li>
+<li><p>transactions</p></li>
+<li><p>duplicate-records</p></li>
+<li><p>assumed-matches</p></li>
+<li><p>source-record</p></li>
+<li><p>reports</p></li>
+<li><p>audit-log</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-445"></a>allow-insert</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether entries are written
+to the audit log each time data is accessed on the MIDM. This
+element is only used when defining the Audit Log page. Specify <tt><b>true</b></tt> to
+enable the audit log. Specify <tt><b>false</b></tt> to disable the audit log. If the audit
+log is maintained, the Audit Log page is available on the MIDM
+for searching and viewing audit log entries and the information is stored in
+the sbyn_audit table.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-446"></a>root-object</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parent object. This should not be changed.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-447"></a>tab-name</p></td>
+<td align="left" valign="top" scope="row"><p>A
+name for tabbed heading for the page. This name appears on tab
+labels associated with the pages on the MIDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>screen-id</p></td>
+<td align="left" valign="top" scope="row"><p>A unique identifier for the page.
+This is referenced from the <i>initial-screen-id</i> element to specify the initial page
+that appears when a user logs in to the MIDM. This value must
+be an integer.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>display-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which the page appears in the tabbed
+headings. The display order goes from left to right.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-pages</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that lists
+and defines the searches that are available from the page. You can define
+multiple searches for each page.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>Search Page Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-448"></a>simple-search-page</p></td>
+<td align="left" valign="top" scope="row"><p>A container element that defines one type of
+search for an MIDM page. You can define multiple simple search pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-449"></a>screen-title</p></td>
+<td align="left" valign="top" scope="row"><p>The name
+of the search as it appears on the search page. Users can
+select a type of search to perform based on the titles you define
+for the searches here.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-result-id</p></td>
+<td align="left" valign="top" scope="row"><p>The unique identifier for the search results page that appears
+for the search. You can define multiple search results pages for each MIDM
+page, and each results page has a unique ID. You can enter any
+of the search result ID values defined in the <i>search-results-pages</i> element described later in
+this table.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-screen-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which the search page appears on the MIDM.
+The display order goes from left to right.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-450"></a>show-euid</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-451"></a>An indicator of whether to display
+the EUID field in the search criteria. Specify <tt><b>true</b></tt> to display the EUID;
+otherwise specify <tt><b>false</b></tt>. This element is not used by all pages, and the default
+value is false if this element does not exist.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-452"></a><a name="indexterm-453"></a>show-lid</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+to display the local ID and system fields in the search criteria. Specify
+<tt><b>true</b></tt> to display the fields; otherwise specify <tt><b>false</b></tt>. This element is not used
+by all pages, and the default value is false if this element does
+not exist. When the local ID is displayed, the local ID and system
+fields appear in their own labelled box.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-status</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display
+the record status field in the search results list. Specify <tt><b>true</b></tt> to display
+the field; otherwise specify <tt><b>false</b></tt>.  This element is not used by all
+pages, and the default value is false if this element does not exist.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-create-date</p></td>
+<td align="left" valign="top" scope="row"><p>An
+indicator of whether to display the create date field to allow searching on
+the date the record was created. Specify <tt><b>true</b></tt> to display the field; otherwise
+specify <tt><b>false</b></tt>.  This element is not used by all pages, and the
+default value is false if this element does not exist.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-create-time</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+to display the create time field to allow searching on the time the
+record was created. Specify <tt><b>true</b></tt> to display the field; otherwise specify <tt><b>false</b></tt>. This
+element is not used by all pages, and the default value is false
+if this element does not exist.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-timestamp</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the timestamp
+field. Specify <tt><b>true</b></tt> to display the field; otherwise specify <tt><b>false</b></tt>. This element is
+not used by all pages, and the default value is false if
+this element does not exist. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-454"></a>instruction</p></td>
+<td align="left" valign="top" scope="row"><p>A short statement to help the user process
+a search. The text you enter here appears above the search fields on
+the Search page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-455"></a>field-group</p></td>
+<td align="left" valign="top" scope="row"><p>A list of fields that appear on the Search page.
+You can define multiple field groups, and each group is contained in a
+labelled box on the Search page. Note that you can only define fields
+for searches on the Record Details page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-456"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>A description of the fields defined for
+the <i>field-group</i> element. This value appears as a box label for the area
+of the page that contains the specified fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-457"></a>field-ref</p></td>
+<td align="left" valign="top" scope="row"><p>One field definition for a field
+in the field group. Use the simple field name of the field with
+their corresponding objects as the root. For example, the path to the FirstName
+field in the Person object is &ldquo;Person.FirstName&rdquo;. You can define multiple <i>field-ref</i> elements
+for each field group, each of which are further configured by the following
+two optional attributes.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field-ref/<a name="indexterm-458"></a>required</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field is required in order to
+perform a search. Specify any of the following values.</p>
+<ul><li><p><b>true</b> - The corresponding field is required to perform the search. These fields are marked with an asterisk (*).</p></li>
+<li><p><b>false</b> - The corresponding field is not required to perform the search. If the <i>required</i> attribute is not defined, the default is false.</p></li>
+<li><p><a name="indexterm-459"></a><b>oneof</b> - This is assigned to more than one field and at least one of the fields with this designation is required to perform the search. If a group of fields is designated as &ldquo;oneof&rdquo;, those fields are marked with a dagger (&nbsp;) on the search page.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field-ref/<a name="indexterm-460"></a>choice</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether you
+search by a range of values rather than an exact value for the
+field. Specify one of the following values.</p>
+<ul><li><p><b>exact</b> - The search is performed on the exact value entered (wildcard may be allowed). If the <i>choice</i> attribute is not specified, this is the default value.</p></li>
+<li><p><b>range</b> - The search is performed on a range of values based on the entered search criteria. Fields with this designation appear twice on the search page, once with &ldquo;From&rdquo; appended to the field label and once with &ldquo;To&rdquo; appended to the field label. Be sure any searches that use range searching in the MIDM are configured to use range searching in query.xml.</p></li></ul>
+<p>To define a field for both
+exact and range searching, define the field twice; once with this attribute set
+to exact and once with it set to range.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-461"></a>search-option</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for
+the configuration information for a search. Each <i>search-option</i> element defines one type of
+search for the page. Note that not all search pages use search options.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-462"></a>display-name</p></td>
+<td align="left" valign="top" scope="row"><p>A
+short phrase describing the type of search to perform, such as &ldquo;Alphanumeric Search&rdquo;
+or &ldquo;Phonetic Search&rdquo;. These names appear on the MIDM for users to select
+when specifying the type of search to perform.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-463"></a>query-builder</p></td>
+<td align="left" valign="top" scope="row"><p>The type of query to
+use when this type of search is selected. The value entered here must
+match a <i>query-builder</i> name in query.xml.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-464"></a>weighted</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the results of
+the search are assigned matching probability weights. Specify <tt><b>true</b></tt> to assign matching weights or
+<tt><b>false</b></tt> to return unweighted results.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-465"></a>candidate-threshold</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum number of records to return for
+a search. This value must be a positive number, and is only used
+for blocking queries. Setting the candidate threshold to zero is equivalent to not
+setting a threshold.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-466"></a>parameter</p></td>
+<td align="left" valign="top" scope="row"><p>A list of optional parameters for the search. Not all
+query builders require parameters.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-467"></a>name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parameter. Currently, only <i>UseWildCard</i> is available.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-468"></a>value</p></td>
+<td align="left" valign="top" scope="row"><p>The value
+of the parameter. For the <i>UseWildCard</i> parameter, this is an indicator of whether
+the parameter is enabled or disabled. Specify <tt><b>true</b></tt> to allow wildcard characters
+or <tt><b>false</b></tt> to perform exact-match searches.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>Search Results List Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-result-pages</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for a list of search
+result page definitions. This allows you to have more than one search result
+configuration for the same MIDM page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-469"></a>search-result-list-page</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for the configuration information
+for one search results page. You can define multiple search results pages.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>search-result-id</p></td>
+<td align="left" valign="top" scope="row"><p>A unique
+identifier for the search result page. This element identifies the results page to
+display for each search type defined above. This value must be an integer.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-470"></a>item-per-page</p></td>
+<td align="left" valign="top" scope="row"><p>The
+number of resulting records to display on one page.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-471"></a>max-result-size</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum number of
+records to return for a search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-status</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the
+record status field in the results list. Specify <tt><b>true</b></tt> to display the field;
+otherwise specify <tt><b>false</b></tt>. Note that you cannot configure the search results fields for all
+search results lists.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-create-date</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to display the create date field
+in the results list. Specify <tt><b>true</b></tt> to display the field; otherwise specify <tt><b>false</b></tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-create-time</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator
+of whether to display the create time field in the results list. Specify
+<tt><b>true</b></tt> to display the field; otherwise specify <tt><b>false</b></tt>. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>show-timestamp</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to
+display the timestamp field in the results list. Specify <tt><b>true</b></tt> to display the
+field; otherwise specify <tt><b>false</b></tt>. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>field-group</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for one list of fields that
+appear in the search results. You can define multiple groups of fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>description</p></td>
+<td align="left" valign="top" scope="row"><p>A brief
+description for the field group. This value appears on the MIDM above the
+fields that are returned from a search.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-472"></a>field-ref</p></td>
+<td align="left" valign="top" scope="row"><p>A definition for one field that
+appears in the search results list. Use the simple field names with their
+corresponding objects as the root. For example, the path to the FirstName field
+in the Person object is &ldquo;Person.FirstName&rdquo;. You can define multiple <i>field-ref</i> elements. </p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="top" scope="row"><p><b>Subscreen Properties</b></p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>subscreen-configurations</p></td>
+<td align="left" valign="top" scope="row"><p>A
+list of sub-pages for a <i>page-name</i> element, described earlier in this table. You
+can define several pages within the main tabbed page. These pages appear on
+the page for which they are defined with their own tabbed headings beneath
+the main tabbed heading row.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>subscreen</p></td>
+<td align="left" valign="top" scope="row"><p>A container element for a sub-page. This element
+uses the same sequence of elements as the main <i>page-name</i> element, including the following:</p>
+<ul><li><p>enable</p></li>
+<li><p>root-object</p></li>
+<li><p>tab-name</p></li>
+<li><p>report-name</p></li>
+<li><p>screen-id</p></li>
+<li><p>display-order</p></li>
+<li><p>search-pages</p></li>
+<li><p>search-result-pages</p></li></ul>
+<p>The
+subscreen element does not include the <i>allow-insert</i> element, but does include two new
+elements, <i>enable</i> and <i>report-name</i>. The enable element contains a Boolean indicator of
+whether the tabbed sub-page is available. The report-name element is used for defining reports.
+</p></td>
+</tr>
+</table>
+<hr><p><b>Note - </b>The <i>subscreen</i> element is used by default to define standard reports that can
+be run from the MIDM. In these <i>subscreen</i> definitions, the <i>report-name</i> element indicates
+the type of report being generated. </p><p>You can specify any of the following production reports:</p>
+<ul><li><p>Assumed Matches</p></li>
+<li><p>Potential Duplicate</p></li>
+<li><p>Deactivated</p></li>
+<li><p>Merged</p></li>
+<li><p>Unmerged</p></li>
+<li><p>Update</p></li></ul>
+<p>Or you can specify any of the following activity reports.</p>
+<ul><li><p>Weekly Transaction Summary Report</p></li>
+<li><p>Monthly Transaction Summary Report</p></li>
+<li><p>Yearly Transaction Summary Report</p></li></ul>
+
+<hr>
+</div>
+
+
+<div class="indent"><a name="agyki"></a><h3>midm.xml File Example</h3>
+<p>Below is a short excerpt from midm.xml based on a master index
+application processing person information. This sample defines two pages on the MIDM. The first
+page defines one blocking search, one simple lookup search, and one search result
+list. The second page is the reports page, and it defines a Potential
+Duplicate Report and a Weekly Activity report.</p><pre>&lt;node>
+   &lt;name>Person&lt;/name>
+   &lt;field>
+      &lt;name>LastName&lt;/name>
+      &lt;display-name>Last Name&lt;/display-name>
+      &lt;display-order>1&lt;/display-order>
+      &lt;max-length>40&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>string&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field>
+   &lt;field>
+      &lt;name>FirstName&lt;/name>
+      &lt;display-name>First Name&lt;/display-name>
+      &lt;display-order>2&lt;/display-order>
+      &lt;max-length>40&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>string&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field>
+   &lt;field>
+      &lt;name>DOB&lt;/name>
+      &lt;display-name>DOB&lt;/display-name>
+      &lt;display-order>3&lt;/display-order>
+      &lt;max-length>32&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>date&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field>
+   &lt;field>
+      &lt;name>Gender&lt;/name>
+      &lt;display-name>Gender&lt;/display-name>
+      &lt;display-order>4&lt;/display-order>
+      &lt;max-length>8&lt;/max-length>
+      &lt;gui-type>MenuList&lt;/gui-type>
+      &lt;value-list>GENDER&lt;/value-list>
+      &lt;value-type>string&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field>
+   &lt;field>
+      &lt;name>SSN&lt;/name>
+      &lt;display-name>SSN&lt;/display-name>
+      &lt;display-order>5&lt;/display-order>
+      &lt;max-length>16&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>string&lt;/value-type>
+      &lt;input-mask>DDD-DD-DDDD&lt;/input-mask>
+      &lt;value-mask>DDDxDDxDDDD&lt;/value-mask>
+      &lt;is-sensitive>true&lt;/is-sensitive>
+   &lt;field>
+&lt;/node>
+&lt;node>
+   &lt;name>Alias&lt;/name>
+   &lt;display-order>1&lt;/display-order>
+   &lt;field>
+      &lt;name>LastName&lt;/name>
+      &lt;display-name>LastName&lt;/display-name>
+      &lt;display-order>1&lt;/display-order>
+      &lt;max-length>40&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>string&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field>
+   &lt;field>
+      &lt;name>FirstName&lt;/name>
+      &lt;display-name>FirstName&lt;/display-name>
+      &lt;display-order>2&lt;/display-order>
+      &lt;max-length>40&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>string&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field>
+&lt;/node>
+&lt;relationships>
+   &lt;name>Person&lt;/name>
+   &lt;children>Alias&lt;/children>
+&lt;/relationships>
+&lt;impl-details>
+   &lt;master-controller-jndi-name>ejb/PersonMasterController
+   &lt;/master-controller-jndi-name>
+   &lt;validation-service-jndi-name>ejb/PersonCodeLookup
+   &lt;/validation-service-jndi-name>
+   &lt;usercode-jndi-name>ejb/PersonUserCodeLookup&lt;/usercode-jndi-name>
+   &lt;reportgenerator-jndi-name>ejb/PersonReportGenerator
+   &lt;/reportgenerator-jndi-name>
+   &lt;debug-flag>true&lt;/debug-flag>
+   &lt;debug-dest>console&lt;/debug-dest>
+   &lt;enable-security>true&lt;/enable-security>
+   &lt;object-sensitive-plug-in-class>com.sun.mdm.index.security.VIPPlugIn
+   &lt;/object-sensitive-plug-in-class>
+&lt;/impl-details>
+&lt;gui-definition>
+   &lt;page-definition>
+      &lt;local-id/>
+      &lt;initial-screen-id>1&lt;/initial-screen-id>
+      &lt;record-details>
+         &lt;root-object>Person&lt;/root-object>
+         &lt;tab-name>Record Details&lt;/tab-name>
+         &lt;screen-id>1&lt;/screen-id>
+         &lt;display-order>2&lt;/display-order>
+         &lt;search-pages>
+            &lt;simple-search-page>
+               &lt;screen-title>Advanced Person Lookup (Phonetic)&lt;/screen-title>
+               &lt;search-result-id>1&lt;/search-result-id>
+               &lt;search-screen-order>1&lt;/search-screen-order>
+               &lt;show-euid>false&lt;/show-euid>
+               &lt;show-lid>false&lt;/show-lid>
+               &lt;instruction/>
+               &lt;field-group>
+                  &lt;description>Person&lt;/description>
+                  &lt;field-ref required="false">Person.FirstName&lt;/field-ref>
+                  &lt;field-ref required="false">Person.LastName&lt;/field-ref>
+                  &lt;field-ref required="false">Person.SSN&lt;/field-ref>
+               &lt;/field-group>
+               &lt;field-group>
+                  &lt;description>Alias&lt;/description>
+                  &lt;field-ref required="false">Person.Alias.FirstName&lt;/field-ref>
+                  &lt;field-ref required="false">Person.Alias.LastName&lt;/field-ref>
+               &lt;/field-group>
+               &lt;search-option>
+                  &lt;display-name>Phonetic Search&lt;/display-name>
+                  &lt;query-builder>BLOCKER-SEARCH&lt;/query-builder>
+                  &lt;weighted>true&lt;/weighted>
+                  &lt;parameter>
+                     &lt;name>UseWildcard&lt;/name>
+                     &lt;value>false&lt;/value>
+                  &lt;/parameter>
+               &lt;/search-option>
+            &lt;/simple-search-page>
+            &lt;simple-search-page>
+               &lt;screen-title>Simple Person Lookup&lt;/screen-title>
+               &lt;search-result-id>1&lt;/search-result-id>
+               &lt;search-screen-order>2&lt;/search-screen-order>
+               &lt;show-euid>true&lt;/show-euid>
+               &lt;show-lid>true&lt;/show-lid>
+               &lt;instruction/>
+               &lt;field-group/>
+               &lt;search-option>
+                  &lt;display-name>Alpha Search&lt;/display-name>
+                  &lt;query-builder>ALPHA-SEARCH&lt;/query-builder>
+                  &lt;weighted>false&lt;/weighted>
+                  &lt;parameter>
+                     &lt;name>UseWildcard&lt;/name>
+                     &lt;value>true&lt;/value>
+                  &lt;/parameter>
+               &lt;/search-option>
+            &lt;/simple-search-page>
+         &lt;/search-pages>
+         &lt;search-result-pages>
+            &lt;search-result-list-page>
+               &lt;search-result-id>1&lt;/search-result-id>
+               &lt;item-per-page>10&lt;/item-per-page>
+               &lt;max-result-size>100&lt;/max-result-size>
+               &lt;field-group>
+                  &lt;description/>
+                  &lt;field-ref>Person.FirstName&lt;/field-ref>
+                  &lt;field-ref>Person.MiddleName&lt;/field-ref>
+                  &lt;field-ref>Person.LastName&lt;/field-ref>
+                  &lt;field-ref>Person.SSN&lt;/field-ref>
+                  &lt;field-ref>Person.DOB&lt;/field-ref>
+                  &lt;field-ref>Person.Gender&lt;/field-ref>
+               &lt;/field-group>
+            &lt;/search-result-list-page>
+         &lt;/search-result-pages>
+      &lt;/record-details>
+      &lt;reports>
+         &lt;root-object>Person&lt;/root-object>
+         &lt;tab-name>Reports&lt;/tab-name>
+         &lt;screen-id>6&lt;/screen-id>
+         &lt;display-order>5&lt;/display-order>
+         &lt;search-pages/>
+         &lt;search-result-pages/>
+         &lt;subscreen-configurations>
+            &lt;subscreen>
+               &lt;enable>true&lt;/enable>
+               &lt;root-object>Person&lt;/root-object>
+               &lt;tab-name>Potential Duplicate Report&lt;/tab-name>
+               &lt;report-name>Potential Duplicate&lt;/report-name>
+               &lt;screen-id>0&lt;/screen-id>
+               &lt;display-order>1&lt;/display-order>
+               &lt;search-pages/>
+               &lt;search-result-pages>
+                  &lt;search-result-list-page>
+                     &lt;search-result-id>0&lt;/search-result-id>
+                     &lt;item-per-page>10&lt;/item-per-page>
+                     &lt;max-result-size>2000&lt;/max-result-size>
+                     &lt;field-group>
+                        &lt;description/>
+                        &lt;field-ref>Person.FirstName&lt;/field-ref>
+                        &lt;field-ref>Person.LastName&lt;/field-ref>
+                        &lt;field-ref>Person.SSN&lt;/field-ref>
+                        &lt;field-ref>Person.DOB&lt;/field-ref>
+                        &lt;field-ref>Person.Gender&lt;/field-ref>
+                     &lt;/field-group>
+                  &lt;/search-result-list-page>
+               &lt;/search-result-pages>
+            &lt;/subscreen>
+            &lt;subscreen>
+               &lt;enable>true&lt;/enable>
+               &lt;root-object>Person&lt;/root-object>
+               &lt;tab-name>Activity Report&lt;/tab-name>
+               &lt;report-name>Transaction Summary Report&lt;/report-name>
+               &lt;screen-id>2&lt;/screen-id>
+               &lt;display-order>2&lt;/display-order>
+               &lt;search-pages>
+                  &lt;simple-search-page>
+                     &lt;screen-title>Weekly Activity&lt;/screen-title>
+                     &lt;report-name>Weekly Transaction Summary Report&lt;/report-name>
+                     &lt;search-result-id>0&lt;/search-result-id>
+                     &lt;search-screen-order>1&lt;/search-screen-order>
+                     &lt;field-group/>
+                  &lt;/simple-search-page>
+                  &lt;search-result-pages>
+                     &lt;search-result-list-page>
+                        &lt;search-result-id>0&lt;/search-result-id>
+                        &lt;item-per-page>10&lt;/item-per-page>
+                        &lt;max-result-size>2000&lt;/max-result-size>
+                        &lt;field-group/>
+                     &lt;/search-result-list-page>
+                  &lt;/search-result-pages>
+               &lt;/subscreen>
+       &lt;/page-definition>
+   &lt;/gui-definition></pre></div>
+</div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_index-validate_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_index-epaths_c.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>
