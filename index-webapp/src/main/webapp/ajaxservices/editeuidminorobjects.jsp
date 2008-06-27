@@ -166,6 +166,10 @@ boolean isUnLinking = (null == isUnLinkingString?false:true);
 String isUnLockingString = request.getParameter("unlocking");
 boolean isUnLocking = (null == isUnLockingString?false:true);
 
+//Variables for isLocking 
+String isLockingString = request.getParameter("locking");
+boolean isLocking = (null == isLockingString?false:true);
+
 //Variables for deactive 
 String isdeactiveEOString = request.getParameter("deactiveEO");
 boolean isDeactiveEO = (null == isdeactiveEOString?false:true);
@@ -397,6 +401,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
         //build modified SBR values hashmap here for the System objects
 		 editMainEuidHandler.buildModifiedSystemObjects();
+		
    		//this.changedSBRArrayList
 		sucessMessage = editMainEuidHandler.performSubmit(); //"EO_EDIT_SUCCESS";
 		
@@ -1354,54 +1359,83 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</table>
 		</div>
      <%}%>
+ 
+<% } else if (isLocking){ %> 	<!-- Explicitly  Locking the SBR fields as chosen by the user-->
+  <% 
+     HashMap sbrHashMap  = new HashMap();
+	 String key = request.getParameter("hiddenLockFields");
+     String lockValue  = (request.getParameter("hiddenLockFieldValue") != null && request.getParameter("hiddenLockFieldValue").trim().length() > 0)?request.getParameter("hiddenLockFieldValue"):null;
 
+     sbrHashMap.put(key,lockValue);
+     sbrHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE);
+     
+   
+	// removefield masking here
+	if(sbrHashMap.keySet().size() > 0 && lockValue != null) sourceHandler.removeFieldInputMasking(sbrHashMap, rootNodeName);
+     
+    //this.changedSBRArrayList     
+    ArrayList changedSBRArrayList = new ArrayList();
+	//set UnlockedFields HashMap By User
+	changedSBRArrayList.add(sbrHashMap);
+  
+    //Lock the field here.
+	sucessMessage = editMainEuidHandler.saveLocksSelected(changedSBRArrayList,null); //"EO_EDIT_SUCCESS";
+    messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+  %>
+	 <%	if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
+ 		 %>
+       <script>
+		   document.getElementById('lockSBRDiv').style.visibility = 'hidden';
+       	   window.location = "#top";
+		   //lock_field_success_text
+	        alert('<%=request.getParameter("hiddenLockDisplayValue")%> <%=bundle.getString("lock_field_success_text")%>');
+            ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+      </script>
+ <% //reset all the fields here for root node and minor objects  
+   } else { //servicelayererror			    %>
+		 <script>
+			 window.location = "#top";
+		 </script>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+				             <li>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+ 								<%= facesMessage.getSummary() %>
+				             </li>
+						 <% } %>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+  <%}%>
+ 
 <% } else if (isUnLocking){ %> 	<!-- UnLocking the SBR fields-->
      <% 
 	    String sbrFullFieldName = request.getParameter("hiddenUnLockFields");
+	 
        
 	   //set UnlockedFields HashMap By User
 	    editMainEuidHandler.getUnLockedFieldsHashMapByUser().put(sbrFullFieldName,null);
 
 		//Save the Un locks selected
 	    sucessMessage = editMainEuidHandler.saveUnLocksSelected();
+	
 		messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 
 	 %>
 <%if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
-			  
-  <script>
-
-	    //document.getElementById('editableSBR:'+'<%=sbrFullFieldName%>').style.visibility = 'visible';
-        //document.getElementById('editableSBR:'+'<%=sbrFullFieldName%>').style.display = 'block';
-
-        //document.getElementById('<%=sbrFullFieldName%>').style.visibility = 'hidden';
-        //document.getElementById('<%=sbrFullFieldName%>').style.display = 'none';
-
-		var formNameValue = document.forms['EORootNodeForm'];
-
-        var thisFrm = document.forms['EORootNodeForm'];
-		var field = '<%=sbrFullFieldName%>';
-		var tempfield;
-        for(i=0; i< thisFrm.elements.length; i++)   {      
-           if (thisFrm.elements[i].title.indexOf(field) != -1)   {
-           tempfield = thisFrm.elements[i];            
-          }
-        }
-        
-		tempfield.readOnly = false;
-        tempfield.disabled = false;
-
-        document.getElementById('lockSourceDiv:'+'<%=sbrFullFieldName%>').style.visibility = 'visible';
-        document.getElementById('lockSourceDiv:'+'<%=sbrFullFieldName%>').style.display = 'block';
-
-        document.getElementById('unlockSourceDiv:'+'<%=sbrFullFieldName%>').style.visibility = 'hidden';
-        document.getElementById('unlockSourceDiv:'+'<%=sbrFullFieldName%>').style.display = 'none';
-  </script>
+  <table><tr><td>
   <script>
     	    window.location = "#top";
-	        alert('<%=sbrFullFieldName%> <%=bundle.getString("unlock_field_success_text")%>');
+	        alert('<%=request.getParameter("hiddenUnLockFieldDisplayName")%> <%=bundle.getString("unlock_field_success_text")%>');
             ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
   </script>
+  </td></tr></table>
  <% //reset all the fields here for root node and minor objects  
    } else { //servicelayererror			    %>
 		 <script>

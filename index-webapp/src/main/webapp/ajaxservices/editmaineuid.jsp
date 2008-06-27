@@ -154,7 +154,7 @@ boolean isSessionActive = true;
 								<tr>
  								<td style="font-size:10px;">
 								     <nobr>
- 										 <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span>Required Fields
+ 										 <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
  									</nobr>
  								</td>
  							  </tr> 
@@ -216,16 +216,19 @@ boolean isSessionActive = true;
                                                      </div> 
 
                                                    </td>                              
-												   <td valign="center">												 
+												   <td valign="center"> 										 
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
 													 <h:panelGrid rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
 													 <h:panelGroup><a href ="javascript:void(0)" 
-                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><img alt="unlock" border="0" height="14px" width="14px" src="images/unlock.PNG"/></a></h:panelGroup></h:panelGrid>
+                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><img alt="unlock" border="0" height="14px" width="14px" src="images/unlock.PNG"/></a></h:panelGroup></h:panelGrid>
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
-                                                     <h:outputLink  rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"   
-                                                                    value="javascript:void(0)" ><img   alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
-                                                     </div> 
+                                                         <h:outputLink 
+                                                           rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
+														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
+														   value="javascript:void(0)"
+                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = ' #{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = ' #{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = ' #{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = ' #{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><img   alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
+                                                      </div> 
                                                      <div id='lockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
                                                          <h:outputLink  value="javascript:void(0)" ><img alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
                                                      </div> 
@@ -263,7 +266,7 @@ boolean isSessionActive = true;
                                                          </div>            
                                                     </h:column>
                                                     
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(!fieldConfigPer.updateable ||  (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]))}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <nobr>
                                                             <input type="text" 
@@ -272,8 +275,7 @@ boolean isSessionActive = true;
                                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy');"
                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-																   readonly="<h:outputText value="#{!fieldConfigPer.updateable}"/>"
-                                                                   value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+													               value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                    />
                                                             <a title="<h:outputText value="#{fieldConfigPer.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPer.name}"/>')" > 
                                                             <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
@@ -282,7 +284,7 @@ boolean isSessionActive = true;
                                                         </div>            
                                                     </h:column>
 
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (!fieldConfigPer.updateable ||  (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]))}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <nobr>
                                                             <input type="text" 
@@ -1068,7 +1070,8 @@ boolean isSessionActive = true;
                                                     </div>
                                             </td>
                                  <form id="unLockFieldsForm">
-								 	<input type="hidden" name="hiddenUnLockFields" title="hiddenUnLockFields"/>
+								 	<input type="hidden" id="hiddenUnLockFields" name="hiddenUnLockFields" title="hiddenUnLockFields"/>
+								 	<input type="hidden" id="hiddenUnLockFieldDisplayName" name="hiddenUnLockFieldDisplayName" title="hiddenUnLockFieldDisplayName"/>
                                 </form>
 								<td valign="top">&nbsp;</td>
 								<td valign="top">
@@ -1106,21 +1109,55 @@ boolean isSessionActive = true;
                     </div>         
                 </div>         
     <!-- END Extra divs for NEW  SO-->
-            <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;HEIGHT:100px;WIDTH:450px;overflow:auto;VISIBILITY:hidden;">
+
+           <div id="lockSBRDiv" class="alert" style="TOP:620px;LEFT:450px;height:120px;VISIBILITY:hidden;overflow:auto;">
+               <form id="lockFieldsForm">
+				<input type="hidden" id="hiddenLockFields" name="hiddenLockFields" title="hiddenLockFields"/>
+ 				<input type="hidden" id="hiddenLockFieldValue" name="hiddenLockFieldValue" title="hiddenLockFieldValue"/>
+ 				<input type="hidden" id="hiddenLockDisplayValue" name="hiddenLockDisplayValue" title="hiddenLockDisplayValue"/>
+                <table valign="center"  border="0">
+                    <tr><td>&nbsp;</td></tr>    
+                    <tr>
+                        <td>
+                             <nobr><b><h:outputText value="#{msgs.lock_text}"/> '<span id="lockSBRFieldValue" style="color:white;"></span>' <h:outputText value="#{msgs.field_question_text}"/></b></nobr> 
+                        </td>
+                    </tr>    
+                    <tr>
+                        <td align="right">
+                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('lockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&locking=true','euidFinalErrorMessages','')">                          
+                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                            </a>
+                           <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('lockSBRDiv',event)">
+                                <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+                            </h:outputLink>
+                        </td>
+                    </tr>
+					<tr><td><div id="lockMessagesDiv"></div></td></tr>
+                </table> 
+                </form>
+            </div> 
+
+
+            <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;height:140px;VISIBILITY:hidden;overflow:auto;">
                 <form name="linkForm">
 				<input type="hidden" name="sbrfullfieldname" title="sbrfullfieldname">
 				<input type="hidden" name="fieldDisplayName" title="fieldDisplayName">
-                <table valign="center">
+                <table border="0" cellpadding="0" cellspacing="0" valign="center">
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <div id="linkedValueDiv" style="visibility:hidden"></div>
-                            <nobr>Link to the '<span id="linkedDisplayValueDiv"></span>' field of :</nobr> 
+                            <nobr><b><h:outputText value="#{msgs.link_to_text}"/> '<span id="linkedDisplayValueDiv" style="color:white;"></span>' <h:outputText value="#{msgs.field_of_text}"/> :</b></nobr> 
                         </td>
-                        <td>
+                    </tr>    
+                    <tr>
+                        <td colspan="2">
                             <h:selectOneMenu id="systemCodeWithLid" title="systemCodeWithLid" value="#{EditMainEuidHandler.linkedSoWithLidByUser}">
                                 <f:selectItems  value="#{EditMainEuidHandler.eoSystemObjectCodesWithLids}" />
                             </h:selectOneMenu>
                         </td>
+                    </tr>    
+                    <tr>
+                        <td  colspan="2">&nbsp;</td>
                     </tr>    
                     <tr>
                         <td align="right">
@@ -1146,7 +1183,7 @@ boolean isSessionActive = true;
                         <td>
                             <div id="unLinkedValueDiv" style="visibility:hidden"></div>
                             <div id="unLinkedFullFieldDiv" style="visibility:hidden"></div>
-                            <nobr>Unlink from  '<span id="unLinkedDisplayValueDiv"></span>' field of Main EUID?</nobr> 
+                            <nobr><b><h:outputText value="#{msgs.unlink_from_text}"/> '<span id="unLinkedDisplayValueDiv" style="color:white;"></span>' <h:outputText value="#{msgs.field_question_text}"/> </b></nobr> 
                         </td>
                     </tr>    
                     <tr>
@@ -1162,8 +1199,8 @@ boolean isSessionActive = true;
                 </table> 
                 </form>
             </div> 
-         </div>         
-
+  
+  
         </body>
     </html>
     </f:view>

@@ -41,10 +41,12 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 
 import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 //import java.util.logging.s;
 //import java.util.logging.Logger;
+import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -572,7 +574,47 @@ public class EditMainEuidHandler {
         }
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
     }
+    
+     /** 
+     * 
+     * Added  By Rajani Kanth on 26/06/2008
+     * 
+     * This method is used to search the single EUID. This method will also informs the user about the merged EUIDS.
+     *
+     * @return String  
+     *    "EO_EDIT_SUCCESS"  if the EO is updated successfully
+     *    ""servicelayererror""  if the EO is not  updated successfully  or any exception occurs in retrieving the EUID.
+     * 
+     * The return string used to display the error message/success message to the user.
+     */
+    public String saveLocksSelected(ArrayList sbrHashMapList, ArrayList sbrMinorObjectsList) {
+        try {
+            String updateEuid = (String) session.getAttribute("editEuid");
 
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+
+            masterControllerService.save(updateEnterpriseObject, sbrHashMapList, sbrMinorObjectsList, null);
+             
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+            mLogger.error(mLocalizer.x("EME030: UserException occurred :{0}", ex.getMessage()), ex);
+            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+            mLogger.error(mLocalizer.x("EME031: Exception occurred :{0}", ex.getMessage()), ex);
+            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+            mLogger.error(mLocalizer.x("EME032: Exception occurred :{0}", ex.getMessage()), ex);
+            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+            mLogger.error(mLocalizer.x("EME001: Exception occurred :{0}", ex.getMessage()), ex);
+            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+        }
+        return EditMainEuidHandler.EDIT_SUCCESS;
+    }
+    
     private void unSetMinorObjectPrimaryValues(ArrayList minorObjects) {
         if (minorObjects.size() > 0) {
             for (int k = 0; k < minorObjects.size(); k++) {
