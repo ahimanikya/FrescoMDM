@@ -9,15 +9,16 @@
    <meta name="description" content="Maintaining Master Indexes provides instructions and information for various tasks involved in maintaining a  master index application. These tasks include setting up security for the Master Index Data Manager (MIDM), archiving and backing up the master index database, changing information in the database, running reports, and making changes to the master index files.">
    <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
-
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
-   </head>
-
+   
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
+</head>
+ 
 <body>
-
+   
    <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
    <!-- Use is subject to license terms. -->
-
+   
    <a name="top"></a>
    <h1>Maintaining Master Indexes</h1>
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
@@ -25,7 +26,7 @@
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"><a href="admn_mi-maint-dbs-archive_c.html">Previous</a></span>
          <span class="tocpageright"></span></h5>
-
+     
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="mevsmi.html">Maintaining Master Indexes</a></p>
@@ -41,13 +42,6 @@
 <p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a></p>
 <p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a></p>
 <p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-security_r">EJB Security Functions</a></p>
-<p class="toc level2 tocsp"><a href="admn_mi-ejb-security_t.html">Defining Web Services Security for Master Index</a></p>
-<p class="toc level3"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-service_t">Secure the Web Service</a></p>
-<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwtr">To Secure the Web Service</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-client_t">Secure the Web Client</a></p>
-<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwxx">To Secure the Web Client</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-users_t">Create Web Services User Accounts</a></p>
-<p class="toc level5"><a href="admn_mi-ejb-security_t.html#gglznejb">To Create a User Account</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-maint-reports_c.html">Learning About Master Index Reports</a></p>
 <p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-about_c">Master Index Command Line Reports</a></p>
 <p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuas">About Production Reports</a></p>
@@ -76,7 +70,7 @@
 <p class="toc level3 tocsp"><a href="admn_mi-maint-reports_t.html#admn_mi-maint-reports_r">Master Index Command Line Report Properties</a></p>
 <p class="toc level3"><a href="admn_mi-maint-reports_t.html#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p>
 <p class="toc level5"><a href="admn_mi-maint-reports_t.html#gfkvq">To Run the Reports Using the Batch File</a></p>
-<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gentextid-1437">To Run the Reports Using a Java Command</a></p>
+<p class="toc level5"><a href="admn_mi-maint-reports_t.html#gentextid-1284">To Run the Reports Using a Java Command</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-maint-dbs-archive_c.html">Maintaining the Master Index Database</a></p>
 <p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-backup_c">Backing up the Master Index Database</a></p>
 <p class="toc level4"><a href="admn_mi-maint-dbs-archive_c.html#ahaop">Online Backups</a></p>
@@ -99,12 +93,12 @@
 
 
    <div class="maincontent">
-
+      
 
 <a name="admin_mi-maint-project_c"></a>
 
 <h2>Implementing Changes to the Master Index Project</h2>
-<a name="indexterm-119"></a><p>After a master index application has been in production, you might need to
+<a name="indexterm-117"></a><p>After a master index application has been in production, you might need to
 make changes to your project. For example, if you add a new
 external system, you need to add that system to the master index database
 and you might need to modify the object structure and OTDs as well
@@ -142,13 +136,13 @@ mind.</p>
 currently defined in mefa.xml, or if you change existing standardization structures, make sure
 to do the following.</p>
 <ul><li><p>Use the appropriate standardization type, domain selector, and field IDs.</p></li>
-<li><p><a name="indexterm-120"></a><a name="indexterm-121"></a>Add the new fields that will store the standardized versions of the original field value to the appropriate objects in object.xml.</p></li>
+<li><p><a name="indexterm-118"></a><a name="indexterm-119"></a>Add the new fields that will store the standardized versions of the original field value to the appropriate objects in object.xml.</p></li>
 <li><p>Add new columns to the database to store the standardized field values.</p></li></ul>
 </div>
 
 
 <div class="indent"><a name="ahapk"></a><h3>Updating the Match String</h3>
-<p><a name="indexterm-122"></a>If you make changes to the match string, update the database indexes and
+<p><a name="indexterm-120"></a>If you make changes to the match string, update the database indexes and
 the blocking query in query.xml accordingly. For example, if you remove a field
 from the match string, you might also want to remove that field from
 the blocking query and database indexes. If you add a field to the
@@ -176,7 +170,7 @@ index application and redeployment is not required.</p></div>
 
 
 <div class="indent"><a name="admn_mi-project-lid_c"></a><h3>Modifying the Local ID Format</h3>
-<p><a name="indexterm-123"></a><a name="indexterm-124"></a>If you need to modify the local ID format for an external system,
+<p><a name="indexterm-121"></a><a name="indexterm-122"></a>If you need to modify the local ID format for an external system,
 regenerate the application after you make the changes and then redeploy the project.
 If you extend the length of a local ID past 20 characters, make
 sure to increase the length of any database columns containing local IDs. Local
@@ -192,11 +186,11 @@ and sbyn_transaction.</p></div>
                <a href="admn_mi-maint-dbs-archive_c.html">Previous</a>
             </td>
             <td class="pageright">
-
+               
             </td>
          </tr>
       </table>
-
+      
    </div>
 
 </body>

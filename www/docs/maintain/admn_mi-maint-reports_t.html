@@ -9,15 +9,16 @@
    <meta name="description" content="Maintaining Master Indexes provides instructions and information for various tasks involved in maintaining a  master index application. These tasks include setting up security for the Master Index Data Manager (MIDM), archiving and backing up the master index database, changing information in the database, running reports, and making changes to the master index files.">
    <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
-
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
 </head>
-
+ 
 <body>
-
+   
    <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
    <!-- Use is subject to license terms. -->
-
+   
    <a name="top"></a>
    <h1>Maintaining Master Indexes</h1>
    <div class="articledate" style="margin-left: 0px;">Last Updated: June 2008</div>
@@ -25,7 +26,7 @@
    <div class="embeddedtocpane">
      <h5><span class="tocpageleft"><a href="admn_mi-maint-reports_c.html">Previous</a></span>
          <span class="tocpageright"><a href="admn_mi-maint-dbs-archive_c.html">Next</a></span></h5>
-
+     
      <h5><span class="toctitle">Contents</span></h5>
      <div class="embeddedtoc">
        <p class="toc level1"><a href="mevsmi.html">Maintaining Master Indexes</a></p>
@@ -41,13 +42,6 @@
 <p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-maint-security_r">Master Index Data Manager User Permissions</a></p>
 <p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-sec-grps_r">EJB User Role Properties</a></p>
 <p class="toc level3"><a href="admn_mi-maint-security_t.html#admn_mi-ejb-security_r">EJB Security Functions</a></p>
-<p class="toc level2 tocsp"><a href="admn_mi-ejb-security_t.html">Defining Web Services Security for Master Index</a></p>
-<p class="toc level3"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-service_t">Secure the Web Service</a></p>
-<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwtr">To Secure the Web Service</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-client_t">Secure the Web Client</a></p>
-<p class="toc level5"><a href="admn_mi-ejb-security_t.html#ggwxx">To Secure the Web Client</a></p>
-<p class="toc level3 tocsp"><a href="admn_mi-ejb-security_t.html#admn_mi-ejb-users_t">Create Web Services User Accounts</a></p>
-<p class="toc level5"><a href="admn_mi-ejb-security_t.html#gglznejb">To Create a User Account</a></p>
 <p class="toc level2 tocsp"><a href="admn_mi-maint-reports_c.html">Learning About Master Index Reports</a></p>
 <p class="toc level3"><a href="admn_mi-maint-reports_c.html#admn_mi-reports-about_c">Master Index Command Line Reports</a></p>
 <p class="toc level4"><a href="admn_mi-maint-reports_c.html#ahuas">About Production Reports</a></p>
@@ -77,7 +71,7 @@
 <p class="toc level3 tocsp"><a href="#admn_mi-maint-reports_r">Master Index Command Line Report Properties</a></p>
 <p class="toc level3"><a href="#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p>
 <p class="toc level5"><a href="#gfkvq">To Run the Reports Using the Batch File</a></p>
-<p class="toc level5"><a href="#gentextid-1437">To Run the Reports Using a Java Command</a></p>
+<p class="toc level5"><a href="#gentextid-1284">To Run the Reports Using a Java Command</a></p>
 </div>
 <p class="toc level2 tocsp"><a href="admn_mi-maint-dbs-archive_c.html">Maintaining the Master Index Database</a></p>
 <p class="toc level3"><a href="admn_mi-maint-dbs-archive_c.html#admn_mi-database-backup_c">Backing up the Master Index Database</a></p>
@@ -99,7 +93,7 @@
 
 
    <div class="maincontent">
-
+      
 
 <a name="admn_mi-maint-reports_t"></a>
 
@@ -110,7 +104,7 @@ from the Master Index Data Manager, see <a href="https://open-dm-mi.dev.java.net
 <ul><li><p><a href="#admn_mi-reports-conf_c">Configuring the Master Index Report Environment</a></p></li>
 <li><p><a href="#admn_mi-reports-conf-rep_c">Configuring Master Index Command Line Reports</a></p></li>
 <li><p><a href="#admn_mi-reports-run_t">Running Master Index Command Line Reports</a></p></li></ul>
-<p><a name="indexterm-67"></a><a name="indexterm-68"></a>The reports are automatically generated at <tt></tt><i>NetBeans_Projects</i><tt>/</tt><i>Project_Name</i><tt>/report-client</tt>. You must also have the Java 2
+<p><a name="indexterm-65"></a><a name="indexterm-66"></a>The reports are automatically generated at <tt></tt><i>NetBeans_Projects</i><tt>/</tt><i>Project_Name</i><tt>/report-client</tt>. You must also have the Java 2
 Platform, Standard Edition v. 1.5.13 or later installed on the machine from which
 the reports are run. Be sure you have configured the database connection for
 the master index application using the GlassFish Admin Console.</p>
@@ -121,20 +115,20 @@ the report environment.</p>
 
 <a name="ahucd"></a><h5>To Set up the Environment</h5>
 <ol>
-<li><b><a name="indexterm-69"></a><a name="indexterm-70"></a><a name="indexterm-71"></a><a name="indexterm-72"></a>If you install or move the reports files to a machine other
+<li><b><a name="indexterm-67"></a><a name="indexterm-68"></a><a name="indexterm-69"></a><a name="indexterm-70"></a>If you install or move the reports files to a machine other
 than the application server machine, make sure JRE 1.5.13 or later is installed on
 the machine where the files reside. </b></li>
 <li><b>Set up all Java environment variables as specified in the Java documentation.</b></li>
 <li><b>Create one environment variable, JAVA_HOME, and set it to the home directory of
 the JRE installation.</b></li>
-<li><b><a name="indexterm-73"></a>If you run the reports using the Java command and not the supplied
+<li><b><a name="indexterm-71"></a>If you run the reports using the Java command and not the supplied
 batch file, modify the CLASSPATH variable before running the reports for the first
 time by adding the absolute path and filename of the files in the
 <tt>lib</tt> subdirectory of the reports home directory to the CLASSPATH variable.</b></li></ol></div>
 
 
 <div class="indent"><a name="admn_mi-reports-conf-rep_c"></a><h3>Configuring Master Index Command Line Reports</h3>
-<p><a name="indexterm-74"></a><a name="indexterm-75"></a><a name="indexterm-76"></a>Before running any reports from the command line, you must customize the XML
+<p><a name="indexterm-72"></a><a name="indexterm-73"></a><a name="indexterm-74"></a>Before running any reports from the command line, you must customize the XML
 configuration file. You can use either of the files located in the reports
 directory in the eView or eIndex subdirectory. A default XML file named <tt>PersonReport.xml</tt>
 is defined for a person object and a default XML file named <tt>CompanyReport.xml</tt>
@@ -147,21 +141,21 @@ the overall report configuration and configuring the individual reports.</p>
 <i>DOCTYPE</i> and the <i>report</i> elements and tells the report client how to connect
 to the application server, which application to run the reports against, and where
 to output the report files. </p>
-<hr><p><b>Note - </b><a name="indexterm-77"></a>The DOCTYPE element indicates the type of document being generated. Do not change
+<hr><p><b>Note - </b><a name="indexterm-75"></a>The DOCTYPE element indicates the type of document being generated. Do not change
 this value.</p>
 <hr>
 
 
 <a name="ggbpf"></a><h5>To Define the Command Line Report Configuration</h5>
 <ol>
-<li><b><a name="indexterm-78"></a>In the SYSTEM element, enter the location of the DTD file for the
-reports. </b><p><a name="indexterm-79"></a>By default, this file is named <tt>report.dtd</tt>, and is located in the <tt>config</tt>
+<li><b><a name="indexterm-76"></a>In the SYSTEM element, enter the location of the DTD file for the
+reports. </b><p><a name="indexterm-77"></a>By default, this file is named <tt>report.dtd</tt>, and is located in the <tt>config</tt>
 directory. You should not need to modify this attribute unless you move <tt>report.dtd</tt></p></li>
-<li><b><a name="indexterm-80"></a><a name="indexterm-81"></a>In the <i>appserver</i> element, enter the IIOP address for the application server.</b><p>This must be in the format <tt>corbaname:iiop:<i>host</i>:<i>port</i></tt>, where <i>host</i> is the name of the
+<li><b><a name="indexterm-78"></a><a name="indexterm-79"></a>In the <i>appserver</i> element, enter the IIOP address for the application server.</b><p>This must be in the format <tt>corbaname:iiop:<i>host</i>:<i>port</i></tt>, where <i>host</i> is the name of the
 server and <i>port</i> is the ORB port number. </p></li>
-<li><b><a name="indexterm-82"></a>In the <i>application</i> element, enter the name of the primary object used by the
+<li><b><a name="indexterm-80"></a>In the <i>application</i> element, enter the name of the primary object used by the
 master index application.</b></li>
-<li><b><a name="indexterm-83"></a>In the <i>output-folder</i> element, enter the location in which the generated reports will be
+<li><b><a name="indexterm-81"></a>In the <i>output-folder</i> element, enter the location in which the generated reports will be
 placed. </b><p>If an output directory is specified in the command line, that directory overrides
 the one specified here. If the output directory already exists, the report client
 issues a warning that any existing report files will be overwritten and gives
@@ -169,11 +163,11 @@ you the option of cancelling the reports.</p></li></ol></div>
 
 
 <div class="indent"><a name="ahuch"></a><h3>Configuring Command Line Reports</h3>
-<p><a name="indexterm-84"></a><a name="indexterm-85"></a><a name="indexterm-86"></a>A configuration section is defined for each of the six report templates. Use these
+<p><a name="indexterm-82"></a><a name="indexterm-83"></a><a name="indexterm-84"></a>A configuration section is defined for each of the six report templates. Use these
 sections to configure each report to display information as you want to view
 it. You can also specify which reports to run.</p>
 
-<a name="gentextid-1209"></a><h5>To Configure Command Line Reports</h5>
+<a name="gentextid-1056"></a><h5>To Configure Command Line Reports</h5>
 <p>For each report, make the following modifications before running the reports. Each element
 or attribute mentioned in the following instructions is defined in . There are
 six stanzas for you to modify, one for each report.</p><ol>
@@ -215,16 +209,16 @@ the <i>fields</i> element.</b></li>
 that define the configuration of each production and activity report.</p><table><col width="25%"><col width="75%"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-87"></a>report</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-85"></a>report</p></td>
 <td align="left" valign="top" scope="row"><p>Defines each report
 run by the batch file. Each report is defined by a report element.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-88"></a>report/name</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-86"></a>report/name</p></td>
 <td align="left" valign="top" scope="row"><p>The
 descriptive name of the report. This can be any string, and appears as
 the title in the specified report.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-89"></a>report/template</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-87"></a>report/template</p></td>
 <td align="left" valign="top" scope="row"><p>The template to use for the type
 of report being generated. You should not need to modify this element, but
 you can specify any of the following templates.</p>
@@ -239,33 +233,33 @@ you can specify any of the following templates.</p>
 <li><p>Yearly Activity</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-90"></a>enable</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-88"></a>enable</p></td>
 <td align="left" valign="top" scope="row"><p>Specifies whether to run the report
 for the current run. Specify <tt><b>true</b></tt> to run the report; specify <tt><b>false</b></tt>
 to disable the report. This option allows you to run one report at
 a time.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-91"></a>output-file</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-89"></a>output-file</p></td>
 <td align="left" valign="top" scope="row"><p>The name of the file generated by the report client. This
 file is created in the output directory defined earlier in the file or
 in the output directory specified in the command line (the command line output
 directory overrides the configuration file output directory).</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-92"></a>max-result-size</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-90"></a>max-result-size</p></td>
 <td align="left" valign="top" scope="row"><p>The number of records to display on
 the report. If no value is entered, or if the value is zero
 (0), the size defaults to 1000 records. To retrieve all records for a
 report, enter a very large value for this element.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-93"></a>page-size</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-91"></a>page-size</p></td>
 <td align="left" valign="top" scope="row"><p>The number of records
 returned to the report generator at one time for each report.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-94"></a>criteria</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-92"></a>criteria</p></td>
 <td align="left" valign="top" scope="row"><p>Defines the date
 range for the report.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-95"></a><a name="indexterm-96"></a>dates/type</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-93"></a><a name="indexterm-94"></a>dates/type</p></td>
 <td align="left" valign="top" scope="row"><p>Indicates the type of date range to use for
 the report. Specify <tt><b>today</b></tt> to report on transactions with today&rsquo;s date; specify
 <tt><b>yesterday</b></tt> to report on transactions with yesterday&rsquo;s date; or specify <tt><b>range</b></tt> to enter
@@ -279,7 +273,7 @@ if yesterday was a Saturday.</p>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-97"></a><a name="indexterm-98"></a><a name="indexterm-99"></a><a name="indexterm-100"></a>dates/from-date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-95"></a><a name="indexterm-96"></a><a name="indexterm-97"></a><a name="indexterm-98"></a>dates/from-date</p></td>
 <td align="left" valign="top" scope="row"><p>The starting date when using a date range
 for the report. Enter the starting date for the report transactions in <b>YYYYMMDD</b>
 or <b>YYYYMMDDHHmmss</b> format. If you enter a date in this element, you must
@@ -294,11 +288,11 @@ value.</p>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-101"></a><a name="indexterm-102"></a>dates/to-date</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-99"></a><a name="indexterm-100"></a>dates/to-date</p></td>
 <td align="left" valign="top" scope="row"><p>The ending date when using a date range for the report. Enter
 the ending date for the report in <b>YYYYMMDD</b> or <b>YYYYMMDDHHmmss</b> format.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-103"></a>status</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-101"></a>status</p></td>
 <td align="left" valign="top" scope="row"><p>This element is
 valid for the potential duplicate report only, and indicates the status of the
 potential duplicate pairs to display on the report. Specify any of the following
@@ -308,25 +302,25 @@ values:</p>
 <li><p><b>R</b> - Only resolved potential duplicates appear on the report.</p><p>Leaving the status blank results in potential duplicates of all statuses appearing on the report.</p></li></ul>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-104"></a>fields</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-102"></a>fields</p></td>
 <td align="left" valign="top" scope="row"><p>A list of fields to display on the report in addition to
 those that are displayed automatically. This element should be empty for the activity reports.
 If a list of fields is supplied for these reports, it is
 ignored.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-105"></a><a name="indexterm-106"></a>field/path</p></td>
-<td align="left" valign="top" scope="row"><p><a name="indexterm-107"></a>The ePath to a field you want to include in the report. For
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-103"></a><a name="indexterm-104"></a>field/path</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-105"></a>The ePath to a field you want to include in the report. For
 more information about ePaths, see <a href="https://open-dm-mi.dev.java.net/docs/config/cnfg_index-epaths_c.html">Master Index Field Notations</a>.</p>
 <hr><p><b>Note - </b>You cannot use the asterisk option in
 the ePaths you specify here.</p>
 <hr>
 </td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-108"></a><a name="indexterm-109"></a>field/label</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-106"></a><a name="indexterm-107"></a>field/label</p></td>
 <td align="left" valign="top" scope="row"><p>The column label for the specified field in
 the report.</p></td>
 </tr>
-<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-110"></a><a name="indexterm-111"></a>field/width</p></td>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-108"></a><a name="indexterm-109"></a>field/width</p></td>
 <td align="left" valign="top" scope="row"><p>The width of the column for the specified field in the
 report. If a field value is larger than the width specified, that value
 will be truncated in the report.</p></td>
@@ -344,8 +338,8 @@ enabled in order to generate command line reports.</p>
 
 <a name="gfkvq"></a><h5>To Run the Reports Using the Batch File</h5>
 <ol>
-<li><b><a name="indexterm-112"></a><a name="indexterm-113"></a><a name="indexterm-114"></a>From a command prompt, navigate to the location of the report files.</b></li>
-<li><b><a name="indexterm-115"></a>Type the following all on one line:</b><pre>ReportClient.bat -f <i>config_file</i>- d <i>output_directory</i></pre><p>where <i>config_file</i> is the name of the report configuration file to use, and
+<li><b><a name="indexterm-110"></a><a name="indexterm-111"></a><a name="indexterm-112"></a>From a command prompt, navigate to the location of the report files.</b></li>
+<li><b><a name="indexterm-113"></a>Type the following all on one line:</b><pre>ReportClient.bat -f <i>config_file</i>- d <i>output_directory</i></pre><p>where <i>config_file</i> is the name of the report configuration file to use, and
 <i>output_directory</i> is the location to which the reports will be written. This value
 overwrites the value specified in the configuration file. If this option is not
 specified, the configuration file value is used.</p>
@@ -357,10 +351,10 @@ the environment variables to be set up correctly.</p>
 <li><b>To view the reports, navigate to the location you specified as your output
 path and open the files in any text editor.</b></li></ol>
 
-<a name="gentextid-1437"></a><h5>To Run the Reports Using a Java Command</h5>
+<a name="gentextid-1284"></a><h5>To Run the Reports Using a Java Command</h5>
 <h6>Before You Begin</h6><p>Before running the reports for the first time, set up the environment variables
 as described in <a href="#ahucd">To Set up the Environment</a>.</p><ol>
-<li><b><a name="indexterm-116"></a><a name="indexterm-117"></a><a name="indexterm-118"></a>At the command prompt, type the following all on one line:</b><pre>java com.sun.mdm.index.report.ReportClient- f <i>config_file</i>- d <i>output_directory</i></pre><p>where <i>config_file</i> is the name of the report configuration file to use and
+<li><b><a name="indexterm-114"></a><a name="indexterm-115"></a><a name="indexterm-116"></a>At the command prompt, type the following all on one line:</b><pre>java com.sun.mdm.index.report.ReportClient- f <i>config_file</i>- d <i>output_directory</i></pre><p>where <i>config_file</i> is the name of the report configuration file to use and
 <i>output_directory</i> is the location to which the reports will be written. This value
 overwrites the value specified in the configuration file. If this option is not
 specified, the configuration file value is used.</p>
@@ -384,7 +378,7 @@ path and open the files in any text editor.</b></li></ol></div>
             </td>
          </tr>
       </table>
-
+      
    </div>
 
 </body>
