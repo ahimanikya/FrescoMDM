@@ -17,10 +17,6 @@ declare
     
     codes tCodeList := tCodeList(
 
-        -- ****     CATEGORY   ****
-        tCode('L', 'CATEGORY', 'Category'),
-        tCode('V', 'PERSON', 'PERSON'),
-
         -- ****     SUFFIX   ****
         tCode('L', 'SUFFIX', 'Suffix'),
         tCode('V', '2ND', '2ND'),

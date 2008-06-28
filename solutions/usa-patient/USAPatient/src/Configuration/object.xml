@@ -6,16 +6,6 @@
     <nodes>
         <tag>USAPatient</tag>
         <fields>
-            <field-name>Category</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module>CATEGORY</code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
             <field-name>FirstName</field-name>
             <field-type>string</field-type>
             <size>40</size>
