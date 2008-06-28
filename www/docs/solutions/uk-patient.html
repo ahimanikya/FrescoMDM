@@ -2,9 +2,7 @@
 <html><head>
 <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>UK Patient</title>
 
-<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css">
-
-</head>
+<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css"></head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -30,18 +28,18 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 <tr>
 <td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
 <td align="undefined" valign="undefined">June
-10th, 2008</td>
+27th, 2008</td>
 </tr>
 </tbody>
-</table>
-<span style="font-weight: bold;"></span><br>
+</table><br><span style="font-weight: bold;">Credits<br><br></span>Thanks goes to Christopher Selwyn, <a href="mailto:Chris.Selwyn@Sun.COM">Chris.Selwyn@Sun.COM</a>, for reviewing this solution and providing the link to the NHS Data Model. &nbsp;<br><br>
 <hr style="width: 100%; height: 2px;">
 <h1>Description</h1>
 <p>The purpose of this solution is to demonstate how a United
 Kingdom
 Patient model might be&nbsp; implemented in the Master Data
 Management (MDM)
-product suite.&nbsp;. Specificaly the solution focuses on the&nbsp; Master Index portion of
+product suite.&nbsp;. Specificaly the solution focuses on
+the&nbsp; Master Index portion of
 MDM. </p>
 <p>This solution uses a patient definition geared towards the
 United Kingdom.&nbsp; Since this is an UKPatient, fields such as
@@ -54,11 +52,17 @@ It highlights the main sections of the United Kingdom Patient model.
 Additionally, it shows the required
 fields of the model.<br>
 <br>
-<img style="width: 640px; height: 560px;" alt="United Kingdom Patient overvier" title="Overview" src="images/UKPatient-Overview-small.png">
+<img style="width: 731px; height: 743px;" alt="United Kingdom Patient Overview" title="United Kingdom Patient Overview" src="images/UKPatient-Overview-small.png"><br>
 <h1>Data Model</h1>
 <p>
-This is the&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font>Unified Modeling Language<font face="Times New Roman">&#8482;</font>Unified Modeling Language<font face="Times New Roman">&#8482;Unified Modeling Language&#8482;&#8482;</font><font face="Times New Roman"></font><font face="Times New Roman">&nbsp;</font> (UML) model used to create the United Kingdom Patient.
-&nbsp;&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font>Unified Modeling Language<font face="Times New Roman">&#8482;</font></p>
+This is the&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font>Unified Modeling
+Language<font face="Times New Roman">&#8482;</font>Unified
+Modeling Language<font face="Times New Roman">&#8482;Unified
+Modeling Language&#8482;&#8482;</font><font face="Times New Roman">&nbsp;</font>
+(UML) model
+used to create the United Kingdom Patient.
+&nbsp;&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font>Unified Modeling
+Language<font face="Times New Roman">&#8482;</font></p>
 <p>Abbreviations used in the model are as follows:</p>
 <table style="text-align: left; width: 409px; height: 60px;" border="0" cellpadding="2" cellspacing="2">
 <tbody>
@@ -87,7 +91,8 @@ Preference&lt;Num&gt;End</td>
 </tr>
 </tbody>
 </table>
-<p><img style="width: 800px; height: 1958px;" alt="UML model used for the United Kingdom Patient solution" title="The UML model" src="images/UKPatient-UML-small.png"></p>
+<p><img style="width: 800px; height: 1958px;" alt="UML Model" title="UML Model" src="images/UKPatient-UML-small.png"><br>
+</p>
 <h1>Master Index Properties</h1>
 <p>The following tables highlight fields that are used in the<span style="font-style: italic;"> </span>UKPatient&nbsp;
 for matching and blocking opertions. Additionally
@@ -122,12 +127,12 @@ UKPatient.DOB<i><br>
 <td align="undefined" valign="undefined">UKPatient.Gender</td>
 <td align="undefined" valign="undefined">Gender</td>
 </tr>
-<tr>
+<tr><td align="undefined" valign="undefined">UKPatient.NI</td><td align="undefined" valign="undefined">NI</td></tr><tr>
 <td align="undefined" valign="undefined">UKPatient.HealthID[*].IdNumType</td>
 <td align="undefined" valign="undefined">String</td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined">HealthID[*].IdNum</td>
+<td align="undefined" valign="undefined">UKPatient.HealthID[*].IdNum</td>
 <td align="undefined" valign="undefined">String</td>
 </tr>
 </tbody>
@@ -202,7 +207,8 @@ A summary of the fields used for the blocker-search rules.<br>
 <span style="font-style: italic;">Notes:</span> <br>
 <ul>
 <li>_Phon indicates a phonetized field.</li>
-<li>&nbsp;Comparison is between Enterprise SystemSBR (Single Best
+<li>&nbsp;Comparison is between Enterprise SystemSBR
+(Single Best
 Record) and the actual data. So (a == a) is actually
 (Enterprise.SystemSBR.a == a).</li>
 </ul>
@@ -238,10 +244,10 @@ Name</td>
 </tr>
 <tr>
 <td align="undefined" valign="undefined">HealthID</td>
-<td align="undefined" valign="undefined">(HealthID.IdNumType
-== HealthID.IdNumType) and <br>
-(HealthID.IdNum == HealthID.IdNum)</td>
-</tr>
+<td align="undefined" valign="undefined">(UKPatient.HealthID.IdNumType
+== UKPatient.HealthID.IdNumType) and <br>
+(UKPatient.HealthID.IdNum == UKPatient.HealthID.IdNum)</td>
+</tr><tr><td align="undefined" valign="undefined">NI</td><td align="undefined" valign="undefined">(UKPatient.NI == UKPatient.NI)</td></tr>
 </tbody>
 </table>
 <h2>Standardization</h2>
@@ -345,9 +351,11 @@ Target<br>
 </table>
 <h1>Enumerations</h1>
 <h2>Code Modules</h2>
-<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.<br></pre><pre> - ****     CATEGORY   ****<br>tCode('L', 'CATEGORY', 'Category'),<br>tCode('V', 'PERSON', 'PERSON'),<br><br>- ****     GENDER   ****<br>tCode('L', 'GENDER', 'Gender'),<br>tCode('V', 'M', 'MALE'),<br>tCode('V', 'F', 'FEMALE'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN'),<br><br>- ****     LANGUAGE   ****<br>tCode('L', 'LANGUAGE', 'Language'),<br>tCode('V', 'ARAB', 'ARABIC'),<br>tCode('V', 'CHIN', 'CHINESE'),<br>tCode('V', 'CZEK', 'CZECH'),<br>tCode('V', 'CREO', 'CREOLE FRENCH'),<br>tCode('V', 'DANE', 'DANISH'),<br>tCode('V', 'ENGL', 'ENGLISH'),<br>tCode('V', 'FRN', 'FRENCH'),<br>tCode('V', 'GERM', 'GERMAN'),<br>tCode('V', 'GREK', 'GREEK'),<br>tCode('V', 'HATI', 'HATIAN'),<br>tCode('V', 'HEBR', 'HEBREW'),<br>tCode('V', 'HNDI', 'HINDI'),<br>tCode('V', 'ITAL', 'ITALIAN'),<br>tCode('V', 'JAPA', 'JAPANESE'),<br>tCode('V', 'KORE', 'KOREAN'),<br>tCode('V', 'OTHE', 'OTHER'),<br>tCode('V', 'PORT', 'PORTUGUESE'),<br>tCode('V', 'PRCI', 'PERSIAN/FARSI'),<br>tCode('V', 'RUSS', 'RUSSIAN'),<br>tCode('V', 'SIGN', 'SIGN LANGUAGE'),<br>tCode('V', 'SPAN', 'SPANISH'),<br>tCode('V', 'SWED', 'SWEDISH'),<br>tCode('V', 'THAI', 'THAI'),<br>tCode('V', 'TURK', 'TURKISH'),<br>tCode('V', 'UNKN', 'UNKNOWN'),<br>tCode('V', 'YDSH', 'YIDDISH'),<br><br>- ****     CONTACT_METHOD   ****<br>tCode('L', 'CONMETH', 'Contact Method'),<br>tCode('V', 'CH', 'HOME TELECOM'),<br>tCode('V', 'CO', 'WORK TELECOM'),<br>tCode('V', 'CC', 'CELLULAR TELECOM'),<br>tCode('V', 'MA', 'MAIL'),<br>tCode('V', 'EM','EMAIL'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN'),<br><br>- ****     RELATIONSHIP   ****<br>tCode('L', 'RELATION', 'Relationship'),<br>tCode('V', 'PARENT', 'PARENT'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>- ****     TITLE   ****<br>tCode('L', 'TITLE', 'Title'),<br>tCode('V', 'MD',   'MEDICAL DOCTOR'),<br>tCode('V', 'PHD',  'DOCTOR'),<br>tCode('V', 'RN',   'REGISTERED NURSE'),<br>tCode('V', 'CNA',  'CERTIFIED NURSES AID'),<br>tCode('V', 'LVN',  'LICENSED VOCATIONAL NURSE'),<br>tCode('V', 'REV',  'REVERAND'),<br>tCode('V', 'LORD', 'LORD'),<br>tCode('V', 'MR', 'MR'),<br>tCode('V', 'MRS', 'MRS'),<br>tCode('V', 'MISS', 'MISS'),<br><br>- ****     SUFFIX   ****<br>tCode('L', 'SUFFIX', 'Suffix'),<br>tCode('V', '2ND', '2ND'),<br>tCode('V', '3RD', '3RD'),<br>tCode('V', 'DDS', 'DDS'),<br>tCode('V', 'ESQ', 'ESQ'),<br>tCode('V', 'II',  'II'),<br>tCode('V', 'III', 'III'),<br>tCode('V', 'IV', 'IV'),<br>tCode('V', 'JR', 'JR'),<br>tCode('V', 'MD', 'MD'),<br>tCode('V', 'RN', 'RN'),<br>tCode('V', 'SR', 'SR'),<br>tCode('V', 'PHD', 'PHD'),<br>tCode('V', 'MA', 'MA'),<br><br>- ****     ADDRTYPE   ****<br>tCode('L', 'ADDRTYPE', 'Address Type'),<br>tCode('V', 'O',  'OFFICE'),<br>tCode('V', 'H',  'HOME'),<br>tCode('V', 'V',  'VACATION'),<br>tCode('V', 'H2', 'HOME 2'),<br>tCode('V', 'M',  'MAILING'),<br>tCode('V', 'W',  'WORK'),<br>tCode('V', 'W2', 'WORK 2'),<br>tCode('V', 'T',  'TEMPORARY'),<br><br>- ****     TELECOMTYPE   ****<br>tCode('L', 'TELETYPE', 'Telecom Type'),<br>tCode('V', 'CH', 'HOME'),<br>tCode('V', 'CO', 'OFFICE'),<br>tCode('V', 'CF', 'FAX'),<br>tCode('V', 'CB', 'BUSINESS'),<br>tCode('V', 'CBD', 'BUSINESS DIRECT'),<br>tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'CC', 'CELLULAR'),<br><br>- ****    ETHNIC_CODE   ****<br>tCode('L', 'ETHNIC', 'Ethnic Category Code'),<br>tCode('V', 'A', 'British'), <br>tCode('V', 'B', 'Irish'), <br>tCode('V', 'C', 'Any other White background'), <br>tCode('V', 'D', 'White and Black Caribbean'),<br>tCode('V', 'E', 'White and Black African'),<br>tCode('V', 'F', 'White and Asian'), <br>tCode('V', 'G', 'Any other mixed background'), <br>tCode('V', 'H', 'Indian'), <br>tCode('V', 'J', 'Pakistani'),<br>tCode('V', 'K', 'Bangladeshi'), <br>tCode('V', 'L', 'Any other Asian background'), <br>tCode('V', 'M', 'Caribbean'), <br>tCode('V', 'N', 'African'), <br>tCode('V', 'P', 'Any other Black background'),  <br>tCode('V', 'R', 'Chinese'), <br>tCode('V', 'S', 'Any other ethnic group'), <br>tCode('V', 'Z', 'Not stated'), <br>        <br>- ****     MSTATUS   ****<br>tCode('L', 'MSTATUS', 'Marital Status'),<br>tCode('V', 'D', 'DIVORCED'),<br>tCode('V', 'L', 'LEGALLY SEPARATED'),<br>tCode('V', 'M', 'MARRIED'),<br>tCode('V', 'P', 'PARTNERED'),<br>tCode('V', 'S', 'SINGLE'),<br>tCode('V', 'U', 'UNKNOWN'),<br>tCode('V', 'W', 'WIDOWED'),     <br>       <br>- ****     CONTACTROLE  ****<br>tCode('L', 'CONROLE', 'Contact Role'),<br>tCode('V', 'EMERGENCY', 'EMERGENCY'),<br>tCode('V', 'GUARANTOR', 'GUARANTOR'),<br>tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     IDNUM_TYPE   ****<br>tCode('L', 'IDTYPE', 'Id Number Type'),<br>tCode('V', 'NHS', 'NHS NUMBER'),<br>tCode('V', 'CHI', 'CHI NUMBER'),<br>tCode('V', 'HC', 'HEATH AND CARE NUMBER'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN')<br></pre>
+<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.<br></pre>
+<pre>-- ****     GENDER   ****<br>tCode('L', 'GENDER', 'Gender'),<br>tCode('V', '0', 'Not Known'),<br>tCode('V', '1', 'Male'),<br>tCode('V', '2', 'Female'),<br>tCode('V', '9', 'Not Specified'),<br><br>-- ****     LANGUAGE   ****<br>tCode('L', 'LANGUAGE', 'Language'),<br>tCode('V', '001' , 'Akan/Ashanti'),<br>tCode('V', '002' , 'Albanian'),<br>tCode('V', '003' , 'Amharic'),<br>tCode('V', '004' , 'Arabic'),<br>tCode('V', '005' , 'Bengali and Sylheti'),<br>tCode('V', '006' , 'Brawa and Somali'),<br>tCode('V', '007' , 'British Signing Language'),<br>tCode('V', '008' , 'Cantonese'),<br>tCode('V', '009' , 'Cantonese and Vietnamese'),<br>tCode('V', '010' , 'Creole'),<br>tCode('V', '011' , 'Dutch'),<br>tCode('V', '012' , 'English'),<br>tCode('V', '013' , 'Ethiopian'),<br>tCode('V', '014' , 'Farsi/Persian'),<br>tCode('V', '015' , 'Finnish'),<br>tCode('V', '016' , 'Flemish'),<br>tCode('V', '017' , 'French'),<br>tCode('V', '018' , 'French creole'),<br>tCode('V', '019' , 'Gaelic'),<br>tCode('V', '020' , 'German'),<br>tCode('V', '021' , 'Greek'),<br>tCode('V', '022' , 'Gujarati'),<br>tCode('V', '023' , 'Hakka'),<br>tCode('V', '024' , 'Hausa'),<br>tCode('V', '025' , 'Hebrew'),<br>tCode('V', '026' , 'Hindi'),<br>tCode('V', '027' , 'Igbo/Ibo'),<br>tCode('V', '028' , 'Italian'),<br>tCode('V', '029' , 'Japanese'),<br>tCode('V', '030' , 'Korean'),<br>tCode('V', '031' , 'Kurdish'),<br>tCode('V', '032' , 'Lingala'),<br>tCode('V', '033' , 'Luganda'),<br>tCode('V', '034' , 'Makaton '),<br>tCode('V', '035' , 'Malayalam'),<br>tCode('V', '036' , 'Mandarin'),<br>tCode('V', '037' , 'Norwegian'),<br>tCode('V', '038' , 'Pashto/Pushtoo'),<br>tCode('V', '039' , 'Patois'),<br>tCode('V', '040' , 'Polish'),<br>tCode('V', '041' , 'Portuguese'),<br>tCode('V', '042' , 'Punjabi'),<br>tCode('V', '043' , 'Russian'),<br>tCode('V', '044' , 'Serbian/Croatian'),<br>tCode('V', '045' , 'Sinhala'),<br>tCode('V', '046' , 'Somali'),<br>tCode('V', '048' , 'Spanish'),<br>tCode('V', '049' , 'Swahili'),<br>tCode('V', '050' , 'Swedish'),<br>tCode('V', '051' , 'Sylheti'),<br>tCode('V', '052' , 'Tagalog Filipino'),<br>tCode('V', '053' , 'Tamil'),<br>tCode('V', '054' , 'Thai'),<br>tCode('V', '055' , 'Tigrinya'),<br>tCode('V', '056' , 'Turkish'),<br>tCode('V', '057' , 'Urdu'),<br>tCode('V', '058' , 'Vietnamese'),<br>tCode('V', '059' , 'Welsh'),<br>tCode('V', '060' , 'Yoruba'),<br>tCode('V', '200' , 'Other'),<br><br>-- ****     CONTACT_METHOD   ****<br>tCode('L', 'CONMETH', 'Contact Method'),<br>tCode('V', 'a' , 'UK Telephone Number'),<br>tCode('V', 'b' , 'Other non UK Telephone Number'),<br>tCode('V', 'c' , 'UK Facsimile Number'),<br>tCode('V', 'd' , 'Internet e-Mail Address'),<br>tCode('V', 'e' , 'Uniform Resource Locator / URL'),<br>tCode('V', 'f' , 'Pager'),<br><br>-- ****     RELATIONSHIP   ****<br>tCode('L', 'RELATION', 'Relationship'),<br>tCode('V', 'PARENT', 'PARENT'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     TITLE   ****<br>tCode('L', 'TITLE', 'Title'),<br>tCode('V', 'Mr' , 'Mr'),<br>tCode('V', 'Mrs' , 'Mrs'),<br>tCode('V', 'Ms' , 'Ms'),<br>tCode('V', 'Dr' , 'Dr'),<br>tCode('V', 'Rev' , 'Rev'),<br>tCode('V', 'Sir' , 'Sir'),<br>tCode('V', 'Lady' , 'Lady'),<br>tCode('V', 'Lord' , 'Lord'),<br>tCode('V', 'Dame' , 'Dame'),<br>tCode('V', 'OTHER', 'OTHER'),<br><br>-- ****     ADDRTYPE   ****<br>tCode('L', 'ADDRTYPE', 'Address Type'),<br>tCode('V', 'O',  'OFFICE'),<br>tCode('V', 'H',  'HOME'),<br>tCode('V', 'V',  'VACATION'),<br>tCode('V', 'H2', 'HOME 2'),<br>tCode('V', 'M',  'MAILING'),<br>tCode('V', 'W',  'WORK'),<br>tCode('V', 'W2', 'WORK 2'),<br>tCode('V', 'T',  'TEMPORARY'),<br><br>-- ****     TELECOMTYPE   ****<br>tCode('L', 'TELETYPE', 'Telecom Type'),<br>tCode('V', 'CH', 'HOME'),<br>tCode('V', 'CO', 'OFFICE'),<br>tCode('V', 'CF', 'FAX'),<br>tCode('V', 'CB', 'BUSINESS'),<br>tCode('V', 'CBD', 'BUSINESS DIRECT'),<br>tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'CC', 'MOBILE'),<br><br>-- ****    ETHNIC_CODE   ****<br>tCode('L', 'ETHNIC', 'Ethnic Category Code'),<br>tCode('V', 'A', 'British'), <br>tCode('V', 'B', 'Irish'), <br>tCode('V', 'C', 'Any other White background'), <br>tCode('V', 'D', 'White and Black Caribbean'),<br>tCode('V', 'E', 'White and Black African'),<br>tCode('V', 'F', 'White and Asian'), <br>tCode('V', 'G', 'Any other mixed background'), <br>tCode('V', 'H', 'Indian'), <br>tCode('V', 'J', 'Pakistani'),<br>tCode('V', 'K', 'Bangladeshi'), <br>tCode('V', 'L', 'Any other Asian background'), <br>tCode('V', 'M', 'Caribbean'), <br>tCode('V', 'N', 'African'), <br>tCode('V', 'P', 'Any other Black background'),  <br>tCode('V', 'R', 'Chinese'), <br>tCode('V', 'S', 'Any other ethnic group'), <br>tCode('V', 'Z', 'Not stated'), <br><br>-- ****     MSTATUS   ****<br>tCode('L', 'MSTATUS', 'Marital Status'),<br>tCode('V', 'S ' , 'Single'),<br>tCode('V', 'M ' , 'Married/Civil Partner'),<br>tCode('V', 'D ' , 'Divorced/Person'),<br>tCode('V', 'W ' , 'Widowed/Surviving Civil Partner'),<br>tCode('V', 'P ' , 'Separated'),<br>tCode('V', 'N ' , 'Not disclosed'),       <br><br>-- ****     CONTACTROLE  ****<br>tCode('L', 'CONROLE', 'Contact Role'),<br>tCode('V', 'EMERGENCY', 'EMERGENCY'),<br>tCode('V', 'GUARANTOR', 'GUARANTOR'),<br>tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     IDNUM_TYPE   ****<br>tCode('L', 'IDTYPE', 'Id Number Type'),<br>tCode('V', 'NHS', 'NHS NUMBER'),<br>tCode('V', 'CHI', 'CHI NUMBER'),<br>tCode('V', 'HC', 'HEATH AND CARE NUMBER'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN')<br><br></pre>
 <h2>User Codes</h2>
-When the user-code is selected in the MIDM GUI then the corresponding format,
+When the user-code is selected in the MIDM GUI then the corresponding
+format,
 input_mask and value_mask are used. The input_mask shows the
 characters that can be typed.<br>
 <br>
@@ -377,16 +385,9 @@ deciimal numbers, a space and then four deciimal numbers
 (example: 1111
 2222 3333 4444). This will be converted to 1111222233334444
 and stored
-in the database.<br>
-<br>
-Example:
-The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD
-ID", "Medical License ID" and "Household ID". If the user
-selects
-the Household ID they can type in four deciimal numbers, a
-space, four deciimal numbers, a space and then four
-deciimal
-numbers (example: 1111 2222 3333 4444). This will be converted
-to 1111222233334444 and stored in the database. <span style="font-family: monospace;"></span>
+in the database.&nbsp;<span style="font-family: monospace;"></span>
 <pre style="margin-left: 40px; overflow: scroll;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
+<h2>References</h2>
+The following references may be useful to those implementing
+an United Kingdom patient solution:<br><ul><li>NHS Data Model and Dictionary, Version 3</li></ul><div style="margin-left: 40px;"><a href="http://www.datadictionary.nhs.uk">http://www.datadictionary.nhs.uk</a><br><br>The attributes for codelist that are defined in this specification where used in this solution.</div><br>
 </body></html>
