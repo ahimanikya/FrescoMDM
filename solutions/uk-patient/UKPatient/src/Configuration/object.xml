@@ -6,16 +6,6 @@
     <nodes>
         <tag>UKPatient</tag>
         <fields>
-            <field-name>Category</field-name>
-            <field-type>string</field-type>
-            <size>32</size>
-            <updateable>true</updateable>
-            <required>true</required>
-            <code-module>CATEGORY</code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
             <field-name>Gender</field-name>
             <field-type>string</field-type>
             <size>32</size>
@@ -185,6 +175,16 @@
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
+        <fields>
+            <field-name>NI</field-name>
+            <field-type>string</field-type>
+            <size>32</size>
+            <updateable>false</updateable>
+            <required>false</required>
+            <code-module></code-module>
+            <pattern></pattern>
+            <key-type>false</key-type>
+        </fields>
     </nodes>
     <nodes>
         <tag>Name</tag>
@@ -274,7 +274,7 @@
             <size>32</size>
             <updateable>true</updateable>
             <required>false</required>
-            <code-module>SUFFIX</code-module>
+            <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
@@ -746,7 +746,7 @@
             <size>32</size>
             <updateable>true</updateable>
             <required>false</required>
-            <code-module>SUFFIX</code-module>
+            <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
@@ -1050,39 +1050,6 @@
         </fields>
     </nodes>
     <nodes>
-        <tag>HeightWeight</tag>
-        <fields>
-            <field-name>DateTaken</field-name>
-            <field-type>date</field-type>
-            <size>12</size>
-            <updateable>true</updateable>
-            <required>true</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>Height</field-name>
-            <field-type>float</field-type>
-            <size>32</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>Weight</field-name>
-            <field-type>float</field-type>
-            <size>32</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-    </nodes>
-    <nodes>
         <tag>HealthID</tag>
         <fields>
             <field-name>IdNumType</field-name>
@@ -1114,7 +1081,6 @@
         <children>AltContact</children>
         <children>AltConTele</children>
         <children>AuxID</children>
-        <children>HeightWeight</children>
         <children>HealthID</children>
     </relationships>
 </Configuration>
