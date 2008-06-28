@@ -6,16 +6,6 @@
     <nodes>
         <tag>AUSPatient</tag>
         <fields>
-            <field-name>Category</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module>CATEGORY</code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
             <field-name>FirstName</field-name>
             <field-type>string</field-type>
             <size>40</size>
@@ -108,10 +98,10 @@
         <fields>
             <field-name>Suffix</field-name>
             <field-type>string</field-type>
-            <size>10</size>
+            <size>35</size>
             <updateable>true</updateable>
             <required>false</required>
-            <code-module>SUFFIX</code-module>
+            <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
