@@ -405,7 +405,7 @@ boolean isSessionActive = true;
                                      <!-- user code related changes start here -->
           						<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
  style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
-								 onchange="getFormValues('#{childNodesName}EOInnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand='+RAND_VAL+'&userCodeMasking=true','#{childNodesName}AddNewSODiv',event)"
+								 onchange="getFormValues('#{childNodesName}EOInnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand='+RAND_VAL+'&userCodeMasking=true','#{childNodesName}EOMinorDiv',event)"
 								rendered="#{childFieldConfigAdd.userCode ne null}">
 												    <f:selectItem itemLabel="" itemValue="" />
                                                    <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
@@ -889,17 +889,16 @@ boolean isSessionActive = true;
                                             </h:column>
                                             <!--Rendering Updateable HTML Text boxes-->
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox' &&  soChildFieldConfigAdd.valueType ne 6}" >
-                                           
-                                                            <h:inputText label="#{soChildFieldConfigAdd.displayName}"  
+                                                          <h:inputText label="#{soChildFieldConfigAdd.displayName}"  
                                                                          title="#{soChildFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
 																		  maxlength="#{soChildFieldConfigAdd.maxLength}"
-																		 onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
-                                                                          onfocus="javascript:clear_masking_on_focus()" 
+																		 onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{soChildFieldConfigAdd.required}"
 																		 rendered="#{soChildFieldConfigAdd.constraintBy ne null}"
 																		 />     
-																		 
+											
 																		 <h:inputText label="#{soChildFieldConfigAdd.displayName}"  
                                                                          title="#{soChildFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')"
