@@ -227,7 +227,7 @@ boolean isSessionActive = true;
                                                            rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
 														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
 														   value="javascript:void(0)"
-                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = ' #{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = ' #{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = ' #{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = ' #{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><img   alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
+                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><img   alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
                                                       </div> 
                                                      <div id='lockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
                                                          <h:outputLink  value="javascript:void(0)" ><img alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
@@ -241,8 +241,8 @@ boolean isSessionActive = true;
                                                         <h:selectOneMenu  title="#{fieldConfigPer.fullFieldName}"
 														style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
 														value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}" 
-                                                                         disabled="#{!fieldConfigPer.updateable || (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}"                                                                         
-                                                                         readonly="#{!fieldConfigPer.updateable || (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
+                                                                         disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" 
+                                                                         readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}">
                                                             <f:selectItem itemLabel="" itemValue="" />
                                                             <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
@@ -257,8 +257,8 @@ boolean isSessionActive = true;
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
                                                                       maxlength="#{fieldConfigPer.maxLength}"
-																	  disabled="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
-                                                                     readonly="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
+																	  disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+                                                                     readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
                                                                      onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
 																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)"                    
@@ -266,7 +266,7 @@ boolean isSessionActive = true;
                                                          </div>            
                                                     </h:column>
                                                     
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(!fieldConfigPer.updateable ||  (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]))}">
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <nobr>
                                                             <input type="text" 
@@ -284,7 +284,7 @@ boolean isSessionActive = true;
                                                         </div>            
                                                     </h:column>
 
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (!fieldConfigPer.updateable ||  (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]))}">
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <nobr>
                                                             <input type="text" 
@@ -307,8 +307,8 @@ boolean isSessionActive = true;
                                                 <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                     <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextArea"   
-																	 disabled="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
-                                                                     readonly="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
+																	 disabled="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+                                                                     readonly="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"/>
                                                 </h:column>
