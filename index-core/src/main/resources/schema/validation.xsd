@@ -49,7 +49,7 @@
 	<xs:element name="rules">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="rule"/>
+				<xs:element ref="rule" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
