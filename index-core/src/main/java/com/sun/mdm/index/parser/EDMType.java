@@ -318,7 +318,7 @@ public class EDMType {
         }
     }
     
-    String getAuditLogXML() {
+    String getAuditLogXML(String rootObject) {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB3 + Utils.startTag(mTagAuditLog));
@@ -326,7 +326,7 @@ public class EDMType {
                             mPageDefinition.auditLog.allowInsert + 
                             Utils.endTag(mTagAllowInsert));
         if (bMidm) {
-            buffer.append(getPageTabXML(mPageDefinition.auditLog.pageTab, Utils.TAB4, mPageDefinition.reports.commonBlock.pageTab.rootObject, "Audit Log"));
+            buffer.append(getPageTabXML(mPageDefinition.auditLog.pageTab, Utils.TAB4, rootObject, "Audit Log"));
         }
         if (mPageDefinition.auditLog.screenID != null) {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
@@ -1653,7 +1653,7 @@ public class EDMType {
         }
         
         if (mPageDefinition.auditLog != null) {
-            buffer.append(getAuditLogXML());
+            buffer.append(getAuditLogXML(rootObject));
         }
 
         buffer.append(Utils.TAB2 + Utils.endTag(mTagPageDefinition));
