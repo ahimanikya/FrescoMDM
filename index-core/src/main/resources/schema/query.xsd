@@ -57,6 +57,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="equals" minOccurs="0" maxOccurs="unbounded"/>
+                                <xs:element ref="not-equals" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="range" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -123,13 +124,9 @@
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="equals">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="field"/>
-				<xs:element ref="source"/>
-			</xs:sequence>
-		</xs:complexType>
+	<xs:element name="equals" type="sourceType">
+	</xs:element>
+	<xs:element name="not-equals" type="sourceType">
 	</xs:element>
 	<xs:element name="field">
 		<xs:simpleType>
@@ -181,8 +178,29 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="source">
-		<xs:simpleType>
-			<xs:restriction base="xs:string"/>
-		</xs:simpleType>
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+        </xs:element>
+	<xs:element name="constant">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
 	</xs:element>
+	<xs:element name="offset">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+	</xs:element>
+        <xs:complexType name="sourceType">
+            <xs:sequence>
+		<xs:element ref="field"/>
+                <xs:choice>
+                    <xs:element ref="source"/>
+                    <xs:element ref="constant"/>
+                    <xs:element ref="offset"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+
 </xs:schema>
