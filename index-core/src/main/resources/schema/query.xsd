@@ -58,6 +58,8 @@
 			<xs:sequence>
 				<xs:element ref="equals" minOccurs="0" maxOccurs="unbounded"/>
                                 <xs:element ref="not-equals" minOccurs="0" maxOccurs="unbounded"/>
+                                <xs:element ref="greater-than-or-equal" minOccurs="0" maxOccurs="unbounded"/>
+                                <xs:element ref="less-than-or-equal" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="range" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -128,6 +130,11 @@
 	</xs:element>
 	<xs:element name="not-equals" type="sourceType">
 	</xs:element>
+        <xs:element name="greater-than-or-equal" type="sourceType">
+	</xs:element>
+	<xs:element name="less-than-or-equal" type="sourceType">
+	</xs:element>
+
 	<xs:element name="field">
 		<xs:simpleType>
 			<xs:restriction base="xs:string"/>
