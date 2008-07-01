@@ -94,7 +94,7 @@
             <xs:element name="duplicate-records" type="commonBlockType"/>
             <xs:element name="assumed-matches" type="commonBlockType"/>
             <xs:element name="source-record" type="sourceRecordReportsType"/>
-            <xs:element name="reports" type="sourceRecordReportsType"/>
+            <xs:element name="reports" type="sourceRecordReportsType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="audit-log" type="commonBlockType"/>
         </xs:sequence>
     </xs:complexType>
