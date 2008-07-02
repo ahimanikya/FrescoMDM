@@ -19,7 +19,7 @@
     <html>
 <% 
 LoginHandler loginHandler = new LoginHandler();
-if (request.getAttribute("Logout") == null && request.getRemoteUser() != null && request.isUserInRole("MasterIndex.Admin")) {
+if (request.getAttribute(LoginHandler.FAIL_INITIALIZATION) == null  && request.getAttribute("Logout") == null && request.getRemoteUser() != null && request.isUserInRole("MasterIndex.Admin")) {
     FacesContext.getCurrentInstance().getExternalContext().redirect("results.jsf");
 }
 %>        
@@ -30,6 +30,8 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
         </head>
 <script language="JavaScript">
     function submitAction() {
+		document.getElementById("loading").style.visibility = 'visible';
+		document.getElementById("loading").style.display = 'block';
         document.loginform.submit();
     }
 
@@ -121,6 +123,12 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                             </tr>
                         </table>
                     </div>
+					<div id="loading" style="visibility:hidden;display:none;">
+                         <table border="0">
+                            <tr>
+                                <td><img src='images/loading.gif' alt="Loading..."/> Loading.... Please Wait.</td>
+                            </tr>
+                    </div>
             </div>
             </div>
             </center>
@@ -164,9 +172,12 @@ e = e.charCode;
 //TOTAL FAILURE, WE HAVE NO WAY OF OBTAINING THE KEY CODE 
 return; 
 } 
-if(e=='13')
+
+ if(e=='13')
 	{
-	document.getElementById("formid").submit();
+    document.getElementById("loading").style.visibility = 'visible';
+	document.getElementById("loading").style.display = 'block';
+ 	document.getElementById("formid").submit();
 	}
 
 } 

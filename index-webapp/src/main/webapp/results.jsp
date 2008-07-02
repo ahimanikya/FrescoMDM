@@ -23,31 +23,40 @@
           LoginHandler loginHandler = new LoginHandler();
           NavigationHandler navigationHandler = new NavigationHandler();
           
-          loginHandler.initializeApplication();
-          ScreenObject screenObject = ConfigManager.getInstance().getInitialScreen();
-          session.setAttribute("ScreenObject", screenObject);
+          String retString  = loginHandler.initializeApplication();
+ 
+          if("initializationfailed".equalsIgnoreCase(retString)) {
+            // Navigate the user to the login page when initialization fails
+			 request.getSession().invalidate(); 
+             FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?error=" + (String) request.getAttribute(LoginHandler.FAIL_INITIALIZATION));
 
-          // Navigate the user as per user configuration in  edm.xml   
-          String tagName  = navigationHandler.getTagNameByScreenId(screenObject.getID());
+		  } else {
+		     ScreenObject screenObject = ConfigManager.getInstance().getInitialScreen();
+             session.setAttribute("ScreenObject", screenObject);
+
+             // Navigate the user as per user configuration in  edm.xml   
+             String tagName  = navigationHandler.getTagNameByScreenId(screenObject.getID());
 
           
-          if(tagName.equalsIgnoreCase("dashboard")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.jsf");
-          } else  if(tagName.equalsIgnoreCase("duplicate-records")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("duplicaterecords.jsf");
-          } else  if(tagName.equalsIgnoreCase("record-details")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("recorddetails.jsf");
-          } else  if(tagName.equalsIgnoreCase("assumed-matches")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("assumedmatches.jsf");
-          } else  if(tagName.equalsIgnoreCase("source-record")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("sourcerecords.jsf");
-          } else  if(tagName.equalsIgnoreCase("reports")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("reports.jsf");
-          } else  if(tagName.equalsIgnoreCase("transactions")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("transactions.jsf");
-          } else  if(tagName.equalsIgnoreCase("audit-log")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("auditlog.jsf");
-          }   
+            if(tagName.equalsIgnoreCase("dashboard")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.jsf");
+            } else  if(tagName.equalsIgnoreCase("duplicate-records")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("duplicaterecords.jsf");
+            } else  if(tagName.equalsIgnoreCase("record-details")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("recorddetails.jsf");
+            } else  if(tagName.equalsIgnoreCase("assumed-matches")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("assumedmatches.jsf");
+            } else  if(tagName.equalsIgnoreCase("source-record")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("sourcerecords.jsf");
+            } else  if(tagName.equalsIgnoreCase("reports")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("reports.jsf");
+            } else  if(tagName.equalsIgnoreCase("transactions")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("transactions.jsf");
+            } else  if(tagName.equalsIgnoreCase("audit-log")) {
+              FacesContext.getCurrentInstance().getExternalContext().redirect("auditlog.jsf");
+            }   
+          } 
+ 
         %>
        
         
@@ -58,7 +67,7 @@
     <table>
         <tr>
             <td>
-            This is the results page from the patient details when submit button was clicked.                            
+            This is the results page from the login details when submit button was clicked.                            
             
             </td>
         </tr>
