@@ -32,6 +32,7 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.valueobjects.UpdateRecords;
+import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.report.ReportException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
@@ -352,82 +353,88 @@ public class UpdateReportHandler    {
 
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
-                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
-                            epathValue = fieldConfig.getFullFieldName();
-                        } else {
-                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
-                        }
-
-                       if (fieldConfig.getValueType() == 6) {
-                           if(eo != null ) { 
-                               newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                           } else {
-                               newValuesMap.put(fieldConfig.getFullFieldName(), null);
-                           }
-                       } else {
-                           Object value= null;
-                           if (eo != null) {
-                               value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
-                           }
-                           if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                               if (value != null) {
-                                   //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                   if (fieldConfig.getUserCode() != null) {
-                                       strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                   } else {
-                                       strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                   }
-
-                                   // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
-
-                                   newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
-                               }
-                           } else {
-                               newValuesMap.put(fieldConfig.getFullFieldName(), value);
-                           }
-                       }
+                        //populate the field values (apply  field input maskings...etc)
+                        newValuesMap = populateHashMapValues(fieldConfig,  newValuesMap,  eo);  
+                        
+                        
                     }
                 } else if (field.equalsIgnoreCase("EUID2")) {
                     newValuesMap.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
-                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
-                            epathValue = fieldConfig.getFullFieldName();
-                        } else {
-                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
-                        }
-
-                        if (fieldConfig.getValueType() == 6) {
-                            newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                        } else {
-                            Object value = null;
-                            if (eo != null) {
-                                value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
-                            }
-                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                if (value != null) {
-                                    //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                    if (fieldConfig.getUserCode() != null) {
-                                        strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                    } else {
-                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                    }
-
-                                    // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
-                                    newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
-                                }
-                            } else {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), value);
-                            }
-                        }
-                        
+                        //populate the field values (apply  field input maskings...etc)
+                        newValuesMap = populateHashMapValues(fieldConfig,  newValuesMap,  eo); 
                     }
-                }
+                }                
+                
             }
         }
         return newValuesMap;
     }
+   
+   private HashMap populateHashMapValues(FieldConfig fieldConfig, HashMap newValuesMap, EnterpriseObject eo) throws ObjectException, EPathException {
+        String epathValue = new String();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+            epathValue = fieldConfig.getFullFieldName();
+        } else {
+            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+        }
+        String strVal;
+        if (fieldConfig.getValueType() == 6) {
+
+            if (eo != null) {
+                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+
+                    newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                } else {
+                    newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                }
+            } else {
+                newValuesMap.put(fieldConfig.getFullFieldName(), null);
+            }
+        } else {
+            Object value = null;
+            if (eo != null) {
+                value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+            }
+            if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+
+                newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+
+            } else {
+                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    if (value != null) {
+                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                        if (fieldConfig.getUserCode() != null) {
+                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                        } else {
+                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                        }
+
+                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      
+                        newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                    }
+                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                    if (value != null) {
+                        //Mask the value as per the masking 
+                        value = fieldConfig.mask(value.toString());
+                        newValuesMap.put(fieldConfig.getFullFieldName(), value);
+                    }
+                } else {
+                    newValuesMap.put(fieldConfig.getFullFieldName(), value);
+                }
+            }
+
+        }
+
+        return newValuesMap;
+    }
+
+   
    
     public UpdateReportConfig getUpdateSearchObject() throws ValidationException, EPathException {
         String errorMessage = null;
@@ -671,5 +678,6 @@ public class UpdateReportHandler    {
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
-
+    
+    
 }

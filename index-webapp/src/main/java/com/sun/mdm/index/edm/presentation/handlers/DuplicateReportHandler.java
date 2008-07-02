@@ -165,10 +165,7 @@ public class DuplicateReportHandler    {
         ArrayList dataRowList = new ArrayList();
         while (pdIter.hasNext()) {
             PotentialDuplicateReportRow reportRow = new PotentialDuplicateReportRow(pdIter.next(), pdrConfig);
-            ReportDataRow[] dataRows = writeRow(pdrConfig, reportRow);
-            for (int i = 0; i < dataRows.length; i++) {
-                dataRowList.add(dataRows[i]);
-            }
+ 
             ArrayList newArrayList = getOutPutValuesMap(pdrConfig, reportRow);
             for (int i = 0; i < newArrayList.size(); i++) {
                 HashMap object = (HashMap) newArrayList.get(i);
@@ -189,133 +186,7 @@ public class DuplicateReportHandler    {
         }
         return dataRows;
     }
-   /** write data row for writeRow */
-   private ReportDataRow[] writeRow(MultirowReportConfig1 reportConfig,MultirowReportObject1 reportRow) throws Exception {
-        ReportDataRow[] dataRows = new ReportDataRow[1];
-        ArrayList rptFields = new ArrayList();
-        List transactionFields = reportConfig.getTransactionFields();
-
-        ArrayList fcArrayList  = getResultsConfigArrayList();
-       
-       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-        
-        ArrayList resultArrayList  = new ArrayList();
-        String strVal;
-        //getSearchResultsArrayByReportType();
-        if (transactionFields != null) {
-            Iterator iter = transactionFields.iterator();
-            EnterpriseObject eo = null;
-            Object obj = null;
-            MasterControllerService masterControllerService = new MasterControllerService();
-            String epathValue =  new String();
-            HashMap newValuesMap = new HashMap();
-            while (iter.hasNext()) {
-                String field = (String) iter.next();
-                String val = reportRow.getValue(field).toString();
-                 if (field.equalsIgnoreCase("EUID1"))  {
-                     newValuesMap.put("EUID",val);
-                     DuplicateRecords duplicateRecords = new DuplicateRecords();
-                     duplicateRecords.setEuid(val);
-                     eo = masterControllerService.getEnterpriseObject(val.toString());
-                
-                     for (int i = 0; i < fcArrayList.size(); i++) {
-                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
-                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
-                             epathValue = fieldConfig.getFullFieldName();
-                         } else {
-                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
-                         }
-
-                         if (fieldConfig.getValueType() == 6) {
-                             newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                         } else {
-                             Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
-                             if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                 if (value != null) {
-                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                        if (fieldConfig.getUserCode() != null) {
-                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                        } else {
-                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                        }
-
-                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
-                                 }
-                             } else {
-                                 newValuesMap.put(fieldConfig.getFullFieldName(), value);
-                             }
-                         }
-                         
-                     }
-                }  else if (field.equalsIgnoreCase("EUID2"))  {
-                    newValuesMap.put("EUID",val);
-                    DuplicateRecords duplicateRecords = new DuplicateRecords();
-                    duplicateRecords.setEuid(val); 
-                    eo = masterControllerService.getEnterpriseObject(val.toString());
-
-                    for (int i = 0; i < fcArrayList.size(); i++) {
-                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
-                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
-                             epathValue = fieldConfig.getFullFieldName();
-                         } else {
-                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
-                         }
-
-                        if (fieldConfig.getValueType() == 6) {
-                            newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                        } else {
-                            Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
-                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                if (value != null) {
-                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                        if (fieldConfig.getUserCode() != null) {
-                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                        } else {
-                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                        }
-
-                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                     newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
-                                }
-                            } else {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), value);
-                            }
-                        }
-                     }
-                }  
-                resultArrayList.add(newValuesMap);
-                
-                //Populate Hash Table as backup
-                //duplicateRecordsResultsHash.put(field, val);
-                rptFields.add(new ReportField(val));
-            }
-        }
-        
-        request.setAttribute("duplicateReportList", resultArrayList);
-        
-        EPathArrayList objectFields = reportConfig.getObjectFields();
-        if (objectFields != null) {
-            EPath[] fields = objectFields.toArray();
-            ObjectNode childObj = reportRow.getObject1();
-            for (int i = 0; i < fields.length; i++) {
-                String field = fields[i].toString();
-                String val = new String();
-                Object obj = EPathAPI.getFieldValue(field, childObj);
-                if (obj != null) {
-                    if (obj instanceof java.util.Date) {
-                        SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
-                        val = sdf.format((java.util.Date) obj);
-                    } else {
-                        val = obj.toString();
-                    }
-                }
-                rptFields.add(new ReportField(val));
-            }
-        }
-        dataRows[0] = new ReportDataRow(rptFields);
-        return dataRows;
-    }
-
-    private ArrayList getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+     private ArrayList getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
         HashMap newValuesMap = new HashMap();
         List transactionFields = reportConfig.getTransactionFields();
 
@@ -353,25 +224,44 @@ public class DuplicateReportHandler    {
                         if (fieldConfig.isUpdateable()) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                                euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                            } else {
-                                Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
-                                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                    if (value != null) {
-                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                        if (fieldConfig.getUserCode() != null) {
-                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                        } else {
-                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                        }
+                                //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
-                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                         newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
-                                        euid1Map.put(fieldConfig.getFullFieldName(), strVal);
-                                    }
+                                    euid1Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
-                                    newValuesMap.put(fieldConfig.getFullFieldName(), value);
-                                    euid1Map.put(fieldConfig.getFullFieldName(), value);
+                                    euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 }
+
+                             } else {
+                                Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+
+                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                    
+                                    euid1Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));                                    
+                                } else {
+                                    if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                        if (value != null) {
+                                            //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                            if (fieldConfig.getUserCode() != null) {
+                                                strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                            } else {
+                                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                            }
+
+                                            // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      
+                                            euid1Map.put(fieldConfig.getFullFieldName(), strVal);
+                                        }
+                                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                        if (value != null) {
+                                            //Mask the value as per the masking 
+                                            value = fieldConfig.mask(value.toString());
+                                            euid1Map.put(fieldConfig.getFullFieldName(), value);
+                                        }
+                                    } else {
+                                        euid1Map.put(fieldConfig.getFullFieldName(), value);
+                                    }
+                                }
+
+
                             }
                         }
                     }
@@ -390,24 +280,41 @@ public class DuplicateReportHandler    {
                         if (fieldConfig.isUpdateable()) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                                euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                                //euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                  euid2Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                                } else {
+                                    euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                                }
+                                
                             } else {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
-                                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                    if (value != null) {
-                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                        if (fieldConfig.getUserCode() != null) {
-                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                        } else {
-                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                        }
-
-                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                         newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
-                                        euid2Map.put(fieldConfig.getFullFieldName(), strVal);
-                                    }
+                                
+                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+                                    euid2Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                                    
                                 } else {
-                                    newValuesMap.put(fieldConfig.getFullFieldName(), value);
-                                    euid2Map.put(fieldConfig.getFullFieldName(), value);
+                                    if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                        if (value != null) {
+                                            //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                            if (fieldConfig.getUserCode() != null) {
+                                                strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                            } else {
+                                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                            }
+
+                                            // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      
+                                            euid2Map.put(fieldConfig.getFullFieldName(), strVal);
+                                        }
+                                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                        if (value != null) {
+                                            //Mask the value as per the masking 
+                                            value = fieldConfig.mask(value.toString());
+                                            euid2Map.put(fieldConfig.getFullFieldName(), value);
+                                        }
+                                    } else {
+                                        euid2Map.put(fieldConfig.getFullFieldName(), value);
+                                    }
                                 }
                             }
                         }
