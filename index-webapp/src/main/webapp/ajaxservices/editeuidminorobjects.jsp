@@ -31,7 +31,7 @@
  
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
-<%
+<% 
 //Author Sridhar Narsingh
 //sridhar@ligaturesoftware.com
 //http://www.ligaturesoftware.com
@@ -332,16 +332,29 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						  !("minorObjSave".equalsIgnoreCase(attributeName)) && 
 						  !("editThisID".equalsIgnoreCase(attributeName)) 
 						  )  {
-						  if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+						  //if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+                          // rootNodesHashMap.put(attributeName, attributeValue); 
+
+						  if (rootNodesHashMap.get(attributeName) == null) {
+  						      if (attributeValue.equalsIgnoreCase("")) { 
+								  continue; 
+							  }	   	  	   
                               rootNodesHashMap.put(attributeName, attributeValue); 
+						  } else {
+                               if (attributeValue.equalsIgnoreCase("")) { 
+                                 rootNodesHashMap.put(attributeName, null); 
+							  } else {
+                                rootNodesHashMap.put(attributeName, attributeValue); 
+							  }
+						  }					  
 					  }
 				 
 					  
 				 }
 			   %>
  <%  } %>
-
- <% if (valiadtions.isEmpty() && isSaveSbr) {%>
+ 
+  <% if (valiadtions.isEmpty() && isSaveSbr) {%>
    <div class="ajaxsuccess">
    	   	  <table>
 			<tr>

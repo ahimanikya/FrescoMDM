@@ -33,7 +33,7 @@
  
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
-<%
+<% 
 //Author Sridhar Narsingh
 //sridhar@ligaturesoftware.com
 //http://www.ligaturesoftware.com
@@ -318,8 +318,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						  !("minorObjSave".equalsIgnoreCase(attributeName)) && 
 						  !("editThisID".equalsIgnoreCase(attributeName)) 
 						  )  {
-						  if (attributeValue.equalsIgnoreCase("")) { continue; }	   
-                          soRootNodesMap.put(attributeName, attributeValue); 
+ 						  if (soRootNodesMap.get(attributeName) == null) {
+ 						      if (attributeValue.equalsIgnoreCase("")) { 
+								  continue; 
+							  }	   	  	   
+                              soRootNodesMap.put(attributeName, attributeValue); 
+						  } else {
+ 						      if (attributeValue.equalsIgnoreCase("")) { 
+                                 soRootNodesMap.put(attributeName, null); 
+							  } else {
+                                soRootNodesMap.put(attributeName, attributeValue); 
+							  }
+						  }
 					  }
 				 
 					  
