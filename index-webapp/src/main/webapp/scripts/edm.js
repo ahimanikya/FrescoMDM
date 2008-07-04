@@ -1957,17 +1957,15 @@ function getRecordDetailsFormValues(formName)   {
    for(i=0; i< thisFrm.elements.length; i++)   {      
 		if(thisFrm.elements[i].title.length != 0 ) {
 				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+	            if(query .indexOf('%') != -1) {
+   		          query  = query.replace("%","~~");
+  	            }
  	    }
     }
 
 	query +="&editThisID="+ editIndexid;
-
-	if(query .indexOf('%') != -1) {
-   		query  = query.replace("%","~~");
-  	 }
-	 
     queryStr  = query;
- }
+  }
 
  /* Opens a new window for the print*/
 function openPrintWindow(url)    {
