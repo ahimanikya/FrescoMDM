@@ -52,6 +52,7 @@ import com.sun.mdm.index.util.LogUtil;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import net.java.hulp.i18n.LocalizationSupport;
 /**
@@ -378,7 +379,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 }
                 eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
                 eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
-                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+                
+               
 
                 String dateField = new String();
                 ArrayList resultsConfigArray = super.getResultsConfigArray();
@@ -404,14 +407,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                            if(value instanceof java.util.Date) {
                                dateField = simpleDateFormatFields.format(value);
                                 
-                               if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                               if (value != null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
                                     fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                } else {
                                     fieldvalues.put(fieldConfig.getFullFieldName(), dateField);
                                 }
                                 
                            } else {
-                               if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                               if (value != null  && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
                                     fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                } else {
                                    if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
@@ -1135,7 +1138,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
         String sbrEUID = (String) mergredHashMapVaueExpression.get("EUID");
         String destnId = (sbrEUID.equalsIgnoreCase(srcEUIDVaueExpression)) ? destnEUIDVaueExpression : srcEUIDVaueExpression;
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         SBR finalSBR = compareDuplicateManager.getEnterpriseObject(sbrEUID).getSBR();
         //Object[] resultsConfigFeilds  = getSearchResultsScreenConfigArray().toArray();
         SourceHandler sourceHandler = new SourceHandler();
