@@ -63,6 +63,8 @@ import java.util.HashMap;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import net.java.hulp.i18n.LocalizationSupport;
 
 /** Creates a new instance of ActivityReportHandler*/ 
@@ -110,19 +112,21 @@ public class ActivityReportHandler {
     /**
      * Search ActivityReportHandlers-Weekly
      */
-    private static final String REPORT_TYPE_DAILY_ACTIVITY = "Daily Activity";
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
+    private  String REPORT_TYPE_DAILY_ACTIVITY = bundle.getString("DAILY_ACTIVITY") ; // Daily Activity";
     /**
      * Search ActivityReportHandlers-Weekly
      */
-    private static final String REPORT_TYPE_WEEKLY_ACTIVITY = "Weekly Activity";
+    private  String REPORT_TYPE_WEEKLY_ACTIVITY =bundle.getString("WEEKLY_ACTIVITY") ; // "Weekly Activity";
     /**
      * Search ActivityReportHandlers-Monthly
      */
-    private static final String REPORT_TYPE_MONTHLY_ACTIVITY = "Monthly Activity";
+    private String REPORT_TYPE_MONTHLY_ACTIVITY = bundle.getString("MONTHLY_ACTIVITY") ; // "Monthly Activity";
     /**
      * Search ActivityReportHandlers-Yearly
      */
-    private static final String REPORT_TYPE_YEARLY_ACTIVITY = "Yearly Activity";
+    private String REPORT_TYPE_YEARLY_ACTIVITY = bundle.getString("YEARLY_ACTIVITY") ; // "Yearly Activity";
     /**
      * Maximum report items to be rendered 
      */
@@ -137,18 +141,18 @@ public class ActivityReportHandler {
         ArrayList finalOutputList = new ArrayList();
         reportType = getFrequency();
         //request.setAttribute("tabName", "ACTIVITY_REPORT");
-        if (reportType.equalsIgnoreCase(REPORT_TYPE_WEEKLY_ACTIVITY) ||
-            reportType.equalsIgnoreCase(REPORT_TYPE_MONTHLY_ACTIVITY) ||
-            reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
+        if (reportType.equalsIgnoreCase(getREPORT_TYPE_WEEKLY_ACTIVITY()) ||
+            reportType.equalsIgnoreCase(getREPORT_TYPE_MONTHLY_ACTIVITY()) ||
+            reportType.equalsIgnoreCase(getREPORT_TYPE_YEARLY_ACTIVITY())) {
             arConfig = getActivitySearchObject();
 			if (arConfig == null)  {
 				return null;  // Form Validation occured and the messages are accumulated in Faces context
 			}
-            if (reportType.equalsIgnoreCase(REPORT_TYPE_WEEKLY_ACTIVITY)) {
+            if (reportType.equalsIgnoreCase(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
                 ksRpt = QwsController.getReportGenerator().execWeeklyKeyStatisticsReport(arConfig);
-            } else if (reportType.equalsIgnoreCase(REPORT_TYPE_MONTHLY_ACTIVITY)) {
+            } else if (reportType.equalsIgnoreCase(getREPORT_TYPE_MONTHLY_ACTIVITY())) {
                 ksRpt = QwsController.getReportGenerator().execMonthlyKeyStatisticsReport(arConfig);
-            } else if (reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
+            } else if (reportType.equalsIgnoreCase(getREPORT_TYPE_YEARLY_ACTIVITY())) {
                 ksRpt = QwsController.getReportGenerator().execYearlyKeyStatisticsReport(arConfig);
             }
             // Methods to fetch data
@@ -251,57 +255,57 @@ public class ActivityReportHandler {
         
         //Populate the Date and Day for the week of the start date
         Date date = DateUtil.string2Date(getCreateStartDate());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a, EEEEEEEEEE, MMMMMMMMMM dd, yyyy");                
-        String strDate = simpleDateFormat.format(date);        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a, EEEEEEEEEE, MMMMMMMMMM dd, yyyy", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        String strDate = simpleDateFormat.format(date);
         int distanceFromSunday = 0;
-        if (strDate.indexOf("Sun") != -1) {
+        if (strDate.indexOf(bundle.getString("DAY00")) != -1) {
             distanceFromSunday = 0;
-        } else if (strDate.indexOf("Mon") != -1) {
+        } else if (strDate.indexOf(bundle.getString("DAY01")) != -1) {
             distanceFromSunday = 1;
-        } else if (strDate.indexOf("Tue") != -1) {
+        } else if (strDate.indexOf(bundle.getString("DAY02")) != -1) {
             distanceFromSunday = 2;
-        } else if (strDate.indexOf("Wed") != -1) {
+        } else if (strDate.indexOf(bundle.getString("DAY03")) != -1) {
             distanceFromSunday = 3;
-        } else if (strDate.indexOf("Thu") != -1) {
+        } else if (strDate.indexOf(bundle.getString("DAY04")) != -1) {
             distanceFromSunday = 4;
-        } else if (strDate.indexOf("Fri") != -1) {
+        } else if (strDate.indexOf(bundle.getString("DAY05")) != -1) {
             distanceFromSunday = 5;
-        } else if (strDate.indexOf("Sat") != -1) {
+        } else if (strDate.indexOf(bundle.getString("DAY06")) != -1) {
             distanceFromSunday = 6;
         }
         long datelong = date.getTime();
-        long displacementFromSunday = (distanceFromSunday * (24 * 60 * 60 *1000)); 
+        long displacementFromSunday = (distanceFromSunday * (24 * 60 * 60 * 1000));
         long Sundaylong = datelong - displacementFromSunday;
-        
-        String sundayDMY =" ";
+
+        String sundayDMY = " ";
         Date sundayDate = new Date(Sundaylong);
-        
-        for (int i = 0; i < countArr.size()-1; i++) {
-                Date thisDate = new Date(sundayDate.getTime() + i * ((24 * 60 * 60 * 1000)));
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                sundayDMY = sdf.format(thisDate);
-                activityRecords[i].setActivityDate(sundayDMY);
-                simpleDateFormat = new SimpleDateFormat("HH:mm a, EEEEEEEEEE, MMMMMMMMMM dd, yyyy");
-                strDate = simpleDateFormat.format(thisDate);
-                if (strDate.indexOf("Sun") != -1) {
-                    activityRecords[i].setDay("Sunday");
-                } else if (strDate.indexOf("Mon") != -1) {
-                    activityRecords[i].setDay("Monday");
-                } else if (strDate.indexOf("Tue") != -1) {
-                    activityRecords[i].setDay("Tuesday");
-                } else if (strDate.indexOf("Wed") != -1) {
-                    activityRecords[i].setDay("Wednesday");
-                } else if (strDate.indexOf("Thu") != -1) {
-                    activityRecords[i].setDay("Thursday");
-                } else if (strDate.indexOf("Fri") != -1) {
-                    activityRecords[i].setDay("Friday");
-                } else if (strDate.indexOf("Sat") != -1) {
-                    activityRecords[i].setDay("Saturday");
-                }
-        }        
+
+        for (int i = 0; i < countArr.size() - 1; i++) {
+            Date thisDate = new Date(sundayDate.getTime() + i * ((24 * 60 * 60 * 1000)));
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            sundayDMY = sdf.format(thisDate);
+            activityRecords[i].setActivityDate(sundayDMY);
+            simpleDateFormat = new SimpleDateFormat("HH:mm a, EEEEEEEEEE, MMMMMMMMMM dd, yyyy");
+            strDate = simpleDateFormat.format(thisDate);
+            if (strDate.indexOf(bundle.getString("DAY00")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY00"));
+            } else if (strDate.indexOf(bundle.getString("DAY01")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY01"));
+            } else if (strDate.indexOf(bundle.getString("DAY02")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY02"));
+            } else if (strDate.indexOf(bundle.getString("DAY03")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY03"));
+            } else if (strDate.indexOf(bundle.getString("DAY04")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY04"));
+            } else if (strDate.indexOf(bundle.getString("DAY05")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY05"));
+            } else if (strDate.indexOf(bundle.getString("DAY06")) != -1) {
+                activityRecords[i].setDay(bundle.getString("DAY06"));
+            }
+        }
         activityRecordsVO = activityRecords;
-        vOList.add(activityRecords);                   
-         return dataRows;       
+        vOList.add(activityRecords);
+        return dataRows;
     }
      /*
      *  getter method to retrieve the data rows of report records.
@@ -350,7 +354,7 @@ public class ActivityReportHandler {
     public KeyStatisticsReportConfig getActivitySearchObject() throws ValidationException, EPathException {
         String errorMessage = null;
         EDMValidation edmValidation = new EDMValidation();
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        // bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         KeyStatisticsReportConfig arConfig = new KeyStatisticsReportConfig();
     
         //Form Validation of  Start Time
@@ -557,21 +561,21 @@ public class ActivityReportHandler {
      * Getter the REPORT_TYPE_WEEKLY_ACTIVITY for the search
      * @param REPORT_TYPE_WEEKLY_ACTIVITY 
      */
-    public static String getREPORT_TYPE_WEEKLY_ACTIVITY() {
+    public  String getREPORT_TYPE_WEEKLY_ACTIVITY() {
         return REPORT_TYPE_WEEKLY_ACTIVITY;
     }
      /**
      * Getter the REPORT_TYPE_MONTHLY_ACTIVITY for the search
      * @param REPORT_TYPE_MONTHLY_ACTIVITY 
      */
-    public static String getREPORT_TYPE_MONTHLY_ACTIVITY() {
+    public  String getREPORT_TYPE_MONTHLY_ACTIVITY() {
         return REPORT_TYPE_MONTHLY_ACTIVITY;
     }
      /**
      * Getter the REPORT_TYPE_YEARLY_ACTIVITY for the search
      * @param REPORT_TYPE_YEARLY_ACTIVITY 
      */
-    public static String getREPORT_TYPE_YEARLY_ACTIVITY() {
+    public  String getREPORT_TYPE_YEARLY_ACTIVITY() {
         return REPORT_TYPE_YEARLY_ACTIVITY;
     }
      /**
@@ -581,47 +585,50 @@ public class ActivityReportHandler {
     public ArrayList getActivityRecordsVO() {
         ArrayList outputList = new ArrayList();
         ArrayList keyList = new ArrayList();
-            if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency()) ){ 
-              keyList.add("ActivityDate");
-            }
-            keyList.add("Add");
-            keyList.add("EUIDDeactivate");
-            keyList.add("EUIDMerge");
-            keyList.add("EUIDUnmerge");
-            keyList.add("LIDMerge");
-            keyList.add("LIDUnMerge");
-            keyList.add("UnresolvedDuplicate");
-            keyList.add("ResolvedDuplicate");
-            
+        if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency())) {
+            keyList.add("ActivityDay");
+            keyList.add("ActivityDate");
+        }
+        keyList.add("Add");
+        keyList.add("EUIDDeactivate");
+        keyList.add("EUIDMerge");
+        keyList.add("EUIDUnmerge");
+        keyList.add("LIDMerge");
+        keyList.add("LIDUnMerge");
+        keyList.add("UnresolvedDuplicate");
+        keyList.add("ResolvedDuplicate");
+
         ArrayList labelList = new ArrayList();
-            if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency()) ){ 
-              labelList.add("Activity Date");
-            }
-            labelList.add("Add");
-            labelList.add("EUID Deactivate");
-            labelList.add("EUID Merge");
-            labelList.add("EUID Unmerge");
-            labelList.add("LID Merge");
-            labelList.add("LID UnMerge");
-            labelList.add("Unresolved Duplicate");
-            labelList.add("Resolved Duplicate");
-                
+        if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency())) {
+            labelList.add("Activity Day");
+            labelList.add("Activity Date");
+        }
+        labelList.add("Add");
+        labelList.add("EUID Deactivate");
+        labelList.add("EUID Merge");
+        labelList.add("EUID Unmerge");
+        labelList.add("LID Merge");
+        labelList.add("LID UnMerge");
+        labelList.add("Unresolved Duplicate");
+        labelList.add("Resolved Duplicate");
+
         for (int i = 0; i < vOList.size(); i++) {
-              ActivityRecords activityRecords[]  = (ActivityRecords[])vOList.get(i);
-              for (int j = 0; j < activityRecords.length; j++) {
-                  HashMap values = new HashMap();
-                  values.put("ActivityDate", activityRecords[j].getActivityDate());
-                  values.put("Add", activityRecords[j].getAddTransactions());
-                  values.put("EUIDDeactivate", activityRecords[j].getEuidDeactivateTrans());
-                  values.put("EUIDMerge", activityRecords[j].getEuidMergedTrans());
-                  values.put("EUIDUnmerge", activityRecords[j].getEuidUnmergedTrans());
-                  values.put("LIDMerge", activityRecords[j].getLidMergedTrans());
-                  values.put("LIDUnMerge", activityRecords[j].getLidUnMergedTrans());
-                  values.put("UnresolvedDuplicate", activityRecords[j].getUnresolvedPotentialDup());
-                  values.put("ResolvedDuplicate", activityRecords[j].getResolvedPotentialDup());
-                  outputList.add(values);
-                  
-              }
+            ActivityRecords activityRecords[] = (ActivityRecords[]) vOList.get(i);
+            for (int j = 0; j < activityRecords.length; j++) {
+                HashMap values = new HashMap();
+                values.put("ActivityDay", activityRecords[j].getDay());
+                values.put("ActivityDate", activityRecords[j].getActivityDate());
+                values.put("Add", activityRecords[j].getAddTransactions());
+                values.put("EUIDDeactivate", activityRecords[j].getEuidDeactivateTrans());
+                values.put("EUIDMerge", activityRecords[j].getEuidMergedTrans());
+                values.put("EUIDUnmerge", activityRecords[j].getEuidUnmergedTrans());
+                values.put("LIDMerge", activityRecords[j].getLidMergedTrans());
+                values.put("LIDUnMerge", activityRecords[j].getLidUnMergedTrans());
+                values.put("UnresolvedDuplicate", activityRecords[j].getUnresolvedPotentialDup());
+                values.put("ResolvedDuplicate", activityRecords[j].getResolvedPotentialDup());
+                outputList.add(values);
+
+            }
         }
         request.setAttribute("keys", keyList);        
         request.setAttribute("labels",labelList);        
@@ -657,5 +664,83 @@ public class ActivityReportHandler {
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
+    
+    public String getLocaleMonthName() {
+        String monthNam = "";
+        try {
+            if (getCreateStartDate() != null) {
+                Date date = DateUtil.string2Date(getCreateStartDate());
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                int monthNum = c.get(Calendar.MONTH)+1;
+                switch (monthNum) {
+                    case 1:
+                       monthNam = bundle.getString("MONTH01");
+                        break;
+                    case 2:
+                        monthNam = bundle.getString("MONTH02");
+                        break;
+                    case 3:
+                        monthNam = bundle.getString("MONTH03");
+                        break;
+                    case 4:
+                        monthNam = bundle.getString("MONTH04");
+                        break;
+                    case 5:
+                       monthNam =  bundle.getString("MONTH05");
+                        break;
+                    case 6:
+                        monthNam = bundle.getString("MONTH06");
+                        break;
+                    case 7:
+                        monthNam = bundle.getString("MONTH07");
+                        break;
+                    case 8:
+                       monthNam = bundle.getString("MONTH08");
+                        break;
+                    case 9:
+                        monthNam = bundle.getString("MONTH09");
+                        break;
+                    case 10:
+                        monthNam = bundle.getString("MONTH10");
+                        break;
+                    case 11:
+                        monthNam = bundle.getString("MONTH11");
+                        break;
+                    case 12:
+                        monthNam = bundle.getString("MONTH12");
+                        break;
+                }
+            }
+        } catch (ValidationException ex) {
+            String errorMessage = bundle.getString("ERROR_start_date");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            mLogger.error(mLocalizer.x("RPT060: {0}", errorMessage), ex);
+            return null;
+        }
+        return monthNam;
+    }
+
+    public int getYearValue() {
+        int yearNum = 0;
+        if (getCreateStartDate() != null) {
+            try {
+
+                Date date = DateUtil.string2Date(getCreateStartDate());
+                java.util.Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                yearNum = c.get(c.YEAR);
+
+            } catch (ValidationException ex) {
+                String errorMessage = bundle.getString("ERROR_start_date");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                mLogger.error(mLocalizer.x("RPT061: {0}", errorMessage), ex);
+                return 0;
+            }
+        }
+        return yearNum;
+    }
+
+
     
 }
