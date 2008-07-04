@@ -82,7 +82,7 @@ ArrayList keys = new ArrayList();
 //List to hold the results
 ArrayList results = new ArrayList();
 
-ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
 String mergeText = bundle.getString("Merged_Transaction_Report_Label");
 String deactiveText = bundle.getString("Deactivated_Record_Report_Label");
 String unmergeText = bundle.getString("Unmerged_Transaction_Report_Label");
@@ -223,9 +223,28 @@ ArrayList fcArrayList  = new ArrayList();
 
 	 <%}%>
          
-
-
-<table>
+<% 
+String reportType = (String)request.getAttribute("frequency");
+%>
+ 
+<table border="0">
+ <tr><td style="width:55%" style="text-decoration:underline;">
+     <b>
+     <% if(reportType != null && reportType.equals(bundle.getString("YEARLY_ACTIVITY"))){%>
+      <h:outputText value="#{msgs.Summary_Report_year}"/>&nbsp; <%=reportHandler.getActivityReport().getYearValue()%>
+     <%} else  if (reportType != null && reportType.equals( bundle.getString("MONTHLY_ACTIVITY")) ){%>
+      <h:outputText value="#{msgs.Summary_Report_month}"/>&nbsp;<%=reportHandler.getActivityReport().getLocaleMonthName()%>&nbsp; <%=reportHandler.getActivityReport().getYearValue()%>
+     <%}%> 
+     </b>
+  </td>
+  <td>&nbsp;</td>
+ </tr>
+   
+ </table>
+ 
+ 
+ 
+<table border="0">
 <%if(results != null) {%>
 <tr>
                      <td style="width:85%">
