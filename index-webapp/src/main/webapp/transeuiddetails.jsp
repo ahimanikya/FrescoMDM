@@ -32,7 +32,7 @@
 <%@ page import="javax.el.ValueExpression" %>
 
 <%@ page import="java.util.ResourceBundle"  %>
-<f:view>
+<f:view> 
   
     <html>
         <head>
@@ -361,7 +361,7 @@
                                                                                      <%}%>
                                                                                     </font>
                                                                                   <%} else {%>
- 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
+ 																					<%if(resultArrayMapMain.get(epathValue) == null ) { %>
                                                                                     <font class="highlight">
 																				         <%if(fieldConfigMap.isSensitive()){%> 
 																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
@@ -379,8 +379,19 @@
                                                                                    <%}%>
 
                                                                                 <%} else {%>
-                                                                                &nbsp; 
-                                                                                <%}%>
+ 																					<%if(resultArrayMapMain.get(epathValue) != null ) { %>
+                                                                                    <font class="highlight">
+																				         <%if(fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+																						 <img src="./images/calup.gif" border="0" alt="Blank Value"/>
+                                                                                       <%}%>
+                                                                                    </font>
+																					 <%}else {%>
+                                                                                       &nbsp; 
+                                                                                     <%}%>
+
+																				<%}%>
                                                                                 
                                                                             </td>
                                                                         </tr>
