@@ -599,7 +599,8 @@ public class LoaderConfig {
 		if (numThreads <= 0) {
 			throw new ConfigException("numThreads is invalid.");	
 		}
-				
+
+		/* can not assume DataObjectReader is DataObjectFileReader.
 		DataObjectFileReader reader = null;
 		String record = null;
 		String fileName = ((DataObjectFileReader)getDataObjectReader()).getFileName();
@@ -621,6 +622,8 @@ public class LoaderConfig {
 			throw new ConfigException("The records are invalid in " + fileName);
 		}		
 		long recordSize = record.length();
+		*/
+		long recordSize = 256;
 		long numOfRecordsInBlockBuckets = totalNoOfRecords/numBlockBuckets;
 		long blockBucketMemory = (numOfRecordsInBlockBuckets*recordSize) * WEIGHT * numThreads;
 		
