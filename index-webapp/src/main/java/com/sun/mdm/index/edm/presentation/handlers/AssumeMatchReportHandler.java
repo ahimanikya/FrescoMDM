@@ -255,7 +255,7 @@ public class AssumeMatchReportHandler  {
     private void populateRow(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow, int groupIndex, int voIndex) throws Exception {
         ArrayList fcArrayList = getResultsConfigArrayList();
         HashMap newValuesMap = new HashMap();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         String epathValue =  new String();
         List transactionFields = reportConfig.getTransactionFields();
         String strVal;
@@ -321,7 +321,7 @@ public class AssumeMatchReportHandler  {
         List transactionFields = reportConfig.getTransactionFields();
 
         ArrayList fcArrayList = getResultsConfigArrayList();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         String strVal;
 
         //getSearchResultsArrayByReportType();
@@ -370,7 +370,7 @@ public class AssumeMatchReportHandler  {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -384,7 +384,7 @@ public class AssumeMatchReportHandler  {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
@@ -471,7 +471,7 @@ public class AssumeMatchReportHandler  {
    
    private HashMap buildHashMapValues(SystemObject systemObject) throws ObjectException, EPathException {
        ArrayList fcArrayList = getResultsConfigArrayList();
-       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
        String strVal;
        String epathValue;
        HashMap newValuesMap = new HashMap();
@@ -485,7 +485,7 @@ public class AssumeMatchReportHandler  {
 
            if (fieldConfig.getValueType() == 6) { // For date related fields
 
-               if (fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+               if (EPathAPI.getFieldValue(epathValue, systemObject.getObject())!=null && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                    newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                } else {
@@ -504,7 +504,7 @@ public class AssumeMatchReportHandler  {
                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                        }
 
-                       if (fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+                       if (value!=null && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                            newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                        } else {
@@ -512,7 +512,7 @@ public class AssumeMatchReportHandler  {
                        }
                    }
                } else {
-                   if (fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+                   if (value!=null && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                        newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                    } else {

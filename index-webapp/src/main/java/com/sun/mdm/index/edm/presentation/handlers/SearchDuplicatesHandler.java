@@ -1,5 +1,5 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER. 
  *
  * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
  *
@@ -27,9 +27,9 @@
  * Created on September 12, 2007, 11:58 AM
  * Author : Pratibha, RajaniKanth
  *  
- */
+ */ 
 
-package com.sun.mdm.index.edm.presentation.handlers;
+package com.sun.mdm.index.edm.presentation.handlers; 
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.master.ProcessingException;
@@ -72,6 +72,7 @@ import java.util.Iterator;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import net.java.hulp.i18n.LocalizationSupport;
 public class SearchDuplicatesHandler extends ScreenConfiguration {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler");
@@ -1227,7 +1228,7 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     private HashMap getValuesForResultFields(EnterpriseObject eo, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
         HashMap resultHashMap=new HashMap();
         ArrayList fieldConfigArray = super.getResultsConfigArray();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         String strVal = new String();
         String dateField = new String();
         if(retrieveResultsFields!=null){
@@ -1237,29 +1238,41 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                 Object value = EPathAPI.getFieldValue(epath, eo.getSBR().getObject());
                 if (value instanceof java.util.Date) {
                     dateField = simpleDateFormatFields.format(value);
-                    resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
+               
+                    if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                         resultHashMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                    } else {
+                        resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
+                    }                
+                    //resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
                 } else {
-                    if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
-                        
-                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                        if (fieldConfig.getUserCode() != null) {
-                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                        } else {
-                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                        }
+                    if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
-                         // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
-                        //value
-                        resultHashMap.put(fieldConfig.getFullFieldName(), strVal);
-                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
-                        if (value != null) {
-                            //Mask the value as per the masking 
-                            value = fieldConfig.mask(value.toString());
+                        resultHashMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                    } else {
+                        if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
+
+                            //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                            if (fieldConfig.getUserCode() != null) {
+                                strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                            } else {
+                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                            }
+
+                            // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                            //value
+                            resultHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                        } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                            if (value != null) {
+                                //Mask the value as per the masking 
+                                value = fieldConfig.mask(value.toString());
+                                resultHashMap.put(fieldConfig.getFullFieldName(), value);
+                            }
+                        } else {
                             resultHashMap.put(fieldConfig.getFullFieldName(), value);
                         }
-                    } else {
-                        resultHashMap.put(fieldConfig.getFullFieldName(), value);
                     }
+
                 }
 
                 //resultHashMap.put(epath, value);

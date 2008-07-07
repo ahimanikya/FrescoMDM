@@ -178,7 +178,7 @@ public class UpdateReportHandler    {
             UpdateReportRow  reportRow = new UpdateReportRow (updateIterator.next(), urConfig);
            
             
-             SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy HH:MM:ss a");
+             SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
              
             String currentTime =simpleDateFormatFields.format(reportRow.getTimestamp()); 
             
@@ -275,7 +275,7 @@ public class UpdateReportHandler    {
        ArrayList rptFields = new ArrayList();
        List transactionFields = reportConfig.getTransactionFields();
        ArrayList fcArrayList  = getResultsConfigArrayList();
-       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
        ArrayList resultArrayList  = new ArrayList();
         
        if (transactionFields != null) {
@@ -334,7 +334,7 @@ public class UpdateReportHandler    {
         List transactionFields = reportConfig.getTransactionFields();
 
         ArrayList fcArrayList = getResultsConfigArrayList();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         String strVal;
 
         //getSearchResultsArrayByReportType();
@@ -387,7 +387,7 @@ public class UpdateReportHandler    {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -401,7 +401,7 @@ public class UpdateReportHandler    {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 

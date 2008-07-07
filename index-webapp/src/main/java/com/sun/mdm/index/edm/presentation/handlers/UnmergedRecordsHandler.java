@@ -172,7 +172,7 @@ public class UnmergedRecordsHandler    {
         ArrayList rptFields = new ArrayList();
         List transactionFields = reportConfig.getTransactionFields();
         ArrayList fcArrayList  = getResultsConfigArrayList();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         ArrayList resultArrayList  = new ArrayList();
         boolean first = true;
         if (transactionFields != null) {
@@ -236,7 +236,7 @@ public class UnmergedRecordsHandler    {
         List transactionFields = reportConfig.getTransactionFields();
 
         ArrayList fcArrayList = getResultsConfigArrayList();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         String strVal = new String();
 
         //getSearchResultsArrayByReportType();
@@ -277,7 +277,7 @@ public class UnmergedRecordsHandler    {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -291,7 +291,7 @@ public class UnmergedRecordsHandler    {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 

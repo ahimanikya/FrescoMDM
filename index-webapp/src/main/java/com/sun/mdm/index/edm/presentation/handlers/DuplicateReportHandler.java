@@ -191,7 +191,7 @@ public class DuplicateReportHandler    {
         List transactionFields = reportConfig.getTransactionFields();
 
         ArrayList fcArrayList = getResultsConfigArrayList();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
 
         HashMap euid1Map = new HashMap();
         HashMap euid2Map = new HashMap();
@@ -221,11 +221,11 @@ public class DuplicateReportHandler    {
                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                         }
 
-                        if (fieldConfig.isUpdateable()) {
+                        if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isUpdateable()) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                                     euid1Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
@@ -235,7 +235,7 @@ public class DuplicateReportHandler    {
                              } else {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
 
-                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                    
+                                if (value!= null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                    
                                     euid1Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));                                    
                                 } else {
                                     if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
@@ -281,7 +281,7 @@ public class DuplicateReportHandler    {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
                                   euid2Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
                                     euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
@@ -290,7 +290,7 @@ public class DuplicateReportHandler    {
                             } else {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                                 
-                                if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+                                if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
                                     euid2Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                     
                                 } else {
