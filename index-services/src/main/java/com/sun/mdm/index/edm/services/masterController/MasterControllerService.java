@@ -187,40 +187,7 @@ public class MasterControllerService {
         }
     }
 
-    //subrata
-    /**
-     *
-     * @param String systemCode
-     * @param String sourceLID
-     * @param String destinationLID
-     * @param SystemObject finalSOImage
-     * @param EnterpriseObject sourceEO
-     * @param EnterpriseObject destinationEO
-     * @return MergeResult
-     * @exception UserException.
-     */
-    MergeResult mergeSystemObject(String systemCode,
-            String sourceLID,
-            String destinationLID,
-            SystemObject finalSOImage,
-            EnterpriseObject sourceEO,
-            EnterpriseObject destinationEO)
-            throws ProcessingException, UserException {
-        if (systemCode != null && sourceLID != null && destinationLID != null && finalSOImage != null && sourceEO != null && destinationEO != null) {
-            SBR srcSBR = sourceEO.getSBR();
-            SBR destSBR = destinationEO.getSBR();
-            String srcRevisionNumber = srcSBR.getRevisionNumber().toString();
-            String destRevisionNumber = destSBR.getRevisionNumber().toString();
-            ObjectNode destImage = finalSOImage.getObject();
-            MergeResult mresult = QwsController.getMasterController().mergeSystemObject(systemCode, sourceLID,
-                    destinationLID, destImage, srcRevisionNumber,
-                    destRevisionNumber, false);
-            return mresult;
-        } else {
-            throw new UserException(mLocalizer.t("SRM503: One of the required fields is null")); //user exception
-        }
-    }
-
+  
     /**
      *
      * @param EnterpriseObject sourceEO
@@ -241,13 +208,14 @@ public class MasterControllerService {
         }
     }
 
-    public SystemObject mergeSystemObject(String systemCode, String sourceLID, String destLID, HashMap hm) throws ProcessingException, UserException, ObjectException, ValidationException, Exception {
+    public SystemObject mergeSystemObject(String systemCode, String sourceLID, String destLID, HashMap hm, ArrayList minorObjectsList) throws ProcessingException, UserException, ObjectException, ValidationException, Exception {
 
         SystemObjectPK destSytemObjectPK = new SystemObjectPK(systemCode, destLID);
-        SystemObject destSO = QwsController.getMasterController().getSystemObject(destSytemObjectPK);
+        SystemObject destSO = QwsController.getMasterController().getSystemObject(destSytemObjectPK); 
         
-        modifySystemObject(destSO, hm);
-  
+        //Modify the system object before merging
+        modifySystemObject(destSO, hm, minorObjectsList);    
+         
         MergeResult mergeResult = QwsController.getMasterController().mergeSystemObject(systemCode, sourceLID, destLID, destSO.getObject(), false);
         return mergeResult.getDestinationEO().getSystemObject(systemCode, destLID);
 
@@ -2020,7 +1988,54 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
         }
        
     }
-    
+     public SystemObject modifySystemObject(SystemObject sysObj, HashMap hm, ArrayList minorObjects) throws ObjectException, ValidationException, Exception {
+        if (hm == null && (minorObjects != null && minorObjects.isEmpty() == false)) {
+            return sysObj;
+        }
+        ObjectNode majorObject = sysObj.getObject();
+
+        String type = majorObject.pGetType();
+        for (Object obj : hm.keySet()) {
+            Object value = hm.get(obj);
+            if (!obj.equals(MasterControllerService.MINOR_OBJECT_ID) && !obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
+                String key = (String) obj;
+                // for removing type prefix
+                int startOfPrefix = key.indexOf(type);
+                int startSubString = startOfPrefix + type.length() + 1; // 1 is for .
+
+                key = key.substring(startSubString);
+                //String valString = (value != null)? value.toString():null;
+                String valString = (value != null && value.toString().trim().length() > 0) ? value.toString() : null;
+                setObjectNodeFieldValue(majorObject, key, valString);
+            }
+        }
+        sysObj.setObject(majorObject);
+
+        if (minorObjects != null && minorObjects.isEmpty() == false) {
+
+            for (Object obj : minorObjects) {
+                HashMap minorObjectsMap = null;
+                try {
+                    minorObjectsMap = (HashMap) obj;
+                } catch (ClassCastException cce) {
+                    throw new UserException(mLocalizer.t("SRM540: SystemObjects could not be modified." +
+                            "systemObjects[] should contain only SystemObjects: {0}",
+                            cce.getMessage()));
+                }
+
+                if (minorObjectsMap.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {
+                    String objectType = (String) hm.get(MINOR_OBJECT_TYPE);
+                    addMinorObject(sysObj, objectType, minorObjectsMap);
+                } else if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
+                    String objectType = (String) hm.get(MINOR_OBJECT_TYPE);
+                    modifyMinorObject(majorObject, minorObjectsMap);
+                }
+            }
+
+        }
+        return sysObj;
+
+    }
 }
 
 
