@@ -860,10 +860,6 @@ function submitFormData(form, thisInnerHtmlDivName) {
 
 
 
-    var lids="";
-    var lidArray = [];
-    var alllidsArray = [];
-    var alllidsactionText = [];
     function collectLid(euid,localIdDesignation) {
         var found = "";
         var allLIds = [];
@@ -930,7 +926,8 @@ function submitFormData(form, thisInnerHtmlDivName) {
             document.getElementById("previewlid2Form:previewhiddenLid2").value = lidArray[0] + ':'+ lidArray[1];
             //Set System
             document.getElementById("previewlid1Form:previewhiddenLid1source").value = system;
-           document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
+            document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
+
             document.getElementById("mergeFinalForm:previewhiddenLid1source").value = system;
     
             for (var i=0; i< lidArray.length; i++) { 
@@ -1222,11 +1219,15 @@ function _utf8_encode (string) {
 var mergePreEuids="";
 
 function populateMergeFields(fieldName,value,displayValue,highLightId) {
-       document.getElementById(fieldName).innerHTML = displayValue;
-       document.getElementById(fieldName).className='highlight';
-       mergePreEuids+=fieldName+"##"+value+'>>';     
+	   if( displayValue == "null") {
+         document.getElementById(fieldName).innerHTML = '<img src="./images/calup.gif" border="0" alt="Blank Value"/>';
+	   } else {
+		 document.getElementById(fieldName).innerHTML = displayValue;
+ 	   }
+	   document.getElementById(fieldName).className='highlight';
+	   mergePreEuids+=fieldName+"##"+value+'>>';     
        //document.getElementById('mergeFinalForm:selectedMergeFields').value = value;
-        document.getElementById('mergeFinalForm:selectedMergeFields').value = mergePreEuids;
+        //document.getElementById('mergeFinalForm:selectedMergeFields').value = mergePreEuids;
 
 	   //document.getElementById('highlight'+highLightId).style.visibility = 'hidden';
 	   //document.getElementById('highlight'+highLightId).style.display = 'none';
@@ -1825,7 +1826,7 @@ function getDuplicateFormValues(formName1,formName2)   {
 	query +="&editThisID="+ editIndexid;
 
     queryStr  = query;
-}
+ }
 
 
 function getFormValuesCancelMerge(formName)   {
@@ -1971,4 +1972,25 @@ function getRecordDetailsFormValues(formName)   {
 function openPrintWindow(url)    {
    var newwindow=window.open(url,"_blank","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes");
    newwindow.focus();
+}
+
+function checkDuplicateFileds(formName,field,message) {
+	var thisFrm = document.getElementById(formName);
+    for(i=0; i< thisFrm.elements.length; i++)   {      
+		thisFrm.elements[i].style.backgroundColor ="#ffffff";
+		thisFrm.elements[i].style.border  ="1px solid #7f9db9";
+		document.getElementById("duplicateIdsDiv").innerHTML = "";
+    }
+    for(i=0; i< thisFrm.elements.length; i++)   {      
+	  if(thisFrm.elements[i].value.length !=0 &&  field.title  != thisFrm.elements[i].title ) {
+		if(field.value == thisFrm.elements[i].value) {
+ 	     document.getElementById("duplicateIdsDiv").innerHTML = field.title + " '" + field.value + "' "+ message;
+ 		 field.value = "";
+		 field.focus(); 
+		 field.style.backgroundColor ="#f7fbd6";
+		 field.style.border  ="1px solid #d75e33"; 
+ 	    }
+	  }
+  }
+
 }
