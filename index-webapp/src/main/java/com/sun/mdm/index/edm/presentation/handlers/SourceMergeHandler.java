@@ -17,16 +17,11 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.exception.ObjectException;
-import com.sun.mdm.index.util.LogUtil;
-//import com.sun.mdm.index.util.Logger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
@@ -35,13 +30,12 @@ import javax.servlet.http.HttpSession;
 import javax.faces.model.SelectItem;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
-import net.java.hulp.i18n.LocalizationSupport;
 /**
  *
  * @author admin
@@ -67,7 +61,7 @@ public class SourceMergeHandler {
      
      private String viewLids="Merge_View_Lids";
      
-    //Adding the following variable for getting the select options if the FieldConfig type is "Menu List"
+    /**Adding the following variable for getting the select options if the FieldConfig type is "Menu List"**/
     private ArrayList<SelectItem> selectOptions = new ArrayList();
     
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -88,15 +82,23 @@ public class SourceMergeHandler {
      
     
     ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
-    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
-    String enterLidsMessaage =bundle.getString("lid_enter_more_lids");
+    String exceptionMessaage = bundle.getString("EXCEPTION_MSG");
+    String enterLidsMessaage = bundle.getString("lid_enter_more_lids") + " " + ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
     SourceHandler sourceHandler = new SourceHandler();
     Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
     Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
     
     EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
     private ArrayList soArrayList = new ArrayList();
-    private HashMap systemObjectHashMap;
+    
+    /**HashMap used for the updated root node values for the surviving system object during merge process**/
+    private HashMap destnRootNodeHashMap = new HashMap();
+    /**ArrayList used for the updated minor object values for the surviving system object during merge process**/
+    private ArrayList destnMinorobjectsList = new ArrayList();
+    
+    /**HashMap used for the prewview of the surviving system object during merge process**/
+    private HashMap soMergePreviewMap = new HashMap();
+    
     /** Selected merge fields */
     private String selectedMergeFields = new String();
 
@@ -192,11 +194,10 @@ public class SourceMergeHandler {
     public String performPreviewLID() {
 
         String[] lids = this.formlids.split(":");
-        //System.out.println(" Request " +   request);
         String sourceLid = lids[0];
         String destnLid = lids[1];
-        request.setAttribute("lids", lids);
-        request.setAttribute("lidsource", this.lidsource);
+        //request.setAttribute("lids", lids);
+        //request.setAttribute("lidsource", this.lidsource);
 
         CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         String sourceEuid = new String();
@@ -208,7 +209,7 @@ public class SourceMergeHandler {
             destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
 
             SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
-            request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
+            //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
            mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()),ex);
@@ -240,12 +241,12 @@ public class SourceMergeHandler {
          String[] lids = this.formlids.split(":");
          String sourceLid = lids[0];
          String destnLid = lids[1];
-         request.setAttribute("lids", lids);
+         //request.setAttribute("lids", lids);
         CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         try{
      
             SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
-            request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
+            //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             //mLogger.error("ProcessingException ex : " + ex.toString());
@@ -262,6 +263,75 @@ public class SourceMergeHandler {
          return ""; //reload the same page
      }
   
+  
+    /** 
+     * Added By Rajani Kanth  on 25/06/2008
+     * 
+     * This method is used to get the preview for the surviving system object. This method is called from the ajax services.
+     *
+     * @return HashMap of final surviving system object as hashmap if preview merge is successfull.
+     *         null if getting merge preview fails or any exception occurs.
+     * 
+     */
+
+  
+  public HashMap previewLIDMerge() {
+
+        String[] lids = this.formlids.split(":");
+        String sourceLid = lids[0];
+        String destnLid = lids[1];
+        //request.setAttribute("lids", lids);
+        //request.setAttribute("lidsource", this.lidsource);
+
+        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        String sourceEuid = new String();
+        String destnEuid = new String();
+
+        try {
+            sourceEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, sourceLid)).getEUID();
+            destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
+            SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
+            //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
+            setSoMergePreviewMap(compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
+            
+            // keep the src and destn lids and the source selected in the 
+            getSoMergePreviewMap().put("SRC_DESTN_LIDS", lids);
+            getSoMergePreviewMap().put("LID_SOURCE", this.lidsource);
+         } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to generate LID preview", ex.getMessage()));
+            return null; 
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            //mLogger.error("UserException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to generate LID preview", ex.getMessage()));
+            return null; 
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            //mLogger.error("Exception ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to generate LID preview", ex.getMessage()));
+            return null; 
+        }
+        
+        try {
+            //Insert audit Log for LID Merge
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge - Selection", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the LID merge confirm page");
+        } catch (ProcessingException ex) {
+            mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to insert audit Log for LID Merge", ex.getMessage()));
+            return null; 
+        } catch (UserException ex) {
+            mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to insert audit Log for LID Merge", ex.getMessage()));
+            return null; 
+        }
+
+        return getSoMergePreviewMap(); 
+
+    }
   
   
      public String performLidMergeSearch () {
@@ -409,6 +479,163 @@ public class SourceMergeHandler {
         }
         return "LID Details";
     }
+     public ArrayList sourcerecordMergeSearch () {
+        session.removeAttribute("soHashMapArrayList");
+        session.setAttribute("tabName","Merge");
+        String eoStatus = new String();
+        ArrayList newArrayList  = new ArrayList();
+        ArrayList newSoArrayList  = new ArrayList();
+        try {
+            String errorMessage = bundle.getString("system_object_not_found_error_message");					  
+            errorMessage += sourceHandler.getSystemCodeDescription(this.source) ; 
+            SystemObject systemObjectLID = null;
+	    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+
+            boolean validateSystemCode = false;
+            if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
+                this.setLid1(this.getLid1().replaceAll("-", ""));
+                systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid1);
+                 //Throw exception if SO is found null.
+                if (systemObjectLID == null) {
+                    errorMessage +=  "," + this.getLid1();
+                    validateSystemCode = true; 
+                 } else {
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source)  + "/" + this.getLid1() + " is " + systemObjectLID.getStatus()));
+                        return null;
+                    }
+                    //get the status if the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus));
+                        return null;
+                    } 
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) { 
+                        newArrayList.add(systemObjectLID);
+                    }
+                }
+            }
+            if (this.getLid2() != null && this.getLid2().trim().length()>0) {
+                this.setLid2(this.getLid2().replaceAll("-", ""));
+                systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid2);
+                //Throw exception if SO is found null.
+                if (systemObjectLID == null) {
+                    errorMessage += "," + this.getLid2();
+                    validateSystemCode = true; 
+                } else {
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus()));
+                        return null;
+                    }
+                    //get the status of the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus));
+                        return null;
+                    }
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                         newArrayList.add(systemObjectLID);
+                    }
+                }
+            }
+            if (this.getLid3() != null && this.getLid3().trim().length()>0) {
+                 this.setLid3(this.getLid3().replaceAll("-", ""));
+                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid3);
+                //Throw exception if SO is found null.
+                if (systemObjectLID == null) {
+                   errorMessage += "," + this.getLid3();
+                   validateSystemCode = true; 
+                } else {
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus()));
+                        return null;
+                    }
+                     //get the status if the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+             
+                     //get the status of the EO
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + eoStatus));
+                        return null;
+                    }
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                            newArrayList.add(systemObjectLID);
+                    }
+                }
+            }
+            if (this.getLid4() != null && this.getLid4().trim().length()>0) {
+                this.setLid4(this.getLid4().replaceAll("-", ""));
+                systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid4);
+                //Throw exception if SO is found null.
+                if (systemObjectLID == null) {
+                    errorMessage += "," +  this.getLid4();
+                    validateSystemCode = true; 
+                } else {
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                        return null;
+                    }
+                     //get the status if the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    //get the status of the EO
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + eoStatus));
+                          return null;
+                    }
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                            newArrayList.add(systemObjectLID);
+                    }
+                }
+            }
+            if(validateSystemCode) {
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+               return null;
+             }
+
+            for (int i = 0; i < newArrayList.size(); i++) {
+                SystemObject systemObject = (SystemObject) newArrayList.get(i);
+                //HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
+                HashMap editSystemObjectHashMap = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+                newSoArrayList.add(editSystemObjectHashMap);
+            }
+    
+            if(newSoArrayList.size() > 0) {
+                setSoArrayList(newSoArrayList);
+                session.setAttribute("soHashMapArrayList", newSoArrayList);
+                if(newSoArrayList.size() ==1 ) { 
+                    FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,enterLidsMessaage,enterLidsMessaage));
+                    return null;
+                }
+            }
+            
+       } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
+             return null;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()),ex);
+            return null;
+        }
+        return newSoArrayList;
+    }
 
     public ArrayList getSoArrayList() {
         return soArrayList;
@@ -440,120 +667,25 @@ public class SourceMergeHandler {
         HashMap fieldValuesMerge = (HashMap)request.getAttribute("mergedSOMap");
            if (fieldValuesMerge != null) {
              fieldValuesMerge.put(fnameExpression, fvalueValueExpression); //set the value for the preview section
-            request.setAttribute("mergedSOMap", fieldValuesMerge);  //restore the session object again.
+            //request.setAttribute("mergedSOMap", fieldValuesMerge);  //restore the session object again.
           
         }
 
     }
      
-      /**
+    /** 
+     * Added By Rajani Kanth  on 25/06/2008
      * 
-     * @param event
-     */
-    public void postMergePreviewSystemObject(ActionEvent event) {
-       
-        String srcLIDValueExpression = (String) event.getComponent().getAttributes().get("mainEOValueExpression");
-        String destnLIDValueExpression = (String) event.getComponent().getAttributes().get("duplicateEOValueExpression");
-
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-        HashMap mergedHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
-
-        String sbrLID =  (String) mergedHashMapValueExpression.get("LID");
-        String destnId = (sbrLID.equalsIgnoreCase(srcLIDValueExpression))?destnLIDValueExpression:srcLIDValueExpression;
-        
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-        try{
-            SystemObject sourceSO = masterControllerService.getSystemObject(this.source,sbrLID);
-            SystemObject destinationSO = masterControllerService.getSystemObject(this.source,destnId);
-            
-             String[] selectedFieldsValue = this.getSelectedMergeFields().split(">>");
-
-             HashMap soHashMap = (HashMap)compareDuplicateManager.getSystemObjectAsHashMap(destinationSO, screenObject).get("SYSTEM_OBJECT_EDIT");
-
-            //when user modifies the person fields the only  update the enterprise object
-            if (selectedFieldsValue.length > 1) {
-                //Modify destination SO values with selected values 
-                for (int i = 0; i < selectedFieldsValue.length; i++) {
-                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
-                    soHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
-                  
-                }
-                //Modify CHANGED SYSTEM OBJECT values here
-                masterControllerService.modifySystemObject(destinationSO, soHashMap);
-            }
-           
-            
-            SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.source, sbrLID, destnId);
-            
-            request.setAttribute("mergedSOMap", getSystemObjectAsHashMap(finalMergredDestnSOPreview));
-            
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC055: Failed to get System object preview {0}",ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC056: Failed to get System object preview {0}",ex.getMessage()),ex);
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC057: Failed to get System object preview {0}",ex.getMessage()),ex);
-        }
-             }
-/**
+     * This method is used to Merge the system object. This method is called from the ajax services for merging the system object.
+     *
+     * @return ArrayList of final surviving system object if merge is successfull.
+     *         null if merge fails or any exception occurs.
      * 
-     * @param event
      */
-
-    public void mergePreviewSystemObject(ActionEvent event) {
-        try {
-
-
-            String[] lids = this.formlids.split(":");
-            String sourceLid = lids[0];
-            String destnLid = lids[1];
-
-        
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-            HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
-
-            String sbrLID = (String) mergredHashMapVaueExpression.get("LID");
-            String destnId = (sbrLID.equalsIgnoreCase(sourceLid)) ? destnLid : sourceLid;
-
-            String sourceEuid = new String();
-            String destnEuid = new String();
-
-            try {
-                sourceEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, sbrLID)).getEUID();
-                destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
-
-                SystemObject finalMergredDestnSO = masterControllerService.mergeSystemObject(this.source, sbrLID, destnId, mergredHashMapVaueExpression);
-                ArrayList finalMergredDestnEOArrayList = new ArrayList();
-                finalMergredDestnEOArrayList.add(finalMergredDestnSO);
-                session.removeAttribute("soHashMapArrayList");
-		
-                request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
-            } catch (ProcessingException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-                mLogger.error(mLocalizer.x("SRC058: Failed to get merge System object preview {0}",ex.getMessage()),ex);
-            } catch (UserException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-                mLogger.error(mLocalizer.x("SRC059: Failed to get merge System object preview {0}",ex.getMessage()),ex);
-            } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
-               mLogger.error(mLocalizer.x("SRC060: Failed to get merge System object preview {0}",ex.getMessage()),ex);
-            }
-            //Insert audit Log for LID Mer
-            masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge Confirm", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the merge confirm page");
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC061: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("SRC062: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
-        }
-      }
-
-    public String mergePreviewSystemObject() {
-
+    
+     public ArrayList mergeSystemObject() {
+        ArrayList finalMergredDestnEOArrayList = new ArrayList();
+ 
         String[] lids = this.formlids.split(":");
         String sourceLid = lids[0];
         String destnLid = lids[1];
@@ -574,80 +706,39 @@ public class SourceMergeHandler {
                     destnMap.put(sourceEuidFull[0], sourceEuidFull[1]);
                 }
             }
-            
-            SystemObject finalMergredDestnSO  = masterControllerService.mergeSystemObject(this.lidsource, sourceLid, destnLid, destnMap);
-            ArrayList finalMergredDestnEOArrayList = new ArrayList();
-            
+            SystemObject finalMergredDestnSO  = masterControllerService.mergeSystemObject(this.lidsource, 
+                                                                                          sourceLid, 
+                                                                                          destnLid, 
+                                                                                          this.destnRootNodeHashMap,
+                                                                                          this.destnMinorobjectsList);
+ 
             finalMergredDestnEOArrayList.add(compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSO, screenObject));
             
             session.removeAttribute("soHashMapArrayList");
             
             session.setAttribute("soHashMapArrayList",finalMergredDestnEOArrayList);            
-            request.setAttribute("lids", lids);
-            request.setAttribute("lidsource", this.lidsource);
-            request.setAttribute("mergeComplete", "mergeComplete");			
+            //request.setAttribute("lids", lids);
+            //request.setAttribute("lidsource", this.lidsource);
+            //request.setAttribute("mergeComplete", "mergeComplete");			
 
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             mLogger.error(mLocalizer.x("SRC063: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            return null;
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
              mLogger.error(mLocalizer.x("SRC064: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            return null;
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            return null;
         }
 
-        return "";
+        return finalMergredDestnEOArrayList;
       }
 
-     private HashMap getSystemObjectAsHashMap(SystemObject systemObject) {
-                
-
-        try {
-
-            //System.out.println("==> :  LID " + systemObject.getLID() + "===> : Code " + systemObject.getSystemCode());
-            
-            HashMap systemObjectHashMap = new HashMap();
-            //add SystemCode and LID value to the new Hash Map
-            systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); 
-            systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); 
-            systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
-            HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-
-            //add SystemCode and LID value to the new Hash Map
-            systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap); // Set the edit SystemObject here
-            //set address array list of hasmap for editing
-            ArrayList addressMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Address"), "Address", MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            if (addressMapSOArrayList.size() > 0) {
-                systemObjectHashMap.put("SOAddressList", addressMapSOArrayList); 
-            }
-
-            //set phone array list of hasmap for editing
-            ArrayList phoneMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone", MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            if (phoneMapSOArrayList.size() > 0) {
-                systemObjectHashMap.put("SOPhoneList", phoneMapSOArrayList); // set SO phones as arraylist here
-            }
-
-            //set alias array list of hasmap for editing
-            ArrayList aliasMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias", MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            if (aliasMapSOArrayList.size() > 0) {
-                systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList); // set SO alias as arraylist here
-            }
-        } catch (EPathException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC066: Failed to get  System object  {0}",ex.getMessage()),ex);
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC067: Failed to get  System object  {0}",ex.getMessage()),ex);
-        }
-         return systemObjectHashMap;   
-     
-     }
-
+  
     public ArrayList getMergeLidsList() {
         return mergeLidsList;
     }
@@ -791,5 +882,73 @@ public HashMap getSortedMap(HashMap hmap)
 		return map;
 	}
 
-     
+    public HashMap getDestnRootNodeHashMap() {
+        return destnRootNodeHashMap;
+    }
+
+    public void setDestnRootNodeHashMap(HashMap destnRootNodeHashMap) {
+        this.destnRootNodeHashMap = destnRootNodeHashMap;
+    }
+
+    public ArrayList getDestnMinorobjectsList() {
+        return destnMinorobjectsList;
+    }
+
+    public void setDestnMinorobjectsList(ArrayList destnMinorobjectsList) {
+        this.destnMinorobjectsList = destnMinorobjectsList;
+    }
+    
+    /**
+     * Added By : <b>Rajani Kanth M</b> 
+     *
+     * <b>Purpose:</b>
+     * Method used to check whether the selected minor object type is avaiable in the preview. <br>
+     * 
+     * @since 02-July-2008<b>
+     *
+     * @return <b>true</b> if the minorobject type not found in the preview <br>
+     *         <b>false</b> if minorobject type already found in the preview
+     * 
+     * @param minorObjectsListPreview   Arraylist of Minor objects available in preview 
+     * @param minorObjectHashMap        Minor objects HashMap for comparision
+     * @param keyType                   Key type of the minor object value for checking  
+      * 
+     */
+    
+    public boolean isNotAvailableInPreview(ArrayList minorObjectsListPreview, HashMap minorObjectHashMap, String keyType) {
+        HashMap returnHashMap = new HashMap();
+        if (minorObjectsListPreview.size() == 0) {
+            return true;
+        }
+        boolean retValue = true;
+        for (int mo = 0; mo < minorObjectsListPreview.size(); mo++) {
+            HashMap previewMinorMap = (HashMap) minorObjectsListPreview.get(mo);
+            String previewMinorType = (String) previewMinorMap.get(keyType);
+            //Build the hashmap with the preview key types for each minor object type
+            returnHashMap.put(previewMinorType, previewMinorType);
+        }
+         
+        String minorObjectKeyType = (String) minorObjectHashMap.get(keyType);
+        
+         
+        //Minor object with key type already exists
+        if (returnHashMap.get(minorObjectKeyType) != null) {
+            retValue = false;
+        } else {
+            retValue = true;
+        }
+        return retValue;
+    }
+
+    
+
+    /**HashMap used for the prewview of the surviving system object during merge process**/
+    public HashMap getSoMergePreviewMap() {
+        return soMergePreviewMap;
+    }
+
+    public void setSoMergePreviewMap(HashMap soMergePreviewMap) {
+        this.soMergePreviewMap = soMergePreviewMap;
+    }
+       
 }
