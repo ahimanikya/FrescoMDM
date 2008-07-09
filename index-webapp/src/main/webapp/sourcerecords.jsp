@@ -76,84 +76,34 @@
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
         <script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
         <script type="text/javascript" >
-            var fieldNameValuesLocal="";
-            var fieldNamesLocal="";
-            var minorObjTypeLocal = "";
-            var minorObjTypeLocalCount = 0;
-            var minorArrayLocal = new Array();
-			var editIndexid = "-1";
-            var userDefinedInputMask="";
+           var fieldNameValuesLocal="";
+           var fieldNamesLocal="";
+           var minorObjTypeLocal = "";
+           var minorObjTypeLocalCount = 0;
+           var minorArrayLocal = new Array();
+  	       var editIndexid = "-1";
+           var userDefinedInputMask="";
+           
+		   // LID merge related global javascript variables
+		   var lids="";
+           var lidArray = [];
+           var alllidsArray = [];
+           var alllidsactionText = [];
 
-            function setEditIndex(editIndex)   {
-				editIndexid = editIndex;
-			}
+           function setEditIndex(editIndex)   {
+		      editIndexid = editIndex;
+	       }
             
            function cancelEdit(formName, thisDiv,minorObject)   {
                 ClearContents(formName); 
                 setEditIndex("-1");
-				document.getElementById(thisDiv).style.visibility = 'hidden';
-				document.getElementById(thisDiv).style.display  = 'none';
+		document.getElementById(thisDiv).style.visibility = 'hidden';
+		document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/> '+ minorObject;
-		   }
+	     }
 	
-	       function accumilateMinorObjectFieldsOnBlurLocal(objectType,field,fullFieldName,mask,valueType) {
-                var maskChars = new Array();
-                var str = mask;
-                
-                str  = str.replace(/D/g,"");
-                
-                maskChars = str.split('');
-                
-                var valueEntered =  "";
-                valueEntered =  field.value;
-
-                //valueEntered  = valueEntered.replace(/\)/g,"");
-                //valueEntered  = valueEntered.replace(/\(/g,"");
-                
-                if(valueType != '6') {
-                    for(var i=0;i<maskChars.length;i++) {
-                        valueEntered  = valueEntered.replace(maskChars[i],'');
-                    }    
-                }    
-
-                minorObjTypeLocal =   objectType;
-                if(fieldNamesLocal != fullFieldName+':') {
-                    fieldNamesLocal+=fullFieldName+':';
-                }
-                fieldNameValuesLocal += fullFieldName + "##"+valueEntered+ ">>" + minorObjTypeLocalCount + ">>";
-                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValuesLocal;
-                
-                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal ;              
-                minorArrayLocal.push(fieldNameValuesLocal);
-                //RESET THE FIELD VALUES HERE
-                fieldNameValuesLocal = "";
-                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;                
-            }
-            var selectedValue;
-            function accumilateMinorObjectSelectFieldsOnBlurLocal(objectType,field,fullFieldName,keyType) {
-				if(keyType == 'true' && selectedValue == field.options[field.selectedIndex].value) {
-					alert("Cannot add " + objectType + "type '"+ field.options[field.selectedIndex].text +"' again. Please choose different value");
-					field.selectedIndex =0;
-					return false;
-				}
-
-                selectedValue = field.options[field.selectedIndex].value;
-                minorObjTypeLocal =   objectType;
-                if(fieldNamesLocal != fullFieldName+':') {
-                    fieldNamesLocal+=fullFieldName+':';
-                }
-                fieldNameValuesLocal += fullFieldName + "##"+selectedValue + ">>" + minorObjTypeLocalCount +">>";
-                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValuesLocal;
-                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal;               
-                minorArrayLocal.push(fieldNameValuesLocal);
-                //RESET THE FIELD VALUES HERE
-                fieldNameValuesLocal = "";
-                ////document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;
-                 
-            }
-            
-            var URI_VAL = '<%=URI%>';
-			var RAND_VAL = '<%=rand%>';
+             var URI_VAL = '<%=URI%>';
+	     var RAND_VAL = '<%=rand%>';
    </script>
         <!--there is no custom header content for this example-->
         
@@ -370,7 +320,7 @@
 																  <%}else{%>
 																	<%=ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
 																 <%}%>
-															   <%} else {%> <!-minorObjectMap- In other cases-->
+															   <%} else {%> <!--minorObjectMap- In other cases-->
 															   <%
 																String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
 																if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
@@ -496,17 +446,34 @@
                                                 <tr>
                                                     <td>
                                                         <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                        <h:form id="BasicSearchFieldsForm">
+                                                       <table>
+														<tr>
+														<td style="font-size:10px;">
+															 <nobr>
+																 <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+															</nobr>
+														</td>
+													  </tr> 
+													  </table> 
+
+														<h:form id="BasicSearchFieldsForm">
                                                           <!-- Start EDIT Fields-->
                                                           <!--Start Displaying the person fields -->                                        
                                                         <form id="<%=objScreenObject.getRootObj().getName()%>EditSOInnerForm" name="<%=objScreenObject.getRootObj().getName()%>EditSOInnerForm" method="post" enctype="application/x-www-form-urlencoded">
+
                                                             <h:dataTable  id="hashIdEdit" 
                                                                           var="fieldConfigPerAdd" 
                                                                           value="#{SourceHandler.rootNodeFieldConfigs}">
                                                                 <h:column>
-                                                                    <h:outputText value="#{fieldConfigPerAdd.displayName}"  />
-                                                                    <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
-                                                                </h:column>
+																	 <h:outputText rendered="#{fieldConfigPerAdd.required}">
+																		<span style="font-size:12px;color:red;verticle-align:top">*</span>
+																	</h:outputText>													  
+																	<h:outputText rendered="#{!fieldConfigPerAdd.required}">
+																		<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+																	</h:outputText>													  
+																	<h:outputText value="#{fieldConfigPerAdd.displayName}" />
+																	<h:outputText value=":"/>
+                                                                 </h:column>
                                                                 <!--Rendering HTML Select Menu List-->
                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
                                                                     <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
@@ -608,8 +575,16 @@
                                                                                                                       value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
                                                                                                                           
                                                                                                             <h:column>
-                                                                                                                <h:outputText value="#{childFieldConfigAdd.displayName}"  />
-                                                                                                                <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
+ 
+																							 <h:outputText rendered="#{childFieldConfigAdd.required}">
+																								<span style="font-size:12px;color:red;verticle-align:top">*</span>
+																							</h:outputText>													  
+																							<h:outputText rendered="#{!childFieldConfigAdd.required}">
+																								<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+																							</h:outputText>													  
+																							<h:outputText value="#{childFieldConfigAdd.displayName}" />
+																							<h:outputText value=":"/>
+
                                                                                                             </h:column>
                                                                                                             <!--Rendering HTML Select Menu List-->
                                             <!--Rendering HTML Select Menu List-->
@@ -663,7 +638,7 @@
                                                                                                                            maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                                                           onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
+                                                                                                                           onblur="javascript:validate_date(this,'MM/dd/yyyy');">
                                                                                                                     <a  title ="<h:outputText value="#{childFieldConfigAdd.displayName}"/> HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
                                                                                                                         <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                                                                     </a>
@@ -1053,7 +1028,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                             <tr>
                                                 <td>
 				                <h:form id="basicValidateAddformData">
-                                                    <table width="100%">
+                                                   <table border="0" cellpadding="1" cellspacing="1" width="100%">
                                                         <tr><td>
                                                     <!--Start Add source record form-->
                                                     <input type="hidden" title="lidmask" name="lidmask" value="DDD-DDD-DDDD" />
@@ -1117,23 +1092,38 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                   <div id="addFormFields" style="visibility:hidden;display:none;">
                                                     <!-- Start ADD  Fields-->
                                                     <table width="100%">
-                                                        <tr>
+														<tr>
+														<td style="font-size:10px;" colspan="2">
+															 <nobr>
+																 <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+															</nobr>
+														</td>
+													  </tr> 
+                                                       <tr>
                                                             <td class="tablehead" colspan="2">
                                                                 <b><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</b>
                                                             </td>
                                                         </tr>
                                                     </table>
                                                     
+                                           <table width="100%" cellspacing="1"  border="0" cellpadding="1">
+                                            <tr>
+                                             <td colspan="2">
 				                            <form id="<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm" name="<%=objScreenObject.getRootObj().getName()%>InnerForm" method="post" enctype="application/x-www-form-urlencoded">
                                                     <h:dataTable  headerClass="tablehead"  
                                                                   id="hashIdEdit" 
-                                                                  width="100%"
-                                                                  var="fieldConfigPerAdd" 
+                                                                   var="fieldConfigPerAdd" 
                                                                   value="#{SourceHandler.rootNodeFieldConfigs}">
                                                         <h:column>
-                                                            <h:outputText value="#{fieldConfigPerAdd.displayName}"  />
-                                                            <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
-                                                        </h:column>
+															 <h:outputText rendered="#{fieldConfigPerAdd.required}">
+																<span style="font-size:12px;color:red;verticle-align:top">*</span>
+															</h:outputText>													  
+															<h:outputText rendered="#{!fieldConfigPerAdd.required}">
+																<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+															</h:outputText>													  
+															<h:outputText value="#{fieldConfigPerAdd.displayName}" />
+														    <h:outputText value=":"/>
+                                                         </h:column>
                                                         <!--Rendering HTML Select Menu List-->
                                                         <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
                                                             <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" >
@@ -1183,7 +1173,9 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                         
                                                     </h:dataTable>
                                                     </form>
-
+                                          </td>
+										  </tr>
+										  </table>
                                                     <h:dataTable  headerClass="tablehead" 
                                                                   id="allChildNodesNamesAdd" 
                                                                   width="100%"
@@ -1232,9 +1224,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                       value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
                                             
                                             <h:column>
-                                                <h:outputText value="#{childFieldConfigAdd.displayName}"  />
-                                                <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
-                                            </h:column>
+												 <h:outputText rendered="#{childFieldConfigAdd.required}">
+													<span style="font-size:12px;color:red;verticle-align:top">*</span>
+												</h:outputText>													  
+												<h:outputText rendered="#{!childFieldConfigAdd.required}">
+													<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+												</h:outputText>													  
+												<h:outputText value="#{childFieldConfigAdd.displayName}" />
+												<h:outputText value=":"/>
+  											</h:column>
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
                                                 <!-- User code fields here -->
@@ -1286,7 +1284,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                    maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
+                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');">
                                                   <a title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
                                                      <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
@@ -1454,10 +1452,18 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																   <%
 																	ValueExpression mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 1" ,  localIdDesignation.getClass());   
 																   %>
-                                                               <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1" title="<%=mergeLIDVaueExpression%>"
-																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                               <h:inputText value="#{SourceMergeHandler.lid1}" 
+															        id="LID1"
+															        title="<%=mergeLIDVaueExpression%>" 
+ 																    style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                     onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                    onkeyup="javascript:qws_field_on_key_up(this)"/>  
+                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
+															        onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"
+																	/>  
+
+																	<%
+																	mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 2" ,  localIdDesignation.getClass());   	
+																	%>
                                                                <td>
                                                                 
 																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
@@ -1465,7 +1471,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                   onkeyup="javascript:qws_field_on_key_up(this)"/>  
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)"
+																   onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"/>  
                                                                </td>																   <%
 																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 3" ,  localIdDesignation.getClass());   
 																   %>
@@ -1476,7 +1483,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
+																				onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"/>  
                                                                </td>
                                                                    <%
 																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 4" ,  localIdDesignation.getClass());   
@@ -1487,519 +1495,38 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
+																				onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"/>  
                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                <td colspan="2">
-															   <nobr>
-                                                                       <h:commandLink title="#{msgs.source_merge_button}" styleClass="button" rendered="#{Operations.SO_SearchView}"
-                                                                                       action="#{SourceMergeHandler.performLidMergeSearch}">
+                                                                  <nobr>
+                                                                       <a title="<h:outputText value="#{msgs.source_merge_button}"/>"
+                                                                          href="javascript:void(0)"
+                                                                          onclick="javascript:getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');"  
+                                                                          class="button" >
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
-                                                                       </h:commandLink>                                     
-                                                                   </nobr>  
-															   <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
+                                                                       </a>                                     
+                                                                </nobr> 
+                                                               <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
                                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                                               </h:outputLink>
-														      </td>
-														      <td colspan="4">&nbsp;</td>
+                                                              </h:outputLink>
+                                                               </td>
+                                                               <td colspan="4">&nbsp;</td>
                                                            </tr>
                                                 
                                                     </table>
                                                    </h:form>
                                              <hr/>
-                                             <%
-                                               if(session.getAttribute("soHashMapArrayList") != null ){
-                                                   
-                                                  //request.setAttribute("soHashMapArrayList",request.getAttribute("soHashMapArrayList")); 
-                                                 ArrayList newSoArrayList= (ArrayList) session.getAttribute("soHashMapArrayList");
-                                             %>
-                                            <table cellpadding="0" cellspacing="0">  
-                                            <tr>
-                                                <td>
-                                                    <div style="height:600px;overflow:auto;">
-                                                        <table>
-                                                          <tr>
-                                                              
-                                                               <%
-																  
-                                                    Object[] soHashMapArrayListObjects = newSoArrayList.toArray();
-                                                    String cssClass = "dynaw169";
-                                                    String cssMain = "maineuidpreview";
-                                                    String menuClass = "menutop";
-                                                    String dupfirstBlue = "dupfirst";
-                                                    for (int countEnt = 0; countEnt < soHashMapArrayListObjects.length; countEnt++) {
-                                                        if (countEnt > 0) {
-                                                            cssClass = "dynaw169";
-                                                            menuClass = "menutop";
-                                                            dupfirstBlue = "dupfirst";
-                                                        }
-                                                        HashMap soHashMap = (HashMap) soHashMapArrayListObjects[countEnt];
-    LIDVaueExpression = ExpressionFactory.newInstance().createValueExpression(soHashMap.get("LID"), soHashMap.get("LID").getClass());
-                                                            %>
-                                                               <!-- Display the field Values-->
-                                                               <%if(countEnt ==0 ) {%>
-                                                                  <td  valign="top">
-                                                                          <div id="labelmainEuidContent" class="yellow">
-                                                                               <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
-                                                                                    <tr>
-                                                                                       <td id="menu<%=soHashMap.get("LID")%>">&nbsp</td>
-                                                                                    </tr> 
-                                                                                    <tr>
-                                                                                        <td valign="top"  id="Label<%=soHashMap.get("LID")%>"><b><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</b></td>
-                                                                                    </tr>
-                                                                               </table>
-                                                                           </div>
-                                                                          <div id="mainEuidContentButtonDiv<%=countEnt%>">
-                                                                             <div id="labelpersonEuidDataContent" class="yellow">
-                                                                                <table border="0" cellspacing="0" cellpadding="0" id="buttoncontent<%=soHashMap.get("LID")%>">
-                                                                        <%
-                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
-                                                                        %>  
-                                                                                    <tr>
-                                                                                      <td>
-                                                                                         <%=fieldConfigMap.getDisplayName()%>                 
-                                                                                      </td>
-                                                                                    </tr>
-                                                                        <%}%>
-                                                             
-                                                                                     <tr><td>&nbsp;</td></tr>
-                                                                   <%
-                                                                   
-                                                                   for (int i = 0; i < arrObjectNodeConfig.length; i++) {
-                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
-                                                                    FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                                   int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
-                                                                    int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-                                                                   %>
-                                                                    <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
-                                                                    <%
-                                                                      for (int max = 0; max< maxMinorObjectsMAX; max++) {
-																    %>
-
-																  <%
-                               		 		                       for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                       FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                      %>  
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <%
-                                                                      } // field config loop
-																	  %>
-
-																	<%
-                                                                      } // max minor objects loop
-																 	 %>
-																	<%
-                                                                      } // max minor objects loop
-																 	 %>
-
-                                                                                </table>
-                                                                            </div>
-                                                                          </div>
-                                                                   </td>
-                                                               <%}%>
-                                                                  <td  valign="top">
-                                                                     <div id="outerMainContentDivid<%=countEnt%>">
-                                                            <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="yellow">
-                                                                <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
-                                                                    <tr>
-                                                                        <td class="menutop"><b> <%=localIdDesignation%>&nbsp;<%=countEnt + 1%></b> </td>
-                                                                    </tr> 
-                                                                     <tr>
-                                                                    <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
-                                                                    <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
-                                                                   <% if(request.getAttribute("mergedSOMap") != null ) { %>
-                                                                     <span title ="<%=soHashMap.get("LID")%>" class="dupbtn" >
-                                                                     <%=soHashMap.get("LID")%>
-                                                                     </span>
-                                                                     <%} else {%>
-                                                                     <a title ="<%=soHashMap.get("LID")%>" class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>','<%=bundle.getString("source_keep_btn") + " " + localIdDesignation%>')">
-                                                                     <%=soHashMap.get("LID")%>
-                                                                     <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script>
-                                                                      </a>
-                                                                  <%}%>
-                                                                 </td>
-                                                                 </tr>
-                                                                </table>
-                                                            </div>
-                                                                <div id="personEuidDataContent<%=soHashMap.get("LID")%>" class="yellow">
-                                                                    <table border="0" cellspacing="0" cellpadding="0" id="buttoncontent<%=soHashMap.get("LID")%>"  >
-                                                                        <%
-                                                        HashMap personfieldValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT");
-                                                        HashMap codesValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT_EDIT");
-                                                        String epathValue = new String();
-                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
-                                                            if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                                epathValue = fieldConfigMap.getFullFieldName();
-                                                            } else {
-                                                                epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                            }
-                                                            if (countEnt > 0) {
-                                                                resultArrayMapCompare.put(epathValue, personfieldValuesMapEO.get(epathValue));
-                                                            } else {
-                                                                resultArrayMapMain.put(epathValue, personfieldValuesMapEO.get(epathValue));
-                                                            }
-                                                        
-                                                                        %>  
-                                                                        <tr>
-                                                                            <td>
-                                                                                <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
-                                                                                       <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-        fnameExpression = ExpressionFactory.newInstance().createValueExpression(epathValue, epathValue.getClass());
-        fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
-                                                                %>
-																     <div id="highlight<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>">
-																            <a title="<%=personfieldValuesMapEO.get(epathValue)%>" href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>')" >
-                                                                                            <font class="highlight"><%=personfieldValuesMapEO.get(epathValue)%></font>
-																							</a>
-                                                                                       </div>
-																     <div id="unHighlight<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>"
-																	 style="visibility:hidden;display:none">
-																	                  <%=personfieldValuesMapEO.get(epathValue)%>
-																	 </div>
-                                                                                       <%} else {%>
-                                                                                           <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                                       <%}%>
-                                                                                <%} else {%>
-                                                                                     &nbsp;
-                                                                                <%}%>
-                                                                                
-                                                                            </td>
-                                                                        </tr>
-                                                                        <%}%>
-                                                             
-                                                                        <tr><td>&nbsp;</td></tr>
-                                                                   <%
-                                                                   
-                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
-																	   %>
-                                                                    <tr><td>&nbsp;</td></tr>
-
-																	   <%
-                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
-                                                                    ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
-                                                                    HashMap minorObjectHashMap = new HashMap();
-                                                                    int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-                                                 int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
-												 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
-
-                                                 FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-			 //if (maxMinorObjectsDiff > 0 ) {
-			 %>
-
-		     <%
-								for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
-                                                                   %>
-																    
-                                                                    <%
-                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                     epathValue = fieldConfigMap.getFullFieldName();
-                                                                    %>  
-                                                                    <tr>
-                                                                        <td>
-                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-																				<%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
-																				<%} else {%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
-																				<%}%>
-                                                                                <%} else {%>
-                                                                                &nbsp;
-                                                                                <%}%>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <%
-                                                                      }//field config loop
-								       } //minor objects values list
-                                                                      %>
-
-                                                                    <%
-								    for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
-								   %>
-
-								 <%
-                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-													                 %>  
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <%                                                                                     }//field config loop
-                                                                        }//Extra minor objects loop
-								 %>
+											 <table>
+											   <tr><td><div id="duplicateIdsDiv" class="ajaxalert"></div></td></tr>
+											   <tr><td><div id="sourceRecordMergeDiv"></div></td></tr>
+											   <tr><td><div id="sourceRecordEuidDiv"></div></td></tr>
+											 </table>
 
 
-								 <%  
-                                                                    } //total minor objects loop
-                                                                    %>
-
-                                                                    </table>
-                                                                </div>
-                                                                     </div>
-                                                                  </td>
-                                                               <% if (countEnt + 1 == soHashMapArrayListObjects.length)   {%>
-                                                                  <td  valign="top">
-                                                                       <div id="preview<%=countEnt%>">
-                                                                <%
-                                                                          HashMap mergedSOMap = new HashMap();
-                                                                          String styleclass = "yellow";
-													                      ArrayList mergePreviewMinorObjectList = new ArrayList();
-                                                                          HashMap previewpersonfieldValuesMapEO = new HashMap();
-                                                                         if(request.getAttribute("mergedSOMap") != null) {
-                                                                          mergedSOMap = (HashMap) request.getAttribute("mergedSOMap");
-                                                                          previewpersonfieldValuesMapEO = (HashMap) mergedSOMap.get("SYSTEM_OBJECT");
-                                                                          styleclass ="blue";
-                                                                         } 
-                                                                
-                                                                %>
-                                                                       
-                                                            <div id="previewmainEuidContent" class="<%=styleclass%>">
-                                                                <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
-                                                                    <tr>
-                                                                        <td id="previewmenu" class="menutop"><h:outputText value="#{msgs.preview_column_text}" /></td>
-                                                                    </tr> 
-                                                                        <tr>
-                                                                            <td valign="top"  id="previewcurve">
-																			<%if(request.getAttribute("mergedSOMap") != null) {%>
-																			  <b><%=previewpersonfieldValuesMapEO.get("LID")%></b>
-																			<%} else {%>
-																			   &nbsp;
-																			<%}%>
-																			</td>
-                                                                        </tr>
-                                                                </table>
-                                                            </div>
-                                                        <div id="previewmainEuidContentButtonDiv">
-                                                            <div id="assEuidDataContent">
-                                                                <div id="personassEuidDataContent" class="<%=styleclass%>">
-                                                                    <table border="0" cellspacing="0" cellpadding="0" id="previewbuttoncontent<%=soHashMap.get("LID")%>">
-                                                                        <%
-
-                                                        String previewepathValue = new String();
-                                                        for (int ifcp = 0; ifcp < roorNodeFieldConfigs.length; ifcp++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifcp];
-                                                            if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                                previewepathValue = fieldConfigMap.getFullFieldName();
-                                                            } else {
-                                                                previewepathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                            }
-                                                        
-                                                                        %>  
-                                                                        <tr>
-                                                                            <td>
-                                                                                <%if(request.getAttribute("mergedSOMap") != null) {%>
-                                                                                    <%if (previewpersonfieldValuesMapEO.get(previewepathValue) != null) {%> 
-                                                                                          <span id="<%=previewepathValue%>"><%=previewpersonfieldValuesMapEO.get(previewepathValue)%></span>
-                                                                                    <%} else {%>
-                                                                                        <span id="<%=previewepathValue%>">&nbsp;</span>
-                                                                                    <%}%>
-                                                                                
-                                                                                <%}else{  %>
-                                                                                    &nbsp;
-                                                                                <%} %>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <%}%>
-                                                             
-                                                                        <tr><td>&nbsp;</td></tr>
-                                                                        <tr><td>&nbsp;</td></tr>
-                                                                   <%
-                                                                   HashMap minorObjectHashMapPreview = new HashMap();
-                                                                   for (int i = 0; i < arrObjectNodeConfig.length; i++) {
-                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
-                                                                    FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                                    int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
-                                                                    int  maxMinorObjectsMinorDB =  (request.getAttribute("mergedSOMap")  != null) ?((Integer) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
-								    int  maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
-								    mergePreviewMinorObjectList = (request.getAttribute("mergedSOMap")  != null)?(ArrayList) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"):new ArrayList();
-                                                                   %>
-                                                                    <%
-                                                                     for(int ar = 0; ar < mergePreviewMinorObjectList.size() ;ar ++) {
-                                                                       minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);                                                                    %>
-                                                                  
-								    <%
-                               		 		            for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                       FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-								       previewepathValue = fieldConfigMap.getFullFieldName();
-                                                                      %>  
-                                                                    <tr>
-                                                                        <td>
-                                                                                <%if(request.getAttribute("mergedSOMap") != null) {%>
-                                                                                    <%if (minorObjectHashMapPreview.get(previewepathValue) != null) {%> 
-                                                                                          <span id="<%=previewepathValue%>"><%=minorObjectHashMapPreview.get(previewepathValue)%></span>
-                                                                                    <%} else {%>
-                                                                                        <span id="<%=previewepathValue%>">&nbsp;</span>
-                                                                                    <%}%>
-                                                                                
-                                                                                <%}else{  %>
-                                                                                    &nbsp;
-                                                                                <%} %>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <%
-                                                                      } // field config loop
-								    %>
-
-								    <%
-                                                                      } // max minor objects loop
-								     %>
-
-                                    <%
-								    for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
-								   %>
-
-								   <%
-                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                    %>  
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <%                                                                                     }//field config loop
-                                                                        }//Extra minor objects loop
-								  %>
-
-                                                                        <tr><td>&nbsp;</td></tr>
-                                                                     
-							       <%
-                                                                     } // all child nodes loop
-								   %>
-
-                                                                    </table>
-                                                                </div>
-                                                                
-                                                                <!--Displaying view sources and view history-->
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                                  </td>
-                                                               <%}%>
-                                                                <td>&nbsp;</td>                                                
-                                                              <%}%>
-                                                             
-                                                          </tr>
-                                                      </table>
-                                                    </div>
-                                                 </td>
-                                             </tr>   
-
-                                             <tr>
-                                                 <td>
-                                                     <table width="100%" cellpadding="0" cellspacing="0">
-                                                       <tr>
-                                                          <td colspan="<%=soHashMapArrayListObjects.length*2 + 3%>">
-                                                             <div class="blueline">&nbsp;</div>
-                                                          </td>   
-                                                       </tr>
-                                                      </table>
-                                                 </td>
-                                             </tr>
-                                           <tr>
-                                               <td>
-                                                   <div id="actionmainEuidContent" class="actionbuton">
-                                                   <table cellpadding="0" cellspacing="0">
-                                           <% ValueExpression soValueExpressionMerge = null;
-                                           for (int countEnt = 0; countEnt < soHashMapArrayListObjects.length; countEnt++) { 
-                                               HashMap soHashMapMerge = (HashMap) soHashMapArrayListObjects[countEnt];
-											   HashMap soHashMap = (HashMap) soHashMapMerge.get("SYSTEM_OBJECT");
-                                               soValueExpressionMerge = ExpressionFactory.newInstance().createValueExpression(soHashMap, soHashMap.getClass());
-
-                                               %>
-                                               <% if (countEnt == 0)    { %>
-                                                    <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
-                                               <% }%>
-                                                     <!--Displaying view sources and view history-->
-                                                     <td valign="top">
-                                                         <div id="dynamicMainEuidButtonContent<%=countEnt%>">
-                                                                    <table border="0" cellspacing="0" cellpadding="0" border="1">
-                                                                        <h:form>
-                                                                            <tr> 
-                                                                                <td valign="top">
-                                                                                    <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}"
-                                                                                                    actionListener="#{SourceMergeHandler.viewEUID}"  
-                                                                                                    action="#{NavigationHandler.toEuidDetails}" >  
-                                                                                        <f:attribute name="soValueExpressionMerge" value="<%=soValueExpressionMerge%>"/>
-                                                                                        <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
-                                                                                    </h:commandLink>                                                                                      
-
-                                                                                </td>                                              
-                                                                            </tr>
-                                                                            
-                                                                        </h:form>
-                                                                    </table>
-                                                            </div> 
-                                                     </td>
-                                               <% if (countEnt + 1 == soHashMapArrayListObjects.length) { 
-																			String keepLid1 = bundle.getString("source_keep_btn") + " " + localIdDesignation + " 1" ;
-																			 ValueExpression keepLid1ValueExpression = ExpressionFactory.newInstance().createValueExpression(keepLid1, keepLid1.getClass());
-																			String keepLid2 = bundle.getString("source_keep_btn") + " " + localIdDesignation + " 2" ;
-ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().createValueExpression(keepLid2, keepLid2.getClass());
-																			%>
-                                                     <td>                                                                <!--Displaying view sources and view history-->
-                                                         <div id="previewActionButton">
-                                                                    <table>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <h:form  id="previewlid1Form">
-                                                                                    <h:commandLink id="lid1Link" title="<%=keepLid1ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
-                                                                                        <span id="LID1"> <%=keepLid1%>  </span>
-                                                                                    </h:commandLink>
-                                                                                    <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
-                                                                                    <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
-                                                                                </h:form>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <h:form id="previewlid2Form">
-                                                                                    <h:commandLink id="lid2Link" title="<%=keepLid2ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
-                                                                                        <span id="LID2"><%=keepLid2%></span>
-                                                                                        <h:inputHidden id="previewhiddenLid2" value="#{SourceMergeHandler.formlids}" />
-                                                                                        <h:inputHidden id="previewhiddenLid2source" value="#{SourceMergeHandler.lidsource}" />
-                                                                                    </h:commandLink>
-                                                                                </h:form>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>  
-                                                         <div id="confirmationButton" style="visibility:hidden">
-                                                                    <table>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <a title='<h:outputText value="#{msgs.ok_text_button}" />' class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
-                                                                                   <span id="confirmok"><h:outputText value="#{msgs.ok_text_button}" /></span>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td>
-                                                                               <h:form>
-                                                                                    <h:commandLink  title ="#{msgs.cancel_but_text}" styleClass="button"   rendered="#{Operations.SO_Merge}"
-                                                                                    action="#{SourceMergeHandler.cancelMergeOperation}" >  
-                                                                                   <span id="confirmcancel"><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                                                                                    </h:commandLink>                                                 
-                                                                               </h:form>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>  
-
-
-
-                                                     </td>
-                                               <%}%>
-                                               
-                                            <%}%>
-                                                   </table>
-                                               </div>
-                                                </td>
-                                           </tr>
-                                            </table>
-                                            <%}%>
+ 
                                 </div>
                               <%}%>
                             </div> <!-- End YUI content -->
@@ -2010,35 +1537,34 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
             
         </div> <!--end source records div -->
          <!-- START Extra divs for add  SO-->
-         <div id="mergeDiv" class="alert" style="top:500px;height:130px;left:560px;visibility:hidden">
+         <div id="mergeDiv" class="alert" style="top:500px;left:560px;visibility:hidden">
              <h:form id="mergeFinalForm">
-                 <table cellspacing="0" cellpadding="0" border="0">
-                     <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
-                    </tr>
-                     <tr><td colspan="2"> &nbsp;</td></tr>
-                     <tr><td colspan="2"> &nbsp;</td></tr>
+                 <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                     <tr><th align="left" colspan="2"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th> </tr>
+                      <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr><td colspan="2">&nbsp;</td></tr>
                       <tr>
-                          <th  align="center" valign="top"><h:outputText value="#{msgs.lid_merge_popup_text}"/></th><th style="padding-right:160px;"><div id="confirmContent"></div></th>
-                     </tr>
-                     <tr><td colspan="2"> &nbsp;</td></tr>
-                     <tr><td colspan="2"> &nbsp;</td></tr>
-                    <tr>
-                         <td colspan=2  align="center" valign="top">
-                             <h:commandLink title ="#{msgs.ok_text_button}"  styleClass="button" 
-                                            action="#{SourceMergeHandler.mergePreviewSystemObject}">
-                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                             </h:commandLink>   
-                             <h:outputLink title="#{msgs.cancel_but_text}"  onclick="javascript:showExtraDivs('mergeDiv',event)" 
+					     <td colspan="2" style="color:#ffffff;">&nbsp;<h:outputText value="#{msgs.source_keep_btn}"/>&nbsp;<%=localIdDesignation%>&nbsp;&nbsp;<span style="color:#ffffff;font-weight:bold;" id="soMergeConfirmContent"></span>&nbsp;&nbsp;?</td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr>
+                         <td colspan="2"  align="center" valign="top" width="100%">
+                              <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
+                                href="javascript:void(0)"
+                                onclick="javascript:getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&mergeFinal=true&rand=<%=rand%>','sourceRecordMergeDiv','');"  
+                                class="button" >
+                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                                </a>                                     
+  							 <h:outputLink title="#{msgs.cancel_but_text}"  onclick="javascript:showExtraDivs('mergeDiv',event)" 
                                             styleClass="button"          
                                             value="javascript:void(0)">
                                  <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
                              </h:outputLink>   
-                             <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
-                             <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
-                             <h:inputHidden id="selectedMergeFields" value="#{SourceMergeHandler.selectedMergeFields}" />
-                         </td>
-                     </tr>
-                     
+  							 <input type="hidden" id="mergeFinalForm:previewhiddenLid1" title="mergeFinalForm_LIDS" />
+							 <input type="hidden" id="mergeFinalForm:previewhiddenLid1source" title="mergeFinalForm_SOURCE" />
+							 <input type="hidden" id="mergeFinalForm:selectedMergeFields" title="mergeFinalForm_MODIFIED_VALUES" />
+					     </td>
+                     </tr> 
                  </table>
              </h:form>
          </div>		
@@ -2239,54 +1765,10 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
           formName = "BasicSearchFieldsForm";
     </script>
     <%}%>  
-    
-   <script>
-function addEvent(object,minorObjectdivId) {
-  var ni = document.getElementById(object+'NewDiv');
-  var numi = document.getElementById(object+"CountValue");
-  var num = (document.getElementById(object+"CountValue").value -1)+ 2;
-  numi.value = num;
-  var divIdName = object+":"+num;
-  var newdiv = document.createElement('div');
-  newdiv.setAttribute("id",divIdName);
-//  newdiv.innerHTML = "<table><tr><td>"+object +" Attr1 <input type='text' id='raj'> </td><tr></tr><td>"+object +" Attr 2<input type='text' id='raj'> //</td><tr></tr><td>"+object +" Attr3 <input type='text' id='raj'> </td><td><a href=\"javascript:;\" onclick=\"removeElement(\'"+divIdName+ //"\')\">Remove &quot;"+ object+"&quot;</a></td></tr><tr><td>&nbsp</td></tr></table>";
-
-    //newdiv.innerHTML +=  "<table border=\"1\"><tr><td>";
-    newdiv.innerHTML +=  document.getElementById(minorObjectdivId).innerHTML;
-    //newdiv.innerHTML +=  "</td><td>";
-    //newdiv.innerHTML +="<table  width=\"50%\" align=\"center\"><tr><td><a href=\"javascript:;\" class=\"button\" onclick=\"removeElement(\'"+divIdName+ "\')\"><span>Remove "+ object+"</span></a></td></tr></table>";
-    //newdiv.innerHTML +=  "</td></tr></table>";
-    
-  ni.appendChild(newdiv);
-  minorObjTypeLocalCount++;
-    //<form name="extra<h:outputText value='#{childNodesName}'/>AddForm" ">
-	//clear all the fields of the form after adding here
-	//ClearMinorObjectContents(newdiv);
-}
-
-function removeElement(divNum) {
-  var array = divNum.split(":");
-  var d = document.getElementById(array[0]+'NewDiv');
-  var olddiv = document.getElementById(divNum);
-  d.removeChild(olddiv);
-   minorObjTypeLocalCount--;
-}
-
-var minorObjectsArray = new Array();
-
-function onclickCaptureAllMinorObjects() {
-        //populate the minor object values here.
-        minorObjectsArray.push(minorArrayLocal);
-        var localArray = minorObjectsArray[minorObjectsArray.length-1];
-
-        document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = localArray;
-        document.getElementById("basicAddformData:minorObjectTotal").value = minorObjTypeLocalCount;
-}
-
-
-</script>
-
-
+  <!-- Clear the merge form fields upoon load of the page -->  
+  <script>
+   ClearContents("basicMergeformData");
+  </script>
 
 
 </html>
