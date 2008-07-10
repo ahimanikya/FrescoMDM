@@ -81,11 +81,11 @@ INPUT.READONLY{
 }
 
 .reportresults  table  {
-  padding-left:3px;
-  padding-top:3px;
-  padding-right:3px;
-  padding-bottom:3px;
-  text-align:right;
+  padding-left:1px;
+  padding-top:1px;
+  padding-right:1px;
+  padding-bottom:1px;
+  text-align:left;
   width:100%
 }
 
@@ -1469,8 +1469,6 @@ a.button:active span {
 	font-family: Arial, Helvetica, sans-serif;
 	color:#0F31B7;
 	font-weight:bold;
-	width:457px;
-	height:379px;
 	/*background-image:url(../images/tableyellow.gif);*/
 	background-repeat:no-repeat;
 	padding-left:10px;

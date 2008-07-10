@@ -22,12 +22,14 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 
-
-<%@ page import="java.util.ArrayList"  %>
+ 
+<%@ page import="java.util.Iterator"  %>
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+<%@ page import="javax.faces.context.FacesContext" %>
+<%@ page import="javax.faces.application.FacesMessage" %>
 
 <%
 //Author Sridhar Narsingh
@@ -106,33 +108,29 @@ function setRand(thisrand)  {
 %>
         
         <body class="yui-skin-sam">
+             <% Operations operations=new Operations();%>
              <%@include file="./templates/header.jsp"%>
             <div id="mainContent" style="overflow:hidden;">                 
             <div id="reports">
-                <table border="0" cellspacing="0" cellpadding="0">
-                    <% Operations operations=new Operations();%>
-                    <tr> 
                         <!--td><%=(String)request.getAttribute("tabName")%></td-->
                               <%
 
                                 ScreenObject subScreenObj = null;
-                                ScreenObject screenObjectObj = (ScreenObject) session.getAttribute("ScreenObject");
 
-								ArrayList subTabsLabelsList = screenObjectObj.getSubscreensConfig();
-                                Object[] subTabsLabelsListObj = subTabsLabelsList.toArray();
-
-								ScreenObject[] orderdedScreens  = new ScreenObject[subTabsLabelsList.size()];
-								for(int i=0;i<subTabsLabelsListObj.length;i++){  
-                                    ScreenObject screenObj = (ScreenObject) subTabsLabelsListObj[i];
-									orderdedScreens[screenObj.getDisplayOrder()] = screenObj;
-							    }
-								ReportHandler reportHandler = new ReportHandler();
- 
+								//get the Sorted Screen objects
+								 ScreenObject screenObjectObj = (ScreenObject) session.getAttribute("ScreenObject");
+   								ReportHandler reportHandler = new ReportHandler();
+                                ScreenObject[] orderdedScreens  = reportHandler.getOrderedScreenObjects();
+                                Iterator messagesIter = FacesContext.getCurrentInstance().getMessages();
+  								%>
+                      <%
+					  if(orderdedScreens != null ) {
                                 String reportTabName = (request.getAttribute("reportTabName") != null)?(String) request.getAttribute("reportTabName"):orderdedScreens[0].getDisplayTitle();
 								String tabName = "";
                                 String clasName = "";
 						   %>
-
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
                         <td>
                             <div id="demo" class="yui-navset">                               
                                 <ul class="yui-nav">
@@ -376,7 +374,35 @@ function setRand(thisrand)  {
                                           <div class="reportresults" id="results<%=i%>"></div>
                                      </div>                                       
                                  <%}%>
-								 
+<%} else {%> 
+
+    <div class="ajaxalert">
+    <table cellpadding="0" cellspacing="0" border="0">	   
+        <% int i=0;
+           while (messagesIter.hasNext()) {
+              FacesMessage facesMessage = (FacesMessage) messagesIter.next();
+		%>
+		    <% if (i == 0) {%>
+			<tr> 
+			  <td>		         
+                   <%=bundle.getString("CONFIG_ERROR")%>&nbsp;:&nbsp;<%=facesMessage.getSummary()%>
+  	          </td>
+			</tr> 
+			<tr>
+			  <td>&nbsp;</td>
+			</tr>
+		   	 <tr> 
+			  <td>
+			<% } else { %>
+			     <ul><li><%=facesMessage.getSummary()%></li></ul>
+			<%} %>
+			<%i++;%>
+         <%}%>     	 
+			   </td>
+			 </tr> 
+	 </table>
+	 </div>
+<%}%>
 
                             </div> <!-- End YUI content -->
 							    

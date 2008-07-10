@@ -19,7 +19,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <%
-          ConfigManager.init();
           LoginHandler loginHandler = new LoginHandler();
           NavigationHandler navigationHandler = new NavigationHandler();
           
@@ -31,6 +30,7 @@
              FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?error=" + (String) request.getAttribute(LoginHandler.FAIL_INITIALIZATION));
 
 		  } else {
+             ConfigManager.init();
 		     ScreenObject screenObject = ConfigManager.getInstance().getInitialScreen();
              session.setAttribute("ScreenObject", screenObject);
 
