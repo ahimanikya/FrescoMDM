@@ -25,7 +25,7 @@
  * Created on November 23, 2007, 4:50 PM
  * Author : Sridhar
  *  
- */
+ */ 
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import javax.faces.context.FacesContext;
@@ -63,6 +63,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -1592,5 +1593,75 @@ public class ReportHandler {
     public void setKeyDescriptionsMap(HashMap keyDescriptionsMap) {
         this.keyDescriptionsMap = keyDescriptionsMap;
     }
-  
+
+/**
+ * This method checks for the valid ordering of the Report Sub tabs, 
+ * @create date: July 7th 2008
+ * @Create by Sridhar Narsingh
+ * @return valid screen object array 
+ * @exception Exception if unhandled exception occurs such as 
+ *  1. Array manuplation fails
+ *  2. NumberFormatException if the XML subscreen display number is not a number
+ *  
+ */    
+  public ScreenObject[] getOrderedScreenObjects() {
+    ScreenObject screenObjectObj = (ScreenObject) session.getAttribute("ScreenObject");
+    ArrayList subTabsLabelsList = screenObjectObj.getSubscreensConfig();
+    Object[] subTabsLabelsListObj = subTabsLabelsList.toArray();
+    ScreenObject[] orderdedScreens = new ScreenObject[subTabsLabelsList.size()];
+    HashMap screenObjectsMap = new HashMap();
+    ArrayList messageList = new ArrayList();
+    HashMap messageMap = new HashMap();
+    try {        
+          for (int i = 0; i < subTabsLabelsListObj.length; i++) {
+            //If the display order is more than the total no of subscreens.
+            ScreenObject screenObj = (ScreenObject) subTabsLabelsListObj[i];                
+            String displayOrderStr = new Integer(screenObj.getDisplayOrder()).toString();
+            Integer.parseInt(displayOrderStr);
+            //Integer.parseInt(new Integer(screenObj.getDisplayOrder()).toString());
+            if(screenObjectsMap.get(displayOrderStr) != null ) { //if screen object with same display order found already, throw exception 
+              ScreenObject foundscreenObject  = (ScreenObject)screenObjectsMap.get(displayOrderStr);
+              if (messageList.size() == 0)   {
+                 messageList.add(foundscreenObject.getDisplayTitle());                  
+              }
+              messageList.add(screenObj.getDisplayTitle());
+              messageMap.put(new Integer(screenObj.getDisplayOrder()).toString(),messageList);
+            } else {
+              screenObjectsMap.put(displayOrderStr, screenObj);  
+            }
+         }
+        if (!messageMap.isEmpty()) {
+            Object[] keys = messageMap.keySet().toArray();
+            for (int i = 0; i < keys.length; i++) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        bundle.getString("DISPLAY_ORDER") + " " +  keys[i] + " " + bundle.getString("ALREADY_DEFINED"), bundle.getString("DISPLAY_ORDER") + " " + (String) keys[i] + " " + bundle.getString("ALREADY_DEFINED")));
+                ArrayList tabNamesArray = (ArrayList) messageMap.get(keys[i]);
+                for (int j = 0; j < tabNamesArray.size(); j++) {
+                    String tabNames = (String) tabNamesArray.get(j);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            tabNames, tabNames));
+                }
+            }
+            return null;
+        }
+          
+        Object[] keys = screenObjectsMap.keySet().toArray();
+        int[] intKeys = new int[keys.length];
+        for (int k = 0; k < keys.length; k++) {
+            String displayOrderStr = (String) keys[k];
+            intKeys[k] = new Integer(displayOrderStr).intValue();
+        }
+        //sort the keys as integers by display order
+        Arrays.sort(intKeys);
+        //orderdedScreens
+        for (int k = 0; k < intKeys.length; k++) {
+            orderdedScreens[k] = (ScreenObject) screenObjectsMap.get(new Integer(intKeys[k]).toString());
+        }
+    } catch (Exception ex) {
+        mLogger.error(mLocalizer.x("RPT103: Unable to get ordered screen objects : {0} ", ex.getMessage()), ex);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,   bundle.getString("CONFIG_ERROR") + " " , ex.getMessage()));
+        return null;
+    }
+    return orderdedScreens;
+} 
 }
