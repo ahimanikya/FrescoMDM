@@ -1583,13 +1583,17 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
           if(c  == countEnt) {
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
+			if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
             document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
             document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+			}
          } else {
            document.getElementById("outerMainContentDivid"+c).style.visibility = "hidden";
            document.getElementById("outerMainContentDivid"+c).style.display = "none";
+		   if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "hidden";
            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "none";
+		   }
          }
 		 */
        }
@@ -1604,8 +1608,10 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
        for(var c=0;c<totalColumns;c++) {
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
+			if (document.getElementById("dynamicMainEuidButtonContent"+c) != null) 			{
             document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
             document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+			}
           }
  }
 }
@@ -1628,9 +1634,11 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
             divLayerHist.style.visibility="visible";
             divLayerHist.style.display="block";
         }
+		if(document.getElementById("previewPane") != null) {
        //display or hide preview pane
        document.getElementById("previewPane").style.visibility="hidden";
        document.getElementById("previewPane").style.display="none";
+		}
 
 
        //display/hide other divs
@@ -1647,13 +1655,17 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
           if(c  == countEnt) {
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
+			if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
             document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
             document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+			}
            } else {
            document.getElementById("outerMainContentDivid"+c).style.visibility = "hidden";
            document.getElementById("outerMainContentDivid"+c).style.display = "none";
+		   if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "hidden";
            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "none";
+		   }
           }
        }
 	   if(mergeflag == 'true') {
@@ -1681,8 +1693,10 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
        for(var c=0;c<totalColumns;c++) {
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
+			if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
             document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
             document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+			}
           }
 
  }
@@ -1980,6 +1994,9 @@ function checkDuplicateFileds(formName,field,message) {
 		thisFrm.elements[i].style.backgroundColor ="#ffffff";
 		thisFrm.elements[i].style.border  ="1px solid #7f9db9";
 		document.getElementById("duplicateIdsDiv").innerHTML = "";
+        if(document.getElementById("duplicateLid") != null ) {
+		  document.getElementById("duplicateLid").value="";
+		}
     }
     for(i=0; i< thisFrm.elements.length; i++)   {      
 	  if(thisFrm.elements[i].value.length !=0 &&  field.title  != thisFrm.elements[i].title ) {
@@ -1989,8 +2006,22 @@ function checkDuplicateFileds(formName,field,message) {
 		 field.focus(); 
 		 field.style.backgroundColor ="#f7fbd6";
 		 field.style.border  ="1px solid #d75e33"; 
- 	    }
+		 //duplicateLid = true;duplicateLidMessage
+         if(document.getElementById("duplicateLid") != null ) {
+		   document.getElementById("duplicateLid").value = field.title + " '" + field.value + "' "+ message;
+		 }
+  	    }
 	  }
   }
 
+}
+
+function populateContents(thisForm,thistitle,thisvalue)  { 
+ thisFrm = document.forms[thisForm];
+ for(i=0; i< thisFrm.elements.length; i++)   {        
+	if (thisFrm.elements[i].title == thistitle) 		   {
+			   thisFrm.elements[i].value = thisvalue;
+	}
+ }
+ return;
 }
