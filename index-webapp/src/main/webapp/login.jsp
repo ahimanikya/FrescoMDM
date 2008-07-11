@@ -53,6 +53,8 @@ if (request.getAttribute(LoginHandler.FAIL_INITIALIZATION) == null  && request.g
                                         <f:selectItem  itemValue="English" itemLabel="#{msgs.locale_english_text}" />
                                         <f:selectItem  itemValue="German" itemLabel="#{msgs.locale_german_text}"/>
                                         <f:selectItem  itemValue="France" itemLabel="#{msgs.locale_french_text}"/>
+                                        <f:selectItem  itemValue="Japanese" itemLabel="#{msgs.locale_japanese_text}"/>
+                                        <f:selectItem  itemValue="Chinese" itemLabel="#{msgs.locale_chinese_text}"/>
                                     </h:selectOneMenu>                                                       
                                     
                                 </td>
