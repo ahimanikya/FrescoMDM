@@ -14,11 +14,19 @@
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
+<%@ page import="java.util.ResourceBundle"  %>
 
+<%
+//set locale value
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+%>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP , FacesContext.getCurrentInstance().getViewRoot().getLocale());
 Operations operationsGlobal = null;
 HttpSession sessionFacesGlobal = null;
 
