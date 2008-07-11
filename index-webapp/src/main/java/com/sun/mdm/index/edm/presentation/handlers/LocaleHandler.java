@@ -25,6 +25,8 @@ public class LocaleHandler {
     private static final String ENGLISH = "English";
     private static final String GERMAN = "German";
     private static final String FRANCE = "France";
+    private static final String JAPAN = "Japanese";
+    private static final String CHINA = "Chinese";
  
     /** Creates a new instance of LocaleHandler */
     public LocaleHandler() {
@@ -51,18 +53,57 @@ public class LocaleHandler {
         
        // Create session from the external context
         HttpSession session   = (HttpSession) context.getExternalContext().getSession(true);        
-        session.setAttribute("selectedLocale",event.getNewValue());
+        session.setAttribute("selectedLocale",selectedLocale);
        
-        if (ENGLISH.equals((String) event.getNewValue())) {
+        //set the language option and faces context locale here
+        if (ENGLISH.equals(selectedLocale)) {
             context.getViewRoot().setLocale(Locale.US);
-        } else  if (GERMAN.equals((String) event.getNewValue())) {
+            setLangOption(ENGLISH); 
+        } else  if (GERMAN.equals(selectedLocale)) {
             context.getViewRoot().setLocale(Locale.GERMANY);
-        } else  if (FRANCE.equals((String) event.getNewValue())) {
+            setLangOption(GERMAN); 
+        } else  if (FRANCE.equals(selectedLocale)) {
             context.getViewRoot().setLocale(Locale.FRANCE);
+            setLangOption(FRANCE); 
+        } else  if (JAPAN.equals(selectedLocale)) {
+            context.getViewRoot().setLocale(Locale.JAPANESE);
+            setLangOption(JAPAN); 
+         } else  if (CHINA.equals(selectedLocale)){
+            //context.getViewRoot().setLocale(Locale.CHINESE);
+            context.getViewRoot().setLocale(Locale.SIMPLIFIED_CHINESE);
+            //context.getViewRoot().setLocale(Locale.TRADITIONAL_CHINESE);
+            setLangOption(CHINA); 
         } else {
             context.getViewRoot().setLocale(Locale.ENGLISH);
+            setLangOption(ENGLISH); 
         }    
     }
 
+    public void setChangedLocale(String selectedLocale) {
+        // Create the faces context to access the UI and session parameters
+        FacesContext context = FacesContext.getCurrentInstance();
+          
+        if (ENGLISH.equals(selectedLocale)) {
+            context.getViewRoot().setLocale(Locale.US);
+            setLangOption(ENGLISH); 
+        } else  if (GERMAN.equals(selectedLocale)) {
+            context.getViewRoot().setLocale(Locale.GERMANY);
+            setLangOption(GERMAN); 
+        } else  if (FRANCE.equals(selectedLocale)) {
+            context.getViewRoot().setLocale(Locale.FRANCE);
+            setLangOption(FRANCE); 
+        } else  if (JAPAN.equals(selectedLocale)) {
+            context.getViewRoot().setLocale(Locale.JAPANESE);
+            setLangOption(JAPAN); 
+        } else  if (CHINA.equals(selectedLocale)) {
+           //context.getViewRoot().setLocale(Locale.CHINESE);
+           context.getViewRoot().setLocale(Locale.SIMPLIFIED_CHINESE);
+           //context.getViewRoot().setLocale(Locale.TRADITIONAL_CHINESE);
+            setLangOption(CHINA); 
+        } else {
+            context.getViewRoot().setLocale(Locale.ENGLISH);
+            setLangOption(ENGLISH); 
+        }    
+    }
 
 }
