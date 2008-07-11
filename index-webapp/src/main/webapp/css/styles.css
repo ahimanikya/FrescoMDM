@@ -109,6 +109,14 @@ INPUT.READONLY{
     text-decoration:none;		                               
     position : relative; /* A must for resizable columns */
 }
+/************* Second Screens************/
+.detailedresults   {
+  text-align:left;
+  position:relative;
+  verticle-align:top;
+  background-color:#F7FBD6;
+}
+/************* Second Screens************/
 
 /***Print Style**/
 
@@ -2794,4 +2802,52 @@ a.navbuttonselected:active span {
   padding-left:18px; 
    PADDING-TOP: 2px;
    PADDING-Bottom: 2px;
+}
+.confirmPreview {
+   position:absolute;
+   font-family: Arial, Helvetica, sans-serif;
+   filter:alpha(opacity=70);-moz-opacity:.70;opacity:.70;
+   color:#ffffff;
+   border-right: 3px solid #000000;
+   border-left: 3px solid #000000;
+   border-top: 3px solid #000000;
+   border-bottom: 3px solid #000000;
+}
+
+.confirmPreview td {
+   font-family: sans-serif,Arial, Helvetica;
+   text-align:center;
+   font-size:12px;
+   vertical-align:middle;	      
+   font-weight:normal;
+   background-color:#000000;
+   color:#ffffff;
+
+}
+
+.confirmPreview th {
+   font-family: sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   font-size: 12px;
+   text-align:center;
+   background-color:#ffffff;
+   color:#000000;
+}
+
+.confirmPreview th em {
+   text-decoration:none;
+   font-family: sans-serif,Arial, Helvetica ;
+   font-size: 12px;
+   text-align:right;
+   padding-top:10px;
+   background-color:#000000;
+   color:#ffffff;
+}
+
+.confirmPreview #actions td {
+   font-family: sans-serif,Arial, Helvetica ;
+   font-size: 12px;
+   text-align:center;
+   background-color:#000000;
+   color:#ffffff;
 }
