@@ -95,7 +95,7 @@ public class DashboardHandler  {
 
             Timestamp tsCurrentTime = new Timestamp(new java.util.Date().getTime());
             Long currentTime = new java.util.Date().getTime();
-            long milliSecsInADay = 86324442L;
+            long milliSecsInADay = 86400000L;
 
             Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
             countPotentialDuplicates = masterControllerService.countPotentialDuplicates(ts24HrsBack, tsCurrentTime);
@@ -121,7 +121,7 @@ public class DashboardHandler  {
 
             Timestamp tsCurrentTime = new Timestamp(new java.util.Date().getTime());
             Long currentTime = new java.util.Date().getTime();
-            long milliSecsInADay = 86324442L;
+            long milliSecsInADay = 86400000L;
 
             Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
             countAssumedMatches = masterControllerService.countAssumedMatches(ts24HrsBack, tsCurrentTime);
@@ -564,6 +564,220 @@ public class DashboardHandler  {
         }
 
         return "Compare Duplicates";
+    }
+
+     /** 
+     * 
+     * Added By Rajani Kanth on 11/06/2008
+     * 
+     * This method is used to search the more than one euids for comparing. This method is called from the ajax services.
+     *
+     * @return ArrayList
+     *    ArrayList of compare euids  if EUIDs are found. 
+     *    null if EUID is not found or any exception occurs in retrieving the EUIDs.
+     *    
+     * 
+     * 
+     * 
+     */
+
+    public ArrayList performCompareEuidSearch() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            EnterpriseObject enterpriseObject = null;
+
+            HashMap eoMap = new HashMap();
+            
+            ArrayList errorsList  = new ArrayList();
+            ArrayList requiredFieldsList  = new ArrayList();
+            ArrayList warningsList  = new ArrayList();
+            
+             if (this.getEuid1() != null && this.getEuid1().trim().length() == 0) {
+              String errorMessage =  "'"+ this.getEuid1() + "' " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2")  ;
+              requiredFieldsList.add(errorMessage);
+            }
+            if (this.getEuid1() != null && this.getEuid1().trim().length() > 0) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid1());
+                    if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
+                        String errorMessage = "'" + this.getEuid1() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
+                        errorsList.add(errorMessage); //add the errors to the array list
+                     } else if (mergeEuid != null) { // IF EO IS MERGED INTO ANTOHER EO
+                        String errorMessage =  "'"+ mergeEuid + "' " + bundle.getString("active_euid_text") + " '"+this.getEuid1() +"'"  ;
+                        errorsList.add(errorMessage); //add the errors to the array list
+                     }
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                         newArrayList.add(eoMap);
+
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid1(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+                 } else {
+                        String errorMessage = this.getEuid1() + " Enterprise Object is " + enterpriseObject.getStatus();
+                        warningsList.add(errorMessage); //add the errors to the array list
+                     }
+                }
+            }
+
+            if (this.getEuid2() != null && this.getEuid2().trim().length() == 0) {
+              String errorMessage =  "'"+ this.getEuid2() + "' " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2")  ;
+              requiredFieldsList.add(errorMessage);
+            }
+
+            if (this.getEuid2() != null && this.getEuid2().trim().length() > 0) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid2());
+                    if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
+                        String errorMessage = "'" + this.getEuid2() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
+                        errorsList.add(errorMessage); //add the errors to the array list
+                     } else if (mergeEuid != null) { // IF EO IS MERGED INTO ANTOHER EO
+                         String errorMessage =  "'"+ mergeEuid + "' " + bundle.getString("active_euid_text") + " '"+this.getEuid2() +"'"  ;
+                         errorsList.add(errorMessage); //add the errors to the array list
+                     }
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                         newArrayList.add(eoMap);
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid2(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+                     } else {
+                        String errorMessage = this.getEuid2() + " Enterprise Object is " + enterpriseObject.getStatus();
+                        warningsList.add(errorMessage); //add the errors to the array list
+                     }
+                }
+            }
+
+            if (this.getEuid3() != null && this.getEuid3().trim().length() == 0) {
+              String errorMessage =  "'"+ this.getEuid3() + "' " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2")  ;
+              requiredFieldsList.add(errorMessage);
+            }
+            
+            
+            if (this.getEuid3() != null && this.getEuid3().trim().length() > 0 ) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid3());
+                    if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
+                        String errorMessage = "'" + this.getEuid3() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
+                        errorsList.add(errorMessage); //add the errors to the array list
+                     } else if (mergeEuid != null) { // IF EO IS MERGED INTO ANTOHER EO
+                        String errorMessage =  "'"+ mergeEuid + "' " + bundle.getString("active_euid_text") + " '"+this.getEuid3() +"'"  ;
+                        errorsList.add(errorMessage); //add the errors to the array list
+                     }
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                        newArrayList.add(eoMap);
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid3(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+                      } else {
+                        String errorMessage = this.getEuid3() + " Enterprise Object is " + enterpriseObject.getStatus();
+                        warningsList.add(errorMessage); //add the errors to the array list
+                     }
+                }
+            }
+            if (this.getEuid4() != null && this.getEuid4().trim().length() == 0) {
+              String errorMessage =  "'"+ this.getEuid4() + "' " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2")  ;
+              requiredFieldsList.add(errorMessage);
+            }
+            if (this.getEuid4() != null && this.getEuid4().trim().length() > 0) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid4());
+                    if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
+                        String errorMessage = "'" + this.getEuid4() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
+                        errorsList.add(errorMessage); //add the errors to the array list
+                      } else if (mergeEuid != null) { // IF EO IS MERGED INTO ANTOHER EO
+                        String errorMessage =  "'"+ mergeEuid + "' " + bundle.getString("active_euid_text") + " '"+this.getEuid4() +"'"  ;
+                        errorsList.add(errorMessage); //add the errors to the array list
+                      }
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                         newArrayList.add(eoMap);
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid4(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+                     } else {
+                        String errorMessage = this.getEuid4() + " Enterprise Object is " + enterpriseObject.getStatus();
+                        warningsList.add(errorMessage); //add the errors to the array list
+                     }
+                }
+            }
+             
+            //If the error ocurrs then display all the messages together
+            if(errorsList.size() > 0 || warningsList.size() > 0 ) {
+                for(int i = 0 ; i< errorsList.size() ; i ++ ) {
+                    String errorMessage = (String) errorsList.get(i);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                }
+
+                for(int i = 0 ; i< warningsList.size() ; i ++ ) {
+                    String warningMessage = (String) warningsList.get(i);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, warningMessage, warningMessage));
+                }
+                return null;
+            }
+     
+            if(requiredFieldsList.size() ==  4 || newArrayList.size() ==  1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("ENTER_MORE_COMPARE_EUIDS"), bundle.getString("ENTER_MORE_COMPARE_EUIDS")));
+                return null;
+            }
+
+             
+            session.setAttribute("eocomparision", "yes");
+            //keep array of eos hashmap in the session
+            session.setAttribute("comapreEuidsArrayList", newArrayList);
+            
+             
+            //If the no error ocurrs then navigate to the compare duplicates page
+            if (errorsList.size() == 0 && warningsList.size() == 0 && newArrayList.size() >  1) {
+                session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+                return newArrayList;
+            }
+            
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("DHB021: Encountered the ProcessingException:{0}", ex.getMessage()), ex);
+            return null;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("DHB022: Encountered the UserException:{0}", ex.getMessage()), ex);
+            return null;
+        }
+
+        return newArrayList;
     }
 
     
