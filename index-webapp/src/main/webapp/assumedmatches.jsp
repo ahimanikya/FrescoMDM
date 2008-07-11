@@ -12,6 +12,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="java.util.ArrayList"  %>
+<%@ page import="java.sql.Timestamp"  %>
 <%@ page import="java.util.HashMap"  %>
 
 <%
@@ -64,7 +65,8 @@ function setRand(thisrand)  {
    double rand = java.lang.Math.random();
    String URI = request.getRequestURI();
    URI = URI.substring(1, URI.lastIndexOf("/"));
-
+   FacesContext facesContext = FacesContext.getCurrentInstance(); 
+   String from = (String)facesContext.getExternalContext().getRequestParameterMap().get("where");
   AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
   Operations operations=new Operations();
 %>
@@ -328,8 +330,40 @@ function setRand(thisrand)  {
       }         
     </script>
      
+<%
+   if ("DBassumematches".equalsIgnoreCase(from))   {
+   Timestamp tsCurrentTime = new Timestamp(new java.util.Date().getTime());
+   //currentTime = new java.util.Date();
+   String queryStr ="";
+   Long currentTime = new java.util.Date().getTime();
+   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+   String startDateField = simpleDateFormatFields.format(currentTime);
+   queryStr = "create_end_date="+startDateField;
 
+   SimpleDateFormat simpletimeFormatFields = new SimpleDateFormat("HH:mm:ss");
+   String startTimeField = simpletimeFormatFields.format(currentTime);
+   queryStr += "&create_end_time="+startTimeField;
+   long milliSecsInADay = 86400000L; //24 hours back
+   Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
+   Date dt24HrsBack = new Date(currentTime - milliSecsInADay);
 
+   simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+   String endDateField = simpleDateFormatFields.format(ts24HrsBack);
+   queryStr += "&create_start_date="+endDateField;
 
+   simpletimeFormatFields = new SimpleDateFormat("HH:mm:ss");
+   String  endTimeField = simpletimeFormatFields.format(ts24HrsBack);
+   queryStr += "&create_start_time="+endTimeField;
+%>
+
+    <script>
+	   var last24hours = "";
+	     populateContents('advancedformData','create_start_date','<%=endDateField%>');
+	     populateContents('advancedformData','create_start_time','<%=startTimeField%>');
+	     populateContents('advancedformData','create_end_date','<%=startDateField%>');
+	     populateContents('advancedformData','create_end_time','<%=endTimeField%>');
+ 	     ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=<%=rand%>&<%=queryStr%>','outputdiv','')
+     </script>
+<% }  %>
 </html>
 </f:view>              
