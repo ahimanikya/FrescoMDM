@@ -215,8 +215,42 @@ if(  (request.getParameter(bundle.getString("transaction_source")) != null &&  r
     (request.getParameter(localIdDesignation+" 4") != null &&  request.getParameter(localIdDesignation+" 4").trim().length()  == 0 ) ) {
      validationFailed = true; 
  }
+  
+ int countLid1 = 0;
  
- sourceMergeHandler.setLid1(request.getParameter(localIdDesignation+" 1"));
+ String  duplicateFound = request.getParameter("duplicateLid");
+ 
+ 
+if (duplicateFound != null && duplicateFound.length() > 0 ) {
+ 	%>
+		<div class="ajaxalert">
+   	   	  <table>
+ 			<tr>
+				<td>  
+				  <script>
+				   document.getElementById("duplicateIdsDiv").innerHTML = "<%=duplicateFound%>";
+ 			       document.getElementById("duplicateLid").value = "";
+                   </script>
+ 				</td>  
+			</tr>
+		</table>
+   </div>
+
+
+<%} else {%>
+
+   	   	  <table>
+ 			<tr>
+				<td>  
+				  <script>
+				   document.getElementById("duplicateIdsDiv").innerHTML = "";
+			       document.getElementById("duplicateLid").value = "";
+                  </script>
+ 				</td>  
+			</tr>
+
+<%
+sourceMergeHandler.setLid1(request.getParameter(localIdDesignation+" 1"));
  sourceMergeHandler.setLid2(request.getParameter(localIdDesignation+" 2"));
  sourceMergeHandler.setLid3(request.getParameter(localIdDesignation+" 3"));
  sourceMergeHandler.setLid4(request.getParameter(localIdDesignation+" 4"));
@@ -235,7 +269,8 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
   }
 %>
 
-<%  //if validation fails null value is returned to newSoArrayList
+<%  
+	//if validation fails null value is returned to newSoArrayList
     // if validation sucessfull or final merge array list of system objects are returned to newSoArrayList
 	ArrayList newSoArrayList= (isPopulateMergeFields || isShowEuid || validationFailed) ? null : (isMergeFinal)?sourceMergeHandler.mergeSystemObject():sourceMergeHandler.sourcerecordMergeSearch();
 
@@ -257,7 +292,10 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
    <script>  
 	   document.getElementById("mergeDiv").style.visibility = "hidden";
 	   document.getElementById("mergeDiv").style.display = "none";
-	   alert("<%=srcs[0]%> <%=bundle.getString("so_merge_confirm_text")%> <%=srcs[1]%>" );
+
+	   //Final success full message
+       document.getElementById("duplicateIdsDiv").innerHTML  = "<b><%=sourceHandler.getSystemCodeDescription(lidsSource)%>/<%=srcs[0]%></b> <%=bundle.getString("so_merge_confirm_text")%> <b><%=sourceHandler.getSystemCodeDescription(lidsSource)%>/<%=srcs[1]%></b>" ;
+	   
 	   ClearContents("basicMergeformData");
      </script>
   </td>
@@ -271,11 +309,13 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 <%if(isPopulateMergeFields) {
      
 	String POPULATE_KEY  = request.getParameter("POPULATE_KEY");
+	String LID  = request.getParameter("LID");
     String POPULATE_VALUE  = ("null".equalsIgnoreCase(request.getParameter("POPULATE_VALUE"))) ? null: request.getParameter("POPULATE_VALUE");
     String POPULATE_VALUE_DESC  = ("null".equalsIgnoreCase(request.getParameter("POPULATE_VALUE_DESC"))) ? null: request.getParameter("POPULATE_VALUE_DESC");
 
     sourceMergeHandler.getDestnRootNodeHashMap().put(POPULATE_KEY,POPULATE_VALUE);
-    /*
+
+     /*
 	HashMap rootNodeValuesHashMap  =  (HashMap) sourceMergeHandler.getSoMergePreviewMap().get("SYSTEM_OBJECT");
 	HashMap rootNodeValuesHashMapCodes  =  (HashMap) sourceMergeHandler.getSoMergePreviewMap().get("SYSTEM_OBJECT_EDIT");
 	
@@ -290,8 +330,58 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
     
  	soMergePreviewMap = sourceMergeHandler.getSoMergePreviewMap();
 	*/
+	String[] src_destns  = request.getParameter("mergeFinalForm_LIDS").split(":");
+    String lid_not_selected = new String();
+ 	for(int i = 0; i< src_destns.length;i++) {
+      if(!LID.equalsIgnoreCase(src_destns[i])) {
+          lid_not_selected = src_destns[i];
+      }
+    } 
+%>
+
+		 <table>
+		   <tr><td>
+		 <script>
+			 //Hide/visible the selected div layers accordingly as per the user selection in the lid merge screen
+             if(document.getElementById('highlight<%=LID%>:<%=POPULATE_KEY%>').style.visibility == 'hidden') {
+ 			  document.getElementById('highlight<%=LID%>:<%=POPULATE_KEY%>').style.visibility = 'visible';
+			  document.getElementById('highlight<%=LID%>:<%=POPULATE_KEY%>').style.display = 'block';
+
+			  document.getElementById('unhighlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.visibility = 'hidden';
+			  document.getElementById('unhighlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.display = 'none';
+			
+			} else {
+  			  document.getElementById('highlight<%=LID%>:<%=POPULATE_KEY%>').style.visibility = 'hidden';
+			  document.getElementById('highlight<%=LID%>:<%=POPULATE_KEY%>').style.display = 'none';
+
+			  document.getElementById('unhighlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.visibility = 'visible';
+			  document.getElementById('unhighlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.display = 'block';
+
+			}
+
+            if(document.getElementById('unhighlight<%=LID%>:<%=POPULATE_KEY%>').style.visibility == 'hidden' ) {
  
- %>
+			   document.getElementById('unhighlight<%=LID%>:<%=POPULATE_KEY%>').style.visibility = 'visible';
+			   document.getElementById('unhighlight<%=LID%>:<%=POPULATE_KEY%>').style.display = 'block';
+
+			   document.getElementById('highlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.visibility = 'hidden';
+			   document.getElementById('highlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.display = 'none';
+
+			} else {
+ 			   document.getElementById('unhighlight<%=LID%>:<%=POPULATE_KEY%>').style.visibility = 'hidden';
+			   document.getElementById('unhighlight<%=LID%>:<%=POPULATE_KEY%>').style.display = 'none';
+
+			   document.getElementById('highlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.visibility = 'visible';
+			   document.getElementById('highlight<%=lid_not_selected%>:<%=POPULATE_KEY%>').style.display = 'block';
+
+			}
+
+		 </script>
+		  </td></tr>
+		  </table>
+
+
+
  <%}%>
 
 
@@ -544,50 +634,105 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                          %>  
                                                                         <tr>
                                                                             <td>
-                                                                                <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
-                                                                                    
-                                                                                <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="background-color:none;">
-                                                                                  <%if (soMergePreviewMap != null) {%> <!-- if preview is then display the links-->
-                                                                                 <%if (previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null) {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
+                                                     <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
+                                                         <%if (soMergePreviewMap != null) {%> <!-- if preview is then display the links-->
+                                                                <%if (previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null) {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
 
-                                                                                    <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+                                                                <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+                                                                                <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" >
                                                                                     <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
                                                                                         <font class="highlight">
-                                                                                            <%if (fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                            <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
                                                                                             <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                             <%}%>
                                                                                         </font>
                                                                                     </a>  
-                                                                                    <%} else {%>
- 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
-                                                                                    <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
+                                                                                </div>
+                                                                                <div id="unhighlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="visibility:hidden;display:none;">
+                                                                                             <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                            <%} else {%> 
+                                                                                            <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                            <%}%>
+                                                                                  </div>
+                                                                <%} else {%>
+ 																	<%if(resultArrayMapMain.get(epathValue) == null) { %>
+                                                                      <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" >
+                                                                          <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
 																					  <font class="highlight">
-																				         <%if(fieldConfigMap.isSensitive()){%> 
+																				         <%if(!operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
 																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                         <%}else{%>
                                                                                          <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                        <%}%>
                                                                                      </font>
 																					 </a>
-                                                                                   <%} else {%> 
-                                                                                       <%if (fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                      <%} else {%> 
-                                                                                       <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                                      <%}%>
-                                                                                    <%}%>
-																				 <%}%>
-                                                                       <%} else {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
-                                                                                       <%if (fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                      <%} else {%> 
-                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                                      <%}%>
+																		 </div>
 
-                                                                       <%}%>
-                                                                              <%} else {%> <!--if not [preview -->
+ 																	  <%} else {%> 
+
+
+														<% if( ( (String) soHashMap.get("LID") ).equalsIgnoreCase( (String)soMergePreviewMap.get("LID") ) )  {%>
+ 
+                                                                      <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" > 
+                                                                         		<%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                <%} else {%> 
+                                                                                    <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                <%}%>
+ 																	 </div>
+
+                                                                      <div id="unhighlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="visibility:hidden;display:none">
+																					<a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
+																					  <font class="highlight">
+																				         <%if(!operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                         <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                     </font>
+																					 </a>
+																		 </div>
+
+
+                                                        <%}else {%>
+                                                                       <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" >
+ 
+                                                                                <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>
+																					   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                <%} else {%> 
+                                                                                       <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                <%}%>
+																	</div>
+                                                                    
+																	<div id="unhighlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="visibility:hidden;display:none">
+  
+                                                                                    <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
+																					  <font class="highlight">
+																				         <%if(!operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                         <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                     </font>
+																					 </a>
+																		 </div>
+
+														<%}%>
+
+                                                                      <%}%>
+																<%}%>
+                                                         <%} else {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
+
+                                                              <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>
+                                                                   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                              <%} else {%> 
+                                                                    <%=personfieldValuesMapEO.get(epathValue)%>
+                                                              <%}%>
+                                                         <%}%>
+                                                     <%} else {%> <!--if not [preview -->
                                                                                     <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
                                                                                      <font class="highlight">
-                                                                                        <%if (fieldConfigMap.isSensitive()) {%>                          <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>                          <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                         <%} else {%> 
                                                                                           <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                         <%}%>
@@ -596,14 +741,14 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 
  																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
  																					    <font class="highlight">
-																				          <%if(fieldConfigMap.isSensitive()){%> 
+																				          <%if(!operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
 																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                           <%}else{%>
                                                                                            <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                         <%}%>
                                                                                        </font>
                                                                                      <%} else {%> 
-                                                                                       <%if (fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                       <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                       <%}%>
@@ -614,13 +759,12 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                         
                                                                                     <%}%>
                                                                                         
-                                                                                </div>
                                                                                     
                                                                                 <%} else {%> <!-- Not null condition  -->
                                                                                     <%if (soMergePreviewMap != null) {%> <!-- if preview is then display the links-->
                                                                                         <%if (previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null) {%>
  		                                                                                <%if(mergePersonfieldValuesMapEO.get(epathValue) != null) { %> 
-                                                                                        <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="background-color:none;">		
+                                                                                        <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" >		
                                                                                           <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
                                                                                                 <font class="highlight">
                                                                                                      <!-- blank image -->
@@ -628,9 +772,32 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                                  </font>
                                                                                             </a>  
                                                                                         </div>
-																						<%}%>
+
+                                                                                        <div id="unhighlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="visibility:hidden;display:none;">		
+                                                                                                 <font class="highlight">
+                                                                                                     <!-- blank image -->
+                                                                                                     <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
+                                                                                                 </font>
+                                                                                         </div>
+																						<%} else {%>
+                                
+                                                                                        <div id="un	highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" style="visibility:hidden;display:none;">		
+                                                                                          <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>');getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   >
+                                                                                                <font class="highlight">
+                                                                                                     <!-- blank image -->
+                                                                                                     <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
+                                                                                                 </font>
+                                                                                            </a>  
+                                                                                        </div>
+
+                                                                                        <div id="highlight<%=personfieldValuesMapEO.get("LID")%>:<%=epathValue%>" >&nbsp;		
+                                                                                          </div>
+								
+
+ 																						<%}%>
+
                                                                                         <%} else {%>
-                                                                                        &nbsp;
+                                                                                        &nbsp; 
                                                                                         <%}%>
                                                                                     <%} else {%>		
                                                                                       <%if(resultArrayMapMain.get(epathValue) != null ) { %>
@@ -638,7 +805,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
  																						   <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
                                                                                        </font>
 																					 <%}else {%>
-                                                                                       &nbsp; 
+                                                                                       &nbsp;
                                                                                      <%}%>
 
 																					<%}%>
@@ -709,7 +876,10 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 
 																				<%}%>
 																				<%} else {%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
+                                                                                 <%if (!operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+																				 <%} else {%> 
+                                                                                  <%=minorObjectHashMap.get(epathValue)%>
+                                                                                 <%}%> 
 																				<%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
@@ -1060,6 +1230,8 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
   <%}%>
 
 <%}%>
+
+<%}%> <!-- if duplicate LIDS not found-->
 
 
            
