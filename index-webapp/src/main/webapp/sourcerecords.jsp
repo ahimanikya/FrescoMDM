@@ -83,8 +83,7 @@
            var minorArrayLocal = new Array();
   	       var editIndexid = "-1";
            var userDefinedInputMask="";
-           
-		   // LID merge related global javascript variables
+ 		   // LID merge related global javascript variables
 		   var lids="";
            var lidArray = [];
            var alllidsArray = [];
@@ -1517,15 +1516,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                            </tr>
                                                 
                                                     </table>
-                                                   </h:form>
+							                       <input type="hidden" id="duplicateLid" title="duplicateLid" />
+                                                    </h:form>
                                              <hr/>
 											 <table>
 											   <tr><td><div id="duplicateIdsDiv" class="ajaxalert"></div></td></tr>
 											   <tr><td><div id="sourceRecordMergeDiv"></div></td></tr>
 											   <tr><td><div id="sourceRecordEuidDiv"></div></td></tr>
 											 </table>
-
-
+ 
  
                                 </div>
                               <%}%>
