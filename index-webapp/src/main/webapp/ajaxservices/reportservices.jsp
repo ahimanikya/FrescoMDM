@@ -18,6 +18,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ReportHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.validations.EDMValidation"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -28,6 +29,13 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
+<%
+//set locale value
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
+%>
 	<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />  
 <%
 String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));

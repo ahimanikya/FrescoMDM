@@ -31,6 +31,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 
 <%
@@ -68,6 +69,11 @@ boolean isSessionActive = true;
 
              String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 
+%>
+<%
+//set locale value
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
 %>
 <f:view>
 	<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />

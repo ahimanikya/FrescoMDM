@@ -22,6 +22,7 @@
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 
 <%@ page import="java.util.Enumeration"%>
@@ -33,6 +34,13 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
+<%
+//set locale value
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
+%>
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 
 <%
