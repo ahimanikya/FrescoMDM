@@ -1138,9 +1138,9 @@ boolean isSessionActive = true;
 
 
             <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;height:140px;VISIBILITY:hidden;overflow:auto;">
-                <form name="linkForm">
-				<input type="hidden" name="sbrfullfieldname" title="sbrfullfieldname">
-				<input type="hidden" name="fieldDisplayName" title="fieldDisplayName">
+                <form name="linkForm"  id="linkForm">
+				<input type="hidden" name="sbrfullfieldname" id="sbrfullfieldname" title="sbrfullfieldname">
+				<input type="hidden" name="fieldDisplayName" id="fieldDisplayName" title="fieldDisplayName">
                 <table border="0" cellpadding="0" cellspacing="0" valign="center">
                     <tr>
                         <td colspan="2">
@@ -1174,9 +1174,9 @@ boolean isSessionActive = true;
                 </form>
             </div> 
            <div id="unLinkSoDiv" class="alert" style="TOP:620px;LEFT:450px;HEIGHT:120px;WIDTH:350px;VISIBILITY:hidden;">
-               <form name="unlinkForm">
-				<input type="hidden" name="sbrfullfieldname" title="sbrfullfieldname">
-				<input type="hidden" name="fieldDisplayName" title="fieldDisplayName">
+               <form name="unlinkForm" id="unlinkForm" >
+				<input type="hidden" name="sbrfullfieldname" id="sbrfullfieldname" title="sbrfullfieldname">
+				<input type="hidden" name="fieldDisplayName" id="fieldDisplayName" title="fieldDisplayName">
                 <table valign="center" style="padding-top:20px">
                     <tr>
                         <td>
