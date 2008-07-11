@@ -10,8 +10,10 @@
 
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+ <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
@@ -60,7 +62,16 @@ boolean isSessionActive = true;
 <%if (isSessionActive)  {%>
 <%
 SourceHandler sourceHandler = new SourceHandler();
+NavigationHandler navigationHandler = new NavigationHandler();
+
+//Keep the record-details page screen object in session when the user comes from the dashboard
+String pageFrom = request.getParameter("pageFrom");   
+if(pageFrom != null && "dashboard".equalsIgnoreCase(pageFrom)) {
+	  session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+}
+  
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
 MasterControllerService masterControllerService = new MasterControllerService();
 Operations operations  = new Operations();
 PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
@@ -87,7 +98,7 @@ ArrayList keys = new ArrayList();
 //List to hold the results
 ArrayList results = new ArrayList();
 
-    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
 String print_text = bundle.getString("print_text");
 String total_records_text = bundle.getString("total_records_text");
@@ -137,6 +148,86 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
 <%if(iscollectEuids) {%> <!-- if compare euids case -->
     
+    <%if(pageFrom != null && "dashboard".equalsIgnoreCase(pageFrom)) {
+     boolean validationFailed = false;
+	 DashboardHandler dashboardHandler = new DashboardHandler();
+     if( (request.getParameter("EUID 1") != null &&  request.getParameter("EUID 1").trim().length()  == 0 ) &&    
+        (request.getParameter("EUID 2") != null &&  request.getParameter("EUID 2").trim().length()  == 0 ) &&    
+        (request.getParameter("EUID 3") != null &&  request.getParameter("EUID 3").trim().length()  == 0 ) &&    
+        (request.getParameter("EUID 4") != null &&  request.getParameter("EUID 4").trim().length()  == 0 ) ) {
+        validationFailed = true;
+     }
+
+      
+	  
+	  //Set EUID1, EUID2, EUID3 and EUID 4 here
+      dashboardHandler.setEuid1(request.getParameter("EUID 1"));
+      dashboardHandler.setEuid2(request.getParameter("EUID 2"));
+      dashboardHandler.setEuid3(request.getParameter("EUID 3"));
+      dashboardHandler.setEuid4(request.getParameter("EUID 4"));
+
+	  session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+      boolean  duplicateFound = (request.getParameter("duplicateLid") != null && request.getParameter("duplicateLid").length() > 0 ) ? true : false;
+
+
+	  %>
+   <% 
+     if(validationFailed || duplicateFound) { //If validation fails display the error message here
+    %>
+     <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+ 				             <li>
+							    <%if(duplicateFound) {%>
+                                  <%=request.getParameter("duplicateLid")%>
+							    <%}else {%>
+							      <%=bundle.getString("ERROR_one_of_many")%>
+							    <%}%>
+							 </li>
+  				      </ul>
+				<td>
+			<tr>
+		</table>
+	</div>
+<%} else {%>
+
+ <% 
+	  ArrayList compareEuidsList = dashboardHandler.performCompareEuidSearch();	
+      Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+ %>
+     <%if(compareEuidsList != null && compareEuidsList.size() > 0) { %>
+		<table><tr><td>
+  		<script>
+          window.location = '/<%=URI%>/compareduplicates.jsf';
+ 		</script>
+ 		</td></tr>
+		</table>
+   <%} else {%>
+    <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+				             <li>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+								<%= facesMessage.getSummary() %>
+				             </li>
+						 <% } %>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+	</div>
+
+   <%}%>
+
+<%}%>
+
+
+    <%} else {%> <!--If not from the dashboard -->
 		<table><tr><td>
           <div class="ajaxalert">
 		<script>
@@ -155,6 +246,10 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 		  </div>
 		</td></tr>
 		</table>
+<%}%>
+
+
+
 
 <%}else if( euidValue != null && euidValue.length() > 0) {
 	 //results = patientDetailsHandler.performSubmit();
@@ -362,6 +457,7 @@ if (results != null)   {
 									
 				              %>
                                    <td>
+								    <nobr>
 								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>
 									  <%if(operations.isEO_Compare() ) {%>
 									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
@@ -384,6 +480,7 @@ if (results != null)   {
 									 <%}else {%>
                                         <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 
 									 <%}%>
+								    </nobr>
                                    </td>
                              <%}%>
                        </tr>
