@@ -9,15 +9,7 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
-<%@ page import="javax.el.*"  %>
-<%@ page import="javax.el.ValueExpression" %>
 <%
-   Operations operations=new Operations();
-   ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
-   String summaryText = bundle.getString("dashboard_summary_table_text");
-   String lookupText = bundle.getString("dashboard_lookup_euid_table_text");
-   String reportsText = bundle.getString("dashboard_reports_table_text");
-   String compareText = bundle.getString("dashboard_compareeuid_table_text");
    
    //ajax related variables
    double rand = java.lang.Math.random();
@@ -51,6 +43,13 @@
         <title><h:outputText value="#{msgs.application_heading}"/></title>   
         <body onload="javascript:setFocusOnFirstField(QuickSearchForm);">
        <%@include file="./templates/header.jsp"%>
+ <%
+   Operations operations=new Operations();
+   String summaryText = bundle.getString("dashboard_summary_table_text");
+   String lookupText = bundle.getString("dashboard_lookup_euid_table_text");
+   String reportsText = bundle.getString("dashboard_reports_table_text");
+   String compareText = bundle.getString("dashboard_compareeuid_table_text");
+%>
        
 <div id="mainContent">  <!-- Main content -->
 <table border="0" cellpadding="5" cellspacing="5">

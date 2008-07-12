@@ -33,12 +33,20 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
  URI = URI.substring(1, URI.lastIndexOf("/"));%>
+
+ <%
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
+%>
 
 <f:view>
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />       
@@ -184,7 +192,7 @@
                                         ValueExpression LIDVaueExpression = null;
                                         ValueExpression sourceSystemVaueExpression = null;
                                         //ConfigManager.init();
-                                         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+                                         //ResourceBundle bundle = //ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, //FacesContext.getCurrentInstance().getViewRoot().getLocale());
                                         String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 
                                         EPathArrayList ePathArrayList = new EPathArrayList();

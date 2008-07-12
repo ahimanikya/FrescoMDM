@@ -21,7 +21,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
-
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
  
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="java.util.HashMap"  %>
@@ -58,7 +58,13 @@ function setRand(thisrand)  {
 
 
 %>
-
+<%
+//set locale value
+if(session!=null ){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
+%>
 <f:view>
     <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
     
@@ -97,14 +103,14 @@ function setRand(thisrand)  {
             <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
          </head>
 <%
-   ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
-   String mergeText = bundle.getString("Merged_Transaction_Report_Label");
+  // ResourceBundle bundle = //ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getV//iewRoot().getLocale());
+  /* String mergeText = bundle.getString("Merged_Transaction_Report_Label");
    String deactiveText = bundle.getString("Deactivated_Record_Report_Label");
    String unmergeText = bundle.getString("Unmerged_Transaction_Report_Label");
    String updateText = bundle.getString("Updated_Record_Report_Label");
    String activityText = bundle.getString("Activity_Report_Label");
    String potDupText = bundle.getString("Potential_Duplicate_Report_Label");
-   String assumedText = bundle.getString("Assumed_Matches_Report_Label");
+   String assumedText = bundle.getString("Assumed_Matches_Report_Label"); */
 %>
         
         <body class="yui-skin-sam">
@@ -115,6 +121,13 @@ function setRand(thisrand)  {
                         <!--td><%=(String)request.getAttribute("tabName")%></td-->
                               <%
 
+                               String mergeText = bundle.getString("Merged_Transaction_Report_Label");
+                               String deactiveText = bundle.getString("Deactivated_Record_Report_Label");
+                               String unmergeText = bundle.getString("Unmerged_Transaction_Report_Label");
+                               String updateText = bundle.getString("Updated_Record_Report_Label");
+                               String activityText = bundle.getString("Activity_Report_Label");
+                               String potDupText = bundle.getString("Potential_Duplicate_Report_Label");
+                               String assumedText = bundle.getString("Assumed_Matches_Report_Label");
                                 ScreenObject subScreenObj = null;
 
 								//get the Sorted Screen objects

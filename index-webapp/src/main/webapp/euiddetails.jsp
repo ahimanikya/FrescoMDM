@@ -19,6 +19,7 @@
 <%@ page import="com.sun.mdm.index.objects.TransactionObject"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 
 <%@ page import="java.text.SimpleDateFormat"  %>
@@ -36,6 +37,14 @@
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
  %>
+<%
+//set locale value
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+
+}
+%>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <f:view>
     

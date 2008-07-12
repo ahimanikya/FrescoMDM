@@ -11,6 +11,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AssumeMatchHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.sql.Timestamp"  %>
 <%@ page import="java.util.HashMap"  %>
@@ -21,6 +22,13 @@
 //http://www.ligaturesoftware.com
 %>
 <f:view>    
+<%
+//set locale value
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
+%>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <html>
         <head>

@@ -81,7 +81,7 @@
                                         <tr>
                                             
                                             <%
-			ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			//ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, //FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();

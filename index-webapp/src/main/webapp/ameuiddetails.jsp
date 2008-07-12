@@ -21,6 +21,7 @@
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -32,6 +33,14 @@
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <f:view>
+   <%
+//set locale value
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+
+}
+%>
      <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
     <html>
         <head>

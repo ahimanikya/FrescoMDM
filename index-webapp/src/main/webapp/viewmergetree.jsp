@@ -6,6 +6,7 @@
 <%@ taglib uri="http://yui4jsf.sourceforge.net" prefix="yui"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 <%
 //Author Sridhar Narsingh
@@ -21,6 +22,13 @@
 	<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/yui4jsfResources.jsf?name=tree.css&folder=treeview&fromAssets=true"--> 
 	<link type="text/css" rel="stylesheet" href="css/yui/treeview/assets/skins/sam/treeview-skin.css"> 
        </head>
+<%
+//set locale value
+if(session!=null ){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
+%>
 <f:view>
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />       
 <body>	

@@ -146,7 +146,7 @@
             int countEnt = 0;
 
             Operations operations = new Operations();
-            ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+          //  ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
 
