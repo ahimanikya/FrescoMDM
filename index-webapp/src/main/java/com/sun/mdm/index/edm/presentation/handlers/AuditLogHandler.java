@@ -309,7 +309,7 @@ public class AuditLogHandler extends ScreenConfiguration {
             setAuditLogVO(new AuditDataObject[alPageIter.count()]);
             
            SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
-           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
             //Populate the Value Object to be displayed on the JSF page.
             while (alPageIter.hasNext()) {
                 auditLogVO[i] = new AuditDataObject(); //to be safe with malloc

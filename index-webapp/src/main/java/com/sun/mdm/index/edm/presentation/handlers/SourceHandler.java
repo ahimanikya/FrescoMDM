@@ -297,7 +297,7 @@ public class SourceHandler {
 //        
 //          
 
-          SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+          SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
           String createDate = null;
         try {
             if (lids.length == 1) { // only sigle LID entered by the user

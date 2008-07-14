@@ -32,6 +32,7 @@
 package com.sun.mdm.index.edm.presentation.handlers; 
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
@@ -80,6 +81,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     private HashMap parametersMap =  new HashMap();    
     private HashMap actionMap =  new HashMap();    
     private ArrayList nonUpdateableFieldsArray = new ArrayList();      
+    Operations operations = new Operations();
     String errorMessage = null;   
     private  static final String SEARCH_DUPLICATES="Search Duplicates";
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
@@ -1239,14 +1241,14 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                 if (value instanceof java.util.Date) {
                     dateField = simpleDateFormatFields.format(value);
                
-                    if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                    if (value!=null && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
                          resultHashMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                     } else {
                         resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
                     }                
                     //resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
                 } else {
-                    if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                    if (value!=null && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
 
                         resultHashMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                     } else {
@@ -1284,7 +1286,7 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     private HashMap getValuesForResultFields(ObjectNode objectNode, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
         HashMap resultHashMap=new HashMap();
         ArrayList fieldConfigArray = super.getResultsConfigArray();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
         String dateField = new String();
         if(retrieveResultsFields!=null){
             for (int i = 0; i < retrieveResultsFields.size(); i++) {

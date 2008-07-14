@@ -9,6 +9,7 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
@@ -100,6 +101,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     
+    Operations operations = new Operations();
     /** Creates a new instance of PatientDetailsHandler */
     
     public PatientDetailsHandler() {
@@ -407,14 +409,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                            if(value instanceof java.util.Date) {
                                dateField = simpleDateFormatFields.format(value);
                                 
-                               if (value != null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                               if (value != null && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
                                     fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                } else {
                                     fieldvalues.put(fieldConfig.getFullFieldName(), dateField);
                                 }
                                 
                            } else {
-                               if (value != null  && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                               if (value != null  && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
                                     fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                } else {
                                    if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
