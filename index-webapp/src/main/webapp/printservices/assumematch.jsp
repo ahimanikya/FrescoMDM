@@ -19,6 +19,7 @@
 <%@ page import="com.sun.mdm.index.master.search.transaction.TransactionSummary"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AssumeMatchHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -66,6 +67,12 @@ boolean isSessionActive = true;
 </head>
 <body>
 
+<%
+//set locale value
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+ 
+%>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 
 
@@ -102,7 +109,7 @@ boolean keyPrinted = false;
  */
 boolean euidPrinted = false;
 
-ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+ ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 String print_text = bundle.getString("print_text");
 String total_records_text = bundle.getString("total_records_text");
 ArrayList fullFieldNamesList  = new ArrayList();

@@ -20,6 +20,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ReportHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.validations.EDMValidation"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -63,7 +64,11 @@ String reportName = request.getParameter("tabName");
  <link type="text/css" href="../css/styles.css"  rel="stylesheet" media="screen, print">
 </head>
 <body>
-
+<%
+//set locale value
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+%>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 	
 
@@ -95,7 +100,7 @@ ArrayList keys = new ArrayList();
 //List to hold the results
 ArrayList results = new ArrayList();
 
-ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 String mergeText = bundle.getString("Merged_Transaction_Report_Label");
 String deactiveText = bundle.getString("Deactivated_Record_Report_Label");
 String unmergeText = bundle.getString("Unmerged_Transaction_Report_Label");

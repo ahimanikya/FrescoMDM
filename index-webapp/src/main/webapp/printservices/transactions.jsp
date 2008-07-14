@@ -19,6 +19,7 @@
 <%@ page import="com.sun.mdm.index.master.search.transaction.TransactionSearchObject"%>
 <%@ page import="com.sun.mdm.index.master.search.transaction.TransactionSummary"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.TransactionHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
@@ -58,6 +59,11 @@ boolean isSessionActive = true;
 <%if (isSessionActive)  {%>
 
 <%ScreenObject  screenObject = (ScreenObject) session.getAttribute("ScreenObject");%>
+<%
+//set locale value
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+%>
 <html>
 <head>
  <title> <%=screenObject.getDisplayTitle()%> </title>

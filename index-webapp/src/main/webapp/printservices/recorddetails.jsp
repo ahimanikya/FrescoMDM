@@ -21,6 +21,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -56,6 +57,11 @@ boolean isSessionActive = true;
 <%if (isSessionActive)  {%>
 
 <%ScreenObject  screenObject = (ScreenObject) session.getAttribute("ScreenObject");%>
+<%
+//set locale value
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+%>
 <html>
 <head>
  <title> <%=screenObject.getDisplayTitle()%> </title>
