@@ -34,6 +34,7 @@
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="java.util.ResourceBundle"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager" %>
 
 <f:view>
     
@@ -417,7 +418,7 @@ function align(thisevent,divID) {
    //currentTime = new java.util.Date();
    String queryStr ="";
    Long currentTime = new java.util.Date().getTime();
-   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
    String startDateField = simpleDateFormatFields.format(currentTime);
    queryStr = "create_end_date="+startDateField;
 
@@ -428,7 +429,7 @@ function align(thisevent,divID) {
    Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
    Date dt24HrsBack = new Date(currentTime - milliSecsInADay);
 
-   simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+   simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
    String endDateField = simpleDateFormatFields.format(ts24HrsBack);
    queryStr += "&create_start_date="+endDateField;
 

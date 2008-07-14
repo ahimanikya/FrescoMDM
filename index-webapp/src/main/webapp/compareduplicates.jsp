@@ -454,35 +454,35 @@
 										  %> <!-- if preview is then display the links-->
 										       <%if ((previewEuidsHashMap.get((String) personfieldValuesMapEO.get("EUID")) != null  && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
  	                                      <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
-                                           <font class="highlight">
-                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
-                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                              <%}else{%> 
-											     <%=personfieldValuesMapEO.get(epathValue)%>
-                                               <%}%>
- 											 </font>
-                                           </a>  
+                                                                                           <font class="highlight">
+                                                                                               <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>                                                               
+                                                                                               <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                               <%} else {%> 
+                                                                                               <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                               <%}%>
+                                                                                           </font>
+                                                                                       </a>  
 											<%} else {%>
-                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
-                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                              <%}else{%> 
-											     <%=personfieldValuesMapEO.get(epathValue)%>
-                                               <%}%>
-											<%}%>
+                                                                                        <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>                                                               
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%} else {%> 
+                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                        <%}%>
+                                                                                        <%}%>
 
 		                                   <%}else {%> <!--if not [preview -->
  										       <%if ((countEnt > 0  &&
                                                 resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
 
                                             <font class="highlight">
-                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                  		      <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                               <%}else{%> 
 											     <%=personfieldValuesMapEO.get(epathValue)%>
                                                <%}%>
                                             </font>
 											<%} else {%>
-                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                  		      <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                               <%}else{%> 
 											     <%=personfieldValuesMapEO.get(epathValue)%>
@@ -499,7 +499,7 @@
 							     <div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">		
  								 <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>',' ','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
                                               <font class="highlight">
-                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                  		      <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                               <%}else{%> 
 											     <!-- blank image -->
@@ -557,13 +557,13 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
 										<%if(fieldConfigMap.isKeyType()) {%>
                                                                                    <b>
-                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
      																					<%=minorObjectHashMap.get(epathValue)%>
                                                                                      <%}%>
 																				   </b>
-										<%}else{if (fieldConfigMap.isSensitive()){%>																				  
+										<%}else{if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>																				  
                                                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                 <%}else {%>
                                                                                 <%=minorObjectHashMap.get(epathValue)%>
@@ -673,7 +673,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <tr>
                                                                             <td>
                                                                                 <%if (soHashMapValues.get(epathValue) != null) {%>
-                                                                                      <%if (fieldConfigMap.isSensitive()){%>
+                                                                                      <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=soHashMapValues.get(epathValue)%>
@@ -730,14 +730,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
                                                                                    <b>
-                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive()&& !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>
                                                                                      <%}%>
  																				   </b>
 																				  <%}else{%>
-                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>
@@ -841,7 +841,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <tr>
                                                                             <td>
                                                                                 <%if (eoValuesMap.get(epathValue) != null) {%>
-                                                                                  <%if (fieldConfigMap.isSensitive()){%>
+                                                                                  <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=eoValuesMap.get(epathValue)%>
@@ -898,14 +898,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
                                                                                    <b>
-                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>
                                                                                      <%}%>
  																				   </b>
 																				  <%}else{%>
-                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>
@@ -1021,7 +1021,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                               
                                                                               <%if(mergePersonfieldValuesMapEO.get(epathValue) != null ) {%>
                                                                                <span id="<%=epathValue%>">
-                                                                                      <%if (fieldConfigMap.isSensitive()){%>
+                                                                                      <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=mergePersonfieldValuesMapEO.get(epathValue)%>
@@ -1089,7 +1089,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                                         <td>
 										                                 <%if( request.getAttribute("eoMultiMergePreview") != null  ) {%>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>

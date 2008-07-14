@@ -15,6 +15,7 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.sql.Timestamp"  %>
 <%@ page import="java.util.HashMap"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager" %>
 
 <%
 //Author Sridhar Narsingh
@@ -344,7 +345,7 @@ function setRand(thisrand)  {
    //currentTime = new java.util.Date();
    String queryStr ="";
    Long currentTime = new java.util.Date().getTime();
-   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
    String startDateField = simpleDateFormatFields.format(currentTime);
    queryStr = "create_end_date="+startDateField;
 
