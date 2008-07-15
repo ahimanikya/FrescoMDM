@@ -61,6 +61,9 @@
             
             <script type="text/javascript" src="scripts/yui4jsf/yahoo-dom-event/yahoo-dom-event.js"></script>
             <script type="text/javascript" src="scripts/yui4jsf/animation/animation-min.js"></script>                        
+			<script>
+		     var euidValueArray=[];
+			</script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title> 
         <body>
@@ -78,7 +81,7 @@
                         <tr>
                             <td>
                                 <div style="height:500px;overflow:auto;">
-                                    <table>
+                                    <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
                                             
                                             <%
@@ -230,7 +233,7 @@
                                                         <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
                                                             <div id="personassEuidDataContent" style="visibility:visible;display:block;">
                                                                 
-                                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                                <table border="0" cellspacing="0" cellpadding="0" class="yellow">
 																<tr><td>EUID</td></tr>
 																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
                                                                     <%
@@ -694,10 +697,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
                                           HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                           HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+										  String euid = (String) personfieldValuesMapEO.get("EUID");
 										  eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
 
 											   %>
-  										<% if (countEnt == 0) {%>
+  									    <script>
+												 euidValueArray.push('<%=euid%>');
+										</script>
+                                 		<% if (countEnt == 0) {%>
                                         <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                         <!--Displaying view sources and view history-->
                                         <% }%>
@@ -708,7 +715,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     <h:form>
                                                         <tr> 
                                                           <td valign="top">
-                                                             <a title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                             <a title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0',euidValueArray)" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                           </td>                                              
                                                         </tr>
                                                         <%
@@ -734,7 +741,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 										<!--START  Extra tds for the sources-->
                                         <% for (int sCount = 0; sCount < eoSources.size(); sCount++) {%>
                                          <td>
-										  <div id="spacer<%=countEnt%><%=sCount%>"  style="visiblity:hidden;display:none;">
+										  <div id="spacer<%=sCount%><%=countEnt%>"  style="visiblity:hidden;display:none;">
 										   <table>
 										     <tr>
 											   <td>

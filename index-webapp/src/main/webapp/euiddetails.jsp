@@ -99,6 +99,7 @@ if(session!=null){
 			 var userDefinedInputMask="";
              var URI_VAL = '<%=URI%>';
 			 var RAND_VAL = '<%=rand%>';
+		   var euidValueArray=[];
 		</script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title> 
@@ -1089,6 +1090,10 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
     
     							
 							          %>
+									  	<script>
+												 euidValueArray.push('<%=euid%>');
+										</script>
+
                                         <% if (countEnt == 0) {%>
                                         <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                         <% }%>
@@ -1145,7 +1150,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 												     if(ops.isTransLog_SearchView()){
 												  %>
                                                       <td valign="top">
-                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
+                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>','true',euidValueArray)" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
@@ -1153,7 +1158,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                   </tr> 
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a  title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a  title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>',euidValueArray)" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
 
@@ -1170,7 +1175,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         ValueExpression tranNoValueExpressionviewmerge = ExpressionFactory.newInstance().createValueExpression(tranNo, tranNo.getClass());
                                                         ValueExpression eoArrayListVE = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                       %>  
-                                                          <tr>
+                                                           <tr>
                                                             <td valign="top">
                                                                 <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}" title="#{msgs.Unmerge_but_text}"
                                                                               onclick="Javascript:showConfirm('unmergePopupDiv',event)" 
