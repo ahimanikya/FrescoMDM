@@ -1881,6 +1881,11 @@ function getFormValues(formName)   {
    for(i=0; i< thisFrm.elements.length; i++)   {      
 			if(thisFrm.elements[i].title.length != 0 ) {
 				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+
+				//fix for issue # 14 for handlling '+' to  standardization
+				 if(query .indexOf('+') != -1) {
+   		          query  = query.replace("+","%2B");
+  	            }
 	    	}
     }
 

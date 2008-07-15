@@ -75,7 +75,7 @@
     </html>
     
 	<%  //invalidate the session and logut the user to start over once again
-	    request.setAttribute("Logout", "LoggedOut");
-        request.getSession().invalidate(); 
+	    //request.setAttribute("Logout", "LoggedOut");
+       // request.getSession().invalidate(); 
              
 	%>
