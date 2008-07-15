@@ -1121,36 +1121,72 @@ function populateUnLinkFields() {
 
 var mergeEuids="";
 var sourceEuids="";
+
+//		   var euids="";
+ //          var euidArray = [];
+ //          var alleuidsArray = [];
+
 function accumilateMultiMergeEuids(mergeEuidVar) {
-    var tab = document.getElementById('mainEuidContent'+mergeEuidVar);
-    if (tab.className == 'yellow')   {
-        tab.className = 'blue'; 
-    } else {
-       tab.className = 'yellow';
-   }
+        var found = "";
+        var allEUIDs = [];
+        var allEUIDsCheck = [];
+        var disableArray = [];
+        for (var i=0; i<alleuidsArray.length; i++) { 
+            allEUIDs[i] = alleuidsArray[i];
+            allEUIDsCheck[i] = alleuidsArray[i];
+         }
 
-var tab = document.getElementById('personEuidDataContent'+mergeEuidVar);
-if (tab.className == 'yellow')   {
-    tab.className = 'blue';
-} else {
-tab.className = 'yellow';
-}
+         //If the destination EO is removed from the selection remove all selections and reset the array of euids
+        if (euidArray.length > 1 && euidArray[0] == mergeEuidVar)   {
+            for (var i=0; i<euidArray.length; i++) {            
+               document.getElementById('mainEuidContent'+euidArray[i]).className = 'yellow';
+               document.getElementById('personEuidDataContent'+euidArray[i]).className = 'yellow'; 		  
+	        }
+		    //Deselect and reset the array size here
+             euidArray = [];
+        } else {
+          for (var i=0; i<euidArray.length; i++) {            
+            if (euidArray[i] == mergeEuidVar)   {
+                euidArray.splice(i,1);
+                found = "true";
+               }
+           }
+ 
+            if (found != "true")    {
+               euidArray.push(mergeEuidVar);
+            }  
+             var tab = document.getElementById('mainEuidContent'+mergeEuidVar);
+             if (tab.className == 'yellow')   {
+               tab.className = 'blue'; 
+             } else {
+               tab.className = 'yellow';
+             }
 
-mergeEuids+=mergeEuidVar+'##';     
+             var tab = document.getElementById('personEuidDataContent'+mergeEuidVar);
+             if (tab.className == 'yellow')   {
+                 tab.className = 'blue';
+             } else {
+                tab.className = 'yellow';
+             }        
+		}
+        mergeEuids+=mergeEuidVar+'##';     
 
-var mainEuidArray = mergeEuids.split("##");
-var mainEuid = mainEuidArray[0];
+        var mainEuidArray = mergeEuids.split("##");
+        var mainEuid = mainEuidArray[0];
 
-document.getElementById('previewForm:destinationEO').value = mainEuid;
-document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
-document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
+        document.getElementById('previewForm:destinationEO').value = mainEuid;
+        document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
+        //document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
- if(mainEuidArray.length > 2) {
-    document.getElementById('previewForm:previewhiddenMergeEuids').value = mergeEuids;
-    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuids; 
-    document.getElementById('mergeEuidsDiv').style.visibility = "visible";
-    document.getElementById('mergeEuidsDiv').style.display = "block";
- }
+         if(euidArray.length >= 2) {
+            document.getElementById('previewForm:previewhiddenMergeEuids').value = euidArray;
+            document.getElementById('mergeFinalForm:srcDestnEuids').value = euidArray; 
+            document.getElementById('mergeEuidsDiv').style.visibility = "visible";
+            document.getElementById('mergeEuidsDiv').style.display = "block";
+         } else {
+            document.getElementById('mergeEuidsDiv').style.visibility = "hidden";
+            document.getElementById('mergeEuidsDiv').style.display = "none";
+		 }
 }
 
 function finalMultiMergeEuids(mergeDivId,thisEvent)  {
@@ -1265,6 +1301,11 @@ function showResolveDivs(divId,thisEvent,potDupId)  {
    if(document.getElementById('reportYUISearch:potentialDuplicateId') != null ) {
      document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
    }
+
+   if(document.getElementById('resolvePotentialDuplicateId') != null ) {
+	 
+     document.getElementById('resolvePotentialDuplicateId').value = potDupId;
+     }
 
 }
 
@@ -1535,25 +1576,30 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
 }
 
 //Functions for view sources/history in euid details pages
-function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize) {
+function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize,euidsArray) {
   
     var divLayerMain;
     var divLayerHistory;
+ 	//Hide/show extra source divs spacer<%=euid%><%=sCount%><%=countEnt%>
+       for(var s=0;s<count;s++) {
+        for(var i=0;i<totalColumns;i++) {
+        // var spacerDiv = document.getElementById('spacer'+euidsArray[e]+s+i);    
+         var spacerDiv = document.getElementById('spacer'+s+i);    
+  	     if(spacerDiv != null) {
+	       //alert(countEnt  + '<<< spacer??'+'??'+s+'??'+i + "~~~~~~~~~" +spacerDiv);
+		   if(countEnt  == i ) {
+	         if (spacerDiv.style.display=="block") {
+               spacerDiv.style.visibility="hidden";
+               spacerDiv.style.display="none";
+	         } else {
+               spacerDiv.style.visibility="visible";
+               spacerDiv.style.display="block";
+ 	        } 
+		  } //if euids array condition
+	    } //if spacer div condition
+	   } //Total number of euid columns
+	  }//Total numbe of src records column
  
-	//Hide/show extra source divs 
-    for(var i=0;i<count;i++) {
-     var spacerDiv = document.getElementById('spacer'+countEnt+i);    
-  	 if(spacerDiv != null) {
-	    if (spacerDiv.style.display=="block") {
-          spacerDiv.style.visibility="hidden";
-          spacerDiv.style.display="none";
-	   } else {
-         spacerDiv.style.visibility="visible";
-         spacerDiv.style.display="block";
- 	   }
-	  }
-	}
-
     for(var i=0;i<count;i++) {
       divLayerMain = document.getElementById(mainDupSources+countEnt+i);
       if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
@@ -1567,8 +1613,10 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
          }
          
          //display or hide preview pane
-         document.getElementById("previewPane").style.visibility="hidden";
-         document.getElementById("previewPane").style.display="none";
+		 if(document.getElementById("previewPane") != null ) {
+            document.getElementById("previewPane").style.visibility="hidden";
+            document.getElementById("previewPane").style.display="none";
+		 }
          //display/hide other divs
          for(var c=0;c<totalColumns;c++) {
 	        //HIDE history divs by default
@@ -1602,8 +1650,10 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
        divLayerMain.style.display="none";
  
        //display or hide preview pane
-       document.getElementById("previewPane").style.visibility="visible";
-       document.getElementById("previewPane").style.display="block";
+       if(document.getElementById("previewPane") != null ) {
+         document.getElementById("previewPane").style.visibility="visible";
+         document.getElementById("previewPane").style.display="block";
+	   }
        //display main and other duplicate divs
        for(var c=0;c<totalColumns;c++) {
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
@@ -1615,12 +1665,26 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize)
           }
  }
 }
-} 
-
-function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,mergeflag) {
+}            
+//View History for the EOS
+function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,mergeflag,euidsArray) {
     var divLayerHist;
     var divLayerSources;
-    //hideOther(mainDupSources,count,countEnt);
+   	
+	//Hide/show extra source divs 
+    for(var s=0;s<count;s++) {
+        for(var i=0;i<totalColumns;i++) {
+        // var spacerDiv = document.getElementById('spacer'+euidsArray[e]+s+i);    
+         var spacerDiv = document.getElementById('spacer'+s+i);    
+  	     if(spacerDiv != null) {
+	       //alert(countEnt  + '<<< spacer??'+'??'+s+'??'+i + "~~~~~~~~~" +spacerDiv);
+            spacerDiv.style.visibility="hidden";
+            spacerDiv.style.display="none";
+ 	    } //if spacer div condition
+	   } //Total number of euid columns
+	}//Total numbe of src records column
+ 
+
 
 	for(var i=0;i<count;i++) {
     divLayerHist = document.getElementById(mainDupHistory+countEnt+i);
@@ -1634,10 +1698,10 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
             divLayerHist.style.visibility="visible";
             divLayerHist.style.display="block";
         }
-		if(document.getElementById("previewPane") != null) {
        //display or hide preview pane
-       document.getElementById("previewPane").style.visibility="hidden";
-       document.getElementById("previewPane").style.display="none";
+		if(document.getElementById("previewPane") != null ) {
+          document.getElementById("previewPane").style.visibility="hidden";
+          document.getElementById("previewPane").style.display="none";
 		}
 
 
@@ -1670,22 +1734,28 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
        }
 	   if(mergeflag == 'true') {
 	    //viewMergeRecords
-         document.getElementById("viewMergeRecords").style.visibility="visible";
-         document.getElementById("viewMergeRecords").style.display="block";
+         if(document.getElementById("viewMergeRecords") != null) {
+	       //viewMergeRecords
+           document.getElementById("viewMergeRecords").style.visibility="visible";
+           document.getElementById("viewMergeRecords").style.display="block";
+         }
        }
     } else if (divLayerHist.style.display=="block") {
        divLayerHist.style.visibility="hidden";
        divLayerHist.style.display="none";
  
        //display or hide preview pane
-       document.getElementById("previewPane").style.visibility="visible";
-       document.getElementById("previewPane").style.display="block";
+	   	if(document.getElementById("previewPane") != null ) {
+           document.getElementById("previewPane").style.visibility="visible";
+           document.getElementById("previewPane").style.display="block";
+		}
 
 	   if(mergeflag == 'true') {
 	    //viewMergeRecords
-         
-         document.getElementById("viewMergeRecords").style.visibility="hidden";
-         document.getElementById("viewMergeRecords").style.display="none";
+         if(document.getElementById("viewMergeRecords") != null) {
+           document.getElementById("viewMergeRecords").style.visibility="hidden";
+           document.getElementById("viewMergeRecords").style.display="none";
+		 }
        }
 
 
@@ -2024,4 +2094,11 @@ function populateContents(thisForm,thistitle,thisvalue)  {
 	}
  }
  return;
+}
+
+function makeDraggable(divId) {
+ 	    var dd;
+        YAHOO.util.Event.onDOMReady(function() {
+            dd = new YAHOO.util.DD(divId);
+         }); 
 }
