@@ -65,7 +65,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     private static transient final Localizer mLocalizer = Localizer.get();
     private static final String SEARCH_PATIENT_DETAILS = "Record Details";
     private static final String SEARCH_EUID_DETAILS = "EUID Details";
-
+    public static final String CONCURRENT_MOD_ERROR = "CONCURRENT_MOD_ERROR";
+    
     //result array list for the out put
     private ArrayList resultArrayList = new ArrayList();
     private String[] euidCheckValues;
@@ -102,6 +103,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     
     Operations operations = new Operations();
+    
+    /**HashMap used for the updated root node values for the surviving EOduring merge process**/
+    private HashMap destnRootNodeHashMap = new HashMap();
+    /**ArrayList used for the updated minor object values for the surviving EO during merge process**/
+    private ArrayList destnMinorobjectsList = new ArrayList();
     /** Creates a new instance of PatientDetailsHandler */
     
     public PatientDetailsHandler() {
@@ -258,7 +264,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 if (eo != null) {
                     HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                     results.add(eoHashMap);
-                    httpRequest.setAttribute("comapreEuidsArrayList", results);
+                    //httpRequest.setAttribute("comapreEuidsArrayList", results);
                     return results;
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID: " + euid + " not found", "EUID: " + euid + " not found"));
@@ -275,7 +281,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                 HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                 results.add(eoHashMap);
-                httpRequest.setAttribute("comapreEuidsArrayList", results);
+                //httpRequest.setAttribute("comapreEuidsArrayList", results);
                 return results;
 
             } else {
@@ -528,6 +534,115 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         return "Compare Duplicates";
     }
 
+    /** 
+     * Added By Rajani Kanth  on 07/06/2008
+     * 
+     * This method is called from the ajax services for resolving the potential duplicate.
+     *
+     * @param potentialDuplicateIdArg - resolving potential duplicate id.
+     *          resolveTypeArg - resolve type (AutoResolve/Resolve)
+     *                 
+     * @return ArrayList of potential duplicates with modified status (A/R) OR
+     *         null if resolve operation fails or any exception occurs.
+     * 
+     */
+
+    public ArrayList resolvePotentialDuplicate(String potentialDuplicateIdArg,String resolveTypeArg) {
+        
+        ArrayList modifiedArrayList = new ArrayList();
+        try {
+            
+            //resolve the potential duplicate as per resolve type
+            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(resolveTypeArg)) ? false : true;
+            String resolveString = ("AutoResolve".equalsIgnoreCase(resolveTypeArg)) ? "R": "A";
+
+            //flag=false incase of autoresolve
+            //flag = true incase of permanant resolve
+            masterControllerService.setAsDifferentPerson(potentialDuplicateIdArg, resolveBoolean);
+             
+            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
+            
+            //reset the status and set it back in session
+            for (int i = 0; i < eoArrayList.size(); i++) {
+                HashMap objectHashMap = (HashMap) eoArrayList.get(i);
+                //set the resolve type for the selected potential duplicate
+                 if(potentialDuplicateIdArg.equalsIgnoreCase((String)objectHashMap.get("PotDupId"))) {
+                  objectHashMap.put("Status", resolveString);
+                }
+                modifiedArrayList.add(objectHashMap);
+            }
+            session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
+
+        } catch (ProcessingException ex) {
+            mLogger.error(mLocalizer.x("PDH010: Encountered the ProcessingException :{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            return null;
+        } catch (UserException ex) {
+            mLogger.error(mLocalizer.x("PDH011: Encountered the  UserException :{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("PDH011: Encountered the  UserException :{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            return null;
+         }
+   
+        return modifiedArrayList;
+    }   
+    
+    
+    /** 
+     * 
+     * Added By Rajani Kanth  on 07/06/2008
+     * 
+     * This method is called from the ajax services for unresolving the potential duplicate.
+     *
+     * @param potentialDuplicateIdArg - unresolving potential duplicate id.
+     *          
+     *                 
+     * @return ArrayList of potential duplicates with modified status (A/R) OR
+     *         null if unresolve operation fails or any exception occurs.
+     * 
+     */
+    public ArrayList unresolvePotentialDuplicate(String potentialDuplicateIdArg) {
+        ArrayList modifiedArrayList = new ArrayList();
+        try {
+            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
+             
+            //un resolve the potential duplicate as per resolve type
+            masterControllerService.unresolvePotentialDuplicate(potentialDuplicateIdArg);
+   
+            //reset the status and set it back in session
+            for (int i = 0; i < eoArrayList.size(); i++) {
+                HashMap objectHashMap = (HashMap) eoArrayList.get(i);
+                 //set the resolve type to "U" (UnResolve)for the selected potential duplicate
+                if(potentialDuplicateIdArg.equalsIgnoreCase((String)objectHashMap.get("PotDupId"))) {
+                  objectHashMap.put("Status", "U");
+                }
+                modifiedArrayList.add(objectHashMap);
+            }
+            session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
+
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH012: Encountered the  ProcessingException :{0} ", ex.getMessage()));
+            return null;
+
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH013: Encountered the  UserException :{0} ", ex.getMessage()));
+             return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("PDH011: Encountered the  UserException :{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            return null;
+        }
+        return modifiedArrayList;
+    }
+
+
+    
+    
     /**
      * 
      * @param event
@@ -632,11 +747,274 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("mergedEOMap", fieldValuesMergeMap);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH016: Encountered the Exception :{0} ", ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH016: Encountered the Exception :{0} ", ex.getMessage()));
         }
 
     }
+    /** 
+     * Added By Rajani Kanth  on 07/06/2008<br>
+     * 
+     * This method is used to get the preview of the surviving enterprise object. <br>
+     * This method is called from the ajax services for merging the enterprise object.<br>
+     *
+     * @param srcDestnEuids String array of source and destination euids.<br>
+     *                 srcDestnEuids[0] will be the surviving euid and rest of them are source euids in the multi merge operation.<br>
+     *                 
+     * @return HashMap of final surviving EO if merge preview is successfull.<br>
+     *         null if merge fails or any exception occurs.<br>
+     * 
+     */
 
+    public HashMap previewMultiMergeEnterpriseObject(String[] srcDestnEuids) {
+        HashMap eoMultiMergePreview = null;
+        try {
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
+            
+/*
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
+            Integer dbRevisionNumber  = destinationEO.getSBR().getRevisionNumber();
+            System.out.println("sessionRevisionNumber--> " + sessionRevisionNumber + "---> dbRevisionNumber " + dbRevisionNumber);
+            
+            if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, PatientDetailsHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text")));
+                destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
+                
+                //reset the SBR revision number here in session
+                session.setAttribute("SBR_REVISION_NUMBER" + destinationEO.getEUID(), destinationEO.getSBR().getRevisionNumber());
+
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put(PatientDetailsHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text"));
+                return retHashMap;
+            }
+            */
+
+
+            
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+
+            ArrayList srcsList = new ArrayList();
+            for (int i = 0; i < srcDestnEuids.length; i++) {
+                if (i != 0) {
+                    srcsList.add(srcDestnEuids[i]);
+                }
+            }
+
+            Object[] sourceEUIDObjs = srcsList.toArray();
+
+            String[] sourceEUIDs = new String[srcsList.size()];
+
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            //httpRequest.setAttribute("sourceEUIDs", sourceEUIDs);
+
+//            httpRequest.setAttribute("destnEuid", destnEuid);
+
+            EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
+
+            eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+
+//            httpRequest.setAttribute("eoMultiMergePreview", eoMultiMergePreview);
+
+
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
+            mLogger.error(mLocalizer.x("PDH017: Encountered the  ProcessingException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
+            mLogger.error(mLocalizer.x("PDH018: Encountered the  UserException :{0} ", ex.getMessage()), ex);
+            return null;
+        }
+
+        //Insert Audit logs 
+        try {
+            //String userName, String euid1, String euid2, String function, int screeneID, String detail
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                    destnEuid,
+                    "",
+                    "EUID Merge Confirm",
+                    new Integer(screenObject.getID()).intValue(),
+                    "View two selected EUIDs of the merge confirm page");
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH019: Encountered the  UserException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH020: Encountered the  ObjectException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH021: Encountered the Exception :{0} ", ex.getMessage()), ex);
+            return null;
+        }
+
+        return eoMultiMergePreview;
+    }
+    /** 
+     * Added By Rajani Kanth  on 07/06/2008 <br>
+     * 
+     * This method is called from the ajax services for merging the enterprise object.<br>
+     *
+     * @param srcDestnEuids  String array of source and destination euids.<br>
+     *                 srcDestnEuids[0] will be the surviving euid and rest of them are source euids in the multi merge operation.<br>
+     *                 
+     * @return ArrayList of final surviving EO if merge preview is successfull.<br>
+     *         null if merge fails or any exception occurs.
+     * 
+     */
+        
+    public ArrayList multiMergeEnterpriseObject(String[] srcDestnEuids) {
+        ArrayList finalMergeList = new ArrayList();
+        try {
+
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
+ /*
+           //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
+            Integer dbRevisionNumber  = destinationEO.getSBR().getRevisionNumber();
+            System.out.println("sessionRevisionNumber--> " + sessionRevisionNumber + "---> dbRevisionNumber " + dbRevisionNumber);
+            if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, PatientDetailsHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text")));
+                destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
+                
+                //reset the SBR revision number here in session
+                session.setAttribute("SBR_REVISION_NUMBER" + destinationEO.getEUID(), destinationEO.getSBR().getRevisionNumber());
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put(PatientDetailsHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text"));
+                ArrayList retList  = new ArrayList();
+
+                retList.add(retHashMap);
+                return retList;
+            }
+*/
+            HashMap eoHashMap = eoHashMap = (HashMap) compareDuplicateManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT_CODES");
+ 
+            String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
+
+            HashMap updatedEoMap = new HashMap();
+
+            //when user modifies the person fields the only  update the enterprise object
+            if (selectedFieldsValue.length > 1) {
+                updatedEoMap.put(MasterControllerService.HASH_MAP_TYPE, eoHashMap.get(MasterControllerService.HASH_MAP_TYPE));
+                updatedEoMap.put(MasterControllerService.MINOR_OBJECT_ID, eoHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
+                //Modify destination EO values with selected values 
+                for (int i = 0; i < selectedFieldsValue.length; i++) {
+                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
+                    //if blank value is entered overwrite the value with null
+                    if (sourceEuidFull[1] != null && "null".equalsIgnoreCase(sourceEuidFull[1])) {
+                        updatedEoMap.put(sourceEuidFull[0], null);
+                    } else {
+                        updatedEoMap.put(sourceEuidFull[0], sourceEuidFull[1]);
+                    }
+
+                }
+                //Modify CHANGED sbr values here
+                masterControllerService.modifySBR(destinationEO.getSBR(), updatedEoMap);
+
+                masterControllerService.updateEnterpriseObject(destinationEO);
+
+                //get the modifed EO and merge it
+                destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
+            }
+ 
+            this.destnRootNodeHashMap = (HashMap)session.getAttribute("destnRootNodeHashMap");
+            
+                     
+            if(this.destnRootNodeHashMap.keySet().size() > 0 ) {
+                destnRootNodeHashMap.put(MasterControllerService.HASH_MAP_TYPE, eoHashMap.get(MasterControllerService.HASH_MAP_TYPE));
+                destnRootNodeHashMap.put(MasterControllerService.MINOR_OBJECT_ID, eoHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
+                 //Modify CHANGED sbr values here
+                masterControllerService.modifySBR(destinationEO.getSBR(), destnRootNodeHashMap);
+
+                masterControllerService.updateEnterpriseObject(destinationEO);
+
+                //get the modifed EO and merge it
+                destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
+                
+            }
+            
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+ 
+            ArrayList srcsList = new ArrayList();
+            for (int i = 0; i < srcDestnEuids.length; i++) {
+                if (i != 0) {
+                    srcsList.add(srcDestnEuids[i]);
+                }
+            }
+
+            Object[] sourceEUIDObjs = srcsList.toArray();
+
+            String[] sourceEUIDs = new String[srcsList.size()];
+
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            EnterpriseObject resulteo = masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
+            session.removeAttribute("comapreEuidsArrayList");
+
+            HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+
+
+            finalMergeList.add(eoMultiMergePreview);
+
+            session.setAttribute("comapreEuidsArrayList", finalMergeList);
+
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH022: Encountered the ObjectException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (ValidationException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH023: Encountered the  ValidationException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH024: Encountered the Exception :{0} ", ex.getMessage()), ex);
+            return null;
+        }
+        //Insert Audit logs 
+        try {
+            //String userName, String euid1, String euid2, String function, int screeneID, String detail
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                                    destnEuid,
+                                                    "",
+                                                    "EUID Multi Merge Confirm",
+                                                    new Integer(screenObject.getID()).intValue(),
+                                                    "View two selected EUIDs of the merge confirm page");
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH025: Encountered the UserException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH026: Encountered the ObjectException :{0} ", ex.getMessage()), ex);
+            return null;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH027: Encountered the Exception :{0} ", ex.getMessage()), ex);
+            return null;
+        }
+
+        return finalMergeList;
+    }
+
+        
         public String previewPostMultiMergedEnterpriseObject() {
         try {
             //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
@@ -665,15 +1043,15 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
             }
 
-            httpRequest.setAttribute("sourceEUIDs", sourceEUIDs);
+//            httpRequest.setAttribute("sourceEUIDs", sourceEUIDs);
 
-            httpRequest.setAttribute("destnEuid", destnEuid);
+//            httpRequest.setAttribute("destnEuid", destnEuid);
             
             EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
 
             HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
 
-            httpRequest.setAttribute("eoMultiMergePreview", eoMultiMergePreview);
+//            httpRequest.setAttribute("eoMultiMergePreview", eoMultiMergePreview);
 
 
         } catch (ProcessingException ex) {
@@ -844,7 +1222,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                 newArrayList.add(eoMap);
             }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
+//            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
              mLogger.error(mLocalizer.x("PDH028: Encountered the ProcessingException :{0} ", ex.getMessage()));
@@ -1568,10 +1946,27 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         this.parametersMap = parametersMap;
     }
 
+    public HashMap getDestnRootNodeHashMap() {
+        return destnRootNodeHashMap;
+    }
+
+    public void setDestnRootNodeHashMap(HashMap destnRootNodeHashMap) {
+        this.destnRootNodeHashMap = destnRootNodeHashMap;
+    }
+
+    public ArrayList getDestnMinorobjectsList() {
+        return destnMinorobjectsList;
+    }
+
+    public void setDestnMinorobjectsList(ArrayList destnMinorobjectsList) {
+        this.destnMinorobjectsList = destnMinorobjectsList;
+    }
+
 }
 
 
    
+
 
 
 
