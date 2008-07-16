@@ -154,13 +154,13 @@ public class LocalIdValidator implements ObjectValidator {
       
     }
 
-    private class LocalIdDefinition {
+    public class LocalIdDefinition {
         private int localIddLength;
         private String systemId;
         private String format = null;
         private Pattern pattern = null;
 
-        LocalIdDefinition(String systemId, int len, String format) {
+        public LocalIdDefinition(String systemId, int len, String format) {
             this.systemId = systemId;
             this.localIddLength = len;
             this.format = format;
@@ -169,7 +169,7 @@ public class LocalIdValidator implements ObjectValidator {
             }
         }
 
-        void validate(String id) throws ValidationException {
+        public void validate(String id) throws ValidationException {
 
             if (id.length() > localIddLength) {
                 throw new ValidationException(mLocalizer.t("OBJ675: The value " + 

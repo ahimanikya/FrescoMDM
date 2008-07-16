@@ -46,13 +46,13 @@ import com.sun.mdm.index.util.Localizer;
 public class ObjectDescriptor {
 
     //private ArrayList mFields;
-    private Hashtable mFields;
-    private String mObjectName;
-    private Hashtable mPatterns;
-    private Hashtable mReferences;
-    private Hashtable mUserReferences;
-    private Hashtable mValues;
-    private Hashtable mUserCodes;
+    protected Hashtable mFields;
+    protected String mObjectName;
+    protected Hashtable mPatterns;
+    protected Hashtable mReferences;
+    protected Hashtable mUserReferences;
+    protected Hashtable mValues;
+    protected Hashtable mUserCodes;
     private transient final Localizer mLocalizer = Localizer.get();
     /**
      * Creates a new instance of ObjectDescriptor

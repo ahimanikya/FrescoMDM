@@ -22,16 +22,12 @@
  */
 package com.sun.mdm.index.objects.validation;
 
-
-
 /**
  * @author jwu
  */
 public class FieldType {
 
-   
-    static final int UNKNOWN = -1;
-
+    public static final int UNKNOWN = -1;
     /** Integer             */
     public static final int INTEGER = 0;
     /** Boolean     */
@@ -39,11 +35,11 @@ public class FieldType {
     /** String      */
     public static final int STRING = 2;
     /** Byte                 */
-    static final int BYTE = 3;
+    public static final int BYTE = 3;
     /** Long                 */
     public static final int LONG = 4;
     /** Raw                 */
-    static final int RAW = 5;
+    public static final int RAW = 5;
     /** Float                */
     public static final int FLOAT = 7;
     /** Date                     */
