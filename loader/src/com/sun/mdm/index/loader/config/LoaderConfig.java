@@ -129,6 +129,19 @@ public class LoaderConfig {
 		initThreshold();
 		initBlockDefinitions();
 		initDataObjectReader();
+		initValidation();
+	}
+
+	/**
+	 * Initializes validation rules.
+	 */
+	private void initValidation() {
+		try {
+			Node item = doc.getElementsByTagName("ValidationConfig").item(0);
+			ValidationConfiguration.getInstance().parse(item);
+		} catch (ConfigException cex) {
+			logger.severe(localizer.x("LDR055: LoaderCofig failed to initialize validation rules : {0}", cex.getMessage()), cex);				
+		}
 	}
 
 	/**
