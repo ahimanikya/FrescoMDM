@@ -31,14 +31,19 @@ import java.util.List;
 import com.sun.mdm.index.dataobject.objectdef.DataObjectAdapter;
 import com.sun.mdm.index.dataobject.objectdef.Field;
 import com.sun.mdm.index.dataobject.ChildType;
+import com.sun.mdm.index.dataobject.DataObject;
+import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
+import com.sun.mdm.index.dataobject.validation.ValidationRuleRegistry;
+
+import com.sun.mdm.index.loader.config.LoaderConfig;
+import com.sun.mdm.index.loader.config.ValidationConfiguration;
 
 import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.dataobject.DataObject;
-
-import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.objects.validation.ObjectValidator;
+import com.sun.mdm.index.objects.validation.ObjectDescriptor;
+import com.sun.mdm.index.objects.validation.exception.ValidationException;
 
 /**
  *  
@@ -114,8 +119,20 @@ public class ObjectNodeUtil {
 		so.addChild(o);
 		so.setChildType(tag);
 
+		// validate object and value
+		if (ValidationConfiguration.getInstance().getValidationEnabled()) {
+			ValidationRuleRegistry registry = ValidationRuleRegistry.getInstance();						
+			ObjectValidator localIdValidator = registry.getObjectValidator("SystemObject");
+			if (localIdValidator != null) {
+				localIdValidator.validate(so);
+			}
+			ObjectDescriptor objectDescriptor = registry.getObjectDescriptor(o.pGetTag());
+			objectDescriptor.validate(o);			
+		}
 
 		return so;
+		} catch (ValidationException e) {
+			throw new LoaderException(e);			
 		} catch (ObjectException e) {
 			throw new LoaderException(e);
 		}  catch (java.text.ParseException e) {
@@ -156,7 +173,6 @@ public class ObjectNodeUtil {
 
 	}
 
-
 	/*
 	 * These ids like PersonId is not part of set of fields defined in
 	 * object.xml, but are implicitly created when creating Master Index
@@ -167,6 +183,7 @@ public class ObjectNodeUtil {
 		String idName = name + "Id";
 		Field f = new Field();
 		f.setName(idName);
+		f.setType("string");
 		objdef.addField(0, f);
 
 		List<ObjectDefinition> children = objdef.getChildren();
