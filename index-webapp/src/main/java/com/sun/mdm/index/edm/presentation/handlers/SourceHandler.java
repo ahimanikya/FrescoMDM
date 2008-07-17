@@ -68,6 +68,8 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import javax.xml.bind.ValidationException;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class SourceHandler {
@@ -179,9 +181,17 @@ public class SourceHandler {
     private ArrayList rootNodeFieldConfigs = new ArrayList();
     private ArrayList allEOChildNodesLists =  new ArrayList();
     private ArrayList allSOChildNodesLists =  new ArrayList();
+    
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     private int euidLength;
     private String enteredFieldValues = new String();
+    
+     /**
+     * ResourceBundle
+     */
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    String exceptionMessaage = bundle.getString("EXCEPTION_MSG");
+    
 
     /** Creates a new instance of SourceHandler */
     public SourceHandler() {
@@ -341,13 +351,17 @@ public class SourceHandler {
                 session.setAttribute("viewEditResultsConfigArray", this.getViewEditResultsConfigArray());
                 session.removeAttribute("keyFunction");
             }
+        }
 
-        } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("SRC018: Unable to perform submit :{0}", ex.getMessage()),ex);
-            //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SRC019: Unable to perform submit :{0}", ex.getMessage()),ex);
-            //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("SRC018: Validation Exception occurred :{0}", ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                 mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()),ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
         
         return this.SEARCH_SOURCE_SUCCESS;
@@ -582,12 +596,19 @@ public class SourceHandler {
            
 
             session.setAttribute("keyFunction", "editSO");
-        } catch (ObjectException ex) {
-             mLogger.error(mLocalizer.x("SRC020: Unable to edit LID :{0}", ex.getMessage()),ex);
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("SRC021: Unable to edit LID :{0}", ex.getMessage()),ex);
         }
-   }
+
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+               mLogger.error(mLocalizer.x("SRC020: Unable to edit LID  ValidationException occurred:{0}", ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC021: Unable to edit LID  UserException occurred:{0}", ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC022: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
+    }
     
     /**
      * 
@@ -612,12 +633,21 @@ public class SourceHandler {
            //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
-                        
-        } catch (ProcessingException ex) {
-         mLogger.error(mLocalizer.x("SRC023: Unable to activate SO :{0}", ex.getMessage()),ex);
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC024: Unable to activate SO :{0}", ex.getMessage()),ex);
+        }              
+
+
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("SRC023: ValidationException Occurred Unable to activate SO :{0}", ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                  mLogger.error(mLocalizer.x("SRC024: UserException Occurred Unable to activate SO :{0}", ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                 mLogger.error(mLocalizer.x("SRC085: UserException Occurred Unable to activate SO :{0}", ex.getMessage()),ex);
+               
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
+
    }
     /**
      * 
@@ -637,13 +667,19 @@ public class SourceHandler {
             //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction","editSO");
-        } catch (ObjectException ex) {
-             mLogger.error(mLocalizer.x("SRC025: Unable to deactivate SO :{0}", ex.getMessage()),ex);
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC026: Unable to deactivate SO :{0}", ex.getMessage()),ex);
-        } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SRC027: Unable to deactivate SO :{0}", ex.getMessage()),ex);
         }
+        
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC025: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC026: Encountered the UserException:{0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC027: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
+ 
           //session.setAttribute("keyFunction","editSO");
    }
     
@@ -1528,11 +1564,19 @@ public class SourceHandler {
         int euidLen = 0;
         try {
             euidLen = masterControllerService.getEuidLength();
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC043: Failed to get EUID length :{0}", ex.getMessage()),ex);
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC044: Failed to get EUID length :{0}", ex.getMessage()),ex);
         }
+        
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("SRC043: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC044: Encountered the UserException:{0} ", ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC099: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
+
         return euidLen;
     }
 
@@ -1618,7 +1662,7 @@ public class SourceHandler {
                     Float.parseFloat(thisValue);
                 }
             } catch (Exception e) {
-                 mLogger.error(mLocalizer.x("SRC075: Failed to check isNumber() :{0}", e.getMessage()),e);
+                 mLogger.error(mLocalizer.x("SRC095: Failed to check isNumber() :{0}", e.getMessage()),e);
                 return false;
             }
         }
