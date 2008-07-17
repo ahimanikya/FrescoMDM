@@ -87,7 +87,9 @@ public class CodeRegistry {
     throws CodeLookupException {
         try {
             if (SINGLETON == null) {
-                con = ConnectionUtil.getConnection();
+                if (con == null) {
+                    con = ConnectionUtil.getConnection();
+                }
                 SINGLETON = new CodeRegistry(con);
             }
             return SINGLETON;

@@ -83,7 +83,9 @@ public class UserCodeRegistry {
     
         try {
             if (SINGLETON == null) {
-                con = ConnectionUtil.getConnection();
+                if (con == null) {
+                    con = ConnectionUtil.getConnection();
+                }
                 SINGLETON = new UserCodeRegistry(con);
             }
             return SINGLETON;
