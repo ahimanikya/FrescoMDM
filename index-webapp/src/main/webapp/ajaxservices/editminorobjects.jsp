@@ -1120,9 +1120,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	validateLID = validateLID.replaceAll("-","");
     sourceAddHandler.setLID(validateLID);
     sourceAddHandler.setSystemCode(validateSystemCode);
-    boolean validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
-    %>
-    <% if(validated)  {	%>
+    String  validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
+	Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+  
+    
+   if(validated != null)  {	%>
+
+     <%if("true".equalsIgnoreCase(validated))  {	%>
       <script>
 	       document.getElementById('saveButtons').style.visibility = 'visible';
      	   document.getElementById('saveButtons').style.display = 'block';
@@ -1134,25 +1138,45 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	       document.getElementById('validateButtons').style.display = 'none';
       </script>
     <%} else {%>
-       <!--script>
-       </script-->
-	   	<div class="ajaxalert">
-	   	  <table>
-			<tr>
-				<td>
-				      <ul>
-				             <li>
-							   <%=sysDesc%>/<%=tempValidateLid%> <%=bundle.getString("already_found_error_text")%>
-				             </li>
-				      </ul>
-				<td>
-			<tr>
-		</table>
-		</div>
+        
+				<div class="ajaxalert">
+						  <table>
+							<tr>
+								<td>
+									  <ul>
+											 <li>
+											  <%=sysDesc%>/<%=tempValidateLid%> <%=bundle.getString("already_found_error_text")%>
+											 </li>
+									  </ul>
+								<td>
+							<tr>
+						</table>
+					</div>
+				<%}%>
 
-     <%}%>
+
+			   <%} else {%>			   
+ 					   <div class="ajaxalert">
+				 
+					  <table>
+							<tr>
+								<td>
+									  <ul>
+										<% while (messagesIter.hasNext())   { %>
+											 <li>
+												<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+												<%= facesMessage.getSummary() %>
+											 </li>
+										 <% } %>
+									  </ul>
+								<td>
+							<tr>
+						</table>
+					</div>
+			   <%}%>
+         <%}%>
   <%}%>
-<% } %>
+
 
  </body>
 </f:view>

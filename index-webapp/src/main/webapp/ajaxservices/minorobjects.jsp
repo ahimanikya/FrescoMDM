@@ -1108,9 +1108,13 @@ if(isSave) {
 				validateLID = validateLID.replaceAll("-","");
 				sourceAddHandler.setLID(validateLID);
 				sourceAddHandler.setSystemCode(validateSystemCode);
-				boolean validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
-				 if(validated)  {	%>
-				  <script>
+				String validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
+				Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+				 if(validated != null)  {	%>
+
+
+                 <%if("true".equalsIgnoreCase(validated))  {	%>
+   				  <script>
                        var rootFormNameValue = document.forms['<%=objScreenObject.getRootObj().getName() + "AddNewSOInnerForm"%>'];
                        var formNameValue = document.forms['basicValidateAddformData'];
                        var lidField =  getDateFieldName(formNameValue.name,'LID');
@@ -1136,11 +1140,9 @@ if(isSave) {
 					   document.getElementById('validateButtons').style.visibility = 'hidden';
 					   document.getElementById('validateButtons').style.display = 'none';
 				  </script>
-			   <%} else {%>
-			   `    <!--script>
-				    //alert("System Code and LID " + "'<%=validateSystemCode%>'" + "/" + "'<%=validateLID%>' "+ " is already found !");
-			        </script-->
-					<div class="ajaxalert">
+                  <%} else {%>
+
+						<div class="ajaxalert">
 						  <table>
 							<tr>
 								<td>
@@ -1153,8 +1155,30 @@ if(isSave) {
 							<tr>
 						</table>
 					</div>
+				<%}%>
+
+
+			   <%} else {%>			   
+ 					   <div class="ajaxalert">
+				 
+					  <table>
+							<tr>
+								<td>
+									  <ul>
+										<% while (messagesIter.hasNext())   { %>
+											 <li>
+												<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+												<%= facesMessage.getSummary() %>
+											 </li>
+										 <% } %>
+									  </ul>
+								<td>
+							<tr>
+						</table>
+					</div>
 			   <%}%>
-         <%}%>
+
+     <%}%>
   <%}%>
 <% } %>
 
