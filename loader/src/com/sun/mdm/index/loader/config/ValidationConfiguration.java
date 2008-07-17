@@ -47,6 +47,11 @@ import com.sun.mdm.index.objects.validation.ObjectDescriptor;
 import com.sun.mdm.index.dataobject.validation.ObjectDescriptorFileReader;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 
+/**
+ * ValidationConfiguration class 
+ * @author cye
+ *
+ */
 public class ValidationConfiguration {
 	private static Logger logger = Logger.getLogger("com.sun.mdm.index.loader.config.ValidationConfiguration");
 	private static Localizer localizer = Localizer.getInstance();
@@ -145,7 +150,19 @@ public class ValidationConfiguration {
     	if (attribute != null) {
     		referenceValidationEnabled = Boolean.parseBoolean(attribute.getNodeValue());
     	}
-    	if (validationEnabled) {    	
+    	if (validationEnabled) {  
+    		
+    		if (referenceValidationEnabled) {
+    			try {
+    				ValidationRuleRegistry registry = ValidationRuleRegistry.getInstance();
+    				LocalIdValidator objectValidator = new LocalIdValidator();
+    				objectValidator.load();
+    				registry.putObjectValidator("SystemObject", objectValidator);
+    			} catch(ValidationException vex) {
+    				throw new ConfigException(vex);
+    			}
+    		}
+    		
     		XPath xpath = XPathFactory.newInstance().newXPath();		
     		try {
     			NodeList rules = (NodeList)xpath.evaluate("//ValidationConfig/rules/rule", validationNode, XPathConstants.NODESET);
@@ -154,15 +171,16 @@ public class ValidationConfiguration {
     				NamedNodeMap ruleAttributes = rule.getAttributes();
     				Node nameAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_NAME);
     				Node classAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_CLASS);
+    				
     				if (nameAttribute.getNodeValue()!= null &&
-    						nameAttribute.getNodeValue().equals(VALIDATE_LOCAL_ID)) {
+    					nameAttribute.getNodeValue().equals(VALIDATE_LOCAL_ID) &&
+    					!referenceValidationEnabled) {
 					
     					Node systemAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_SYSTEM);
     					Node lengthAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_LENGTH);
     					Node formatAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_FORMAT);
-					 
     					initLocalIdValidator(classAttribute.getNodeValue(),
-    							systemAttribute, lengthAttribute, formatAttribute);
+    									     systemAttribute, lengthAttribute, formatAttribute);
 					
     				} else if (nameAttribute.getNodeValue()!= null &&
     						   nameAttribute.getNodeValue().equals(VALIDATE_OBJECT_VALUE)) {

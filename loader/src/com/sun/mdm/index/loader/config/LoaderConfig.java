@@ -129,13 +129,12 @@ public class LoaderConfig {
 		initThreshold();
 		initBlockDefinitions();
 		initDataObjectReader();
-		initValidation();
 	}
 
 	/**
 	 * Initializes validation rules.
 	 */
-	private void initValidation() {
+	public void initValidation() {
 		try {
 			Node item = doc.getElementsByTagName("ValidationConfig").item(0);
 			ValidationConfiguration.getInstance().parse(item);
