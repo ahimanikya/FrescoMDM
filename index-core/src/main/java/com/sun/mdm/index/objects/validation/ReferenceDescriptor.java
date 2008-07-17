@@ -33,7 +33,7 @@ import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
-
+        
 /**
  * @author jwu
  */
@@ -43,6 +43,24 @@ public class ReferenceDescriptor implements FieldValidator {
     private CodeRegistry mCodeRegistry = null;
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private transient final Localizer mLocalizer = Localizer.get();
+    
+    /**
+     * Creates a new instance of ReferenceDescriptor
+     * @param code registry
+     * @param module module name
+     */
+    public ReferenceDescriptor(String module, CodeRegistry codeRegistry) {
+        if (module == null) {
+            throw new RuntimeException(mLocalizer.t("OBJ716: Module parameter " + 
+                                        "cannot be null."));
+        }
+        mCodeRegistry = codeRegistry;
+        if (mCodeRegistry == null) {
+            throw new RuntimeException(mLocalizer.t("OBJ717: Code registry " + 
+                                        "could not be located."));
+        }
+        mModule = module;
+    }
     
     /**
      * Creates a new instance of ReferenceDescriptor

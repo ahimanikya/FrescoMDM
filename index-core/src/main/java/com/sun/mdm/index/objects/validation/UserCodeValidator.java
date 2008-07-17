@@ -47,8 +47,17 @@ public class UserCodeValidator implements FieldValidator {
     private String mReferencedFieldName = null;
     private String mReferencedFieldValue = null;
     private String mReferencedFieldModule = null;
+    private UserCodeRegistry mUserCodeRegistry = null;    
     private transient final Localizer mLocalizer = Localizer.get();
 
+    /**
+     * Creates a new instance of UserCodeValidator
+     */
+    public UserCodeValidator(String referencedField, UserCodeRegistry userCodeRegistry) {
+        mReferencedFieldName = referencedField;
+        mUserCodeRegistry = userCodeRegistry;
+    }
+    
     /**
      * Creates a new instance of UserCodeValidator
      */
@@ -86,12 +95,13 @@ public class UserCodeValidator implements FieldValidator {
             return;
         }
 
-        UserCodeRegistry codeRegistry = null;
-        try {
-            codeRegistry = UserCodeRegistry.getInstance();
-        } catch (CodeLookupException e) {
-            throw new ValidationException(mLocalizer.t("OBJ731: Could not " + 
+        if (mUserCodeRegistry == null) {
+            try {
+                mUserCodeRegistry = UserCodeRegistry.getInstance();
+            } catch (CodeLookupException e) {
+                throw new ValidationException(mLocalizer.t("OBJ731: Could not " + 
                                         "retrieve the User Code Registry: {0}", e));
+            }
         }
         if (mReferencedFieldModule == null) {
             throw new InvalidReferencedModule(mLocalizer.t("OBJ732: Referenced " + 
@@ -102,7 +112,7 @@ public class UserCodeValidator implements FieldValidator {
                                         "code cannot be null."));
         }
         
-        UserCode uc = codeRegistry.getUserCode(mReferencedFieldModule, mReferencedFieldValue);
+        UserCode uc = mUserCodeRegistry.getUserCode(mReferencedFieldModule, mReferencedFieldValue);
         if (uc == null) {
             throw new InvalidContraintByField(mLocalizer.t("OBJ734: Could not " + 
                                         "retrieve the user code"));

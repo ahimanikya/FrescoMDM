@@ -43,6 +43,24 @@ public class UserReferenceDescriptor implements FieldValidator {
     private UserCodeRegistry mUserCodeRegistry = null;
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private transient final Localizer mLocalizer = Localizer.get();
+
+    /**
+     * Creates a new instance of ReferenceDescriptor
+     * @param user code registry
+     * @param module module name
+     */
+    public UserReferenceDescriptor(String module, UserCodeRegistry userCodeRegistry) {
+        if (module == null) {
+            throw new RuntimeException(mLocalizer.t("OBJ737: The module parameter " + 
+                                        "cannot be null."));
+        }
+        mUserCodeRegistry = userCodeRegistry;
+        if (mUserCodeRegistry == null) {
+            throw new RuntimeException(mLocalizer.t("OBJ738: User code registry " + 
+                                        "could not be located."));
+        }
+        mModule = module;
+    }
     
     /**
      * Creates a new instance of ReferenceDescriptor
