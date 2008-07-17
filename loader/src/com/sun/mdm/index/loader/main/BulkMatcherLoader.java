@@ -92,7 +92,9 @@ public class BulkMatcherLoader {
 		new LoaderLogManager().init();
 		logger.info(localizer.x("LDR001: Bulk Loader Started"));
 
+		config_.initValidation();		
 		config_.validation();
+		
 		loadConfig();
 		ConfigurationService.getInstance();	
 		logger.info(localizer.x("LDR002: Configuration loaded"));
