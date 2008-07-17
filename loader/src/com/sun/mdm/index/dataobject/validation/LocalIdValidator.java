@@ -24,6 +24,11 @@ package com.sun.mdm.index.dataobject.validation;
 
 import java.util.Hashtable;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.loader.util.Localizer;
@@ -32,6 +37,8 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.objects.validation.ObjectValidator;
 import com.sun.mdm.index.objects.validation.LocalIdValidator.LocalIdDefinition;
+import com.sun.mdm.index.objects.metadata.MetaDataService;
+
 import com.sun.mdm.index.loader.config.ValidationConfiguration;
 
 /**
@@ -42,6 +49,10 @@ public class LocalIdValidator implements ObjectValidator {
 	private static Logger logger = Logger.getLogger("com.sun.mdm.index.dataobject.validation.LocalIdValidator");
 	private static Localizer localizer = Localizer.getInstance();
 
+    private static final String SELECT_LOCALID_SQL = "select systemcode, id_length, format "
+    				      					 	     + "from sbyn_systems where status = 'A'";
+    private static final int MAXIMUM_LOCALID_LENGTH = 40;
+    
 	private Hashtable<String, LocalIdDefinition> 
 			localIdDefinitions = new Hashtable<String, LocalIdDefinition>();
 
@@ -65,6 +76,50 @@ public class LocalIdValidator implements ObjectValidator {
     	localIdDefinitions.put(systemId, localIdDefinition);    	
     }
 
+    /**
+     * Loads localId validation from sbyn_systems table.
+     * @throws ValidationException
+     */
+    public void load() 
+    	throws ValidationException {
+    	Connection con = null;       
+        try {
+             con = ValidationCodeRegistry.getInstance().getConnection();             
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(SELECT_LOCALID_SQL);
+             while (rs.next()) {
+                 String systemId = rs.getString(1);
+                 int lenId = rs.getInt(2);
+                 if (lenId == 0) {
+                     lenId = MetaDataService.getFieldSize("Enterprise.SystemObject.LocalID");
+                 }
+                 if (lenId > MAXIMUM_LOCALID_LENGTH) {
+                     lenId = MAXIMUM_LOCALID_LENGTH;
+                 }
+                 String format = rs.getString(3);
+                 com.sun.mdm.index.objects.validation.LocalIdValidator x = 
+             		new com.sun.mdm.index.objects.validation.LocalIdValidator();                  
+                 LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, lenId, format);
+                 localIdDefinitions.put(systemId, localIdDefinition);
+             }
+             rs.close();
+             stmt.close();                             	 
+         } catch (SQLException sex) {
+             throw new ValidationException(localizer.t("LDR075: Could not " + 
+                                     				   "initialize LocalIDValidator: {0}", sex));
+         } catch (ObjectException oex) {
+             throw new ValidationException(localizer.t("LDR076: Could not " + 
+                                     			 	   "initialize LocalIDValidator: {0}", oex));             
+         }  finally {
+        	 try {
+        		 if (con != null) {
+        			 con.close();
+        		 }
+        	 } catch (SQLException ignore) {
+        	 }
+         }
+    }
+    
     /**
      * Validates system object.
      * @param objectNode	system object.

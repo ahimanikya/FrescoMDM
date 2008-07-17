@@ -61,6 +61,8 @@ import com.sun.mdm.index.objects.validation.FloatValueValidator;
 import com.sun.mdm.index.objects.validation.CharacterValueValidator;
 import com.sun.mdm.index.objects.validation.ValueValidator;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
+import com.sun.mdm.index.codelookup.UserCodeRegistry;
+import com.sun.mdm.index.codelookup.CodeRegistry;
 
 /**
  * This class is for reading object descriptor.
@@ -71,8 +73,6 @@ public class ObjectDescriptorFileReader implements ObjectDescriptorReader {
 	private static Logger logger = Logger.getLogger("com.sun.mdm.index.dataobject.validation.ObjectDescriptorReader");
 	private static Localizer localizer = Localizer.getInstance();
 	
-    private EIndexObject eIndexObject;
-    private String destinationPath;
     private static final String LINEFEED = System.getProperty("line.separator", "\n");
     private static final String TAB = "    ";
 
@@ -140,12 +140,14 @@ public class ObjectDescriptorFileReader implements ObjectDescriptorReader {
     private static final String EXCLINSERT = "FieldDescriptor.EXCLINSERT";
     private static final String NONE = "FieldDescriptor.NONE";
 
+    private EIndexObject eIndexObject;
+    private String destinationPath;    
     private AbstractList<ObjectDescriptor> objectDescriptors = new ArrayList<ObjectDescriptor>();
-    
+        
     /**
      * ObjectDescriptor Constructor
      */    
-    public ObjectDescriptorFileReader() { 
+    public ObjectDescriptorFileReader() {    	
 	}
     
     /**
@@ -195,7 +197,7 @@ public class ObjectDescriptorFileReader implements ObjectDescriptorReader {
      */
     public void create(boolean validateReferenceEnabled) 
     	throws ValidationException {    	
-    	try {
+    	try {    		
     		ArrayList<NodeDef> objectNodes = eIndexObject.getNodes();
     	    for (NodeDef objectNode : objectNodes) {
     	    	// object name
@@ -207,7 +209,7 @@ public class ObjectDescriptorFileReader implements ObjectDescriptorReader {
     	    	for (FieldDef field : fields) {
     	    		String fieldName = field.getFieldName();
     	    		int fieldType = ToType(field);
-    	    		int fieldAttribute = ToAttribute(field);    	    		
+    	    		int fieldAttribute = ToAttribute(field);	    		
     	    		// field descriptor
     	    		FieldDescriptor fieldDescriptor =  new FieldDescriptor(fieldName, fieldType, fieldAttribute);    	    		
     	    		objectDescriptor.addFieldDescriptor(fieldDescriptor);
@@ -238,7 +240,8 @@ public class ObjectDescriptorFileReader implements ObjectDescriptorReader {
                     	// Reference validator
                         String codeModule = field.getCodeModule();
                         if (validateReferenceEnabled && codeModule != null && codeModule.trim().length() != 0) {
-                        	objectDescriptor.addReferenceDescriptor(fieldName, new ReferenceDescriptor(codeModule));                        	                            
+                        	CodeRegistry codeRegistry = ValidationCodeRegistry.getInstance().getCodeRegistry();
+                        	objectDescriptor.addReferenceDescriptor(fieldName, new ReferenceDescriptor(codeModule, codeRegistry));                        	                            
                         }                        
                         // Pattern validator
                         String pattern = field.getPattern();
@@ -248,12 +251,14 @@ public class ObjectDescriptorFileReader implements ObjectDescriptorReader {
                         // UserReference validator 
                         String userCode = field.getUserCode();
                         if (validateReferenceEnabled && userCode != null && userCode.trim().length() != 0) {
-                        	objectDescriptor.addUserReferenceDescriptor(fieldName, new UserReferenceDescriptor(userCode));
+                        	UserCodeRegistry userCodeRegistry = ValidationCodeRegistry.getInstance().getUserCodeRegistry();
+                        	objectDescriptor.addUserReferenceDescriptor(fieldName, new UserReferenceDescriptor(userCode, userCodeRegistry));
                         }                        
                         // UserCode validator 
                         String constraintByField = field.getConstraintBy();
                         if (validateReferenceEnabled && constraintByField != null && constraintByField.trim().length() != 0) {
-                        	objectDescriptor.addUserCodeValidator(fieldName, new UserCodeValidator(constraintByField));
+                        	UserCodeRegistry userCodeRegistry = ValidationCodeRegistry.getInstance().getUserCodeRegistry();                        	
+                        	objectDescriptor.addUserCodeValidator(fieldName, new UserCodeValidator(constraintByField, userCodeRegistry));
                         }
                     }    	    		
     	    	}  
