@@ -163,6 +163,19 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 return null;
             }
 
+            //Check the input masking for the enterted values
+            HashMap inputMaskErrors = super.checkInputMasking();
+            if (!inputMaskErrors.isEmpty()) {
+                Object[] keysValidations = inputMaskErrors.keySet().toArray();
+                for (int i = 0; i < keysValidations.length; i++) {
+                    String value = (String) keysValidations[i] + " " + (String) inputMaskErrors.get((String) keysValidations[i]);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, value, value));
+                }
+                return null;
+            }
+
+            
+            
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
                 errorMessage = bundle.getString("LID_only");   //"Please Enter System Code";
@@ -389,9 +402,23 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     sysobj3 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
                     eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
                 }
-                eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
-                eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
-                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+                
+                try{
+                    eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
+                    eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
+                    
+                }
+               catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("PDH085: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("PDH086: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("PDH087: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                }
+                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
                 
                
 
@@ -467,10 +494,18 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
         // End here            
         // SambaG
+        }
 
-        } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("PDH009: Exception has occured  :{0} ", ex.getMessage()),ex);
-            return null;
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("PDH009: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("PDH075: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("PDH076: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             return null;
         }
     }
 
@@ -1990,11 +2025,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 // modified exceptional handling logic
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("PDH087: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("PDH088: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("PDH088: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("PDH089: Encountered the UserException:{0} ", ex.getMessage()), ex);
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("PDH089: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("PDH090: Error  occurred"), ex);
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }

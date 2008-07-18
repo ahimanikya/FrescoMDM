@@ -205,14 +205,18 @@ public class TransactionHandler extends ScreenConfiguration {
                             mLogger.info(mLocalizer.x("TRS025: {0}",errorMessage));
                             return null;
                         }
-                    } catch (ProcessingException ex) {
-                       mLogger.error(mLocalizer.x("TRS005: Failed to submit :{0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-                        return null;
-                    } catch (UserException ex) {
-                        mLogger.error(mLocalizer.x("TRS006: Failed to submit :{0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-                        return null;
+                    } 
+
+                    catch (Exception ex) {
+                        if (ex instanceof ValidationException) {
+                            mLogger.error(mLocalizer.x("TRS005: Service Layer Validation Exception has occurred"), ex);
+                        } else if (ex instanceof UserException) {
+                            mLogger.error(mLocalizer.x("TRS006: Service Layer User Exception occurred"), ex);
+                        } else if (!(ex instanceof ProcessingException)) {
+                            mLogger.error(mLocalizer.x("TRS080: Error  occurred"), ex);
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                         return null;
                     }
                 }
             }
@@ -288,29 +292,16 @@ public class TransactionHandler extends ScreenConfiguration {
                 return resultsArrayList;
             //  request.setAttribute("searchSize",new Integer(transactionsVO.length) );
             }
-        } catch (ValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS009: Failed to submit due to ValidationException:{0}",ex.getMessage()),ex);
-            return null;
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
-            mLogger.error(mLocalizer.x("TRS010: Failed to submitdue to UserException :{0}",ex.getMessage()),ex);
-            return null;
-        } catch (PageException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS011: Failed to submit due to PageException:{0}",ex.getMessage()),ex);
-            return null;
-        } catch (RemoteException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS012: Failed to submit due to RemoteException:{0}",ex.getMessage()),ex);
-            return null;
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS013: Failed to submit due to ProcessingException :{0}",ex.getMessage()),ex);
-            return null;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-            mLogger.error(mLocalizer.x("TRS014: Failed to submit due to Exception: {0}",ex.getMessage()),ex);
+        }
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("TRS009: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("TRS010: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("TRS011: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
         return resultsArrayList;
@@ -408,14 +399,17 @@ public class TransactionHandler extends ScreenConfiguration {
                             mLogger.info(mLocalizer.x("TRS025: {0}",errorMessage));
                             return VALIDATION_ERROR;
                         }
-                    } catch (ProcessingException ex) {
-                       mLogger.error(mLocalizer.x("TRS005: Failed to submit :{0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-                        return VALIDATION_ERROR;
-                    } catch (UserException ex) {
-                        mLogger.error(mLocalizer.x("TRS006: Failed to submit :{0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-                        return VALIDATION_ERROR;
+
+                    }catch  (Exception ex) {
+                        if (ex instanceof ValidationException) {
+                            mLogger.error(mLocalizer.x("TRS005: Service Layer Validation Exception has occurred"), ex);
+                        } else if (ex instanceof UserException) {
+                            mLogger.error(mLocalizer.x("TRS006: Service Layer User Exception occurred"), ex);
+                        } else if (!(ex instanceof ProcessingException)) {
+                            mLogger.error(mLocalizer.x("TRS081: Error  occurred"), ex);
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                          return VALIDATION_ERROR;
                     }
 
                 }
@@ -496,29 +490,16 @@ public class TransactionHandler extends ScreenConfiguration {
                 request.setAttribute("resultsArrayList", resultsArrayList);
             //  request.setAttribute("searchSize",new Integer(transactionsVO.length) );
             }
-        } catch (ValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS009: Failed to submit due to ValidationException:{0}",ex.getMessage()),ex);
-            return VALIDATION_ERROR;
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
-            mLogger.error(mLocalizer.x("TRS010: Failed to submitdue to UserException :{0}",ex.getMessage()),ex);
-            return VALIDATION_ERROR;
-        } catch (PageException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS011: Failed to submit due to PageException:{0}",ex.getMessage()),ex);
-            return VALIDATION_ERROR;
-        } catch (RemoteException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS012: Failed to submit due to RemoteException:{0}",ex.getMessage()),ex);
-            return VALIDATION_ERROR;
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-             mLogger.error(mLocalizer.x("TRS013: Failed to submit due to ProcessingException :{0}",ex.getMessage()),ex);
-            return VALIDATION_ERROR;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-            mLogger.error(mLocalizer.x("TRS014: Failed to submit due to Exception: {0}",ex.getMessage()),ex);
+
+        }catch  (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("TRS012: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("TRS013: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("TRS014: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return VALIDATION_ERROR;
         }
         return TRANSACTIONS_PAGE;
@@ -739,22 +720,18 @@ public class TransactionHandler extends ScreenConfiguration {
                 }
             }
 
-        } catch (PageException ex) {
-                        mLogger.error(mLocalizer.x("TRS016: Failed to get Transaction details due to PageException : {0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,   exceptionMessaage, ex.toString()));
-                        return null;
-        } catch (RemoteException ex) {
-                         mLogger.error(mLocalizer.x("TRS017: Failed to get Transaction details due to RemoteException : {0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,   exceptionMessaage, ex.toString()));
-                        return null;
-        } catch (UserException ex) {
-                       mLogger.error(mLocalizer.x("TRS018: Failed to get Transaction details due to UserException : {0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-                        return null;
-        } catch (ProcessingException ex) {
-                        mLogger.error(mLocalizer.x("TRS019: Failed to get Transaction details due to ProcessingException : {0}",ex.getMessage()),ex);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,   exceptionMessaage, ex.toString()));
-                        return null;
+        } 
+
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("TRS016: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("TRS017: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("TRS018: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             return null;
         }
         return eoArrayList;
          
@@ -782,10 +759,17 @@ public class TransactionHandler extends ScreenConfiguration {
                         EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                         transactionSearchObject.setEUID(eo.getEUID());
                     }
-                } catch (ProcessingException ex) {
-                     mLogger.error(mLocalizer.x("TRS020: Failed to get Transaction details due to ProcessingException : {0}",ex.getMessage()),ex);
-                } catch (UserException ex) {
-                    mLogger.error(mLocalizer.x("TRS021: Failed to get Transaction details due to UserException : {0}",ex.getMessage()),ex);
+                } 
+
+                catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("TRS019: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("TRS020: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("TRS021: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                 }
 
             }
@@ -958,13 +942,18 @@ public class TransactionHandler extends ScreenConfiguration {
                                                         "Unmerge two enterprise objects");
             }
                 
-        } catch (ProcessingException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,   exceptionMessaage,ex.toString()));
-                     mLogger.error(mLocalizer.x("TRS022: Failed to unmerge EnterpriseObject due to ProcessingException : {0}",ex.getMessage()),ex);
-        } catch (UserException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage,ex.toString()));
-                    mLogger.error(mLocalizer.x("TRS023: Failed to unmerge EnterpriseObject due to UserException : {0}",ex.getMessage()),ex);
-        }  
+        } 
+
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("TRS022: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("TRS023: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("TRS026: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
 
     }
 

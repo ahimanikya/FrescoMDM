@@ -1056,5 +1056,85 @@ public class ScreenConfiguration {
     public void setKeyDescriptionsMap(HashMap keyDescriptionsMap) {
         this.keyDescriptionsMap = keyDescriptionsMap;
     }
- 
+
+    
+    /**
+     * Added by Raajni Kanth
+     * rkanth@ligaturesoftware.com
+     * Checks if the user has entered the values with proper input mask as 
+     * defined in the midm configuration file 
+     * Modified Date:07/18/2008
+     * @see checkMasking
+     * @return HashMap - Hashmap with values and input maskings
+     */   
+    public HashMap checkInputMasking() {
+        HashMap valiadtions = new HashMap();
+        ArrayList fgGroups = getSearchScreenFieldGroupArray();
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+            ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+            for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                //if one of these is required
+                       if (getUpdateableFeildsMap().get(basicFieldConfig.getName()) != null) {
+                        String value = ((String) getUpdateableFeildsMap().get(basicFieldConfig.getName())).trim();
+                        if (value.length() > 0 && basicFieldConfig.getInputMask() != null && basicFieldConfig.getInputMask().length() > 0)  { 
+                          
+                              if(!checkMasking(value,basicFieldConfig.getInputMask())) {
+                                valiadtions.put(basicFieldConfig.getDisplayName(),bundle.getString("lid_format_error_text") + " " +basicFieldConfig.getInputMask());								  
+                             }
+                        }
+                        
+                    }
+             } // Field config loop
+         } // Field group loop
+       
+        return valiadtions;
+    }
+    
+    /**
+     * Added by Raajni Kanth
+     * rkanth@ligaturesoftware.com
+     * Checks if the user has entered the values with proper input mask as 
+     * defined in the midm configuration file 
+     * Modified Date:07/18/2008
+     * @see checkInputMasking
+     * @return HashMap - Hashmap with values and input maskings
+     */   
+    public boolean checkMasking(String thisValue, String masking)  {
+        Character c;
+        if ((thisValue != null && thisValue.trim().length() > 0 ) &&  (masking.length() != thisValue.length()) ) { 
+			return false; //check length
+		}
+        try {
+            if (thisValue != null && thisValue.trim().length() > 0) {
+                for (int i = 0; i < masking.length(); i++) {  //Digit 
+
+                    if (masking.charAt(i) == 'D') {
+                        if (!Character.isDigit(thisValue.charAt(i))) {
+                            return false;
+                        }
+                    } else if (masking.charAt(i) == 'L') {  //Char 
+                        if (!Character.isLetter(thisValue.charAt(i))) {
+                            return false;
+                        }
+                    } else if (masking.charAt(i) == 'A') {  //Char 
+                        if (!Character.isLetter(thisValue.charAt(i)) && !Character.isDigit(thisValue.charAt(i))) {
+                            return false;
+                        }
+                    } else {
+                        if (masking.charAt(i) != thisValue.charAt(i)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e)  {
+                             mLogger.error(mLocalizer.x("SRC076: Failed to check masking :{0}", e.getMessage()),e);
+            return false;
+        }                
+        return true;
+    }
+
+
 }
