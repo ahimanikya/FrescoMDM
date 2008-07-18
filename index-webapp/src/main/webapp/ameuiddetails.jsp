@@ -23,6 +23,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 
+
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.Set"  %>
@@ -103,7 +104,7 @@ if(session!=null){
             Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
             Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
             AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
-            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(dateFormat);
             ArrayList eoArrayList = new ArrayList();
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
 

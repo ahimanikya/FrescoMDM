@@ -20,7 +20,7 @@
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
-
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -181,7 +181,7 @@ if(session!=null){
             PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
 
-            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(dateFormat);
             ArrayList eoArrayList = new ArrayList();
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
             if (request.getParameter("euid") != null) {

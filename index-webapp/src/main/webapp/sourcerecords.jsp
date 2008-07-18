@@ -36,6 +36,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 
+
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -188,7 +189,7 @@ if(session!=null){
                                         SystemObject singleSystemObject = (SystemObject) session.getAttribute("singleSystemObject");
                                         ArrayList searchResultsScreenConfigArray = (ArrayList) session.getAttribute("viewEditResultsConfigArray");
                                         ArrayList systemObjectsMapList = (ArrayList) session.getAttribute("systemObjectsMapList");
-                                        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+                                        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(dateFormat);
                                         ValueExpression LIDVaueExpression = null;
                                         ValueExpression sourceSystemVaueExpression = null;
                                         //ConfigManager.init();
@@ -514,9 +515,20 @@ if(session!=null){
                                                                                onblur="javascript:validate_date(this,'MM/dd/yyyy');"
                                                                                onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                                                                                onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                                        <a title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"  HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
-                                                                            <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPerAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                                        </a>
+                                                                       <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{fieldConfigPerAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                                                     </nobr>
                                                                         
                                                                         
@@ -645,10 +657,21 @@ if(session!=null){
                                                                                                                            maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                                                           onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                                                                                    <a  title ="<h:outputText value="#{childFieldConfigAdd.displayName}"/> HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                                                                                        <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                                                                                    </a>
+                                                                                                                           onblur="javascript:validate_date(this,'<%=dateFormat%>');">
+                                                                                                                    <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{childFieldConfigAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{childFieldConfigAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                                                                                                 </nobr>
                                                                                                             </h:column>                     
                                                                                                                 
@@ -983,10 +1006,21 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                            maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                           onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFormFieldsOnBlur('basicViewformData',this,'<h:outputText value="#{feildConfig.name}"/>')">
-                                                                    <a title="<h:outputText value="#{feildConfig.displayName}"/> HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                                        <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                                    </a>
+                                                                           onblur="javascript:validate_date(this,'<%=dateFormat%>');javascript:accumilateFormFieldsOnBlur('basicViewformData',this,'<h:outputText value="#{feildConfig.name}"/>')">
+                                                                    <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{feildConfig.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{feildConfig.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                                                 </nobr>
                                                             </h:column>
                                                                 
@@ -1159,12 +1193,23 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                    id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
                                                    required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
                                                    maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-												   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+												   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                                                   onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                  <a title ="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"  HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPerAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
+                                                  <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{fieldConfigPerAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                           </nobr>
 
 
@@ -1291,10 +1336,21 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                    maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
+                                                  onblur="javascript:validate_date(this,'<%=dateFormat%>');">
+                                                 <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{childFieldConfigAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{childFieldConfigAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                           </nobr>
                                      </h:column>                     
 

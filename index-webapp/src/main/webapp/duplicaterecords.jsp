@@ -239,9 +239,21 @@ function align(thisevent,divID) {
                                                    maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy')">
-                                                  <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/></a>
+                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+                                                 <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{feildConfig.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{feildConfig.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                           </nobr>
                                         </h:column>
                              
@@ -418,7 +430,7 @@ function align(thisevent,divID) {
    //currentTime = new java.util.Date();
    String queryStr ="";
    Long currentTime = new java.util.Date().getTime();
-   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(dateFormat);
    String startDateField = simpleDateFormatFields.format(currentTime);
    queryStr = "create_end_date="+startDateField;
 
@@ -429,7 +441,7 @@ function align(thisevent,divID) {
    Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
    Date dt24HrsBack = new Date(currentTime - milliSecsInADay);
 
-   simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+   simpleDateFormatFields = new SimpleDateFormat(dateFormat);
    String endDateField = simpleDateFormatFields.format(ts24HrsBack);
    queryStr += "&create_start_date="+endDateField;
 

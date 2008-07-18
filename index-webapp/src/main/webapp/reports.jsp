@@ -279,18 +279,29 @@ if(session!=null ){
 																				
 																				<h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
 																				  <nobr>
-	                                            <input type="text" 
-                                                   id = "form<%=i%><h:outputText value="#{feildConfig.name}"/>"  
-                                                   title = "<h:outputText value="#{feildConfig.name}"/>"  
-                                                   value="<h:outputText value="#{ReportHandler.reportParameters[feildConfig.name]}"/>"
-                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                   maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
-                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
-                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy')">
-                                                  <a HREF="javascript:void(0);"title="<h:outputText value="#{feildConfig.displayName}"/>"  onclick="g_Calendar.show(event,'form<%=i%><h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/></a>
-
+	                                          <input type="text"
+id = "form<%=i%><h:outputText value="#{feildConfig.name}"/>"
+title = "<h:outputText value="#{feildConfig.name}"/>"
+value="<h:outputText value="#{ReportHandler.reportParameters[feildConfig.name]}"/>"
+required="<h:outputText value="#{feildConfig.required}"/>"
+maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
+onkeyup="javascript:qws_field_on_key_up(this)"
+onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+<a href="javascript:void(0);"
+title="<h:outputText value="#{feildConfig.displayName}"/>"
+onclick="g_Calendar.show(event,
+'form<%=i%><h:outputText value="#{feildConfig.name}"/>',
+'<%=dateFormat%>',
+'<%=global_daysOfWeek%>',
+'<%=global_months%>',
+'<%=cal_prev_text%>',
+'<%=cal_next_text%>',
+'<%=cal_today_text%>',
+'<%=cal_month_text%>',
+'<%=cal_year_text%>')"
+><img border="0" title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)" src="./images/cal.gif"/></a>
+<font class="dateFormat">(<%=dateFormat%>)</font>
 
 																				  </nobr>
 																				</h:column>
