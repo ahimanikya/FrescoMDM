@@ -2851,3 +2851,12 @@ a.navbuttonselected:active span {
    background-color:#000000;
    color:#ffffff;
 }
+.dateFormat
+{
+    font-family: sans-serif,Arial, Helvetica ;
+ font-size:9px;
+ font-weight:normal;
+    color:#000000;
+ }
+
+ 
