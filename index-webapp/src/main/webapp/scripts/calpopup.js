@@ -50,14 +50,23 @@ var cp_location = 1;		// 0 = At the side of the button. 1 = At the bottom of the
 var g_startDay = 0;		// 0=sunday, 1=monday
 
 var g_Calendar;  		// global to hold the calendar reference, set by constructor
+//var daysOfWeek_global = "";
+//var months_global ="";
+//Global variables as per the locale in German, Japanese...etc
+var cal_prev_text_global="";
+var cal_next_text_global = "";
+var cal_today_text_global ="";
+var cal_month_text_global= "";
+var cal_year_text_global="";
 
 // constructor for calendar class
 function Calendar() {
 	g_Calendar = this;
 
 	// some constants needed throughout the program
-	this.daysOfWeek = "Sun Mon Tue Wed Thu Fri Sat".split(" ");
-	this.months = "January February March April May June July August September October November December".split(" ");
+	//this.daysOfWeek = "Sun Mon Tue Wed Thu Fri Sat".split(" ");
+	//this.months = "January February March April May June July August September October November December".split(" ");
+
 	this.daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31); 
 	this.containerLayer = null;
 	this.dayMask = [1,1,1,1,1,1,1];
@@ -65,7 +74,27 @@ function Calendar() {
 	this.showHolidays = true;
 }
 
-Calendar.prototype.show = function(e, target, dateFormat, dateFrom, dateTo, menuYearFrom, menuYearTo){
+Calendar.prototype.show = function(e, 
+	                               target, 
+								   dateFormat,
+								   daysOfWeek_global,
+								   months_global,
+								   cal_prev_text,
+								   cal_next_text,
+								   cal_today_text,
+								   cal_month_text,
+								   cal_year_text,
+								   dateFrom, dateTo, menuYearFrom, menuYearTo){
+ cal_prev_text_global=cal_prev_text;
+ cal_next_text_global = cal_next_text;
+ cal_today_text_global =cal_today_text;
+ cal_month_text_global= cal_month_text;
+ cal_year_text_global=cal_year_text;
+	
+	dateFormat = dateFormat.toLowerCase();
+ 	
+ 	this.daysOfWeek = daysOfWeek_global.split(" ");
+	this.months = months_global.split(" ");
     
 	if(!document.getElementById) {
 		alert("This browser is not suppored for a calendar popup.");
@@ -274,13 +303,23 @@ Calendar.prototype.show = function(e, target, dateFormat, dateFrom, dateTo, menu
 		this.menuYearTo = tmpCurYear;
 	// Really is up to not to, so increment by one.
 	this.menuYearTo++;
-	
-	this.writeString(this.buildString());
+ 	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 
 	this.containerLayer.style.visibility='visible';
 };
 
-Calendar.prototype.buildString = function(){
+Calendar.prototype.buildString = function(cal_prev_text,
+								   cal_next_text,
+								   cal_today_text,
+								   cal_month_text,
+								   cal_year_text
+){
+ 
 	var tmpStr = '';
 	
 	// See if there are holidays for this month. Save the holidays to a temporary array
@@ -301,15 +340,14 @@ Calendar.prototype.buildString = function(){
 		 	tmpStr = '<iframe src="blank.html" scrolling="no" frameborder="0" style="width: ' + this.containerLayer.offsetWidth + 'px; height: ' + this.containerLayer.offsetHeight + 'px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);"></iframe>';
 		 }
 	}
-        
     tmpStr = '<iframe src="blank.html" scrolling="no" frameborder="-1" style="width: ' + this.containerLayer.offsetWidth + 'px; height: ' + this.containerLayer.offsetHeight + 'px;z-index: -1; position: absolute;"></iframe>';
 	tmpStr += '<table cellspacing="0">';
 	tmpStr += '<thead><tr><td colspan="7"><ul>\n'+
-			'<li id="cp_prevMonth"><a href="javascript:g_Calendar.changeMonth(-1)" title="Go to previous month"><span>&lt;</span></a></li>\n'+
+			'<li id="cp_prevMonth"><a href="javascript:g_Calendar.changeMonth(-1)" title="'+cal_prev_text+' '+cal_month_text+'"><span>&lt;</span></a></li>\n'+
 			'<li id="cp_monthMenu">' + this.months[this.month] + '\n' +
 			'<ul id="cp_months"><li><a href="javascript:g_Calendar.clickMonth(0)">January</a></li><li><a href="javascript:g_Calendar.clickMonth(1)">February</a></li><li><a href="javascript:g_Calendar.clickMonth(2)">March</a></li><li><a href="javascript:g_Calendar.clickMonth(3)">April</a></li><li><a href="javascript:g_Calendar.clickMonth(4)">May</a></li><li><a href="javascript:g_Calendar.clickMonth(5)">June</a></li><li><a href="javascript:g_Calendar.clickMonth(6)">July</a></li><li><a href="javascript:g_Calendar.clickMonth(7)">August</a></li><li><a href="javascript:g_Calendar.clickMonth(8)">September</a></li><li><a href="javascript:g_Calendar.clickMonth(9)">October</a></li><li><a href="javascript:g_Calendar.clickMonth(10)">November</a></li><li><a href="javascript:g_Calendar.clickMonth(11)">December</a></li></ul></li>\n' +
-			'<li id="cp_nextMonth"><a href="javascript:g_Calendar.changeMonth(1)" title="Go to next month"><span>&gt;</span></a></li>\n' +
-			'<li id="cp_prevYear"><a href="javascript:g_Calendar.changeYear(-1)" title="Go to previous year"><span>&lt;</span></a></li>\n' +
+			'<li id="cp_nextMonth"><a href="javascript:g_Calendar.changeMonth(1)" title="'+cal_next_text+' '+cal_month_text+'"><span>&gt;</span></a></li>\n' +
+			'<li id="cp_prevYear"><a href="javascript:g_Calendar.changeYear(-1)" title="'+cal_prev_text+' '+cal_year_text+'"><span>&lt;</span></a></li>\n' +
 			'<li id="cp_yearMenu">' + this.year + '\n';
 
 	if(this.menuYearTo - this.menuYearFrom > 7){
@@ -329,7 +367,7 @@ Calendar.prototype.buildString = function(){
 		tmpStr += '<li><a href="javascript:g_Calendar.clickYear(' + y + ')">' + y + '</a></li>';
 	}
 
-	tmpStr += '</ul></li>\n<li id="cp_nextYear"><a href="javascript:g_Calendar.changeYear(1)" title="Go to next year"><span>&gt;</span></a></li>\n</ul></td></tr>';
+	tmpStr += '</ul></li>\n<li id="cp_nextYear"><a href="javascript:g_Calendar.changeYear(1)" title="'+cal_next_text+' '+cal_year_text+'"><span>&gt;</span></a></li>\n</ul></td></tr>';
 
 	var iCount = 1;
 
@@ -343,8 +381,9 @@ Calendar.prototype.buildString = function(){
 	}
 
 	var dtToday = new Date();
+         
 
-	tmpStr += '</tr></thead><tfoot><tr><td colspan="7">Today is: <a href="javascript:g_Calendar.clickToday()" title="Go to current month">' + (/^d/.test(this.dateFormat)?dtToday.getDate() + ' ' + this.months[dtToday.getMonth()] + ' ':this.months[dtToday.getMonth()] + ' ' + dtToday.getDate() + ', ') + dtToday.getFullYear()+'</a></td></tr></tfoot><tbody>';
+	tmpStr += '</tr></thead><tfoot><tr><td colspan="7">'+cal_today_text+ '<a href="javascript:g_Calendar.clickToday()" >' + (/^d/.test(this.dateFormat)?dtToday.getDate() + ' ' + this.months[dtToday.getMonth()] + ' ':this.months[dtToday.getMonth()] + ' ' + dtToday.getDate() + ', ') + dtToday.getFullYear()+'</a></td></tr></tfoot><tbody>';
 	var tmpFrom = parseInt('' + this.dateFromYear + this.dateFromMonth + this.dateFromDay,10);
 	var tmpTo = parseInt('' + this.dateToYear + this.dateToMonth + this.dateToDay,10);
 	var tmpCompare;
@@ -472,14 +511,24 @@ Calendar.prototype.isLeapYear = function(year) {
 
 Calendar.prototype.selectChange = function(el) {
 	this.month = el.selectedIndex;
-	this.writeString(this.buildString());
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 };
 
 Calendar.prototype.inputChange = function(el) {
 	var tmp = el;
 	if (tmp.value >=1900 && tmp.value <=2100) {
 		this.year = tmp.value;
-		this.writeString(this.buildString());
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 	} else {
 		tmp.value = this.year;
 	}
@@ -492,7 +541,12 @@ Calendar.prototype.changeYear = function(incr) {
 		this.year--;
 	}
 
-	this.writeString(this.buildString());
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 };
 
 Calendar.prototype.changeMonth = function(incr){ 
@@ -508,7 +562,12 @@ Calendar.prototype.changeMonth = function(incr){
 		this.month--;
 	}
 
-	this.writeString(this.buildString());
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 };
 
 Calendar.prototype.clickDay = function(day){
@@ -527,20 +586,37 @@ Calendar.prototype.clickDay = function(day){
 
 Calendar.prototype.clickMonth = function(month){
 	this.month = month;
-	this.writeString(this.buildString());
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 };
 
 Calendar.prototype.clickYear = function(year){
 	this.year = year;
-	this.writeString(this.buildString());
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
 };
 
 Calendar.prototype.clickToday = function(){
 	var theDate = new Date();
 	this.year = theDate.getFullYear();
 	this.month = theDate.getMonth();
-	this.writeString(this.buildString());
-};
+	this.writeString(this.buildString(cal_prev_text_global,
+								   cal_next_text_global,
+								   cal_today_text_global,
+								   cal_month_text_global,
+								   cal_year_text_global
+));
+
+	g_Calendar.clickDay(theDate.getDate());
+ };
 
 Calendar.prototype.formatDateAsString = function(day, month, year){
 	var delim = eval('/\\' + this.dateDelim + '/g');
