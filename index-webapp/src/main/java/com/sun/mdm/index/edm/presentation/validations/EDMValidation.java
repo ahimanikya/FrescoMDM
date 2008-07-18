@@ -34,6 +34,7 @@
 package com.sun.mdm.index.edm.presentation.validations;
 
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -45,6 +46,9 @@ import com.sun.mdm.index.edm.presentation.util.Logger;
 import java.util.ResourceBundle;
 import net.java.hulp.i18n.LocalizationSupport;
 import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
+import com.sun.mdm.index.edm.util.DateUtil;
+import java.util.Calendar;
+import java.util.Date;
 public class EDMValidation {
     
    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.validations.EDMValidation");
@@ -53,8 +57,8 @@ public class EDMValidation {
    private Hashtable MONTH_DAY_HASH = new Hashtable();
    private String[] MONTHS = new String[13];   
    
-   
-   
+  
+
    public EDMValidation()    {
    }
    
@@ -98,8 +102,23 @@ public class EDMValidation {
             int month = 0;
             int year = 0;
 
+            String dateFormat = ConfigManager.getDateFormat();
+            try {
+
+                Date date = DateUtil.string2Date(thisDate);
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DATE);
+                year = c.get(Calendar.YEAR);
+
+            } catch (ValidationException ex) {
+                mLogger.error(mLocalizer.x("EVL011:Invalid Date : {0}", ex.getMessage()));
+            }
+
+
             // ---- Server Validation ---
-            StringTokenizer st = new StringTokenizer(thisDate, "/");
+         /*   StringTokenizer st = new StringTokenizer(thisDate, "/");
             String[] dateTokens = new String[st.countTokens()];
             //There should be a minimum of three tokens
             if (st.countTokens() != 3) {
@@ -134,6 +153,8 @@ public class EDMValidation {
                 }
                 i++;
             }
+          */
+            
             if ((year % 4 == 0 || year % 100 == 0 || year % 400 == 0)) {
                this.MONTH_DAY_HASH.put("2", "29");
             } else {
@@ -158,10 +179,7 @@ public class EDMValidation {
             if (month > 12 || month < 1) {
                 return bundle.getString("Invalid_Month_format"); //"Invalid Month The format of Date is MM/DD/YYYY"; //Month should be between 1 and 12
             }
-          // mLogger.info(mLocalizer.x("EVL001: Day: Month: Year: {0}:{1}:{2}", new Integer(day).toString(),new Integer(month).toString(),new Integer(year).toString()));
-           //mLogger.error(mLocalizer.x("EVL002: Month :: {0}", new Integer(month).toString()));
-           //mLogger.error(mLocalizer.x("EVL003: Year :: {0}", new Integer(year).toString()));
-
+          
 
        } catch (Exception ex) {
            mLogger.error(mLocalizer.x("EVL004: Date validation failed :{0}", ex.getMessage()),ex);
@@ -269,4 +287,7 @@ public class EDMValidation {
        }       
        return "success";
    }
+   
+ 
+   
 }
