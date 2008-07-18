@@ -63,6 +63,7 @@ import java.util.HashMap;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import net.java.hulp.i18n.LocalizationSupport;
@@ -282,11 +283,13 @@ public class ActivityReportHandler {
 
         for (int i = 0; i < countArr.size() - 1; i++) {
             Date thisDate = new Date(sundayDate.getTime() + i * ((24 * 60 * 60 * 1000)));
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
             sundayDMY = sdf.format(thisDate);
+            
             activityRecords[i].setActivityDate(sundayDMY);
             simpleDateFormat = new SimpleDateFormat("HH:mm a, EEEEEEEEEE, MMMMMMMMMM dd, yyyy");
             strDate = simpleDateFormat.format(thisDate);
+           
             if (strDate.indexOf(bundle.getString("DAY00")) != -1) {
                 activityRecords[i].setDay(bundle.getString("DAY00"));
             } else if (strDate.indexOf(bundle.getString("DAY01")) != -1) {
