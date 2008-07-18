@@ -16,6 +16,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 
 <%
 //set locale value
@@ -74,7 +75,17 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
   http://www.ligaturesoftware.com
   Update Date: 12/16/2007  
   -->
+<%
+String global_daysOfWeek  = bundle.getString("global_daysOfWeek");
+String global_months = bundle.getString("global_months");
+String cal_prev_text = bundle.getString("cal_prev_text");
+String cal_next_text = bundle.getString("cal_next_text");
+String cal_today_text = bundle.getString("cal_today_text");
+String cal_month_text = bundle.getString("cal_month_text");
+String cal_year_text = bundle.getString("cal_year_text");
+String  dateFormat = ConfigManager.getDateFormat();
 
+%>
       <!--Skip to main Content added-->
     <a href="#mainContent"><img src="images/spacer.gif" border="0" height="0" width= "0" alt="Skip to main Content"></a>
 
