@@ -35,7 +35,7 @@
 <%@ page import="java.util.ArrayList"  %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
-
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -147,7 +147,7 @@ ArrayList collectedEuidsList = new ArrayList();
  <%
                     ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
                     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
   
 					PotentialDuplicateIterator asPdIter;
                     PotentialDuplicateSummary mainDuplicateSummary = null;

@@ -72,12 +72,15 @@ boolean isSessionActive = true;
  String URICSS = URI.replaceAll("/ajaxservices","");
 
 %>
+<f:view>
 <%
 //set locale value
+if(session!=null){
  LocaleHandler localeHandler = new LocaleHandler();
  localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+}
  %>
-<f:view>
+
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 
     
@@ -133,6 +136,18 @@ boolean isSessionActive = true;
 			// Added by Anil, fix for  CR 6709864
 			Operations operations=new Operations();
         %>
+<!-- Global variables for the calendar-->
+<%
+ ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+ String global_daysOfWeek  = bundle.getString("global_daysOfWeek");
+ String global_months = bundle.getString("global_months");
+ String cal_prev_text = bundle.getString("cal_prev_text");
+ String cal_next_text = bundle.getString("cal_next_text");
+ String cal_today_text = bundle.getString("cal_today_text");
+ String cal_month_text = bundle.getString("cal_month_text");
+ String cal_year_text = bundle.getString("cal_year_text");
+ String  dateFormat = ConfigManager.getDateFormat();
+%>
         <body>
             <div> 
                 <div>
@@ -277,14 +292,25 @@ boolean isSessionActive = true;
                                                             <input type="text" 
 															       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                    id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
-                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
 													               value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                    />
-                                                            <a title="<h:outputText value="#{fieldConfigPer.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPer.name}"/>')" > 
-                                                            <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                            </a>
+                                                            <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{fieldConfigPer.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												           <font class="dateFormat">(<%=dateFormat%>)</font>
                                                         </nobr>
                                                         </div>            
                                                     </h:column>
