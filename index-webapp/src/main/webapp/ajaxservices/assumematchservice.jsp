@@ -146,7 +146,7 @@ if (results != null)   {
     String value = new String();
 	for(int ji=0;ji<keys.size();ji++) {
 	    if ("EUID".equalsIgnoreCase((String)keys.toArray()[ji]))  {
-	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:true,resizeable:true,width:150}";
+	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:true,resizeable:true}";
 	    } else {
 	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",resizeable:true}";
 	    }
@@ -179,10 +179,10 @@ if (results != null)   {
                   	   <thead>
                           <tr>
                      	   <% for (int i =0;i< keys.size();i++) { %>
-                               <th><%=keys.toArray()[i]%></th>
+                               <th><nobr><%=keys.toArray()[i]%></nobr></th>
                           <%}%>
                          </tr>
-                	   </thead>
+                	   </thead>	
                   	   <tbody>
                        <% for (int i = 0; i < results.size(); i++) { //Outer Arraylist 
 			              ArrayList valueList = (ArrayList) results.get(i);
@@ -191,7 +191,7 @@ if (results != null)   {
 			           %>
 						<tr> 		
 							                 <%for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {%>
-											   <td>
+											   <td valign="top">
 											      <table border="0" style="border:none">
                                                   <% for (int j = 0; j < valueList.size(); j++) { //The values itself can be an array %>
 										                <%HashMap valueMap = (HashMap) valueList.get(j);
@@ -204,22 +204,26 @@ if (results != null)   {
 													 }
 					                               %>
 												    <tr>
-												       <td width=<%=length%>px style="border:none">	
+												       <td  style="border:none">	
+													   <nobr>
 												   <%  if ((screenObject.getRootObj().getName()+"."+"ID").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 														<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 
-												   <%  }  else if ((screenObject.getRootObj().getName()+"."+"EUID").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
+												   <%  }  else if ((screenObject.getRootObj().getName()+"."+"EUID").equalsIgnoreCase((String)fullFieldNamesList.toArray	()[kc])) { %>
 												       <% if (!euidPrinted) { %>
 														<a href="ameuiddetails.jsf?AMID=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>" >
 														<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 														</a>
 
 														   <% euidPrinted = true;%>
+														<% } else { %>
+														  &nbsp;
 														<% } %>
 
 												   <%  } else { %>
 														<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 												   <%  } %>
+												   </nobr>
 												     </td>
 													 </tr>												 
   									             <%}%><!-- end value list loop -->
