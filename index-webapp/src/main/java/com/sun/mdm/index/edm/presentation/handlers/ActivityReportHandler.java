@@ -64,9 +64,12 @@ import java.util.HashMap;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import net.java.hulp.i18n.LocalizationSupport;
+import org.omg.CORBA.UserException;
 
 /** Creates a new instance of ActivityReportHandler*/ 
 public class ActivityReportHandler {
@@ -137,10 +140,11 @@ public class ActivityReportHandler {
      */
     private Integer pageSize;  
 
-    
+     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     public ArrayList activityReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception {
         ArrayList finalOutputList = new ArrayList();
         reportType = getFrequency();
+        try{
         //request.setAttribute("tabName", "ACTIVITY_REPORT");
         if (reportType.equalsIgnoreCase(getREPORT_TYPE_WEEKLY_ACTIVITY()) ||
             reportType.equalsIgnoreCase(getREPORT_TYPE_MONTHLY_ACTIVITY()) ||
@@ -164,6 +168,17 @@ public class ActivityReportHandler {
                 ReportDataRow[] rdr = getMONYRRRows();
                 finalOutputList = getActivityRecordsVO();
             }
+        }
+        }
+      catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RPT070: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT071: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT072: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
         return finalOutputList;
     }

@@ -75,9 +75,13 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import net.java.hulp.i18n.LocalizationSupport;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.epath.EPathException;
+
 
 /**
  * @author Sridhar Narsingh
@@ -141,6 +145,7 @@ public class DeactivatedReportHandler    {
 
     private Integer maxResultsSize;  
     private Integer pageSize;  
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     
     /**
      *Operations class used for implementing the security layer from midm-security.xml file
@@ -157,9 +162,20 @@ public class DeactivatedReportHandler    {
     public ArrayList deactivateReport() throws ValidationException, EPathException, ReportException, Exception {
         drConfig = getDeactivateReportSearchObject();
         if (drConfig != null) {
+            try{
             dr = QwsController.getReportGenerator().execDeactivateReport(drConfig);
             // Code to retrieve the data rows of report records.
             ReportDataRow[] rdr = getDRRows();
+            } catch (Exception ex) {
+                if (ex instanceof ValidationException) {
+                    mLogger.error(mLocalizer.x("RPT130: Service Layer Validation Exception has occurred"), ex);
+                } else if (ex instanceof UserException) {
+                    mLogger.error(mLocalizer.x("RPT131: Service Layer User Exception occurred"), ex);
+                } else if (!(ex instanceof ProcessingException)) {
+                    mLogger.error(mLocalizer.x("RPT132: Error  occurred"), ex);
+                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            }
             //return getDeactivatedRecordsVO();
             return resultArrayList;
         } else {

@@ -45,7 +45,10 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.util.QwsUtil;
 import java.util.ResourceBundle;
+import javax.faces.application.FacesMessage;
+import javax.xml.bind.ValidationException;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class ViewMergeTreeHandler {
@@ -69,6 +72,7 @@ public class ViewMergeTreeHandler {
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
     private String euid = request.getParameter("euid");
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
 
     public ViewMergeTreeHandler() {
         //createHtmlNodeTreeDataModel();        
@@ -149,21 +153,31 @@ public class ViewMergeTreeHandler {
             TextNode euidNode = null;
             euidNode = buildTree(node, euidNode);
 
-
-
-
             htmlNodeTreeDataModel.addNode(euidNode);
 
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
-            return SERVICE_LAYER_ERROR;
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
-            return SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
+//        } catch (ProcessingException ex) {
+//            mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
+//            return SERVICE_LAYER_ERROR;
+//        } catch (UserException ex) {
+//            mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
+//            return SERVICE_LAYER_ERROR;
+//        } catch (Exception ex) {
+//            mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
+//            return SERVICE_LAYER_ERROR;
+//        }
+            // modified exceptional handling logic
+            }catch  (Exception ex) {
+            if (ex instanceof ValidationException) {                
+                mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return SERVICE_LAYER_ERROR;
         }
+ 
         return SUCCESS;
     }
 

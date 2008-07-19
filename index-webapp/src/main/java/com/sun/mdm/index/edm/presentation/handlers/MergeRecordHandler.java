@@ -76,6 +76,9 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import net.java.hulp.i18n.LocalizationSupport;
 
 /** Creates a new instance of DeactivatedReportsHandler*/ 
@@ -121,7 +124,8 @@ public class MergeRecordHandler    {
     /**
      *Resource bundle
      */
-        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     /**
      * This method populates the DeactivatedReports using the Service Layer call
           * @TODO
@@ -134,8 +138,19 @@ public class MergeRecordHandler    {
          reportType = "Merge Reports";
          MergeReportConfig  mrConfig = getMergeReportSearchObject();
          if(mrConfig != null) {
+           try{
            MergeReport mRpt = QwsController.getReportGenerator().execMergeReport(mrConfig);
            ReportDataRow[] rdr = getMRRows(mrConfig,mRpt);
+           } catch (Exception ex) {
+                 if (ex instanceof ValidationException) {
+                     mLogger.error(mLocalizer.x("MRG050: Service Layer Validation Exception has occurred"), ex);
+                 } else if (ex instanceof UserException) {
+                     mLogger.error(mLocalizer.x("MRG051: Service Layer User Exception occurred"), ex);
+                 } else if (!(ex instanceof ProcessingException)) {
+                     mLogger.error(mLocalizer.x("MRG052: Error  occurred"), ex);
+                 }
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             }
            return resultArrayList;
          } else { //if validation occurs return null value
            return null;             

@@ -78,6 +78,9 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class DuplicateReportHandler    {
@@ -150,7 +153,7 @@ public class DuplicateReportHandler    {
      */
     Operations operations = new Operations();
     
-    
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     
     private ArrayList resultsConfigArrayList  = new ArrayList();
     
@@ -159,10 +162,22 @@ public class DuplicateReportHandler    {
     public ArrayList duplicateReport() throws ValidationException, EPathException, ReportException, Exception {
         pdrConfig = getPotentialDuplicateSearchObject();
         if (pdrConfig != null) {
+            
+            try{
             pdIter = QwsController.getReportGenerator().execPotentialDuplicateReportIterator(pdrConfig);
             // Code to retrieve the data rows of report records.
             ReportDataRow[] rdr = getPDRRows();
             setDuplicateRecordsVO(new DuplicateRecords[rdr.length]);
+            } catch (Exception ex) {
+                if (ex instanceof ValidationException) {
+                    mLogger.error(mLocalizer.x("RPT150: Service Layer Validation Exception has occurred"), ex);
+                } else if (ex instanceof UserException) {
+                    mLogger.error(mLocalizer.x("RPT151: Service Layer User Exception occurred"), ex);
+                } else if (!(ex instanceof ProcessingException)) {
+                    mLogger.error(mLocalizer.x("RPT152: Error  occurred"), ex);
+                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            }
             return resultArrayList;
         } else {
             return null;

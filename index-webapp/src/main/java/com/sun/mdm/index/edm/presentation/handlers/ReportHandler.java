@@ -63,6 +63,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -70,6 +73,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 import net.java.hulp.i18n.LocalizationSupport;
+
 
 public class ReportHandler {
 
@@ -227,6 +231,7 @@ public class ReportHandler {
 
     //resource bundle definitin
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
 
     //get locale specific texts for report tab names
     String Merged_Transaction_Report_Label = bundle.getString("Merged_Transaction_Report_Label");
@@ -303,19 +308,17 @@ public class ReportHandler {
               setResultsSize(duplicateRecordsResults.size());
             }
             return duplicateRecordsResults;
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT043: Unable to get deactivated report :{0} ", ex.getMessage()));
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT044: Unable to get deactivated report: {0} ", ex.getMessage()));
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("EPathException", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
+
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT027: Unable to get deactivated report:{0} ", ex.getMessage()));
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
+            if (ex instanceof ValidationException) {
+                  mLogger.error(mLocalizer.x("RPT043: Unable to get deactivated report :{0} ", ex.getMessage()));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT044: Unable to get deactivated report: {0} ", ex.getMessage()));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT027: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             return null;
         }
     }
 
@@ -375,18 +378,16 @@ public class ReportHandler {
             if (mergeResults != null && mergeResults.size() > 0) {
                 setResultsSize(mergeResults.size() / 2);
             }
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT028: Failed to get Merge report {0} ", ex.getMessage()), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured " + ex.getMessage(), ex.getMessage()));
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT029: Failed to get Merge report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT030: Failed to get Merge report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("RPT028: Failed to get Merge report {0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT029: Failed to get Merge report {0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT030: Failed to get Merge report {0} ", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
         return mergeResults;
@@ -449,19 +450,16 @@ public class ReportHandler {
               setResultsSize(results.size());
             }
             return results;
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT031: Unable to get activity report {0} ", ex.getMessage()), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured " + ex.getMessage(), ex.getMessage()));
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT032: Unable to get activity report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
+
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT033: Unable to get activity report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("RPT031: Unable to get activity report {0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT032: Unable to get activity report {0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+               mLogger.error(mLocalizer.x("RPT033: Unable to get activity report {0} ", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
     }
@@ -523,18 +521,16 @@ public class ReportHandler {
             }
             
             return results;
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT034: Failed to get unMerge report {0} ", ex.getMessage()), ex);
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT035: Failed to get unMerge report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT036: Failed to get unMerge report  {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+        } 
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RPT034: Failed to get unMerge report {0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT035: Failed to get unMerge report {0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT036: Failed to get unMerge report  {0} ", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
     }
@@ -597,18 +593,15 @@ public class ReportHandler {
             }
             return results;
 
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT037: Unable to update the report  {0} ", ex.getMessage()), ex);
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT038: Unable to update the report  {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT039: Unable to update the report  {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RPT037: Unable to update the report  {0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT038: Unable to update the report  {0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT039: Unable to update the report  {0} ", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
     }
@@ -669,22 +662,15 @@ public class ReportHandler {
               setResultsSize(results.size()/2);
             }
             return results;
-        } catch (ValidationException ex) {
-            //Logger.getLogger(ReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            // Sailaja to add code for this
-            mLogger.error(mLocalizer.x("Error Occured ", ex.getMessage()), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured " + ex.getMessage(), ex.getMessage()));
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT054: Unable to duplicate the report  {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT055: Unable to duplicate the report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RPT054: Unable to duplicate the report  {0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT055: Unable to duplicate the report  {0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT056: Unable to duplicate the report  {0} ", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
     }
@@ -747,18 +733,15 @@ public class ReportHandler {
             }
             return results;
 
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT040: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
-            return null;
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT041: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return null;
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT042: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RPT040: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RPT041: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RPT042: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
     }

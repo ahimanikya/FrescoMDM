@@ -75,6 +75,9 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import net.java.hulp.i18n.LocalizationSupport;
 import com.sun.mdm.index.objects.exception.ObjectException;
 
@@ -122,6 +125,7 @@ public class UnmergedRecordsHandler    {
      *Resource bundle
      */
     ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     
     ArrayList resultArrayList = new ArrayList();
             
@@ -137,9 +141,21 @@ public class UnmergedRecordsHandler    {
         UnmergeReportConfig umrConfig = getUnmergeReportSearchObject();
         
         if (umrConfig != null) {
+            try{
             UnmergeReport umRpt = QwsController.getReportGenerator().execUnmergeReport(umrConfig);
             ReportDataRow[] rdr = getUMRRows(umrConfig, umRpt);
             setUnmergedRecordsVO(new UnmergedRecords[rdr.length]);
+            } catch (Exception ex) {
+                if (ex instanceof ValidationException) {
+                    mLogger.error(mLocalizer.x("UMG050: Service Layer Validation Exception has occurred"), ex);
+                } else if (ex instanceof UserException) {
+                    mLogger.error(mLocalizer.x("UMG051: Service Layer User Exception occurred"), ex);
+                } else if (!(ex instanceof ProcessingException)) {
+                    mLogger.error(mLocalizer.x("UMG052: Error  occurred"), ex);
+                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            }
+
             return resultArrayList;
         } else {
             return null;
