@@ -186,7 +186,6 @@ String strVal = new String();
 
 	  <%
      FieldConfig fieldConfig = (FieldConfig) screenConfigArrayLocal.get(fc);
- 	 System.out.println("fgfgfgfgfg" + fg);  
  	 String   value = (fieldConfig.isRange()) ? (String) newHashMap.get(fieldConfig.getDisplayName()):(String) newHashMap.get(fieldConfig.getName());
 	 %>
 
