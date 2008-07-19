@@ -100,6 +100,8 @@ String potDupText = bundle.getString("Potential_Duplicate_Report_Label");
 String assumedText = bundle.getString("Assumed_Matches_Report_Label");
 String print_text = bundle.getString("print_text");
 String total_records_text = bundle.getString("total_records_text");
+ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+String sortOption = "false";
 
 int pageSize = 10;
 ArrayList fullFieldNamesList  = new ArrayList();
@@ -133,22 +135,26 @@ ArrayList fcArrayList  = new ArrayList();
  <%
 	 if (mergeText.equalsIgnoreCase(reportName))    { 
         /**********************Merge Report************************/
-		 results = reportHandler.mergeReport();
+ 		 results = reportHandler.mergeReport();
 		 fcArrayList  = reportHandler.getMergedRecordsHandler().getResultsConfigArrayList();
      } else if (deactiveText.equalsIgnoreCase(reportName))  {
       /**********************Deactivated Report************************/
+		 sortOption = "true";
 		 results = reportHandler.deactivatedReport();
 		 fcArrayList  = reportHandler.getDeactivatedReport().getResultsConfigArrayList();
 	 } else if (updateText.equalsIgnoreCase(reportName))  {
       /**********************Update Report************************/
+		 sortOption = "true";
 		 results = reportHandler.updateReport();
 		 fcArrayList  = reportHandler.getUpdateReport().getResultsConfigArrayList();
 	 } else if (unmergeText.equalsIgnoreCase(reportName))  {
       /**********************UnMerge Report************************/
+		 sortOption = "true";
 		 results = reportHandler.unMergeReport();
 		 fcArrayList  = reportHandler.getUnmergedRecordsHandler().getResultsConfigArrayList();
 	 } else if (activityText.equalsIgnoreCase(reportName))  {
       /**********************Activity Report************************/
+		 sortOption = "true";
 		 results = reportHandler.activitiesReport();
 	 } else if (assumedText.equalsIgnoreCase(reportName))  {
       /**********************Assume Match Report************************/
@@ -199,9 +205,15 @@ ArrayList fcArrayList  = new ArrayList();
     String value = new String();
 	for(int ji=0;ji<keys.size();ji++) {
 	    if ("EUID".equalsIgnoreCase((String)keys.toArray()[ji]))  {
-	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:true,resizeable:true,width:150}";
+          if (assumedText.equalsIgnoreCase(reportName)) { 
+				 sortOption = "true";
+		  }
+	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:"+sortOption+",resizeable:true,width:150}";
 	    }  else {
-	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:true,resizeable:true}";
+          if (assumedText.equalsIgnoreCase(reportName)) { 
+				 sortOption = "false";
+		  }
+	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:"+sortOption+",resizeable:true}";
 	    }
        myColumnDefs.append(value);
        if(ji != keys.size()-1) myColumnDefs.append(",");
@@ -257,95 +269,106 @@ String reportType = (String)request.getAttribute("frequency");
 <tr>
                      <td style="width:85%">
                          <h:outputText value="#{msgs.total_records_text}"/>
-						 <%if (potDupText.equalsIgnoreCase(reportName))  {%>
-						   <%=results.size()/2%>&nbsp;&nbsp;
-						 <%}else{%>
-						   <%=results.size()%>&nbsp;&nbsp;
-						 <%}%>
-
+						   <%=results.size()%>
 				     </td>
 					 <td>
-
-                    <h:panelGrid>
-                        <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('<%=formName%>');openPrintWindow('/<%=URI%>/printservices/reportsprint.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
-					</h:panelGrid>             
-                         
+					 <%if(results.size() > 0){%>
+                       <h:panelGrid>
+                          <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('<%=formName%>');openPrintWindow('/<%=URI%>/printservices/reportsprint.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
+					  </h:panelGrid> 
+					<%}%>
                      </td>
 </tr>
 <%}%>
 <tr>
 <td colspan="2">
-<% 
- if(results != null && results.size() > 0 ) {%>
+<%  if(results != null && results.size() > 0 ) {	%>
+ 
+             <div id="myMarkedUpContainer<%=divId%>" class="reportresults">
+                	<table id="myTable" border="0">
+                  	   <thead>
+                          <tr>
+                     	   <% for (int i =0;i< keys.size();i++) { %>
+                               <th><nobr><%=keys.toArray()[i]%></nobr></th>
+                          <%}%>
+                         </tr>
+                	   </thead>
+                  	   <tbody>
+                       <% for (int i = 0; i < results.size(); i++) { //Outer Arraylist 
+			              ArrayList valueList = (ArrayList) results.get(i);
+						  int length=10;
+						  boolean euidPrinted = false;
+			           %>
+						<tr> 		
+							                 <%for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {%>
+											   <td valign="top">
+											      <table style="border:none">
+                                                  <% for (int j = 0; j < valueList.size(); j++) { //The values itself can be an array %>
+										                <%HashMap valueMap = (HashMap) valueList.get(j);%>
+												    <tr>
+												       <td  style="border:none">	
+													     <%if (assumedText.equalsIgnoreCase(reportName) && ("EUID").equalsIgnoreCase((String)fullFieldNamesList.toArray	()[kc])) { %>
+														     <% if (j ==0 ) { %>
+																 <nobr>
+																	 <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
+																 </nobr>
+															 <% } else  { %>
+															    &nbsp;
+															 <% } %> 
+														<%} else {%>
+																 <nobr>
+																	 <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
+																 </nobr>
+														<%}%>
+												     </td>
+													 </tr>												 
+  									             <%}%><!-- end value list loop -->
+												 </table>
+												</td>
+							                 <%}%> <!-- end Full field loop -->
+							</tr>
+		                  <% } %>
+	                 </tbody>
+                 </table>
+              </div>
 
-<div id="myMarkedUpContainer<%=divId%>">
-	<table id="myTable">
-	   <thead>
-            <tr>
-	   <% for (int i =0;i< keys.size();i++) { %>
-                <th><%=keys.toArray()[i]%></th>
-	   <%}%>
-            </tr>
-	   </thead>
-	   <tbody>
-<%       for (int i3 = 0; i3 < results.size(); i3++) { %>
-              <tr>
-                <%HashMap valueMap = (HashMap) results.get(i3);
-                    for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
-
-				%>
-                   <td>
-                      <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
-                   </td>
-                  <%}%>
-				  <%}%>
-              </tr>
-	   </tbody>
-	</table>
-</div>
 <%}%>
 </td>
 </tr>
 </table>
 
+		<script>
+			var fieldsArray = new Array();
+		</script>
+			<% for(int index=0;index<keys.size();index++) {%>
+					<script>
+						fieldsArray[<%=index%>] = '<%=keys.toArray()[index]%>';
+					</script>
+			<%}%>
+		<script type="text/javascript">
+			var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("myTable"));
+			myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+			myDataSource.responseSchema = {
+				fields: fieldsArray
+			};
+			var myConfigs = {
+				paginator : new YAHOO.widget.Paginator({
+					rowsPerPage    : 10, // REQUIRED
+					totalRecords   : <%=results.size()%> //, // OPTIONAL
+					//template       : "{PageLinks} Show {RowsPerPageDropdown} per page"
+				})     
+			};
+			var myColumnDefs = <%=myColumnDefs.toString().length() == 0?"\""+ "\"":myColumnDefs.toString()%>;
+			var myDataTable = new YAHOO.widget.DataTable("myMarkedUpContainer<%=divId%>", myColumnDefs, myDataSource,myConfigs);
+		</script>
 
 
-
-
-<script>
-var fieldsArray = new Array();
-</script>
 <% for(int index=0;index<keys.size();index++) {%>
         <script>
             fieldsArray[<%=index%>] = '<%=keys.toArray()[index]%>';
         </script>
 <%}%>
 
-<script type="text/javascript">
-var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("myTable"));
 
-myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-
-myDataSource.responseSchema = {
-    fields: fieldsArray
-};
-
-var myConfigs = {
-    paginator : new YAHOO.widget.Paginator({
-        rowsPerPage    : <%=reportHandler.getRecordsPerPage(reportName)%>, //, // REQUIRED
-        totalRecords   : <%=(results != null && results.size() > 0 )?results.size():"0"%>//, // OPTIONAL
-        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page"
-    })     
-};
-
-var myDataTable = new YAHOO.widget.DataTable("myContainer",
-    myColumnDefs, myDataSource, myConfigs);
-
-
-var myColumnDefs = <%=myColumnDefs.toString().length() == 0?"\""+ "\"":myColumnDefs.toString()%>;
-
-
-var myDataTable = new YAHOO.widget.DataTable("myMarkedUpContainer<%=divId%>", myColumnDefs, myDataSource,myConfigs);
-</script>
   <%} %>  <!-- Session check -->
 </f:view>
