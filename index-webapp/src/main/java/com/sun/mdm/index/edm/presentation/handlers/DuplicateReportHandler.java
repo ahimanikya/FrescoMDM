@@ -76,6 +76,8 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.presentation.security.Operations;
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class DuplicateReportHandler    {
@@ -143,6 +145,13 @@ public class DuplicateReportHandler    {
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
     
+    /**
+     *Operations class used for implementing the security layer from midm-security.xml file
+     */
+    Operations operations = new Operations();
+    
+    
+    
     private ArrayList resultsConfigArrayList  = new ArrayList();
     
     private ArrayList resultArrayList = new ArrayList();
@@ -165,12 +174,9 @@ public class DuplicateReportHandler    {
         ArrayList dataRowList = new ArrayList();
         while (pdIter.hasNext()) {
             PotentialDuplicateReportRow reportRow = new PotentialDuplicateReportRow(pdIter.next(), pdrConfig);
- 
             ArrayList newArrayList = getOutPutValuesMap(pdrConfig, reportRow);
-            for (int i = 0; i < newArrayList.size(); i++) {
-                HashMap object = (HashMap) newArrayList.get(i);
-                resultArrayList.add(object);
-            }
+            //Add arraylist of hashvalues with values
+            resultArrayList.add(newArrayList);
         }            
         request.setAttribute("duplicateReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
@@ -225,7 +231,7 @@ public class DuplicateReportHandler    {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && !operations.isField_VIP()  && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                                     euid1Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
@@ -235,7 +241,7 @@ public class DuplicateReportHandler    {
                              } else {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
 
-                                if (value!= null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                    
+                                if (value!= null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                    
                                     euid1Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));                                    
                                 } else {
                                     if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
@@ -281,7 +287,7 @@ public class DuplicateReportHandler    {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
                                   euid2Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
                                     euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
@@ -290,7 +296,7 @@ public class DuplicateReportHandler    {
                             } else {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                                 
-                                if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+                                if (value!=null && !operations.isField_VIP()  && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
                                     euid2Map.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                     
                                 } else {

@@ -73,6 +73,8 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.presentation.security.Operations;
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 import net.java.hulp.i18n.LocalizationSupport;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -131,7 +133,7 @@ public class DeactivatedReportHandler    {
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 
     //resource bundle definitin
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
     
     private ArrayList resultsConfigArrayList  = new ArrayList();
   
@@ -139,6 +141,11 @@ public class DeactivatedReportHandler    {
 
     private Integer maxResultsSize;  
     private Integer pageSize;  
+    
+    /**
+     *Operations class used for implementing the security layer from midm-security.xml file
+     */
+    Operations operations = new Operations();
     
     /**
      * @return the value object for display
@@ -311,27 +318,24 @@ public class DeactivatedReportHandler    {
     }
 
 
-    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+    private ArrayList getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
         HashMap newValuesMap = new HashMap();
+        ArrayList newValuesMapList = new ArrayList();
         List transactionFields = reportConfig.getTransactionFields();
 
         ArrayList fcArrayList = getResultsConfigArrayList();
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
-
+       
         //getSearchResultsArrayByReportType();
         if (transactionFields != null) {
             Iterator iter = transactionFields.iterator();
             EnterpriseObject eo = null;
-            Object obj = null;
-            MasterControllerService masterControllerService = new MasterControllerService();
-            String epathValue = new String();
-            while (iter.hasNext()) {
+             MasterControllerService masterControllerService = new MasterControllerService();
+             while (iter.hasNext()) {
                 String field = (String) iter.next();
                 String val = reportRow.getValue(field).toString();
                 if (field.equalsIgnoreCase("EUID")) {
                     newValuesMap.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
-
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
                         newValuesMap = populateHashMapValues(fieldConfig,  newValuesMap,  eo);  
@@ -339,7 +343,8 @@ public class DeactivatedReportHandler    {
                 } 
             }
         }
-        return newValuesMap;
+        newValuesMapList.add(newValuesMap);
+        return newValuesMapList;
     }
     
       private HashMap populateHashMapValues(FieldConfig fieldConfig, HashMap newValuesMap, EnterpriseObject eo) throws ObjectException, EPathException {
@@ -356,7 +361,7 @@ public class DeactivatedReportHandler    {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -370,7 +375,7 @@ public class DeactivatedReportHandler    {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if ( value != null && !operations.isField_VIP()  && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
@@ -405,7 +410,7 @@ public class DeactivatedReportHandler    {
     public DeactivateReportConfig getDeactivateReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          DeactivateReportConfig drc = new DeactivateReportConfig();
                   
         //Form Validation of  Start Time

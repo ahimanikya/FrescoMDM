@@ -77,6 +77,8 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
+import com.sun.mdm.index.edm.presentation.security.Operations;
 import net.java.hulp.i18n.LocalizationSupport;
 /** Creates a new instance of DeactivatedReportsHandler*/ 
 public class UpdateReportHandler    { 
@@ -131,12 +133,17 @@ public class UpdateReportHandler    {
     /**
      *Resource bundle
      */
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());        
     
     /**
      *get Screen Object from the session
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
+    /**
+     *Operations class used for implementing the security layer from midm-security.xml file
+     */
+    Operations operations = new Operations();
 
     private Integer maxResultsSize;  
     private Integer pageSize;  
@@ -198,7 +205,9 @@ public class UpdateReportHandler    {
             }*/
             prevTimestamp = currentTime;
             index++;
-            resultArrayList.add(getOutPutValuesMap(urConfig, reportRow));
+            ArrayList outputList = new ArrayList();
+            outputList.add(getOutPutValuesMap(urConfig, reportRow));
+            resultArrayList.add(outputList);
         
         }
         }
@@ -387,7 +396,7 @@ public class UpdateReportHandler    {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -401,7 +410,7 @@ public class UpdateReportHandler    {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if (value!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
@@ -439,7 +448,7 @@ public class UpdateReportHandler    {
     public UpdateReportConfig getUpdateSearchObject() throws ValidationException, EPathException {
         String errorMessage = null;
         EDMValidation edmValidation = new EDMValidation();
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
         UpdateReportConfig urConfig = new UpdateReportConfig();
 
         //Form Validation of  Start Time

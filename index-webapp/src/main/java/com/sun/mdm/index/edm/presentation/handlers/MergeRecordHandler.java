@@ -74,6 +74,8 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.presentation.security.Operations;
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 import net.java.hulp.i18n.LocalizationSupport;
 
 /** Creates a new instance of DeactivatedReportsHandler*/ 
@@ -108,12 +110,18 @@ public class MergeRecordHandler    {
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
     
+     /**
+     *Operations class used for implementing the security layer from midm-security.xml file
+     */
+    Operations operations = new Operations();
+
+    
     private ArrayList resultsConfigArrayList  = new ArrayList();
   
     /**
      *Resource bundle
      */
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());        
     /**
      * This method populates the DeactivatedReports using the Service Layer call
           * @TODO
@@ -143,9 +151,13 @@ public class MergeRecordHandler    {
             //for (int i = 0; i < dataRows.length; i++) {
             //    dataRowList.add(dataRows[i]);
             //}
-            resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID1"));
-            resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID2"));
+            ArrayList innerList = new ArrayList(); 
+            innerList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID1"));
+            innerList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID2"));
+            resultArrayList.add(innerList);
+            
         }   
+        
         return dataRowList2Array(dataRowList);
        
      }
@@ -268,7 +280,7 @@ public class MergeRecordHandler    {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -282,7 +294,7 @@ public class MergeRecordHandler    {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if (value!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
@@ -317,7 +329,7 @@ public class MergeRecordHandler    {
     public MergeReportConfig getMergeReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          MergeReportConfig mrConfig = new MergeReportConfig();
 
         //Form Validation of  Start Time

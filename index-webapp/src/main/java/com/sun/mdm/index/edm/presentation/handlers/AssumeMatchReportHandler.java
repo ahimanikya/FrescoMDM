@@ -31,25 +31,18 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.valueobjects.AssumeMatchesRecords;
-import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.report.ReportException;
 import java.rmi.RemoteException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.event.*;
 import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchIterator;
 import com.sun.mdm.index.master.search.transaction.TransactionIterator;
-import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
-import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.AssumedMatchReportConfig;
 import com.sun.mdm.index.report.AssumedMatchReportRow;
 import com.sun.mdm.index.report.MultirowReportConfig1;
@@ -71,16 +64,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Level;
-//import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.presentation.security.Operations;
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 import com.sun.mdm.index.objects.SystemObject;
-import net.java.hulp.i18n.LocalizationSupport;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.epath.EPathException;
 
@@ -105,7 +97,7 @@ public class AssumeMatchReportHandler  {
     Hashtable assumematchRecordsResultsHash = new Hashtable();
     
     //resource bundle definitin
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
         
     ArrayList vOList = new ArrayList();
      /**
@@ -149,6 +141,11 @@ public class AssumeMatchReportHandler  {
      *get Screen Object from the session
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
+    /**
+     *Operations class used for implementing the security layer from midm-security.xml file
+     */
+    Operations operations = new Operations();
     
     private ArrayList resultsConfigArrayList  = new ArrayList();
     private ArrayList resultsArrayList  = new ArrayList();
@@ -195,7 +192,7 @@ public class AssumeMatchReportHandler  {
                 prevEuid = assumedMatchReportRow.getEUID();
                 index++;
             }
-            populateValuesMap(summaryList);
+            if(summaryList.size() > 0 ) populateValuesMap(summaryList);
             return resultsArrayList;
         } else {
             return null;
@@ -441,6 +438,7 @@ public class AssumeMatchReportHandler  {
               
         
        array =  compareMap.keySet().toArray();
+       ArrayList amValuesList = new ArrayList();
        for (int i = 0; i < array.length; i++) {
            HashMap newValuesMap = new HashMap();           
            String thisLidShystem = (String)array[i];                      
@@ -450,9 +448,10 @@ public class AssumeMatchReportHandler  {
            newValuesMap.put("LID", systemObject.getLID());
            newValuesMap.put("SystemCode", ValidationService.getInstance().getSystemDescription(systemObject.getSystemCode()));
            newValuesMap.put("Weight", assumedMatchReportCompare.getWeight());
-           resultsArrayList.add(newValuesMap);           
+           amValuesList.add(newValuesMap);
        }
        
+        
         for (int r = 0; r < assumedMatchReportRowList.size(); r++) {
            AssumedMatchReportRow assumedMatchReportRow = (AssumedMatchReportRow) assumedMatchReportRowList.get(r);
            HashMap newValuesMap = new HashMap();
@@ -462,10 +461,12 @@ public class AssumeMatchReportHandler  {
            newValuesMap.put("EUID", assumedMatchReportRow.getEUID());
            newValuesMap.put("SystemCode", ValidationService.getInstance().getSystemDescription(assumedMatchReportRow.getSystemCode()));
            newValuesMap.put("Weight", assumedMatchReportRow.getWeight());
-           resultsArrayList.add(newValuesMap);
+           amValuesList.add(newValuesMap);
            newValuesMap = new HashMap();
             
        }
+       
+       resultsArrayList.add(amValuesList);           
 
     }
    
@@ -485,7 +486,7 @@ public class AssumeMatchReportHandler  {
 
            if (fieldConfig.getValueType() == 6) { // For date related fields
 
-               if (EPathAPI.getFieldValue(epathValue, systemObject.getObject())!=null && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+               if (EPathAPI.getFieldValue(epathValue, systemObject.getObject())!=null && !operations.isField_VIP()  && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                    newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                } else {
@@ -504,7 +505,7 @@ public class AssumeMatchReportHandler  {
                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                        }
 
-                       if (value!=null && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+                       if (value != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                            newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                        } else {
@@ -528,7 +529,7 @@ public class AssumeMatchReportHandler  {
    public AssumedMatchReportConfig getAssumedMatchReportSearchObject()  throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          AssumedMatchReportConfig amrc = new AssumedMatchReportConfig(); 
 
         //Form Validation of  Start Time
