@@ -2171,12 +2171,18 @@ public class EDMType {
             for (int i = 0; i < mAlEDMNodes.size(); i++) {
                 EDMNode node = (EDMNode) mAlEDMNodes.get(i);
                 ArrayList alFields = node.getFields();
-                for (int j = 0; j < alFields.size(); j++) {
-                    EDMFieldDef edmFieldDef = (EDMFieldDef) alFields.get(j);
-                    if (edmFieldDef.getFieldName().equals(oldName)) {
-                        edmFieldDef.setFieldName(newName);
-                        bRet = true;
-                        break;
+                if (alFields != null) {
+                    for (int j = 0; j < alFields.size(); j++) {
+                        EDMFieldDef edmFieldDef = (EDMFieldDef) alFields.get(j);
+                        if (edmFieldDef.getFieldName().equals(oldName)) {
+                            edmFieldDef.setFieldName(newName);
+                            bRet = true;
+                            break;
+                        }
+                    }
+                    String oldNodeName = oldName.substring(0, oldName.length() - 1);
+                    if (node.getNodeName().equals(oldNodeName)) {
+                        node.setNodeName(newName.substring(0, newName.length() - 1));
                     }
                 }
                 if (bRet == true) {
