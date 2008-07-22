@@ -367,7 +367,7 @@ public class AssumeMatchReportHandler  {
             if (eo != null) {
                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
 
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                 } else {
@@ -381,7 +381,7 @@ public class AssumeMatchReportHandler  {
             if (eo != null) {
                 value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
             }
-            if (value!=null && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+            if (value!=null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                 newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
@@ -398,7 +398,7 @@ public class AssumeMatchReportHandler  {
                         // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      
                         newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                     }
-                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                } else if (fieldConfig.getInputMask() != null && !operations.isField_VIP() && fieldConfig.getInputMask().length() > 0) {
                     if (value != null) {
                         //Mask the value as per the masking 
                         value = fieldConfig.mask(value.toString());
@@ -415,43 +415,9 @@ public class AssumeMatchReportHandler  {
     }
    private void populateValuesMap(ArrayList assumedMatchReportRowList) throws Exception {
         MasterControllerService masterControllerService = new MasterControllerService();
+  
+        ArrayList amValuesList = new ArrayList();
          
-        AssumedMatchReportRow assumedMatchReportCompare = (AssumedMatchReportRow) assumedMatchReportRowList.get(0);
-        Object[] systemObjectsArrayObjCompare = masterControllerService.getEnterpriseObject(assumedMatchReportCompare.getEUID()).getSystemObjects().toArray();
-       HashMap compareMap = new HashMap();
-       for (int i = 0; i < systemObjectsArrayObjCompare.length; i++) {
-           SystemObject objectCompare = (SystemObject) systemObjectsArrayObjCompare[i];
-           compareMap.put(objectCompare.getLID() + "/" + objectCompare.getSystemCode(), objectCompare);
-       }
-
-       HashMap amSystemCodesMap = new HashMap();
-       for (int r = 0; r < assumedMatchReportRowList.size(); r++) {
-           AssumedMatchReportRow assumedMatchReportRow = (AssumedMatchReportRow) assumedMatchReportRowList.get(r);
-           amSystemCodesMap.put(assumedMatchReportRow.getLID() + "/" + assumedMatchReportRow.getSystemCode(), "");
-
-       }
-       Object array[] = amSystemCodesMap.keySet().toArray();
-       for (int i = 0; i < array.length; i++) {
-           String thisLidShystem = (String)array[i];           
-           compareMap.remove(thisLidShystem);
-       }
-              
-        
-       array =  compareMap.keySet().toArray();
-       ArrayList amValuesList = new ArrayList();
-       for (int i = 0; i < array.length; i++) {
-           HashMap newValuesMap = new HashMap();           
-           String thisLidShystem = (String)array[i];                      
-           SystemObject  systemObject = (SystemObject)compareMap.get(thisLidShystem);
-           newValuesMap = buildHashMapValues(systemObject);
-           newValuesMap.put("EUID", assumedMatchReportCompare.getEUID());
-           newValuesMap.put("LID", systemObject.getLID());
-           newValuesMap.put("SystemCode", ValidationService.getInstance().getSystemDescription(systemObject.getSystemCode()));
-           newValuesMap.put("Weight", assumedMatchReportCompare.getWeight());
-           amValuesList.add(newValuesMap);
-       }
-       
-        
         for (int r = 0; r < assumedMatchReportRowList.size(); r++) {
            AssumedMatchReportRow assumedMatchReportRow = (AssumedMatchReportRow) assumedMatchReportRowList.get(r);
            HashMap newValuesMap = new HashMap();
@@ -487,35 +453,35 @@ public class AssumeMatchReportHandler  {
            if (fieldConfig.getValueType() == 6) { // For date related fields
 
                if (EPathAPI.getFieldValue(epathValue, systemObject.getObject())!=null && !operations.isField_VIP()  && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
-
-                   newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                    newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                } else {
                    newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, systemObject.getObject())));
                }
            } else {
                Object value = EPathAPI.getFieldValue(epathValue, systemObject.getObject());
-               if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                   if (value != null) {
-                       //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                       if (fieldConfig.getUserCode() != null) { //If user code exists then get the user defined descriptions
+               if (value != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
-                           strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                       } else { //if  value list then get the descrption for the codes
+                   newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
-                           strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                       }
+               } else {
+                   if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                       if (value != null) {
+                           //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                           if (fieldConfig.getUserCode() != null) {
+                               strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                           } else {
+                               strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                           }
 
-                       if (value != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
-
-                           newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
-                       } else {
+                           // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      
                            newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                        }
-                   }
-               } else {
-                   if (value!=null && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
-
-                       newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                   } else if (fieldConfig.getInputMask() != null && !operations.isField_VIP() && fieldConfig.getInputMask().length() > 0) {
+                       if (value != null) {
+                           //Mask the value as per the masking 
+                           value = fieldConfig.mask(value.toString());
+                           newValuesMap.put(fieldConfig.getFullFieldName(), value);
+                       }
                    } else {
                        newValuesMap.put(fieldConfig.getFullFieldName(), value);
                    }
