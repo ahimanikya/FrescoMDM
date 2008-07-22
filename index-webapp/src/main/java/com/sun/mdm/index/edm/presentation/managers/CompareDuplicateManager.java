@@ -72,6 +72,8 @@ import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
 import com.sun.mdm.index.objects.SystemObjectPK;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class CompareDuplicateManager {
@@ -79,6 +81,11 @@ public class CompareDuplicateManager {
     private static transient final Localizer mLocalizer = Localizer.get();
     public static final String MINOR_OBJECT_TYPE = "MINOR_OBJECT_TYPE";
     private MasterControllerService masterControllerService = new MasterControllerService();
+    /**
+     *Http session variable
+     */
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+
     /** Creates a new instance of CompareDuplicateManager*/
     public CompareDuplicateManager() {
     }
@@ -468,7 +475,25 @@ public class CompareDuplicateManager {
 
     }
     
-     public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
+     
+     /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used to get the enterprise object as hash map.  The returned hashmap will contain the in information about <br>
+       * SBR - root node information as hashmap  <br>
+       * SBR - minorobjects as arraylist of hashmaps <br>
+       * History as ArrayList of hashmap with function+date as key <br>
+       * Sources as Arraylist of hashmap with SystemCode/LID <br>
+       * Link/Lock related informatin <br>
+       * 
+     * 
+     * @param enterpriseObject 
+     * @param screenObject 
+     * @return HashMap 
+     * 
+     */
+
+    public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
             HashMap enterpriseObjectHashMap = new HashMap();
             SourceHandler sourceHandler = new SourceHandler();
             String rootNodeName = screenObject.getRootObj().getName();
@@ -533,7 +558,11 @@ public class CompareDuplicateManager {
             }
 
             //add SystemCode and LID value to the new Hash Map  
-            editEnterpriseObjectHashMap.put("EUID", enterpriseObject.getEUID()); // set LID here
+            editEnterpriseObjectHashMap.put("EUID", enterpriseObject.getEUID()); // set EUID here
+             
+            session.setAttribute("SBR_REVISION_NUMBER"+enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
+            
+            
             editEnterpriseObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_CODES", codesEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
