@@ -952,27 +952,28 @@ public class MasterControllerService {
         return systemObject;
     }
 
-    public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject eo, EPathArrayList ePathArrayList) throws ObjectException, EPathException {
+    public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject eo, EPathArrayList ePathArrayList) throws ObjectException, EPathException, Exception {
         return getSystemObjectAsHashMap(eo.getSBR(), ePathArrayList);
     }
 
-    public ArrayList getEnterpriseObjectChildrenArrayList(EnterpriseObject eo, EPathArrayList ePathArrayList, String childObjType, String operation) throws ObjectException, EPathException {
+    public ArrayList getEnterpriseObjectChildrenArrayList(EnterpriseObject eo, EPathArrayList ePathArrayList, String childObjType, String operation) throws ObjectException, EPathException, Exception {
         return getSystemObjectChildrenArrayList(eo.getSBR(), ePathArrayList, childObjType, operation);
     }
 
-    public HashMap getSystemObjectAsHashMap(SystemObject so, EPathArrayList ePathArrayList) throws ObjectException, EPathException {
+    public HashMap getSystemObjectAsHashMap(SystemObject so, EPathArrayList ePathArrayList) throws ObjectException, EPathException, Exception {
         EPath[] ePaths = ePathArrayList.toArray();
         HashMap hashMap = new HashMap();
         ObjectNode objNode = so.getObject();
         String dateField = new String();
-
+        ConfigManager.init();
         String childType = so.getChildType();
         for (int i = 0; i < ePaths.length; i++) {
             String ePathName = ePaths[i].getName();
             if (ePathName.indexOf(childType) == 0) {
                 Object fieldValue = EPathAPI.getFieldValue(ePathName, objNode);
                 if (fieldValue instanceof java.util.Date) {
-                    dateField = new SimpleDateFormat("MM/dd/yyyy").format(fieldValue);
+                    //dateField = new SimpleDateFormat("MM/dd/yyyy").format(fieldValue);
+                    dateField = new SimpleDateFormat(ConfigManager.getDateFormat()).format(fieldValue);
                     hashMap.put(ePathName, dateField);
                 } else {
                     hashMap.put(ePathName, fieldValue);
@@ -984,13 +985,14 @@ public class MasterControllerService {
         return hashMap;
     }
 
-    public ArrayList getSystemObjectChildrenArrayList(SystemObject so, EPathArrayList ePathArrayList, String childObjType, String operation) throws ObjectException, EPathException {
+    public ArrayList getSystemObjectChildrenArrayList(SystemObject so, EPathArrayList ePathArrayList, String childObjType, String operation) throws ObjectException, EPathException, Exception {
         ArrayList resultArrayList = new ArrayList();
         EPath[] ePaths = ePathArrayList.toArray();
+        ConfigManager.init();
 
         ObjectNode objNode = so.getObject();
         String dateField = new String();
-
+        ConfigManager.init();
         ArrayList allChildrenFromHashMap = objNode.getAllChildrenFromHashMap();
         if (allChildrenFromHashMap != null && allChildrenFromHashMap.isEmpty() == false) {
 
@@ -1005,7 +1007,7 @@ public class MasterControllerService {
                             Object fieldValue = EPathAPI.getFieldValue(ePathName, childObjectNode);
                             if (ePathName.contains(type)) {
                                 if (fieldValue instanceof java.util.Date) {
-                                    dateField = new SimpleDateFormat("MM/dd/yyyy").format(fieldValue);
+                                     dateField = new SimpleDateFormat(ConfigManager.getDateFormat()).format(fieldValue);
                                     hashmapChild.put(ePathName, dateField);
                                 } else {
                                     hashmapChild.put(ePathName, fieldValue);
@@ -1068,10 +1070,12 @@ public class MasterControllerService {
         }
     }
 
-    public ArrayList viewHistory(String euid) throws ProcessingException, UserException, PageException, RemoteException {
+    public ArrayList viewHistory(String euid) throws ProcessingException, UserException, PageException, RemoteException, Exception {
         TransactionSearchObject transactionSearchObject = new TransactionSearchObject();
         transactionSearchObject.setEUID(euid);
         TransactionIterator transactionIterator = QwsController.getMasterController().lookupTransactions(transactionSearchObject);
+        ConfigManager.init();
+
         ArrayList historyEOs = new ArrayList();
         while (transactionIterator.hasNext()) {
             TransactionSummary transactionSummary = transactionIterator.next();
@@ -1080,7 +1084,7 @@ public class MasterControllerService {
             String functionName = transactionSummary.getTransactionObject().getFunction();
 
             Date modifiedDate = transactionSummary.getTransactionObject().getTimeStamp();
-            String dateOfAction = new SimpleDateFormat("MM/dd/yyyy").format(modifiedDate);
+            String dateOfAction = new SimpleDateFormat(ConfigManager.getDateFormat()).format(modifiedDate);
 
             String title = functionName + " " + dateOfAction + ":" +transNumber;
 
