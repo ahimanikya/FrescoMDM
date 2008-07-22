@@ -163,10 +163,13 @@ public class ActivityReportHandler {
             // Methods to fetch data
             if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
                 ReportDataRow[] rdr = getWKRRows();
-                finalOutputList = getActivityRecordsVO();
+                ArrayList weeklyReportList  = getActivityRecordsVO();
+                finalOutputList.add(weeklyReportList);
             } else if (reportType.equals(getREPORT_TYPE_MONTHLY_ACTIVITY()) || reportType.equals(getREPORT_TYPE_YEARLY_ACTIVITY())) {
                 ReportDataRow[] rdr = getMONYRRRows();
-                finalOutputList = getActivityRecordsVO();
+                ArrayList montlyReportList  = getActivityRecordsVO();
+                finalOutputList.add(montlyReportList);
+                
             }
         }
         }
@@ -636,14 +639,14 @@ public class ActivityReportHandler {
                 HashMap values = new HashMap();
                 values.put("ActivityDay", activityRecords[j].getDay());
                 values.put("ActivityDate", activityRecords[j].getActivityDate());
-                values.put("Add", activityRecords[j].getAddTransactions());
-                values.put("EUIDDeactivate", activityRecords[j].getEuidDeactivateTrans());
-                values.put("EUIDMerge", activityRecords[j].getEuidMergedTrans());
-                values.put("EUIDUnmerge", activityRecords[j].getEuidUnmergedTrans());
-                values.put("LIDMerge", activityRecords[j].getLidMergedTrans());
-                values.put("LIDUnMerge", activityRecords[j].getLidUnMergedTrans());
-                values.put("UnresolvedDuplicate", activityRecords[j].getUnresolvedPotentialDup());
-                values.put("ResolvedDuplicate", activityRecords[j].getResolvedPotentialDup());
+                values.put("Add", (activityRecords[j].getAddTransactions()==null?"0":activityRecords[j].getAddTransactions()));
+                values.put("EUIDDeactivate", (activityRecords[j].getEuidDeactivateTrans()==null?"0":activityRecords[j].getEuidDeactivateTrans()));
+                values.put("EUIDMerge", (activityRecords[j].getEuidMergedTrans()==null?"0":activityRecords[j].getEuidMergedTrans()));
+                values.put("EUIDUnmerge", (activityRecords[j].getEuidUnmergedTrans()==null?"0":activityRecords[j].getEuidUnmergedTrans()));
+                values.put("LIDMerge", (activityRecords[j].getLidMergedTrans()==null?"0":activityRecords[j].getLidMergedTrans()));
+                values.put("LIDUnMerge", (activityRecords[j].getLidUnMergedTrans() ==null?"0":activityRecords[j].getLidUnMergedTrans()));
+                values.put("UnresolvedDuplicate", (activityRecords[j].getUnresolvedPotentialDup()== null?"0":activityRecords[j].getUnresolvedPotentialDup()));
+                values.put("ResolvedDuplicate", (activityRecords[j].getResolvedPotentialDup()==null?"0":activityRecords[j].getResolvedPotentialDup()));
                 outputList.add(values);
 
             }
