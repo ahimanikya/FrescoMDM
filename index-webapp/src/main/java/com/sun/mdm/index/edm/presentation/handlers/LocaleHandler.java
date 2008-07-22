@@ -46,6 +46,18 @@ public class LocaleHandler {
     public void setLangOption(String langOption) {
         this.langOption = langOption;
     }
+     /** 
+     * Modified By Rajani Kanth on 25/06/2008
+     * 
+     * This method will set the locale as per the user's locale preferences
+     * 
+     * Modified to support Japnese and chinese locales
+     * 
+     * @param selectedLocale  Selecte locate by the user
+     * 
+     * 
+     */
+
     public void localeChanged(ValueChangeEvent event) {
         // Create the faces context to access the UI and session parameters
         FacesContext context = FacesContext.getCurrentInstance();
@@ -54,7 +66,7 @@ public class LocaleHandler {
        // Create session from the external context
         HttpSession session   = (HttpSession) context.getExternalContext().getSession(true);        
         session.setAttribute("selectedLocale",selectedLocale);
-       
+        
         //set the language option and faces context locale here
         if (ENGLISH.equals(selectedLocale)) {
             context.getViewRoot().setLocale(Locale.US);
@@ -78,11 +90,20 @@ public class LocaleHandler {
             setLangOption(ENGLISH); 
         }    
     }
+    
+     /** 
+     * Added By Rajani Kanth on 25/06/2008
+     * 
+     * This method will set the locale as per the user's locale preferences
+     * 
+     * @param selectedLocale  Selecte locate by the user
+     * 
+     * 
+     */
 
     public void setChangedLocale(String selectedLocale) {
         // Create the faces context to access the UI and session parameters
         FacesContext context = FacesContext.getCurrentInstance();
-          
         if (ENGLISH.equals(selectedLocale)) {
             context.getViewRoot().setLocale(Locale.US);
             setLangOption(ENGLISH); 

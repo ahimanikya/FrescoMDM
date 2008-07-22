@@ -91,6 +91,8 @@ public class SourceAddHandler {
    public static final String UPDATE_SUCCESS = "UPDATE_SUCCESS";
    private static final String VALIDATE_SOURCE_SUCCESS = "validationsuccess";
    private static final String SERVICE_LAYER_ERROR = "servicelayererror";
+   
+   private static final String CONCURRENT_MOD_ERROR = "CONCURRENT_MOD_ERROR";
 
    private MasterControllerService masterControllerService = new MasterControllerService();
 
@@ -146,7 +148,6 @@ public class SourceAddHandler {
             //add the key as brand new in the hashmap
             newSOHashMap.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.SYSTEM_OBJECT_BRAND_NEW);
 
-            //System.out.println("NEW SO HASH MAP" + newSOHashMap);
             //add new SO to the arraylist
             getNewSOHashMapArrayList().add(newSOHashMap);
 
@@ -551,19 +552,62 @@ public class SourceAddHandler {
         //set address array list of hasmap for editing
         session.setAttribute("keyFunction", "editSO");
    }
-    
-    public String updateSO(){
+    /**
+     * 
+     * @param SystemObject
+     */
+    public void editLID(SystemObject singleSystemObjectEdit){
+        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        HashMap editSystemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObjectEdit, screenObject);
+        SourceHandler sourceHandlerFaces = (SourceHandler)session.getAttribute("SourceHandler");
+
+
+        session.setAttribute("singleSystemObjectLID", singleSystemObjectEdit);
+        session.setAttribute("systemObjectMap", editSystemObjectMap);
+
+        if("active".equalsIgnoreCase((String) editSystemObjectMap.get("Status")) ) {
+           //set the single SO hash map for single so EDITING
+           this.setNewSOHashMap(editSystemObjectMap);
+        } else {
+            sourceHandlerFaces.setDeactivatedSOHashMap(editSystemObjectMap);
+        }
+
+        //set address array list of hasmap for editing
+        session.setAttribute("keyFunction", "editSO");
+   }
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used to update the SO.
+     *
+     *  @return UPDATE_SUCCESS if save is successful <br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
+     */    
+    public String updateSO() {
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");
 
-         try {
+        try {
 
             SystemObject systemObject = (SystemObject) session.getAttribute("singleSystemObjectLID");
-    
+
             //get the enterprise object for the system object
             EnterpriseObject sysEnterpriseObject = masterControllerService.getEnterpriseObjectForSO(systemObject);
-            ArrayList editSOHashRootNodeMapList = new ArrayList();
             
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+sysEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = sysEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+sysEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+sysEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return SourceAddHandler.CONCURRENT_MOD_ERROR;
+            }
+            
+            
+            
+            ArrayList editSOHashRootNodeMapList = new ArrayList();
+
             editSOHashRootNodeMapList.add((HashMap) this.getNewSOHashMap().get("SYSTEM_OBJECT"));
 
             SourceHandler sourceHandler = new SourceHandler();            

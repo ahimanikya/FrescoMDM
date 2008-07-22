@@ -781,7 +781,7 @@ public class DashboardHandler  {
              
             session.setAttribute("eocomparision", "yes");
             //keep array of eos hashmap in the session
-            session.setAttribute("comapreEuidsArrayList", newArrayList);
+            //session.setAttribute("comapreEuidsArrayList", newArrayList);
             
              
             //If the no error ocurrs then navigate to the compare duplicates page

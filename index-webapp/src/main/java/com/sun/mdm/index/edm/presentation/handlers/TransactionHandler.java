@@ -121,6 +121,11 @@ public class TransactionHandler extends ScreenConfiguration {
  * Map to hold the parameters
  **/
     private HashMap parametersMap  = new HashMap();
+
+    /*
+     * Map to hold the CONCURRENT_MOD_ERROR TEXT
+     **/
+    public static final String CONCURRENT_MOD_ERROR = "CONCURRENT_MOD_ERROR";
     
     /** Creates a new instance of TransactionHandler */
 
@@ -1024,4 +1029,71 @@ public class TransactionHandler extends ScreenConfiguration {
         this.parametersMap = parametersMap;
     }
 
+   
+     /** 
+     * Added By Rajani Kanth  on 07/17/2008 <br>
+     * 
+     * This method is called from the ajax services for unmerging the enterprise object.<br>
+     *
+     * @param transactionNumber  Transaction Number of the EUID.<br>
+     *                 srcDestnEuids[0] will be the surviving euid and rest of them are source euids in the multi merge operation.<br>
+     *                 
+     * @return MergeResult return the new un merge result object if unmerge is successfull.<br>
+     *         null if merge fails or any exception occurs.
+     * 
+     */
+    
+    public HashMap unmergeEnterpriseObject(String transactionNumber, String euid) {
+        HashMap retHashMap = new HashMap();
+        try {
+
+            Integer sessionRevisionNumber = (Integer) session.getAttribute("SBR_REVISION_NUMBER" + euid);
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(euid);
+
+            Integer dbRevisionNumber = destinationEO.getSBR().getRevisionNumber();
+            
+            if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, TransactionHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text")));
+ 
+                //reset the SBR revision number here in session
+                session.setAttribute("SBR_REVISION_NUMBER" + destinationEO.getEUID(), destinationEO.getSBR().getRevisionNumber());
+
+                retHashMap.put(TransactionHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text"));
+                return retHashMap;
+            }
+
+            MergeResult unMergeResult = masterControllerService.unmerge(transactionNumber);
+
+            
+            if (unMergeResult.getDestinationEO() != null && unMergeResult.getSourceEO() != null) {
+            
+                //keep the unmerge result in the hashmap
+                retHashMap.put("unMergeResult", unMergeResult);
+
+                //Insert audit log here for EUID search
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                        unMergeResult.getDestinationEO().getEUID(),
+                        unMergeResult.getSourceEO().getEUID(),
+                        "EUID Unmerge",
+                        new Integer(screenObject.getID()).intValue(),
+                        "Unmerge two enterprise objects");
+            }
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            mLogger.error(mLocalizer.x("TRS092: Failed to unmerge EnterpriseObject due to ProcessingException : {0}",ex.getMessage()),ex);
+            return null;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            mLogger.error(mLocalizer.x("TRS093: Failed to unmerge EnterpriseObject due to UserException : {0}", ex.getMessage()), ex);
+            return null;
+         } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            return null;
+        }
+        return retHashMap;
+    }
+
+    
 }

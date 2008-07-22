@@ -214,13 +214,11 @@ public class ScreenConfiguration {
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
 
-                //System.out.println("screenObject.getSearchScreensConfig().size()"+screenObject.getSearchScreensConfig().size()+"this.searchType ==> : " + this.searchType+ "objSearchScreenConfig.getScreenTitle() --> " + objSearchScreenConfig.getScreenTitle());
                 if (screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
                     //set the instruction line here
                     setInstructionLine(objSearchScreenConfig.getInstruction());
-                    ////System.out.println("size() > 1  Basic --> " + basicSearchFieldConfigs);
                     Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
                     //Iterate the the FieldConfigGroup array list
                     while (basicSearchFieldConfigsIterator.hasNext()) {
@@ -231,7 +229,6 @@ public class ScreenConfiguration {
                         ArrayList fieldConfigsList = basicSearchFieldGroup.getFieldConfigs();
                         for (int i = 0; i < fieldConfigsList.size(); i++) {
                             FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
-                            //System.out.println("Screen Config Object --> " + fieldConfigsList.get(i));
                             screenConfigArray.add(object);
                         }
                     }
@@ -251,7 +248,6 @@ public class ScreenConfiguration {
                         ArrayList fieldConfigsList = basicSearchFieldGroup.getFieldConfigs();
                         for (int i = 0; i < fieldConfigsList.size(); i++) {
                             FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
-                            //////System.out.println("Screen Config Object --> " + fieldConfigsList.get(i));
                             screenConfigArray.add(object);
                         }
                     }
@@ -363,7 +359,6 @@ public class ScreenConfiguration {
 
     public boolean checkOneOfManyCondition() {
         Object[] keySet = getUpdateableFeildsMap().keySet().toArray();
-        //System.out.println("==> " + getUpdateableFeildsMap() +"==> " + getUpdateableFeildsMap().keySet());
         int count = 0;
         for (int i = 0; i < keySet.length; i++) {
             String key = (String) keySet[i];
@@ -376,7 +371,6 @@ public class ScreenConfiguration {
                 }
             }
         }
-        //System.out.println("==> " + count +"==> " + keySet.length);
         if (count == keySet.length) {
             return true;
         } else {
@@ -700,7 +694,6 @@ public class ScreenConfiguration {
         Iterator iteratorScreenConfig = screenConfigList.iterator();
         while (iteratorScreenConfig.hasNext()) {
             SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-            //System.out.println("screenObject.getSearchScreensConfig().size()"+screenObject.getSearchScreensConfig().size()+"this.searchType ==> : " + this.searchType+ "objSearchScreenConfig.getScreenTitle() --> " + objSearchScreenConfig.getScreenTitle());
             if (this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                 
                 //set the instruction line here
@@ -708,7 +701,6 @@ public class ScreenConfiguration {
 
                 // Get an array list of field config groups
                 ArrayList basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                ////System.out.println("size() > 1  Basic --> " + basicSearchFieldConfigs);
                 Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
                 //Iterate the the FieldConfigGroup array list
                 while (basicSearchFieldConfigsIterator.hasNext()) {
@@ -752,28 +744,22 @@ public class ScreenConfiguration {
         // get the event with the changed values
         String systemCodeSelected = (String) event.getNewValue();
         String lidMaskValue = getMaskedValue(systemCodeSelected);
-        ////System.out.println("==>: returned value " + lidMaskValue);
         //set mask and its length
         setLidMask(lidMaskValue);
         setLidMaskLength(lidMaskValue.length());
-
-    ////System.out.println("this.getLidMask ==>: " + this.getLidMask() + "Length ==> : " + this.getLidMaskLength() );
 
     }
 
     private String getMaskedValue(String systemCodeSelected) {
         String lidMaskValue = new String();
-        //////System.out.println("systemCodeSelected ==> : " +  systemCodeSelected);
         String[][] lidMaskingArray = masterControllerService.getSystemCodes();
 
         for (int i = 0; i < lidMaskingArray.length; i++) {
             String[] strings = lidMaskingArray[i];
-            //////System.out.println("Outer Loop ==> : " +  strings);
             //Get the lid masking values here
             for (int j = 0; j < strings.length; j++) {
                 String string = strings[j];
                 if (systemCodeSelected.equalsIgnoreCase(string)) {
-                    ////System.out.println( systemCodeSelected + "<=== [" +i + "]"  + "[" +j + "]" + "Inner Loop ==> : ");
                     lidMaskValue = lidMaskingArray[i + 1][j];
                 }
 
@@ -1070,6 +1056,7 @@ public class ScreenConfiguration {
     public HashMap checkInputMasking() {
         HashMap valiadtions = new HashMap();
         ArrayList fgGroups = getSearchScreenFieldGroupArray();
+        boolean maskValidation  = true;
         for (int fg = 0; fg < fgGroups.size(); fg++) {
             FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
             ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
@@ -1079,16 +1066,21 @@ public class ScreenConfiguration {
                        if (getUpdateableFeildsMap().get(basicFieldConfig.getName()) != null) {
                         String value = ((String) getUpdateableFeildsMap().get(basicFieldConfig.getName())).trim();
                         if (value.length() > 0 && basicFieldConfig.getInputMask() != null && basicFieldConfig.getInputMask().length() > 0)  { 
-                          
-                              if(!checkMasking(value,basicFieldConfig.getInputMask())) {
-                                valiadtions.put(basicFieldConfig.getDisplayName(),bundle.getString("lid_format_error_text") + " " +basicFieldConfig.getInputMask());								  
-                             }
+                              if((getUpdateableFeildsMap().get("LID") != null && getUpdateableFeildsMap().get("LID").toString().trim().length() > 0)) {
+                                  maskValidation = checkMasking(value,(String)getUpdateableFeildsMap().get("lidmask"));
+                              } else {
+                                  maskValidation = checkMasking(value,basicFieldConfig.getInputMask());
+                              }                              
+                              if(!maskValidation) {
+                                 valiadtions.put(basicFieldConfig.getDisplayName(),bundle.getString("lid_format_error_text") + " " +basicFieldConfig.getInputMask());								  
+                              }
+                              
+                              
                         }
                         
                     }
              } // Field config loop
          } // Field group loop
-       
         return valiadtions;
     }
     

@@ -207,46 +207,7 @@ public class SourceHandler {
         session.setAttribute("tabName", "View/Edit");
         
         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        //get the hidden fields search type from the form usin the facesContext
-        // get the array list as per the search
-//        ArrayList fieldConfigArrayList  = this.getViewEditScreenConfigArray();
-//        Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
-//        int totalFields = fieldConfigArrayList.size();
-//        int countMenuFields = 0;
-//        int countEmptyFields = 0;
-//        while(fieldConfigArrayIter.hasNext())  {           
-//             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
-//             String feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getName());                          
-//            
-//             if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
-//                this.setSystemCode(feildValue);
-//             }
-//
-//             if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
-//                 countMenuFields++;     
-//             } else if(!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue != null && feildValue.trim().length() == 0)  { 
-//               countEmptyFields++;       
-//             }
-//        }
-//        String lid = this.getLID().replaceAll("-", ""); 
-//        this.setLID(lid);
-//        
-//        //Checking one of many condition here   
-//        if( (totalFields > 0 && countEmptyFields+countMenuFields == totalFields)   && // all updateable fields are left blank
-//           (this.getEUID() == null || (this.getEUID()  != null && this.getEUID().trim().length() == 0))  &&
-//           (this.getLID()  == null || (this.getLID()  != null && this.getLID().trim().length() == 0))  &&
-//           (this.getCreate_start_date()  == null || (this.getCreate_start_date()  != null && this.getCreate_start_date().trim().length() == 0))  &&
-//           (this.getCreate_start_time()  == null || (this.getCreate_start_time()  != null && this.getCreate_start_time().trim().length() == 0))  &&
-//           (this.getCreate_end_date()  == null  || (this.getCreate_end_date()  != null && this.getCreate_end_date().trim().length() == 0))  &&
-//           (this.getCreate_end_time()  == null || (this.getCreate_end_time()  != null && this.getCreate_end_time().trim().length() == 0))  &&
-//           (this.getSystemCode()  == null) &&  
-//           (this.getStatus()  == null ) 
-//           )  {
-//                String errorMessage = bundle.getString("potential_dup_search_error");
-//                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-//                return VALIDATION_ERROR;  
-//        }
-
+ 
         HashMap newFieldValuesMap = new HashMap();
 
         if (enteredFieldValues != null && enteredFieldValues.length() > 0) {
@@ -313,12 +274,18 @@ public class SourceHandler {
             if (lids.length == 1) { // only sigle LID entered by the user
                 // only sigle LID entered by the user
                 singleSystemObject = masterControllerService.getSystemObject(this.SystemCode, lids[0]);
+                
+
                 if(singleSystemObject == null) {
                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("system_object_not_found_error_message"), bundle.getString("system_object_not_found_error_message")));
                   return this.SEARCH_SOURCE_SUCCESS;
                 }
-                //EPathArrayList personEPathArrayList = buildSystemObjectEpaths(screenObject.getRootObj().getName());
-               
+
+                EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObjectForSO(singleSystemObject);
+
+                //keep the EO revision number in session
+                session.setAttribute("SBR_REVISION_NUMBER" + enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
+
                 HashMap systemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
                         
                 session.setAttribute("singleSystemObjectLID", singleSystemObject);

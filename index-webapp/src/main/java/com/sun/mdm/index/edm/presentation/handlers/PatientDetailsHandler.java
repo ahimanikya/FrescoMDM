@@ -831,11 +831,10 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         try {
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
             
-/*
+
             //get the revision number from the session and which is available in DB
             Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
             Integer dbRevisionNumber  = destinationEO.getSBR().getRevisionNumber();
-            System.out.println("sessionRevisionNumber--> " + sessionRevisionNumber + "---> dbRevisionNumber " + dbRevisionNumber);
             
             if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, PatientDetailsHandler.CONCURRENT_MOD_ERROR,
@@ -850,7 +849,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text"));
                 return retHashMap;
             }
-            */
 
 
             
@@ -943,11 +941,10 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         try {
 
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
- /*
+ 
            //get the revision number from the session and which is available in DB
             Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
             Integer dbRevisionNumber  = destinationEO.getSBR().getRevisionNumber();
-            System.out.println("sessionRevisionNumber--> " + sessionRevisionNumber + "---> dbRevisionNumber " + dbRevisionNumber);
             if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, PatientDetailsHandler.CONCURRENT_MOD_ERROR,
                         "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text")));
@@ -963,7 +960,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 retList.add(retHashMap);
                 return retList;
             }
-*/
+
             HashMap eoHashMap = eoHashMap = (HashMap) compareDuplicateManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT_CODES");
  
             String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
@@ -2072,6 +2069,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
    
+
 
 
 

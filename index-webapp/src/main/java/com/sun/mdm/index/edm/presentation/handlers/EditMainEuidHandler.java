@@ -76,6 +76,7 @@ public class EditMainEuidHandler {
     ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
     String exceptionMessaage = bundle.getString("EXCEPTION_MSG");
     private static final String EDIT_SUCCESS = "EO_EDIT_SUCCESS";
+    private static final String CONCURRENT_MOD_ERROR = "CONCURRENT_MOD_ERROR";
     //Hash map for single EO  for view
     private ArrayList singleEOHashMapArrayList = new ArrayList();
     //Hash map for singl EO  for EDITING
@@ -141,6 +142,16 @@ public class EditMainEuidHandler {
     public EditMainEuidHandler() {
     }
 
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used to create the  enterprise object.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful <br>
+     *         null if save EO fails or any exception occurs. <br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user <br>
+     * 
+     */
     public String performSubmit() {
         try {
             String updateEuid = (String) session.getAttribute("editEuid");
@@ -148,6 +159,16 @@ public class EditMainEuidHandler {
 
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
 
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+            
+            
+            
             //EDIT the EO and its system objects here
             EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject, this.changedSBRArrayList, this.editSOHashMapArrayList, this.editSOMinorObjectsHashMapArrayList);
 
@@ -246,10 +267,33 @@ public class EditMainEuidHandler {
             mLogger.error(mLocalizer.x("EME010: Unable to activate  System Object :{0}", ex.getMessage()));
         }
     }
+   
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used to deactive the EO from edit main euid screen.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful<br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
+     */
 
     public String deactivateEO(String euid) {
 
         try {
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            
+           
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
 
             //Deactivate the enterprise object
             masterControllerService.deactivateEnterpriseObject(euid);
@@ -270,17 +314,31 @@ public class EditMainEuidHandler {
     //Keep the updated SO in the session again
     }
 
-//add new SO fields here
-    /**
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
      * 
-     * @param eventx
-     * @return 
+     * This method is used to add the SO to enterprise object.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful <br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
      */
-    public String addNewSO() {
+      public String addNewSO() {
         try {
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
             String updateEuid = (String) session.getAttribute("editEuid");
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+            
+            
 
             //Add new SO here
             EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject,
@@ -507,10 +565,31 @@ public class EditMainEuidHandler {
         this.newSOHashMapArrayList = newSOHashMapArrayList;
     }
 
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used SAVE the links selected by the user from edit main euid ajax services
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful <br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
+     */
+
     public String saveLinksSelected() {
         try {
             String updateEuid = (String) session.getAttribute("editEuid");
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+
+            
             EnterpriseObject updateEO = masterControllerService.saveLinks(linkedFieldsHashMapByUser, updateEnterpriseObject);
             session.setAttribute("editEuid", updateEO.getEUID());
 
@@ -530,10 +609,31 @@ public class EditMainEuidHandler {
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
     }
 
+    
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used SAVE the unlinks selected by the user from edit main euid ajax services.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful<br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
+     */
+
     public String saveUnLinksSelected() {
         try {
             String updateEuid = (String) session.getAttribute("editEuid");
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber = (Integer) session.getAttribute("SBR_REVISION_NUMBER" + updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'" + updateEnterpriseObject.getEUID() + "' "+bundle.getString("concurrent_mod_text"), "'" + updateEnterpriseObject.getEUID() + "' "+bundle.getString("concurrent_mod_text")));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+            
             EnterpriseObject updateEO = masterControllerService.removeLinks(unLinkedFieldsHashMapByUser, updateEnterpriseObject);
             //masterControllerService.updateEnterpriseObject(updateEO);
             session.setAttribute("editEuid", updateEO.getEUID());
@@ -552,12 +652,33 @@ public class EditMainEuidHandler {
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
     }
 
+    /** 
+     * Modified  By Rajani Kanth  on 11/07/2008
+     * 
+     * This method is used SAVE the unlocks selected by the user from edit main euid ajax services.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful <br>
+     *         null if add SO , save EO fails or any exception occurs. <br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user <br>
+     * 
+     */
     public String saveUnLocksSelected() {
         try {
             String updateEuid = (String) session.getAttribute("editEuid");
 
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            
+            
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+
             EnterpriseObject updateEO = masterControllerService.removeLocks(unLockedFieldsHashMapByUser, updateEnterpriseObject);
+            
             //masterControllerService.updateEnterpriseObject(updateEO);
             session.setAttribute("editEuid", updateEO.getEUID());
 
@@ -575,24 +696,34 @@ public class EditMainEuidHandler {
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
     }
     
-     /** 
-     * 
+    
+    /** 
      * Added  By Rajani Kanth on 26/06/2008
      * 
-     * This method is used to search the single EUID. This method will also informs the user about the merged EUIDS.
-     *
-     * @return String  
-     *    "EO_EDIT_SUCCESS"  if the EO is updated successfully
-     *    ""servicelayererror""  if the EO is not  updated successfully  or any exception occurs in retrieving the EUID.
+     * Modified  By Rajani Kanth  on 11/07/2008
      * 
-     * The return string used to display the error message/success message to the user.
+     * This method is used SAVE the locks selected by the user from edit main euid ajax services
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful <br>
+     *         null if add SO , save EO fails or any exception occurs. <br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user <br>
+     * 
      */
+
+
     public String saveLocksSelected(ArrayList sbrHashMapList, ArrayList sbrMinorObjectsList) {
         try {
             String updateEuid = (String) session.getAttribute("editEuid");
 
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
 
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
             masterControllerService.save(updateEnterpriseObject, sbrHashMapList, sbrMinorObjectsList, null);
              
         } catch (UserException ex) {
@@ -615,19 +746,7 @@ public class EditMainEuidHandler {
         return EditMainEuidHandler.EDIT_SUCCESS;
     }
     
-    private void unSetMinorObjectPrimaryValues(ArrayList minorObjects) {
-        if (minorObjects.size() > 0) {
-            for (int k = 0; k < minorObjects.size(); k++) {
-                HashMap minorObjectHashMap = (HashMap) minorObjects.get(k);
-                minorObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, null);
-                minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, null);
-                minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, null);
-                minorObjectHashMap.put(MasterControllerService.LID, null);
-                minorObjects.remove(minorObjectHashMap);
-            }
-        }
-    }
-
+    
     public void setUpdatedEOFields(EnterpriseObject editEnterpriseObject) {
         try {
             // Keep the EO in session
@@ -986,12 +1105,18 @@ public class EditMainEuidHandler {
                     if ((oldValue == null && (newValue != null && newValue.toString().trim().length() == 0))) {
                         eoHashMap.put(ePathName, null);
                     }
+                    if ((oldValue != null && (newValue != null && newValue.toString().trim().length() == 0))) {
+                        eoHashMap.put(ePathName, "NULLVALUE");
+                    }
+
+                    if ((oldValue != null && newValue == null)) {
+                        eoHashMap.put(ePathName, "NULLVALUE");
+                    }
+                    
                     //check if old value is equal to new value
                     if ((oldValue == null && newValue == null)) {
                         eoHashMap.remove(ePathName);
-//                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-//                            eoHashMap.remove(ePathName);
-                    } else if ((oldValue != null && newValue != null) && oldValue.toString().equalsIgnoreCase(newValue.toString())) {
+                     } else if ((oldValue != null && newValue != null) && oldValue.toString().equalsIgnoreCase(newValue.toString())) {
                         eoHashMap.remove(ePathName);
                     }
                 }
@@ -1001,7 +1126,11 @@ public class EditMainEuidHandler {
             for (int i = 0; i < keys.length; i++) {
                 String key = (String) keys[i];
                 if (eoHashMap.get(key) != null) {
-                    newUpdatedMap.put(key, eoHashMap.get(key));
+                    if("NULLVALUE".equalsIgnoreCase( (String)eoHashMap.get(key) ) ) {
+                        newUpdatedMap.put(key, null);
+                    } else {
+                      newUpdatedMap.put(key, eoHashMap.get(key));
+                    }
                 }
             }
             this.editSingleEOHashMap.put("ENTERPRISE_OBJECT_CODES", newUpdatedMap);
@@ -1074,7 +1203,6 @@ public class EditMainEuidHandler {
 
             HashMap soRootNodesMap = (HashMap) systemObjectsMap.get("SYSTEM_OBJECT");
             HashMap soRootNodesMapNew = new HashMap();
-
             Object[] keys = soRootNodesMap.keySet().toArray();
             //build an array of hashmap with out link key
             for (int i = 0; i < keys.length; i++) {
@@ -1089,6 +1217,7 @@ public class EditMainEuidHandler {
             }
             //Remove input field maskings before saving the values
             sourceHandler.removeFieldInputMasking(soRootNodesMapNew, screenObject.getRootObj().getName());
+           
             //build an array of system object hashmaps for sending to the SL
             this.editSOHashMapArrayList.add(soRootNodesMapNew);
 
