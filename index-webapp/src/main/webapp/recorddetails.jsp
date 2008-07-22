@@ -147,7 +147,7 @@ function align(thisevent,divID) {
 			   </tr>
                     <tr>
                         <td colspan="2">
-                            <input id='lidmask' type='hidden' name='lidmask' value='' />
+                            <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
                             <h:dataTable cellpadding="0" cellspacing="0"
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
@@ -444,6 +444,7 @@ function align(thisevent,divID) {
      
 </html>
 </f:view>
+
 
 
 

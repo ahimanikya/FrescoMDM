@@ -78,6 +78,8 @@
 	   	   }
 		   // LID merge related global javascript variables
 		   var euids="";
+		   var fromPage="";
+		   var duplicateEuids = "";
            var euidArray = [];
            var alleuidsArray = [];
 		   var euidValueArraySrc=[];
@@ -139,13 +141,16 @@
 			        <tr><td><div id="mainDupSource" class="compareResults"></div></td></tr>
  			 </table>
              </div> 
-             <%if(request.getParameter("euids") != null) {%>
+              <%if(request.getParameter("euids") != null) {%>
              	<script>
                	  ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+'&rand=<%=rand%>&euids=<%=request.getParameter("euids")%>','mainDupSource','');
               	</script>
              <%} else {%>
              	<script>
-               	  ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+'&rand=<%=rand%>','mainDupSource','');
+               	  ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+'&rand=<%=rand%>&fromPage=<%=request.getParameter("fromPage")%>&duplicateEuids=<%=request.getParameter("duplicateEuids")%>','mainDupSource','');
+                  fromPage ="<%=request.getParameter("fromPage")%>";
+                  duplicateEuids = "<%=request.getParameter("duplicateEuids")%>";
+
               	</script>
              <%}%>
 
@@ -224,7 +229,8 @@
                                                    </td>
                                                </tr>
                                            </table>
-                                        </h:form>
+                                           
+                                       </h:form>
                                    </div>                                                
 
              <div id="resolvepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.resolvepopup_help}"/></div>    

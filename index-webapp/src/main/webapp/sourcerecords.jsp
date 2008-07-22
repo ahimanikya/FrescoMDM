@@ -512,7 +512,7 @@ if(session!=null){
                                                                                id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
                                                                                required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
                                                                                maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-                                                                               onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+                                                                               onblur="javascript:validate_date(this,'<%=dateFormat%>');"
                                                                                onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                                                                                onkeyup="javascript:qws_field_on_key_up(this)" >
                                                                        <a href="javascript:void(0);" 
