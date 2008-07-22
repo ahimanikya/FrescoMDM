@@ -2814,7 +2814,8 @@ ArrayList collectedEuidsList = new ArrayList();
   <tr>
   <td>
   <script>
-    window.location = '/<%=URI%>/compareduplicates.jsf';
+ 
+    window.location = '/<%=URI%>/compareduplicates.jsf?fromPage=duplicates&duplicateEuids=<%=collectedEuids%>';
  </script>
   </td>
  </tr>

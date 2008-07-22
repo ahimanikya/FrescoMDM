@@ -209,7 +209,7 @@ boolean isSessionActive = true;
                 <nobr>
                     <input type="text" 
                            title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
-                           id = "<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"  
+                           id = "NEWSO<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
                            required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
                            maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
                            onblur="javascript:validate_date(this,'<%=dateFormat%>');"
@@ -218,7 +218,7 @@ boolean isSessionActive = true;
                            <a href="javascript:void(0);" 
 							title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"
                             onclick="g_Calendar.show(event,
-							'<h:outputText value="#{fieldConfigPerAdd.name}"/>',
+							'NEWSO<h:outputText value="#{fieldConfigPerAdd.name}"/>',
 							'<%=dateFormat%>',
 							'<%=global_daysOfWeek%>',
 							'<%=global_months%>',
@@ -353,7 +353,7 @@ boolean isSessionActive = true;
                                                         <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
                                                             <nobr>
                                                                 <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
-                                                                       id = "New<h:outputText value="#{childFieldConfigAdd.name}"/>"  
+                                                                       id = "NewSO<h:outputText value="#{childFieldConfigAdd.name}"/>"  
                                                                        required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
                                                                        maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                                        onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
@@ -362,7 +362,7 @@ boolean isSessionActive = true;
                                                                  <a href="javascript:void(0);" 
 							                                      title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>"
                                                                   onclick="g_Calendar.show(event,
-							                                      '<h:outputText value="#{childFieldConfigAdd.name}"/>',
+							                                      'NewSO<h:outputText value="#{childFieldConfigAdd.name}"/>',
 							                                      '<%=dateFormat%>',
 							                                      '<%=global_daysOfWeek%>',
 							                                      '<%=global_months%>',

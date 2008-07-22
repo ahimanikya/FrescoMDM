@@ -399,6 +399,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 }%>
 
 <%if (!isValidationErrorOccured && isSave) { %>  <!-- Save System Object -->
+  <%
+     String megredEuid  = compareDuplicateManager.getMergedEuid(editEuid);
+	  
+  %>
+<%if(megredEuid == null) {%> <!-- EUID merge condition-->
 	 <% 
        rootNodesHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE);
    
@@ -419,8 +424,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		sucessMessage = editMainEuidHandler.performSubmit(); //"EO_EDIT_SUCCESS";
 		
         messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+		//CONCURRENT_MOD_ERROR
     %> 
-	 <%	if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%} else if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
 		 //SET ALL THE VALUES HERE
           editMainEuidHandler.getChangedSBRArrayList().clear();//Changed SBR hashmap array 
           editMainEuidHandler.getEditSOHashMapArrayList().clear();//Changed/New System objects hashmap array
@@ -488,6 +509,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</table>
 		</div>
      <%}%>
+ <%} else {%> <!-- merged euid condition-->
+        <table>
+         <tr><td>
+         <script>
+      	     alert("'<%=megredEuid%>'  <%=bundle.getString("active_euid_text")%>  '<%=editEuid%>'.");			   
+             window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+         </script>
+         </td>
+         </tr>
+         </table>
+
+ <%}%>
 <%}else if (isLoad) {%>
    <script> 
         setEOEditIndex('-1')
@@ -1267,7 +1300,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 	 %>
 
-<%if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
+		//CONCURRENT_MOD_ERROR
+    %> 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
   <script>
 
 	  document.getElementById('linkSoDiv').style.visibility='hidden';
@@ -1327,8 +1377,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
             messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 
 		}
-	 %>
-<%if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
+			//CONCURRENT_MOD_ERROR
+    %> 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
  			  
   <script>
 
@@ -1394,8 +1460,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     //Lock the field here.
 	sucessMessage = editMainEuidHandler.saveLocksSelected(changedSBRArrayList,null); //"EO_EDIT_SUCCESS";
     messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-  %>
-	 <%	if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
+ 		//CONCURRENT_MOD_ERROR
+    %> 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%}else if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
  		 %>
        <script>
 		   document.getElementById('lockSBRDiv').style.visibility = 'hidden';
@@ -1440,8 +1522,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	
 		messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 
-	 %>
-<%if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
+		//CONCURRENT_MOD_ERROR
+    %> 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
   <table><tr><td>
   <script>
     	    window.location = "#top";
@@ -1477,8 +1575,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
  <% sucessMessage = editMainEuidHandler.deactivateEO(editEuid); 
     messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 
- %>
-<%if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
+ 		//CONCURRENT_MOD_ERROR
+    %> 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
 		 <script>
 			 window.location = "#top";
 		 </script>

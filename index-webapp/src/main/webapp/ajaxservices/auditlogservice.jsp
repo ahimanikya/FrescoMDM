@@ -175,7 +175,7 @@ if (results != null)   {
                   	   <thead>
                           <tr>
                      	   <% for (int i =0;i< keys.size();i++) { %>
-                               <th><%=keys.toArray()[i]%></th>
+                               <th><nobr><%=keys.toArray()[i]%></nobr></th>
                           <%}%>
                          </tr>
                 	   </thead>
@@ -185,8 +185,9 @@ if (results != null)   {
                             <%HashMap valueMap = (HashMap) results.get(i3);
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
 				              %>
-                                   <td style="text-align:right">
+                                   <td style="text-align:right"><nobr>
 		                               <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
+									   </nobr>
 		                           </td>
                              <%}%>
                        </tr>

@@ -379,7 +379,6 @@ if (isCancel){
 					   isValidate = false;
 					   %>
 			   `    <!--script>
-				    //alert("System Code and LID " + "'<%=validateSystemCode%>'" + "/" + "'<%=validateLID%>' "+ " is already found !");
 			        </script-->
 					<div class="ajaxalert">
 						  <table>
@@ -604,8 +603,24 @@ if (isCancel){
 
 		Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 		
-     %> 
-	 <%	if ("EO_EDIT_SUCCESS".equalsIgnoreCase(isSuccess))  { %>
+    		//CONCURRENT_MOD_ERROR
+    %> 
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(isSuccess))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+ 								alert("EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%> ");
+                                window.location = "#top";
+                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+	 <%}else if ("EO_EDIT_SUCCESS".equalsIgnoreCase(isSuccess))  { %>
 		<script>
 		    alert('<%=sourceHandler.getSystemCodeDescription(request.getParameter("SystemCode"))%>/<%=request.getParameter("LID")%> <%=bundle.getString("lid_system_added_succes_text")%>');
  	         window.location = "#top";  

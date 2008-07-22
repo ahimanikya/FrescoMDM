@@ -297,9 +297,9 @@ if(session!=null){
                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
 													               value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                    />
-                                                            <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
-                                                     onclick="g_Calendar.show(event,
+                                                           <a href="javascript:void(0);" 
+  												          title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+                                                          onclick="g_Calendar.show(event,
 												          '<h:outputText value="#{fieldConfigPer.name}"/>',
 														  '<%=dateFormat%>',
 														  '<%=global_daysOfWeek%>',
@@ -481,11 +481,24 @@ if(session!=null){
                                                    maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
-                                          </nobr>
+                                                  onblur="javascript:validate_date(this,'<%=dateFormat%>');">
+
+									              <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{childFieldConfigAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{childFieldConfigAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												           <font class="dateFormat">(<%=dateFormat%>)</font>
+												  
+                                           </nobr>
                                      </h:column>                     
 
 
@@ -700,13 +713,13 @@ if(session!=null){
 																				   readonly="true"
 																				   disabled="true"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
-                                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
-                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"   onfocus="javascript:clear_masking_on_focus()" 
                                                                                    />
                                                                                       
-                                                                                <h:graphicImage alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                                <h:graphicImage alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>          
+    
 																		   </nobr>
                                                                        </h:column>
 
@@ -716,15 +729,27 @@ if(session!=null){
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
-                                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                                    />
                                                                                        
-                                                                            <a title="<h:outputText value="#{fieldConfigPer.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>')" > 
-                                                                                <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                                            </a>
+   													<a href="javascript:void(0);" 
+												     title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												           <font class="dateFormat">(<%=dateFormat%>)</font>
+
 																		   </nobr>
                                                                        </h:column>
                                                                         <!--Rendering Updateable HTML Text Area-->
@@ -792,7 +817,7 @@ if(session!=null){
 																				   readonly="true"
 																				   disabled="true"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
-                                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                                    onfocus="javascript:clear_masking_on_focus()"  onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
@@ -951,11 +976,23 @@ if(session!=null){
                                                    maxlength="<h:outputText value="#{soChildFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{soChildFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a title="<h:outputText value="#{soChildFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/><h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{soChildFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
-                                          </nobr>
+                                                  onblur="javascript:validate_date(this,'<%=dateFormat%>');">
+                                         
+   													<a href="javascript:void(0);" 
+												     title="<h:outputText value="#{soChildFieldConfigAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/><h:outputText value="#{soChildFieldConfigAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{soChildFieldConfigAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												           <font class="dateFormat">(<%=dateFormat%>)</font>
+                                            </nobr>
                                      </h:column>                     
 
 
@@ -1003,7 +1040,7 @@ if(session!=null){
                                                    maxlength="<h:outputText value="#{soChildFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{soChildFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');">
+                                                  onblur="javascript:validate_date(this,'<%=dateFormat%>');">
                                                   <a title="<h:outputText value="#{soChildFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
                                                      <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>

@@ -203,7 +203,8 @@ ArrayList fcArrayList  = new ArrayList();
 	
 	myColumnDefs.append("[");
     String value = new String();
-	for(int ji=0;ji<keys.size();ji++) {
+ 
+ 	for(int ji=0;ji<keys.size();ji++) {
 	    if ("EUID".equalsIgnoreCase((String)keys.toArray()[ji]))  {
           if (assumedText.equalsIgnoreCase(reportName)) { 
 				 sortOption = "true";
@@ -336,7 +337,7 @@ String reportType = (String)request.getAttribute("frequency");
 </td>
 </tr>
 </table>
-
+<%  if(results != null ) {	%>
 		<script>
 			var fieldsArray = new Array();
 		</script>
@@ -361,14 +362,13 @@ String reportType = (String)request.getAttribute("frequency");
 			var myColumnDefs = <%=myColumnDefs.toString().length() == 0?"\""+ "\"":myColumnDefs.toString()%>;
 			var myDataTable = new YAHOO.widget.DataTable("myMarkedUpContainer<%=divId%>", myColumnDefs, myDataSource,myConfigs);
 		</script>
-
+<%}%>
 
 <% for(int index=0;index<keys.size();index++) {%>
         <script>
             fieldsArray[<%=index%>] = '<%=keys.toArray()[index]%>';
         </script>
 <%}%>
-
 
   <%} %>  <!-- Session check -->
 </f:view>

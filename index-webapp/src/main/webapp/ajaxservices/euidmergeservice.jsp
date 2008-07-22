@@ -35,6 +35,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
  <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+ <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
@@ -143,6 +144,7 @@ boolean isSessionActive = true;
 
 			String  populateMergeFieldsStr = request.getParameter("populateMergeFields");
 			boolean isPopulateMergeFields = (null == populateMergeFieldsStr?false:true);
+
 			%>
             <%if(isCancelMultiMerge) {%>
              <%if(request.getParameter("euids") != null) {%>
@@ -177,7 +179,16 @@ boolean isSessionActive = true;
 				String[]  compareEuids = request.getParameter("euids").split(",");
                 eoArrayList = patientDetailsHandler.buildCompareEuids(compareEuids);
  				session.setAttribute("comapreEuidsArrayList",eoArrayList);
-            } %>
+            }
+
+			if (request.getParameter("fromPage") != null && request.getParameter("duplicateEuids") != null ) {
+ 				SearchDuplicatesHandler searchDuplicatesHandler = new SearchDuplicatesHandler();
+				//build the arraylist of compare euids and navigate o the compare duplicates page.
+                 searchDuplicatesHandler.buildCompareDuplicateEuids(request.getParameter("duplicateEuids"));   
+				 eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList"); 
+            }
+			
+			%>
 
 <%if(isPopulateMergeFields) {
      
@@ -193,21 +204,42 @@ boolean isSessionActive = true;
   
  %>
  <%}%>
-
+ 
 
 
 	
-<%			
+<%						    
+          
 	     if(isMergePreview) {
               
 			  String[] srcDestnEuids = request.getParameter("PREVIEW_SRC_DESTN_EUIDS").split(",");
  
               eoMultiMergePreview = patientDetailsHandler.previewMultiMergeEnterpriseObject(srcDestnEuids);
 			  messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+ 		   %>
+           <% if(eoMultiMergePreview != null ) {%>
+               <%if (eoMultiMergePreview.get(PatientDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {
+			   eoArrayList.clear();
 
-		   %>
-	     <% if(eoMultiMergePreview != null ) {%>
- 
+			   
+                %> <!-- Clear all the values in the arraylist here -->
+              <table>
+              <tr>
+                <td>
+               		<script> 
+ 			            alert("EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%> ");
+						if((fromPage != null && fromPage.length > 0 ) && (duplicateEuids != null && duplicateEuids.length > 0 ) ) {
+                           window.location = '/<%=URI%>/compareduplicates.jsf?fromPage='+fromPage+'&duplicateEuids='+duplicateEuids;
+						 } else {
+ 		                    window.location = '/<%=URI%>/compareduplicates.jsf?euids='+alleuidsArray;
+						}
+              	    </script>
+                   </td>
+               </tr>
+             </table>
+             
+             <%} else {%>
+
 			<%    for(int i = 0;i< srcDestnEuids.length;i++) {
 				  previewEuidsHashMap.put(srcDestnEuids[i],srcDestnEuids[i]);
 			    }
@@ -227,7 +259,8 @@ boolean isSessionActive = true;
                  </td>
                </tr>
              </table>
- 
+			<%}%>
+
 			
 			<%  } else {%>
         <div class="ajaxalert">
@@ -253,6 +286,7 @@ boolean isSessionActive = true;
 
 
 <%			
+  boolean isConcurrentModification = true;
 	     if(isMergeFinal) {
               
 			  String[] srcDestnEuids = request.getParameter("MERGE_SRC_DESTN_EUIDS").split(",");
@@ -269,7 +303,24 @@ boolean isSessionActive = true;
 				HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
     			
 				%>
- 
+              <%if (eoHashMapValues.get(PatientDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {%>
+			  <table>
+              <tr>
+                <td>
+               		<script> 
+					    //merge_destnEuid
+					    document.getElementById('mergeDiv').style.visibility ='hidden';
+					    document.getElementById('mergeDiv').style.display ='none';
+  			            alert("EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%> ");
+ 		                window.location = '/<%=URI%>/compareduplicates.jsf?euids='+alleuidsArray;
+  				      </script>
+                  </td>
+               </tr>
+             </table>
+             <%eoArrayList.clear();
+					  %> <!-- Clear all the values in the arraylist here -->
+             <%} else {%>
+
             <%  session.removeAttribute("destnRootNodeHashMap");
               
 			%>
@@ -289,10 +340,11 @@ boolean isSessionActive = true;
               </td>
              </tr>
             </table>
-  			<%  } else {%>
-             <div class="ajaxalert">
-    	      <table>
-			   <tr>
+           <%}%> <!-- Concurrent modification error -->
+			<%  } else {%>
+        <div class="ajaxalert">
+    	  <table>
+			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
@@ -1592,7 +1644,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                      <!--AFTER-->
                       </table>
                    <%}%>
-
+ 
  <%}%> <!-- if session is active -->
 
 </html>

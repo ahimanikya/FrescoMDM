@@ -8,6 +8,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 
@@ -22,6 +23,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
+<%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 
@@ -317,8 +319,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		String isSuccess = sourceAddHandler.updateSO();
         Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
      %> 
-	 <%	if ("UPDATE_SUCCESS".equalsIgnoreCase(isSuccess))  { %>
-			   <!-- // close the Minor objects 
+	 <% if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(isSuccess))  { 
+                EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObjectForSO(singleSystemObjectLID);
+                //keep the EO revision number in session
+                session.setAttribute("SBR_REVISION_NUMBER" + enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
+				sourceAddHandler.editLID(singleSystemObjectLID);
+   		  %>
+     <table>
+      <tr>
+      <td>
+      <script>
+ 	   alert(" '<%=enterpriseObject.getEUID()%>' <%=bundle.getString("concurrent_mod_text")%> <%=bundle.getString("login_try_again_text")%> ");
+       window.location = '/<%=URI%>/sourcerecords.jsf';
+      </script>
+     </td>
+	 </tr>
+	</table>
+  <%} else if ("UPDATE_SUCCESS".equalsIgnoreCase(isSuccess))  { %>			   <!-- // close the Minor objects 
 			   // Close the Root node fields
 			   // Hide the Save button -->
 		  <script>
@@ -360,13 +377,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		  <%
 			}
           %>
-
-          <%
-			//reset all the fields here for root node and minor objects 
-		    //sourceAddHandler.getNewSOHashMap().clear();
-		   } %>
-	  <% if ("UPDATE_SUCCESS".equalsIgnoreCase(isSuccess))  { %>
-	  	  <!-- Navigate the user to the top of the page to see the messages-->
+ 	  	  <!-- Navigate the user to the top of the page to see the messages-->
           <script>
 	   	    window.location = "#top";
 	      </script>

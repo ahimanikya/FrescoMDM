@@ -168,7 +168,7 @@ if (results != null)   {
                   	   <thead>
                           <tr>
                      	   <% for (int i =0;i< keys.size();i++) { %>
-                               <th><%=keys.toArray()[i]%></th>
+                               <th><nobr><%=keys.toArray()[i]%></nobr></th>
                           <%}%>
                          </tr>
                 	   </thead>
@@ -179,6 +179,7 @@ if (results != null)   {
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
 				              %>
                                    <td style="text-align:right">
+								   <nobr>
 						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 
                                         <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode"))%>" >										
@@ -187,6 +188,7 @@ if (results != null)   {
 								   <%  }  else { %>
                                         <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 								   <% } %>
+								   </nobr>
                                    </td>
                              <%}%>
                        </tr>

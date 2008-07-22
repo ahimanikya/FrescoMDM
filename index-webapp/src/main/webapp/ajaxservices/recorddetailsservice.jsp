@@ -201,15 +201,43 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 		</table>
 	</div>
 <%} else {%>
+<% ArrayList allEuids = new ArrayList();	
+	%>
+<%
+  if( (request.getParameter("EUID 1") != null &&  request.getParameter("EUID 1").trim().length()  > 0 ) ) {
+ 	  allEuids.add(request.getParameter("EUID 1"));
+   }
+ %>
+	
+<%
+  if( (request.getParameter("EUID 2") != null &&  request.getParameter("EUID 2").trim().length()  > 0 ) ) {
+ 	  allEuids.add(request.getParameter("EUID 2"));
+   }
+ %>
+ 	
+<%
+  if( (request.getParameter("EUID 3") != null &&  request.getParameter("EUID 3").trim().length()  > 0 ) ) {
+ 	  allEuids.add(request.getParameter("EUID 3"));
+   }
+ %>
 
- <% 
+<%
+  if( (request.getParameter("EUID 4") != null &&  request.getParameter("EUID 4").trim().length()  > 0 ) ) {
+ 	  allEuids.add(request.getParameter("EUID 4"));
+   }
+ %>
+
+ <%   String allEuidsString  = allEuids.toString();
+      allEuidsString = allEuidsString.replace("[","");
+      allEuidsString = allEuidsString.replace("]","");
+      allEuidsString = allEuidsString.replace(" ","");
 	  ArrayList compareEuidsList = dashboardHandler.performCompareEuidSearch();	
       Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
  %>
      <%if(compareEuidsList != null && compareEuidsList.size() > 0) { %>
 		<table><tr><td>
   		<script>
-          window.location = '/<%=URI%>/compareduplicates.jsf';
+           window.location = '/<%=URI%>/compareduplicates.jsf?euids=<%=allEuidsString%>';
  		</script>
  		</td></tr>
 		</table>
@@ -307,11 +335,19 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
  
 <%
- // String lid = (String) patientDetailsHandler.getParametersMap().get("LID");
- // String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
+   boolean checkMasking = true;
+   lid = (String) patientDetailsHandler.getParametersMap().get("LID");
+   String lidmask = (String) patientDetailsHandler.getParametersMap().get("lidmask");
+   // String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
+   // valiadtions.put(basicFieldConfig.getDisplayName(),bundle.getString("lid_format_error_text") + " " +basicFieldConfig.getInputMask());
+   checkMasking = patientDetailsHandler.checkMasking(lid,lidmask);
+
+   %>
+ <%if(checkMasking) {%>
+  <%
+   EnterpriseObject eo = null;
+
   lid = lid.replaceAll("-", "");
-  EnterpriseObject eo = null;
-  
   SystemObject so = masterControllerService.getSystemObject(systemCode, lid);
   if(so != null ) {
      eo = masterControllerService.getEnterpriseObjectForSO(so);
@@ -356,6 +392,29 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 	 <table>
 	 </div>
   <%}%>
+ <%} else {%>
+       <div class="ajaxalert">
+    <table>
+	   <tr>
+	     <td>
+   <%
+    localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+   String messages = localIdDesignation + " " + bundle.getString("lid_format_error_text") + " " +lidmask;
+  %>     	 
+
+	 <script>
+		 var messages = document.getElementById("messages");
+	     messages.innerHTML= "<%=messages%>";
+		 messages.style.visibility="visible";
+	 </script>
+	   </td>
+	   </tr>
+	 <table>
+	 </div>
+
+ <%}%>
+
+
  <%} else {%>
 
 <% if(request.getParameter("pageName") != null) { %> <!-- From the euid details page-->
