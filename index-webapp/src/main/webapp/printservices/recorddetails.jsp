@@ -367,6 +367,7 @@ if (results != null)   {
 									
 				              %>
                                    <td>
+								   <nobr>
 								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>									    
                                            <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"&nbsp;":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 
 									<%}else if(!keyValue.equalsIgnoreCase("Weight") && fullfieldValue.indexOf(screenObject.getRootObj().getName()) != 0) {
@@ -376,6 +377,7 @@ if (results != null)   {
 									 <%}else {%>
                                         <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"&nbsp;":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 
 									 <%}%>
+								   </nobr>
                                    </td>
                              <%}%>
                        </tr>

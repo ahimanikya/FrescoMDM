@@ -164,8 +164,8 @@ ArrayList fcArrayList  = new ArrayList();
 
 
 <%
-     ArrayList fgGroups = reportHandler.getSearchScreenFieldGroupArray(reportHandler.getSearchScreenConfigArray());
- 
+        ArrayList fgGroups = reportHandler.getSearchScreenFieldGroupArray(reportHandler.getSearchScreenConfigArray());
+
 	 //if Activity report type loop through only once
 	 int fgSize  = (activityText.equalsIgnoreCase(reportName)) ? 1 : fgGroups.size();
 	 

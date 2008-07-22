@@ -242,12 +242,13 @@ if (results != null)   {
                             <%HashMap valueMap = (HashMap) results.get(i3);
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
 				              %>
-                                   <td>
+                                   <td><nobr>
 						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 										<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"&nbsp;":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 
 								   <%  }  else { %>
                                         <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"&nbsp;":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 								   <% } %>
+								   </nobr>
                                    </td>
                              <%}%>
                        </tr>

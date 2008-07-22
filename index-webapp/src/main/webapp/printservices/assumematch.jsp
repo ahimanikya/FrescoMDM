@@ -269,7 +269,8 @@ if (results != null)   {
 													 }
 					                               %>
 												    <tr>
-												       <td width=<%=length%>px style="border:none">	
+												       <td style="border:none">	
+													   <nobr>
 												   <%  if ((screenObject.getRootObj().getName()+"."+"ID").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 														<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 
@@ -282,6 +283,7 @@ if (results != null)   {
 												   <%  } else { %>
 														<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 												   <%  } %>
+												   </nobr>
 												     </td>
 													 </tr>												 
   									             <%}%><!-- end value list loop -->
