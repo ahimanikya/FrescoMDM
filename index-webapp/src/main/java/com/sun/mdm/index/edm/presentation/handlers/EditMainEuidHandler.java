@@ -946,13 +946,18 @@ public class EditMainEuidHandler {
             //set all system objects here
             setEoSystemObjectsOld(eoSOobjectsOld);
 
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("EME024: Unable to set updated EO fields:{0}", ex.getMessage()));
-        //Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("EME025: Unable to set updated EO fields:{0}", ex.getMessage()));
-        //Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("EME024: Unable to set updated EO fields:{0}", ex.getMessage()));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("EME025: Unable to set updated EO fields:{0}", ex.getMessage()));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("EME125: Unable to set updated EO fields:{0}", ex.getMessage()));
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
+
+
     }
 
     public String getHiddenLinkFields() {
@@ -1152,13 +1157,17 @@ public class EditMainEuidHandler {
                 }
             }
 
-
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("EME036: Exception has occurred :{0}", ex.getMessage()), ex);
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("EME037: Exception has occurred :{0}", ex.getMessage()), ex);
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("EME036: Exception has occurred :{0}", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+               mLogger.error(mLocalizer.x("EME037: Exception has occurred :{0}", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                 mLogger.error(mLocalizer.x("EME137: Exception has occurred :{0}", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
-
+                   
 
 
     }

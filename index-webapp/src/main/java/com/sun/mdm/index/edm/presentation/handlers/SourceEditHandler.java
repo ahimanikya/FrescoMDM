@@ -47,6 +47,12 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
+import java.util.ResourceBundle;
+import javax.faces.application.FacesMessage;
+import javax.xml.bind.ValidationException;
 import net.java.hulp.i18n.LocalizationSupport;
 
 
@@ -78,6 +84,8 @@ public class SourceEditHandler {
     private HashMap editSingleSOHashMap = new HashMap();
     
     public static final String UPDATE_SUCCESS = "UPDATE SUCCESS";
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());    
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     
     /** Creates a new instance of SourceEditHandler */
     public SourceEditHandler() {
@@ -146,25 +154,21 @@ public class SourceEditHandler {
             session.setAttribute("systemObjectMap", editSystemObjectMap);
             
             //set the single SO hash map for single so EDITING
-            this.setEditSingleSOHashMap(editSystemObjectMap);
-                
-            //set address array list of hasmap for editing
-            ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Address"), "Address",masterControllerService.MINOR_OBJECT_UPDATE);
-             
-            //set phone array list of hasmap for editing
-            ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone",masterControllerService.MINOR_OBJECT_UPDATE);
-             
-            //set alias array list of hasmap for editing
-            ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias",masterControllerService.MINOR_OBJECT_UPDATE);
-             
+            this.setEditSingleSOHashMap(editSystemObjectMap);                
+                         
             session.setAttribute("keyFunction", "editSO");
-        } catch (ObjectException ex) {
-            //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        mLogger.error(mLocalizer.x("SRC014: Failed to edit LID:{0}",ex.getMessage()),ex);
-        } catch (EPathException ex) {
-            //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-       mLogger.error(mLocalizer.x("SRC015: Failed to edit LID:{0}",ex.getMessage()),ex);
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC014: Failed to edit LID:{0}", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC015: Failed to edit LID:{0}", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC115: Failed to edit LID:{0}", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
+                   
    }
 
     
