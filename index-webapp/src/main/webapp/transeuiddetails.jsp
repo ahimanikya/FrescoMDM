@@ -19,12 +19,11 @@
 <%@ page import="com.sun.mdm.index.objects.TransactionObject"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
-
-
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.Set"  %>
 <%@ page import="java.util.HashMap"  %>
+<%@ page import="java.util.TreeMap"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Collection"  %>
 <%@ page import="java.util.Iterator"  %>
@@ -33,11 +32,45 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager" %>
+<script>
+	function changecolor(v)   {
+				 if (v.style.backgroundColor == "#696969")   {
+					 v.style.backgroundColor="#e7e7d6";
+				 } else {
+					 v.style.backgroundColor="#696969";
+				 }
+	}
+</script>
+
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
+  TreeMap detailsArray = (TreeMap)session.getAttribute("transdetails");
+  //System.out.println("detailsArray " + detailsArray);
+  String [] transactionIds = (detailsArray.keySet().toString()).split(",");
+  String [] functions = new String[transactionIds.length];
+
+  for (int i =0;i<transactionIds.length;i++)   {	    
+	    transactionIds[i] = transactionIds[i].trim();
+		if (i == 0 ) 
+			transactionIds[i] = transactionIds[i].substring(1,transactionIds[i].length());
+		if (i == transactionIds.length -1 )
+			transactionIds[i] = transactionIds[i].substring(0,transactionIds[i].length()-1);
+		
+		functions[i] = (String)detailsArray.get(transactionIds[i]);
+  }
  %>
+ <script>
+var pages =[];
+var functions =[];
+var thisIdx=0;
+  <%for (int i=0; i<transactionIds.length;i++)    { %>
+         pages.push("<%=transactionIds[i]%>");
+         functions.push("<%=functions[i]%>");
+   <% }%>
+</script>
+								
 
 <f:view> 
   
@@ -80,8 +113,24 @@
         <body>
           <%@include file="./templates/header.jsp"%>
             <div id="mainContent">
-                <div id="mainDupSource" class="duplicateresults"></div>                                       
-            </div>    
+                    <div id="header" class="detailedresults">
+			            <table>			 
+                              <tr>
+                                <th align="left" class="euidHeadMessage">
+                                     <b> <%=bundle.getString("transaction_details_title")%></b>
+                                 </th>
+                               </tr>               
+                              <tr>
+                                <td align="center" style="align:center;text-align:center;color:green;"><div id="messages"></div></td>
+                               </tr>               							   
+			                   <tr>
+				                  <td valign="top">
+                                      <div id="mainDupSource" class="duplicateresults"></div>                                       
+				                  </td>
+				               </tr>
+			             </table>
+                    </div>
+			</div>    			
 			<%
             String transactionId = (String) (request.getParameter("transactionId")==null?request.getAttribute("transactionId"):request.getParameter("transactionId"));
             String function  = (request.getParameter("function") != null)? request.getParameter("function") : "Update";
@@ -93,18 +142,23 @@
               	</script>
               <%}%>
                  <%ValueExpression tranNoValueExpressionviewunmerge = ExpressionFactory.newInstance().createValueExpression(transactionId, transactionId.getClass());%>
-                       <div id="unmergePopupDiv" class="alert" style="TOP: 1050px; LEFT: 500px; VISIBILITY: hidden;">
-                              <table cellpadding="0" cellspacing="0">
+                       <div id="unmergePopupDiv" class="confirmPreview" style="VISIBILITY: hidden;">
+                              <table cellpadding="0" cellspacing="0" border="0">
                                 <form id="unmergeForm">
                                   <input type="hidden" id="unmergeTransactionId" name="unmergeTransactionId" title="unmergeTransactionId"  />
                                   <input type="hidden" id="mainEuid" name="mainEuid" title="mainEuid"  />
-
 									<tr>
-									    <th align="left"><%=bundle.getString("pop_up_confirmation_heading")%></th>
-									    <th align="right"><a href="javascript:void(0)" rel="unmergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th>
+									    <th><%=bundle.getString("pop_up_confirmation_heading")%></th>
 									</tr>
                                     <tr>
-									  <td colspan="2"><h:outputText value="#{msgs.unmerge_tran_popup_content_text}" /> <%=bundle.getString("merged_euid_label")%><div id="unmergeEuid"></div>?
+									  <td colspan="2">
+									     <table>
+										    <tr>
+											   <td>
+										          <h:outputText value="#{msgs.unmerge_tran_popup_content_text}" /> <%=bundle.getString("merged_euid_label")%><div id="unmergeEuid"></div>?
+											  </td>
+											 </tr>
+										 </table>
 									  </td>
 									</tr>
 									<tr><td colspan="2">&nbsp;</td></tr>
@@ -113,7 +167,7 @@
 									      <tr>
 										    <td align="right">
                                             <a href="javascript:void(0)" 
-                                               onclick="javascript:getFormValues('unmergeForm'); ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&unMergeFinal=true&rand=<%=rand%>','mainDupSource','');" 
+                                               onclick="javascript:getFormValues('unmergeForm');showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&unMergeFinal=true&rand=<%=rand%>','mainDupSource','');" 
 											   class="button" title="<h:outputText value="#{msgs.ok_text_button}" />">
                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                             </a>   

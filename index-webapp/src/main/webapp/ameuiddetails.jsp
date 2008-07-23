@@ -75,11 +75,12 @@ if(session!=null){
 			 }
 
 			 function changecolor(v)   {
-				 if (v.style.backgroundColor == "#000000")   {
+				 if (v.style.backgroundColor == "#696969")   {
 					 v.style.backgroundColor="#e7e7d6";
 				 } else {
-					 v.style.backgroundColor="#000000";
+					 v.style.backgroundColor="#696969";
 				 }
+				 //alert("Next");
 				  //v.innerText="<tr><td>Next</td></tr>";
 			}
             function cancelPreview(divId)  {
@@ -139,6 +140,7 @@ var thisIdx=0;
         </body>
     </html>
 </f:view>
+
 
 
 
