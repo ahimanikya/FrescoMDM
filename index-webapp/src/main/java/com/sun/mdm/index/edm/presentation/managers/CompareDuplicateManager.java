@@ -31,6 +31,7 @@
 
 package com.sun.mdm.index.edm.presentation.managers;
 import com.sun.mdm.index.edm.control.QwsController;
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 import com.sun.mdm.index.edm.presentation.handlers.SourceHandler;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
@@ -72,8 +73,11 @@ import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
 import com.sun.mdm.index.objects.SystemObjectPK;
+import java.util.ResourceBundle;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.ValidationException;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class CompareDuplicateManager {
@@ -81,6 +85,8 @@ public class CompareDuplicateManager {
     private static transient final Localizer mLocalizer = Localizer.get();
     public static final String MINOR_OBJECT_TYPE = "MINOR_OBJECT_TYPE";
     private MasterControllerService masterControllerService = new MasterControllerService();
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     /**
      *Http session variable
      */
@@ -464,12 +470,17 @@ public class CompareDuplicateManager {
                 
             }
 
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("CPD008: Failed to get SystemObject   :{0}", ex.getMessage()),ex);
-        } catch (ObjectException ex) {
-           mLogger.error(mLocalizer.x("CPD009: Failed to get SystemObject  :{0}", ex.getMessage()),ex);
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("CPD008: Failed to get SystemObject   :{0}", ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("CPD009: Failed to get SystemObject  :{0}", ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("CPD090: Failed to get SystemObject  :{0}", ex.getMessage()),ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
-
+           
 
         return systemObjectHashMap;
 
@@ -661,17 +672,28 @@ public class CompareDuplicateManager {
 
 
             return enterpriseObjectHashMap;
-        } catch (ObjectException ex) {
-           mLogger.error(mLocalizer.x("CPD010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-        } catch (ConnectionInvalidException ex) {
-           mLogger.error(mLocalizer.x("CPD011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-        } catch (OPSException ex) {
-            mLogger.error(mLocalizer.x("CPD012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("CPD013: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("CPD014: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
-        }
+//        } catch (ObjectException ex) {
+//           mLogger.error(mLocalizer.x("CPD010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+//        } catch (ConnectionInvalidException ex) {
+//           mLogger.error(mLocalizer.x("CPD011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+//        } catch (OPSException ex) {
+//            mLogger.error(mLocalizer.x("CPD012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+//        } catch (ProcessingException ex) {
+//            mLogger.error(mLocalizer.x("CPD013: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
+//        } catch (UserException ex) {
+//            mLogger.error(mLocalizer.x("CPD014: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
+//        }
+         } catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("CPD010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+                    } else if (ex instanceof UserException) {
+                         mLogger.error(mLocalizer.x("CPD011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                       mLogger.error(mLocalizer.x("CPD012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+               }
+                   
 
             return enterpriseObjectHashMap;
     }
@@ -788,13 +810,24 @@ public class CompareDuplicateManager {
 
                 }
             }
-        } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("CPD015: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-        } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("CPD016: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-        } catch (RemoteException ex) {
-             mLogger.error(mLocalizer.x("CPD017: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-        }
+//        } catch (ProcessingException ex) {
+//             mLogger.error(mLocalizer.x("CPD015: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
+//        } catch (UserException ex) {
+//             mLogger.error(mLocalizer.x("CPD016: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
+//        } catch (RemoteException ex) {
+//             mLogger.error(mLocalizer.x("CPD017: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
+//        }
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("CPD015: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("PDH086: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("CPD017: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                }
+                   
         return newArrayListHistory;
     }
 
@@ -923,11 +956,18 @@ public class CompareDuplicateManager {
                 }
                 newArrayList.add(systemObjectHashMap);
             }
-        } catch (EPathException ex) {
-             mLogger.error(mLocalizer.x("CPD018: Failed to get EOSources :{0}", ex.getMessage()),ex);
-        } catch (ObjectException ex) {
-             mLogger.error(mLocalizer.x("CPD019: Failed to get EOSources :{0}", ex.getMessage()),ex);
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("CPD018: Failed to get EOSources :{0}", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("CPD019: Failed to get EOSources :{0}", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("CPD091: Failed to get EOSources :{0}", ex.getMessage()), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
+                   
         return newArrayList;
     }
 
