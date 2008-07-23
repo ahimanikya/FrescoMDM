@@ -114,7 +114,14 @@ INPUT.READONLY{
   text-align:left;
   position:relative;
   verticle-align:top;
+  width:100%;
+  overflow-x: auto; 
+  overflow-y: hidden;
   background-color:#F7FBD6;
+  border-left: 1px solid #6B757B; 
+  border-right: 1px solid #6B757B; 
+  border-top: 1px solid #182442;  
+  border-bottom: 1px solid #6B757B;
 }
 
 .detailedresults  td {
@@ -656,7 +663,7 @@ width:25px;
            font-weight:bold;
            float:left;
            position:relative;
-	   border-left: 1px solid #6B757B; 
+	       border-left: 1px solid #6B757B; 
            border-right: 1px solid #6B757B; 
            border-top: 1px solid #182442;  
            border-bottom: 1px solid #6B757B;
@@ -2861,6 +2868,7 @@ a.navbuttonselected:active span {
    font-family: sans-serif,Arial, Helvetica ;
    font-size: 12px;
    text-align:right;
+   text-decoration:none;
    padding-top:10px;
    background-color:#000000;
    color:#ffffff;
