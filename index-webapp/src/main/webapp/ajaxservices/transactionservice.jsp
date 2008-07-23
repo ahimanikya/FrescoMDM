@@ -31,6 +31,7 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="java.util.HashMap"  %>
+<%@ page import="java.util.TreeMap"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
@@ -70,9 +71,8 @@ boolean isSessionActive = true;
 <%
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 TransactionHandler transactionHandler= new TransactionHandler();
-
 Enumeration parameterNames = request.getParameterNames();
-
+TreeMap transDetailsMap = new TreeMap();
 
 //Map to hold the validation Errors
 HashMap valiadtions = new HashMap();
@@ -180,7 +180,9 @@ if (results != null)   {
 				              %>
                                    <td style="text-align:right">
 								   <nobr>
-						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
+						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { 
+								  transDetailsMap.put(valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber")),valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode")));
+								  %>
 
                                         <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode"))%>" >										
 										<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
@@ -193,6 +195,7 @@ if (results != null)   {
                              <%}%>
                        </tr>
                      <%}%>
+					 <%session.setAttribute("transdetails",transDetailsMap);%>
 	                 </tbody>
                     </table>
                 </div>

@@ -847,8 +847,18 @@ boolean isSessionActive = true;
                                    <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
                                                  HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                            if (countEnt == 0) {%>
-                                                 <td width="20px"><img src="images/spacer.gif"  height="1px" border="0"/></td>
-                                                 <td width="167px"><img src="images/spacer.gif" height="1px" border="0"/></td>
+                                        <td><img src='/<%=URI%>/images/spacer.gif' border="0" width="20px"></td>
+										<td width="169px" valign="top">
+                                          <table cellpadding="0" cellspacing="0">
+										    <tr>
+											  <td valign="top">  
+                                                   <a href="assumedmatches.jsf" class="button" title="<h:outputText value="#{msgs.search_again}"/>" >
+															 <span><h:outputText value="#{msgs.search_again}"/></span>
+												   </a>											  
+											  </td>
+											</tr>
+										  </table>
+										</td>
                       							 <%   Operations ops = new Operations();
 												        if(ops.isTransLog_SearchView()){%>
                                                             <td width="167px">

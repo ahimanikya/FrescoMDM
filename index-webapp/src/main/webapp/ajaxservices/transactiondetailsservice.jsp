@@ -98,6 +98,12 @@ boolean isSessionActive = true;
 <%}%>
 
 <%if (isSessionActive)  {%>
+ <% String message = request.getParameter("msg");
+	if (message != null && message.length() > 0)    {%>
+     <script>
+	    document.getElementById('messages').innerHTML = "<%=message%>";
+     </script>
+ <%}%>
 <%          Enumeration parameterNames = request.getParameterNames();
             ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			
@@ -163,7 +169,7 @@ boolean isSessionActive = true;
 				    <td>
               	   <script>
 					  showExtraDivs('unmergePopupDiv',event);
- 					  alert("<%=unMergeResult.getSourceEO().getEUID()%> is Unmerged from <%=unMergeResult.getDestinationEO().getEUID()%>");
+					  document.getElementById('messages').innerHTML="<%=unMergeResult.getSourceEO().getEUID()%>&nbsp;<%=bundle.getString("unmerged_from")%>&nbsp;<%=unMergeResult.getDestinationEO().getEUID()%>";
                  	  ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+'&rand=<%=rand%>&transactionId=<%=unmergeTransNumber%>&function=<%=unmergeFunction%>','mainDupSource','');
               	   </script>
 				   </td>
@@ -222,17 +228,30 @@ boolean isSessionActive = true;
                <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td>
-							<FORM>
-							 <a class="button" title="<h:outputText value="#{msgs.view_list_but_text}"/>" href="javascript:void()" onclick="history.go(-1)"><span><h:outputText value="#{msgs.view_list_but_text}"/></span></a>
-							</FORM>
-                           </td>
-                        </tr>
-                        <tr>
-                            <td>
                                 <div style="height:500px;overflow:auto;">
                     
                                     <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
+<!--Prev Navigation -->
+<td valign="top" align="right">
+<!-- not allowed -->
+<div id="prevnotallowed" style="cursor:not-allowed;visibility:hidden;height:700px;overflow:hidden;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;background-color:#e7e7d6">
+		<table border="0" height="100%" title="<%=bundle.getString("begining")%>">
+           <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
+           <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
+         </table>
+	</div>
+</td>
+
+<td valign="top" align="right">
+<!-- not allowed -->
+	<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:700px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+		<table border="0" height="100%" title="<%=bundle.getString("prev")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?operation=prev&random=rand'+'&'+'transactionId='+pages[thisIdx-1]+'&function='+functions[--thisIdx],'mainDupSource','');" >
+		<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
+		<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
+         </table>
+	</div>
+</td>
 
                                            <%
                                             Object[] eoArrayListObjects = eoArrayList.toArray();
@@ -314,9 +333,6 @@ boolean isSessionActive = true;
                                                 ObjectNodeConfig[] arrObjectNodeConfig = objScreenObject.getRootObj().getChildConfigs();
                    %>
                                           <%if (countEnt == 0) {%>
-                                          <%
-
-                                            %>
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
@@ -769,6 +785,26 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                             <td  valign="top">
                                                  <div id="mainDupHistory" style="visibility:hidden;display:none"></div>
                                             </td>
+<!--Next Navigation -->
+<td valign="top" align="left">
+	<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:700px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+		<table border="0" height="100%" title="<%=bundle.getString("next")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?operation=next&random=rand'+'&'+'transactionId='+pages[thisIdx+1]+'&function='+functions[++thisIdx],'mainDupSource','');" >
+           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
+           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
+         </table>mainDupSource
+	</div>
+<!--- not allowed -->
+</td>
+<td valign="top" align="left">
+	<div id="nextnotallowed" style="cursor:not-allowed;visibility:hidden;height:700px;overflow:hidden;verticle-align:top;position:relative;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+		<table border="0" height="100%" title="<%=bundle.getString("end")%>" >
+           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
+           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
+         </table>
+	</div>
+<!--- not allowed -->
+</td>
+
                                             <td valign="top"><div id="previewPane"></div></td>                                        
                                         </tr>
                                     </table>
@@ -806,13 +842,24 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 												 euidValueArray.push('<%=euid%>');
 										</script>
                                  		<% if (countEnt == 0) {%>
-                                        <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
+                                        <td><img src='/<%=URI%>/images/spacer.gif' border="0" width="20px"></td>
+										<td width="169px" valign="top">
+                                          <table cellpadding="0" cellspacing="0">
+										    <tr>
+											  <td valign="top">  
+                                                   <a href="transactions.jsf" class="button" title="<h:outputText value="#{msgs.search_again}"/>" >
+															 <span><h:outputText value="#{msgs.search_again}"/></span>
+												   </a>											  
+											  </td>
+											</tr>
+										  </table>
+										</td>
                                         <!--Displaying view sources and view history-->
                                         <% }%>
 
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" border="1">
+                                                <table cellspacing="0" cellpadding="0" border="0">
                                                     <h:form>
                                                         <tr> 
                                                           <td valign="top">
@@ -838,7 +885,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             </td> 
                                                         </tr>
                                                         <% } else {%>
-                                                        <tr><td>&nbsp;</td></tr>
+                                                        <!--tr><td>&nbsp;</td></tr-->
                                                         <%}%>
                                                     </h:form>
                                                 </table>
@@ -888,6 +935,76 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                    <%}%>
                    <%}%>
   <%}%> <!-- if session is active -->
+<script>
+ if (pages.length == 1)  {
+       document.getElementById('prevnotallowed').style.visibility = 'visible';
+       document.getElementById('prevnotallowed').style.width= '20px';
+       document.getElementById('prevnotallowed').style.height= '700px';
+
+       document.getElementById('nextnotallowed').style.visibility = 'visible';	   
+       document.getElementById('nextnotallowed').style.width = '20px';	   
+       document.getElementById('nextnotallowed').style.height = '700px';	   
+
+       document.getElementById('next').style.visibility = 'hidden';	   
+       document.getElementById('next').style.width = '0px';	   
+       document.getElementById('next').style.height = '0px';	   
+
+       document.getElementById('prev').style.visibility = 'hidden';
+       document.getElementById('prev').style.width= '0px';
+       document.getElementById('prev').style.height= '700px';
+
+ } else if (thisIdx >= pages.length -1)  {
+	   //alert('Overflow');
+       document.getElementById('prev').style.visibility = 'visible';
+       document.getElementById('prev').style.width = '20px';
+       document.getElementById('prev').style.height = '700px';
+
+       document.getElementById('prevnotallowed').style.visibility = 'hidden';
+       document.getElementById('prevnotallowed').style.width = '0px';
+       document.getElementById('prevnotallowed').style.height = '0px';
+
+       document.getElementById('next').style.visibility = 'hidden';	   
+       document.getElementById('next').style.width = '0px';	   
+       document.getElementById('next').style.height = '0px';	   
+
+       document.getElementById('nextnotallowed').style.visibility = 'visible';	   
+       document.getElementById('nextnotallowed').style.width = '20px';	   
+       document.getElementById('nextnotallowed').style.height = '700px';	   
+ } else if (thisIdx <= 0)   {
+	   //alert('Underflow');
+       document.getElementById('prev').style.visibility = 'hidden';
+       document.getElementById('prev').style.width= '0px';
+       document.getElementById('prev').style.height= '700px';
+
+       document.getElementById('prevnotallowed').style.visibility = 'visible';
+       document.getElementById('prevnotallowed').style.width= '20px';
+       document.getElementById('prevnotallowed').style.height= '700px';
+
+       document.getElementById('nextnotallowed').style.visibility = 'hidden';
+       document.getElementById('nextnotallowed').style.width = '0px';
+       document.getElementById('nextnotallowed').style.height = '0px';
+
+	   document.getElementById('next').style.visibility = 'visible';
+	   document.getElementById('next').style.width= '20px';
+	   document.getElementById('next').style.height= '700px';
+ } else {
+       document.getElementById('nextnotallowed').style.visibility = 'hidden';
+       document.getElementById('nextnotallowed').style.width = '0px';
+       document.getElementById('nextnotallowed').style.height = '0px';
+
+	   document.getElementById('next').style.visibility = 'visible';
+	   document.getElementById('next').style.width= '20px';
+	   document.getElementById('next').style.height= '700px';
+
+	   document.getElementById('prevnotallowed').style.visibility = 'hidden';
+       document.getElementById('prevnotallowed').style.width = '0px';
+       document.getElementById('prevnotallowed').style.height = '0px';
+
+       document.getElementById('prev').style.visibility = 'visible';
+       document.getElementById('prev').style.width = '20px';
+       document.getElementById('prev').style.height = '700px';
+ }
+</script>
 
 </html>
 
