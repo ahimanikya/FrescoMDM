@@ -184,23 +184,34 @@ public class EditMainEuidHandler {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, successMessage, successMessage));
 
         //setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME030: UserException occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME031: Exception occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME032: Exception occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+//        } catch (UserException ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+//            mLogger.error(mLocalizer.x("EME030: UserException occurred :{0}", ex.getMessage()), ex);
+//            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+//        } catch (ObjectException ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+//            mLogger.error(mLocalizer.x("EME031: Exception occurred :{0}", ex.getMessage()), ex);
+//            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+//        } catch (ProcessingException ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+//            mLogger.error(mLocalizer.x("EME032: Exception occurred :{0}", ex.getMessage()), ex);
+//            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+//        } catch (Exception ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+//            mLogger.error(mLocalizer.x("EME001: Exception occurred :{0}", ex.getMessage()), ex);
+//            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+//        }
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME001: Exception occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        }
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("EME130: ValidationException occurred :{0}", ex.getMessage()), ex);
+                    } else if (ex instanceof UserException) {
+                       mLogger.error(mLocalizer.x("EME131: UserException occurred :{0}", ex.getMessage()), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                       mLogger.error(mLocalizer.x("EME132: Exception occurred :{0}", ex.getMessage()), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+                } 
         return EditMainEuidHandler.EDIT_SUCCESS;
     }
 
@@ -303,11 +314,16 @@ public class EditMainEuidHandler {
             // Keep the EO in session
             session.setAttribute("editEuid", updatedEnterpriseObject.getEUID());
 
-
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("EME035: Exception has occurred :{0}", ex.getMessage()), ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("EME065: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("EME067: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("EME068: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             return EditMainEuidHandler.SERVICE_LAYER_ERROR;
         }
         return EditMainEuidHandler.EDIT_SUCCESS;
 
@@ -355,19 +371,18 @@ public class EditMainEuidHandler {
 
             setUpdatedEOFields(eoFinal); //set the updated values here
 
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("EME011: Unable to add  System Object :{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return SERVICE_LAYER_ERROR;
-        } catch (ObjectException ex) {
-            mLogger.error(mLocalizer.x("EME012: Unable to add  System Object :{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("EME013: Unable to add  System Object :{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return SERVICE_LAYER_ERROR;
-        }
+
+          } catch (Exception ex) {
+              if (ex instanceof ValidationException) {
+                  mLogger.error(mLocalizer.x("EME011: Unable to add  System Object :{0}", ex.getMessage()));
+              } else if (ex instanceof UserException) {
+                  mLogger.error(mLocalizer.x("EME012: Unable to add  System Object :{0}", ex.getMessage()));
+              } else if (!(ex instanceof ProcessingException)) {
+                  mLogger.error(mLocalizer.x("EME013: Unable to add  System Object :{0}", ex.getMessage()));
+              }
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+              return SERVICE_LAYER_ERROR;
+          }
         return EditMainEuidHandler.EDIT_SUCCESS;
     }
 
@@ -595,17 +610,17 @@ public class EditMainEuidHandler {
 
             masterControllerService.updateEnterpriseObject(updateEO);
 
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("EME018: Unable to save selected links :{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (UserException ex) {
-            //Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-            mLogger.error(mLocalizer.x("EME019: Unable to save selected links:{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("EME018: Unable to save selected links :{0}", ex.getMessage()));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("EME019: Unable to save selected links :{0}", ex.getMessage()));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("EME070: Unable to save selected links :{0}", ex.getMessage()));
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return EditMainEuidHandler.SERVICE_LAYER_ERROR;
         }
-
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
     }
 
@@ -640,13 +655,15 @@ public class EditMainEuidHandler {
 
             masterControllerService.updateEnterpriseObject(updateEO);
 
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("EME020: Unable to save selected unlinks:{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("EME021: Unable to save selected unlinks:{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("EME020: Unable to save selected unlinks:{0}", ex.getMessage()));
+            } else if (ex instanceof UserException) {
+                 mLogger.error(mLocalizer.x("EME021: Unable to save selected unlinks:{0}", ex.getMessage()));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("EME071: Unable to save selected unlinks:{0}", ex.getMessage()));
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return EditMainEuidHandler.SERVICE_LAYER_ERROR;
         }
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
@@ -684,15 +701,17 @@ public class EditMainEuidHandler {
 
             masterControllerService.updateEnterpriseObject(updateEO);
 
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("EME022: Unable to save selected unlocks:{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("EME023: Unable to save selected unlocks:{0}", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        }
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("EME022: Unable to save selected unlocks:{0}", ex.getMessage()));
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("EME023: Unable to save selected unlocks:{0}", ex.getMessage()));
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("EME073: Unable to save selected unlocks:{0}", ex.getMessage()));
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+          }
         return EditMainEuidHandler.EDIT_EO_SUCCESS;
     }
     
@@ -725,24 +744,18 @@ public class EditMainEuidHandler {
                 return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
             }
             masterControllerService.save(updateEnterpriseObject, sbrHashMapList, sbrMinorObjectsList, null);
-             
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME030: UserException occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME031: Exception occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME032: Exception occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.toString()));
-            mLogger.error(mLocalizer.x("EME001: Exception occurred :{0}", ex.getMessage()), ex);
-            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
-        }
+
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("EME030: UserException occurred :{0}", ex.getMessage()), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("EME031: Exception occurred :{0}", ex.getMessage()), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("EME032: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                     return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+                }
         return EditMainEuidHandler.EDIT_SUCCESS;
     }
     
@@ -945,10 +958,10 @@ public class EditMainEuidHandler {
 
             //set all system objects here
             setEoSystemObjectsOld(eoSOobjectsOld);
-
+            
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("EME024: Unable to set updated EO fields:{0}", ex.getMessage()));
+                 mLogger.error(mLocalizer.x("EME024: Unable to set updated EO fields:{0}", ex.getMessage()));
             } else if (ex instanceof UserException) {
                 mLogger.error(mLocalizer.x("EME025: Unable to set updated EO fields:{0}", ex.getMessage()));
             } else if (!(ex instanceof ProcessingException)) {
@@ -956,8 +969,7 @@ public class EditMainEuidHandler {
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
-
-
+  
     }
 
     public String getHiddenLinkFields() {
@@ -1270,14 +1282,16 @@ public class EditMainEuidHandler {
             } else if (systemObject == null) {
                 validated = true;
             }
-
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error(mLocalizer.x("EME037: Exception has occurred :{0}", ex.getMessage()), ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error(mLocalizer.x("EME038: Exception has occurred :{0}", ex.getMessage()), ex);
-        }
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("EME037: Exception has occurred :{0}", ex.getMessage()), ex);
+                    } else if (ex instanceof UserException) {
+                       mLogger.error(mLocalizer.x("EME038: Exception has occurred :{0}", ex.getMessage()), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                       mLogger.error(mLocalizer.x("EME039: Exception has occurred :{0}", ex.getMessage()), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                }
         return validated;
     }
 

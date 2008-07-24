@@ -358,7 +358,11 @@ public class ScreenConfiguration {
     }
 
     public boolean checkOneOfManyCondition() {
-        Object[] keySet = getUpdateableFeildsMap().keySet().toArray();
+        //Modified by Sridhar on 7/24/2008        
+        HashMap oneofCheckMap = new HashMap();
+        oneofCheckMap.putAll(getUpdateableFeildsMap());
+        oneofCheckMap.remove("lidmask"); //Do not consider lidmask for one-to-many check
+        Object[] keySet = oneofCheckMap.keySet().toArray();
         int count = 0;
         for (int i = 0; i < keySet.length; i++) {
             String key = (String) keySet[i];

@@ -31,11 +31,13 @@ import javax.faces.model.SelectItem;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.edm.util.QwsUtil;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.xml.bind.ValidationException;
 /**
  *
  * @author admin
@@ -102,6 +104,8 @@ public class SourceMergeHandler {
     /** Selected merge fields */
     private String selectedMergeFields = new String();
 
+    /** local Id Designation as per midm.xml file*/
+    String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
     
     /** Creates a new instance of SourceMergeHandler */
     public SourceMergeHandler() {
@@ -210,28 +214,32 @@ public class SourceMergeHandler {
 
             SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
             //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
-           mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            //mLogger.error("UserException ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()),ex);
+
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            //mLogger.error("Exception ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            if (ex instanceof ValidationException) {
+               mLogger.error(mLocalizer.x("SRC145: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC146: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC147: Failed to generate LID preview {0}",ex.getMessage()),ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
         
         try {
             //Insert audit Log for LID Merge
             masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge - Selection", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the LID merge confirm page");
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
-        }
 
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC148: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC149: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC150: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
         return ""; //reload the same page
 
     }
@@ -247,19 +255,17 @@ public class SourceMergeHandler {
      
             SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
             //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            //mLogger.error("ProcessingException ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC050: Failed to Merge LID {0}",ex.getMessage()),ex); 
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            //mLogger.error("UserException ex : " + ex.toString());
-             mLogger.error(mLocalizer.x("SRC051: Failed to Merge LID {0}",ex.getMessage()),ex);
+
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            //mLogger.error("Exception ex : " + ex.toString());
-             mLogger.error(mLocalizer.x("SRC052: Failed to Merge LID {0}",ex.getMessage()),ex);
-        }
+          if (ex instanceof ValidationException) {
+             mLogger.error(mLocalizer.x("SRC050: Failed to Merge LID {0}",ex.getMessage()),ex); 
+          } else if (ex instanceof UserException) {
+              mLogger.error(mLocalizer.x("SRC051: Failed to Merge LID {0}",ex.getMessage()),ex);
+          } else if (!(ex instanceof ProcessingException)) {
+              mLogger.error(mLocalizer.x("SRC052: Failed to Merge LID {0}",ex.getMessage()),ex);
+          }
+          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+      }
          return ""; //reload the same page
      }
   
@@ -297,37 +303,35 @@ public class SourceMergeHandler {
             // keep the src and destn lids and the source selected in the 
             getSoMergePreviewMap().put("SRC_DESTN_LIDS", lids);
             getSoMergePreviewMap().put("LID_SOURCE", this.lidsource);
-         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
-           mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to generate LID preview", ex.getMessage()));
-            return null; 
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            //mLogger.error("UserException ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to generate LID preview", ex.getMessage()));
-            return null; 
+
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            //mLogger.error("Exception ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to generate LID preview", ex.getMessage()));
-            return null; 
-        }
-        
+          if (ex instanceof ValidationException) {
+             mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()),ex);
+          } else if (ex instanceof UserException) {
+              mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()),ex);
+          } else if (!(ex instanceof ProcessingException)) {
+               mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()),ex);
+          }
+          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+          
+          return null; 
+      }
+
         try {
             //Insert audit Log for LID Merge
             masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge - Selection", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the LID merge confirm page");
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to insert audit Log for LID Merge", ex.getMessage()));
-            return null; 
-        } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to insert audit Log for LID Merge", ex.getMessage()));
-            return null; 
-        }
+
+        } catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                       mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SRC090: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return null; 
+         }
 
         return getSoMergePreviewMap(); 
 
@@ -347,6 +351,9 @@ public class SourceMergeHandler {
 
             boolean validateSystemCode = false;
             if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
+                
+                
+
                 this.setLid1(this.getLid1().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid1);
                 //Throw exception if SO is found null.
@@ -468,15 +475,18 @@ public class SourceMergeHandler {
                 if(newSoArrayList.size() ==1 ) { 
                     FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,enterLidsMessaage,enterLidsMessaage));
                 }
-            }
-            
-       } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()),ex);
-        }
+            }            
+
+        } catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("SRC153: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("SRC154: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SRC155: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                }
         return "LID Details";
     }
      public ArrayList sourcerecordMergeSearch () {
@@ -493,6 +503,18 @@ public class SourceMergeHandler {
 
             boolean validateSystemCode = false;
             if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
+                
+                //check the lid masking here.
+                String sysMasking = getMaskedValue(this.source);
+                boolean isMaskValid = true;
+
+                isMaskValid = sourceHandler.checkMasking(this.getLid1(), sysMasking);
+                if (!isMaskValid) {
+                    errorMessage = localIdDesignation +" 1 " + bundle.getString("lid_format_error_text") + sysMasking;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                }          
+                                
                 this.setLid1(this.getLid1().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid1);
                  //Throw exception if SO is found null.
@@ -521,6 +543,16 @@ public class SourceMergeHandler {
                 }
             }
             if (this.getLid2() != null && this.getLid2().trim().length()>0) {
+                //check the lid masking here.
+                String sysMasking = getMaskedValue(this.source);
+                boolean isMaskValid = true;
+
+                isMaskValid = sourceHandler.checkMasking(this.getLid2(), sysMasking);
+                if (!isMaskValid) {
+                    errorMessage = localIdDesignation +" 2 " + bundle.getString("lid_format_error_text") + sysMasking;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                }                 
                 this.setLid2(this.getLid2().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid2);
                 //Throw exception if SO is found null.
@@ -548,6 +580,16 @@ public class SourceMergeHandler {
                 }
             }
             if (this.getLid3() != null && this.getLid3().trim().length()>0) {
+                //check the lid masking here.
+                String sysMasking = getMaskedValue(this.source);
+                boolean isMaskValid = true;
+
+                isMaskValid = sourceHandler.checkMasking(this.getLid3(), sysMasking);
+                if (!isMaskValid) {
+                    errorMessage = localIdDesignation +" 3 " + bundle.getString("lid_format_error_text") + sysMasking;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                }                 
                  this.setLid3(this.getLid3().replaceAll("-", ""));
                  systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid3);
                 //Throw exception if SO is found null.
@@ -577,6 +619,16 @@ public class SourceMergeHandler {
                 }
             }
             if (this.getLid4() != null && this.getLid4().trim().length()>0) {
+                //check the lid masking here.
+                String sysMasking = getMaskedValue(this.source);
+                boolean isMaskValid = true;
+
+                isMaskValid = sourceHandler.checkMasking(this.getLid4(), sysMasking);
+                if (!isMaskValid) {
+                    errorMessage = localIdDesignation +" 4 " + bundle.getString("lid_format_error_text") + sysMasking;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                }                 
                 this.setLid4(this.getLid4().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid4);
                 //Throw exception if SO is found null.
@@ -623,17 +675,18 @@ public class SourceMergeHandler {
                     FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,enterLidsMessaage,enterLidsMessaage));
                     return null;
                 }
-            }
-            
-       } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
-             return null;
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()),ex);
-            return null;
-        }
+            }            
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
+                    } else if (ex instanceof UserException) {
+                       mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()),ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SRC055: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return null;
+          }
         return newSoArrayList;
     }
 
@@ -721,22 +774,20 @@ public class SourceMergeHandler {
             //request.setAttribute("lidsource", this.lidsource);
             //request.setAttribute("mergeComplete", "mergeComplete");			
 
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC063: Failed to get merge System object preview {0}",ex.getMessage()),ex);
-            return null;
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC064: Failed to get merge System object preview {0}",ex.getMessage()),ex);
-            return null;
+
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC063: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC064: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()),ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
-
         return finalMergredDestnEOArrayList;
-      }
+    }
 
   
     public ArrayList getMergeLidsList() {
@@ -773,24 +824,7 @@ public class SourceMergeHandler {
         
     }
 
-    private String getMaskedValue(String systemCodeSelected)  {
-        String lidMaskValue = new String();
-        String[][] lidMaskingArray = masterControllerService.getSystemCodes();
-
-        for (int i = 0; i < lidMaskingArray.length; i++) {
-            String[] strings = lidMaskingArray[i];
-            //Get the lid masking values here
-            for (int j = 0; j < strings.length; j++) {
-                String string = strings[j];
-                if(systemCodeSelected.equalsIgnoreCase(string)) {
-                   lidMaskValue = lidMaskingArray[i+1][j];
-                }
-                
-            }
-        }
-        
-        return lidMaskValue;
-    }
+ 
     public int getLidMaskLength() {
         return lidMaskLength;
     }
@@ -949,6 +983,25 @@ public HashMap getSortedMap(HashMap hmap)
 
     public void setSoMergePreviewMap(HashMap soMergePreviewMap) {
         this.soMergePreviewMap = soMergePreviewMap;
+    }
+    
+    private String getMaskedValue(String systemCodeSelected) {
+        String lidMaskValue = new String();
+        String[][] lidMaskingArray = masterControllerService.getSystemCodes();
+
+        for (int i = 0; i < lidMaskingArray.length; i++) {
+            String[] strings = lidMaskingArray[i];
+            //Get the lid masking values here
+            for (int j = 0; j < strings.length; j++) {
+                String string = strings[j];
+                if (systemCodeSelected.equalsIgnoreCase(string)) {
+                    lidMaskValue = lidMaskingArray[i + 1][j];
+                }
+
+            }
+        }
+
+        return lidMaskValue;
     }
        
 }
