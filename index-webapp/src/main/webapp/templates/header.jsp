@@ -30,44 +30,50 @@
 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP , FacesContext.getCurrentInstance().getViewRoot().getLocale());
 Operations operationsGlobal = null;
 HttpSession sessionFacesGlobal = null;
-
 sessionFacesGlobal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-
 operationsGlobal = new Operations();
 sessionFacesGlobal.setAttribute("Operations",operationsGlobal);
-
- 
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 
 // fix for 6679172,6684209
 if(session!=null && session.isNew()) {	
-	
 	//session.invalidate();
 %>
    <c:redirect url="login.jsf"/>
-<%}
-%>
+<%}%>
 
-<%
-if(session.getAttribute("ScreenObject") == null  ) {
-%>
+<%if(session.getAttribute("ScreenObject") == null  ) {%>
    <c:redirect url="login.jsf"/>
-<%}
-%>
+<%}%>
 
-<%
-if(session.getAttribute("user") == null  ) {
-%>
+<%if(session.getAttribute("user") == null  ) {%>
    <c:redirect url="login.jsf"/>
-<%}
-%>
+<%}%>
 
 <%
 ConfigManager.init();
 
 String uri = request.getRequestURI();
 String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
-
+//Added by Sridhar to handle the null pointer Exception bug#66
+NavigationHandler navigationHandler = new NavigationHandler();                                 
+if(requestPage.equalsIgnoreCase("recorddetails.jsp")) { 
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+} else if(requestPage.equalsIgnoreCase("assumedmatches.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("assumed-matches"));	
+}else if(requestPage.equalsIgnoreCase("transactions.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("transactions"));	
+}else if(requestPage.equalsIgnoreCase("duplicaterecords.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));	
+}else if(requestPage.equalsIgnoreCase("reports.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("reports"));	
+}else if(requestPage.equalsIgnoreCase("sourcerecords.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("source-record"));	
+}else if(requestPage.equalsIgnoreCase("auditlog.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("audit-log"));	
+}
+//Get the updated Session Object based on the user browser navigation
+screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 %>
 <!-- 
   Author Sridhar Narsingh
@@ -102,8 +108,7 @@ String  dateFormat = ConfigManager.getDateFormat();
                      <span class="greetingsmall"><nobr><%=session.getAttribute("user")%>&nbsp;</span>
                      <h:commandLink title="#{msgs.header_logout_prompt}" action="#{LoginHandler.signOutUser}" styleClass="greetingsmall">
                          <h:outputText  value="#{msgs.header_logout_prompt}" />
-                     </h:commandLink>
-                     
+                     </h:commandLink>                     
                      <%}%>             
                      <img src='images/sun-logo.png' alt="Sun Microsystems" title="Sun Microsystems"/>
                  </td>
@@ -113,8 +118,7 @@ String  dateFormat = ConfigManager.getDateFormat();
 		 <%
          ArrayList headerTabsLabelsList = ConfigManager.getInstance().getAllScreenObjects();                    
 		 Object[] headerTabsLabelsListObj = headerTabsLabelsList.toArray();
-		 ScreenObject allScreensArrayOrdered[] = new ScreenObject[headerTabsLabelsListObj.length];
-         
+		 ScreenObject allScreensArrayOrdered[] = new ScreenObject[headerTabsLabelsListObj.length];         
 		 String headerClassName = "";		
                    // modfied by Anil , fix for MIDM security Isssue
 		 for(int aIndex = 0 ;aIndex <headerTabsLabelsListObj.length; aIndex++) {
@@ -186,8 +190,7 @@ String  dateFormat = ConfigManager.getDateFormat();
                                   
                                   if (allScreensArrayOrdered[i]!=null){
                                     ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
-                                    ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());
-                                    
+                                    ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());                                    
                                   %>
 
                                   <h:form>
