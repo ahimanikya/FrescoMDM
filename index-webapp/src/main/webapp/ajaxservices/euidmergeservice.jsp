@@ -696,7 +696,7 @@ boolean isSessionActive = true;
 										    <%if(countEnt > 0) {%>
                                                 <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(potDupStatusText)%> </font></td></tr>
 											  <%} else {%>
-                                                <tr><td>&nbsp;</td></tr>
+                                                <tr><td> &nbsp;</td></tr>
 											  <%}%>
 										 <%}%>
                                      <%
@@ -826,7 +826,7 @@ boolean isSessionActive = true;
  																						   <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
                                                                                        </font>
 																					 <%}else {%>
-                                                                                       &nbsp; 
+                                                                                        &nbsp; 
                                                                                      <%}%>
 
 																					<%}%>
@@ -861,8 +861,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 																			<%}%>
 																	   </td>
 																	</tr>
-<h:form>
-
+ 
                                                                     <%
                                                                     for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
 																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
@@ -899,7 +898,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                   <%  } // TOTAL MINOR OBJECTS LOOP
 																  %>
 
-</h:form>
+
                                                                   <%
 								                                  for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
 								                                  %>
@@ -953,14 +952,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             <tr>
                                                                 <td class="<%=menuClass%>"><%=personfieldValuesMapEO.get("SYSTEM_CODE")%></td>
                                                             </tr> 
-                                                            <h:form>
-                                                                <tr>
+                                                                 <tr>
                                                                     <td valign="top" class="dupfirst">
-                                                                            <b><%=personfieldValuesMapEO.get("EUID")%></b>
+                                                                            <b><%=personfieldValuesMapEO.get("LID")%></b>
                                                                     </td>
                                                                 </tr>
-                                                            </h:form>
-                                                        </table>
+                                                         </table>
                                                     </div>
                                                 </div>
 											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
@@ -1128,14 +1125,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             <tr>
                                                                 <td class="<%=menuClass%>"><%=keyTitle%></td>
                                                             </tr> 
-                                                            <h:form>
-                                                                <tr>
+                                                                 <tr>
                                                                     <td valign="top" class="dupfirst">
                                                                             <%=objectHistMapValues.get("EUID")%>
                                                                     </td>
                                                                 </tr>
-                                                            </h:form>
-                                                        </table>
+                                                         </table>
                                                     </div>
                                                 </div>
 
@@ -1251,10 +1246,10 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
 													                 %>  
-                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr><td> &nbsp;</td></tr>
                                                                     <%                                                                                     }//field config loop
 																	 %>
-                                                                     <tr><td>&nbsp;</td></tr>
+                                                                     <tr><td> &nbsp;</td></tr>
 
 																	 <%
                                                                         }//Extra minor objects loop
@@ -1513,7 +1508,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 
                                                       <% if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus) ||
                                                               "R".equalsIgnoreCase(potDupStatus)) { %>
-					                                   <h:form id="unresolveForm">
+					                                   <form id="unresolveForm">
 													    <input type="hidden" title="unresolvePotentialDuplicateId" id="potentialDuplicateId" value="<%=potDupId%>" >
   							                           <%if(operations.isPotDup_Unresolve()) {%>
                    										<a class="diffviewbtn" title="<h:outputText value="#{msgs.potential_dup_button}"/>"
@@ -1524,7 +1519,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 							                               <%}%>
 
 
-					                                   </h:form>
+					                                   </form>
                                                       <%} else  {%> 
 												        <%
                                                          String diff_person_heading_text = bundle.getString("diff_person_heading_text");
@@ -1585,7 +1580,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                 <table>
                                                     <tr>
                                                         <td>
-                                                            <h:form  id="previewForm">
+                                                            <form  id="previewForm">
  							                                    <%if(operations.isEO_Merge()) {%>
 																 <a href="javascript:void(0)"  class="button" tilte="<h:outputText value="#{msgs.preview_column_text}"/>"
                                                                     onclick="javascript:getFormValues('previewForm');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&mergePreview=true&rand=<%=rand%>','mainDupSource','');"   >
@@ -1594,7 +1589,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 																 <%}%>
                                                                  <input type="hidden" id="previewForm:previewhiddenMergeEuids" title="PREVIEW_SRC_DESTN_EUIDS"/>
                                                                 <h:inputHidden id="destinationEO" value="#{PatientDetailsHandler.destnEuid}" />
-                                                             </h:form>
+                                                             </form>
                                                         </td>
                                                     </tr>
                                                 </table>

@@ -290,8 +290,10 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
 <%}else if( euidValue != null && euidValue.length() > 0) {
 	 //results = patientDetailsHandler.performSubmit();
+
 	 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidValue);
      String megredEuid  = compareDuplicateManager.getMergedEuid(euidValue);
+	 session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
 	%> <!-- if only EUID is entered by the user is entered by the user-->
 	<%if(megredEuid == null) {%>
 <table>
@@ -308,7 +310,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
            <table>
        	   <tr>
        	     <td>
-              <% String messages = "EUID " + euidValue + " Not Found. Please check the EUID value"; %>     	 
+              <% String messages = "EUID '" + euidValue + "' " + bundle.getString("euid_not_found_text"); %>     	 
  	            <script>
        		      var messages = document.getElementById("messages");
        	          messages.innerHTML= "<%=messages%>";
@@ -417,16 +419,18 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
  <%} else {%>
 
-<% if(request.getParameter("pageName") != null) { %> <!-- From the euid details page-->
-   <%if(request.getParameter("EUID") == null && request.getParameter("EUID").trim().length() == 0
-	&& lid  == null && systemCode == null ) 
+<% if(request.getParameter("pageName") != null) { 
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+	%> <!-- From the euid details page-->
+   <%if(request.getParameter("EUID") != null && request.getParameter("EUID").trim().length() == 0
+	  ) 
    
     {%>
         <div class="ajaxalert">
            <table>
        	   <tr>
        	     <td>
-              <% String messages = "Please enter the EUID value"; %>     	 
+              <% String messages = bundle.getString("enter_euid_text"); %>     	 
  	            <script>
        		      var messages = document.getElementById("messages");
                   messages.innerHTML= "<%=messages%>";
@@ -440,6 +444,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
 <%} else {%>
 <%
+
  results = patientDetailsHandler.performSubmit();
 
 ArrayList resultConfigArray = patientDetailsHandler.getResultsConfigArray();
