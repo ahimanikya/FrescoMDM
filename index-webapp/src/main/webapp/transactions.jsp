@@ -91,7 +91,7 @@ function setRand(thisrand)  {
 
                             <tr>
                                 <td>
-                                    <input id='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{TransactionHandler.lidMask}"/>' />
+                                    <input id='lidmask' title='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{TransactionHandler.lidMask}"/>' />
                             <h:dataTable headerClass="tablehead"  
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 

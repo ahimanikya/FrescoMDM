@@ -110,7 +110,7 @@ function setRand(thisrand)  {
 						   }
                            %>
                             
-                            <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
+                            <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='DDD-DDD-DDDD' />
                             <h:dataTable headerClass="tablehead"  
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 

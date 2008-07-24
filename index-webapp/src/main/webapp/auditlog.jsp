@@ -100,7 +100,7 @@ function setRand(thisrand)  {
 				           </tr>
 						   <tr>
                                 <td>
-                                    <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
+                                    <input id='lidmask' title='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
                             <h:dataTable headerClass="tablehead"  
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
@@ -278,6 +278,39 @@ function setRand(thisrand)  {
 		  </tr>
 		  </table>
    </body>     
+        <%
+           AuditLogHandler auditLogHandler = new AuditLogHandler();
+           String[][] lidMaskingArray = auditLogHandler.getAllSystemCodes();
+          
+        %>
+
+        <script>
+            var systemCodes = new Array();
+            var lidMasks = new Array();
+        </script>
+        
+        <%
+        for(int i=0;i<lidMaskingArray.length;i++) {
+            String[] innerArray = lidMaskingArray[i];
+            for(int j=0;j<innerArray.length;j++) {
+            
+            if(i==0) {
+         %>       
+         <script>
+           systemCodes['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>      
+         <%       
+            } else {
+         %>
+         <script>
+           lidMasks ['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>
+         <%       
+            }
+           }
+           }
+        %>
+    
     <script>
         function setLidMaskValue(field,formName) {
             var  selectedValue = field.options[field.selectedIndex].value;

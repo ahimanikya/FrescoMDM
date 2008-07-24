@@ -137,7 +137,7 @@ function align(thisevent,divID) {
               	 <h:form id="advancedformData" >
                 <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
 				value='<h:outputText value="#{SearchDuplicatesHandler.selectedSearchType}"/>' />
-                            <input id='lidmask' type='hidden' name='lidmask' value='' />
+                            <input id='lidmask' title="lidmask" type='hidden' name='lidmask' value='' />
                             <h:dataTable cellpadding="0" cellspacing="0"
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
