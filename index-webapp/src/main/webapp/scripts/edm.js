@@ -690,6 +690,7 @@ function ajaxMinorObjects(url,thisInnerHtmlDivName,isEdit)    {
 		innerHtmlDiv = "stealth";
 	}
     document.getElementById(innerHtmlDiv).style.visibility='visible';
+    document.getElementById(innerHtmlDiv).innerHTML =  "<table style='font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;'><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table>";
     xhr = getXmlHttpObject(minorObjectsStateChanged); 
     //Send the xmlHttp get to the specified url 
     xmlHttpGet(xhr, url); 
@@ -722,6 +723,7 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
     innerHtmlDiv = thisInnerHtmlDivName;
     thisEvent = e;
     document.getElementById(innerHtmlDiv).style.visibility='visible';
+    document.getElementById(innerHtmlDiv).innerHTML =  "<table style='font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;'><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table>";
     xhr = getXmlHttpObject(ajaxstateChangeHandler); 
     //Send the xmlHttp get to the specified url 
     xmlHttpGet(xhr, url); 
@@ -1586,7 +1588,6 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize,
         // var spacerDiv = document.getElementById('spacer'+euidsArray[e]+s+i);    
          var spacerDiv = document.getElementById('spacer'+s+i);    
   	     if(spacerDiv != null) {
-	       //alert(countEnt  + '<<< spacer??'+'??'+s+'??'+i + "~~~~~~~~~" +spacerDiv);
 		   if(countEnt  == i ) {
 	         if (spacerDiv.style.display=="block") {
                spacerDiv.style.visibility="hidden";
@@ -1677,7 +1678,6 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
         // var spacerDiv = document.getElementById('spacer'+euidsArray[e]+s+i);    
          var spacerDiv = document.getElementById('spacer'+s+i);    
   	     if(spacerDiv != null) {
-	       //alert(countEnt  + '<<< spacer??'+'??'+s+'??'+i + "~~~~~~~~~" +spacerDiv);
             spacerDiv.style.visibility="hidden";
             spacerDiv.style.display="none";
  	    } //if spacer div condition
