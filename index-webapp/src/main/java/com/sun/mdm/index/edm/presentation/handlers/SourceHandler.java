@@ -206,7 +206,9 @@ public class SourceHandler {
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");
         
-       HashMap newFieldValuesMap = new HashMap();
+        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
+ 
+        HashMap newFieldValuesMap = new HashMap();
 
         if (enteredFieldValues != null && enteredFieldValues.length() > 0) {
                 String[] fieldNameValues = enteredFieldValues.split(">>");
@@ -227,10 +229,10 @@ public class SourceHandler {
   
             setLID((String) newFieldValuesMap.get(MasterControllerService.LID));
             setSystemCode((String) newFieldValuesMap.get("SystemCode"));
-            String  validationMessage  = new String();  
-	    String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+                    String  validationMessage  = new String();  
+					String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
             if( this.getLID() == null) {
-		 validationMessage =  bundle.getString("LID_SysCode") + " " + localIdDesignation  ;
+				 validationMessage =  bundle.getString("LID_SysCode") + " " + localIdDesignation  ;
                   //validationMessage = "Please Enter LID Value";
                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
                   return this.SEARCH_SOURCE_SUCCESS;
@@ -240,23 +242,13 @@ public class SourceHandler {
                   return this.SEARCH_SOURCE_SUCCESS;
             } else if( (this.getLID() != null && this.getLID().trim().length() == 0 )
 		 && (this.getSystemCode() != null && this.getSystemCode().trim().length() > 0 )) {
-		 validationMessage =  bundle.getString("LID_SysCode") + " " + localIdDesignation ;
+				  validationMessage =  bundle.getString("LID_SysCode") + " " + localIdDesignation ;
                   //validationMessage = "Please Enter LID Value";
                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
                   return this.SEARCH_SOURCE_SUCCESS;                
             }
-            
-            //check the lid masking here.
-        String sysMasking = getMaskedValue(this.getSystemCode());
-        boolean isMaskValid = true;
 
-        isMaskValid = checkMasking(this.getLID(), sysMasking); 
-        if (!isMaskValid) {
-                  validationMessage = localIdDesignation+" "+ bundle.getString("lid_format_error_text") + sysMasking  ;
-                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
-                  return this.SEARCH_SOURCE_SUCCESS;                
-        }
-            
+
         //get array of lids 
         String lids[] = this.getStringEUIDs(this.getLID());
         //instantiate master controller service
@@ -264,7 +256,17 @@ public class SourceHandler {
         SystemObject[] systemObjectArrays = null;
         ArrayList systemObjectsMapList = new ArrayList();
         EPathArrayList ePathArrayList = new EPathArrayList();
-      
+//        ArrayList newArrayList  = this.getViewEditResultsConfigArray();
+//        try {
+//            for (int i = 0; i < newArrayList.size(); i++) {
+//                FieldConfig fieldConfig = (FieldConfig) newArrayList.get(i);
+//                ePathArrayList.add(fieldConfig.getFullFieldName());
+//            }
+//        } catch (EPathException ex) {
+//            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//          
 
           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
           String createDate = null;
@@ -1677,25 +1679,6 @@ public class SourceHandler {
             }
         }    
         return -1;
-    }
-    
-     private String getMaskedValue(String systemCodeSelected) {
-        String lidMaskValue = new String();
-        String[][] lidMaskingArray = masterControllerService.getSystemCodes();
-
-        for (int i = 0; i < lidMaskingArray.length; i++) {
-            String[] strings = lidMaskingArray[i];
-            //Get the lid masking values here
-            for (int j = 0; j < strings.length; j++) {
-                String string = strings[j];
-                if (systemCodeSelected.equalsIgnoreCase(string)) {
-                    lidMaskValue = lidMaskingArray[i + 1][j];
-                }
-
-            }
-        }
-
-        return lidMaskValue;
     }
     
 }
