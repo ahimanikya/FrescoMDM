@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<midm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/midm.xsd">
+    <node>
+        <name>USACitizen</name>
+        <field>
+            <name>FirstName</name>
+            <display-name>First Name</display-name>
+            <display-order>1</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MiddleName</name>
+            <display-name>Middle Name</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>LastName</name>
+            <display-name>Last Name</display-name>
+            <display-order>3</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Suffix</name>
+            <display-name>Suffix</display-name>
+            <display-order>4</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>SUFFIX</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Title</name>
+            <display-name>Title</display-name>
+            <display-order>5</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>TITLE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>SSN</name>
+            <display-name>SSN</display-name>
+            <display-order>6</display-order>
+            <max-length>11</max-length>
+            <gui-type>TextBox</gui-type>
+            <input-mask>DDD-DD-DDDD</input-mask>
+            <value-mask>DDDxDDxDDDD</value-mask>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>DOB</name>
+            <display-name>Date of Birth</display-name>
+            <display-order>7</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Gender</name>
+            <display-name>Gender</display-name>
+            <display-order>8</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>GENDER</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MStatus</name>
+            <display-name>Marital Status</display-name>
+            <display-order>9</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>MSTATUS</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Race</name>
+            <display-name>Race</display-name>
+            <display-order>10</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>RACE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PobCity</name>
+            <display-name>Place of Birth City</display-name>
+            <display-order>11</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PobStateCode</name>
+            <display-name>Place of Birth State</display-name>
+            <display-order>12</display-order>
+            <max-length>10</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>STATECD</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PobCountry</name>
+            <display-name>Place of Birth Country</display-name>
+            <display-order>13</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>DOD</name>
+            <display-name>Date of Death</display-name>
+            <display-order>14</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Height</name>
+            <display-name>Height</display-name>
+            <display-order>15</display-order>
+            <max-length>4</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>float</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>HairColor</name>
+            <display-name>Hair Color</display-name>
+            <display-order>16</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>HAIRCOLR</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EyeColor</name>
+            <display-name>Eye Color</display-name>
+            <display-order>17</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>EYECOLOR</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Occupation</name>
+            <display-name>Occupation</display-name>
+            <display-order>18</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Employer</name>
+            <display-name>Employer</display-name>
+            <display-order>19</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Email</name>
+            <display-name>Email</display-name>
+            <display-order>20</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>HasBirthCertificate</name>
+            <display-name>Has Birth Certificate</display-name>
+            <display-order>21</display-order>
+            <max-length>1</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>YESNO</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Alias</name>
+        <display-order>1</display-order>
+        <field>
+            <name>FirstName</name>
+            <display-name>First Name</display-name>
+            <display-order>1</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MiddleName</name>
+            <display-name>Middle Name</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>true</key-type>
+        </field>
+        <field>
+            <name>LastName</name>
+            <display-name>Last Name</display-name>
+            <display-order>3</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>true</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Address</name>
+        <display-order>2</display-order>
+        <field>
+            <name>AddressType</name>
+            <display-name>Address Type</display-name>
+            <display-order>1</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>ADDRTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine1</name>
+            <display-name>Address Line1</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine2</name>
+            <display-name>Address Line2</display-name>
+            <display-order>3</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>City</name>
+            <display-name>City</display-name>
+            <display-order>4</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>StateCode</name>
+            <display-name>State</display-name>
+            <display-order>5</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>STATECD</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PostalCode</name>
+            <display-name>Postal Code</display-name>
+            <display-order>6</display-order>
+            <max-length>5</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PostalCodeExt</name>
+            <display-name>Postal Code Extension</display-name>
+            <display-order>7</display-order>
+            <max-length>4</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>County</name>
+            <display-name>County</display-name>
+            <display-order>8</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Country</name>
+            <display-name>Country</display-name>
+            <display-order>9</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Phone</name>
+        <display-order>3</display-order>
+        <field>
+            <name>PhoneType</name>
+            <display-name>Phone Type</display-name>
+            <display-order>1</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>PHONTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Phone</name>
+            <display-name>Phone</display-name>
+            <display-order>2</display-order>
+            <max-length>14</max-length>
+            <gui-type>TextBox</gui-type>
+            <input-mask>(DDD) DDD-DDDD</input-mask>
+            <value-mask>xDDDxxDDDxDDDD</value-mask>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PhoneExt</name>
+            <display-name>Phone Extension</display-name>
+            <display-order>3</display-order>
+            <max-length>6</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Passport</name>
+        <display-order>4</display-order>
+        <field>
+            <name>BookNumber</name>
+            <display-name>Book Number</display-name>
+            <display-order>1</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>IssueDate</name>
+            <display-name>Issue Date</display-name>
+            <display-order>2</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>CardNumber</name>
+            <display-name>Card Number</display-name>
+            <display-order>3</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>CardIssueDate</name>
+            <display-name>Card Issue Date</display-name>
+            <display-order>4</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Id</name>
+        <display-order>5</display-order>
+        <field>
+            <name>IdType</name>
+            <display-name>Id Type</display-name>
+            <display-order>1</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>IDTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Identification</name>
+            <display-name>Identification</display-name>
+            <display-order>2</display-order>
+            <max-length>56</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>IdStateCode</name>
+            <display-name>State</display-name>
+            <display-order>3</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>STATECD</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Family</name>
+        <display-order>6</display-order>
+        <field>
+            <name>MemberType</name>
+            <display-name>Member Type</display-name>
+            <display-order>1</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>MEMRTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberFirstName</name>
+            <display-name>First Name</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberLastName</name>
+            <display-name>Last Name</display-name>
+            <display-order>3</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberMiddleName</name>
+            <display-name>Middle Name</display-name>
+            <display-order>4</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberDOB</name>
+            <display-name>Date of Birth</display-name>
+            <display-order>5</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberPobCity</name>
+            <display-name>Place of Birth City</display-name>
+            <display-order>6</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberPobStateCode</name>
+            <display-name>Place of Birth State</display-name>
+            <display-order>7</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>STATECD</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberPobCountry</name>
+            <display-name>Place of Birth Country</display-name>
+            <display-order>8</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberUSCitizen</name>
+            <display-name>US Citizen</display-name>
+            <display-order>9</display-order>
+            <max-length>1</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>YESNO</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberDOD</name>
+            <display-name>Date of Death</display-name>
+            <display-order>10</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberWasMarried</name>
+            <display-name>Was Married</display-name>
+            <display-order>11</display-order>
+            <max-length>1</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>YESNO</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberDivorced</name>
+            <display-name>Divorced</display-name>
+            <display-order>12</display-order>
+            <max-length>1</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>YESNO</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberWidowed</name>
+            <display-name>Widowed</display-name>
+            <display-order>13</display-order>
+            <max-length>1</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>YESNO</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberLastMarried</name>
+            <display-name>Last Married</display-name>
+            <display-order>14</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberPhone</name>
+            <display-name>Phone</display-name>
+            <display-order>15</display-order>
+            <max-length>14</max-length>
+            <gui-type>TextBox</gui-type>
+            <input-mask>(DDD) DDD-DDDD</input-mask>
+            <value-mask>xDDDxxDDDxDDDD</value-mask>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberPhoneExt</name>
+            <display-name>Phone Extension</display-name>
+            <display-order>16</display-order>
+            <max-length>6</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MemberEmail</name>
+            <display-name>Email</display-name>
+            <display-order>17</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Contact</name>
+        <display-order>7</display-order>
+        <field>
+            <name>ContactType</name>
+            <display-name>Contact Type</display-name>
+            <display-order>1</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>CONTTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactFirstName</name>
+            <display-name>First Name</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactLastName</name>
+            <display-name>Last Name</display-name>
+            <display-order>3</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactAddressLine1</name>
+            <display-name>Address Line1</display-name>
+            <display-order>4</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactAddressLine2</name>
+            <display-name>Address Line2</display-name>
+            <display-order>5</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactCity</name>
+            <display-name>City</display-name>
+            <display-order>6</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactStateCode</name>
+            <display-name>State</display-name>
+            <display-order>7</display-order>
+            <max-length>8</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>STATECD</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPostalCode</name>
+            <display-name>Postal Code</display-name>
+            <display-order>8</display-order>
+            <max-length>5</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPostalCodeExt</name>
+            <display-name>Postal Code Extension</display-name>
+            <display-order>9</display-order>
+            <max-length>4</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactCounty</name>
+            <display-name>County</display-name>
+            <display-order>10</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactCountry</name>
+            <display-name>Country</display-name>
+            <display-order>11</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPhone</name>
+            <display-name>Phone</display-name>
+            <display-order>12</display-order>
+            <max-length>14</max-length>
+            <gui-type>TextBox</gui-type>
+            <input-mask>(DDD) DDD-DDDD</input-mask>
+            <value-mask>xDDDxxDDDxDDDD</value-mask>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPhoneExt</name>
+            <display-name>Phone Extension</display-name>
+            <display-order>13</display-order>
+            <max-length>6</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactEmail</name>
+            <display-name>Email</display-name>
+            <display-order>14</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <relationships>
+        <name>USACitizen</name>
+        <children>Alias</children>
+        <children>Address</children>
+        <children>Phone</children>
+        <children>Passport</children>
+        <children>Id</children>
+        <children>Family</children>
+        <children>Contact</children>
+    </relationships>
+    <impl-details>        <master-controller-jndi-name>ejb/USACitizenMasterController</master-controller-jndi-name>        <validation-service-jndi-name>ejb/USACitizenCodeLookup</validation-service-jndi-name>        <usercode-jndi-name>ejb/USACitizenUserCodeLookup</usercode-jndi-name>        <reportgenerator-jndi-name>ejb/USACitizenReportGenerator</reportgenerator-jndi-name>        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>    </impl-details>    <gui-definition>        <page-definition>            <local-id></local-id>            <initial-screen-id>1</initial-screen-id>            <dashboard>                <root-object>USACitizen</root-object>                <tab-name>Dashboard</tab-name>                <screen-id>8</screen-id>                <display-order>0</display-order>                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Summary</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Reports</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Compare EUIDs</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Lookup EUID</tab-name>                        <screen-id>3</screen-id>                        <display-order>3</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                </subscreen-configurations>            </dashboard>            <record-details>                <root-object>USACitizen</root-object>                <tab-name>Record Details</tab-name>                <screen-id>1</screen-id>                <display-order>2</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>Advanced USACitizen Lookup (Phonetic)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <instruction></instruction>                        <field-group>                            <description>USACitizen</description>                            <field-ref>USACitizen.FirstName</field-ref>                            <field-ref>USACitizen.LastName</field-ref>                            <field-ref>USACitizen.SSN</field-ref>                        </field-group>                        <field-group>                            <description>USACitizen.Address</description>                            <field-ref>USACitizen.Address.AddressLine1</field-ref>                            <field-ref>USACitizen.Address.City</field-ref>                        </field-group>                        <search-option>                            <display-name>Phonetic Search</display-name>                            <query-builder>BLOCKER-SEARCH</query-builder>                            <weighted>true</weighted>                            <parameter>                                <name>UseWildcard</name>                                <value>false</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>Advanced USACitizen Lookup (Alpha)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>0</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <instruction>Enter as much information as possible to narrow the search</instruction>                        <field-group>                            <description>USACitizen</description>                            <field-ref>USACitizen.FirstName</field-ref>                            <field-ref>USACitizen.LastName</field-ref>                            <field-ref>USACitizen.SSN</field-ref>                        </field-group>                        <field-group>                            <description>USACitizen.Address</description>                            <field-ref>USACitizen.Address.AddressLine1</field-ref>                            <field-ref>USACitizen.Address.City</field-ref>                        </field-group>                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildcard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>Simple USACitizen Lookup</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>2</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <instruction></instruction>                        <field-group/>
+                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildcard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>1</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>USACitizen.FirstName</field-ref>                            <field-ref>USACitizen.MiddleName</field-ref>                            <field-ref>USACitizen.LastName</field-ref>                            <field-ref>USACitizen.SSN</field-ref>                            <field-ref>USACitizen.DOB</field-ref>                            <field-ref>USACitizen.Gender</field-ref>                            <field-ref>USACitizen.Address.AddressLine1</field-ref>                            <field-ref>USACitizen.Address.AddressLine2</field-ref>                            <field-ref>USACitizen.Address.City</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </record-details>            <transactions>                <root-object>USACitizen</root-object>                <tab-name>Transactions</tab-name>                <screen-id>2</screen-id>                <display-order>4</display-order>                <search-pages>                    <simple-search-page>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group/>
+                    </search-result-list-page>                </search-result-pages>            </transactions>            <duplicate-records>                <root-object>USACitizen</root-object>                <tab-name>Duplicate Records</tab-name>                <screen-id>3</screen-id>                <display-order>1</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>Basic Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>0</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <show-status>false</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>false</show-create-time>                        <instruction></instruction>                        <field-group/>
+                    </simple-search-page>                    <simple-search-page>                        <screen-title>Advanced Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <show-status>true</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>true</show-create-time>                        <instruction></instruction>                        <field-group/>
+                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>USACitizen.FirstName</field-ref>                            <field-ref>USACitizen.MiddleName</field-ref>                            <field-ref>USACitizen.LastName</field-ref>                            <field-ref>USACitizen.SSN</field-ref>                            <field-ref>USACitizen.DOB</field-ref>                            <field-ref>USACitizen.Gender</field-ref>                            <field-ref>USACitizen.Address.AddressLine1</field-ref>                            <field-ref>USACitizen.Address.AddressLine2</field-ref>                            <field-ref>USACitizen.Address.City</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </duplicate-records>            <assumed-matches>                <root-object>USACitizen</root-object>                <tab-name>Assumed Matches</tab-name>                <screen-id>4</screen-id>                <display-order>3</display-order>                <search-pages/>
+                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>USACitizen.FirstName</field-ref>                            <field-ref>USACitizen.MiddleName</field-ref>                            <field-ref>USACitizen.LastName</field-ref>                            <field-ref>USACitizen.SSN</field-ref>                            <field-ref>USACitizen.DOB</field-ref>                            <field-ref>USACitizen.Gender</field-ref>                            <field-ref>USACitizen.Address.AddressLine1</field-ref>                            <field-ref>USACitizen.Address.AddressLine2</field-ref>                            <field-ref>USACitizen.Address.City</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </assumed-matches>            <source-record>                <root-object>USACitizen</root-object>                <tab-name>Source Record</tab-name>                <screen-id>5</screen-id>                <display-order>6</display-order>                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>View/Edit</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                                <instruction></instruction>                                <field-group/>
+                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <show-euid>true</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                                <show-timestamp>true</show-timestamp>                                <field-group>                                    <description></description>                                    <field-ref>USACitizen.FirstName</field-ref>                                    <field-ref>USACitizen.MiddleName</field-ref>                                    <field-ref>USACitizen.LastName</field-ref>                                    <field-ref>USACitizen.SSN</field-ref>                                    <field-ref>USACitizen.DOB</field-ref>                                    <field-ref>USACitizen.Gender</field-ref>                                    <field-ref>USACitizen.Address.AddressLine1</field-ref>                                    <field-ref>USACitizen.Address.AddressLine2</field-ref>                                    <field-ref>USACitizen.Address.City</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Add</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                                <instruction></instruction>                                <field-group/>
+                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group/>
+                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Merge</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>LID Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                                <instruction></instruction>                                <field-group/>
+                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group/>
+                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </source-record>            <reports>                <root-object>USACitizen</root-object>                <tab-name>Reports</tab-name>                <screen-id>6</screen-id>                <display-order>5</display-order>                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Potential Duplicate Report</tab-name>                        <report-name>Potential Duplicate</report-name>                        <screen-id>0</screen-id>                        <display-order>5</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>USACitizen.FirstName</field-ref>                                    <field-ref>USACitizen.MiddleName</field-ref>                                    <field-ref>USACitizen.LastName</field-ref>                                    <field-ref>USACitizen.SSN</field-ref>                                    <field-ref>USACitizen.DOB</field-ref>                                    <field-ref>USACitizen.Gender</field-ref>                                    <field-ref>USACitizen.Address.AddressLine1</field-ref>                                    <field-ref>USACitizen.Address.AddressLine2</field-ref>                                    <field-ref>USACitizen.Address.City</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Deactivated Record Report</tab-name>                        <report-name>Deactivated</report-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Merged Transaction Report</tab-name>                        <report-name>Merged</report-name>                        <screen-id>2</screen-id>                        <display-order>0</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>USACitizen.FirstName</field-ref>                                    <field-ref>USACitizen.MiddleName</field-ref>                                    <field-ref>USACitizen.LastName</field-ref>                                    <field-ref>USACitizen.SSN</field-ref>                                    <field-ref>USACitizen.DOB</field-ref>                                    <field-ref>USACitizen.Gender</field-ref>                                    <field-ref>USACitizen.Address.AddressLine1</field-ref>                                    <field-ref>USACitizen.Address.AddressLine2</field-ref>                                    <field-ref>USACitizen.Address.City</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Unmerged Transaction Report</tab-name>                        <report-name>Unmerged</report-name>                        <screen-id>3</screen-id>                        <display-order>2</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Updated Record Report</tab-name>                        <report-name>Update</report-name>                        <screen-id>4</screen-id>                        <display-order>3</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>USACitizen.FirstName</field-ref>                                    <field-ref>USACitizen.MiddleName</field-ref>                                    <field-ref>USACitizen.LastName</field-ref>                                    <field-ref>USACitizen.SSN</field-ref>                                    <field-ref>USACitizen.DOB</field-ref>                                    <field-ref>USACitizen.Gender</field-ref>                                    <field-ref>USACitizen.Address.AddressLine1</field-ref>                                    <field-ref>USACitizen.Address.AddressLine2</field-ref>                                    <field-ref>USACitizen.Address.City</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Activity Report</tab-name>                        <report-name>Transaction Summary</report-name>                        <screen-id>5</screen-id>                        <display-order>4</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Weekly Activity</screen-title>                                <report-name>Weekly Transaction Summary Report</report-name>                                <search-result-id>0</search-result-id>                                <search-screen-order>1</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Monthly Activity</screen-title>                                <report-name>Monthly Transaction Summary Report</report-name>                                <search-result-id>0</search-result-id>                                <search-screen-order>2</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Yearly Activity</screen-title>                                <report-name>Yearly Transaction Summary Report</report-name>                                <search-result-id>0</search-result-id>                                <search-screen-order>3</search-screen-order>                                <field-group/>
+                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group/>
+                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>USACitizen</root-object>                        <tab-name>Assumed Matches Report</tab-name>                        <report-name>Assumed Match</report-name>                        <screen-id>6</screen-id>                        <display-order>6</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>USACitizen.FirstName</field-ref>                                    <field-ref>USACitizen.MiddleName</field-ref>                                    <field-ref>USACitizen.LastName</field-ref>                                    <field-ref>USACitizen.SSN</field-ref>                                    <field-ref>USACitizen.DOB</field-ref>                                    <field-ref>USACitizen.Gender</field-ref>                                    <field-ref>USACitizen.Address.AddressLine1</field-ref>                                    <field-ref>USACitizen.Address.AddressLine2</field-ref>                                    <field-ref>USACitizen.Address.City</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </reports>            <audit-log>                <allow-insert>false</allow-insert>                <root-object>USACitizen</root-object>                <tab-name>Audit Log</tab-name>                <screen-id>7</screen-id>                <display-order>7</display-order>                <search-pages>                    <simple-search-page>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group/>
+                    </search-result-list-page>                </search-result-pages>            </audit-log>        </page-definition>    </gui-definition></midm>

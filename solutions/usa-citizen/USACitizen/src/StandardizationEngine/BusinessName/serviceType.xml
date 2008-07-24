@@ -1,0 +1,3 @@
+<serviceType defaultInstance="Generic">
+	<description>Business Name Standardization</description>
+</serviceType>
