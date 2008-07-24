@@ -178,18 +178,18 @@ public class ScreenConfiguration {
     /** Creates a new instance of ScreenConfiguration */
     public ScreenConfiguration() {
         if (screenObject!=null){ //fix for 6679172,6684209
+        searchScreenConfig = (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() > 0) ? (SearchScreenConfig) screenObject.getSearchScreensConfig().toArray()[0] : null;
         
-        searchScreenConfig = (screenObject.getSearchScreensConfig().size() > 0) ? (SearchScreenConfig) screenObject.getSearchScreensConfig().toArray()[0] : null;
+        searchType = (searchScreenConfig != null) ?  searchScreenConfig.getScreenTitle() : new String("");
         
-        searchType = (searchScreenConfig != null) ? searchScreenConfig.getScreenTitle() : new String("");
-        
-        searchResultsConfig = (screenObject.getSearchResultsConfig().size() > 0) ? (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0] : null;
+        searchResultsConfig = (screenObject.getSearchResultsConfig() != null && screenObject.getSearchResultsConfig().size() > 0) ? (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0] : null;
         
         resultsType = (searchResultsConfig != null) ? searchResultsConfig.getMaxRecords() + " Records"+ " (" + searchResultsConfig.getSearchResultID() + ")" : new String("");
         
         selectedSearchType = (searchScreenConfig != null) ? searchScreenConfig.getScreenTitle() : new String("");
+        
         instructionLine  = (searchScreenConfig != null) ? searchScreenConfig.getInstruction() : new String("");
-       
+        
         lidMaskLength = (getAllSystemCodes()[1][0] != null)? getAllSystemCodes()[1][0].length():0;
         
     }
@@ -213,8 +213,8 @@ public class ScreenConfiguration {
             Iterator iteratorScreenConfig = screenConfigList.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-
-                if (screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                //07/24/08Sridhar:Added the != null condition as a precaution to fix the bug#66
+                if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
                     //set the instruction line here
@@ -231,8 +231,8 @@ public class ScreenConfiguration {
                             FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
                             screenConfigArray.add(object);
                         }
-                    }
-                } else if (screenObject.getSearchScreensConfig().size() == 1){
+                    }//07/24/08Sridhar:Added the != null condition as a precaution to fix the bug#66                
+                } else if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() == 1){
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
                     //set the instruction line here
@@ -380,7 +380,6 @@ public class ScreenConfiguration {
         } else {
             return false;
         }
-
     }
     
 /**
@@ -655,7 +654,8 @@ public class ScreenConfiguration {
      */
     public int getPossilbeSearchTypesCount() {
         int searchCount= 0;
-        if (screenObject!=null){
+        //07/24/08 Sridhar:Added the != null condition as a precaution to fix the bug#66                
+        if (screenObject!=null && screenObject.getSearchScreensConfig() != null ){
                  return screenObject.getSearchScreensConfig().size();
         }else
         {
@@ -867,7 +867,7 @@ public class ScreenConfiguration {
      */
     public ArrayList getSearchScreenConfigArray() {
         ArrayList configArray = null;
-        if (screenObject!=null){
+        if (screenObject.getSearchScreensConfig() != null && screenObject!=null){
              return screenObject.getSearchScreensConfig();
         }
         else
@@ -929,7 +929,7 @@ public class ScreenConfiguration {
             Iterator iteratorScreenConfig = screenConfigList.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-                if (screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
                     //set the instruction line here
@@ -944,7 +944,7 @@ public class ScreenConfiguration {
                         //Build array of field configs from 
                         searchScreenFieldGroupArray.add(basicSearchFieldGroup);
                     }
-                } else if (screenObject.getSearchScreensConfig().size() == 1){
+                } else if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() == 1){
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
 
@@ -1059,6 +1059,7 @@ public class ScreenConfiguration {
      */   
     public HashMap checkInputMasking() {
         HashMap valiadtions = new HashMap();
+        
         ArrayList fgGroups = getSearchScreenFieldGroupArray();
         boolean maskValidation  = true;
         for (int fg = 0; fg < fgGroups.size(); fg++) {
