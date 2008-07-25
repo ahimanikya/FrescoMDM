@@ -19,6 +19,7 @@
       <module>usa-patient</module>
       <module>aus-patient</module>
       <module>uk-patient</module>
+      <module>usa-citizen</module>
       <module>packages</module>   
     </modules>     
     
