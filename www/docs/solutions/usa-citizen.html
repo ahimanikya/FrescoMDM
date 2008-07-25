@@ -1,0 +1,521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>USA Citizen</title>
+
+<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css">
+</head>
+<body>
+<table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="text-align: center; vertical-align: middle;"><big><big><big>United
+States of America Patient Solution</big></big></big></td>
+</tr>
+</tbody>
+</table>
+<br>
+<span style="font-weight: bold;"></span>
+<table style="text-align: left; width: 247px; height: 72px;" border="0" cellpadding="0" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold;">Maintained
+by:</span></td>
+<td align="undefined" valign="undefined">David D. Lee<span style="font-size: 6pt; font-family: Arial;"><br>
+<a href="mailto:David.D.Lee@Sun.COM">David.D.Lee@Sun.COM</a></span><br>
+<a href="mailto:Andrea.Kendal@sun.com">
+</a></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
+<td align="undefined" valign="undefined">June 27th, 2008</td>
+</tr>
+</tbody>
+</table>
+<span style="font-weight: bold;"></span><br>
+<hr style="width: 100%; height: 2px;">
+<h1>Description</h1>
+<p><i><span style="font-style: italic;"></span></i><i><span style="font-style: italic;"></span></i>The
+purpose of this solution is to demonstate how a United States of
+America Citizen model might be implemented in the Master Data
+Management (MDM) product suite. Specificaly the solution focuses on the&nbsp; Master Index portion of
+MDM.<br>
+</p>
+<h1>Data Model</h1>
+<p>Following diagram displays the USA Citizen model. USA Citizen object contains attributes which are not repeated and have zero or one occurrence. Attributes in <strong>bold</strong>are required. Sub-objects such as Alias and Address are linked to the USA Citizen object. Sub-objects have zero to many occurrences. For each sub-objects to exists, required attributes in <strong>bold</strong> for that sub-object must be present.</p>
+<p><img src="images/USACitizenModel.png" width="445" height="1171"><br>
+  <br>
+  <br>
+</p>
+<h1>Master Index Properties</h1>
+<p>The following tables highlight fields that are used in the
+USACitizen for matching and blocking opertions. Additionally,
+the
+tables capture the required fields, fields that are standardized and
+fields that are normalized. Finally, it shows the complete
+database definitions that are used with the solution.<i><br>
+</i></p>
+<h2>Matching</h2>
+<span style="font-style: italic;">Note:</span> _Std
+indicates that a field is standardized.
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td style="width: 60%;">Field
+Name</td>
+<td align="undefined" valign="undefined">Match
+Type</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.FirstName_Std</td>
+<td align="undefined" valign="undefined">FirstName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.LastName_Std</td>
+<td align="undefined" valign="undefined">LastName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.SSN</td>
+<td align="undefined" valign="undefined">SSN</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.DOB</td>
+<td align="undefined" valign="undefined">Date</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.Gender</td>
+<td align="undefined" valign="undefined">Gender</td>
+</tr>
+</tbody>
+</table>
+<h2>Query - BLOCKER-SEARCH Rules</h2>
+A summary of the fields used for the blocker-search rules.<br>
+<br>
+<span style="font-style: italic;">Notes:</span> _Phon indicates a phoneticized field.
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Block
+Name</td>
+<td align="undefined" valign="undefined">Queries</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">FirstLastDOB</td>
+<td align="undefined" valign="undefined">(USACitizen.FirstName_Phon
+== USACitizen.FirstName_Phon)
+and <br>
+(USACitizen.LastName_Phon
+== USACitizen.LastName_Phon) and<br>
+(USACitizen.DOB == USACitizen.DOB )</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">SSN<span><br>
+</span></td>
+<td align="undefined" valign="undefined">USACitizen.SSN==USACitizen.SSN<br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">FirstDOBGender</td>
+<td align="undefined" valign="undefined">(USACitizen.FirstName_Phon
+== USACitizen.FirstName_Phon) and (USACitizen.DOB == USACitizen.DOB)
+and (USACitizen.Gender == USACitizen.Gender)</td>
+</tr>
+</tbody>
+</table>
+<h2>Standardization</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Standardization
+Type</td>
+<td align="undefined" valign="undefined"><span style="font-weight: bold;">Source
+Fields</span><br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">Address<span style="font-style: italic;"><br>
+</span></td>
+<td align="undefined" valign="undefined">USACitizen.Address[*].AddressLine1<br>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2>Normalization</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Type</td>
+<td align="undefined" valign="undefined">Unnormalized
+Source</td>
+<td align="undefined" valign="undefined">Normalized
+Destination</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">USACitizen.FirstName</td>
+<td align="undefined" valign="undefined">USACitizen.FirstName_Std</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">USACitizen.LastName</td>
+<td align="undefined" valign="undefined">USACitizen.LastName_Std</td>
+</tr>
+</tbody>
+</table>
+<h2>Phonticized Fields</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Unphoneticized
+Source</td>
+<td align="undefined" valign="undefined">Phoneticized
+Target<br>
+</td>
+<td align="undefined" valign="undefined">Encoder<br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.FirstName_Std</td>
+<td align="undefined" valign="undefined">USACitizen.FirstName_Phon</td>
+<td align="undefined" valign="undefined">Soundex</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.LastName_Std</td>
+<td align="undefined" valign="undefined">USACitizen.LastName_Phon</td>
+<td align="undefined" valign="undefined">NYSIIS</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">USACitizen.Address[*].AddressLine1_StName</td>
+<td align="undefined" valign="undefined">USACitizen.Address[*].AddressLine1_StPhon</td>
+<td align="undefined" valign="undefined">NYSIIS</td>
+</tr>
+</tbody>
+</table>
+<h1>Enumerations</h1>
+<h2>Code Modules</h2>
+<p><em><strong>SUFFIX</strong></em><br>
+</p>
+<ul>
+  <li>2ND</li>
+  <li> 3RD<br>
+  </li>
+  <li>DDS<br>
+  </li>
+  <li>ESQ<br>
+  </li>
+  <li>II<br>
+  </li>
+  <li>III<br>
+  </li>
+  <li>IV<br>
+  </li>
+  <li>JR<br>
+  </li>
+  <li>MD<br>
+  </li>
+  <li>RN<br>
+  </li>
+  <li>SR<br>
+  </li>
+  <li>PHD<br>
+  </li>
+  <li>MA</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>TITLE</strong></em><br>
+</p>
+<ul>
+  <li>MEDICAL DOCTOR<br>
+  </li>
+  <li>DOCTOR<br>
+  </li>
+  <li>REGISTERED NURSE<br>
+  </li>
+  <li>CERTIFIED NURSES AID<br>
+  </li>
+  <li>LICENSED VOCATIONAL NURSE<br>
+  </li>
+  <li>REVERAND<br>
+  </li>
+  <li>MR<br>
+  </li>
+  <li>MRS<br>
+  </li>
+  <li>MISS</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>GENDER</strong></em><br>
+</p>
+<ul>
+  <li>MALE<br>
+  </li>
+  <li>FEMALE<br>
+  </li>
+  <li>OTHER<br>
+  </li>
+  <li>UNKNOWN</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>MSTATUS</strong></em><br>
+</p>
+<ul>
+  <li>DIVORCED<br>
+  </li>
+  <li>LEGALLY SEPARATED<br>
+  </li>
+  <li>MARRIED<br>
+  </li>
+  <li>PARTNER<br>
+  </li>
+  <li>SINGLE<br>
+  </li>
+  <li>UNKNOWN<br>
+  </li>
+  <li>WIDOWED</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>RACE</strong></em><br>
+</p>
+<ul>
+  <li>AMERICAN INDIAN<br>
+  </li>
+  <li>ASIAN<br>
+  </li>
+  <li>BLACK<br>
+  </li>
+  <li>HISPANIC<br>
+  </li>
+  <li>OTHER<br>
+  </li>
+  <li>REFUSED<br>
+  </li>
+  <li>UNKNOWN<br>
+  </li>
+  <li>WHITE</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>HAIRCOLR</strong></em><br>
+</p>
+<ul>
+  <li>BLACK<br>
+  </li>
+  <li>BLONDE<br>
+  </li>
+  <li>BROWN<br>
+  </li>
+  <li>RED<br>
+  </li>
+  <li>GRAY</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>EYECOLOR</strong></em><br>
+</p>
+<ul>
+  <li>AMBER<br>
+  </li>
+  <li>BLACK<br>
+  </li>
+  <li>BLUE<br>
+  </li>
+  <li>BROWN<br>
+  </li>
+  <li>GRAY<br>
+  </li>
+  <li>GREEN<br>
+  </li>
+  <li>HAZEL</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>ADDRTYPE</strong></em><br>
+</p>
+<ul>
+  <li>OFFICE<br>
+  </li>
+  <li>HOME<br>
+  </li>
+  <li>VACATION<br>
+  </li>
+  <li>HOME 2<br>
+  </li>
+  <li>MAILING<br>
+  </li>
+  <li>WORK<br>
+  </li>
+  <li>WORK 2<br>
+  </li>
+  <li>TEMPORARY</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>PHONTYPE</strong></em><br>
+</p>
+<ul>
+  <li>HOME<br>
+  </li>
+  <li>OFFICE<br>
+  </li>
+  <li>FAX<br>
+  </li>
+  <li>BUSINESS<br>
+  </li>
+  <li>BUSINESS DIRECT<br>
+  </li>
+  <li>BUSINESS ALTERNATE<br>
+  </li>
+  <li>PAGER<br>
+  </li>
+  <li>CELLULAR</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>MEMRTYPE</strong></em><br>
+</p>
+<ul>
+  <li>FATHER<br>
+  </li>
+  <li>MOTHER<br>
+  </li>
+  <li>SPOUSE<br>
+  </li>
+  <li>SON<br>
+  </li>
+  <li>DAUGHTER<br>
+  </li>
+  <li>BROTHER<br>
+  </li>
+  <li>SISTER</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>IDTYPE</strong></em><br>
+</p>
+<ul>
+  <li>DRIVER LICENSE<br>
+  </li>
+  <li>STATE ID<br>
+  </li>
+  <li>FEDERAL ID</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>YESNO</strong></em><br>
+</p>
+<ul>
+  <li>YES<br>
+  </li>
+  <li>NO</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>STATECD</strong></em><br>
+</p>
+<ul>
+  <li>ALABAMA<br>
+  </li>
+  <li>ALASKA<br>
+  </li>
+  <li>ARIZONA<br>
+  </li>
+  <li>ARKANSAS<br>
+  </li>
+  <li>CALIFORNIA<br>
+  </li>
+  <li>COLORADO<br>
+  </li>
+  <li>CONNECTICUT<br>
+  </li>
+  <li>DELAWARE<br>
+  </li>
+  <li>DISTRICT OF COLUMBIA<br>
+  </li>
+  <li>FLORIDA<br>
+  </li>
+  <li>GEORGIA<br>
+  </li>
+  <li>HAWAII<br>
+  </li>
+  <li>IDAHO<br>
+  </li>
+  <li>ILLINOIS<br>
+  </li>
+  <li>INDIANA<br>
+  </li>
+  <li>IOWA<br>
+  </li>
+  <li>KANSAS<br>
+  </li>
+  <li>KENTUCKY<br>
+  </li>
+  <li>LOUISIANA<br>
+  </li>
+  <li>MAINE<br>
+  </li>
+  <li>MARYLAND<br>
+  </li>
+  <li>MASSACHUSETTS<br>
+  </li>
+  <li>MICHIGAN<br>
+  </li>
+  <li>MINNESOTA<br>
+  </li>
+  <li>MISSISSIPPI<br>
+  </li>
+  <li>MISSOURI<br>
+  </li>
+  <li>MONTANA<br>
+  </li>
+  <li>NEBRASKA<br>
+  </li>
+  <li>NEVADA<br>
+  </li>
+  <li>NEW HAMPSHIRE<br>
+  </li>
+  <li>NEW JERSEY<br>
+  </li>
+  <li>NEW MEXICO<br>
+  </li>
+  <li>NEW YORK<br>
+  </li>
+  <li>NORTH CAROLINA<br>
+  </li>
+  <li>NORTH DAKOTA<br>
+  </li>
+  <li>OHIA<br>
+  </li>
+  <li>OKLAHOMA<br>
+  </li>
+  <li>OREGON<br>
+  </li>
+  <li>PENNSYLVANIA<br>
+  </li>
+  <li>PUERTO RICO<br>
+  </li>
+  <li>RHODE ISLAND<br>
+  </li>
+  <li>SOUTH CAROLINA<br>
+  </li>
+  <li>SOUTH DAKOTA<br>
+  </li>
+  <li>TENNESSEE<br>
+  </li>
+  <li>TEXAS<br>
+  </li>
+  <li>UTAH<br>
+  </li>
+  <li>VERMONT<br>
+  </li>
+  <li>VIRGIN ISLANDS<br>
+  </li>
+  <li>VIRGINIA<br>
+  </li>
+  <li>WASHINGTON<br>
+  </li>
+  <li>WISCONSIN<br>
+  </li>
+  <li>WEST VIRGINIA<br>
+  </li>
+  <li>WYOMING</li>
+</ul>
+<p>&nbsp;</p>
+<p><em><strong>CONTTYPE</strong></em><br>
+</p>
+<ul>
+  <li>EMERGENCY</li>
+  <li>    GUARDIAN</li>
+</ul>
+</body></html>
