@@ -155,8 +155,11 @@ public class SourceAddHandler {
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
             //set Update user name her
             masterControllerService.setUpdateUserName((String) session.getAttribute("user"));
-            //create systemobject start
+            //create systemobject start           
+           
             SystemObject createSystemObject = masterControllerService.createSystemObject(getSystemCode(), getLID(), newSOHashMap);
+            
+             
             
             //add all minor objects here
             for(int i=0;i<getNewSOMinorObjectsHashMapArrayList().size();i++) {
@@ -170,6 +173,7 @@ public class SourceAddHandler {
                         
              //finished creating SO and EO
             
+           
             SystemObject newSystemObject = masterControllerService.getSystemObject(getSystemCode(), getLID());
             eoFinal  = masterControllerService.getEnterpriseObjectForSO(newSystemObject);
 
@@ -177,16 +181,39 @@ public class SourceAddHandler {
             //adding summary message after creating systemobjec
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
         }           
-        catch (Exception ex) {
+      catch (Exception ex) {
+          
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("SRC001: Service Layer Validation Exception has occurred"), ex);
             } else if (ex instanceof UserException) {
+
+
                 mLogger.error(mLocalizer.x("SRC002: Service Layer User Exception occurred"), ex);
             } else if (!(ex instanceof ProcessingException)) {
-                 mLogger.error(mLocalizer.x("SRC003: Error  occurred"), ex);           
+
+
+                mLogger.error(mLocalizer.x("SRC003: Error  occurred"), ex);
+            } else if (ex instanceof ProcessingException) {
+
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRC103: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return SourceAddHandler.SERVICE_LAYER_ERROR;
+                } else {
+                    mLogger.error(mLocalizer.x("SRC104: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                    return SourceAddHandler.SERVICE_LAYER_ERROR;
+                }
             }
+
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-              return SourceAddHandler.SERVICE_LAYER_ERROR;
+            return SourceAddHandler.SERVICE_LAYER_ERROR;
         }
 
             
@@ -228,20 +255,25 @@ public class SourceAddHandler {
         String lid = getLID().replaceAll("-", "");
         setLID(lid);
         try {
+                    
             SystemObject systemObject = masterControllerService.getSystemObject(getSystemCode(), getLID());
             if (systemObject != null) {
                 errorMessage = bundle.getString("SystemCode_LID_Validation"); //"Validation Failed. SystemCode/LID already found.";
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+
                 mLogger.info(mLocalizer.x("SRC077: {0}", errorMessage));
                 session.setAttribute("validation", "Validation Failed");
             } else if (systemObject == null) {
+
                 errorMessage = bundle.getString("Validation_Success"); //"Validation Success.";
                 //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,errorMessage,errorMessage));
 
                 mLogger.info(mLocalizer.x("SRC078: {0}", errorMessage));
                 session.setAttribute("validation", "Validation Success");
             }
+
+           
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("SRC007: ValidationException Exception occurred :{0}", ex.getMessage()), ex);
@@ -273,13 +305,31 @@ public class SourceAddHandler {
                 setSystemCode(systemCode);
                 validated = "true";
             }
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
+             
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("SRC071: ValidationException has occurred:{0}", ex.getMessage()), ex);
             } else if (ex instanceof UserException) {
                 mLogger.error(mLocalizer.x("SRC072: UserException  has occurred:{0}", ex.getMessage()), ex);
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error(mLocalizer.x("SRC073: UserException  has occurred:{0}", ex.getMessage()), ex);
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                    }
+
+                    mLogger.error(mLocalizer.x("SRC113: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return SourceAddHandler.SERVICE_LAYER_ERROR;
+                } else {
+                    mLogger.error(mLocalizer.x("SRC114: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+
+                    return SourceAddHandler.SERVICE_LAYER_ERROR;
+                }
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
