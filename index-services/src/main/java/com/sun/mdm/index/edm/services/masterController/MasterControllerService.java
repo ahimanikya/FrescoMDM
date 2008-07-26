@@ -953,6 +953,7 @@ public class MasterControllerService {
     }
 
     public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject eo, EPathArrayList ePathArrayList) throws ObjectException, EPathException, Exception {
+        
         return getSystemObjectAsHashMap(eo.getSBR(), ePathArrayList);
     }
 
@@ -1170,32 +1171,54 @@ public class MasterControllerService {
         TransactionSummary transactionSummary = QwsController.getMasterController().lookupTransaction(transactionNumber);
         // return transactionSummary.getTransactionObject().getFunction().equalsIgnoreCase("euidMerge");         
         boolean result = false;
-        TransactionObject transactionObject = transactionSummary.getTransactionObject();
-        if (transactionObject == null) {
-            return false;
-        }
-        String euid = transactionObject.getEUID();
         boolean merged = false;
-        TransactionObject transactionObjectNew = this.findMergeType(euid);
-        if (transactionObjectNew == null) {
-            merged = false;
+        boolean lastImage= false;     
+         
+        if (transactionSummary.getTransactionObject().getFunction().equalsIgnoreCase("EUIDMerge") || transactionSummary.getTransactionObject().getFunction().equalsIgnoreCase("LIDMerge")) {
+
+            merged = true;
         } else {
-            String function = transactionObjectNew.getFunction();
-            if (function == null) {
-                merged = false;
+            merged = false;
+
+        }
+        lastImage= false;        
+        MergeHistoryNode mn = QwsController.getMasterController().getMergeHistory(transactionSummary.getTransactionObject()
+                                                             .getEUID());        
+      
+        if (mn != null && mn.getTransactionObject() != null &&
+                (equals(mn.getTransactionObject().getTransactionNumber(), transactionSummary.getTransactionObject().getTransactionNumber()))) {
+
+            if (transactionSummary.getTransactionObject().getFunction().equalsIgnoreCase("EUIDMerge")) {
+                lastImage = true;
             } else {
-                if ("euidMerge".equalsIgnoreCase(function)) {
-                    merged = true;
+                MergeHistoryNode mn2 = QwsController.getMasterController().getMergeHistory(transactionSummary.getTransactionObject().getEUID2());
+
+                if (mn2 != null && mn2.getTransactionObject() != null &&
+                        (equals(mn2.getTransactionObject().getTransactionNumber(), transactionSummary.getTransactionObject().getTransactionNumber()))) {
+                    lastImage = true;
                 }
             }
         }
-        if (merged == true && transactionObject.getTransactionNumber().equals(transactionObjectNew.getTransactionNumber())) {
-            result = true;
-        } else {
-            result = false;
-        }
+        result = (merged && lastImage );
         return result;
     }
+    
+     private boolean equals(String s1, String s2) {
+        if (s1 == null && s2 == null) {
+            return true;
+        } else if (s1 == null && s2 != null) {
+            return false;
+        } else if (s1 != null && s2 == null) {
+            return false;
+        } else {
+            if (s1.equals(s2)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     
     public String getPotentialDuplicateID(String euid, String dupID) throws ProcessingException, UserException, PageException, RemoteException {
         PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
