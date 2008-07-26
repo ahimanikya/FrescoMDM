@@ -685,7 +685,7 @@ public class TransactionHandler extends ScreenConfiguration {
                 for (int i = 0; i < tsArray.length; i++) {
                     TransactionSummary ts = tsArray[i];
                     String functionName = ts.getTransactionObject().getFunction();
-                    if ("euidMerge".equalsIgnoreCase(functionName)) {
+                    if ("euidMerge".equalsIgnoreCase(functionName) ||  "euidMerge".equalsIgnoreCase(functionName)) {
                         if (viewMergehist != null) {
                             if (viewMergehist.getBeforeEO1() != null) {
                                 //eoArrayList.add(viewMergehist.getBeforeEO1());
