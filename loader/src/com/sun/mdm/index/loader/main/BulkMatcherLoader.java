@@ -197,10 +197,10 @@ public class BulkMatcherLoader {
 			logger.info(localizer.x("LDR018: Potential Duplicates Maching Completed"));			
 			FileManager.deleteSBRBlockDir(false);
 			FileManager.deleteSBRInputDir(false);
-			if (isMasterLoader_) { 	 
+			//if (isMasterLoader_) { 	 
 				PotDupGenerator potGen = new PotDupGenerator();
 				potGen.generatePotDups();
-			}
+			//}
 			logger.info(localizer.x("LDR019: Potential Duplicates Completed"));
 			FileManager.deleteSBRMatchDir(false);
 
