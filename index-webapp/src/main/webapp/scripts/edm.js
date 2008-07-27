@@ -2107,3 +2107,15 @@ function makeDraggable(divId) {
             dd = new YAHOO.util.DD(divId);
          }); 
 }
+
+
+//enable all the fields in the form 
+function enableallfields(thisForm)  { 
+ thisFrm = document.forms[thisForm];
+ for(i=0; i< thisFrm.elements.length; i++)   {        
+     thisFrm.elements[i].readOnly = false;
+     thisFrm.elements[i].disabled = false;
+
+  }
+ return;
+}

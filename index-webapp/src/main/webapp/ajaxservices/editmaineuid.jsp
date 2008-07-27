@@ -225,11 +225,9 @@ if(session!=null){
 													  <tr>
 													   <td valign="center">
                                                      <div id='linkSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'  style="valign:top;">
-                                                     <h:outputLink        rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]
-													 || EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"   
-                                                                    value="javascript:void(0)" ><img alt="link" height="14px" width="14px" border="0" src="images/spacer.gif"/><img alt="link" height="1px" width="4px" border="0" src="images/spacer.gif"/></h:outputLink>
-													 <h:outputLink  rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"   
-                                                                    value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><img alt="link" styleClass="imgClass" border="0" src="images/link.PNG"/><img alt="link" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
+
+                                                    <h:graphicImage url="./images/spacer.gif" style="border:1px;"height="14px" width="18px" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] || EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"  />  
+													 <h:outputLink  rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP) && !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><h:graphicImage  alt="#{msgs.link_text}"  url="./images/link.PNG" style="border:0px;" /><img alt="link" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
                                                      </div> 
                                                      <div id='linkSourceDivData:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'             style='visibility:hidden;display:none;'>
                                                            <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><img alt="link" height="14px" width="14px" border="0" src="images/link.PNG"/></h:outputLink>
@@ -240,24 +238,26 @@ if(session!=null){
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
 													 <h:panelGrid rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
 													 <h:panelGroup><a href ="javascript:void(0)" 
-                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><img alt="unlock" border="0" height="14px" width="14px" src="images/unlock.PNG"/></a></h:panelGroup></h:panelGrid>
+                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}" /></a></h:panelGroup></h:panelGrid>
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
-                                                         <h:outputLink 
-                                                           rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
+ 													  <h:outputLink 
+                                                           rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP) || !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
 														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
 														   value="javascript:void(0)"
-                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><img   alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
+                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" >
+                                                            <h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}" /></h:outputLink>
+														  
                                                       </div> 
                                                      <div id='lockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
-                                                         <h:outputLink  value="javascript:void(0)" ><img alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
+                                                         <h:outputLink  value="javascript:void(0)" ><img alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"  /></h:outputLink>
                                                      </div> 
 													  </td>
 													  </tr>
 													</table>
                                                  </h:column>                                                        
                                                  <!--Rendering HTML Select Menu List-->
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                         <h:selectOneMenu  title="#{fieldConfigPer.fullFieldName}"
 														style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
 														value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}" 
@@ -267,9 +267,28 @@ if(session!=null){
                                                             <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
                                                     </h:column>
+
+													<h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+ 														<h:selectOneMenu 
+																readonly="true" 
+																disabled="true" 
+																rendered="#{!Operations.field_VIP }">
+                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                         </h:selectOneMenu>
+
+                                                         <h:selectOneMenu  title="#{fieldConfigPer.fullFieldName}"
+														style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
+														value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}" 
+                                                                         disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" 
+                                                                         readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+																		 rendered="#{Operations.field_VIP}">
+                                                            <f:selectItem itemLabel="" itemValue="" />
+                                                            <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
+                                                        </h:selectOneMenu>
+                                                    </h:column>
                                                     
                                                     <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <h:inputText label="#{fieldConfigPer.displayName}"  
 														             title="#{fieldConfigPer.fullFieldName}"
@@ -285,10 +304,43 @@ if(session!=null){
                                                                  />
                                                          </div>            
                                                     </h:column>
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                        <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
+                                                        <h:inputText label="#{fieldConfigPer.displayName}"  
+														             title="#{fieldConfigPer.fullFieldName}"
+                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                     required="#{fieldConfigPer.required}"
+                                                                      maxlength="#{fieldConfigPer.maxLength}"
+																	  disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+                                                                     readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
+                                                                     onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
+																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
+                                                                     onkeyup="javascript:qws_field_on_key_up(this)"   
+																	 rendered="#{Operations.field_VIP}"
+                                                                 />
+																 
+																 <h:inputText label="#{fieldConfigPer.displayName}"  
+														             maxlength="#{fieldConfigPer.maxLength}"
+																	 disabled="true"
+                                                                     readonly="true" 
+ 																	 rendered="#{!Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] eq null}"
+                                                                 />
+																 <h:inputText label="#{fieldConfigPer.displayName}"  
+														               value="#{msgs.SENSITIVE_FIELD_MASKING}"  
+                                                                     required="#{fieldConfigPer.required}"
+                                                                      maxlength="#{fieldConfigPer.maxLength}"
+																	  disabled="true"
+                                                                     readonly="true" 
+ 																	 rendered="#{!Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] ne null}"
+                                                                 />
+                                                         </div>            
+                                                    </h:column>
                                                     
                                                     <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <nobr>
+														<h:panelGrid>
+														   <h:panelGroup rendered="#{!fieldConfigPer.sensitive}">
                                                             <input type="text" 
 															       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                    id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
@@ -311,11 +363,47 @@ if(session!=null){
 														  '<%=cal_year_text%>')" 
 														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
 												           <font class="dateFormat">(<%=dateFormat%>)</font>
-                                                        </nobr>
+														   </h:panelGroup>
+
+														   <h:panelGroup rendered="#{fieldConfigPer.sensitive && !Operations.field_VIP}">
+                                                            <input type="text" 
+															       readonly="true"
+															       disabled="true"
+   													               value = "<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}"/>"  
+                                                                   />
+                                                                   <img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/>												           <font class="dateFormat">(<%=dateFormat%>)</font>
+														       </h:panelGroup>
+														   <h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}">
+                                                            <input type="text" 
+															       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
+                                                                   id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+													               value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                   />
+                                                           <a href="javascript:void(0);" 
+  												          title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+                                                          onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{fieldConfigPer.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												           <font class="dateFormat">(<%=dateFormat%>)</font>
+														       </h:panelGroup>
+														   </h:panelGrid>
+
+														</nobr>
                                                         </div>            
                                                     </h:column>
 
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
+                                                     <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <nobr>
                                                             <input type="text" 
@@ -335,15 +423,30 @@ if(session!=null){
 
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
                                                 <!--Rendering Updateable HTML Text Area-->
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
-                                                    <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                    <h:inputTextarea title="#{fieldConfigPer.fullFieldName}"  
                                                                      id="fieldConfigIdTextArea"   
 																	 disabled="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
                                                                      readonly="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                     required="#{fieldConfigPer.required}"
+																	 rendered="#{Operations.field_VIP}"/>
+
+                                                    <h:inputTextarea disabled="true"
+                                                                     readonly="true" 
+                                                                     value="#{msgs.SENSITIVE_FIELD_MASKING}" 
+                                                                     required="#{fieldConfigPer.required}"
+																	 rendered="#{!Operations.Operations.field_VIP}"/>
+                                                </h:column>
+
+                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
+                                                    <h:inputTextarea title="#{fieldConfigPer.fullFieldName}"  
+ 																	 disabled="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+                                                                     readonly="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
+                                                                     value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"/>
                                                 </h:column>
-                                                
+												
                                             </h:dataTable>    
 
 
@@ -672,14 +775,12 @@ if(session!=null){
                                                                                 </h:outputLink>
                                                                             </div> 
                                                                             <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
-                                                                                           value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
-                                                                                <h:graphicImage  alt="unlink" styleClass="imgClass"
-                                                                                                 url="./images/unlink.PNG"/>               
-                                                                            </h:outputLink>
+                                                                                           value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')"><h:graphicImage  alt="unlink" styleClass="imgClass"
+                                                                                                 url="./images/unlink.PNG" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}"/></h:outputLink>
                                                                         </h:column>                                                        
                                                                         
                                                                         <!--Rendering HTML Select Menu List-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6 &&!fieldConfigPer.sensitive}" >
                                                                             <h:selectOneMenu 													
 																			title="#{fieldConfigPer.fullFieldName}"
 																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
@@ -690,8 +791,32 @@ if(session!=null){
                                                                                 <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                                             </h:selectOneMenu>
                                                                         </h:column>
+
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                                            <h:selectOneMenu 													
+																			title="#{fieldConfigPer.fullFieldName}"
+																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
+																			disabled="#{!fieldConfigPer.updateable}"
+																			readonly="#{ !fieldConfigPer.updateable}"
+																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"
+																			rendered="#{Operations.field_VIP}"
+																			>
+                                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                                                <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
+                                                                            </h:selectOneMenu>       
+																			
+																			<h:selectOneMenu 													
+ 																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
+																			disabled="true"
+																			readonly="true"
+ 																			rendered="#{!Operations.field_VIP}"
+																			>
+                                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                                             </h:selectOneMenu>
+  
+                                                                        </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
 																	                     onkeyup="javascript:qws_field_on_key_up(this)"
@@ -704,9 +829,54 @@ if(session!=null){
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                 onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
                                                                                          />
+                                                                        </h:column>                                                                   
+                                                                        
+																		<h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                                            <h:inputText label="#{fieldConfigPer.displayName}"  
+                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
+																	                     onkeyup="javascript:qws_field_on_key_up(this)"
+																			             title="#{fieldConfigPer.fullFieldName}"
+                                                                                          maxlength="#{fieldConfigPer.maxLength}"
+																			             disabled="#{!fieldConfigPer.updateable}"
+																			             readonly="#{!fieldConfigPer.updateable}"
+																						 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
+                                                                               value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                                onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
+																				rendered="#{Operations.field_VIP}"/>
+
+                                                                            <h:inputText  disabled="true"
+																			             readonly="true"
+                                                                                         value="#{msgs.SENSITIVE_FIELD_MASKING}" 
+                                                                                          required="#{fieldConfigPer.required}"
+																				           rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
+
+                                                                            <h:inputText disabled="true"
+																			             readonly="true"
+                                                                                         required="#{fieldConfigPer.required}"
+																				         rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
                                                                         </h:column>
+ 
+
+
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                        <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6}">
+                                                                        <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 && !fieldConfigPer.sensitive}">
+																		    <nobr>
+                                                                            <input type="text" 
+																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+																				   readonly="true"
+																				   disabled="true"
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"   onfocus="javascript:clear_masking_on_focus()" 
+                                                                                   />
+                                                                                      
+                                                                                <h:graphicImage alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>          
+    
+																		   </nobr>
+                                                                       </h:column>
+
+                                                                        <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 && fieldConfigPer.sensitive}">
 																		    <nobr>
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
@@ -724,8 +894,9 @@ if(session!=null){
                                                                        </h:column>
 
 																		<h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6}">
-																		    <nobr>
-
+																		 <h:panelGrid>
+																		   <h:panelGroup rendered="#{!fieldConfigPer.sensitive}">
+																		    <nobr> 
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
@@ -735,30 +906,95 @@ if(session!=null){
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                                    />
                                                                                        
-   													<a href="javascript:void(0);" 
-												     title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
-                                                     onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>',
-														  '<%=dateFormat%>',
-														  '<%=global_daysOfWeek%>',
-														  '<%=global_months%>',
-														  '<%=cal_prev_text%>',
-														  '<%=cal_next_text%>',
-														  '<%=cal_today_text%>',
-														  '<%=cal_month_text%>',
-														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
-												           <font class="dateFormat">(<%=dateFormat%>)</font>
+																					<a href="javascript:void(0);" 
+																					 title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+																					 onclick="g_Calendar.show(event,
+																						  '<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>',
+																						  '<%=dateFormat%>',
+																						  '<%=global_daysOfWeek%>',
+																						  '<%=global_months%>',
+																						  '<%=cal_prev_text%>',
+																						  '<%=cal_next_text%>',
+																						  '<%=cal_today_text%>',
+																						  '<%=cal_month_text%>',
+																						  '<%=cal_year_text%>')" 
+																						  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+																						   <font class="dateFormat">(<%=dateFormat%>)</font>
 
 																		   </nobr>
+																		   </h:panelGroup>
+																		   <h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}">
+																		    <nobr> 
+                                                                            <input type="text" 
+																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                                   />
+                                                                                       
+																					<a href="javascript:void(0);" 
+																					 title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+																					 onclick="g_Calendar.show(event,
+																						  '<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>',
+																						  '<%=dateFormat%>',
+																						  '<%=global_daysOfWeek%>',
+																						  '<%=global_months%>',
+																						  '<%=cal_prev_text%>',
+																						  '<%=cal_next_text%>',
+																						  '<%=cal_today_text%>',
+																						  '<%=cal_month_text%>',
+																						  '<%=cal_year_text%>')" 
+																						  ><img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+																						   <font class="dateFormat">(<%=dateFormat%>)</font>
+
+																		   </nobr>
+
+																		   </h:panelGroup>
+
+																		   <h:panelGroup rendered="#{fieldConfigPer.sensitive && !Operations.field_VIP}">
+																		    <nobr> 
+                                                                            <input type="text" 
+																			       readonly="true"
+																				   disabled="true"
+																			       value = "<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>"  
+                                                                                   />   
+																					<img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/><font class="dateFormat">(<%=dateFormat%>)</font>
+
+																		   </nobr>
+
+																		   </h:panelGroup>
+
+																	     </h:panelGrid>
+	
                                                                        </h:column>
+
+
+
                                                                         <!--Rendering Updateable HTML Text Area-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
 																			                 title="#{fieldConfigPer.fullFieldName}"
-                                                                                             id="fieldConfigIdTextArea"   
-                                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                                              value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                              required="#{fieldConfigPer.required}"/>
+                                                                        </h:column>
+
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+																			                 title="#{fieldConfigPer.fullFieldName}"
+                                                                                              value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                                             required="#{fieldConfigPer.required}"
+																							 rendered="#{Operations.field_VIP}"/>
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+                                                                                             value="#{msgs.SENSITIVE_FIELD_MASKING}" 
+                                                                                             readonly="true"
+																							 disabled="true"
+																							 rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+                                                                                             readonly="true"
+																							 disabled="true"
+																							 rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
                                                                         </h:column>
                                                             </h:dataTable>
 															<%} else {%>
@@ -783,7 +1019,7 @@ if(session!=null){
                              
                                                                         
                                                                         <!--Rendering HTML Select Menu List-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                                             <h:selectOneMenu 													
 																			title="#{fieldConfigPer.fullFieldName}"
 																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
@@ -794,14 +1030,22 @@ if(session!=null){
                                                                                 <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                                             </h:selectOneMenu>
                                                                         </h:column>
-                                                                        <!--Rendering Updateable HTML Text boxes-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                                            <h:selectOneMenu 													
+																			title="#{fieldConfigPer.fullFieldName}"
+																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
+																			disabled="true"
+																			readonly="true"	>
+                                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                                             </h:selectOneMenu>
+                                                                        </h:column>																		<!--Rendering Updateable HTML Text boxes-->
+																		 <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
 																	                     onkeyup="javascript:qws_field_on_key_up(this)"
 																			             title="#{fieldConfigPer.fullFieldName}"
-                                                                                         id="fieldConfigIdTextbox"   
-                                                                                         maxlength="#{fieldConfigPer.maxLength}"
+                                                                                          maxlength="#{fieldConfigPer.maxLength}"
 																			             disabled="true"
 																			             readonly="true"
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
@@ -809,8 +1053,37 @@ if(session!=null){
                                                                                 onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
                                                                                          />
                                                                         </h:column>
+
+																		 <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                                            <h:inputText label="#{fieldConfigPer.displayName}"  
+                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
+																	                     onkeyup="javascript:qws_field_on_key_up(this)"
+																			             title="#{fieldConfigPer.fullFieldName}"
+                                                                                         maxlength="#{fieldConfigPer.maxLength}"
+																			             disabled="true"
+																			             readonly="true"
+                                                                               value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                               onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
+                                                                                onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
+																				rendered="#{Operations.field_VIP}"
+                                                                                         />
+                                                                            <h:inputText label="#{fieldConfigPer.displayName}"  
+                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
+																	                     onkeyup="javascript:qws_field_on_key_up(this)"
+																			             title="#{fieldConfigPer.fullFieldName}"
+                                                                                          maxlength="#{fieldConfigPer.maxLength}"
+																			             disabled="true"
+																			             readonly="true"
+                                                                               value="#{msgs.SENSITIVE_FIELD_MASKING}" 
+                                                                               onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
+                                                                                onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
+																				rendered="#{!Operations.field_VIP}"
+                                                                                         />
+                                                                        </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 }">
+																		  <h:panelGrid>
+																		    <h:panelGroup rendered="#{!fieldConfigPer.sensitive}">
 																		    <nobr>
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
@@ -825,15 +1098,64 @@ if(session!=null){
                                                                                        
                                                                                 <h:graphicImage   alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
 																		   </nobr>
-                                                                       </h:column>
+																		   </h:panelGroup>
+
+																			<h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}">
+                                                                            <input type="text" 
+																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+																				   readonly="true"
+																				   disabled="true"
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onfocus="javascript:clear_masking_on_focus()"  onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" rendered="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>"  
+                                                                                   />
+                                                                                       
+                                                                                <h:graphicImage   alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>    
+																			</h:panelGroup>
+
+																			<h:panelGroup rendered="#{fieldConfigPer.sensitive && !Operations.field_VIP}">
+                                                                            <input type="text" 
+																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
+																				   readonly="true"
+																				   disabled="true"
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onfocus="javascript:clear_masking_on_focus()"  onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>"  
+                                                                                   />
+                                                                                       
+                                                                                <h:graphicImage   alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>    
+																			</h:panelGroup>
+
+																			</h:panelGrid>
+
+                                                                       </h:column>              
+																	    
                                                                         <!--Rendering Updateable HTML Text Area-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
 																			                 title="#{fieldConfigPer.fullFieldName}"
-                                                                                             id="fieldConfigIdTextArea"   
-																							 readonly="true"
+                                                                                             readonly="true"
                                                                                              value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                              required="#{fieldConfigPer.required}"/>
+                                                                        </h:column>                                                                   <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && fieldConfigPer.sensitive}" >
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+																			                 title="#{fieldConfigPer.fullFieldName}"
+                                                                                              readonly="true"
+                                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+ 																							 rendered="#{Operations.field_VIP}"/>
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+																			                 title="#{fieldConfigPer.fullFieldName}"
+                                                                                             readonly="true"
+                                                                                             value="#{msgs.SENSITIVE_FIELD_MASKING}" 
+                                                                                             rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+																			                 title="#{fieldConfigPer.fullFieldName}"
+                                                                                             readonly="true"
+                                                                                              rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
                                                                         </h:column>
                                                             </h:dataTable>
 
@@ -853,7 +1175,7 @@ if(session!=null){
 						   </a>
 						 <%}else{%>
 						    <input title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" type="button" value="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" readonly="true" disabled="true"/>
-						    <input type="button" value="Clear" readonly="true" disabled="true"/>
+						    <input type="button" value="<h:outputText value="#{msgs.clear_button_label}"/>" readonly="true" disabled="true"/>
 						 <%}%>
 						</nobr>
 					  </td>
@@ -1067,13 +1389,13 @@ if(session!=null){
 					  <nobr>
 					  <%if("active".equalsIgnoreCase(soStatus)) {%> 
 					      <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)">
-                               <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
+                               <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>  <h:outputText value='#{childNodesName}'/> </span>
                             </a>
 						    <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                           </a>
                         <%}else{%>
-                            <input title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  type="button" value="Save <h:outputText value="#{childNodesName}"/>" readonly="true" disabled="true"/>
+                            <input title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  type="button" value="<h:outputText value="#{msgs.source_rec_save_but}"/>  <h:outputText value="#{childNodesName}"/>" readonly="true" disabled="true"/>
                             <input type="button" value="<h:outputText value="#{msgs.clear_button_label}"/>" readonly="true" disabled="true"/>
                       	<%}%>
 						</nobr>

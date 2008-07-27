@@ -22,6 +22,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
+
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -193,6 +195,8 @@ boolean isSaveSbr= (null == saveSbrString?false:true);
 
 
 boolean checkOverWrites  = false ;
+
+Operations operations = new Operations();
  //Save Edited Values
 //Variables for adding new source fields
 String saveEditedValues= request.getParameter("editThisID");
@@ -592,24 +596,50 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							 <% if(fcArray[k].isRequired()) { %>
 								 <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
- 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										      <%}else{%>
-                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										     <%}%>
-										   <%} else {%> <!-- In other cases-->
-										   <%
-											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
-                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
-                                              if (value != null) {
-                                                 //Mask the value as per the masking 
-                                                 value = fcArray[k].mask(value.toString());
-                                               }
-                                            } 
-											%> 
-										     <%=value%>
+                                       	   <%if( fcArray[k].isSensitive()){%>
+												<%if( !operations.isField_VIP() ) {%> 
+													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
+												<%} else {%> 
+												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+														  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+															 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														  <%}else{%>
+															<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														 <%}%>
+													   <%} else {%> <!-- In other cases-->
+													   <%
+														String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+														if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+														  if (value != null) {
+															 //Mask the value as per the masking 
+															 value = fcArray[k].mask(value.toString());
+														   }
+														} 
+														%> 
+														 <%=value%>
+													   <%}%>
+												<%}%>
+										   <%} else {%>
+											   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+												  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+													 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												  <%}else{%>
+													<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												 <%}%>
+											   <%} else {%> <!-- In other cases-->
+											   <%
+												String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+												if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+												  if (value != null) {
+													 //Mask the value as per the masking 
+													 value = fcArray[k].mask(value.toString());
+												   }
+												} 
+												%> 
+												 <%=value%>
+											   <%}%>
 										   <%}%>
+
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
 									  <%}%>
@@ -724,25 +754,51 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
                              <td>
 
-								  <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
- 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										      <%}else{%>
-                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										     <%}%>
-										   <%} else {%> <!-- In other cases-->
-										   <%
-											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
-                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
-                                              if (value != null) {
-                                                 //Mask the value as per the masking 
-                                                 value = fcArray[k].mask(value.toString());
-                                               }
-                                            } 
-											%> 
-										     <%=value%>
+								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+                                       	   <%if( fcArray[k].isSensitive()){%>
+												<%if( !operations.isField_VIP() ) {%> 
+													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
+												<%} else {%> 
+												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+														  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+															 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														  <%}else{%>
+															<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														 <%}%>
+													   <%} else {%> <!-- In other cases-->
+													   <%
+														String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+														if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+														  if (value != null) {
+															 //Mask the value as per the masking 
+															 value = fcArray[k].mask(value.toString());
+														   }
+														} 
+														%> 
+														 <%=value%>
+													   <%}%>
+												<%}%>
+										   <%} else {%>
+											   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+												  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+													 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												  <%}else{%>
+													<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												 <%}%>
+											   <%} else {%> <!-- In other cases-->
+											   <%
+												String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+												if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+												  if (value != null) {
+													 //Mask the value as per the masking 
+													 value = fcArray[k].mask(value.toString());
+												   }
+												} 
+												%> 
+												 <%=value%>
+											   <%}%>
 										   <%}%>
+
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
 									  <%}%>
@@ -986,24 +1042,50 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 								  <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
- 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										      <%}else{%>
-                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										     <%}%>
-										   <%} else {%> <!-- In other cases-->
-										   <%
-											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
-                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
-                                              if (value != null) {
-                                                 //Mask the value as per the masking 
-                                                 value = fcArray[k].mask(value.toString());
-                                               }
-                                            } 
-											%> 
-										     <%=value%>
+                                       	   <%if( fcArray[k].isSensitive()){%>
+												<%if( !operations.isField_VIP() ) {%> 
+													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
+												<%} else {%> 
+												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+														  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+															 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														  <%}else{%>
+															<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														 <%}%>
+													   <%} else {%> <!-- In other cases-->
+													   <%
+														String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+														if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+														  if (value != null) {
+															 //Mask the value as per the masking 
+															 value = fcArray[k].mask(value.toString());
+														   }
+														} 
+														%> 
+														 <%=value%>
+													   <%}%>
+												<%}%>
+										   <%} else {%>
+											   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+												  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+													 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												  <%}else{%>
+													<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												 <%}%>
+											   <%} else {%> <!-- In other cases-->
+											   <%
+												String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+												if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+												  if (value != null) {
+													 //Mask the value as per the masking 
+													 value = fcArray[k].mask(value.toString());
+												   }
+												} 
+												%> 
+												 <%=value%>
+											   <%}%>
 										   <%}%>
+
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
 									  <%}%>
@@ -1032,7 +1114,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     setEOEditIndex('-1')
    </script>
    <script>
-	   document.getElementById('<%=request.getParameter("MOT")%>EOInnerForm').reset();		  
+	   document.getElementById('<%=request.getParameter("MOT")%>EOInnerForm').reset();	
+       enableallfields('<%=request.getParameter("MOT")%>EOInnerForm');
    </script>
 <%}%>
 
@@ -1176,24 +1259,50 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
  							 <% if(fcArray[k].isRequired()) { %>
 								   <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
- 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										      <%}else{%>
-                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
-										     <%}%>
-										   <%} else {%> <!-- In other cases-->
-										   <%
-											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
-                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
-                                              if (value != null) {
-                                                 //Mask the value as per the masking 
-                                                 value = fcArray[k].mask(value.toString());
-                                               }
-                                            } 
-											%> 
-										     <%=value%>
+                                       	   <%if( fcArray[k].isSensitive()){%>
+												<%if( !operations.isField_VIP() ) {%> 
+													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
+												<%} else {%> 
+												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+														  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+															 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														  <%}else{%>
+															<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+														 <%}%>
+													   <%} else {%> <!-- In other cases-->
+													   <%
+														String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+														if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+														  if (value != null) {
+															 //Mask the value as per the masking 
+															 value = fcArray[k].mask(value.toString());
+														   }
+														} 
+														%> 
+														 <%=value%>
+													   <%}%>
+												<%}%>
+										   <%} else {%>
+											   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+												  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+													 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												  <%}else{%>
+													<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												 <%}%>
+											   <%} else {%> <!-- In other cases-->
+											   <%
+												String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+												if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+												  if (value != null) {
+													 //Mask the value as per the masking 
+													 value = fcArray[k].mask(value.toString());
+												   }
+												} 
+												%> 
+												 <%=value%>
+											   <%}%>
 										   <%}%>
+
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
 									  <%}%>
@@ -1221,7 +1330,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <% }  else if (isEdit)  { %>
     
     <script>
-      document.getElementById('EO<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
+      document.getElementById('EO<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ ' '+'<%=request.getParameter("MOT")%>';
 	  document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.visibility = 'visible';
       document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.display = 'block'; 
     </script>
@@ -1264,8 +1373,50 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
   					    var thisFrm = document.getElementById('<%=formName%>');
                         elemType = thisFrm.elements[<%=k%>].type.toUpperCase();
-					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {
-							if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+					<%if( fcArray[k].isSensitive() && !operations.isField_VIP()){%>
+					
+					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+						<%	if(fcArray[k].isRequired()) {
+				       %>
+
+						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+				       %>
+ 						  
+                            thisFrm.elements[<%=k%>].readOnly = true;
+                            thisFrm.elements[<%=k%>].disabled = true;
+							thisFrm.elements[<%=k%>].options.selectedIndex = 0;
+   
+						<%} else {%>
+							if(elemType != 'HIDDEN') {
+                               thisFrm.elements[<%=k%>].readOnly = true;
+                               thisFrm.elements[<%=k%>].disabled = true;
+ 							   thisFrm.elements[<%=k%>].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
+						    }
+						<%}%>
+
+					    <%} else {%>
+						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+				       %>
+ 						  
+                            thisFrm.elements[<%=k%>].readOnly = true;
+                            thisFrm.elements[<%=k%>].disabled = true;
+							thisFrm.elements[<%=k%>].options.selectedIndex = 0;
+                            thisFrm.elements[<%=k%>].title = '';
+  
+						<%} else {%>
+							if(elemType != 'HIDDEN') {
+                               thisFrm.elements[<%=k%>].readOnly = true;
+                               thisFrm.elements[<%=k%>].disabled = true;
+ 							   thisFrm.elements[<%=k%>].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
+                               thisFrm.elements[<%=k%>].title = '';
+						    }
+						<%}%>
+						<%}%>
+
+					   <%}%>
+					<%} else {%>
+					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
                            if(elemType != 'HIDDEN') {
 						  
@@ -1282,6 +1433,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						    }
 						<%}%>
 					<%}%>
+
+					<%}%>
+					
 						
 		           <%}%>
 			   </script>
@@ -1298,8 +1452,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		sucessMessage  = editMainEuidHandler.saveLinksSelected();
 		messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 
-	 %>
-
+	  
 		//CONCURRENT_MOD_ERROR
     %> 
 	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>

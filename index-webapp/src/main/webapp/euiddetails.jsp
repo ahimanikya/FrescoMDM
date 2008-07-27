@@ -75,6 +75,7 @@ if(session!=null){
             
             <script type="text/javascript" src="scripts/yui4jsf/yahoo-dom-event/yahoo-dom-event.js"></script>
             <script type="text/javascript" src="scripts/yui4jsf/animation/animation-min.js"></script>                        
+            <script type="text/javascript" src="scripts/yui/dragdrop/dragdrop-min.js"></script>
 
 		   <script type="text/javascript" >
            var rand = "";
@@ -91,10 +92,11 @@ if(session!=null){
 	   		  }
               function cancelEdit(formName, thisDiv,minorObject)   {
                 ClearContents(formName); 
-                setEditIndex("-1");
+				enableallfields(formName);
+                setEOEditIndex("-1");
 				document.getElementById(thisDiv).style.visibility = 'hidden';
 				document.getElementById(thisDiv).style.display  = 'none';
-                document.getElementById(minorObject+'buttonspan').innerHTML = 'Save '+ minorObject;
+                document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/>  '+ minorObject;
 		      }
 			 var userDefinedInputMask="";
              var URI_VAL = '<%=URI%>';
@@ -1341,7 +1343,11 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
       }         
 
     </script>
-
+<script type="text/javascript">
+    makeDraggable("lockSBRDiv");
+    makeDraggable("unLinkSoDiv");
+    makeDraggable("linkSoDiv");
+</script>
     </html>
     </f:view>
     

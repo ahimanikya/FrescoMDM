@@ -104,9 +104,10 @@ if(session!=null){
             
            function cancelEdit(formName, thisDiv,minorObject)   {
                 ClearContents(formName); 
+                enableallfields(formName);
                 setEditIndex("-1");
-		document.getElementById(thisDiv).style.visibility = 'hidden';
-		document.getElementById(thisDiv).style.display  = 'none';
+		        document.getElementById(thisDiv).style.visibility = 'hidden';
+		        document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/> '+ minorObject;
 	     }
 	
@@ -274,7 +275,11 @@ if(session!=null){
                                                           <%=fieldConfigMap.getDisplayName()%>
                                                         </th>
                                                         <td>
-                                                          <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
+															<%if(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>   
+                                                               <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                            <%}else{%>
+                                                               <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
+                                                             <%}%>
 														</td>
                                                      </tr>
                                                    <%}%>
@@ -322,7 +327,10 @@ if(session!=null){
                                                         <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
                                                           <td>
 														  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-															   <%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
+   															<%if( fieldConfigArrayMinor[k].isSensitive() && !operations.isField_VIP()){%>   
+                                                               <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                            <%}else{%>
+                                               					<%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
 																  <%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
 																	 <%=ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
 																  <%}else{%>
@@ -340,6 +348,7 @@ if(session!=null){
 																%> 
 																 <%=value%>
 															   <%}%>
+                                                             <%}%>
 														  <%} else {%> <!-- else print &nbsp-->
 															&nbsp;
 														  <%}%>
@@ -481,17 +490,58 @@ if(session!=null){
 																	</h:outputText>													  
 																	<h:outputText value="#{fieldConfigPerAdd.displayName}" />
 																	<h:outputText value=":"/>
-                                                                 </h:column>
+                                                                  </h:column>
                                                                 <!--Rendering HTML Select Menu List-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
                                                                     <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
                                                                                      value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
                                                                         <f:selectItem itemLabel="" itemValue="" />
                                                                         <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
                                                                     </h:selectOneMenu>
                                                                 </h:column>
+																
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive}" >
+																	<h:selectOneMenu 
+																	        readonly="true" 
+																			disabled="true" 
+																			rendered="#{!Operations.field_VIP }">
+                                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                                    </h:selectOneMenu>
+                                                                    <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
+																	                 rendered="#{Operations.field_VIP  }"
+                                                                                     value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
+                                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                                        <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
+                                                                    </h:selectOneMenu>      
+                                                                </h:column>
+																
                                                                 <!--Rendering Updateable HTML Text boxes-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6}" >
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive}" >
+																   
+                                                                    <h:inputText label="#{fieldConfigPerAdd.displayName}"  
+                                                                                  value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
+                                                                                 title="#{fieldConfigPerAdd.fullFieldName}"
+                                                                                 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
+                                                                                 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
+                                                                                 maxlength="#{fieldConfigPerAdd.maxLength}"
+                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"
+																				rendered="#{Operations.field_VIP}"/>
+																
+																	<h:inputText label="#{fieldConfigPerAdd.displayName}"  
+                                                                                 value="#{msgs.SENSITIVE_FIELD_MASKING}"
+																				 readonly="true"
+																				 disabled="true"
+ 																				rendered="#{!Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] ne null}"/>	
+
+																	<h:inputText label="#{fieldConfigPerAdd.displayName}"  
+                                                                                 readonly="true"
+																				 disabled="true"
+ 																				rendered="#{!Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] eq null}"/>	
+
+                                                                </h:column>                     
+
+																<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
                                                                     <h:inputText label="#{fieldConfigPerAdd.displayName}"  
                                                                                  id="fieldConfigIdTextbox"  
                                                                                  value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
@@ -503,7 +553,7 @@ if(session!=null){
                                                                                 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
                                                                 </h:column>                     
                                                                 <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && !fieldConfigPerAdd.sensitive}">
                                                                     
                                                                     <nobr><!--Sridhar -->
                                                                         <input type="text" 
@@ -533,14 +583,70 @@ if(session!=null){
                                                                         
                                                                         
                                                                 </h:column>
-                                                                <!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6}" >
+
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && Operations.field_VIP }">
+                                                                    <nobr><!--Sridhar -->
+                                                                        <input type="text" 
+                                                                               title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
+                                                                               value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
+                                                                               id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
+                                                                               required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
+                                                                               maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+                                                                               onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                               onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
+                                                                               onkeyup="javascript:qws_field_on_key_up(this)" >
+                                                                       <a href="javascript:void(0);" 
+												     title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"
+                                                     onclick="g_Calendar.show(event,
+												          '<h:outputText value="#{fieldConfigPerAdd.name}"/>',
+														  '<%=dateFormat%>',
+														  '<%=global_daysOfWeek%>',
+														  '<%=global_months%>',
+														  '<%=cal_prev_text%>',
+														  '<%=cal_next_text%>',
+														  '<%=cal_today_text%>',
+														  '<%=cal_month_text%>',
+														  '<%=cal_year_text%>')" 
+														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+												  <font class="dateFormat">(<%=dateFormat%>)</font>
+                                                                    </nobr>
+                                                                </h:column>
+
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && !Operations.field_VIP }">
+                                                                    <nobr><!--Sridhar -->
+                                                                        <input type="text" 
+                                                                                value="<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}"/>"
+                                                                               id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
+                                                                               readonly="true" 
+                                                                               disabled="true" 
+                                                                               maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+                                                                               ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/><font class="dateFormat">(<%=dateFormat%>)</font>
+                                                                    </nobr>
+                                                                </h:column>
+
+																<!--Rendering Updateable HTML Text Area-->
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive }" >
                                                                     <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
                                                                                      title="#{fieldConfigPerAdd.fullFieldName}"
                                                                                      value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
                                                                                     
 																					 id="fieldConfigIdTextArea"   
                                                                                      required="#{fieldConfigPerAdd.required}"
+                                                                                      />
+                                                                </h:column>
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive }" >
+                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
+																	                 readonly="true"
+																					 disabled="true"
+                                                                                     value="#{msgs.SENSITIVE_FIELD_MASKING}" 
+                                                                                     required="#{fieldConfigPerAdd.required}"
+																					 rendered="#{!Operations.field_VIP}"
+                                                                                     />
+                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
+                                                                                     title="#{fieldConfigPerAdd.fullFieldName}"
+                                                                                     value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}" 
+                                                                                     required="#{fieldConfigPerAdd.required}"
+																					 rendered="#{Operations.field_VIP}"
                                                                                      />
                                                                 </h:column>
                                                                     

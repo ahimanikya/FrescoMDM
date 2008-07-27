@@ -12,6 +12,11 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
+
 
 
 <%@ page import="java.util.Enumeration"%>
@@ -21,6 +26,8 @@
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Iterator"  %>
+<%@ page import="java.util.ResourceBundle"  %>
+ 
 
 
 <%
@@ -56,6 +63,15 @@ boolean isSessionActive = true;
 	</table>
 <%}%>
 
+<%
+//set locale value
+if(session!=null){
+ LocaleHandler localeHandler = new LocaleHandler();
+ localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
+
+}
+%>
+
 <%if (isSessionActive)  {%>
 
 <%
@@ -65,6 +81,9 @@ ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 
 HttpSession session1 = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 SourceHandler  sourceHandler   = new SourceHandler();
+Operations operations = new Operations();
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
 
 //all field configs hashmap
 HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
@@ -108,8 +127,8 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
 	<table align="right">			   
                     <tr align="right" >			   
                      <td align="right" colspan="2">
-                       <a href="javascript:void(0);" onclick="javascript:closeDiv();">Close</a>
-                       <a href="javascript:void(0);" onclick="javascript:closeDiv();"><img src="images/close.gif" width="12" height="12" border="0" alt="close"/></a>
+                       <a href="javascript:void(0);" onclick="javascript:closeDiv();"><%=bundle.getString("View_MergeTree_close_text")%></a>
+                       <a href="javascript:void(0);" onclick="javascript:closeDiv();"><img src="images/close.gif" width="12" height="12" border="0" alt='<%=bundle.getString("View_MergeTree_close_text")%>'/></a>
                      </td>
 		           </tr>
     </table>			   
@@ -123,13 +142,17 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
 				                  <%=fcArray[k].getDisplayName()%>: 
 							    </td>
 							    <td align="left">
-								<%
-						       if(fcArray[k].isKeyType()) {
-						        %>
-								 <b><%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":minorObjectMap.get(fcArray[k].getFullFieldName()))%></b>							
-								<%}else {%>
-								 <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":minorObjectMap.get(fcArray[k].getFullFieldName()))%>							
+								 <%if( fcArray[k].isSensitive() && !operations.isField_VIP() ) { %>
+                                        <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":bundle.getString("SENSITIVE_FIELD_MASKING"))%>
+                                <%} else {%>
+								  <% if(fcArray[k].isKeyType()) { %>
+								  <b><%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":minorObjectMap.get(fcArray[k].getFullFieldName()))%></b>							
+							 	<%}else {%>
+								  <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":minorObjectMap.get(fcArray[k].getFullFieldName()))%>							
+								 <%}%>
 								<%}%>
+
+
 								</td>
 						   </tr>	
 					<% } %>
