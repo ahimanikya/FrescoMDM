@@ -47,7 +47,6 @@
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
   TreeMap detailsArray = (TreeMap)session.getAttribute("transdetails");
-  //System.out.println("detailsArray " + detailsArray);
   String [] transactionIds = (detailsArray.keySet().toString()).split(",");
   String [] functions = new String[transactionIds.length];
 
@@ -167,7 +166,7 @@ var thisIdx=0;
 									      <tr>
 										    <td align="right">
                                             <a href="javascript:void(0)" 
-                                               onclick="javascript:getFormValues('unmergeForm');showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&unMergeFinal=true&rand=<%=rand%>','mainDupSource','');" 
+                                               onclick="javascript:getFormValues('unmergeForm');showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&unMergeFinal=true&rand=<%=rand%>','mainDupSource','');document.getElementById('unmergePopupDiv').style.visibility='hidden';document.getElementById('unmergePopupDiv').style.display='none';" 
 											   class="button" title="<h:outputText value="#{msgs.ok_text_button}" />">
                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                             </a>   
