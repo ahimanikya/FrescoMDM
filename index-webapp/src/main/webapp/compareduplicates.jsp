@@ -178,7 +178,7 @@
 														<a href="javascript:void(0)"  
 														   class="button" 
 														    title="<h:outputText value="#{msgs.ok_text_button}" />"
-                                                            onclick="javascript:getFormValues('mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&mergeFinal=true&rand=<%=rand%>','mainDupSource','');"   >
+                                                            onclick="javascript:getFormValues('mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&mergeFinal=true&rand=<%=rand%>','mainDupSource','');showExtraDivs('mergeDiv',event)"   >
                                                                      <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                        </a>	
 												 <%}%>
