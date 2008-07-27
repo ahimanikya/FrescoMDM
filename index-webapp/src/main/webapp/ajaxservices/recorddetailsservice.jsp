@@ -290,10 +290,9 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
 <%}else if( euidValue != null && euidValue.length() > 0) {
 	 //results = patientDetailsHandler.performSubmit();
-
-	 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidValue);
+	// EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidValue);
      String megredEuid  = compareDuplicateManager.getMergedEuid(euidValue);
-	 session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+	 Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 	%> <!-- if only EUID is entered by the user is entered by the user-->
 	<%if(megredEuid == null) {%>
 <table>
@@ -305,7 +304,25 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
   </tr>
   </table>
   <%}else if(megredEuid != null){%>
-       <%if("Invalid EUID".equalsIgnoreCase(megredEuid)) {%>
+       <%if("Exception_Occured".equalsIgnoreCase(megredEuid)) {%>
+ <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+				             <li>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+ 								<%= facesMessage.getSummary() %>
+				             </li>
+						 <% } %>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+
+       <%}else if("Invalid EUID".equalsIgnoreCase(megredEuid)) {%>
        <div class="ajaxalert">
            <table>
        	   <tr>
@@ -600,30 +617,31 @@ if (results != null)   {
 	 </script>
 
 <% } else { %> <!-- End results!= null -->
-    <div class="ajaxalert">
-    <table>
-	   <tr>
-	     <td>
+    <div>
+<p style="text-align:left;color:red;">
      <%
 		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 	      StringBuffer msgs = new StringBuffer("<ul>");	
+			
           while (messagesIter.hasNext()) {
+
                      FacesMessage facesMessage = (FacesMessage) messagesIter.next();
+	%>
+				 <%=  facesMessage.getSummary()%>
+		<%
                      msgs.append("<li>");
 					 msgs.append(facesMessage.getSummary());
 					 msgs.append("</li>");
           }
 		  msgs.append("</ul>");		  
      %>     	 
-
+</p>
 	 <script>
 		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=msgs%>";
+	     
+	     messages.innerHTML= escape('<%=msgs%>');
 		 messages.style.visibility="visible";
 	 </script>
-	   </td>
-	   </tr>
-	 <table>
 	 </div>
 
 <% } %>
