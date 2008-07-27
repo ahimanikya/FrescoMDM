@@ -695,6 +695,12 @@ public class SourceAddHandler {
 
             //Keep the updated SO in the session again
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
+            
+            //get the enterprise object for the system object
+            EnterpriseObject updatedEnterpriseObject = masterControllerService.getEnterpriseObjectForSO(updatedSystemObject);
+            
+            //update the corresponding EO revision number
+            session.setAttribute("SBR_REVISION_NUMBER"+updatedEnterpriseObject.getEUID(),updatedEnterpriseObject.getSBR().getRevisionNumber());
 
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
