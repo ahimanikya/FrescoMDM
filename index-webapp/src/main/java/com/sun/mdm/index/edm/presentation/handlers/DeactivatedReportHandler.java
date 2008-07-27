@@ -162,20 +162,10 @@ public class DeactivatedReportHandler    {
     public ArrayList deactivateReport() throws ValidationException, EPathException, ReportException, Exception {
         drConfig = getDeactivateReportSearchObject();
         if (drConfig != null) {
-            try{
+          
             dr = QwsController.getReportGenerator().execDeactivateReport(drConfig);
             // Code to retrieve the data rows of report records.
-            ReportDataRow[] rdr = getDRRows();
-            } catch (Exception ex) {
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("RPT130: Service Layer Validation Exception has occurred"), ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("RPT131: Service Layer User Exception occurred"), ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("RPT132: Error  occurred"), ex);
-                }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            }
+            ReportDataRow[] rdr = getDRRows();            
             //return getDeactivatedRecordsVO();
             return resultArrayList;
         } else {

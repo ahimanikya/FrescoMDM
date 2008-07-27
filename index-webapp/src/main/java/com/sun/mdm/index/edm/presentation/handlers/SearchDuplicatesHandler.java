@@ -215,11 +215,15 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                             mLogger.info(mLocalizer.x("SDP005: {0} ", errorMessage));
                             return null;
                         }
-                    } catch (ProcessingException ex) {
-                        mLogger.error(mLocalizer.x("SDP006: Failed  during submit {0} ", ex.getMessage()),ex);
-                        return null;
-                    } catch (UserException ex) {
-                        mLogger.error(mLocalizer.x("SDP007: Failed  during submit {0} ", ex.getMessage()),ex);                       
+                    } catch (Exception ex) {
+                        if (ex instanceof ValidationException) {
+                            mLogger.error(mLocalizer.x("SDP006: Service Layer Validation Exception has occurred"), ex);
+                        } else if (ex instanceof UserException) {
+                            mLogger.error(mLocalizer.x("SDP007: Service Layer User Exception occurred"), ex);
+                        } else if (!(ex instanceof ProcessingException)) {
+                            mLogger.error(mLocalizer.x("SDP115: Error  occurred"), ex);
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         return null;
                     }
 
@@ -407,26 +411,19 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 newFinalArray.add(newInnerArray);
             }
             httpRequest.setAttribute("finalArrayList", newFinalArray);                
-        } catch (Exception ex) {
-               // UserException and ValidationException don't need a stack trace.
-                // ProcessingException stack trace logged by MC
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("SDP010: Unable to perform submit :{0} ", ex.getMessage()),ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("SDP011: Unable to perform submit :{0} ", ex.getMessage()),ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("SDP012: Unable to perform submit :{0} ", ex.getMessage()),ex);
-                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
-                } else if (!(ex instanceof PageException)) {
-                    mLogger.error(mLocalizer.x("SDP013: Unable to perform submit :{0} ", ex.getMessage()),ex);
-                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
-                } else if (!(ex instanceof RemoteException)) {
-                    mLogger.error(mLocalizer.x("SDP014: Unable to perform submit :{0} ", ex.getMessage()),ex);
-                }else
-                { //mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
-                     mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
-                }
-                return null;
+        
+          } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SDP010: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SDP011: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SDP012: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+
+            return null;
+
         }
         return newFinalArray;
     }
@@ -455,16 +452,17 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 }
                 compareEOArrayList.add(eoMap);
                 }
-        } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
-        } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
-        } catch (RemoteException ex) {
-             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
-        } catch (Exception ex) {
-             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
+          
+           } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SDP015: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SDP090: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SDP091: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
-            
         session.setAttribute("comapreEuidsArrayList", compareEOArrayList);
     }
 
@@ -513,13 +511,16 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                                 potentialDuplicateSearchObject.setEUIDs(null);
                             }
                         }
-                    } catch (ProcessingException ex) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
-                        mLogger.error(mLocalizer.x("SDP016: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
-                        return null;
-                    } catch (UserException ex) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.toString()));
-                        mLogger.error(mLocalizer.x("SDP017: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
+
+                    } catch (Exception ex) {
+                        if (ex instanceof ValidationException) {
+                            mLogger.error(mLocalizer.x("SDP016: Service Layer Validation Exception has occurred"), ex);
+                        } else if (ex instanceof UserException) {
+                            mLogger.error(mLocalizer.x("SDP017: Service Layer User Exception occurred"), ex);
+                        } else if (!(ex instanceof ProcessingException)) {
+                            mLogger.error(mLocalizer.x("SDP092: Error  occurred"), ex);
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         return null;
                     }
                 }
@@ -717,10 +718,16 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             for (int i = 0; i < associatedDuplicates.length; i++) {
                 strEuid.add(associatedDuplicates[i].getEUID1());
             }
-        } catch (RemoteException ex) {
-           mLogger.error(mLocalizer.x("SDP040: Failed to get the EUIDs  : {0} ", ex.getMessage()),ex);
-        } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SDP041: Failed to get the EUIDs  : {0} ", ex.getMessage()),ex);
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SDP040: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SDP041: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SDP093: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
         return strEuid;
     }
@@ -770,14 +777,17 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             }
 
 			httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
-        } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("SDP021: Unable to resolve  PotentialDuplicates : {0} ", ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-        } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SDP022: Unable to resolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-        }
-   
+
+        } catch (Exception ex) {
+          if (ex instanceof ValidationException) {
+              mLogger.error(mLocalizer.x("SDP094: Service Layer Validation Exception has occurred"), ex);
+          } else if (ex instanceof UserException) {
+              mLogger.error(mLocalizer.x("SDP095: Service Layer User Exception occurred"), ex);
+          } else if (!(ex instanceof ProcessingException)) {
+              mLogger.error(mLocalizer.x("SDP096: Error  occurred"), ex);
+          }
+          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+      }
     }
 
     public void unresolvePotentialDuplicateAction(ActionEvent event) {
@@ -809,16 +819,16 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             }
             httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
 
-  
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("SDP023: Unable  to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP024: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        }
-
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("SDP097: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("SDP098: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SDP099: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                }
     }
 
     
@@ -865,17 +875,18 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             eoMultiMergePreview.put("EUID", resulteo.getEUID());
             httpRequest.setAttribute("eoMultiMergePreview" + getRowCount(), eoMultiMergePreview);
             
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP037: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        }catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        }
-           
+
+            } catch (Exception ex) {
+                if (ex instanceof ValidationException) {
+                    mLogger.error(mLocalizer.x("SDP100: Service Layer Validation Exception has occurred"), ex);
+                } else if (ex instanceof UserException) {
+                    mLogger.error(mLocalizer.x("SDP101: Service Layer User Exception occurred"), ex);
+                } else if (!(ex instanceof ProcessingException)) {
+                    mLogger.error(mLocalizer.x("SDP102: Error  occurred"), ex);
+                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            }
+   
          httpRequest.setAttribute("finalArrayList", duplicatesArray);                
         
 }
@@ -1079,26 +1090,17 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
 
                 newFinalArray.add(newInnerArray);
             }
+
         } catch (Exception ex) {
-               // UserException and ValidationException don't need a stack trace.
-                // ProcessingException stack trace logged by MC
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("SDP030: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("SDP031: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                   mLogger.error(mLocalizer.x("SDP032: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
-                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
-                } else if (!(ex instanceof PageException)) {
-                   mLogger.error(mLocalizer.x("SDP033: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
-                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
-                } else if (!(ex instanceof RemoteException)) {
-                   mLogger.error(mLocalizer.x("SDP034: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
-                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
-                }else
-                { mLogger.error(mLocalizer.x("SDP035: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("SDP030: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("SDP031: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SDP032: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                 }
-        }
     
        return newFinalArray;
 }
@@ -1352,14 +1354,18 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
  
             masterControllerService.setAsDifferentPerson(potDupId, resolveBoolean);
           
-        } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("SDP021: Unable to resolve  PotentialDuplicates : {0} ", ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-        } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SDP022: Unable to resolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SDP104: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SDP105: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SDP106: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
-   
+
     }
 
     public void unresolvePotentialDuplicateAction(HashMap resolveDuplicatesMap) {
@@ -1370,14 +1376,15 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             //un resolve the potential duplicate 
             masterControllerService.unresolvePotentialDuplicate(potDupId);
 
-            
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("SDP023: Unable  to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP024: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SDP107: Service Layer Validation Exception has occurred"), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SDP108: Service Layer User Exception occurred"), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SDP109: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
 
     }
@@ -1419,17 +1426,17 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             //PUT THE DESTINATION AND SOURCE EUIDS for selecting it by default in the preview screen
             finalPreviewMap.put("destinationEuid" + rowCount, destnEuidValue + rowCount);
             finalPreviewMap.put("srcsList" + rowCount, srcsList);
-            
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP037: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        }catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
-        }
+
+        } catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("SDP110: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("SDP111: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SDP112: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                }
            
          return finalPreviewMap;
 }

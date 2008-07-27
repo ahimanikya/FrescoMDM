@@ -134,27 +134,17 @@ public class MergeRecordHandler    {
      * @throws com.sun.mdm.index.objects.epath.EPathException
      * @throws java.lang.Exception
      */    
-     public ArrayList mergeReport() throws ValidationException, EPathException, ReportException, Exception    {
-         reportType = "Merge Reports";
-         MergeReportConfig  mrConfig = getMergeReportSearchObject();
-         if(mrConfig != null) {
-           try{
-           MergeReport mRpt = QwsController.getReportGenerator().execMergeReport(mrConfig);
-           ReportDataRow[] rdr = getMRRows(mrConfig,mRpt);
-           } catch (Exception ex) {
-                 if (ex instanceof ValidationException) {
-                     mLogger.error(mLocalizer.x("MRG050: Service Layer Validation Exception has occurred"), ex);
-                 } else if (ex instanceof UserException) {
-                     mLogger.error(mLocalizer.x("MRG051: Service Layer User Exception occurred"), ex);
-                 } else if (!(ex instanceof ProcessingException)) {
-                     mLogger.error(mLocalizer.x("MRG052: Error  occurred"), ex);
-                 }
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-             }
-           return resultArrayList;
-         } else { //if validation occurs return null value
-           return null;             
-         }
+    public ArrayList mergeReport() throws ValidationException, EPathException, ReportException, Exception {
+        reportType = "Merge Reports";
+        MergeReportConfig mrConfig = getMergeReportSearchObject();
+        if (mrConfig != null) {
+            MergeReport mRpt = QwsController.getReportGenerator().execMergeReport(mrConfig);
+            ReportDataRow[] rdr = getMRRows(mrConfig, mRpt);
+            return resultArrayList;
+        } else { //if validation occurs return null value
+
+            return null;
+        }
     }
      
     //getter method to retrieve the data rows of report records.

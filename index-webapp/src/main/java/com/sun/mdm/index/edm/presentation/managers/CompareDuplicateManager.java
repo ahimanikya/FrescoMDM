@@ -1115,13 +1115,19 @@ public class CompareDuplicateManager {
                     return "Invalid EUID";
                 }
             }
-        } catch (ProcessingException ex) {
-            mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
-            return "Invalid EUID";
-        } catch (UserException ex) {
-            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
-            return "Invalid EUID";
-        }
+
+            
+        }catch (Exception ex) {
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("CPD020: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("CPD021: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("CPD080: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                     return "Exception_Occured";
+           }
         return mergedEuid;
     }
 

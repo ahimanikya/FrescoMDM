@@ -110,7 +110,7 @@ public class DashboardHandler  {
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error(mLocalizer.x("DHB012: Error  occurred"), ex);
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
 } 
         return countPotentialDuplicates;
     }
@@ -133,7 +133,7 @@ public class DashboardHandler  {
              } else if (!(ex instanceof ProcessingException)) {
                  mLogger.error(mLocalizer.x("DHB012: Error  occurred"), ex);
              }
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+//             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
          }
             return countAssumedMatches;
     }

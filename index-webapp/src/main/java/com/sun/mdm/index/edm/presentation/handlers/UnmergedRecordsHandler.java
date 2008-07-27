@@ -140,22 +140,11 @@ public class UnmergedRecordsHandler    {
         reportType = "Unmerge Reports";
         UnmergeReportConfig umrConfig = getUnmergeReportSearchObject();
         
-        if (umrConfig != null) {
-            try{
+        if (umrConfig != null) {           
             UnmergeReport umRpt = QwsController.getReportGenerator().execUnmergeReport(umrConfig);
             ReportDataRow[] rdr = getUMRRows(umrConfig, umRpt);
             setUnmergedRecordsVO(new UnmergedRecords[rdr.length]);
-            } catch (Exception ex) {
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("UMG050: Service Layer Validation Exception has occurred"), ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("UMG051: Service Layer User Exception occurred"), ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("UMG052: Error  occurred"), ex);
-                }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            }
-
+         
             return resultArrayList;
         } else {
             return null;

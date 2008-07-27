@@ -182,6 +182,7 @@ public class ActivityReportHandler {
                 mLogger.error(mLocalizer.x("RPT072: Error  occurred"), ex);
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return finalOutputList;
     }

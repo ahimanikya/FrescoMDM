@@ -402,30 +402,18 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     sysobj3 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
                     eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
                 }
-                
-                try{
-                    eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
-                    eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
-                    
-                }
-               catch (Exception ex) {
-                    if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("PDH085: Service Layer Validation Exception has occurred"), ex);
-                    } else if (ex instanceof UserException) {
-                        mLogger.error(mLocalizer.x("PDH086: Service Layer User Exception occurred"), ex);
-                    } else if (!(ex instanceof ProcessingException)) {
-                        mLogger.error(mLocalizer.x("PDH087: Error  occurred"), ex);
-                    }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-                }
-                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
-                
-               
+          
+                eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
+
+                eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
+                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+
 
                 String dateField = new String();
                 ArrayList resultsConfigArray = super.getResultsConfigArray();
                 String strVal = new String();
-                while (eoSearchResultIterator.hasNext()) {
+                
+                while (eoSearchResultIterator!=null && eoSearchResultIterator.hasNext()) {
                     EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
                     
                     ObjectNode objectNode = eoSearchResultRecord.getObject();
@@ -486,7 +474,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     fieldvalues.put("EOStatus", eo.getStatus());
 
                     resultArrayList.add(fieldvalues);
-                }
+                
+            }
                 //httpRequest.setAttribute("resultArrayListReq", resultArrayList);
                 return resultArrayList;
                 //setResultsSize(getPatientDetailsVO().length);

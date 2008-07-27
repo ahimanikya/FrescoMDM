@@ -163,21 +163,11 @@ public class DuplicateReportHandler    {
         pdrConfig = getPotentialDuplicateSearchObject();
         if (pdrConfig != null) {
             
-            try{
             pdIter = QwsController.getReportGenerator().execPotentialDuplicateReportIterator(pdrConfig);
             // Code to retrieve the data rows of report records.
             ReportDataRow[] rdr = getPDRRows();
             setDuplicateRecordsVO(new DuplicateRecords[rdr.length]);
-            } catch (Exception ex) {
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("RPT150: Service Layer Validation Exception has occurred"), ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("RPT151: Service Layer User Exception occurred"), ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("RPT152: Error  occurred"), ex);
-                }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            }
+
             return resultArrayList;
         } else {
             return null;
