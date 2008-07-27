@@ -17,7 +17,9 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
-
+<script>
+ var tabTitles=[];
+</script>
 <%
 //set locale value
  LocaleHandler localeHandler = new LocaleHandler();
@@ -71,6 +73,8 @@ if(requestPage.equalsIgnoreCase("recorddetails.jsp")) {
     session.setAttribute("ScreenObject", navigationHandler.getScreenObject("source-record"));	
 }else if(requestPage.equalsIgnoreCase("auditlog.jsp"))  {
     session.setAttribute("ScreenObject", navigationHandler.getScreenObject("audit-log"));	
+}else if(requestPage.equalsIgnoreCase("dashboard.jsp"))  {
+    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("dashboard"));	
 }
 //Get the updated Session Object based on the user browser navigation
 screenObject = (ScreenObject) session.getAttribute("ScreenObject");
@@ -183,9 +187,13 @@ String  dateFormat = ConfigManager.getDateFormat();
 		  <tr>
              <td colspan="2">
                  <div id="header">
+                                  <h:form id="tabsForm" title="tabsForm">
                                  <%                                  
                                  for(int i=0;i<allScreensArrayOrdered.length;i++){  
                                   %> 
+								  <script>
+									  tabTitles.push("<%=allScreensArrayOrdered[i].getDisplayTitle()%>");
+								  </script>
                                   <% 
                                   
                                   if (allScreensArrayOrdered[i]!=null){
@@ -193,22 +201,23 @@ String  dateFormat = ConfigManager.getDateFormat();
                                     ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());                                    
                                   %>
 
-                                  <h:form>
 								  <%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
                                        <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbuttonselected" 
+									   onclick="javascript:highlighTabs('tabsForm',event)"
                                                   actionListener="#{NavigationHandler.setHeaderByTabName}" > 
                                           <f:attribute name="screenId" value="<%=screenID%>"/>
-                                          <span><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+                                          <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" ><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
                                       </h:commandLink>
 								 <%} else {%>
                                        <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbutton" 
+									   onclick="javascript:highlighTabs('tabsForm',event)"
                                                   actionListener="#{NavigationHandler.setHeaderByTabName}" > 
                                           <f:attribute name="screenId" value="<%=screenID%>"/>
-                                          <span><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+                                          <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=screenObject.getDisplayTitle()%>"><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
                                       </h:commandLink>
 								 <%}%>
-                                 </h:form>
                                  <%}}%>
+                                 </h:form>
 
 				 </div>
 		     </td>
@@ -217,5 +226,46 @@ String  dateFormat = ConfigManager.getDateFormat();
              <td width="100%" colspan="2"><div class="blueline">&nbsp;</div></td>
          </tr>
      </table>    
-  
+<script>
+
+function highlighTabs(formName,thisEvent)   {
+
+  var clickedTabTitle = (thisEvent.target != null?thisEvent.target.parentNode.title:thisEvent.srcElement.parentElement.title);  
+	//alert("ssss" + clickedTabTitle);
+
+  for(i=0; i< tabTitles.length; i++)   {      
+			if(tabTitles[i] == clickedTabTitle ) {
+				//thisEvent.target.parentElement.style.className = "navbuttonselected"
+				if (document.getElementById(tabTitles[i]).parentNode != null)	 {
+					selectedId  = document.getElementById(tabTitles[i]).parentNode
+				} else {
+					selectedId = document.getElementById(tabTitles[i]).parentElement;
+				}				
+				selectedId.className = "navbuttonselected"
+	    	} else {
+				var notSelectedId = document.getElementById(tabTitles[i]).parentNode;
+				notSelectedId.className = "navbutton";
+			}
+    }
+}
+
+/*function highlighTabs(formName,thisEvent)   {
+	alert(thisEvent.target);
+  var src = e.srcelement? e.srcelement : e.target; 
+  var clickedTabTitle = thisEvent.srcElement.parentElement.title;  
+  for(i=0; i< tabTitles.length; i++)   {      
+			if(tabTitles[i] == clickedTabTitle ) {
+				alert(thisEvent.srcElement);
+				thisEvent.srcElement.parentElement.style.className = "navbuttonselected"
+				var selectedId = document.getElementById(tabTitles[i]).parentElement;
+				selectedId.className = "navbuttonselected"
+	    	} else {
+				var notSelectedId = document.getElementById(tabTitles[i]).parentElement;
+				alert(thisEvent.srcElement);
+				notSelectedId.className = "navbutton";
+			}
+    }
+}
+*/
+</script>
 </div>
