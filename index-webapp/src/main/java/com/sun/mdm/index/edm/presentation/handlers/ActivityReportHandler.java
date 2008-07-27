@@ -607,9 +607,13 @@ public class ActivityReportHandler {
     public ArrayList getActivityRecordsVO() {
         ArrayList outputList = new ArrayList();
         ArrayList keyList = new ArrayList();
-        if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency())) {
+        /*if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency())) {
+        }*/
+        if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
             keyList.add("ActivityDay");
-            keyList.add("ActivityDate");
+            keyList.add("ActivityDate");            
+            keyList.add("LidTransfer");            
+            keyList.add("EuidUpdate");            
         }
         keyList.add("Add");
         keyList.add("EUIDDeactivate");
@@ -617,13 +621,23 @@ public class ActivityReportHandler {
         keyList.add("EUIDUnmerge");
         keyList.add("LIDMerge");
         keyList.add("LIDUnMerge");
-        keyList.add("UnresolvedDuplicate");
-        keyList.add("ResolvedDuplicate");
+        //Modified by Sridhar 7/25/08
+        // Do not Display Unresolved Duplicate & Resolved Duplicateon Weekly Report  
+        // as per Pratibha's instructions subsequent to her discussion with Su mei                    
+        if (!reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
+            keyList.add("UnresolvedDuplicate");
+            keyList.add("ResolvedDuplicate");
+        }
 
         ArrayList labelList = new ArrayList();
-        if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency())) {
+        if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
             labelList.add("Activity Day");
             labelList.add("Activity Date");
+            //Modified by Sridhar 7/25/08
+            // Display LID Transfer on Weekly Report  
+            // as per Pratibha's instructions subsequent to her discussion with Su mei            
+            labelList.add("LID Transfer");
+            labelList.add("EUID Update");            
         }
         labelList.add("Add");
         labelList.add("EUID Deactivate");
@@ -631,23 +645,41 @@ public class ActivityReportHandler {
         labelList.add("EUID Unmerge");
         labelList.add("LID Merge");
         labelList.add("LID UnMerge");
-        labelList.add("Unresolved Duplicate");
-        labelList.add("Resolved Duplicate");
+        
+        //Modified by Sridhar 7/25/08
+        // Do not Display Unresolved Duplicate & Resolved Duplicateon Weekly Report  
+        // as per Pratibha's instructions subsequent to her discussion with Su mei                    
+        if (!reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
+            labelList.add("Unresolved Duplicate");
+            labelList.add("Resolved Duplicate");
+        }
 
         for (int i = 0; i < vOList.size(); i++) {
             ActivityRecords activityRecords[] = (ActivityRecords[]) vOList.get(i);
             for (int j = 0; j < activityRecords.length; j++) {
                 HashMap values = new HashMap();
-                values.put("ActivityDay", activityRecords[j].getDay());
-                values.put("ActivityDate", activityRecords[j].getActivityDate());
+                if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
+                    values.put("ActivityDay", activityRecords[j].getDay());
+                    values.put("ActivityDate", activityRecords[j].getActivityDate());                    
+            //Modified by Sridhar 7/25/08
+            // Display LID Transfer on Weekly Report  
+            // as per Pratibha's instructions subsequent to her discussion with Su mei            
+                    values.put("LidTransfer", activityRecords[j].getLidTransfer());
+                    values.put("EuidUpdate",activityRecords[j].getUpdateCount());            
+                }
                 values.put("Add", (activityRecords[j].getAddTransactions()==null?"0":activityRecords[j].getAddTransactions()));
                 values.put("EUIDDeactivate", (activityRecords[j].getEuidDeactivateTrans()==null?"0":activityRecords[j].getEuidDeactivateTrans()));
                 values.put("EUIDMerge", (activityRecords[j].getEuidMergedTrans()==null?"0":activityRecords[j].getEuidMergedTrans()));
                 values.put("EUIDUnmerge", (activityRecords[j].getEuidUnmergedTrans()==null?"0":activityRecords[j].getEuidUnmergedTrans()));
                 values.put("LIDMerge", (activityRecords[j].getLidMergedTrans()==null?"0":activityRecords[j].getLidMergedTrans()));
                 values.put("LIDUnMerge", (activityRecords[j].getLidUnMergedTrans() ==null?"0":activityRecords[j].getLidUnMergedTrans()));
-                values.put("UnresolvedDuplicate", (activityRecords[j].getUnresolvedPotentialDup()== null?"0":activityRecords[j].getUnresolvedPotentialDup()));
-                values.put("ResolvedDuplicate", (activityRecords[j].getResolvedPotentialDup()==null?"0":activityRecords[j].getResolvedPotentialDup()));
+                //Modified by Sridhar 7/25/08
+                // Do not display UnresolvedDuplicate and ResolvedDuplicate on Weekly Report  
+                // as per Pratibha's instructions subsequent to her discussion with Su mei
+                if (! reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) { 
+                    values.put("UnresolvedDuplicate", (activityRecords[j].getUnresolvedPotentialDup()== null?"0":activityRecords[j].getUnresolvedPotentialDup()));
+                    values.put("ResolvedDuplicate", (activityRecords[j].getResolvedPotentialDup()==null?"0":activityRecords[j].getResolvedPotentialDup()));                    
+                }
                 outputList.add(values);
 
             }
