@@ -1176,8 +1176,8 @@ function accumilateMultiMergeEuids(mergeEuidVar) {
         var mainEuidArray = mergeEuids.split("##");
         var mainEuid = mainEuidArray[0];
 
-        document.getElementById('previewForm:destinationEO').value = mainEuid;
-        document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
+        //document.getElementById('previewForm:destinationEO').value = mainEuid;
+        //document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
         //document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
          if(euidArray.length >= 2) {
