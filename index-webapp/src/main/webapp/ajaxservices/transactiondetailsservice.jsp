@@ -151,8 +151,7 @@ boolean isSessionActive = true;
 				    <td>
 
              	   <script>
-					   showExtraDivs('unmergePopupDiv',event);
-					   alert("<%=unmergeHashMap.get("CONCURRENT_MOD_ERROR")%>");
+ 					   alert("<%=unmergeHashMap.get("CONCURRENT_MOD_ERROR")%>");
                  	   ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+'&rand=<%=rand%>&transactionId=<%=unmergeTransactionId%>&function=euidMerge','mainDupSource','');
               	   </script>
 				   </td>
@@ -168,8 +167,7 @@ boolean isSessionActive = true;
 				    <tr>
 				    <td>
               	   <script>
-					  showExtraDivs('unmergePopupDiv',event);
-					  document.getElementById('messages').innerHTML="<%=unMergeResult.getSourceEO().getEUID()%>&nbsp;<%=bundle.getString("unmerged_from")%>&nbsp;<%=unMergeResult.getDestinationEO().getEUID()%>";
+ 					  document.getElementById('messages').innerHTML="<%=unMergeResult.getSourceEO().getEUID()%>&nbsp;<%=bundle.getString("unmerged_from")%>&nbsp;<%=unMergeResult.getDestinationEO().getEUID()%>";
                  	  ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+'&rand=<%=rand%>&transactionId=<%=unmergeTransNumber%>&function=<%=unmergeFunction%>','mainDupSource','');
               	   </script>
 				   </td>
@@ -183,8 +181,7 @@ boolean isSessionActive = true;
 					   <table>
 					  	 <tr>
 					 		<td>
-							   <script>showExtraDivs('unmergePopupDiv',event);</script> 
-								<ul>
+ 								<ul>
 									<% while (messagesIter.hasNext())   { %>
 										 <li>
 											<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
@@ -420,16 +417,14 @@ boolean isSessionActive = true;
                                                             <tr>
                                                                 <td class="menutop"><%=dupHeading%></td>
                                                             </tr> 
-                                                            <h:form>
-                                                                <tr>
+                                                                 <tr>
                                                                     <td>
                                                                        <font style="text-decoration:none;color:#000000;"><b>
                                                                             <%=personfieldValuesMapEO.get("EUID")%>
                                                                         </b></font>
                                                                     </td>
                                                                 </tr>
-                                                            </h:form>
-                                                        </table>
+                                                         </table>
                                                     </div>
                                                 </div>
                                                 
@@ -633,14 +628,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             <tr>
                                                                 <td class="<%=menuClass%>"><%=soHashMap.get("SYSTEM_CODE")%></td>
                                                             </tr> 
-                                                            <h:form>
-                                                                <tr>
+                                                                 <tr>
                                                                     <td valign="top" class="dupfirst">
                                                                             <b><%=soHashMap.get("LID")%></b>
                                                                     </td>
                                                                 </tr>
-                                                            </h:form>
-                                                        </table>
+                                                         </table>
                                                     </div>
                                                 </div>
 											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
@@ -860,8 +853,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                 <table cellspacing="0" cellpadding="0" border="0">
-                                                    <h:form>
-                                                        <tr> 
+                                                         <tr> 
                                                           <td valign="top">
                                                              <a title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0',euidValueArray)" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                           </td>                                              
@@ -887,7 +879,6 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <% } else {%>
                                                         <!--tr><td>&nbsp;</td></tr-->
                                                         <%}%>
-                                                    </h:form>
                                                 </table>
                                             </div> 
                                         </td>
