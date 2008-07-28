@@ -1108,8 +1108,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                      <td valign="top">
                                                          <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                                     <table border="0" cellspacing="0" cellpadding="0" border="0">
-                                                                        <h:form>
-                                                                            <tr> 
+                                                                             <tr> 
                                                                                 <td valign="top">
                                                                                  <%if(operations.isEO_SearchViewSBR()) {%>
                                                                                  <a href="javascript:void(0)"  
@@ -1119,9 +1118,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																					<%}%>
                                                                                 </td>                                              
                                                                             </tr>
-                                                                            
-                                                                        </h:form>
-                                                                    </table>
+                                                                     </table>
                                                             </div> 
                                                      </td>
                                                <% if (countEnt + 1 == soHashMapArrayListObjects.length) { 
@@ -1135,7 +1132,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                     <table>
                                                                         <tr>
                                                                             <td>
-                                                                                <h:form  id="previewlid1Form">
+                                                                                <form  id="previewlid1Form">
  
                                                                                  <%if(operations.isSO_Merge()) {%>
                                                                                  <a href="javascript:void(0)"  id="previewlid1Form:lid1Link"
@@ -1146,12 +1143,12 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                                     <input type="hidden" id="previewlid1Form:previewhiddenLid1" title="PREVIEW_SRC_DEST_LIDS"  />
                                                                                     <input type="hidden" id="previewlid1Form:previewhiddenLid1source" title="PREVIEW_SYSTEM_CODE"  />
 
-                                                                                </h:form>
+                                                                                </form>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>
-                                                                                <h:form id="previewlid2Form">
+                                                                                <form id="previewlid2Form">
                                                                                   <%if(operations.isSO_Merge()) {%>
                                                                                  <a href="javascript:void(0)"  id="previewlid2Form:lid2Link"
                                                                                        onclick="javascript:getDuplicateFormValues('basicMergeformData','previewlid2Form');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&mergePreview=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&rand=<%=rand%>','sourceRecordMergeDiv','');"   
@@ -1160,7 +1157,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
 																					<%}%>
                                                                                     <input type="hidden" id="previewlid2Form:previewhiddenLid2" title="PREVIEW_SRC_DEST_LIDS"  />
                                                                                     <input type="hidden" id="previewlid2Form:previewhiddenLid2source" title="PREVIEW_SYSTEM_CODE"  />
-                                                                                </h:form>
+                                                                                </form>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
