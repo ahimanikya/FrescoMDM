@@ -122,6 +122,7 @@ INPUT.READONLY{
   border-right: 1px solid #6B757B; 
   border-top: 1px solid #182442;  
   border-bottom: 1px solid #6B757B;
+  height:700px;
 }
 
 .detailedresults  td {
