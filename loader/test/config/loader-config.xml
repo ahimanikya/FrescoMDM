@@ -1,8 +1,15 @@
 <loader>
-    <threshold-config>
-        <duplicateThreshold>7.25</duplicateThreshold>
-        <matchThreshold>29.0</matchThreshold>
-    </threshold-config>
+  <threshold-config>
+  	<duplicateThreshold>7.25</duplicateThreshold>
+     <matchThreshold>29.0</matchThreshold>
+  </threshold-config>
+
+	<ValidationConfig name="Validation" class="com.sun.mdm.index.dataobject.validation.ValidationConfiguration" validate="false" reference="false">
+  	<rules>
+    	<rule name="validate-local-id" class="com.sun.mdm.index.dataobject.validation.LocalIdValidator" system="*" length="10" format="[0-9]{10}" />
+    	<rule name="validate-object-value" class="com.sun.mdm.index.dataobject.validation.ObjectDescriptorFileReader" />
+    </rules>
+  </ValidationConfig>
 
         <query-builder name="BLOCKER-SEARCH" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
             <config>
