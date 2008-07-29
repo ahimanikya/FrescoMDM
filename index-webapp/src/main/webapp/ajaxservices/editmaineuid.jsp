@@ -236,17 +236,37 @@ if(session!=null){
                                                    </td>                              
 												   <td valign="center"> 										 
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
-													 <h:panelGrid rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
-													 <h:panelGroup><a href ="javascript:void(0)" 
-                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}" /></a></h:panelGroup></h:panelGrid>
+													 <h:panelGrid style="border:1;cellpadding:0;cellspacing:0;" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
+													 <h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}" ><a href ="javascript:void(0)" 
+                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>
+													 
+													 <h:panelGroup rendered="#{!fieldConfigPer.sensitive}" ><a href ="javascript:void(0)" 
+                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>													 
+													 </h:panelGrid>
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
+													 <h:panelGrid style="border:1;cellpadding:0;cellspacing:0;" >
+													  <h:panelGroup rendered="#{  fieldConfigPer.sensitive &&  Operations.field_VIP }">
  													  <h:outputLink 
-                                                           rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP) || !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
+                                                           rendered="#{ !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
 														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
 														   value="javascript:void(0)"
-                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" >
-                                                            <h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}" /></h:outputLink>
+                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;"  />
+															
+													</h:outputLink>
+													</h:panelGroup>
+
+													  <h:panelGroup rendered="#{!fieldConfigPer.sensitive}"> 
+ 													  <h:outputLink 
+                                                           rendered="#{ !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
+														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
+														   value="javascript:void(0)"
+                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;"  />
+															
+													</h:outputLink>
+													</h:panelGroup>
+
+													</h:panelGrid>
 														  
                                                       </div> 
                                                      <div id='lockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
@@ -334,7 +354,7 @@ if(session!=null){
  																	 rendered="#{!Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] ne null}"
                                                                  />
                                                          </div>            
-                                                    </h:column>
+                                                    </h:column> 
                                                     
                                                     <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
