@@ -112,6 +112,21 @@ public class LoaderGeneratorTask extends Task {
 
 			config.setMatchConfig(str);
 
+			// ValidationConfig			
+			String  validationConfig = "    <ValidationConfig name=\"Validation\""
+						 + " class=\"com.sun.mdm.index.dataobject.validation.ValidationConfiguration\""
+						 + " validate=\"false\" reference=\"false\">\n"
+  						 + "        <rules>\n"
+    						 + "            <rule name=\"validate-local-id\""
+    						 + " class=\"com.sun.mdm.index.dataobject.validation.LocalIdValidator\""
+    						 + " system=\"*\" length=\"10\" format=\"[0-9]{10}\" />\n"
+    						 + "            <rule name=\"validate-object-value\""
+    						 + " class=\"com.sun.mdm.index.dataobject.validation.ObjectDescriptorFileReader\" />\n"
+    						 + "        </rules>\n"
+  						 + "    </ValidationConfig>\n";
+					
+			config.setValidationConfig(validationConfig);
+			
 			// Write it out
 			write(config);
 			writeBuildXML();

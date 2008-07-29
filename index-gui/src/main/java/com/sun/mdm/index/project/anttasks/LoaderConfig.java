@@ -28,6 +28,8 @@ public class LoaderConfig {
 	private String systemProperties="";
 
 	private String dataObjectReader="";
+	
+	private String validationConfig="";
 
 	/**
 	 * 
@@ -125,6 +127,14 @@ public class LoaderConfig {
 		this.dataObjectReader = dataObjectReader;
 	}
 
+	public String getValidationConfig() {
+		return validationConfig;
+	}
+
+	public void setValidationConfig(String validationConfig) {
+		this.validationConfig = validationConfig;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -132,6 +142,8 @@ public class LoaderConfig {
 		sb.append("<loader>\n");
 
 		sb.append(threshold + "\n");
+
+		sb.append(validationConfig + "\n");
 
 		sb.append(blockConfig + "\n");
 
