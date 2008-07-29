@@ -31,3 +31,6 @@ MDM-Solution-UKPatient.zip|0444|bin|<SRC_DIR>|MDM-Solution-UKPatient.zip|<DST_DI
 
 set SRC_DIR <SRCROOT>/solutions/aus-patient/target
 MDM-Solution-AUSPatient.zip|0444|bin|<SRC_DIR>|MDM-Solution-AUSPatient.zip|<DST_DIR>
+
+set SRC_DIR <SRCROOT>/solutions/usa-citizen/target
+MDM-Solution-USACitizen.zip|0444|bin|<SRC_DIR>|MDM-Solution-USACitizen.zip|<DST_DIR>
