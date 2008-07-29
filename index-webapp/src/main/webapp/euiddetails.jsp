@@ -149,7 +149,7 @@ if(session!=null){
                              </h:form>
 							 <td>	
                                 <FORM>
-			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="javascript:void(0)" onclick="history.go(-1)">
+			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="#" onclick="history.back()" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					            </a>
   				              </FORM>
