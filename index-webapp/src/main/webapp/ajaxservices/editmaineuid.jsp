@@ -161,7 +161,7 @@ if(session!=null){
                                 </tr>
                                 <tr>
                                     <td align="left" colspan="2">
-					                 <a title="<h:outputText  value="#{msgs.back_button_text}"/>" class="button" href="javascript:void(0)" onclick="history.go(-1)">
+					                 <a title="<h:outputText  value="#{msgs.back_button_text}"/>" class="button" href="#" onclick="history.back()" >
 						               <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					                 </a>
                                     </td>
