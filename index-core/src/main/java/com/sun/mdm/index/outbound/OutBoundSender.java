@@ -87,7 +87,7 @@ public class OutBoundSender {
 
     /**
      * Publish the eventType and its enterprise object information to a topic
-     * @param eventType values are UPD, ADD, MRG, UNMRG, BEA, REA
+     * @param eventType values are UPD, ADD, MRG, UNMRG, DEA, REA
      * @param id the id
      * @param EnterpriseObject an enterprise object that is used to construct xml  
      */
@@ -102,7 +102,7 @@ public class OutBoundSender {
 
     /**
      * Publish the eventType and two EnterpriseObject to a topic
-     * @param eventType values are UPD, ADD, MRG, UNMRG, BEA, REA
+     * @param eventType values are UPD, ADD, MRG, UNMRG, DEA, REA
      * @param id the id
      * @param mresult Pairs of SBRs are extracted from  mresult and  is stringified to xml
      *    and is sent to the topic.
