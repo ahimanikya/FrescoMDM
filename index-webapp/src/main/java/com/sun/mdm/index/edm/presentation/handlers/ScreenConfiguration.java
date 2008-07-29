@@ -207,9 +207,8 @@ public class ScreenConfiguration {
 
         try {
             
-            if (screenObject!=null){//fix for 6679172,6684209
+            if (screenObject!=null && screenObject.getSearchScreensConfig()!= null){//fix for 6679172,6684209
             ArrayList screenConfigList = screenObject.getSearchScreensConfig();
-
             Iterator iteratorScreenConfig = screenConfigList.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
@@ -252,7 +251,7 @@ public class ScreenConfiguration {
                         }
                     }
                 }
-            }}
+             }}
 
         } catch (Exception e) {
             //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
@@ -275,8 +274,9 @@ public class ScreenConfiguration {
      * @return ArrayList
      */
     public ArrayList getResultsConfigArray() {
-            if(screenObject!=null){//fix for 6679172,6684209
+            if(screenObject!=null && screenObject.getSearchResultsConfig()!= null ){//fix for 6679172,6684209
             ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
+               
             Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
             ArrayList newArrayList = new ArrayList();
             while (iteratorScreenConfig.hasNext()) {
@@ -293,6 +293,7 @@ public class ScreenConfiguration {
                 
             }    
             this.resultsConfigArray = newArrayList;
+           
             }
         return resultsConfigArray;
     }
@@ -323,7 +324,7 @@ public class ScreenConfiguration {
     public int getMaxRecords() {
         int mRecords = 0;
         
-        if(screenObject!=null){ //fix for 6679172,6684209
+        if(screenObject!=null && screenObject.getSearchResultsConfig()!= null){ //fix for 6679172,6684209
         ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
         SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) resultsScreenConfigArray.get(0);
         mRecords = objSearchScreenConfig.getMaxRecords();
@@ -341,7 +342,7 @@ public class ScreenConfiguration {
     public int getPageSize() {
         int psize = 0;
         
-        if(screenObject!=null){ //fix for 6679172,6684209
+        if(screenObject!=null && screenObject.getSearchResultsConfig()!= null){ //fix for 6679172,6684209
         ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
         SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) resultsScreenConfigArray.get(0);
         psize = objSearchScreenConfig.getPageSize();       
@@ -790,7 +791,7 @@ public class ScreenConfiguration {
     }
 
     public ArrayList<SelectItem> getPossilbeResultsTypes() {
-        if (screenObject!=null){//fix for 6679172,6684209
+        if (screenObject!=null && screenObject.getSearchResultsConfig()!=null){//fix for 6679172,6684209
         ArrayList searchResultsConfigPossibleTypes = screenObject.getSearchResultsConfig();
         Iterator iteratorSearchResultsConfigIter = searchResultsConfigPossibleTypes.iterator();
         SearchResultsConfig objSearchResultsConfig;
@@ -923,9 +924,8 @@ public class ScreenConfiguration {
         ArrayList basicSearchFieldConfigs;
         try {
             
-            if(screenObject!=null){ //fix for 6679172,6684209
+            if(screenObject!=null && screenObject.getSearchScreensConfig()!= null ){ //fix for 6679172,6684209
             ArrayList screenConfigList = screenObject.getSearchScreensConfig();
-
             Iterator iteratorScreenConfig = screenConfigList.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();

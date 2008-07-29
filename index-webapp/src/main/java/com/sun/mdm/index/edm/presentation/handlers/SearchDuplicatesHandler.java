@@ -1177,6 +1177,8 @@ public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws E
         SearchResultsConfig searchResultConfig = null;
         ArrayList arlEPaths = null;
         Iterator ePathsIterator = null;
+        
+ if(arlResultsConfig!= null){
         Iterator resultConfigIterator = arlResultsConfig.iterator();
         String objectRef = null;
 
@@ -1201,7 +1203,7 @@ public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws E
             // Add an EUID field for the PotentialDuplicateAManager.  This is required.
             arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
         }
-
+        }
        
         return arlResultFields;
     }
