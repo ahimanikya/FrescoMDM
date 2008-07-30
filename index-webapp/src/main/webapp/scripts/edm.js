@@ -2119,3 +2119,19 @@ function enableallfields(thisForm)  {
   }
  return;
 }
+ 
+
+ function showUnmergeViewSources(totalSources)  {
+	var divId;
+	for(var i = 0 ; i <totalSources ; i ++) {
+		divId = 'unmergepreviewmainDupSources'+i;
+	 	if (document.getElementById(divId).style.visibility == 'visible')    {
+			document.getElementById(divId).style.visibility = "hidden";
+			document.getElementById(divId).style.display = "none";
+		} else {
+			document.getElementById(divId).style.visibility = "visible";
+			document.getElementById(divId).style.display = "block";
+		}
+	}
+
+}
