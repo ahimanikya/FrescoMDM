@@ -256,17 +256,7 @@ public class SourceHandler {
         SystemObject[] systemObjectArrays = null;
         ArrayList systemObjectsMapList = new ArrayList();
         EPathArrayList ePathArrayList = new EPathArrayList();
-//        ArrayList newArrayList  = this.getViewEditResultsConfigArray();
-//        try {
-//            for (int i = 0; i < newArrayList.size(); i++) {
-//                FieldConfig fieldConfig = (FieldConfig) newArrayList.get(i);
-//                ePathArrayList.add(fieldConfig.getFullFieldName());
-//            }
-//        } catch (EPathException ex) {
-//            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//          
+     
 
           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
           String createDate = null;
@@ -327,6 +317,21 @@ public class SourceHandler {
                  mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()),ex);
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()),ex);
+            }else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRC200: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return null;
+                } else {
+                    mLogger.error(mLocalizer.x("SRC201: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                     return null;
+                }
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }

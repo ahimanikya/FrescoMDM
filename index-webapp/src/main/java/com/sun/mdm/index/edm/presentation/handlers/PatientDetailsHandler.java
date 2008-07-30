@@ -492,7 +492,24 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 mLogger.error(mLocalizer.x("PDH075: Service Layer User Exception occurred"), ex);
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error(mLocalizer.x("PDH076: Error  occurred"), ex);
+            }else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("PDH099: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return null;
+                } else {
+                    mLogger.error(mLocalizer.x("PDH100: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                     return null;
+                }
             }
+
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
              return null;
         }
