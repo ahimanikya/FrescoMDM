@@ -86,6 +86,16 @@ function align(thisevent,divID) {
 	divID.style.top = thisevent.clientY-180;
 	divID.style.left= thisevent.clientX;
 }
+
+		   //  merge related global javascript variables
+		   var euids="";
+		   var fromPage="";
+		   var duplicateEuids = "";
+           var euidArray = [];
+           var alleuidsArray = [];
+		   var euidValueArraySrc=[];
+		   var euidValueArrayHis=[];
+		   var previewEuidDivs=[];
 </script>
 
 		</head>
@@ -408,8 +418,8 @@ function align(thisevent,divID) {
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }  
          
-     //var selectedSearchValue = //document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
-     //document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+     var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+     document.getElementById("selectedSearchType").value = selectedSearchValue;
       if( document.advancedformData.elements[0]!=null) {
 		var i;
 		var max = document.advancedformData.length;
