@@ -410,7 +410,8 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
 
                 newFinalArray.add(newInnerArray);
             }
-            httpRequest.setAttribute("finalArrayList", newFinalArray);                
+            //httpRequest.setAttribute("finalArrayList", newFinalArray);                
+            session.setAttribute("finalArrayList", newFinalArray);                
         
           } catch (Exception ex) {
             if (ex instanceof ValidationException) {
@@ -1392,19 +1393,18 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     }
 
     
-  public HashMap previewPostMultiMergedEnterpriseObject(String destnEuidValue,String sourceEuids,String rowCount) {
+  public HashMap previewPostMultiMergedEnterpriseObject(String[]  sourceDestnEuids,String rowCount) {
         HashMap finalPreviewMap = new HashMap();
         try {
             //String destnEuidValue = (String) previewDuplicatesMap.get("destnEuid");
-            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuidValue);
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(sourceDestnEuids[0]);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
-            String[] allEUIDs = sourceEuids.split("##");
-            
+             
             
             ArrayList srcsList  = new ArrayList();
-            for (int i = 0; i < allEUIDs.length; i++) {
+            for (int i = 0; i < sourceDestnEuids.length; i++) {
                 if(i !=0 ) {
-                    srcsList.add(allEUIDs[i]);
+                    srcsList.add(sourceDestnEuids[i]);
                 }
             }    
             
@@ -1418,15 +1418,13 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                 srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
             }
 
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
             HashMap eoMultiMergePreview = new HashMap();//compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
-         
             eoMultiMergePreview.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(resulteo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));           
             eoMultiMergePreview.put("EUID", resulteo.getEUID());
             finalPreviewMap.put("eoMultiMergePreview" + rowCount, eoMultiMergePreview);
             //PUT THE DESTINATION AND SOURCE EUIDS for selecting it by default in the preview screen
-            finalPreviewMap.put("destinationEuid" + rowCount, destnEuidValue + rowCount);
+            finalPreviewMap.put("destinationEuid" + rowCount, sourceDestnEuids[0] + rowCount);
             finalPreviewMap.put("srcsList" + rowCount, srcsList);
 
         } catch (Exception ex) {
@@ -1438,25 +1436,26 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                         mLogger.error(mLocalizer.x("SDP112: Error  occurred"), ex);
                     }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-                }
+                    return null;
+       }
            
          return finalPreviewMap;
 }
   
-  public void performMultiMergeEnterpriseObject(String destnEuidValue,String sourceEuids,String rowCount) {
+  public EnterpriseObject performMultiMergeEnterpriseObject(String[]  sourceDestnEuids,String rowCount) {
+   
+      EnterpriseObject resultingEO = null;
         try {
 
             //String destnEuidValue = (String) previewDuplicatesMap.get("destnEuid");
-            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuidValue);
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(sourceDestnEuids[0]);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
-
-            String[] allEUIDs = sourceEuids.split("##");
-                       
+            
             ArrayList srcsList  = new ArrayList();
             
-            for (int i = 0; i < allEUIDs.length; i++) {
+            for (int i = 0; i < sourceDestnEuids.length; i++) {
                 if(i !=0 ) {
-                    srcsList.add(allEUIDs[i]);
+                    srcsList.add(sourceDestnEuids[i]);
                 }
             }    
             Object[] sourceEUIDObjs =  srcsList.toArray();            
@@ -1469,20 +1468,25 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             }
             
             //perform multi merge here
-            masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
-            
-        } catch (ValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP026: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()),ex);
+            resultingEO =  masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
+           
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP027: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()),ex);
-        }
+                    if (ex instanceof ValidationException) {
+                        mLogger.error(mLocalizer.x("SDP110: Service Layer Validation Exception has occurred"), ex);
+                    } else if (ex instanceof UserException) {
+                        mLogger.error(mLocalizer.x("SDP111: Service Layer User Exception occurred"), ex);
+                    } else if (!(ex instanceof ProcessingException)) {
+                        mLogger.error(mLocalizer.x("SDP112: Error  occurred"), ex);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return null;
+       }
+
       //Insert Audit logs 
        try {
        //String userName, String euid1, String euid2, String function, int screeneID, String detail
         masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               destnEuidValue, 
+                                               sourceDestnEuids[0], 
                                                "",
                                                "EUID Multi Merge Confirm",
                                                new Integer(screenObject.getID()).intValue(),
@@ -1490,16 +1494,18 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
         } catch (UserException ex) {   
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
            mLogger.error(mLocalizer.x("SDP028: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
+           return null;
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
            mLogger.error(mLocalizer.x("SDP029: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
+           return null;
         }
-        
-        
-
+        return resultingEO;
+ 
 }        
 
 }
+
 
 
 
