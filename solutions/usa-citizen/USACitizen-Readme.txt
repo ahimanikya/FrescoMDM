@@ -13,8 +13,8 @@ definitions and matches.
 
 Loading and examining the various files provided with this solution will give a good
 basis for understanding Master Index. 
- 
- 
+
+
 What is included with this Solution
 ------------------------------------
 o This readme.
@@ -27,72 +27,72 @@ o MDM-Solutions-USACitizen.zip
 
 How to use the solution.
 -----------------------
-	1. Unzip MDM-Solutions-USACitizen.zip.
+1. Unzip MDM-Solutions-USACitizen.zip.
 
-	2. Open the following projects in Netbeans 6.1.
-	
+2. Open the following projects in Netbeans 6.1.
+
     TIP: You can open all of these by opening the main USACitizen project
     and selecting the "Open Required Projects" option. 
 
-		USACitizen
-		USACitizen-ejb
-		USACitizen-war
+    USACitizen
+    USACitizen-ejb
+    USACitizen-war
 
-  3. Create the database.
+3. Create the database.
 
     Create a new user for database.  And execute following script files in this order
     to prepare the database.
 
-	 		create.sql
-			codelist.sql
-			systems.sql
+    create.sql
+    codelist.sql
+    systems.sql
 
-  4. Make sure that the GlassFish server is started.
+4. Make sure that the GlassFish server is started.
 
-	5. Right click on the USACitizen project and select 
-     "Generate Master Index Files".
+5. Right click on the USACitizen project and select 
+   "Generate Master Index Files".
 
-	6. Build and deploy the USACitizen project.
-		a) Right click on the USACitizen project and select 
-		   "Build".
-		b) Right click on the USACitizen project and select
-		   "Undeploy and Deploy".
-                   
+6. Build and deploy the USACitizen project.
+    a) Right click on the USACitizen project and select 
+       "Build".
+    b) Right click on the USACitizen project and select
+       "Undeploy and Deploy".
+
     This will bring up the "Warning - Select Server" dialog.
     Select "GlassFish V2" as the target server.  
 
-	7. Using the GlassFish Admin Console define the following:
-		Resources
-		JDBC
-		Connection pool
-		USACitizen
-		JDBC Resources
-		jdbc/USACitizenDataSource
+7. Using the GlassFish Admin Console define the following:
+    Resources
+    JDBC
+    Connection pool
+    USACitizen
+    JDBC Resources
+    jdbc/USACitizenDataSource
 
-		Configuration
-		Security
-		Realms
-		file
+    Configuration
+    Security
+    Realms
+    file
 
-		a) Select "Manage Users"
-		b) Select "New"
-       Enter the following values:
-		   User ID: 	mdm
-       Group List:     MasterIndex.Admin,Administrator
-       Password:   mdm
-                          
+    a) Select "Manage Users"
+    b) Select "New"
 
-   8. Bring up the MIDM GUI using the following URL:
-      http://localhost:<http_port_default_8080>/USACitizenMIDM
+    Enter the following values:
+        User ID: mdm
+        Group List: MasterIndex.Admin,Administrator
+        Password: mdm
+
+8. Bring up the MIDM GUI using the following URL:
+    http://localhost:<http_port_default_8080>/USACitizenMIDM
            
-   9. Log into the MIDM GUI using the username of 'mdm' and the password of 'mdm'.            
+9. Log into the MIDM GUI using the username of 'mdm' and the password of 'mdm'.            
 
-  10. Add new records:
-      a) Select the "Source Record" tab.  
-      b) Select the "Add" sub-tab.  
-      c) Select "SUN" for the System and enter a unique Local ID, such as 444-444-4444.
-      d) At a minimum specify the required values in the USACitizen Info section.
-      e) Select "Submit" to add the new record.
+10. Add new records:
+    a) Select the "Source Record" tab.  
+    b) Select the "Add" sub-tab.  
+    c) Select "SUN" for the System and enter a unique Local ID, such as 444-444-4444.
+    d) At a minimum specify the required values in the USACitizen Info section.
+    e) Select "Submit" to add the new record.
 
 Examples of what you might try
 ------------------------------
@@ -108,20 +108,20 @@ Examples of what you might try
 Updating the USACitizen model
 -----------------------------
    o Make the desired changes to the Master Index configuration files.
-      
+
    o Right click on the USACitizen project and select "Generate Master Index Files".
-      
+
    o Update the database definitions by running the following SQL commands as the 'mdm' user.
 
    TIP: Be sure to run the drop.sql script first! Then run the create.sql script.
       
-	 drop.sql
-	 create.sql
-	 codelist.sql
-	 systems.sql
+   drop.sql
+   create.sql
+   codelist.sql
+   systems.sql
              
    o  Build and deploy the USACitizen project.      
-        a) Right click on the USACitizen project and select
-           "Clean and Build".
-        b) Right click on the USACitizen project and select
-           "Undeploy and Deploy".
+       a) Right click on the USACitizen project and select
+          "Clean and Build".
+       b) Right click on the USACitizen project and select
+          "Undeploy and Deploy".
