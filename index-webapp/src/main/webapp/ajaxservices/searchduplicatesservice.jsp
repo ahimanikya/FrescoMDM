@@ -94,7 +94,7 @@ EDMValidation edmValidation = new EDMValidation();
 
 
 //List to hold the results
-ArrayList finalArrayList = new ArrayList();
+ArrayList finalArrayList = (ArrayList) session.getAttribute("finalArrayList");
 
 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
     
@@ -136,6 +136,8 @@ boolean isCancelMultiMergeEOs= (null == cancelMultiMergeEOs?false:true);
 
 String keyParam = new String();
 ArrayList collectedEuidsList = new ArrayList();
+
+HashMap previewEuidsHashMap  = new HashMap();
 %>
 
 <%
@@ -175,8 +177,10 @@ ArrayList collectedEuidsList = new ArrayList();
 				     if(potentialDuplicateSearchObject != null) {
 						   duplicateSearchObjectVE  = ExpressionFactory.newInstance().createValueExpression(potentialDuplicateSearchObject, potentialDuplicateSearchObject.getClass());
 					}
-    HashMap eoMultiMergePreviewHashMap = new HashMap();
-
+					HashMap eoMultiMergePreviewHashMap = null;
+					HashMap previewHashMap = new HashMap();
+					HashMap eoMapPreview = new HashMap();
+				 
 %>                
 
 
@@ -184,527 +188,19 @@ ArrayList collectedEuidsList = new ArrayList();
 <%if(isPreviewMerge) {%>  <!--if is Preview Merge-->
  <%
 	 HashMap previewDuplicatesMap = new HashMap();
-	 //Build the request Map 
-   while(parameterNames.hasMoreElements())   { 
-    String attributeName = (String) parameterNames.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-		
-	   if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
-		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
-			!("random".equalsIgnoreCase(attributeName)) &&
-			!("potentialDuplicateId".equalsIgnoreCase(attributeName)) &&
-			!("resolveType".equalsIgnoreCase(attributeName)) 
-		   ) {
-		     searchDuplicatesHandler.getParametersMap().put(attributeName,attributeValue);			
-	   }
-   } 
-
-//parameterNamesResolve
-   while(parameterNamesResolve.hasMoreElements())   { 
-    String attributeName = (String) parameterNamesResolve.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-      if ( ("destnEuidValue".equalsIgnoreCase(attributeName)) ||
-           ("rowcount".equalsIgnoreCase(attributeName)) ||
-           ("sourceEuids".equalsIgnoreCase(attributeName))
-		  
-		  ) { 
-		   previewDuplicatesMap.put(attributeName,attributeValue);			
-	   }
-   } 
-
-   if(previewDuplicatesMap.keySet().toArray().length  > 0) {
-     eoMultiMergePreviewHashMap = searchDuplicatesHandler.previewPostMultiMergedEnterpriseObject((String) previewDuplicatesMap.get("destnEuidValue"), (String) previewDuplicatesMap.get("sourceEuids"),(String) previewDuplicatesMap.get("rowcount"));
-   }
+     String[] srcDestnEuids = request.getParameter("PREVIEW_SRC_DESTN_EUIDS").split(",");
+     for(int i = 0 ; i < srcDestnEuids.length;i++ ) {
+		previewEuidsHashMap.put(srcDestnEuids[i]+request.getParameter("rowCount"), srcDestnEuids[i]+request.getParameter("rowCount") );
+	 }
+ 	  
+     eoMultiMergePreviewHashMap = searchDuplicatesHandler.previewPostMultiMergedEnterpriseObject(srcDestnEuids,(String) request.getParameter("rowCount"));
     
 %>
-
-
-<%
- //Final duplicates array list here
- finalArrayList = searchDuplicatesHandler.performSubmit();
-
-%>
-<% if (finalArrayList != null)   {
-%>
-
- <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
-         <tr>
-           <td  align="left" width="50%">
-			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=finalArrayList.size()%>
-            </td>
-            <td colspan="2" style="align:left;width:50%">
-				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
-                                       rendered="#{Operations.potDup_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
-				<% } %>
-            </td>
-			</tr>
-       </table>    
-<% } %>
-
-
-<% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
- <!-- Output here -->
-<table>
-<tr><td>
-<script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "";		 
-</script>
-</td>
-</tr>
-</table>
-
-
-
-                <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
-
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                 <%}%>
-                <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
-
-                %>
-                <div id="dataDiv" style="overflow:auto;height:1024px;border: 1px solid #6B757B;">
-                    <div>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                            <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
-                                
-                                for(int fac=0;fac<finalArrayList.size();fac++) {
-                                   
-                                %>
-                            <div id="mainEuidDiv<%=countMain%>">
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td><img src="images/spacer.gif" width="15"></td>
-                                        <%
-                                        HashMap resultArrayMapMain = new HashMap();
-                                        HashMap resultArrayMapCompare = new HashMap();
-                                        String epathValue;
-
-                                        ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
-									    //accumilate the duplicate euids here
-                                        StringBuffer arlInnerEuids = new StringBuffer();
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
-                                        for (int j = 0; j < arlInner.size(); j++) {
-                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-
-                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
-                                               String  weight =  eoHashMapValues.get("Weight").toString();
-                                               String  potDupStatus = (String) eoHashMapValues.get("Status");
-                                               String  potDupId = (String) eoHashMapValues.get("PotDupId");
-
-   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
-                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
-                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
-                                               
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
-											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
-
-                                               arlInnerEuids.append((String) eoHashMapValues.get("EUID") + ",");
-											   //arlInnerEuids.add((String) eoHashMapValues.get("EUID") );
-											   
-                                               // Code to render headers
-                                               if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
-                                                } else if (j==0)
-                                                {    dupHeading = "<b> Main EUID</b>";
-                                                }
-                                               //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
-                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-                                                if (j > 0) {
-                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                } else {
-                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                }
-                                              }
-                                        
-					                
-                                               
-                                        %>
-                                       <%if(j == 0 ) {%>
-                                        <td valign="top">
-                                            <div id="mainEuidContent">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
-                                                    </tr> 
-                                                </table>
-                                            </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-													<tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%><%=fac%>" class="yellow">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                             <%
-
-													    keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){
-							
-							                %>
-                                                          <a title="<%=fieldValuesMapSource.get("EUID")%>" class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-                                                        </td>
-                                                    </tr>
-                                                        
-                                                </table>
-												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-														epathValue = fieldConfigMap.getFullFieldName();
-                                                        
-                                                     %>
-                                                    <tr>
-                                                        <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-
-                                                        </td>                                                        
-                                                    </tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
-                                              </table>
-											  </div>
-                                            </div>   
-                                        </td>
-                                        <%} else {%> <!--For duplicates here-->  
-
-                                            <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
-                                                 <div style="overflow:auto;width:507px;overflow-y:hidden;">
-                                                     <table>
-                                                         <tr>
-                                            <%}%>
-                                        
-                                           <td valign="top"> 
-                                            <% 
-                                                if ("R".equalsIgnoreCase(potDupStatus)) {       
-                                                 %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%><%=fac%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            
-                                            <%}%>        
-
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
-                                                    </tr> 
-                                                    <tr>
-                                                      <td valign="top" class="dupfirst">
-   												      <%
-                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-		        			                            %>
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-    
-                                                      <%} else {%>        
-                                                        <%
-													      keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                           <a title="<%=fieldValuesMapSource.get("EUID")%>" class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-													  <%} %>        
-
-                                                      </td>
-                                                    </tr>
-                                                </table>
-                                            <%
-                                            String userAgent = request.getHeader("User-Agent");
-                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
-                                            response.setHeader("Vary", "User-Agent");
-                                         %>
-                                         <% if (isFirefox) {%>
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
-                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
-                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
-                                                 <%=weight%>
-                                             </div>                                             
-                                         </div>
-                                         
-                                           <% }else{%>
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                         </div>                                             
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                             <%=weight%>
-                                         </div> 
-                                      
-                                         <%}%>
-										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
-                                                    <tr>                                                        
-                                                       <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
-
-                                                        </td>        
-                                                    </tr>
-                                                    <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-												
-                                                 	<%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
-
-												        <a title="<h:outputText value="#{msgs.potential_dup_button}"/>" class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
-                                                         <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </a>  
-														<%}%>
-
-												<%}else{%>
-												<%
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-												    	<%if(operations.isPotDup_Unresolve()) {%>
-
-                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
-															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
-                                                            </a>   
-															<%}%>
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
-                                                    <tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                            <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
-                                                       </tr>
-                                                     </table>
-                                                 </div>
-                                                </td>
-                                            <%}%>
-                                        
-                                        <%}%>
-                                        <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
-                                        <%}%>
-                                      <td  valign="top">
-									  <%
-										keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-											if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
-									 	   <script>
-											   document.getElementById('mainEuidContentDiv'+'<%=eoMultiMergePreviewHashMap.get("destinationEuid"+new Integer(fac).toString())%>').className='blue';
-										    </script>
-									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
-									  <%} else {%>
-   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
-									  <%}%>
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-                                              <tr>
-                                                  <td width="100%" class="menutop1"><h:outputText value="#{msgs.preview_column_text}"/></td>
-                                              </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-												  keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-											       if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {
-														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
-
-                                                 <tr>
-                                                        <td>
-                                                        <%
-													 keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-													 if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-                                                          <b><%=previewHashMap.get("EUID")%></b>
-														<%} else {%>
-														  &nbsp;
-														<%}%>														
-														</td>
-                                                </tr>
-                                                <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        epathValue = fieldConfig.getFullFieldName();                                            
-                                                    %>
-
-                                                    <tr>
-                                                        <td>
-														 <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
-														        &nbsp;
-														      <%}%>
-														   <%} else {%>
-														     &nbsp;
-														   <%}%>
-														</td>
-
-                                                    </tr>
-                                                <%}%>
-
-                                                <tr>
-                                                    <td valign="top" align="left">
-
-
-													  <nobr>
-                                                        <!--div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
-                                                               <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
-                                                               </a>
-                                                              <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                                       	       </a>
-                                                           </div-->
-
-                                                          <form id="multiMergeFinal<%=fac%>" name="multiMergeFinal<%=fac%>">
-														    <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-															  if(eoMultiMergePreviewHashMap.get(keyParam)  != null ) {
-                                                            %>
-                                                       	     <%if(operations.isEO_Merge()) {%>
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.source_submenu_merge}"/>"
-															   onclick="javascript:getFormValuesMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                       	         <span><h:outputText value="#{msgs.source_submenu_merge}"/></span>
-                                                       	       </a>
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                        	     <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                                       	       </a>
-                                                       	     <%}%>
-
-															<%}%>
-                                                            </form>   
-
-													  </nobr>
-                                                    </td>
-                                                </tr>
-                                                    
-                                                    <tr>
-                                                       <td valign="top" align="right">
-                                                            <!--Show compare duplicates button-->
-                                                         <%
-                                                            //ValueExpression euidVaueExpressionList = //ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-														    String finalEuidsString = arlInnerEuids.toString();
-                                                            finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
-                                                         %>
-                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
-															  </a>
-
-														</td>
-                                                    </tr>
-                                                        
-
-                                            </table>
-                                      </div>  
-                                    </div>
-                                    
-                           </tr>
-                        </table>
-                    </div> 
-                    <div id="separator"  class="sep"></div>
-                         <%}%> <!--final Array list count loop -->
-                         <%}%> <!-- final Array list  condition in session-->
-               </div> 
-               <%}%>  
-               <%
-                   if (finalArrayList != null && finalArrayList.size() == 0) {
-               %>
-               <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
-                             </td>
-                         </tr>
-                       </table>
-               </div>
-               <%}%>
-               
-            </div>
-            
-
-
-<% } else { %> <!-- End results!= null -->
+ 
+ <%if(eoMultiMergePreviewHashMap == null) {
+	 finalArrayList = null;
+	 
+	 %>
     <div class="ajaxalert">
     <table>
 	   <tr>
@@ -720,1068 +216,99 @@ ArrayList collectedEuidsList = new ArrayList();
           }
 		  msgs.append("</ul>");		  
      %>     	 
-
+     <%=msgs%>
 	 <script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=msgs%>";
+   		 euids="";
+         euidArray = [];
+         alleuidsArray = [];
+		 previewEuidDivs = [];
 	 </script>
 	   </td>
 	   </tr>
 	 <table>
 	 </div>
-
-<% } %>
-
-//
-<%} else if(isCancelMultiMergeEOs) {%>  <!--if  Cancel Multi Merge EOs -->
-
-
- <%
-	 HashMap previewDuplicatesMap = new HashMap();
-	 //Build the request Map 
-   while(parameterNames.hasMoreElements())   { 
-    String attributeName = (String) parameterNames.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-		
-	   if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
-		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
-			!("random".equalsIgnoreCase(attributeName)) &&
-			!("potentialDuplicateId".equalsIgnoreCase(attributeName)) &&
-			!("resolveType".equalsIgnoreCase(attributeName)) 
-		   ) {
-		     searchDuplicatesHandler.getParametersMap().put(attributeName,attributeValue);			
-	   }
-   } 
-
-%>
-
-<!-- redisplay the output here START-->
-<%  
-	//finalArrayList = searchDuplicatesHandler.resetOutputList(searchDuplicatesHandler.getPdSearchObject());
-   //Final duplicates array list here
-    finalArrayList = searchDuplicatesHandler.performSubmit();
-	if (finalArrayList != null)   {
-%>
-
- <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
-         <tr>
-           <td  align="left" width="50%">
-			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=finalArrayList.size()%>
-            </td>
-            <td colspan="2" style="align:left;width:50%">
-				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
-                                       rendered="#{Operations.potDup_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
-				<% } %>
-            </td>
-			</tr>
-       </table>    
-<% } %>
-
-
-<% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
- <!-- Output here -->
-<table>
-<tr><td>
-<script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "";		 
-</script>
-</td>
-</tr>
-</table>
-
-
-
-                <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
-
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                 <%}%>
-                <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
-
-                %>
-                <div id="dataDiv" style="overflow:auto;height:1024px;border: 1px solid #6B757B;">
-                    <div>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                            <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
-                                
-                                for(int fac=0;fac<finalArrayList.size();fac++) {
-                                   
-                                %>
-                            <div id="mainEuidDiv<%=countMain%>">
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td><img src="images/spacer.gif" width="15"></td>
-                                        <%
-                                        HashMap resultArrayMapMain = new HashMap();
-                                        HashMap resultArrayMapCompare = new HashMap();
-                                        String epathValue;
-
-                                        ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
-									    //accumilate the duplicate euids here
-                                        StringBuffer arlInnerEuids = new StringBuffer();
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
-                                        for (int j = 0; j < arlInner.size(); j++) {
-                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-
-                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
-                                               String  weight =  eoHashMapValues.get("Weight").toString();
-                                               String  potDupStatus = (String) eoHashMapValues.get("Status");
-                                               String  potDupId = (String) eoHashMapValues.get("PotDupId");
-
-   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
-                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
-                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
-                                               
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
-											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
-
-                                               arlInnerEuids.append((String) eoHashMapValues.get("EUID") + ",");
-											   //arlInnerEuids.add((String) eoHashMapValues.get("EUID") );
-											   
-
-                                               // Code to render headers
-                                               if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
-                                                } else if (j==0)
-                                                {    dupHeading = "<b> Main EUID</b>";
-                                                }
-                                               //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
-                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-                                                if (j > 0) {
-                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                } else {
-                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                }
-                                              }
-                                        
-					                
-                                               
-                                        %>
-                                       <%if(j == 0 ) {%>
-                                        <td valign="top">
-                                            <div id="mainEuidContent">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
-                                                    </tr> 
-                                                </table>
-                                            </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-													<tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                        <%
-														keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)"  title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-                                                        </td>
-                                                    </tr>
-                                                        
-                                                </table>
-												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-														epathValue = fieldConfigMap.getFullFieldName();
-                                                        
-                                                     %>
-                                                    <tr>
-                                                        <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-
-                                                        </td>                                                        
-                                                    </tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
-                                              </table>
-											  </div>
-                                            </div>   
-                                        </td>
-                                        <%} else {%> <!--For duplicates here-->  
-
-                                            <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
-                                                 <div style="overflow:auto;width:507px;overflow-y:hidden;">
-                                                     <table>
-                                                         <tr>
-                                            <%}%>
-                                        
-                                           <td valign="top">
-
-                                            <% 
-                                                if ("R".equalsIgnoreCase(potDupStatus)) {       
-                                                 %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%}%>        
-
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
-                                                    </tr> 
-                                                    <tr>
-                                                      <td valign="top" class="dupfirst">
-   												      <%
-                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-		        			                            %>
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-    
-                                                      <%} else {%>        
-                                                        <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-													  <%} %>        
-
-                                                      </td>
-                                                    </tr>
-                                                </table>
-                                            <%
-                                            String userAgent = request.getHeader("User-Agent");
-                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
-                                            response.setHeader("Vary", "User-Agent");
-                                         %>
-                                         <% if (isFirefox) {%>
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
-                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
-                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
-                                                 <%=weight%>
-                                             </div>                                             
-                                         </div>
-                                         
-                                           <% }else{%>
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                         </div>                                             
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                             <%=weight%>
-                                         </div> 
-                                      
-                                         <%}%>
-										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
-                                                    <tr>                                                        
-                                                       <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
-
-                                                        </td>        
-                                                    </tr>
-                                                    <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-												  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
-
-                                                 <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
-                                                             <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </a>  
-												  <%}%>
-												<%}else{%>
-												<%
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-												    	<%if(operations.isPotDup_Unresolve()) {%>
-
-                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
-															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
-                                                            </a>   
-															<%}%>
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
-                                                    <tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                            <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
-                                                       </tr>
-                                                     </table>
-                                                 </div>
-                                                </td>
-                                            <%}%>
-                                        
-                                        <%}%>
-                                        <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
-                                        <%}%>
-                                      <td  valign="top">
-									  <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-										if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
-									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
-									  <%} else {%>
-   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
-									  <%}%>
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-                                              <tr>
-                                                  <td width="100%" class="menutop1"><h:outputText value="#{msgs.preview_column_text}"/></td>
-                                              </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-
-											       if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {
-														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
-
-                                                 <tr>
-                                                        <td>
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-                                                          <b><%=previewHashMap.get("EUID")%></b>
-														<%} else {%>
-														  &nbsp;
-														<%}%>														
-														</td>
-                                                </tr>
-                                                <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        epathValue = fieldConfig.getFullFieldName();                                            
-                                                    %>
-
-                                                    <tr>
-                                                        <td>
-														 <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
-														        &nbsp;
-														      <%}%>
-														   <%} else {%>
-														     &nbsp;
-														   <%}%>
-														</td>
-
-                                                    </tr>
-                                                <%}%>
-
-                                                <tr>
-                                                    <td valign="top" align="left">
-													 <nobr>
-													    <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
-														    <%if(operations.isEO_Merge()) {%>
-
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
-                                                               </a>
-                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-																  
-                                                       	       </a>
-														 <%}%>
-                                                        </div>
-
-													  </nobr>
-                                                  </td>
-                                                </tr>
-                                                    
-                                                    <tr>
-                                                       <td valign="top" align="right">
-                                                            <!--Show compare duplicates button-->
-                                                         <%
-                                                            //ValueExpression euidVaueExpressionList = //ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-														    String finalEuidsString = arlInnerEuids.toString();
-                                                            finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
-                                                         %>
-                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
-															  </a>
-
-														</td>
-                                                    </tr>
-                                                        
-
-                                            </table>
-                                      </div>  
-                                    </div>
-                                    
-                           </tr>
-                        </table>
-                    </div> 
-                    <div id="separator"  class="sep"></div>
-                         <%}%> <!--final Array list count loop -->
-                         <%}%> <!-- final Array list  condition in session-->
-               </div> 
-               <%}%>  
-               <%
-                   if (finalArrayList != null && finalArrayList.size() == 0) {
-               %>
-               <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
-                             </td>
-                         </tr>
-                       </table>
-               </div>
-               <%}%>
-               
-            </div>
-            
-
-
-<% } else { %> <!-- End results!= null -->
-    <div class="ajaxalert">
-    <table>
+  <%} else {%>
+     <table>
 	   <tr>
 	     <td>
-     <%
-		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-	      StringBuffer msgs = new StringBuffer("<ul>");	
-          while (messagesIter.hasNext()) {
-                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
-                     msgs.append("<li>");
-					 msgs.append(facesMessage.getSummary());
-					 msgs.append("</li>");
-          }
-		  msgs.append("</ul>");		  
-     %>     	 
+  	 
 
 	 <script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=msgs%>";
+		document.getElementById('MERGE_SRC_DESTN_EUIDS<%=request.getParameter("rowCount")%>').value="<%=request.getParameter("PREVIEW_SRC_DESTN_EUIDS")%>";
+ 		for(var i = 0 ;i < previewEuidDivs.length;i++) {
+ 		   if(document.getElementById(previewEuidDivs[i]) != null ) {
+             document.getElementById(previewEuidDivs[i]).className = 'blue';
+		   }
+ 		}
+		 euids="";
+         euidArray = [];
+         alleuidsArray = []; 
 	 </script>
 	   </td>
 	   </tr>
 	 <table>
-	 </div>
+ 
+  <%}%>
 
-<% } %>
 
+<%} else if(isCancelMultiMergeEOs) {
+	  //remove the final arraylist from the session
+     session.removeAttribute("finalArrayList");
+
+	%>  <!--if  Cancel Multi Merge EOs -->
+<table>
+  <tr>
+     <td>
+	   <script>
+	        getFormValues('advancedformData');
+            ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','') ;
+			euids="";
+            euidArray = [];
+            alleuidsArray = []; 
+			previewEuidDivs = [];
+      </script>
+	 </td>
+  </tr>
+</table>
+ 
 <%} else if(isMultiMergeEOs) {%>  <!--if MERGE EO's -->
  <%
-	 HashMap previewDuplicatesMap = new HashMap();
-	 //Build the request Map 
-   while(parameterNames.hasMoreElements())   { 
-    String attributeName = (String) parameterNames.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-		
-	   if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
-		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
-			!("random".equalsIgnoreCase(attributeName)) &&
-			!("potentialDuplicateId".equalsIgnoreCase(attributeName)) &&
-			!("resolveType".equalsIgnoreCase(attributeName)) 
-		   ) {
-		     searchDuplicatesHandler.getParametersMap().put(attributeName,attributeValue);			
-	   }
-   } 
+	HashMap previewDuplicatesMap = new HashMap();
+  
+    String[] srcDestnEuids = request.getParameter("MERGE_SRC_DESTN_EUIDS").split(",");
 
-//parameterNamesResolve
-   while(parameterNamesResolve.hasMoreElements())   { 
-    String attributeName = (String) parameterNamesResolve.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-      if ( ("destnEuidValue".equalsIgnoreCase(attributeName)) ||
-           ("rowcount".equalsIgnoreCase(attributeName)) ||
-           ("sourceEuids".equalsIgnoreCase(attributeName))
-		  
-		  ) { 
-		   previewDuplicatesMap.put(attributeName,attributeValue);			
-	   }
-   } 
+ 	  
+    searchDuplicatesHandler.performMultiMergeEnterpriseObject(srcDestnEuids,request.getParameter("rowCount"));
+   
+    session.removeAttribute("finalArrayList");
 
-   if(previewDuplicatesMap.keySet().toArray().length  > 0) {
-     searchDuplicatesHandler.performMultiMergeEnterpriseObject((String) previewDuplicatesMap.get("destnEuidValue"), (String) previewDuplicatesMap.get("sourceEuids"),(String) previewDuplicatesMap.get("rowcount"));
-   }
+    String finalEuids  = request.getParameter("MERGE_SRC_DESTN_EUIDS").replaceAll(srcDestnEuids[0]+"," , "");
     
 %>
-
-<!-- redisplay the output here START-->
-<%  
-	//finalArrayList = searchDuplicatesHandler.resetOutputList(searchDuplicatesHandler.getPdSearchObject());
-   //Final duplicates array list here
-    finalArrayList = searchDuplicatesHandler.performSubmit();
-	if (finalArrayList != null)   {
-%>
-
- <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
-         <tr>
-           <td  align="left" width="50%">
-			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=finalArrayList.size()%>
-            </td>
-            <td colspan="2" style="align:left;width:50%">
-				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
-                                       rendered="#{Operations.potDup_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
-				<% } %>
-            </td>
-			</tr>
-       </table>    
-<% } %>
-
-
-<% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
- <!-- Output here -->
 <table>
-<tr><td>
-<script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "";		 
-</script>
-</td>
-</tr>
+  <tr>
+     <td>
+	   <script>
+	        //getFormValues('advancedformData');
+            //ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','') ;
+			euids="";
+            euidArray = [];
+            alleuidsArray = []; 
+		    previewEuidDivs = [];
+
+		    var messages = document.getElementById("messages");
+	        messages.innerHTML= '<%=finalEuids%>  <%=bundle.getString("so_merge_confirm_text")%>  <%=srcDestnEuids[0]%>' ;		 
+
+      </script>
+	 </td>
+  </tr>
 </table>
 
-
-
-                <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
-
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                 <%}%>
-                <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
-
-                %>
-                <div id="dataDiv" style="overflow:auto;height:1024px;border: 1px solid #6B757B;">
-                    <div>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                            <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
-                                
-                                for(int fac=0;fac<finalArrayList.size();fac++) {
-                                   
-                                %>
-                            <div id="mainEuidDiv<%=countMain%>">
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td><img src="images/spacer.gif" width="15"></td>
-                                        <%
-                                        HashMap resultArrayMapMain = new HashMap();
-                                        HashMap resultArrayMapCompare = new HashMap();
-                                        String epathValue;
-
-                                        ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
-									    //accumilate the duplicate euids here
-                                        StringBuffer arlInnerEuids = new StringBuffer();
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
-                                        for (int j = 0; j < arlInner.size(); j++) {
-                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-
-                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
-                                               String  weight =  eoHashMapValues.get("Weight").toString();
-                                               String  potDupStatus = (String) eoHashMapValues.get("Status");
-                                               String  potDupId = (String) eoHashMapValues.get("PotDupId");
-
-   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
-                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
-                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
-                                               
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
-											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
-
-                                               arlInnerEuids.append((String) eoHashMapValues.get("EUID") + ",");
-											   //arlInnerEuids.add((String) eoHashMapValues.get("EUID") );
-											   
-
-                                               // Code to render headers
-                                               if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
-                                                } else if (j==0)
-                                                {    dupHeading = "<b> Main EUID</b>";
-                                                }
-                                               //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
-                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-                                                if (j > 0) {
-                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                } else {
-                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                }
-                                              }
-                                        
-					                
-                                               
-                                        %>
-                                       <%if(j == 0 ) {%>
-                                        <td valign="top">
-                                            <div id="mainEuidContent">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
-                                                    </tr> 
-                                                </table>
-                                            </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-													<tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                        <%
-														keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-                                                        </td>
-                                                    </tr>
-                                                        
-                                                </table>
-												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-														epathValue = fieldConfigMap.getFullFieldName();
-                                                        
-                                                     %>
-                                                    <tr>
-                                                        <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-
-                                                        </td>                                                        
-                                                    </tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
-                                              </table>
-											  </div>
-                                            </div>   
-                                        </td>
-                                        <%} else {%> <!--For duplicates here-->  
-
-                                            <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
-                                                 <div style="overflow:auto;width:507px;overflow-y:hidden;">
-                                                     <table>
-                                                         <tr>
-                                            <%}%>
-                                        
-                                           <td valign="top">
-
-                                            <% 
-                                                if ("R".equalsIgnoreCase(potDupStatus)) {       
-                                                 %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%}%>        
-
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
-                                                    </tr> 
-                                                    <tr>
-                                                      <td valign="top" class="dupfirst">
-   												      <%
-                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-		        			                            %>
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-    
-                                                      <%} else {%>        
-                                                        <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-													  <%} %>        
-
-                                                      </td>
-                                                    </tr>
-                                                </table>
-                                            <%
-                                            String userAgent = request.getHeader("User-Agent");
-                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
-                                            response.setHeader("Vary", "User-Agent");
-                                         %>
-                                         <% if (isFirefox) {%>
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
-                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
-                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
-                                                 <%=weight%>
-                                             </div>                                             
-                                         </div>
-                                         
-                                           <% }else{%>
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                         </div>                                             
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                             <%=weight%>
-                                         </div> 
-                                      
-                                         <%}%>
-										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
-                                                    <tr>                                                        
-                                                       <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
-
-                                                        </td>        
-                                                    </tr>
-                                                    <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-												  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
-
-                                                 <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
-                                                             <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </a>  
-												  <%}%>
-												<%}else{%>
-												<%
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-												    	<%if(operations.isPotDup_Unresolve()) {%>
-
-                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
-															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
-                                                            </a>   
-															<%}%>
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
-                                                    <tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                            <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
-                                                       </tr>
-                                                     </table>
-                                                 </div>
-                                                </td>
-                                            <%}%>
-                                        
-                                        <%}%>
-                                        <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
-                                        <%}%>
-                                      <td  valign="top">
-									  <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-										if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
-									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
-									  <%} else {%>
-   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
-									  <%}%>
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-                                              <tr>
-                                                  <td width="100%" class="menutop1"><h:outputText value="#{msgs.preview_column_text}"/></td>
-                                              </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-
-											       if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {
-														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
-
-                                                 <tr>
-                                                        <td>
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-                                                          <b><%=previewHashMap.get("EUID")%></b>
-														<%} else {%>
-														  &nbsp;
-														<%}%>														
-														</td>
-                                                </tr>
-                                                <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        epathValue = fieldConfig.getFullFieldName();                                            
-                                                    %>
-
-                                                    <tr>
-                                                        <td>
-														 <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
-														        &nbsp;
-														      <%}%>
-														   <%} else {%>
-														     &nbsp;
-														   <%}%>
-														</td>
-
-                                                    </tr>
-                                                <%}%>
-
-                                                <tr>
-                                                    <td valign="top" align="left">
-													  <nobr>
-													    <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
-														    <%if(operations.isEO_Merge()) {%>
-
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
-                                                               </a>
-                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                                       	       </a>
-														 <%}%>                       
-														 </div>
-
-													  </nobr>
-                                                    </td>
-                                                </tr>
-                                                    
-                                                    <tr>
-                                                       <td valign="top" align="right">
-                                                            <!--Show compare duplicates button-->
-                                                         <%
-                                                            //ValueExpression euidVaueExpressionList = //ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-														    String finalEuidsString = arlInnerEuids.toString();
-                                                            finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
-                                                         %>
-                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
-															  </a>
-
-														</td>
-                                                    </tr>
-                                                        
-
-                                            </table>
-                                      </div>  
-                                    </div>
-                                    
-                           </tr>
-                        </table>
-                    </div> 
-                    <div id="separator"  class="sep"></div>
-                         <%}%> <!--final Array list count loop -->
-                         <%}%> <!-- final Array list  condition in session-->
-               </div> 
-               <%}%>  
-               <%
-                   if (finalArrayList != null && finalArrayList.size() == 0) {
-               %>
-               <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
-                             </td>
-                         </tr>
-                       </table>
-               </div>
-               <%}%>
-               
-            </div>
-            
-
-
-<% } else { %> <!-- End results!= null -->
-    <div class="ajaxalert">
-    <table>
-	   <tr>
-	     <td>
-     <%
-		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-	      StringBuffer msgs = new StringBuffer("<ul>");	
-          while (messagesIter.hasNext()) {
-                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
-                     msgs.append("<li>");
-					 msgs.append(facesMessage.getSummary());
-					 msgs.append("</li>");
-          }
-		  msgs.append("</ul>");		  
-     %>     	 
-
-	 <script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=msgs%>";
-	 </script>
-	   </td>
-	   </tr>
-	 <table>
-	 </div>
-
-<% } %>
-
+ 
 <%} else if(isUnresolveDuplicate) {%>  <!--if Resolve Duplicate-->
  <%
 	 HashMap resolveDuplicatesMap = new HashMap();
-	 //Build the request Map 
-   while(parameterNames.hasMoreElements())   { 
-    String attributeName = (String) parameterNames.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-		
-	   if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
-		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
-			!("random".equalsIgnoreCase(attributeName)) &&
-			!("potentialDuplicateId".equalsIgnoreCase(attributeName)) &&
-			!("resolveType".equalsIgnoreCase(attributeName)) 
-		   ) {
-		     searchDuplicatesHandler.getParametersMap().put(attributeName,attributeValue);			
-	   }
-   } 
-
-//parameterNamesResolve
+  //parameterNamesResolve
    while(parameterNamesResolve.hasMoreElements())   { 
     String attributeName = (String) parameterNamesResolve.nextElement();
     String attributeValue = (String) request.getParameter(attributeName);
@@ -1793,511 +320,29 @@ ArrayList collectedEuidsList = new ArrayList();
    } 
 
    searchDuplicatesHandler.unresolvePotentialDuplicateAction(resolveDuplicatesMap);
+
+   //remove the final arraylist from the session
+   session.removeAttribute("finalArrayList");
+
     
 %>
-
-<!-- redisplay the output here START-->
-<%  
-	//finalArrayList = searchDuplicatesHandler.resetOutputList(searchDuplicatesHandler.getPdSearchObject());
-   //Final duplicates array list here
-    finalArrayList = searchDuplicatesHandler.performSubmit();
-	if (finalArrayList != null)   {
-%>
-
- <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
-         <tr>
-           <td  align="left" width="50%">
-			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=finalArrayList.size()%>
-            </td>
-            <td colspan="2" style="align:left;width:50%">
-				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
-                                       rendered="#{Operations.potDup_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
-				<% } %>
-            </td>
-			</tr>
-       </table>    
-<% } %>
-
-
-<% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
- <!-- Output here -->
-<table>
-<tr><td>
-<script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "";		 
-</script>
-</td>
-</tr>
+  <table>
+  <tr>
+     <td>
+	   <script>
+	        //getFormValues('advancedformData');
+            //ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')  
+           euids="";
+           euidArray = [];
+           alleuidsArray = [];
+		   previewEuidDivs = [];
+      </script>
+	 </td>
+  </tr>
 </table>
-
-
-
-                <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
-
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                 <%}%>
-                <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
-
-                %>
-                <div id="dataDiv" style="overflow:auto;height:1024px;border: 1px solid #6B757B;">
-                    <div>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                            <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
-                                
-                                for(int fac=0;fac<finalArrayList.size();fac++) {
-                                   
-                                %>
-                            <div id="mainEuidDiv<%=countMain%>">
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td><img src="images/spacer.gif" width="15"></td>
-                                        <%
-                                        HashMap resultArrayMapMain = new HashMap();
-                                        HashMap resultArrayMapCompare = new HashMap();
-                                        String epathValue;
-
-                                        ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
-									    //accumilate the duplicate euids here
-                                        StringBuffer arlInnerEuids = new StringBuffer();
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
-                                        for (int j = 0; j < arlInner.size(); j++) {
-                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-
-                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
-                                               String  weight =  eoHashMapValues.get("Weight").toString();
-                                               String  potDupStatus = (String) eoHashMapValues.get("Status");
-                                               String  potDupId = (String) eoHashMapValues.get("PotDupId");
-
-   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
-                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
-                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
-                                               
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
-											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
-
-                                               arlInnerEuids.append((String) eoHashMapValues.get("EUID") + ",");
-											   //arlInnerEuids.add((String) eoHashMapValues.get("EUID") );
-											   
-
-                                               // Code to render headers
-                                               if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
-                                                } else if (j==0)
-                                                {    dupHeading = "<b> Main EUID</b>";
-                                                }
-                                               //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
-                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-                                                if (j > 0) {
-                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                } else {
-                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                }
-                                              }
-                                        
-					                
-                                               
-                                        %>
-                                       <%if(j == 0 ) {%>
-                                        <td valign="top">
-                                            <div id="mainEuidContent">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
-                                                    </tr> 
-                                                </table>
-                                            </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-													<tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                        <%
-														keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                        <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                            <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-                                                        </td>
-                                                    </tr>
-                                                        
-                                                </table>
-												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-														epathValue = fieldConfigMap.getFullFieldName();
-                                                        
-                                                     %>
-                                                    <tr>
-                                                        <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-
-                                                        </td>                                                        
-                                                    </tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
-                                              </table>
-											  </div>
-                                            </div>   
-                                        </td>
-                                        <%} else {%> <!--For duplicates here-->  
-
-                                            <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
-                                                 <div style="overflow:auto;width:507px;overflow-y:hidden;">
-                                                     <table>
-                                                         <tr>
-                                            <%}%>
-                                        
-                                           <td valign="top">
-
-                                            <% 
-                                                if ("R".equalsIgnoreCase(potDupStatus)) {       
-                                                 %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%}%>        
-
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
-                                                    </tr> 
-                                                    <tr>
-                                                      <td valign="top" class="dupfirst">
-   												      <%
-                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-		        			                            %>
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-    
-                                                      <%} else {%>        
-                                                        <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-													  <%} %>        
-
-                                                      </td>
-                                                    </tr>
-                                                </table>
-                                            <%
-                                            String userAgent = request.getHeader("User-Agent");
-                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
-                                            response.setHeader("Vary", "User-Agent");
-                                         %>
-                                         <% if (isFirefox) {%>
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
-                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
-                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
-                                                 <%=weight%>
-                                             </div>                                             
-                                         </div>
-                                         
-                                           <% }else{%>
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                         </div>                                             
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                             <%=weight%>
-                                         </div> 
-                                      
-                                         <%}%>
-										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
-                                                    <tr>                                                        
-                                                       <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
-
-                                                        </td>        
-                                                    </tr>
-                                                    <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-												  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
-
-                                                 <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
-                                                             <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </a>  
-												  <%}%>
-												<%}else{%>
-												<%
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-												    	<%if(operations.isPotDup_Unresolve()) {%>
-
-                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
-															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
-                                                            </a>   
-															<%}%>
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
-                                                    <tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                            <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
-                                                       </tr>
-                                                     </table>
-                                                 </div>
-                                                </td>
-                                            <%}%>
-                                        
-                                        <%}%>
-                                        <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
-                                        <%}%>
-                                      <td  valign="top">
-									  <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-										if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
-									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
-									  <%} else {%>
-   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
-									  <%}%>
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-                                              <tr>
-                                                  <td width="100%" class="menutop1"><h:outputText value="#{msgs.preview_column_text}"/></td>
-                                              </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-
-											       if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {
-														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
-
-                                                 <tr>
-                                                        <td>
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-                                                          <b><%=previewHashMap.get("EUID")%></b>
-														<%} else {%>
-														  &nbsp;
-														<%}%>														
-														</td>
-                                                </tr>
-                                                <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        epathValue = fieldConfig.getFullFieldName();                                            
-                                                    %>
-
-                                                    <tr>
-                                                        <td>
-														 <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
-														        &nbsp;
-														      <%}%>
-														   <%} else {%>
-														     &nbsp;
-														   <%}%>
-														</td>
-
-                                                    </tr>
-                                                <%}%>
-
-                                                <tr>
-                                                    <td valign="top" align="left">
-													  <nobr>
-                                                        <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
-														    <%if(operations.isEO_Merge()) {%>
-
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
-                                                               </a>
-                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                                       	       </a>
-														 <%}%>                       
-														 </div>
-
-													  </nobr>
-                                                    </td>
-                                                </tr>
-                                                    
-                                                    <tr>
-                                                       <td valign="top" align="right">
-                                                            <!--Show compare duplicates button-->
-                                                         <%
-                                                            //ValueExpression euidVaueExpressionList = //ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-														    String finalEuidsString = arlInnerEuids.toString();
-                                                            finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
-                                                         %>
-                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
-															  </a>
-
-														</td>
-                                                    </tr>
-                                                        
-
-                                            </table>
-                                      </div>  
-                                    </div>
-                                    
-                           </tr>
-                        </table>
-                    </div> 
-                    <div id="separator"  class="sep"></div>
-                         <%}%> <!--final Array list count loop -->
-                         <%}%> <!-- final Array list  condition in session-->
-               </div> 
-               <%}%>  
-               <%
-                   if (finalArrayList != null && finalArrayList.size() == 0) {
-               %>
-               <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
-                             </td>
-                         </tr>
-                       </table>
-               </div>
-               <%}%>
-               
-            </div>
-            
-
-
-<% } else { %> <!-- End results!= null -->
-    <div class="ajaxalert">
-    <table>
-	   <tr>
-	     <td>
-     <%
-		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-	      StringBuffer msgs = new StringBuffer("<ul>");	
-          while (messagesIter.hasNext()) {
-                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
-                     msgs.append("<li>");
-					 msgs.append(facesMessage.getSummary());
-					 msgs.append("</li>");
-          }
-		  msgs.append("</ul>");		  
-     %>     	 
-
-	 <script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=msgs%>";
-	 </script>
-	   </td>
-	   </tr>
-	 <table>
-	 </div>
-
-<% } %>
-
 <%} else if(isResolveDuplicate) {%>  <!--if Resolve Duplicate-->
  <% HashMap resolveDuplicatesMap = new HashMap();
-	 //Build the request Map 
-   while(parameterNames.hasMoreElements())   { 
-    String attributeName = (String) parameterNames.nextElement();
-    String attributeValue = (String) request.getParameter(attributeName);
-	   //potentialDuplicateId=00000000000000065000, create_end_date=, resolveDuplicate=true, create_start_date=05/12/2008, resolveType=AutoResolve
-		
-	   if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
-		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
-			!("random".equalsIgnoreCase(attributeName)) &&
-			!("potentialDuplicateId".equalsIgnoreCase(attributeName)) &&
-			!("resolveType".equalsIgnoreCase(attributeName)) 
-		   ) {
-		     searchDuplicatesHandler.getParametersMap().put(attributeName,attributeValue);			
-	   }
-   } 
-
-
+  
 //parameterNamesResolve
    while(parameterNamesResolve.hasMoreElements())   { 
     String attributeName = (String) parameterNamesResolve.nextElement();
@@ -2310,6 +355,9 @@ ArrayList collectedEuidsList = new ArrayList();
    } 
 
    searchDuplicatesHandler.resolvePotentialDuplicate(resolveDuplicatesMap);
+  
+  //remove the final arraylist from the session
+   session.removeAttribute("finalArrayList");
     
 %>
 
@@ -2317,498 +365,32 @@ ArrayList collectedEuidsList = new ArrayList();
 	 document.getElementById('resolvePopupDiv').style.visibility = 'hidden';
 	 document.getElementById('resolvePopupDiv').style.display = 'none';
 </script>
-
-<!-- redisplay the output here START-->
-<%  
-	//finalArrayList = searchDuplicatesHandler.resetOutputList(searchDuplicatesHandler.getPdSearchObject());
-   //Final duplicates array list here
-    finalArrayList = searchDuplicatesHandler.performSubmit();
-	if (finalArrayList != null)   {
-%>
-
- <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
-         <tr>
-           <td  align="left" width="50%">
-			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=finalArrayList.size()%>
-            </td>
-            <td colspan="2" style="align:left;width:50%">
-				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
-                                       rendered="#{Operations.potDup_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
-				<% } %>
-            </td>
-			</tr>
-       </table>    
-<% } %>
-
-
-<% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
- <!-- Output here -->
+ 
+ <!-- redisplay the output here END-->
 <table>
-<tr><td>
-<script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "";		 
-</script>
-</td>
-</tr>
+  <tr>
+     <td>
+	   <script>
+	        //getFormValues('advancedformData');
+            //ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')  
+           euids="";
+           euidArray = [];
+           alleuidsArray = [];
+		   previewEuidDivs = [];
+
+ 		</script>
+    </td>
+    </tr>
 </table>
-
-
-
-                <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
-
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                 <%}%>
-                <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
-
-                %>
-                <div id="dataDiv" style="overflow:auto;height:1024px;border: 1px solid #6B757B;">
-                    <div>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                            <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
-                                
-                                for(int fac=0;fac<finalArrayList.size();fac++) {
-                                   
-                                %>
-                            <div id="mainEuidDiv<%=countMain%>">
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td><img src="images/spacer.gif" width="15"></td>
-                                        <%
-                                        HashMap resultArrayMapMain = new HashMap();
-                                        HashMap resultArrayMapCompare = new HashMap();
-                                        String epathValue;
-
-                                        ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
-									    //accumilate the duplicate euids here
-                                        StringBuffer arlInnerEuids = new StringBuffer();
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
-                                        for (int j = 0; j < arlInner.size(); j++) {
-                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-
-                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
-                                               String  weight =  eoHashMapValues.get("Weight").toString();
-                                               String  potDupStatus = (String) eoHashMapValues.get("Status");
-                                               String  potDupId = (String) eoHashMapValues.get("PotDupId");
-
-   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
-                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
-                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
-                                               
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
-											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
-
-                                               arlInnerEuids.append((String) eoHashMapValues.get("EUID") + ",");
-											   //arlInnerEuids.add((String) eoHashMapValues.get("EUID") );
-											   
-
-                                               // Code to render headers
-                                               if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
-                                                } else if (j==0)
-                                                {    dupHeading = "<b> Main EUID</b>";
-                                                }
-                                               //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
-                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-                                                if (j > 0) {
-                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                } else {
-                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                }
-                                              }
-                                        
-					                
-                                               
-                                        %>
-                                       <%if(j == 0 ) {%>
-                                        <td valign="top">
-                                            <div id="mainEuidContent">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
-                                                    </tr> 
-                                                </table>
-                                            </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-													<tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                        <%
-                                                        keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-
-														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-                                                        </td>
-                                                    </tr>
-                                                        
-                                                </table>
-												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-														epathValue = fieldConfigMap.getFullFieldName();
-                                                        
-                                                     %>
-                                                    <tr>
-                                                        <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-
-                                                        </td>                                                        
-                                                    </tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
-                                              </table>
-											  </div>
-                                            </div>   
-                                        </td>
-                                        <%} else {%> <!--For duplicates here-->  
-
-                                            <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
-                                                 <div style="overflow:auto;width:507px;overflow-y:hidden;">
-                                                     <table>
-                                                         <tr>
-                                            <%}%>
-                                        
-                                           <td valign="top">
-
-                                            <% 
-                                                if ("R".equalsIgnoreCase(potDupStatus)) {       
-                                                 %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%}%>        
-
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
-                                                    </tr> 
-                                                    <tr>
-                                                      <td valign="top" class="dupfirst">
-   												      <%
-                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-		        			                            %>
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-    
-                                                      <%} else {%>        
-                                                        <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-													  <%} %>        
-
-                                                      </td>
-                                                    </tr>
-                                                </table>
-                                            <%
-                                            String userAgent = request.getHeader("User-Agent");
-                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
-                                            response.setHeader("Vary", "User-Agent");
-                                         %>
-                                         <% if (isFirefox) {%>
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
-                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
-                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
-                                                 <%=weight%>
-                                             </div>                                             
-                                         </div>
-                                         
-                                           <% }else{%>
-                                            <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                         </div>                                             
-                                         <div id = "bar"  title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                             <%=weight%>
-                                         </div> 
-                                      
-                                         <%}%>
-										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
-                                                    <tr>                                                        
-                                                       <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
-
-                                                        </td>        
-                                                    </tr>
-                                                    <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-                                                   <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
-
-												        <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
-                                                             <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </a>  
-														<%}%>
-												<%}else{%>
-												<%
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-												    	<%if(operations.isPotDup_Unresolve()) {%>
-
-                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
-															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
-                                                            </a>   
-															<%}%>
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
-                                                    <tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                            <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
-                                                       </tr>
-                                                     </table>
-                                                 </div>
-                                                </td>
-                                            <%}%>
-                                        
-                                        <%}%>
-                                        <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
-                                        <%}%>
-                                      <td  valign="top">
-									  <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
-											if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
-									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
-									  <%} else {%>
-   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
-									  <%}%>
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-                                              <tr>
-                                                  <td width="100%" class="menutop1"><h:outputText value="#{msgs.preview_column_text}"/></td>
-                                              </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-											       if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {
-														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
-
-                                                 <tr>
-                                                        <td>
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-                                                          <b><%=previewHashMap.get("EUID")%></b>
-														<%} else {%>
-														  &nbsp;
-														<%}%>														
-														</td>
-                                                </tr>
-                                                <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        epathValue = fieldConfig.getFullFieldName();                                            
-                                                    %>
-
-                                                    <tr>
-                                                        <td>
-														 <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
-														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
-														        &nbsp;
-														      <%}%>
-														   <%} else {%>
-														     &nbsp;
-														   <%}%>
-														</td>
-
-                                                    </tr>
-                                                <%}%>
-
-                                                <tr>
-                                                    <td valign="top" align="left">
-													  <nobr>
-													      <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
-														    <%if(operations.isEO_Merge()) {%>
-
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
-                                                               </a>
-                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                                       	       </a>
-														 <%}%>                       
-														 </div>
-
-													  </nobr>
-                                                    </td>
-                                                </tr>
-                                                    
-                                                    <tr>
-                                                       <td valign="top" align="right">
-                                                            <!--Show compare duplicates button-->
-                                                         <%
-                                                            //ValueExpression euidVaueExpressionList = //ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-														    String finalEuidsString = arlInnerEuids.toString();
-                                                            finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
-                                                         %>
-                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
-															  </a>
-
-														</td>
-                                                    </tr>
-                                                        
-
-                                            </table>
-                                      </div>  
-                                    </div>
-                                    
-                           </tr>
-                        </table>
-                    </div> 
-                    <div id="separator"  class="sep"></div>
-                         <%}%> <!--final Array list count loop -->
-                         <%}%> <!-- final Array list  condition in session-->
-               </div> 
-               <%}%>  
-               <%
-                   if (finalArrayList != null && finalArrayList.size() == 0) {
-               %>
-               <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
-                             </td>
-                         </tr>
-                       </table>
-               </div>
-               <%}%>
-               
-            </div>
-            
-
-
-<% } else { %> <!-- End results!= null -->
-    <div class="ajaxalert">
-    <table>
-	   <tr>
-	     <td>
-     <%
-		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-	      StringBuffer msgs = new StringBuffer("<ul>");	
-          while (messagesIter.hasNext()) {
-                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
-                     msgs.append("<li>");
-					 msgs.append(facesMessage.getSummary());
-					 msgs.append("</li>");
-          }
-		  msgs.append("</ul>");		  
-     %>     	 
-
-	 <script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=msgs%>";
-	 </script>
-	   </td>
-	   </tr>
-	 <table>
-	 </div>
-
-<% } %>
-
-
-<!-- redisplay the output here END-->
-
 
 <%}else if(iscompareEuids) {%>  <!--if is compare euids case -->
   <%
     //build the arraylist of compare euids and navigate to the compare duplicates page.
     searchDuplicatesHandler.buildCompareDuplicateEuids(collectedEuids);
+
+   //remove the final arraylist from the session
+    session.removeAttribute("finalArrayList");
+ 
   %>
 <table>
   <tr>
@@ -2820,10 +402,12 @@ ArrayList collectedEuidsList = new ArrayList();
   </td>
  </tr>
 </table>
-<%} else {%> <!--other wise-->
+  
+<%}%>
 
 
-<% //Build the request Map 
+
+<% //Build the request Map  to display the duplicates here.
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
     String attributeValue = (String) request.getParameter(attributeName);
@@ -2835,19 +419,25 @@ ArrayList collectedEuidsList = new ArrayList();
    } 
 
 %>
+<%if(!isMultiMergeEOs) {%>
 <table>
 <tr><td>
 <script>
+	   
 		 var messages = document.getElementById("messages");
 	     messages.innerHTML= "";		 
 </script>
 </td>
 </tr>
 </table>
+<%}%>
 
 <%
+	//set the selected search type here....
+	 searchDuplicatesHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+
  //Final duplicates array list here
- finalArrayList = searchDuplicatesHandler.performSubmit();
+ finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):searchDuplicatesHandler.performSubmit();
 
 %>
 <% if (finalArrayList != null)   {
@@ -2860,11 +450,12 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
-                                       rendered="#{Operations.potDup_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
+				    <% if (operations.isPotDup_Print()) { %>
+                         <a class="button" title="<%=bundle.getString("print_text")%>" href="javascript:void(0)"
+                                       onclick="javascript:getFormValues('advancedformData');setRand(Math.random());openPrintWindow('/<%=URI%>/printservices/searchduplicateprint.jsf?'+queryStr)">
+                                       <span><h:outputText value="#{msgs.print_text}"/></span>
+                         </a>            
+					<%}%>
 				<% } %>
             </td>
 			</tr>
@@ -2873,6 +464,7 @@ ArrayList collectedEuidsList = new ArrayList();
 
 
 <% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
+<%if(!isMultiMergeEOs) {%>
  <!-- Output here -->
 <table>
 <tr><td>
@@ -2883,19 +475,12 @@ ArrayList collectedEuidsList = new ArrayList();
 </td>
 </tr>
 </table>
+<%}%>
 
 
 
                 <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
-
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                 <%}%>
-                <%
+                 <%
                     if(finalArrayList != null && finalArrayList.size() >0 ) {
 
                 %>
@@ -2956,17 +541,36 @@ ArrayList collectedEuidsList = new ArrayList();
                                                 } else {
                                                     epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
                                                 }
+
+									         keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
+
+												
+											       if(eoMultiMergePreviewHashMap != null && eoMultiMergePreviewHashMap.get(keyParam) != null ) {
+														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
+														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
+                                                   }
+												   
+
+										//Compare the surviving EUID if it is previewed
+                                        if( eoMultiMergePreviewHashMap != null) {         
+                                           resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue)); //Compare with other values 
+										   resultArrayMapMain.put(epathValue, eoMapPreview.get(epathValue));//keep the surviving EO values to compare eoMapPreview
+										   
+										} else { //Compare with the main EUID only
                                                 if (j > 0) {
                                                     resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
                                                 } else {
                                                     resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
                                                 }
                                               }
+										}
+
                                         
 					                
                                                
                                         %>
-                                       <%if(j == 0 ) {%>
+										<script>alleuidsArray.push('<%=fieldValuesMapSource.get("EUID")%>:<%=fac%>');</script>
+                                        <%if(j == 0 ) {%>
                                         <td valign="top">
                                             <div id="mainEuidContent">
                                                 <table border="0" cellspacing="0" cellpadding="0">
@@ -2975,8 +579,8 @@ ArrayList collectedEuidsList = new ArrayList();
                                                     </tr> 
                                                 </table>
                                             </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                             <div id="mainEuidContentDiv<%=countMain%>" class="yellow">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
@@ -2990,21 +594,22 @@ ArrayList collectedEuidsList = new ArrayList();
                                             </div>   
                                         </td>
                                         <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
+                                            <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow">
                                                 <table border="0" cellspacing="0" cellpadding="0" >
                                                     <tr>
                                                         <td valign="top" class="menutop">Main EUID</td>
                                                     </tr> 
                                                     <tr>
                                                         <td valign="top" class="dupfirst">
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
+														<%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();%>
+                                                        <%if(eoMultiMergePreviewHashMap != null ){%>
+ 															<span class="dupbtn" href="javascript:void(0)">
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </span>
+														<%} else {%>
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>','<%=arlInner.size()%>');"> 
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+                                                            </a>
 														<%} %>
 
                                                         </td>
@@ -3052,11 +657,11 @@ ArrayList collectedEuidsList = new ArrayList();
                                             <% 
                                                 if ("R".equalsIgnoreCase(potDupStatus)) {       
                                                  %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                 <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
                                             <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                 <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
                                             <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
                                             <%}%>        
 
                                                 <table border="0" cellspacing="0" cellpadding="0" >
@@ -3070,17 +675,19 @@ ArrayList collectedEuidsList = new ArrayList();
 		        			                            %>
                                                                 <%=fieldValuesMapSource.get("EUID")%>
     
-                                                      <%} else {%>        
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>"
-														  onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
+                                                      <%} else {%>  
+													  <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();%>
 
-														<%} else {%>
+                                                        <%if(eoMultiMergePreviewHashMap != null){%>
+
                                                             <span class="dupbtn" href="javascript:void(0)">
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </span>
+														<%} else {%>
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>"
+														  onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>','<%=arlInner.size()%>');"> 
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+                                                            </a>
 														<%} %>
 
 													  <%} %>        
@@ -3119,24 +726,102 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         epathValue = fieldConfigMap.getFullFieldName();                                            %>
                                                     <tr>                                                        
                                                        <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
+  
+                                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
+                                                                                    
+                                                                                <div id="highlight<%=fieldValuesMapSource.get("EUID")%>:<%=epathValue%>" style="background-color:none;">
+                                                                                  <%if (eoMultiMergePreviewHashMap != null) {%> <!-- if preview is then display the links-->
+                                                                                 <%if (previewEuidsHashMap.get((String) fieldValuesMapSource.get("EUID")+ new Integer(fac).toString() ) != null) {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
 
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
+                                                                                    <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+ 
+                                                                                        <font class="highlight">
+                                                                                            <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                            <%} else {%> 
+                                                                                            <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                            <%}%>
+                                                                                        </font>
+                                                                                   
+                                                                                    <%} else {%>
+ 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
+ 																					  <font class="highlight">
+																				         <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                         <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                     </font>
+                                                                                   <%} else {%> 
+                                                                                       <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%} else {%> 
+                                                                                       <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                      <%}%>
+                                                                                    <%}%>
+																				 <%}%>
+                                                                       <%} else {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
+                                                                                       <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%} else {%> 
+                                                                                        <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                      <%}%>
+
+                                                                       <%}%>
+                                                                              <%} else {%> <!--if not [preview -->
+                                                                                    <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+                                                                                     <font class="highlight">
+                                                                                        <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                          <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%} else {%> 
+                                                                                          <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                        <%}%>
+                                                                                    </font>
+                                                                                    <%} else {%>
+
+ 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
+ 																					    <font class="highlight">
+																				          <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
+																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                          <%}else{%>
+                                                                                           <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                        <%}%>
+                                                                                       </font>
+                                                                                     <%} else {%> 
+                                                                                       <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%} else {%> 
+                                                                                       <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                      <%}%>
+                                                                                    <%}%> 
+
+
+                                                                                    <%}%>
+                                                                                        
+                                                                                    <%}%>
+                                                                                        
+                                                                                </div>
+                                                                                    
+                                                                                <%} else {%> <!-- Not null condition  -->
+                                                                                    <%if (eoMultiMergePreviewHashMap != null) {%> <!-- if preview is then display the links-->
+                                                                                        <%if (previewEuidsHashMap.get((String) fieldValuesMapSource.get("EUID")) != null) {%>
+ 		                                                                                <%if(eoMapPreview.get(epathValue) != null) { %> 
+                                                                                                 <font class="highlight">
+                                                                                                     <!-- blank image -->
+                                                                                                     <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
+                                                                                                 </font>
+  																						<%}%>
+                                                                                        <%} else {%>
+                                                                                        &nbsp;
+                                                                                        <%}%>
+                                                                                    <%} else {%>		
+                                                                                      <%if(resultArrayMapMain.get(epathValue) != null ) { %>
+                                                                                       <font class="highlight">
+ 																						   <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
+                                                                                       </font>
+																					 <%}else {%>
+                                                                                        &nbsp; 
+                                                                                     <%}%>
+
+																					<%}%>
+                                                                                <%}%>
+
+
 
                                                         </td>        
                                                     </tr>
@@ -3184,7 +869,9 @@ ArrayList collectedEuidsList = new ArrayList();
                                         <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
                                         <%}%>
                                       <td  valign="top">
-									  <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
+									  <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();%>
+
+									  <%if(eoMultiMergePreviewHashMap != null && eoMultiMergePreviewHashMap.get(keyParam) != null ) {%>
 									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
 									  <%} else {%>
    									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
@@ -3193,17 +880,10 @@ ArrayList collectedEuidsList = new ArrayList();
                                               <tr>
                                                   <td width="100%" class="menutop1"><h:outputText value="#{msgs.preview_column_text}"/></td>
                                               </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-											       if(eoMultiMergePreviewHashMap.get(keyParam) != null ) {
-														previewHashMap  = (HashMap) eoMultiMergePreviewHashMap.get(keyParam);
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
 
                                                  <tr>
                                                         <td>
-                                                        <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
+                                                        <%if(eoMultiMergePreviewHashMap != null && eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
                                                           <b><%=previewHashMap.get("EUID")%></b>
 														<%} else {%>
 														  &nbsp;
@@ -3218,7 +898,7 @@ ArrayList collectedEuidsList = new ArrayList();
 
                                                     <tr>
                                                         <td>
-														 <%if(eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
+														 <%if(eoMultiMergePreviewHashMap != null && eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
 														     <%if(eoMapPreview.get(epathValue) != null)  {%>
    														        <%=eoMapPreview.get(epathValue)%>
 														      <%} else {%>
@@ -3238,14 +918,39 @@ ArrayList collectedEuidsList = new ArrayList();
 													     <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
 														    <%if(operations.isEO_Merge()) {%>
 
-                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:getFormValues('previewForm<%=fac%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&rowCount=<%=fac%>&random='+rand+'&'+queryStr,'outputdiv','');"> 
                                                                  <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
                                                                   <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
+
+
 														 <%}%>
+														  <form id="previewForm<%=fac%>">
+                                                            <input type="hidden" id="PREVIEW_SRC_DESTN_EUIDS<%=fac%>" title="PREVIEW_SRC_DESTN_EUIDS"/>
+                                                            <input type="hidden" id="PREVIEW_DIVS<%=fac%>" title="PREVIEW_DIVS"/>
+														 </form>
 														 </div>
+
+														  <form id="multiMergeFinal<%=fac%>" name="multiMergeFinal<%=fac%>">
+														    <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
+															  if(eoMultiMergePreviewHashMap != null && eoMultiMergePreviewHashMap.get(keyParam)  != null ) {
+                                                            %>
+                                                       	     <%if(operations.isEO_Merge()) {%>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.source_submenu_merge}"/>"
+															   onclick="javascript:getDuplicateFormValues('multiMergeFinal<%=fac%>','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&rowCount=<%=fac%>&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                       	         <span><h:outputText value="#{msgs.source_submenu_merge}"/></span>
+                                                       	       </a>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                        	     <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+                                                       	       </a>
+                                                       	     <%}%>
+
+															<%}%>
+															<input type="hidden" id="MERGE_SRC_DESTN_EUIDS<%=fac%>" title="MERGE_SRC_DESTN_EUIDS"/>
+                                                            </form>   
+
 
 													  </nobr>
                                                     </td>
@@ -3325,7 +1030,6 @@ ArrayList collectedEuidsList = new ArrayList();
 <% } %>
 
 
-<%}%>
 
   <%} %>  <!-- Session check -->
 </f:view>
