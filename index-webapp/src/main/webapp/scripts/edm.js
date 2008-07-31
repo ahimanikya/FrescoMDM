@@ -1962,32 +1962,84 @@ previewhiddenMergeEuidsFinalMerge="";
 mergeEuidsPreview="";
 
 }
-function accumilateMultiMergeEuidsPreviewDuplicates(fac,count,mergeEuidVar) {
-		var tab = document.getElementById('mainEuidContentDiv'+fac+count+mergeEuidVar);
-        if (tab.className == 'yellow')   {
-           tab.className = 'blue';
+function accumilateMultiMergeEuidsPreviewDuplicates(fac,count,mergeEuidVar,arrlInnerSize) {
+var preview  = document.getElementById('previewEuidDiv'+fac);
+
+ var found = "";
+        var allEUIDs = [];
+        var allEUIDsCheck = [];
+        var disableArray = [];
+        for (var i=0; i<alleuidsArray.length; i++) { 
+            allEUIDs[i] = alleuidsArray[i];
+            allEUIDsCheck[i] = alleuidsArray[i];
+         }
+
+         //If the destination EO is removed from the selection remove all selections and reset the array of euids
+        if (euidArray.length > 1 && euidArray[0] == mergeEuidVar+':'+fac)   {
+			for(var i=0;i<arrlInnerSize;i++) {
+             for (var j=0; j<euidArray.length; j++) {            
+ 				if(document.getElementById('mainEuidContentDiv'+euidArray[j]+i) != null) {
+                   document.getElementById('mainEuidContentDiv'+euidArray[j]+i).className = 'yellow';			   
+				}
+  	          }
+			}
+		    //Deselect and reset the array size here
+             euidArray = [];
+			 preview.className = 'yellow';
         } else {
-            tab.className = 'yellow';
-        }
-		var mainEuidDataDiv = document.getElementById('mainEuidDataDiv'+fac+count+mergeEuidVar);
-		var preview  = document.getElementById('previewEuidDiv'+fac);
+          for (var i=0; i<euidArray.length; i++) {            
+            if (euidArray[i] == mergeEuidVar+':'+fac)   {
+                euidArray.splice(i,1);
+                found = "true";
+               }
+           }
  
-        preview.className = 'blue';
+            if (found != "true")    {
+               euidArray.push(mergeEuidVar+':'+fac);
+            }  
+ 		    
+			var tab = document.getElementById('mainEuidContentDiv'+mergeEuidVar+":"+fac+count);
+            if (tab.className == 'yellow')   {
+               tab.className = 'blue'; 
+             } else {
+               tab.className = 'yellow';
+             }
+ 
+             preview.className = 'blue';
+
+ 		}
+  
   
         mergeEuidsPreview+=mergeEuidVar+'##';     
 
        var mainEuidArray = mergeEuidsPreview.split("##");
        var mainEuid = mainEuidArray[0];
+		 var finalEuidsArray = [];
 
-       if(mainEuidArray.length > 2) {
+		 for(var i = 0 ; i< euidArray.length ; i++) {
+			  var valueArray  = euidArray[i].split(":");
+			  if(valueArray[1] == fac) {
+                finalEuidsArray.push(valueArray[0]);
+			  }
+		 }
+   
+       if(finalEuidsArray.length > 1) {
          rowCountMerge  = fac;
          destinationEOFinalMerge = mainEuid;
          previewhiddenMergeEuidsFinalMerge = mergeEuidsPreview;
+ 
+		 document.getElementById('PREVIEW_SRC_DESTN_EUIDS'+fac).value = finalEuidsArray;
+		 document.getElementById('MERGE_SRC_DESTN_EUIDS'+fac).value = finalEuidsArray;
+		 document.getElementById('PREVIEW_DIVS'+fac).value = previewEuidDivs;
+         
 		 //buttonsDiv<%=fac%>
          document.getElementById('buttonsDiv'+ fac).style.visibility = "visible";
          document.getElementById('buttonsDiv'+ fac).style.display = "block";
 
-     }
+     } else {
+         document.getElementById('buttonsDiv'+ fac).style.visibility = "hidden";
+         document.getElementById('buttonsDiv'+ fac).style.display = "none";
+	 }
 
 }
 //multiMergeEuidsPreview
@@ -2007,11 +2059,11 @@ function multiMergeEuidsPreview(formName)   {
 	query +="&rowcount="+ rowCountMerge;
     queryStr  = query;
 
+ 
 }
 
 
-function showEOMinorObjectsDiv(minorObj,divName)  {
-}
+
 
 function showMinorObjectsDiv(divId) {
 	//animateDiv(divId,document.getElementById(divId).style.height)
@@ -2118,6 +2170,22 @@ function enableallfields(thisForm)  {
 
   }
  return;
+}
+ 
+
+ function showUnmergeViewSources(totalSources)  {
+	var divId;
+	for(var i = 0 ; i <totalSources ; i ++) {
+		divId = 'unmergepreviewmainDupSources'+i;
+	 	if (document.getElementById(divId).style.visibility == 'visible')    {
+			document.getElementById(divId).style.visibility = "hidden";
+			document.getElementById(divId).style.display = "none";
+		} else {
+			document.getElementById(divId).style.visibility = "visible";
+			document.getElementById(divId).style.display = "block";
+		}
+	}
+
 }
  
 
