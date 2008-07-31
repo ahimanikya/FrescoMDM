@@ -60,6 +60,16 @@
 		functions[i] = (String)detailsArray.get(transactionIds[i]);
   }
  %>
+
+<!-- Modify By : M.Narahari on 29/07/2008
+     Description : modified thisIdx to set the initial navigation
+ -->
+
+<%
+ String transactionId = (String) (request.getParameter("transactionId")==null?request.getAttribute("transactionId"):request.getParameter("transactionId"));
+ String function  = (request.getParameter("function") != null)? request.getParameter("function") : "Update";
+%>
+
  <script>
 var pages =[];
 var functions =[];
@@ -67,6 +77,10 @@ var thisIdx=0;
   <%for (int i=0; i<transactionIds.length;i++)    { %>
          pages.push("<%=transactionIds[i]%>");
          functions.push("<%=functions[i]%>");
+		 <% if(transactionIds[i].equalsIgnoreCase(transactionId)){%>
+         thisIdx = <%=i%>;
+		<%}%>
+
    <% }%>
 </script>
 								
@@ -130,10 +144,6 @@ var thisIdx=0;
 			             </table>
                     </div>
 			</div>    			
-			<%
-            String transactionId = (String) (request.getParameter("transactionId")==null?request.getAttribute("transactionId"):request.getParameter("transactionId"));
-            String function  = (request.getParameter("function") != null)? request.getParameter("function") : "Update";
-			%>
 
 			   <%if(request.getParameter("transactionId") != null && request.getParameter("function") != null ) {%>
              	<script>
@@ -172,7 +182,7 @@ var thisIdx=0;
                                             </a>   
 											</td>
 										    <td>
-                                            <a href="javascript:void(0)" onclick="javascript:showExtraDivs('unmergePopupDiv',event)"  class="button" title="<h:outputText value="#{msgs.cancel_but_text}" />">
+                                            <a href="javascript:void(0)" onclick="javascript:showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&cancelUnmerge=true&rand=<%=rand%>','mainDupSource','');"  class="button" title="<h:outputText value="#{msgs.cancel_but_text}" />">
                                                 <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
                                             </a>   
 											</td>
