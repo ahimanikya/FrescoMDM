@@ -879,8 +879,10 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     public ArrayList getEOList(String assumedMatchEUID) {
         ArrayList eoArrayList = new ArrayList();
         try {
+            EnterpriseObject eo  = masterControllerService.getEnterpriseObject(assumedMatchEUID);
+            if(eo == null ) return null;
             //get the enterprise object for the assumed match EUID        
-            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(masterControllerService.getEnterpriseObject(assumedMatchEUID), screenObject);
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             //put Assumed match summary System/LID in the hashmap
             eoArrayList.add(eoMap);
 
@@ -893,6 +895,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 mLogger.error(mLocalizer.x("ASM100: Error  occurred"), ex);
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+			return null;
         }
         return eoArrayList;
 
