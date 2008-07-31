@@ -136,7 +136,7 @@ boolean isSessionActive = true;
             //variable for max minor objects count
             int maxMinorObjectsMAX = 0;
 
-            if (eoArrayList != null) {
+            if (eoArrayList != null && eoArrayList.size() > 0 ) {
                 request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
                                             %>  
                                             <!-- Display the field Names first column-->
@@ -642,8 +642,8 @@ boolean isSessionActive = true;
                                                         HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
 													    String eoHistStatus = (String) objectHistMapValues.get("EO_STATUS");
                                             %>
-                                            <td  valign="top" id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none;">
-                                                <div>
+                                            <td  valign="top" >
+                                                <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none;">
                                                     <div style="width:170px;overflow:hidden;">
                                                         <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
                                                             <table border="0" cellspacing="0" cellpadding="0" >
@@ -900,7 +900,52 @@ boolean isSessionActive = true;
                                 </table>
                             </td>
 						  </tr>
-                      <%}%>
+                      <%} else {%> 
+					    <tr>
+							<td valign="top" align="right">
+							<!-- not allowed -->
+							<div id="prevnotallowed" style="cursor:not-allowed;visibility:hidden;height:3700px;overflow:hidden;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;background-color:#e7e7d6">
+									<table border="0" height="100%" title="<%=bundle.getString("begining")%>">
+									   <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
+									   <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
+									 </table>
+								</div>
+							</td>
+							<td valign="top" align="right">
+							<!-- not allowed -->
+								<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:3700px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+									<table border="0" height="100%" title="<%=bundle.getString("prev")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=prev&random=rand'+'&'+'AMID='+pages[--thisIdx],'outputdiv','');" >
+									<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
+									<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
+									 </table>
+								</div>
+							</td>
+						    <td valign="top">
+							  <font style="color:red;overflow:hidden">
+							 <%=bundle.getString("enterprise_object_not_found_error_message")%>&nbsp;<%=bundle.getString("undo_euid_message")%>
+							   <font>
+							 </td>
+							<!--Next Navigation -->
+							<td valign="top" align="left">
+								<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:3700px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+									<table border="0" height="100%" title="<%=bundle.getString("next")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=next&random=rand'+'&'+'AMID='+pages[++thisIdx],'outputdiv','');" >
+									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
+									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
+									 </table>
+								</div>
+							<!--- not allowed -->
+							</td>
+							<td valign="top" align="left">
+								<div id="nextnotallowed" style="cursor:not-allowed;visibility:hidden;height:3700px;overflow:hidden;verticle-align:top;position:relative;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+									<table border="0" height="100%" title="<%=bundle.getString("end")%>" >
+									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
+									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
+									 </table>
+								</div>
+							<!--- not allowed -->
+							</td>
+						</tr>
+					  <%}%>
                         
                     </table>
                 </div>				
