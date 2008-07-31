@@ -1121,6 +1121,60 @@ public class TransactionHandler extends ScreenConfiguration {
         }
         return retHashMap;
     }
+     /** 
+     * Added By Rajani Kanth  on 07/17/2008 <br>
+     * 
+     * This method is called from the ajax services for unmerging the enterprise object.<br>
+     *
+     * @param transactionNumber  Transaction Number of the EUID.<br>
+     *                 srcDestnEuids[0] will be the surviving euid and rest of them are source euids in the multi merge operation.<br>
+     *                 
+     * @return MergeResult return the new un merge result object if unmerge is successfull.<br>
+     *         null if merge fails or any exception occurs.
+     * 
+     */
+    
+    public HashMap previewUnmergeEnterpriseObject(String transactionNumber, String euid) {
+        HashMap retHashMap = new HashMap();
+        try {
+
+            Integer sessionRevisionNumber = (Integer) session.getAttribute("SBR_REVISION_NUMBER" + euid);
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(euid);
+
+            Integer dbRevisionNumber = destinationEO.getSBR().getRevisionNumber();
+            
+            if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, TransactionHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text")));
+ 
+                //reset the SBR revision number here in session
+                session.setAttribute("SBR_REVISION_NUMBER" + destinationEO.getEUID(), destinationEO.getSBR().getRevisionNumber());
+
+                retHashMap.put(TransactionHandler.CONCURRENT_MOD_ERROR,
+                        "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text"));
+                return retHashMap;
+            }
+
+            MergeResult unMergeResult = masterControllerService.previewUnmerge(transactionNumber);
+            CompareDuplicateManager compareDuplicateManager  = new CompareDuplicateManager();
+            
+            if (unMergeResult.getDestinationEO() != null && unMergeResult.getSourceEO() != null) {
+                 retHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject);
+             }
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            mLogger.error(mLocalizer.x("TRS092: Failed to unmerge EnterpriseObject due to ProcessingException : {0}",ex.getMessage()),ex);
+            return null;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            mLogger.error(mLocalizer.x("TRS093: Failed to unmerge EnterpriseObject due to UserException : {0}", ex.getMessage()), ex);
+            return null;
+         } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            return null;
+        }
+        return retHashMap;
+    }
 
     
 }
