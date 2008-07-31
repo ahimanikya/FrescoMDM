@@ -271,7 +271,10 @@ boolean isSessionActive = true;
                                                 </div>
                                             </td>
                                             <%}%>     
-                                            
+                                            <!-- Modify By : M.Narahari on 29/07/2008
+                                                 Description : Removed <h:form/> tag for EUID of mainEuidContent div
+                                              -->
+
                                             <!-- Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
@@ -282,7 +285,6 @@ boolean isSessionActive = true;
                                                                     <td class="<%=menuClass%>"><%=dupHeading%>
                                                                     </td>
                                                                 </tr> 
-                                                                <h:form>
                                                                     <tr>
                                                                         <td valign="top" class="dupfirst">
                                                                             <span class="dupbtn">
@@ -290,7 +292,6 @@ boolean isSessionActive = true;
                                                                             </span>
                                                                         </td>
                                                                     </tr>
-                                                                </h:form>
                                                             </table>
                                                         </div>
                                                     </div>
@@ -478,13 +479,13 @@ boolean isSessionActive = true;
                                                                 <tr>
                                                                     <td class="<%=menuClass%>"><%=soHashMap.get("SYSTEM_CODE")%></td>
                                                                 </tr> 
-                                                                <h:form>
                                                                     <tr>
-                                                                        <td valign="top" class="dupfirst">
+                                                                        <td class="dupfirst">
+																		<font style="text-decoration:none;color:#000000;">
                                                                             <b><%=soHashMap.get("LID")%></b>
+																		</font>
                                                                         </td>
                                                                     </tr>
-                                                                </h:form>
                                                             </table>
                                                         </div>
                                                     </div>
