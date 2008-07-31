@@ -91,10 +91,10 @@
         <body>
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent" style="overflow:hidden;">
-  			   <table><tr><td>
+  			   <table width="1024px"><tr><td>
                 <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
                     <h:form id="potentialDupBasicForm">
-                        <table border="0" cellpadding="0" cellspacing="0" width="90%" align="left"> 
+                        <table border="0" cellpadding="0" cellspacing="0" > 
                             <tr>
                                 <td align="left">
                                     <h:outputText value="#{msgs.datatable_euid_text}"/>

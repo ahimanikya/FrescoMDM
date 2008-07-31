@@ -70,12 +70,12 @@ function setRand(thisrand)  {
         <title><h:outputText value="#{msgs.application_heading}"/></title>  
         <%@include file="./templates/header.jsp"%>
     <body class="yui-skin-sam">
-	  <table>
+	  <table width="100%">
 	    <tr>
 		  <td>
-             <div id="mainContent">     
+             <div id="mainContent" style="width:100%">     
               <div id ="auditlog " class="basicSearch">
-                        <table border="0" cellpadding="0" cellspacing="0" >
+                        <table border="0" cellpadding="0" cellspacing="0">
                       <h:form id="searchTypeForm" >
                             <tr>
                                 <td>
@@ -335,6 +335,7 @@ function setRand(thisrand)  {
     </script>
     </html>
 </f:view>
+
 
 
 
