@@ -57,6 +57,7 @@ String URI_Session = request.getRequestURI();URI_Session = URI_Session.substring
 //remove the app name 
 URI_Session = URI_Session.replaceAll("/ajaxservices","");
 boolean isSessionActive = true;
+
 %>
 <% if(session!=null && session.isNew()) {
 	isSessionActive = false;
@@ -235,12 +236,7 @@ HashMap previewEuidsHashMap  = new HashMap();
 
 	 <script>
 		document.getElementById('MERGE_SRC_DESTN_EUIDS<%=request.getParameter("rowCount")%>').value="<%=request.getParameter("PREVIEW_SRC_DESTN_EUIDS")%>";
- 		for(var i = 0 ;i < previewEuidDivs.length;i++) {
- 		   if(document.getElementById(previewEuidDivs[i]) != null ) {
-             document.getElementById(previewEuidDivs[i]).className = 'blue';
-		   }
- 		}
-		 euids="";
+ 		 euids="";
          euidArray = [];
          alleuidsArray = []; 
 	 </script>
@@ -252,11 +248,11 @@ HashMap previewEuidsHashMap  = new HashMap();
 
 
 <%} else if(isCancelMultiMergeEOs) {
-	  //remove the final arraylist from the session
+	//remove the final arraylist from the session
      session.removeAttribute("finalArrayList");
 
 	%>  <!--if  Cancel Multi Merge EOs -->
-<table>
+ <table>
   <tr>
      <td>
 	   <script>
@@ -270,7 +266,6 @@ HashMap previewEuidsHashMap  = new HashMap();
 	 </td>
   </tr>
 </table>
- 
 <%} else if(isMultiMergeEOs) {%>  <!--if MERGE EO's -->
  <%
 	HashMap previewDuplicatesMap = new HashMap();
@@ -289,24 +284,23 @@ HashMap previewEuidsHashMap  = new HashMap();
   <tr>
      <td>
 	   <script>
-	        //getFormValues('advancedformData');
-            //ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','') ;
-			euids="";
+ 			euids="";
             euidArray = [];
             alleuidsArray = []; 
 		    previewEuidDivs = [];
 
 		    var messages = document.getElementById("messages");
-	        messages.innerHTML= '<%=finalEuids%>  <%=bundle.getString("so_merge_confirm_text")%>  <%=srcDestnEuids[0]%>' ;		 
+			messages.className = "ajaxsuccess";
+	        messages.innerHTML= '<font style="padding-top:100px;color:green;"><%=finalEuids%>  <%=bundle.getString("so_merge_confirm_text")%>  <%=srcDestnEuids[0]%></font>' ;		 
+		
 
       </script>
 	 </td>
   </tr>
 </table>
 
- 
 <%} else if(isUnresolveDuplicate) {%>  <!--if Resolve Duplicate-->
- <%
+  <%
 	 HashMap resolveDuplicatesMap = new HashMap();
   //parameterNamesResolve
    while(parameterNamesResolve.hasMoreElements())   { 
@@ -330,8 +324,6 @@ HashMap previewEuidsHashMap  = new HashMap();
   <tr>
      <td>
 	   <script>
-	        //getFormValues('advancedformData');
-            //ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')  
            euids="";
            euidArray = [];
            alleuidsArray = [];
@@ -371,9 +363,7 @@ HashMap previewEuidsHashMap  = new HashMap();
   <tr>
      <td>
 	   <script>
-	        //getFormValues('advancedformData');
-            //ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')  
-           euids="";
+            euids="";
            euidArray = [];
            alleuidsArray = [];
 		   previewEuidDivs = [];
@@ -383,28 +373,9 @@ HashMap previewEuidsHashMap  = new HashMap();
     </tr>
 </table>
 
-<%}else if(iscompareEuids) {%>  <!--if is compare euids case -->
-  <%
-    //build the arraylist of compare euids and navigate to the compare duplicates page.
-    searchDuplicatesHandler.buildCompareDuplicateEuids(collectedEuids);
-
-   //remove the final arraylist from the session
-    session.removeAttribute("finalArrayList");
- 
-  %>
-<table>
-  <tr>
-  <td>
-  <script>
- 
-    window.location = '/<%=URI%>/compareduplicates.jsf?fromPage=duplicates&duplicateEuids=<%=collectedEuids%>';
- </script>
-  </td>
- </tr>
-</table>
-  
 <%}%>
 
+ 
 
 
 <% //Build the request Map  to display the duplicates here.
@@ -513,6 +484,8 @@ HashMap previewEuidsHashMap  = new HashMap();
                                                //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
                                                String  weight =  eoHashMapValues.get("Weight").toString();
                                                String  potDupStatus = (String) eoHashMapValues.get("Status");
+											   String potDupStatusText = (potDupStatus != null) ? ValidationService.getInstance().getDescription("RESOLVETYPE", potDupStatus):"";
+
                                                String  potDupId = (String) eoHashMapValues.get("PotDupId");
 
    						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
@@ -581,11 +554,14 @@ HashMap previewEuidsHashMap  = new HashMap();
                                             </div> 
                                              <div id="mainEuidContentDiv<%=countMain%>" class="yellow">
                                                 <table border="0" cellspacing="0" cellpadding="0" >
+
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
+                                                     %>
+													<% if (ifc == 0) {%>
+													     <tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
+													<% } %>
                                                     <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
                                                     <%}%>
 													<tr><td>&nbsp</td></tr>
@@ -593,8 +569,13 @@ HashMap previewEuidsHashMap  = new HashMap();
                                                 </table>
                                             </div>   
                                         </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow">
+                                        <td valign="top"> 
+										   <%if(eoMultiMergePreviewHashMap != null && 
+													 eoMultiMergePreviewHashMap.get((String) fieldValuesMapSource.get("EUID")+":"+Integer.toString(fac) ) != null){ %>
+                                             <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="blue">
+											<%}else {%>
+                                              <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow">
+											<%}%>
                                                 <table border="0" cellspacing="0" cellpadding="0" >
                                                     <tr>
                                                         <td valign="top" class="menutop">Main EUID</td>
@@ -624,6 +605,10 @@ HashMap previewEuidsHashMap  = new HashMap();
 														epathValue = fieldConfigMap.getFullFieldName();
                                                         
                                                      %>
+													<% if (ifc == 0) {%>
+ 														 <tr><td><%=potDupStatusText%></td></tr>
+													<% } %>
+ 
                                                     <tr>
                                                         <td>
 														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
@@ -653,15 +638,19 @@ HashMap previewEuidsHashMap  = new HashMap();
                                             <%}%>
                                         
                                            <td valign="top">
-
                                             <% 
                                                 if ("R".equalsIgnoreCase(potDupStatus)) {       
                                                  %>
                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
                                             <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
+                                            <%} else {%>
+                                                <%if(eoMultiMergePreviewHashMap != null && 
+													 eoMultiMergePreviewHashMap.get((String) fieldValuesMapSource.get("EUID")+":"+Integer.toString(fac) ) != null){ %>
+                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="blue" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+											  <%} else {%>
                                                   <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+ 											  <%}%>
                                             <%}%>        
 
                                                 <table border="0" cellspacing="0" cellpadding="0" >
@@ -724,6 +713,10 @@ HashMap previewEuidsHashMap  = new HashMap();
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
                                                         epathValue = fieldConfigMap.getFullFieldName();                                            %>
+													<% if (ifc == 0) {%>
+														 <tr><td><%=potDupStatusText%></td></tr>
+													<% } %>
+ 
                                                     <tr>                                                        
                                                        <td> 
   
@@ -895,6 +888,9 @@ HashMap previewEuidsHashMap  = new HashMap();
                                                      FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
                                                         epathValue = fieldConfig.getFullFieldName();                                            
                                                     %>
+                                         			<% if (i == 0) {%>
+													     <tr><td>&nbsp;</td></tr>
+													<% } %>
 
                                                     <tr>
                                                         <td>
@@ -964,7 +960,9 @@ HashMap previewEuidsHashMap  = new HashMap();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                                <a href="compareduplicates.jsf?fromPage=duplicaterecords&duplicateEuids=<%=finalEuidsString%>" 
+															  class="downlink"  title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>" 
+															  >   
 															  </a>
 
 														</td>
@@ -1028,7 +1026,6 @@ HashMap previewEuidsHashMap  = new HashMap();
 	 </div>
 
 <% } %>
-
 
 
   <%} %>  <!-- Session check -->
