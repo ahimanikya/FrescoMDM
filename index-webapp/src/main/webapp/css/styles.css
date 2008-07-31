@@ -92,11 +92,12 @@ INPUT.READONLY{
 .reportresults  table th {
    font-family: Arial, Helvetica, sans-serif;
    font-size:12px;
+   white-space:nowrap;
+   font-size:bold;
    color:#a4a39e;
    text-align:center;
     background: url(../images/results_head.gif) repeat-x;
     color:#000;
-    text-decoration:none;		                      
     border-right: 1px solid #6B757B;           
     position : relative; /* A must for resizable columns */
 }
@@ -116,13 +117,12 @@ INPUT.READONLY{
   verticle-align:top;
   width:100%;
   overflow-x: auto; 
-  overflow-y: hidden;
+  overflow-y: auto;
   background-color:#F7FBD6;
   border-left: 1px solid #6B757B; 
   border-right: 1px solid #6B757B; 
   border-top: 1px solid #182442;  
   border-bottom: 1px solid #6B757B;
-  height:700px;
 }
 
 .detailedresults  td {
@@ -136,11 +136,12 @@ INPUT.READONLY{
 .detailedresults  th {
    font-family: Arial, Helvetica, sans-serif;
    font-size:12px;
+   white-space:nowrap;
+   font-size:bold;
    color:#a4a39e;
    text-align:center;
    background: url(../images/results_head.gif) repeat-x;
    color:#000;
-   text-decoration:none;		                      
    border-right: 1px solid #6B757B;           
    position : relative; /* A must for resizable columns */
 }
@@ -391,7 +392,8 @@ width:25px;
 }
 
 #mainContent {
- width:1200px;
+/* width:1200px;*/
+width:100%;
  overflow:auto;
  float:left;
 }
@@ -657,7 +659,8 @@ width:25px;
            font-family: Arial, Helvetica, sans-serif;
            font-size:15px;
 	   color:#837F74;
-           width: 1024px;
+           /*width: 1024px;*/
+		   width:99%;
            background-color:#f9f7de;           
            text-align:left;
 	   vertical-align:middle;	      
