@@ -570,6 +570,24 @@ public class MasterControllerService {
         return mergeResult;
     }
 
+    public MergeResult previewUnmerge(String transactionNumber) throws ProcessingException, UserException {
+        TransactionSummary transactionSummary = QwsController.getMasterController().lookupTransaction(transactionNumber);
+        TransactionObject transactionObject = transactionSummary.getTransactionObject();
+        String transactionFunction = transactionSummary.getTransactionObject().getFunction();
+        MergeResult mergeResult = null;
+        if (transactionFunction.equals("euidMerge")) {
+            mergeResult = QwsController.getMasterController().unmergeEnterpriseObject(transactionObject.getEUID(), true);
+        } else if (transactionFunction.equals("lidMerge")) {
+
+            String systemCode = transactionObject.getSystemCode();
+            String LID1 = transactionObject.getLID1();
+            String LID2 = transactionObject.getLID2();
+            mergeResult = QwsController.getMasterController().unmergeSystemObject(systemCode, LID2, LID1, true);
+        }
+        return mergeResult;
+    }
+   
+    
     public ArrayList getEnterpriseObjects(String euids[]) throws ProcessingException, UserException {
         ArrayList eoArrayList = new ArrayList();
         for (int i = 0; i < euids.length; i++) {
@@ -691,7 +709,6 @@ public class MasterControllerService {
                 SBROverWrite sbrOverWrite = new SBROverWrite();   
                 sbrOverWrite.setAddFlag(true);
 //                String createEPath = EPathBuilder.createEPath(minorObject, sbr.getObject().pGetTag() + "." + (String) obj);
-//                System.out.println("==> constructed epath: " + createEPath);
                 sbrOverWrite.setPath( sbr.getObject().pGetTag() + "." + (String) obj); // This is Person.Address.AddresLine1
                 sbrOverWrite.setData(value);
                 overWrites.add(sbrOverWrite);
