@@ -19,7 +19,19 @@
                 <tr>
                     <td> 
 
-                       <%if(request.getParameter("error") != null) {%>
+                       <%if(request.getParameter("na") != null) {%>
+                        <div class="errorHeadMessage"> <%=bundle.getString("not_authorized_head")%></div> 
+                        <div id="errorSummary"  class="errorSummary"> 
+                            <p>
+                               <%=request.getParameter("na")%>
+                            </p>
+							<p>
+							   <%=bundle.getString("check_permissions")%>&nbsp;<a title="<%=bundle.getString("login_submit_button_prompt")%>" href="login.jsp"> <%=bundle.getString("login_try_again_text")%>  </a>&nbsp;<%=bundle.getString("login_after_issue_resolved")%>
+                               
+                            </p>
+                        </div>
+
+                       <%} else if(request.getParameter("error") != null) {%>
                         <div class="errorHeadMessage"> <%=bundle.getString("login_user_login_init_load_message")%></div> 
                         <div id="errorSummary"  class="errorSummary"> 
                             <p>
@@ -34,7 +46,7 @@
 					   <div class="errorHeadMessage"><%=bundle.getString("login_error_heading_text")%></div> 
                         <div id="errorSummary" class="errorSummary" > 
                             <p>
-                               <%=bundle.getString("login_user_login_failure_message")%> <a title="<%=bundle.getString("login_try_again_text")%>" href="login.jsf"> <%=bundle.getString("login_after_issue_resolved")%></a>
+                               <%=bundle.getString("login_user_login_failure_message")%> <a title="<%=bundle.getString("login_try_again_text")%>" href="login.jsf"> <%=bundle.getString("login_try_again_text")%></a>
                             </p>
                         </div>
 
@@ -43,6 +55,11 @@
                 </tr>
             </table>
             <div> <!-- End Main Content -->
+	<%  //invalidate the session and logut the user to start over once again
+	    request.setAttribute("Logout", "LoggedOut");
+        request.getSession().invalidate(); 
+             
+	%>
             
         </body>
     </html>

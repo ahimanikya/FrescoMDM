@@ -8,15 +8,24 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 <%@ page import="javax.faces.context.FacesContext"  %>
+<%@ page import="javax.faces.application.FacesMessage"%>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
+<%@ page import="java.util.HashMap"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
+<!-- 
+  Author Sridhar Narsingh
+  sridhar@ligaturesoftware.com
+  http://www.ligaturesoftware.com
+  Update Date: 12/16/2007  
+  -->
+
 <script>
  var tabTitles=[];
 </script>
@@ -29,6 +38,7 @@
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
+Operations operationSecurityCheck = new Operations();
 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP , FacesContext.getCurrentInstance().getViewRoot().getLocale());
 Operations operationsGlobal = null;
 HttpSession sessionFacesGlobal = null;
@@ -36,6 +46,21 @@ sessionFacesGlobal = (HttpSession) FacesContext.getCurrentInstance().getExternal
 operationsGlobal = new Operations();
 sessionFacesGlobal.setAttribute("Operations",operationsGlobal);
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+boolean allowed = false;
+//Added by Sridhar 7/29/2008
+// Permissions Map:This map defines the relationship between the MIDM xml tag names and the 
+// files associated with the functionality of the tag
+// The permissions are based on the MIDM tag name
+HashMap tagNameScreenNameMap = new HashMap();
+tagNameScreenNameMap.put("dashboard","dashboard.jsp");
+tagNameScreenNameMap.put("duplicate-records","duplicaterecords.jsp,compareduplicates.jsp");
+tagNameScreenNameMap.put("record-details","recorddetails.jsp,euiddetails.jsp,compareduplicates.jsp");
+tagNameScreenNameMap.put("assumed-matches","assumedmatches.jsp,ameuiddetails.jsp");
+tagNameScreenNameMap.put("source-record","sourcerecords.jsp");
+tagNameScreenNameMap.put("reports","reports.jsp");
+tagNameScreenNameMap.put("transactions","transactions.jsp,transeuiddetails.jsp");
+tagNameScreenNameMap.put("audit-log","auditlog.jsp");
+String refererPage = request.getHeader("referer");
 
 // fix for 6679172,6684209
 if(session!=null && session.isNew()) {	
@@ -57,34 +82,188 @@ ConfigManager.init();
 
 String uri = request.getRequestURI();
 String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
-//Added by Sridhar to handle the null pointer Exception bug#66
+         ArrayList headerTabsLabelsList = ConfigManager.getInstance().getAllScreenObjects();                    
+		 Object[] headerTabsLabelsListObj = headerTabsLabelsList.toArray();
+		 ScreenObject allScreensArrayOrdered[] = new ScreenObject[headerTabsLabelsListObj.length];         
+		 String headerClassName = "";		
+                   // modfied by Anil , fix for MIDM security Isssue
+		 for(int aIndex = 0 ;aIndex <headerTabsLabelsListObj.length; aIndex++) {
+		    ScreenObject screenObjectLocal = (ScreenObject) headerTabsLabelsListObj[aIndex];                   
+                    if (screenObjectLocal!=null){
+                     String screenName = ConfigManager.getInstance().getScreenObjectTagName(screenObjectLocal.getID().toString());
+                     if (screenName.equalsIgnoreCase("assumed-matches")){
+                         if(!operationSecurityCheck.isAssumedMatch_SearchView()){
+                             screenObjectLocal = null;
+                         }
+                     }
+                      if (screenName.equalsIgnoreCase("transactions")){
+                         if(!operationSecurityCheck.isTransLog_SearchView()){
+                             screenObjectLocal = null;
+                         }
+                     }
+                     if (screenName.equalsIgnoreCase("audit-log")){
+                         if(!operationSecurityCheck.isAuditLog_SearchView()){
+                             screenObjectLocal = null;
+                         }
+                     }
+                     if (screenName.equalsIgnoreCase("record-details")){
+                         if(!operationSecurityCheck.isEO_SearchViewSBR()){
+                             screenObjectLocal = null;
+                         }
+                     }
+                      if (screenName.equalsIgnoreCase("duplicate-records")){
+                         if(!operationSecurityCheck.isPotDup_SearchView()){
+                             screenObjectLocal = null;
+                         }
+                     }
+					 if (screenName.equalsIgnoreCase("reports")){
+                         if(!operationSecurityCheck.isReports_MergedRecords()&& !operationSecurityCheck.isReports_DeactivatedEUIDs() &&
+							 !operationSecurityCheck.isReports_UnmergedRecords() && !operationSecurityCheck.isReports_Updates() && !operationSecurityCheck.isReports_Activity() && !operationSecurityCheck.isReports_Duplicates()&& !operationSecurityCheck.isReports_AssumedMatches()){
+                             screenObjectLocal = null;
+                         }
+                     }
+					 if (screenName.equalsIgnoreCase("source-record")){
+                         if(!operationSecurityCheck.isSO_SearchView() && !operationSecurityCheck.isSO_Add() && !operationSecurityCheck.isSO_Merge()){
+                             screenObjectLocal = null;
+                         }
+                     }
+                    }                
+                if (screenObjectLocal!=null){
+                     allScreensArrayOrdered[screenObjectLocal.getDisplayOrder()] = screenObjectLocal;
+                }
+		 }
 NavigationHandler navigationHandler = new NavigationHandler();                                 
-if(requestPage.equalsIgnoreCase("recorddetails.jsp")) { 
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-} else if(requestPage.equalsIgnoreCase("assumedmatches.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("assumed-matches"));	
-}else if(requestPage.equalsIgnoreCase("transactions.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("transactions"));	
-}else if(requestPage.equalsIgnoreCase("duplicaterecords.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));	
-}else if(requestPage.equalsIgnoreCase("reports.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("reports"));	
-}else if(requestPage.equalsIgnoreCase("sourcerecords.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("source-record"));	
-}else if(requestPage.equalsIgnoreCase("auditlog.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("audit-log"));	
-}else if(requestPage.equalsIgnoreCase("dashboard.jsp"))  {
-    session.setAttribute("ScreenObject", navigationHandler.getScreenObject("dashboard"));	
+//System.out.println("Accessable tabs --> " + allScreensArrayOrdered.length );
+//Modified by Sridhar Narsingh sridhar@ligaturesoftware.com
+//to handle the null pointer Exception bug#66
+//Added logic to check the URL hacking to fix the bug # 17
+//**Build the list of permitted screens
+ArrayList permittedScreens = new ArrayList();
+for (int i=0;i<allScreensArrayOrdered.length;i++)    {
+   if (allScreensArrayOrdered[i] != null)  {
+       permittedScreens.add(allScreensArrayOrdered[i]);
+   }
 }
+   //System.out.println(" requestPage " + requestPage);
+for (int i=0;i<permittedScreens.size();i++)    {
+	String permittedTagName = navigationHandler.getTagNameByScreenId(((ScreenObject)permittedScreens.get(i)).getID());
+	String permittedScreenName[] = ((String)tagNameScreenNameMap.get(permittedTagName)).split(",");
+	//Check if the requested page is within the permitted tabs
+	for (int j = 0; j<permittedScreenName.length;j++ )    {
+            //System.out.println("permittedTagName  ->>" + permittedTagName  + " permittedScreenName " + permittedScreenName[j]);	   
+	     if (permittedScreenName[j].equalsIgnoreCase(requestPage))    {		   
+		        allowed = true;  // Access allowed (valid request)
+			    session.setAttribute("ScreenObject", navigationHandler.getScreenObject(permittedTagName));
+	     }
+         if(allowed) break;
+	 }
+}
+
+//User has no permission to any tabs,No access to MIDM
+if(permittedScreens.size() == 0 ) {  
+    FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?error="+bundle.getString("no_midm_access"));
+} 
+
 //Get the updated Session Object based on the user browser navigation
 screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 %>
-<!-- 
-  Author Sridhar Narsingh
-  sridhar@ligaturesoftware.com
-  http://www.ligaturesoftware.com
-  Update Date: 12/16/2007  
-  -->
+
+<%   
+    boolean initialScreenAllowed = false;	
+	if (!allowed)  {
+        ScreenObject initialScreenObject = ConfigManager.getInstance().getInitialScreen();		
+		String initialTagName  = navigationHandler.getTagNameByScreenId(((ScreenObject)initialScreenObject).getID());
+		for (int i=0;i<permittedScreens.size();i++)    {
+			String thisTagName  = navigationHandler.getTagNameByScreenId(((ScreenObject)permittedScreens.get(i)).getID());
+			if (thisTagName.equalsIgnoreCase(initialTagName))    {
+				initialScreenAllowed = true; //Initial screen configuration is fine				
+				break;
+			}
+		}
+%>
+<%      //Check if the initial configuration is wrongly configured
+	    if (!initialScreenAllowed )    {
+		    if((null != refererPage && refererPage.endsWith("login.jsf")))    {
+				   //If he has come from the login screen, take him to dashboard with a configuration message
+                   ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("dashboard");
+                   session.setAttribute("ScreenObject", screenObjectDashboard);			
+			       FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.jsf?na="+bundle.getString("initial_screen_error"));
+			} else {
+				    //user has hacked the URL, however update the correct screen object 
+					//so that any delay in redirect should not cause Null Pointer Exception
+			        if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || 
+						"euiddetails.jsp".equalsIgnoreCase(requestPage) || 
+						"compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("record-details");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);			
+					}  else if ("dashboard.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("dashboard");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);			
+					}  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) ||  
+						        "compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("duplicate-records");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("assumedmatches.jsp".equalsIgnoreCase(requestPage) || 
+						        "ameuiddetails.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("assumed-matches");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("sourcerecords.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("source-record");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("reports.jsp".equalsIgnoreCase(requestPage))    {						
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("reports");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("transeuiddetails.jsp".equalsIgnoreCase(requestPage) || 
+						        "transactions.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("transactions");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("auditlog.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("audit-log");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}
+			        // BOOOOOOOOOOOOOO!! throw em' out
+				
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?na="+bundle.getString("not_authorized"));
+			}
+       }  else {
+				    //user has hacked the URL, however update the correct screen object 
+					//so that any delay in redirect should not cause Null Pointer Exception
+			        if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || 
+						"euiddetails.jsp".equalsIgnoreCase(requestPage) || 
+						"compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("record-details");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);			
+					}  else if ("dashboard.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("dashboard");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);			
+					}  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) ||  
+						        "compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("duplicate-records");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("assumedmatches.jsp".equalsIgnoreCase(requestPage) || 
+						        "ameuiddetails.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("assumed-matches");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("sourcerecords.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("source-record");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("reports.jsp".equalsIgnoreCase(requestPage))    {						
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("reports");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("transeuiddetails.jsp".equalsIgnoreCase(requestPage) || 
+						        "transactions.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("transactions");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("auditlog.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("audit-log");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}
+			        // BOOOOOOOOOOOOOO!! throw em' out
+				
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?na="+bundle.getString("not_authorized"));
+	   }
+   } %>
+
 <%
 String global_daysOfWeek  = bundle.getString("global_daysOfWeek");
 String global_months = bundle.getString("global_months");
@@ -94,7 +273,6 @@ String cal_today_text = bundle.getString("cal_today_text");
 String cal_month_text = bundle.getString("cal_month_text");
 String cal_year_text = bundle.getString("cal_year_text");
 String  dateFormat = ConfigManager.getDateFormat();
-
 %>
       <!--Skip to main Content added-->
     <a href="#mainContent"><img src="images/spacer.gif" border="0" height="0" width= "0" alt="Skip to main Content"></a>
@@ -119,70 +297,6 @@ String  dateFormat = ConfigManager.getDateFormat();
              </tr>    
          </h:form>   
 		 <!--Start dynamic header content code here -->
-		 <%
-         ArrayList headerTabsLabelsList = ConfigManager.getInstance().getAllScreenObjects();                    
-		 Object[] headerTabsLabelsListObj = headerTabsLabelsList.toArray();
-		 ScreenObject allScreensArrayOrdered[] = new ScreenObject[headerTabsLabelsListObj.length];         
-		 String headerClassName = "";		
-                   // modfied by Anil , fix for MIDM security Isssue
-		 for(int aIndex = 0 ;aIndex <headerTabsLabelsListObj.length; aIndex++) {
-		    ScreenObject screenObjectLocal = (ScreenObject) headerTabsLabelsListObj[aIndex];
-                    
-                    if (screenObjectLocal!=null){
-                     String screenName = ConfigManager.getInstance().getScreenObjectTagName(screenObjectLocal.getID().toString());
-                 
-                     Operations ops = new Operations();
-                     
-                     if (screenName.equalsIgnoreCase("assumed-matches")){
-                         if(!ops.isAssumedMatch_SearchView()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-                      if (screenName.equalsIgnoreCase("transactions")){
-                         if(!ops.isTransLog_SearchView()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-                     if (screenName.equalsIgnoreCase("audit-log")){
-                         if(!ops.isAuditLog_SearchView()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-                     if (screenName.equalsIgnoreCase("record-details")){
-                         if(!ops.isEO_SearchViewSBR()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-                      if (screenName.equalsIgnoreCase("duplicate-records")){
-                         if(!ops.isPotDup_SearchView()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-					 if (screenName.equalsIgnoreCase("reports")){
-                         if(!ops.isReports_MergedRecords()&& !ops.isReports_DeactivatedEUIDs() &&
-							 !ops.isReports_UnmergedRecords() && !ops.isReports_Updates() && !ops.isReports_Activity() && !ops.isReports_Duplicates()&& !ops.isReports_AssumedMatches()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-					 if (screenName.equalsIgnoreCase("source-record")){
-                         if(!ops.isSO_SearchView() && !ops.isSO_Add() && !ops.isSO_Merge()){
-                             screenObjectLocal = null;
-                             
-                         }
-                     }
-                    }
-                
-                if (screenObjectLocal!=null){
-                     allScreensArrayOrdered[screenObjectLocal.getDisplayOrder()] = screenObjectLocal;
-                }
-		 }
-		 %>
           
 		  <tr>
              <td colspan="2">
@@ -191,17 +305,18 @@ String  dateFormat = ConfigManager.getDateFormat();
                                  <%                                  
                                  for(int i=0;i<allScreensArrayOrdered.length;i++){  
                                   %> 
+                                  <% 
+                                  if (allScreensArrayOrdered[i]!=null){%>
 								  <script>
 									  tabTitles.push("<%=allScreensArrayOrdered[i].getDisplayTitle()%>");
 								  </script>
-                                  <% 
-                                  
-                                  if (allScreensArrayOrdered[i]!=null){
-                                    ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
+
+                                    <%ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
                                     ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());                                    
                                   %>
 
 								  <%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
+
                                        <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbuttonselected" 
 									   onclick="javascript:highlighTabs('tabsForm',event)"
                                                   actionListener="#{NavigationHandler.setHeaderByTabName}" > 
@@ -216,7 +331,8 @@ String  dateFormat = ConfigManager.getDateFormat();
                                           <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=screenObject.getDisplayTitle()%>"><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
                                       </h:commandLink>
 								 <%}%>
-                                 <%}}%>
+                                 <%}%>
+								<%}%>
                                  </h:form>
 
 				 </div>
@@ -226,6 +342,7 @@ String  dateFormat = ConfigManager.getDateFormat();
              <td width="100%" colspan="2"><div class="blueline">&nbsp;</div></td>
          </tr>
      </table>    
+
 <script>
 
 function highlighTabs(formName,thisEvent)   {
@@ -248,24 +365,5 @@ function highlighTabs(formName,thisEvent)   {
 			}
     }
 }
-
-/*function highlighTabs(formName,thisEvent)   {
-	alert(thisEvent.target);
-  var src = e.srcelement? e.srcelement : e.target; 
-  var clickedTabTitle = thisEvent.srcElement.parentElement.title;  
-  for(i=0; i< tabTitles.length; i++)   {      
-			if(tabTitles[i] == clickedTabTitle ) {
-				alert(thisEvent.srcElement);
-				thisEvent.srcElement.parentElement.style.className = "navbuttonselected"
-				var selectedId = document.getElementById(tabTitles[i]).parentElement;
-				selectedId.className = "navbuttonselected"
-	    	} else {
-				var notSelectedId = document.getElementById(tabTitles[i]).parentElement;
-				alert(thisEvent.srcElement);
-				notSelectedId.className = "navbutton";
-			}
-    }
-}
-*/
 </script>
 </div>
