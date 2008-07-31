@@ -322,11 +322,7 @@ function align(thisevent,divID) {
     </div>  
     </td>
     </tr>
-</table>
-
-<!--Output div here-->
-<table cellspacing="0" cellpadding="0" border="0" style="color:#837F74;height:100%;width: 1024px;font-size:12px;">
-  <tr><td><div  id="outputdiv"></div></td></tr>
+   <tr><td><div  id="outputdiv"></div></td></tr>
 </table>
 
 </div>  
