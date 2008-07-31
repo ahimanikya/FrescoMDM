@@ -1424,9 +1424,10 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             eoMultiMergePreview.put("EUID", resulteo.getEUID());
             finalPreviewMap.put("eoMultiMergePreview" + rowCount, eoMultiMergePreview);
             //PUT THE DESTINATION AND SOURCE EUIDS for selecting it by default in the preview screen
-            finalPreviewMap.put("destinationEuid" + rowCount, sourceDestnEuids[0] + rowCount);
-            finalPreviewMap.put("srcsList" + rowCount, srcsList);
-
+             for (int i = 0; i < sourceDestnEuids.length; i++) {
+                finalPreviewMap.put(sourceDestnEuids[i] + ":" + rowCount, sourceDestnEuids[i] + rowCount);
+             }
+             
         } catch (Exception ex) {
                     if (ex instanceof ValidationException) {
                         mLogger.error(mLocalizer.x("SDP110: Service Layer Validation Exception has occurred"), ex);
