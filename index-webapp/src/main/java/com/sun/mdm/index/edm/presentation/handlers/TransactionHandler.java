@@ -1159,7 +1159,8 @@ public class TransactionHandler extends ScreenConfiguration {
             CompareDuplicateManager compareDuplicateManager  = new CompareDuplicateManager();
             
             if (unMergeResult.getDestinationEO() != null && unMergeResult.getSourceEO() != null) {
-                 retHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject);
+                 //retHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject);
+                 retHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(unMergeResult.getSourceEO(), screenObject);
              }
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
