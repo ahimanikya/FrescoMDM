@@ -27,6 +27,7 @@
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.Set"  %>
 <%@ page import="java.util.HashMap"  %>
+<%@ page import="java.util.TreeMap"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Collection"  %>
 <%@ page import="java.util.Iterator"  %>
@@ -99,23 +100,42 @@ if(session!=null){
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title>
         <body class="yui-skin-sam">
+
+<!-- Modify By : M.Narahari on 29/07/2008
+     Description : sorted euids and modified thisIdx to set the initial navigation
+ -->
+
 <%
    String amid = request.getParameter("AMID");
    String paginationArray = request.getParameter("euids");
    String [] pagination = paginationArray.split(",");
-
+   TreeMap paginationArrayMap= new TreeMap();
+   for (int i=0; i<pagination.length;i++){ 
+   	   paginationArrayMap.put(pagination[i],"");
+   }
+   pagination = (String[])(paginationArrayMap.keySet().toString()).split(",");
+   for (int i=0; i<pagination.length;i++)    { 
+		if (i == 0 ) {
+			pagination[i] = pagination[i].substring(1,pagination[i].length());
+         } else if (i == pagination.length -1 )  {
+			pagination[i] = pagination[i].substring(0,pagination[i].length()-1);
+		 }
+		 pagination[i] = pagination[i].trim();
+   }
    
    double rand = java.lang.Math.random();
    String URI = request.getRequestURI();
    URI = URI.substring(1, URI.lastIndexOf("/"));
 %>
 
-
 <script>
 var pages =[];
 var thisIdx=0;
   <%for (int i=0; i<pagination.length;i++)    { %>
          pages.push("<%=pagination[i]%>");
+       <% if(pagination[i].equalsIgnoreCase(amid)){%>
+         thisIdx = <%=i%>;
+		<%}%>
    <% }%>
 </script>
             <%@include file="./templates/header.jsp"%>
