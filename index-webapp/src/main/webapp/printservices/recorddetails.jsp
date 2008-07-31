@@ -135,6 +135,7 @@ ArrayList collectedEuidsList = new ArrayList();
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
     String attributeValue = (String) request.getParameter(attributeName);
+	 attributeValue = attributeValue.replaceAll("~~","%");
        if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) ) {
             patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);
