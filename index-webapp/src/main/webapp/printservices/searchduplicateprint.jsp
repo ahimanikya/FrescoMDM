@@ -343,6 +343,7 @@ String strVal = new String();
                                                //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
                                                String  weight =  eoHashMapValues.get("Weight").toString();
                                                String  potDupStatus = (String) eoHashMapValues.get("Status");
+											   String potDupStatusText = (potDupStatus != null) ? ValidationService.getInstance().getDescription("RESOLVETYPE", potDupStatus):"";
                                                String  potDupId = (String) eoHashMapValues.get("PotDupId");
 
    						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
@@ -390,16 +391,18 @@ String strVal = new String();
                                                     </tr> 
                                                 </table>
                                             </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                             <div id="mainEuidContentDiv<%=countMain%>" class="yellow">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
                                                              
                                                     %>
+													<% if (ifc == 0) {%>
+													     <tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
+													<% } %>
                                                     <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
                                                     <%}%>
-													<tr><td>&nbsp</td></tr>
 													<tr><td>&nbsp</td></tr>
                                                 </table>
                                             </div>   
@@ -427,6 +430,10 @@ String strVal = new String();
 														epathValue = fieldConfigMap.getFullFieldName();
                                                         
                                                      %>
+  													<% if (ifc == 0) {%>
+													     <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(potDupStatusText)%> </font></td></tr>
+													<% } %>
+
                                                     <tr>
                                                         <td>
 														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
@@ -439,8 +446,7 @@ String strVal = new String();
                                                         </td>                                                        
                                                     </tr>
                                                     <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
+     												<tr><td>&nbsp;</td></tr>
                                               </table>
 
 											  </div>
@@ -518,7 +524,12 @@ String strVal = new String();
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
+                                                        epathValue = fieldConfigMap.getFullFieldName();    
+														%>
+														<% if (ifc == 0) {%>
+													     <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(potDupStatusText)%> </font></td></tr>
+													<% } %>
+
                                                     <tr>                                                        
                                                        <td> 
                                                                 <%if (fieldValuesMapSource.get(epathValue) != null) {%>
@@ -543,27 +554,6 @@ String strVal = new String();
                                                         </td>        
                                                     </tr>
                                                     <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-                                                  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
-
-												        <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
-                                                         <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </a>  
-												   <%}%>
-
-												<%}else{%>
-												<%
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
                                                     <tr><td>&nbsp</td></tr>
                                                 </table>
                                             </div>   
