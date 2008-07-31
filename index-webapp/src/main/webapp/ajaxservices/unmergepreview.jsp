@@ -134,46 +134,21 @@ boolean isSessionActive = true;
 			//unMergePreview
 			String unMergePreviewStr = request.getParameter("unMergePreview");
             boolean isUnMergePreview = (null == unMergePreviewStr?false:true);
-            //cancelUnmerge
-            String cancelUnmergeStr = request.getParameter("cancelUnmerge");
-            boolean isCancelUnmerge = (null == cancelUnmergeStr?false:true);
-            
+
             String  unmergeTransactionId = request.getParameter("unmergeTransactionId");
 			String mainEuid  = request.getParameter("mainEuid");
             String mainEUID = new String();
 			
-            if (request.getParameter("transactionId") != null) {
-                eoArrayList = transactionHandler.getTranscationDetails(transactionId);
-                request.setAttribute("comapreEuidsArrayList", eoArrayList);
-            }
-
-			String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
-
+ 
 
             HashMap unmergeHashMap  = new HashMap();
             HashMap unmergePreviewHashMap  = new HashMap();
-			if(isCancelUnmerge) {
-    %> 
-	  <table><tr><td>
-        <script>
-		   ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?random=rand'+'&'+'transactionId='+pages[thisIdx]+'&function='+functions[thisIdx],'mainDupSource','');
-		</script>
-		</td></tr>
-		</table>
-                
- <%   request.setAttribute("comapreEuidsArrayList", eoArrayList); 
-}
-
-			%>
-
-
-
-	<%		if(isUnMergeFinal) {
+			if(isUnMergePreview) {
                 //eoArrayList = transactionHandler.getTranscationDetails(unmergeTransactionId);
-				unmergeHashMap = transactionHandler.unmergeEnterpriseObject(unmergeTransactionId, mainEuid);
+ 				unmergePreviewHashMap  = transactionHandler.previewUnmergeEnterpriseObject(unmergeTransactionId, mainEuid);
 				messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-                if(unmergeHashMap != null ) {
-				  if(unmergeHashMap.get("CONCURRENT_MOD_ERROR") != null ) {%> <!-- If concurrent modification-->
+                if(unmergePreviewHashMap != null ) {
+				  if(unmergePreviewHashMap.get("CONCURRENT_MOD_ERROR") != null ) {%> <!-- If concurrent modification-->
 				  <table>
 				    <tr>
 				    <td>
@@ -185,27 +160,13 @@ boolean isSessionActive = true;
 				   </td>
 				   </tr>
 				 </td>
+				 </table>
 
 				<%} else {
-					MergeResult unMergeResult  = (MergeResult) unmergeHashMap.get("unMergeResult");
-					String unmergeTransNumber  = unMergeResult.getTransactionObject().getTransactionNumber();
-                    String unmergeFunction    = unMergeResult.getTransactionObject().getFunction();
-					%>
-				  <table>
-				    <tr>
-				    <td>
-              	   <script>
- 					  document.getElementById('messages').innerHTML="<%=unMergeResult.getSourceEO().getEUID()%>&nbsp;<%=bundle.getString("unmerged_from")%>&nbsp;<%=unMergeResult.getDestinationEO().getEUID()%>";
-					  pages[thisIdx] = "<%=unmergeTransNumber%>";
-					  functions[thisIdx] = "<%=unmergeFunction%>";
-					   
-					  ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?random=rand'+'&'+'transactionId='+pages[thisIdx]+'&function='+functions[thisIdx],'mainDupSource','');
-               	   </script>
-				   </td>
-				   </tr>
-				 </td>
-		 
+					eoArrayList.add(unmergePreviewHashMap);
 
+ 					%>
+ 
 				<%}%>
 
 				<%} else {%> <!-- If unmerge fails modification-->
@@ -229,25 +190,13 @@ boolean isSessionActive = true;
 				<%}%>
 
                 
-            <% request.setAttribute("comapreEuidsArrayList", eoArrayList);
+<%                request.setAttribute("comapreEuidsArrayList", eoArrayList);
 
-			} else {%>
-				<table>
-				  <tr>
-					<td> 
-						<script>
-								document.getElementById('messages').innerHTML  = ""; 
-			 document.getElementById("transDetailsDiv").innerHTML  = "<%=bundle.getString("datatable_transactionid_text")%>: <b>" + pages[thisIdx] + "</b> <%=bundle.getString("transaction_function")%> : <b>"+ functions[thisIdx] + "</b>"; 
-						</script>
-				   </td>
-				</tr>
-				</table>
+			}
 
-
-			<%}%>
-
-
-
+			%>
+ 
+  
 <%
 				//Variables for euid merge  
   			 messagesIter = FacesContext.getCurrentInstance().getMessages(); 
@@ -272,35 +221,13 @@ boolean isSessionActive = true;
             if ( eoArrayList != null && eoArrayList.size() > 0 ) {
             %>  
                <table cellspacing="0" cellpadding="0" border="0">
-			            <tr><td><div id="transDetailsDiv" style="font-color:#000000"></div></td></tr>
-                        <tr>
+                         <tr>
                             <td>
-                                <div style="height:500px;overflow:auto;">
+                                <div>
                     
                                     <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
-<!--Prev Navigation -->
-<td valign="top" align="right">
-<!-- not allowed -->
-<div id="prevnotallowed" style="cursor:not-allowed;visibility:hidden;height:700px;overflow:hidden;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;background-color:#e7e7d6">
-		<table border="0" height="100%" title="<%=bundle.getString("begining")%>">
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
-         </table>
-	</div>
-</td>
-
-<td valign="top" align="right">
-<!-- not allowed -->
-	<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:700px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
-		<table border="0" height="100%" title="<%=bundle.getString("prev")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?operation=prev&random=rand'+'&'+'transactionId='+pages[thisIdx-1]+'&function='+functions[--thisIdx],'mainDupSource','');" >
-		<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
-		<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
-         </table>
-	</div>
-</td>
-
-                                           <%
+                                            <%
                                             Object[] eoArrayListObjects = eoArrayList.toArray();
                                             String dupHeading = "Main Euid";
                                             String cssMain = "maineuidpreview";
@@ -379,93 +306,14 @@ boolean isSessionActive = true;
                                                 FieldConfig[] rootFieldConfigArray = (FieldConfig[]) sourceHandler.getAllNodeFieldConfigs().get(rootNodeName);
                                                 ObjectNodeConfig[] arrObjectNodeConfig = objScreenObject.getRootObj().getChildConfigs();
                    %>
-                                          <%if (countEnt == 0) {%>
-                                            <td  valign="top">
-                                                <div id="outerMainContentDivid" style="visibility:visible;display:block">
-                                                    <div style="width:170px;overflow:auto">
-                                                        <div id="mainEuidContent" class="<%=cssMain%>">
-                                                            <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                                                                <tr><td><b style="font-size:12px; color:blue;"><%=rootNodeName%> Info </b></td></tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
-                                                        <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                            <div id="personassEuidDataContent" class="yellow">
-                                                                
-                                                                <table border="0" cellspacing="0" cellpadding="0" >
-																<tr><td>EUID</td></tr>
-																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
-                                                                    <%
-
-                                                                String mainDOB;
-                                                                ValueExpression fnameExpression;
-                                                                ValueExpression fvalueVaueExpression;
-                                                                String epathValue;
-
-                                                              for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
-                                                                 FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
-                                                                   if(!"EUID".equalsIgnoreCase(fieldConfigMap.getDisplayName())) {
-
-                                                                    %>  
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <%
-                                                                       }
-                                                                      }
-                                                                    %>
-                                                                    <%
-                                                                   
-                                                                   for (int i = 0; i < arrObjectNodeConfig.length; i++) {
-                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
-                                                                    FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-
-                                                              maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
-                                                              int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-                                                                   %>
-                                                                    <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
-                                                                    <%
-
-												              for (int max = 0; max< maxMinorObjectsMAX; max++) {
-                               		 		                   for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                       FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                      %>  
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <%
-                                                                      } //FIELD CONFIG LOOP
-																	  %>
-                                                                     <tr><td>&nbsp;</td></tr>
-
-																	  <%
-                                                                     }
-																	 %>
-
-																	 <%
-                                                                     }
-                                                                    %>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <%}%>     
-                                            
-                                            <!-- Display the field Values-->
+                                             <!-- Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
                                                 <div style="width:170px;overflow:hidden">
-                                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow" >
+                                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="blue" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
-                                                                <td class="menutop"><%=dupHeading%></td>
+                                                                <td class="menutop"><h:outputText  value="#{msgs.Unmerge_but_text}"/>&nbsp;<h:outputText  value="#{msgs.preview_column_text}"/></td>
                                                             </tr> 
                                                                  <tr>
                                                                     <td>
@@ -478,9 +326,9 @@ boolean isSessionActive = true;
                                                     </div>
                                                 </div>
                                                 
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="yellow">
+                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="blue">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
-                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow">
+                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="blue">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
 																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%>
 																</font></td></tr>
@@ -662,7 +510,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                               
                                                <td  valign="top">
 
-                                                <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
+                                                <div id="unmergepreviewmainDupSources<%=i%>" style="visibility:hidden;display:none">
                                                     <div style="width:170px;overflow:hidden;">
                                                     
 											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
@@ -825,168 +673,15 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                             <!--END displaying the sources-->
                                             
                                            <%}%>
-                                            <td  valign="top">
-                                                 <div id="mainDupHistory" style="visibility:hidden;display:none"></div>
-                                            </td>
-                                            <td valign="top"><div id="unmergePreviewPane"></div></td>                              
-<!--Next Navigation -->
-<td valign="top" align="left">
-	<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:700px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
-		<table border="0" height="100%" title="<%=bundle.getString("next")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?operation=next&random=rand'+'&'+'transactionId='+pages[thisIdx+1]+'&function='+functions[++thisIdx],'mainDupSource','');" >
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
-         </table>mainDupSource
-	</div>
-<!--- not allowed -->
-</td>
-<td valign="top" align="left">
-	<div id="nextnotallowed" style="cursor:not-allowed;visibility:hidden;height:700px;overflow:hidden;verticle-align:top;position:relative;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
-		<table border="0" height="100%" title="<%=bundle.getString("end")%>" >
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
-         </table>
-	</div>
-<!--- not allowed -->
-</td>
-
-          
-                                        </tr>
+                                         </tr>
                                     </table>
                                 </div>
                             </td>
                         </tr>   
-                        <tr>
-                            <td>
-                                <table width="100%" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td colspan="<%=eoArrayListObjects.length * 2 + 3%>">
-                                            <div class="blueline">&nbsp;</div>
-                                        </td>   
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div id="actionmainEuidContent" class="actionbuton">
-                                    <table cellpadding="0" cellspacing="0">
-                                        <% 
-										 int unmergeSourcesSize = 0;	
-										for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
-
-                                          HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
-                                          HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
-										  String euid = (String) personfieldValuesMapEO.get("EUID");
-										  eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
- 
-										  if(countEnt == 0) {
-											  mainEuid = euid;
-										  }
-
-											   %>
-  									    <script>
-												 euidValueArray.push('<%=euid%>');
-										</script>
-                                 		<% if (countEnt == 0) {%>
-                                        <td><img src='/<%=URI%>/images/spacer.gif' border="0" width="20px"></td>
-										<td width="169px" valign="top">
-                                          <table cellpadding="0" cellspacing="0">
-										    <tr>
-											  <td valign="top">  
-                                                   <a href="transactions.jsf" class="button" title="<h:outputText value="#{msgs.search_again}"/>" >
-															 <span><h:outputText value="#{msgs.search_again}"/></span>
-												   </a>											  
-											  </td>
-											</tr>
-										  </table>
-										</td>
-                                        <!--Displaying view sources and view history-->
-                                        <% }%>
-
-                                        <td valign="top">
-                                            <div id="dynamicMainEuidButtonContent<%=countEnt%>">
-                                                <table cellspacing="0" cellpadding="0" border="0">
-                                                         <tr> 
-                                                          <td valign="top">
-                                                             <a title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0',euidValueArray)" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
-                                                          </td>                                              
-                                                        </tr>
-                                                        <%
-											 
-                                                         boolean isMerge = ("euidMerge".equalsIgnoreCase(function) || "lidMerge".equalsIgnoreCase(function)) ? transactionHandler.isEUIDMerge(transactionId): false;
-                                                         if (isMerge && countEnt == 1 ) {
-															 unmergeSourcesSize = eoSources.size();
-                                                             EnterpriseObject mainMergeEO = masterControllerService.getEnterpriseObject(mainEuid);
-															 if(mainMergeEO != null ) {
-																 session.setAttribute("SBR_REVISION_NUMBER"+mainMergeEO.getEUID(), mainMergeEO.getSBR().getRevisionNumber()); 
-															 }
-                                                         %>                 
-                                                        <tr>
-                                                            <td valign="top" colspan="2">
-                                                            <div id="unMergePreviewButtons" >
-   
-															<a href="javascript:void(0)" 
-															   onclick="javascript:document.getElementById('unmergeTransactionId').value='<%=transactionId%>';document.getElementById('mainEuid').value='<%=mainEuid%>';getFormValues('unmergeForm');ajaxURL('/<%=URI%>/ajaxservices/unmergepreview.jsf?'+queryStr+'&unMergePreview=true&rand=<%=rand%>','unmergePreviewPane','');document.getElementById('previewSourcesButton').style.visibility='visible';document.getElementById('previewSourcesButton').style.display='block';document.getElementById('unMergePreviewButtons').style.visibility='hidden';document.getElementById('unMergePreviewButtons').style.display='none';" 
-															   class="button" title="<h:outputText  value="#{msgs.preview_column_text}"/>&nbsp;<%=("euidMerge".equalsIgnoreCase(function))?"EUID":localIdDesignation%>&nbsp;<h:outputText  value="#{msgs.Unmerge_but_text}"/>"><span><h:outputText  value="#{msgs.preview_column_text}"/>&nbsp;<h:outputText  value="#{msgs.Unmerge_but_text}"/></span>
-															</a>   
-														</div>
-                                                            </td> 
-                                                        </tr>
-                                                        <% } else if (!isMerge && countEnt == 1 ) {%>
-														  <%if("euidMerge".equalsIgnoreCase(function) || "lidMerge".equalsIgnoreCase(function)) {%>
-                                                           <tr><td><h:outputText style="color:red" value="#{msgs.unmerge_button_not_avail_text} "/>&nbsp;</td></tr>
-														  <%}%>
-                                                        <%}%>
-                                                </table>
-                                            </div> 
-                                        </td>
-										<!--START  Extra tds for the sources-->
-                                        <% for (int sCount = 0; sCount < eoSources.size(); sCount++) {%>
-                                         <td>
-										  <div id="spacer<%=sCount%><%=countEnt%>"  style="visiblity:hidden;display:none;">
-										   <table>
-										     <tr>
-											   <td>
- 										           <img src="images/spacer.gif" width="172px" height="1px" border="0">
- 											   </td>
-											   </tr>
-											 </table>
-                                            </div>
-                                        </td>
-										<%}%>
-										<!--END Extra tds for the sources-->
-                                         <%}%>
-										  <td>
-										  <div id="previewSourcesButton" style="visibility:hidden;display:none;">
-										  <table cellspacing="0" cellpadding="0">
-										   <tr>
-										     <td>
-										   <a class="viewbtn" href="javascript:showUnmergeViewSources('<%=unmergeSourcesSize%>')"><h:outputText value="#{msgs.view_sources_text}"/></a>
-										   </td>
-										   </tr>
-                                            <tr>
-											 <td>
-										     <a href="Javascript:void(0)"
-												class="button" 
-                                                onclick="Javascript:showExtraDivs('unmergePopupDiv',event)"
-												title="<h:outputText  value="#{msgs.Unmerge_but_text}"/>">
-                                                 <span><h:outputText  value="#{msgs.Unmerge_but_text}"/></span></a>
-											</td>
-                                             </tr>
-											 </table>
-
-										   </div>
-										   </td>
-                                       </tr>
-                    					      </table>
-                                </div>
-                            </td>
-                        </tr>
-                      <!-- eo ArrayList NOT NULL CONDITION  -->  
+                       <!-- eo ArrayList NOT NULL CONDITION  -->  
                     </table>
                     <%} else {%> <!-- If the transaction details are not found -->
-					 <% if(!isUnMergeFinal) {%>
-                     <div class="ajaxalert">
+	                   <div class="ajaxalert">
 					   <table>
 					  	 <tr>
 					 		<td>
@@ -1002,79 +697,9 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 						<tr>
 					 </table>
 					</div>
-                   <%}%>
-                   <%}%>
+                    <%}%>
   <%}%> <!-- if session is active -->
-<script>
- if (pages.length == 1)  {
-       document.getElementById('prevnotallowed').style.visibility = 'visible';
-       document.getElementById('prevnotallowed').style.width= '20px';
-       document.getElementById('prevnotallowed').style.height= '700px';
 
-       document.getElementById('nextnotallowed').style.visibility = 'visible';	   
-       document.getElementById('nextnotallowed').style.width = '20px';	   
-       document.getElementById('nextnotallowed').style.height = '700px';	   
-
-       document.getElementById('next').style.visibility = 'hidden';	   
-       document.getElementById('next').style.width = '0px';	   
-       document.getElementById('next').style.height = '0px';	   
-
-       document.getElementById('prev').style.visibility = 'hidden';
-       document.getElementById('prev').style.width= '0px';
-       document.getElementById('prev').style.height= '700px';
-
- } else if (thisIdx >= pages.length -1)  {
-	   //alert('Overflow');
-       document.getElementById('prev').style.visibility = 'visible';
-       document.getElementById('prev').style.width = '20px';
-       document.getElementById('prev').style.height = '700px';
-
-       document.getElementById('prevnotallowed').style.visibility = 'hidden';
-       document.getElementById('prevnotallowed').style.width = '0px';
-       document.getElementById('prevnotallowed').style.height = '0px';
-
-       document.getElementById('next').style.visibility = 'hidden';	   
-       document.getElementById('next').style.width = '0px';	   
-       document.getElementById('next').style.height = '0px';	   
-
-       document.getElementById('nextnotallowed').style.visibility = 'visible';	   
-       document.getElementById('nextnotallowed').style.width = '20px';	   
-       document.getElementById('nextnotallowed').style.height = '700px';	   
- } else if (thisIdx <= 0)   {
-	   //alert('Underflow');
-       document.getElementById('prev').style.visibility = 'hidden';
-       document.getElementById('prev').style.width= '0px';
-       document.getElementById('prev').style.height= '700px';
-
-       document.getElementById('prevnotallowed').style.visibility = 'visible';
-       document.getElementById('prevnotallowed').style.width= '20px';
-       document.getElementById('prevnotallowed').style.height= '700px';
-
-       document.getElementById('nextnotallowed').style.visibility = 'hidden';
-       document.getElementById('nextnotallowed').style.width = '0px';
-       document.getElementById('nextnotallowed').style.height = '0px';
-
-	   document.getElementById('next').style.visibility = 'visible';
-	   document.getElementById('next').style.width= '20px';
-	   document.getElementById('next').style.height= '700px';
- } else {
-       document.getElementById('nextnotallowed').style.visibility = 'hidden';
-       document.getElementById('nextnotallowed').style.width = '0px';
-       document.getElementById('nextnotallowed').style.height = '0px';
-
-	   document.getElementById('next').style.visibility = 'visible';
-	   document.getElementById('next').style.width= '20px';
-	   document.getElementById('next').style.height= '700px';
-
-	   document.getElementById('prevnotallowed').style.visibility = 'hidden';
-       document.getElementById('prevnotallowed').style.width = '0px';
-       document.getElementById('prevnotallowed').style.height = '0px';
-
-       document.getElementById('prev').style.visibility = 'visible';
-       document.getElementById('prev').style.width = '20px';
-       document.getElementById('prev').style.height = '700px';
- }
-</script>
 
 </html>
 
