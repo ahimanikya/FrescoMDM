@@ -1580,97 +1580,143 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
 //Functions for view sources/history in euid details pages
 function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize,euidsArray) {
   
-    var divLayerMain;
-    var divLayerHistory;
- 	//Hide/show extra source divs spacer<%=euid%><%=sCount%><%=countEnt%>
-       for(var s=0;s<count;s++) {
-        for(var i=0;i<totalColumns;i++) {
-        // var spacerDiv = document.getElementById('spacer'+euidsArray[e]+s+i);    
-         var spacerDiv = document.getElementById('spacer'+s+i);    
-  	     if(spacerDiv != null) {
-		   if(countEnt  == i ) {
-	         if (spacerDiv.style.display=="block") {
-               spacerDiv.style.visibility="hidden";
-               spacerDiv.style.display="none";
-	         } else {
-               spacerDiv.style.visibility="visible";
-               spacerDiv.style.display="block";
- 	        } 
-		  } //if euids array condition
-	    } //if spacer div condition
-	   } //Total number of euid columns
-	  }//Total numbe of src records column
- 
-    for(var i=0;i<count;i++) {
-      divLayerMain = document.getElementById(mainDupSources+countEnt+i);
-      if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
-         divLayerMain.style.visibility="visible";
-         divLayerMain.style.display="block";
-         
-         if( mainDupSources == 'mainDupSources') {
-            divLayerMain = document.getElementById("mainDupSources"+countEnt+i);
-            divLayerMain.style.visibility="visible";
-            divLayerMain.style.display="block";
-         }
-         
-         //display or hide preview pane
-		 if(document.getElementById("previewPane") != null ) {
-            document.getElementById("previewPane").style.visibility="hidden";
-            document.getElementById("previewPane").style.display="none";
-		 }
-         //display/hide other divs
-         for(var c=0;c<totalColumns;c++) {
-	        //HIDE history divs by default
-             for(var j=0;j<historySize;j++) {
-              divLayerHistory = document.getElementById("mainDupHistory"+c+j);
-              if(divLayerHistory != null) {  
-                divLayerHistory.style.visibility="hidden";
-                divLayerHistory.style.display="none";
-			  }
-            }
-		  /*
-          if(c  == countEnt) {
-            document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
-            document.getElementById("outerMainContentDivid"+c).style.display = "block";
-			if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
-            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
-            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
-			}
-         } else {
-           document.getElementById("outerMainContentDivid"+c).style.visibility = "hidden";
-           document.getElementById("outerMainContentDivid"+c).style.display = "none";
-		   if(document.getElementById("dynamicMainEuidButtonContent"+c) != null) {
-           document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "hidden";
-           document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "none";
+		var divLayerMain;
+		var divLayerHistory;
+		//Hide/show extra source divs spacer<%=euid%><%=sCount%><%=countEnt%>
+		   for(var s=0;s<count;s++) {
+			for(var i=0;i<totalColumns;i++) {
+			// var spacerDiv = document.getElementById('spacer'+euidsArray[e]+s+i);    
+			 var spacerDiv = document.getElementById('spacer'+s+i);    
+			 if(spacerDiv != null) {
+			   if(countEnt  == i ) {
+				 if (spacerDiv.style.display=="block") {
+				   spacerDiv.style.visibility="hidden";
+				   spacerDiv.style.display="none";
+				 } else {
+				   spacerDiv.style.visibility="visible";
+				   spacerDiv.style.display="block";
+				} 
+			  } //if euids array condition
+			} //if spacer div condition
+		   } //Total number of euid columns
+		  }//Total numbe of src records column
+		var showSources = "true";
+		for(var i=0;i<count;i++) {
+		  divLayerMain = document.getElementById(mainDupSources+countEnt+i);
+		  if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
+			 divLayerMain.style.visibility="visible";
+			 divLayerMain.style.display="block";
+			 showSources = "true";
+  			 if( mainDupSources == 'mainDupSources') {
+				divLayerMain = document.getElementById("mainDupSources"+countEnt+i);
+				divLayerMain.style.visibility="visible";
+				divLayerMain.style.display="block";
+			 }
+			 
+			 //display or hide preview pane
+			 if(document.getElementById("previewPane") != null ) {
+				document.getElementById("previewPane").style.visibility="hidden";
+				document.getElementById("previewPane").style.display="none";
+			 }
+			 //display/hide other divs
+			 for(var c=0;c<totalColumns;c++) {
+				//HIDE history divs by default
+				 for(var j=0;j<historySize;j++) {
+				  divLayerHistory = document.getElementById("mainDupHistory"+c+j);
+				  if(divLayerHistory != null) {  
+					divLayerHistory.style.visibility="hidden";
+					divLayerHistory.style.display="none";
+				  }
+				}
+			  
 		   }
-         }
-		 */
-       }
-    } else if (divLayerMain.style.display=="block" || divLayerMain.style.display!="") {
-       divLayerMain.style.visibility="hidden";
-       divLayerMain.style.display="none";
+		} else if (divLayerMain.style.display=="block" || divLayerMain.style.display!="") {
+		   divLayerMain.style.visibility="hidden";
+		   divLayerMain.style.display="none";
+		   showSources = "false";
+
+
+		   //display main and other duplicate divs
+		   for(var c=0;c<totalColumns;c++) {
+				document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
+				document.getElementById("outerMainContentDivid"+c).style.display = "block";
+				if (document.getElementById("dynamicMainEuidButtonContent"+c) != null) 			{
+				document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
+				document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+				}
+			  }
+	 }
+	}
+ 	 
+	 for(var c=0;c<totalColumns;c++) {
+ 				 for(var j=0;j<count;j++) {
+				  divLayerMain = document.getElementById("mainDupSources"+c+j);
+				  if(divLayerMain != null ) {
+					  if(divLayerMain.style.visibility == 'visible') {
+ 						showSources = "true";
+					  }
+				  }
+					
+ 				}
+			  
+		   }
+
+  		//show/hiden merge buttons in compare duplicates screen
+		if(showSources == "true"   ) {
+  				if(document.getElementById("mergeFinalEuidsDiv") != null ) {
+						document.getElementById("mergeFinalEuidsDiv").style.visibility="hidden";
+						document.getElementById("mergeFinalEuidsDiv").style.display="none";
+				 }
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="hidden";
+			 document.getElementById("previewPane").style.display="none";
+		   }
+
+ 		} else {
+				if(document.getElementById("mergeFinalEuidsDiv") != null ) {
+						document.getElementById("mergeFinalEuidsDiv").style.visibility="visible";
+						document.getElementById("mergeFinalEuidsDiv").style.display="block";
+				 }
+
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="visible";
+			 document.getElementById("previewPane").style.display="block";
+		   }
  
-       //display or hide preview pane
-       if(document.getElementById("previewPane") != null ) {
-         document.getElementById("previewPane").style.visibility="visible";
-         document.getElementById("previewPane").style.display="block";
-	   }
-       //display main and other duplicate divs
-       for(var c=0;c<totalColumns;c++) {
-            document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
-            document.getElementById("outerMainContentDivid"+c).style.display = "block";
-			if (document.getElementById("dynamicMainEuidButtonContent"+c) != null) 			{
-            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
-            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
-			}
-          }
- }
-}
+		}
+
+ 	if(euidArray.length > 1 ) {
+		if(showSources == "true"   ) {
+   				 if(document.getElementById("mergeEuidsDiv") != null ) {
+						document.getElementById("mergeEuidsDiv").style.visibility="hidden";
+						document.getElementById("mergeEuidsDiv").style.display="none"; 
+				}
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="hidden";
+			 document.getElementById("previewPane").style.display="none";
+		   }
+		} else {
+	  			 if(document.getElementById("mergeEuidsDiv") != null ) {
+						document.getElementById("mergeEuidsDiv").style.visibility="visible";
+						document.getElementById("mergeEuidsDiv").style.display="block"; 
+				}
+
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="visible";
+			 document.getElementById("previewPane").style.display="block";
+		   }
+		}
+	}
 }            
 //View History for the EOS
 function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,mergeflag,euidsArray) {
     var divLayerHist;
     var divLayerSources;
+	var showHistory = "true";
    	
 	//Hide/show extra source divs 
     for(var s=0;s<count;s++) {
@@ -1692,20 +1738,14 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
     if (divLayerHist.style.display=="none" || divLayerHist.style.display=="") {
          divLayerHist.style.visibility="visible";
          divLayerHist.style.display="block";
+ 		 showHistory = "true";
           
        if( mainDupHistory == 'mainDupHistory') {
             divLayerHist = document.getElementById("mainDupHistory"+countEnt+i);
             divLayerHist.style.visibility="visible";
             divLayerHist.style.display="block";
         }
-       //display or hide preview pane
-		if(document.getElementById("previewPane") != null ) {
-          document.getElementById("previewPane").style.visibility="hidden";
-          document.getElementById("previewPane").style.display="none";
-		}
-
-
-       //display/hide other divs
+        //display/hide other divs
        for(var c=0;c<totalColumns;c++) {
 	   //hide sources by default
 	   for(var j=0;j<sourceSize;j++) {  
@@ -1743,12 +1783,9 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
     } else if (divLayerHist.style.display=="block") {
        divLayerHist.style.visibility="hidden";
        divLayerHist.style.display="none";
+ 		 showHistory = "false";
  
-       //display or hide preview pane
-	   	if(document.getElementById("previewPane") != null ) {
-           document.getElementById("previewPane").style.visibility="visible";
-           document.getElementById("previewPane").style.display="block";
-		}
+  
 
 	   if(mergeflag == 'true') {
 	    //viewMergeRecords
@@ -1771,6 +1808,72 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
 
  }
 }
+
+
+      //check for all the history divs
+	  for(var c=0;c<totalColumns;c++) {
+		 for(var j=0;j<count;j++) {
+		  divLayerHist = document.getElementById("mainDupHistory"+c+j);
+		  if(divLayerHist != null ) {
+			  if(divLayerHist.style.visibility == 'visible') {
+				showHistory = "true";
+			  }
+		  }			
+		}
+       }
+
+ 
+		//show/hiden merge buttons in compare duplicates screen
+		if(showHistory == "true"   ) {
+  				if(document.getElementById("mergeFinalEuidsDiv") != null ) {
+						document.getElementById("mergeFinalEuidsDiv").style.visibility="hidden";
+						document.getElementById("mergeFinalEuidsDiv").style.display="none";
+				 }
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="hidden";
+			 document.getElementById("previewPane").style.display="none";
+		   }
+
+ 		} else {
+				if(document.getElementById("mergeFinalEuidsDiv") != null ) {
+						document.getElementById("mergeFinalEuidsDiv").style.visibility="visible";
+						document.getElementById("mergeFinalEuidsDiv").style.display="block";
+				 }
+
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="visible";
+			 document.getElementById("previewPane").style.display="block";
+		   }
+ 
+		}
+
+ 	if(euidArray.length > 1 ) {
+		if(showHistory == "true"   ) {
+			if(document.getElementById("mergeEuidsDiv") != null ) {
+					document.getElementById("mergeEuidsDiv").style.visibility="hidden";
+					document.getElementById("mergeEuidsDiv").style.display="none"; 
+			}
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="hidden";
+			 document.getElementById("previewPane").style.display="none";
+		   }
+		} else {
+	  			 if(document.getElementById("mergeEuidsDiv") != null ) {
+					document.getElementById("mergeEuidsDiv").style.visibility="visible";
+					document.getElementById("mergeEuidsDiv").style.display="block"; 
+				 }
+
+		   //display or hide preview pane
+		   if(document.getElementById("previewPane") != null ) {
+			 document.getElementById("previewPane").style.visibility="visible";
+			 document.getElementById("previewPane").style.display="block";
+		   }
+		}
+	}
+
 
 } 
 
