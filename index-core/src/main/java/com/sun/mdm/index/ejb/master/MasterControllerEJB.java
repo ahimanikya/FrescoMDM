@@ -1282,25 +1282,16 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         Connection con = null;
         int count = 0;
         try {
-System.out.println("PD 1");
 			con = mControllerImpl.getConnection();
-System.out.println("PD 2");
             count = mControllerImpl.countPotentialDuplicates(con,pdso);
-System.out.println("PD 3 "+count);
         } catch (ProcessingException e) {
-			System.out.println("PD 4");
             mControllerImpl.rollbackTransaction(con);
-			System.out.println("PD 5");
             throw e;
         } catch (UserException e) {
-			System.out.println("PD 6");
             mControllerImpl.rollbackTransaction(con);
-			System.out.println("PD 7");
             throw e;
         } finally {
-			System.out.println("PD 8");
             mControllerImpl.releaseResources(con);
-			System.out.println("PD 9");
         }
         return count;
     }
@@ -1355,26 +1346,17 @@ System.out.println("PD 3 "+count);
         Connection con = null;
         int count = 0;
         try {
-			System.out.println("AM 1");
             con = mControllerImpl.getConnection();
-						System.out.println("AM 2");
             count = mControllerImpl.countAssumedMatches(con, amso);
-						System.out.println("AM 3 "+count);
            
         } catch (ProcessingException e) {
-						System.out.println("AM 4");
             mControllerImpl.rollbackTransaction(con);
-						System.out.println("AM 5");
             throw e;
         } catch (UserException e) {
-						System.out.println("AM 6");
             mControllerImpl.rollbackTransaction(con);
-						System.out.println("AM 7");
             throw e;
         } finally {
-						System.out.println("AM 8");
             mControllerImpl.releaseResources(con);
-						System.out.println("AM 9");
         }
         return count;
     }
