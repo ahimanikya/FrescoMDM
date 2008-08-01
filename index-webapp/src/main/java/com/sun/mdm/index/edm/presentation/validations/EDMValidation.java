@@ -71,7 +71,7 @@ public class EDMValidation {
        
        String errorMessage = null;
         try {
-            this.MONTHS[0] = "Error";
+            this.MONTHS[0] = "0";
             this.MONTHS[1] = "1";
             this.MONTHS[2] = "2";
             this.MONTHS[3] = "3";
@@ -83,20 +83,20 @@ public class EDMValidation {
             this.MONTHS[9] = "9";
             this.MONTHS[10] = "10";
             this.MONTHS[11] = "11";
-            this.MONTHS[12] = "12";
+            //this.MONTHS[12] = "12";
 
-            this.MONTH_DAY_HASH.put("1", "31");
-            this.MONTH_DAY_HASH.put("2", "28");
-            this.MONTH_DAY_HASH.put("3", "31");
-            this.MONTH_DAY_HASH.put("4", "30");
-            this.MONTH_DAY_HASH.put("5", "31");
-            this.MONTH_DAY_HASH.put("6", "30");
+            this.MONTH_DAY_HASH.put("0", "31");
+            this.MONTH_DAY_HASH.put("1", "29");
+            this.MONTH_DAY_HASH.put("2", "31");
+            this.MONTH_DAY_HASH.put("3", "30");
+            this.MONTH_DAY_HASH.put("4", "31");
+            this.MONTH_DAY_HASH.put("5", "30");
+            this.MONTH_DAY_HASH.put("6", "31");
             this.MONTH_DAY_HASH.put("7", "31");
-            this.MONTH_DAY_HASH.put("8", "31");
-            this.MONTH_DAY_HASH.put("9", "30");
-            this.MONTH_DAY_HASH.put("10", "31");
-            this.MONTH_DAY_HASH.put("11", "30");
-            this.MONTH_DAY_HASH.put("12", "31");
+            this.MONTH_DAY_HASH.put("8", "30");
+            this.MONTH_DAY_HASH.put("9", "31");
+            this.MONTH_DAY_HASH.put("10", "30");
+            this.MONTH_DAY_HASH.put("11", "31");
 
             int day = 0;
             int month = 0;
@@ -156,13 +156,13 @@ public class EDMValidation {
           */
             
             if ((year % 4 == 0 || year % 100 == 0 || year % 400 == 0)) {
-               this.MONTH_DAY_HASH.put("2", "29");
+               this.MONTH_DAY_HASH.put("1", "29");
             } else {
-                this.MONTH_DAY_HASH.put("2", "28");
+                this.MONTH_DAY_HASH.put("1", "28");
             }
 
-            //Month should < 12
-            if (month > 12 || month <= 0) {
+            //Month should < 11
+            if (month > 11 && month < 0) {
                 return bundle.getString("Invalid_Month");//"Invalid Month Entered";
             }
             //Day should be according to the MONTH_DAY table
@@ -176,7 +176,7 @@ public class EDMValidation {
 //                }
 //            } else 
            
-            if (month > 12 || month < 1) {
+            if (month > 11 || month < 0) {
                 return bundle.getString("Invalid_Month_format"); //"Invalid Month The format of Date is MM/DD/YYYY"; //Month should be between 1 and 12
             }
           
