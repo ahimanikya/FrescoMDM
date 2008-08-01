@@ -40,6 +40,9 @@
 					 v.style.backgroundColor="#696969";
 				 }
 	}
+  
+  // variable used to fix the view source/history issues
+  var euidArray = [];
 </script>
 <%
  double rand = java.lang.Math.random();
