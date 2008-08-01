@@ -109,14 +109,11 @@
                                 </td>
                                 <td>                                    
                                      <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('potentialDupBasicForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
-
-                                    <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
-                                        <span>
-                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
-                                            <h:outputText  value="#{msgs.Advanced_search_text}"/>
-                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
-                                       </span>
-                                    </h:commandLink>                                     
+                               </td>
+                                <td>                                    
+                                     <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
+                                        <span><img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/><h:outputText  value="#{msgs.Advanced_search_text}"/><img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/></span>
+                                    </h:commandLink>                                      
                                 </td>
                             </tr>
                             <tr>

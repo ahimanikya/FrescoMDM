@@ -96,7 +96,9 @@ if(session!=null){
              	previewdiv.innerHTML = "";
              	previewdiv.style.visibility="hidden";
   }
-</script>
+  // variable used to fix the view source/history issues
+  var euidArray = [];
+ </script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title>
         <body class="yui-skin-sam">
@@ -160,6 +162,7 @@ var thisIdx=0;
         </body>
     </html>
 </f:view>
+
 
 
 

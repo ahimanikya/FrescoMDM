@@ -102,6 +102,13 @@ if(session!=null){
              var URI_VAL = '<%=URI%>';
 			 var RAND_VAL = '<%=rand%>';
 		   var euidValueArray=[];
+		   var euids="";
+		   var fromPage="";
+		   var duplicateEuids = "";
+           var euidArray = [];
+           var alleuidsArray = [];
+		   var euidValueArraySrc=[];
+		   var euidValueArrayHis=[];
 		</script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title> 
@@ -1177,17 +1184,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         ValueExpression tranNoValueExpressionviewmerge = ExpressionFactory.newInstance().createValueExpression(tranNo, tranNo.getClass());
                                                         ValueExpression eoArrayListVE = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                       %>  
-                                                           <tr>
-                                                            <td valign="top">
-                                                                <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}" title="#{msgs.Unmerge_but_text}"
-                                                                              onclick="Javascript:showConfirm('unmergePopupDiv',event)" 
-                                                                              value="Javascript:void(0)">
-                                                                    <h:outputText  value="#{msgs.Unmerge_but_text}"/>                                                          
-                                                                </h:outputLink>
-                                                            </td> 
-                                                        </tr>
-
-                                                    <tr>
+                                                     <tr>
                                                       <td valign="top">
                                                          <a href="javascript:void(0);" class="viewbtn" title="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>"									 onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
                                                           <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
