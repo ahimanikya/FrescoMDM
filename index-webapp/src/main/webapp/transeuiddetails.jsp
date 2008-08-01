@@ -41,12 +41,12 @@
 				 }
 	}
 </script>
-
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
-  TreeMap detailsArray = (TreeMap)session.getAttribute("transdetails");
+  
+  TreeMap detailsArray = (session.getAttribute("transdetails") != null)?(TreeMap)session.getAttribute("transdetails"):new TreeMap();
   String [] transactionIds = (detailsArray.keySet().toString()).split(",");
   String [] functions = new String[transactionIds.length];
 
@@ -123,8 +123,8 @@ var thisIdx=0;
 			</script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title> 
-        <body>
-          <%@include file="./templates/header.jsp"%>
+        <body>		
+          <%@include file="./templates/header.jsp"%>		
             <div id="mainContent">
                     <div id="header" class="detailedresults">
 			            <table>			 
@@ -150,7 +150,7 @@ var thisIdx=0;
                 	  ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+'&rand=<%=rand%>&transactionId=<%=request.getParameter("transactionId")%>&function=<%=request.getParameter("function")%>','mainDupSource','');
               	</script>
               <%}%>
-                 <%ValueExpression tranNoValueExpressionviewunmerge = ExpressionFactory.newInstance().createValueExpression(transactionId, transactionId.getClass());%>
+                 
                        <div id="unmergePopupDiv" class="confirmPreview" style="VISIBILITY: hidden;">
                               <table cellpadding="0" cellspacing="0" border="0">
                                 <form id="unmergeForm">
