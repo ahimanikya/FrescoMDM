@@ -551,7 +551,8 @@ if (results != null)   {
 								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>
 									  <%if(operations.isEO_Compare() ) {%>
 									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
-                                        <input type="checkbox" onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
+                                        <input type="checkbox" id="checkbox-<%=valueMap.get("EUID")%>"
+                                              onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
 									  <%} else {%>
                                         <input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
 									  <%}%>
