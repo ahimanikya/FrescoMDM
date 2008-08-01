@@ -75,7 +75,13 @@ boolean isSessionActive = true;
 <%if (isSessionActive)  {%>
 
 <%
+NavigationHandler navigationHandler = new NavigationHandler();
+
+//set the screen object of the duplicate records
+session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));
+
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
 MasterControllerService masterControllerService = new MasterControllerService();
 
 String URI = request.getRequestURI();
@@ -404,9 +410,11 @@ HashMap previewEuidsHashMap  = new HashMap();
 <%}%>
 
 <%
-	//set the selected search type here....
-	 searchDuplicatesHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
-
+ 	//set the selected search type here....
+	 if(request.getParameter("selectedSearchType") != null ) {
+	   searchDuplicatesHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+	 }
+ 
  //Final duplicates array list here
  finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):searchDuplicatesHandler.performSubmit();
 

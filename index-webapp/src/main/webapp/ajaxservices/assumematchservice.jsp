@@ -70,6 +70,11 @@ boolean isSessionActive = true;
 
 
 <%
+NavigationHandler navigationHandler = new NavigationHandler();
+
+//set the screen object of the assumed matches
+session.setAttribute("ScreenObject", navigationHandler.getScreenObject("assumed-matches"));
+
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
 
@@ -132,6 +137,11 @@ ArrayList fullFieldNamesList  = new ArrayList();
 %>
 
 <%
+
+if(request.getParameter("selectedSearchType") != null ) {
+	   assumeMatchHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+}
+  
 results = assumeMatchHandler.performSubmit();
 ArrayList resultConfigArray = assumeMatchHandler.getResultsConfigArray();
 if (results != null)   {
