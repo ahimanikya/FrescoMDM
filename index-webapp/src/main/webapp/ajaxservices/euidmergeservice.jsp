@@ -588,7 +588,7 @@ boolean isSessionActive = true;
                                                                     <%
                                                                       }//FIELD CONFIG LOOP
 																	%>
-                                                                     <tr><td>&nbsp;</td></tr>
+                                                                     <tr><td> &nbsp;</td></tr>
 
 																	 <%
                                                                      } // MAX MINOR OBJECTS LOOP
@@ -893,7 +893,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                   <%
                                                                       } //FIELD CONFIG LOOP
 																 %>
-                                                                  <tr><td>&nbsp;</td></tr>
+                                                                  <tr><td> &nbsp;</td></tr>
 
                                                                   <%  } // TOTAL MINOR OBJECTS LOOP
 																  %>
@@ -907,7 +907,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
 													                 %>  
-                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr><td> &nbsp;</td></tr>
                                                                     <%                                                                                     }//field config loop
 																	 %>
                                                                       <tr><td>&nbsp;</td></tr>
@@ -1067,7 +1067,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     <%
                                                                       } // FIELD CONFIGS LOOP
 																    %>
-                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr><td> &nbsp;</td></tr>
                                                                     <%} // MINOR OBJECTS LOOP FOR THE SO
 																	%>
 
@@ -1079,7 +1079,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
 													                 %>  
-                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr><td> &nbsp;</td></tr>
                                                                     <%                                                                                     }//field config loop
 																	%>
                                                                     <tr><td>&nbsp;</td></tr>
@@ -1196,7 +1196,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 																	        <%if(minorObjectMapList.size() == 0) {%>
 																			  No <%=childObjectNodeConfig.getName()%>.
 																			<%} else {%>
-																	         &nbsp;
+																	          &nbsp;
 																			<%}%>
 																	   </td>
 																	</tr>
@@ -1225,14 +1225,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                      <%}%>
  																				  <%}%>
                                                                                 <%} else {%>
-                                                                                &nbsp;
+                                                                                 &nbsp;
                                                                                 <%}%>
                                                                           </td>
                                                                       </tr>
                                                                     <%
                                                                       } //FIELD CONFIG LOOP
 																	%>
-                                                                     <tr><td>&nbsp;</td></tr>
+                                                                     <tr><td> &nbsp;</td></tr>
 
 																	<%
 																     }  //MINOR OBJECTS LOOP 
@@ -1576,6 +1576,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 												<%}%>
                                         <% if (countEnt + 1 == eoArrayListObjects.length) {%>
                                         <td> <!--Displaying view sources and view history-->
+										   <% if( eoMultiMergePreview == null  ) { %>
                                             <div id="mergeEuidsDiv"  style="visibility:hidden;display:none;">
                                                 <table>
                                                     <tr>
@@ -1594,10 +1595,8 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                     </tr>
                                                 </table>
                                             </div>  
-                                           <%
-                                           if( eoMultiMergePreview != null  ) {
-                                           %>
-                                            <div id="mergeFinalEuidsDiv"  >
+											<% } else { %>
+                                            <div id="mergeFinalEuidsDiv" style="visiblity:visible;display:block;" >
                                                 <table>
                                                     <tr>
                                                         <td>
