@@ -238,16 +238,7 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>Status</name>
-            <display-name>Status</display-name>
-            <display-order>26</display-order>
-            <max-length>8</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>DriverLicense</name>
+            <name>DriversLicense</name>
             <display-name>Driver License</display-name>
             <display-order>27</display-order>
             <max-length>20</max-length>
@@ -256,7 +247,7 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>DriverLicenseSt</name>
+            <name>DriversLicenseSt</name>
             <display-name>Driver License St.</display-name>
             <display-order>28</display-order>
             <max-length>10</max-length>
@@ -458,18 +449,77 @@
         </field>
     </node>
 
+    <node>
+        <name>AuxId</name>
+        <display-order>4</display-order>
+        <field>
+            <name>AuxIdDef</name>
+            <display-name>Auxiliary ID Type</display-name>
+            <display-order>1</display-order>
+            <max-length>10</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>AUXIDDEF</value-list>
+            <value-type>string</value-type>
+            <key-type>true</key-type>
+        </field>
+        <field>
+            <name>Id</name>
+            <display-name>Auxiliary ID</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+	
+    <node>
+        <name>Comment</name>
+        <display-order>5</display-order>
+        <field>
+            <name>CommentCode</name>
+            <display-name>Comment Code</display-name>
+            <display-order>0</display-order>
+            <max-length>8</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>true</key-type>
+        </field>
+        <field>
+            <name>EnterDate</name>
+            <display-name>Enter Date</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+	</field>
+        <field>
+            <name>CommentText</name>
+            <display-name>Comment Text</display-name>
+            <display-order>2</display-order>
+            <max-length>1000</max-length>
+            <gui-type>TextArea</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    
+
     <relationships>
         <name>Person</name>
         <children>Alias</children>
         <children>Address</children>
         <children>Phone</children>
+		<children>AuxId</children>
+		<children>Comment</children>
     </relationships>
+    
     <impl-details>
         <master-controller-jndi-name>ejb/PersonMasterController</master-controller-jndi-name>
         <validation-service-jndi-name>ejb/PersonCodeLookup</validation-service-jndi-name>
         <usercode-jndi-name>ejb/PersonUserCodeLookup</usercode-jndi-name>
         <reportgenerator-jndi-name>ejb/PersonReportGenerator</reportgenerator-jndi-name>
-        <enable-security>true</enable-security>
         <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
     </impl-details>
     <gui-definition>
