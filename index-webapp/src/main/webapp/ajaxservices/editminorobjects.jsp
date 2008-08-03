@@ -822,19 +822,17 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	<%} else {
 		if(!isValidationErrorOccured) {
 		   //copy the content into the minor objects
-		   System.out.println("----1---tempMinorObjectMap--- BEFORE---> " + tempMinorObjectMap);
-		   System.out.println("----1---thisMinorObject--- BEFORE---> " + thisMinorObject);
-	       for(int k=0;k<fcArrayLocal.length;k++) {
-		   System.out.println(" <----1---fcArrayLocal[k].isSensitive()--- BEFORE---> " + fcArrayLocal[k].isSensitive() + "&CONDITION " +!operations.isField_VIP() );
+		  for(int k=0;k<fcArrayLocal.length;k++) {
+		   
 			  if( fcArrayLocal[k].isSensitive() && !operations.isField_VIP() ) { 
-				  System.out.println("------CONDITION----SUCCESS--");  
+				 
 				  continue;
 			   }
               thisMinorObject.put(fcArrayLocal[k].getFullFieldName(),tempMinorObjectMap.get(fcArrayLocal[k].getFullFieldName()) );
 			  
 		   }
 
-		   System.out.println("----2---thisMinorObject--- AFTER---> " + thisMinorObject);
+		   
 		 }
 	}%>
       
