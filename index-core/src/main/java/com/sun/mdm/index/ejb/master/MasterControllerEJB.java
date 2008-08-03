@@ -1282,8 +1282,8 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         Connection con = null;
         int count = 0;
         try {
-			con = mControllerImpl.getConnection();
-            count = mControllerImpl.countPotentialDuplicates(con,pdso);
+            con = mControllerImpl.getConnection();
+            count = mControllerImpl.countPotentialDuplicates(pdso);
         } catch (ProcessingException e) {
             mControllerImpl.rollbackTransaction(con);
             throw e;
@@ -1347,7 +1347,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         int count = 0;
         try {
             con = mControllerImpl.getConnection();
-            count = mControllerImpl.countAssumedMatches(con, amso);
+            count = mControllerImpl.countAssumedMatches(amso);
            
         } catch (ProcessingException e) {
             mControllerImpl.rollbackTransaction(con);
