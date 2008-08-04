@@ -90,10 +90,10 @@
         <title><h:outputText value="#{msgs.application_heading}" /></title>
         <body>
             <%@include file="./templates/header.jsp"%>
-            <div id="mainContent" style="overflow:hidden;">
-  			   <table width="1024px"><tr><td>
+             <div id="mainContent" style="overflow:hidden;">
+  			   <table width="100%"><tr><td>
                 <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
-                    <h:form id="potentialDupBasicForm">
+                    <h:form id="advancedformData">
                         <table border="0" cellpadding="0" cellspacing="0" > 
                             <tr>
                                 <td align="left">
@@ -107,15 +107,38 @@
 								        maxlength="#{SourceHandler.euidLength}" 
 										/>
                                 </td>
+
+                                  <% if(request.getParameter("euids") != null) { %>
                                 <td>                                    
-                                     <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('potentialDupBasicForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
-                               </td>
+                                     <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
+                                </td>                                    
                                 <td>                                    
-                                     <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
-                                        <span><img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/><h:outputText  value="#{msgs.Advanced_search_text}"/><img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/></span>
-                                    </h:commandLink>                                      
-                                </td>
-                            </tr>
+									 <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
+                                        <span>
+                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
+                                            <h:outputText  value="#{msgs.Advanced_search_text}"/>
+                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
+                                       </span>
+                                    </h:commandLink>                          
+							</td>                                    
+                            <%}else {%>
+                                <td>                                    
+                                       <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
+										       href="javascript:void(0)"
+                                               onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'mainDupSource','')">  
+                                                <span><h:outputText value="#{msgs.search_button_label}"/></span></a>
+                                 </td>                                    
+                                <td>                             
+								      <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
+                                        <span>
+                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
+                                            <h:outputText  value="#{msgs.Advanced_search_text}"/>
+                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
+                                       </span>
+                                    </h:commandLink>                          
+                                </td>                                    
+									<%}%>
+                             </tr>
                             <tr>
                                 <td colspan="2">                           
                                            <h:messages  warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" /> 
@@ -134,7 +157,7 @@
                     </h:form>
                  </div>
              </td></tr></table>
-  			 <table>
+  			 <table width="100%">
 			        <tr><td><div id="mainDupSource" class="compareResults"></div></td></tr>
  			 </table>
              </div> 
@@ -255,14 +278,14 @@
         <%}%>
 
 <script>
-         if( document.potentialDupBasicForm.elements[0]!=null) {
+         if( document.advancedformData.elements[0]!=null) {
 		var i;
-		var max = document.potentialDupBasicForm.length;
+		var max = document.advancedformData.length;
 		for( i = 0; i < max; i++ ) {
-			if( document.potentialDupBasicForm.elements[ i ].type != "hidden" &&
-				!document.potentialDupBasicForm.elements[ i ].disabled &&
-				!document.potentialDupBasicForm.elements[ i ].readOnly ) {
-				document.potentialDupBasicForm.elements[ i ].focus();
+			if( document.advancedformData.elements[ i ].type != "hidden" &&
+				!document.advancedformData.elements[ i ].disabled &&
+				!document.advancedformData.elements[ i ].readOnly ) {
+				document.advancedformData.elements[ i ].focus();
 				break;
 			}
 		}
