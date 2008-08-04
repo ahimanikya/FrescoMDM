@@ -37,6 +37,8 @@
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
+<%NavigationHandler navigationHandler = new NavigationHandler();%>
+
 <%
 Operations operationSecurityCheck = new Operations();
 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP , FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -132,7 +134,6 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                      allScreensArrayOrdered[screenObjectLocal.getDisplayOrder()] = screenObjectLocal;
                 }
 		 }
-NavigationHandler navigationHandler = new NavigationHandler();                                 
 //System.out.println("Accessable tabs --> " + allScreensArrayOrdered.length );
 //Modified by Sridhar Narsingh sridhar@ligaturesoftware.com
 //to handle the null pointer Exception bug#66
@@ -164,13 +165,11 @@ if(permittedScreens.size() == 0 ) {
     FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?error="+bundle.getString("no_midm_access"));
 } 
 
-//Get the updated Session Object based on the user browser navigation
-screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 %>
 
 <%   
     boolean initialScreenAllowed = false;	
-	if (!allowed)  {
+ 	if (!allowed)  {
         ScreenObject initialScreenObject = ConfigManager.getInstance().getInitialScreen();		
 		String initialTagName  = navigationHandler.getTagNameByScreenId(((ScreenObject)initialScreenObject).getID());
 		for (int i=0;i<permittedScreens.size();i++)    {
@@ -179,9 +178,12 @@ screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 				initialScreenAllowed = true; //Initial screen configuration is fine				
 				break;
 			}
-		}
+		} 
 %>
-<%      //Check if the initial configuration is wrongly configured
+ 
+<%      
+	  
+       //Check if the initial configuration is wrongly configured
 	    if (!initialScreenAllowed )    {
 		    if((null != refererPage && refererPage.endsWith("login.jsf")))    {
 				   //If he has come from the login screen, take him to dashboard with a configuration message
@@ -192,17 +194,20 @@ screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 				    //user has hacked the URL, however update the correct screen object 
 					//so that any delay in redirect should not cause Null Pointer Exception
 			        if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || 
-						"euiddetails.jsp".equalsIgnoreCase(requestPage) || 
-						"compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
-                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("record-details");
-                         session.setAttribute("ScreenObject", screenObjectDashboard);			
-					}  else if ("dashboard.jsp".equalsIgnoreCase(requestPage))    {
+						"euiddetails.jsp".equalsIgnoreCase(requestPage))    {
+                         session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));			
+ 					}  else if ("dashboard.jsp".equalsIgnoreCase(requestPage))    {
                          ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("dashboard");
                          session.setAttribute("ScreenObject", screenObjectDashboard);			
-					}  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) ||  
-						        "compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
-                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("duplicate-records");
-                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+                    }  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) )    {
+						  session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));			
+					}  else if ("compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                          if(request.getParameter("euids") != null) {
+                            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));			
+						 } else {
+                            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));			
+						 }
+
 					}  else if ("assumedmatches.jsp".equalsIgnoreCase(requestPage) || 
 						        "ameuiddetails.jsp".equalsIgnoreCase(requestPage))    {
                          ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("assumed-matches");
@@ -229,17 +234,20 @@ screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 				    //user has hacked the URL, however update the correct screen object 
 					//so that any delay in redirect should not cause Null Pointer Exception
 			        if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || 
-						"euiddetails.jsp".equalsIgnoreCase(requestPage) || 
-						"compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
-                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("record-details");
+						"euiddetails.jsp".equalsIgnoreCase(requestPage) )    {
+                          ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("record-details");
                          session.setAttribute("ScreenObject", screenObjectDashboard);			
 					}  else if ("dashboard.jsp".equalsIgnoreCase(requestPage))    {
                          ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("dashboard");
                          session.setAttribute("ScreenObject", screenObjectDashboard);			
-					}  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) ||  
-						        "compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
-                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("duplicate-records");
-                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) )    {
+						  session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));			
+					}  else if ("compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                          if(request.getParameter("euids") != null) {
+                            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));			
+						 } else {
+                             session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));			
+						 }
 					}  else if ("assumedmatches.jsp".equalsIgnoreCase(requestPage) || 
 						        "ameuiddetails.jsp".equalsIgnoreCase(requestPage))    {
                          ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("assumed-matches");
@@ -262,8 +270,50 @@ screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 				
                     FacesContext.getCurrentInstance().getExternalContext().redirect("loginerror.jsf?na="+bundle.getString("not_authorized"));
 	   }
-   } %>
+   } else {
 
+	   			     if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || 
+						"euiddetails.jsp".equalsIgnoreCase(requestPage) )    {
+                          ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("record-details");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);			
+					}  else if ("dashboard.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("dashboard");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);			
+					}  else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage))    {
+                            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));			
+ 					}  else if ("compareduplicates.jsp".equalsIgnoreCase(requestPage))    {
+                          if(request.getParameter("euids") != null) {
+                             session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));			
+						 } else {
+                             session.setAttribute("ScreenObject", navigationHandler.getScreenObject("duplicate-records"));			
+						 }
+					}  else if ("assumedmatches.jsp".equalsIgnoreCase(requestPage) || 
+						        "ameuiddetails.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("assumed-matches");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("sourcerecords.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("source-record");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("reports.jsp".equalsIgnoreCase(requestPage))    {						
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("reports");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("transeuiddetails.jsp".equalsIgnoreCase(requestPage) || 
+						        "transactions.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("transactions");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}  else if ("auditlog.jsp".equalsIgnoreCase(requestPage))    {
+                         ScreenObject  screenObjectDashboard = navigationHandler.getScreenObject("audit-log");
+                         session.setAttribute("ScreenObject", screenObjectDashboard);									
+					}
+
+   }
+   
+   //Get the updated Session Object based on the user browser navigation
+   screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
+   
+   %>
+ 
 <%
 String global_daysOfWeek  = bundle.getString("global_daysOfWeek");
 String global_months = bundle.getString("global_months");
