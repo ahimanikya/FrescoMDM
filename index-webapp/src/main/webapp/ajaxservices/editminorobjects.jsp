@@ -265,8 +265,22 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						  !("minorObjSave".equalsIgnoreCase(attributeName)) && 
 						  !("editThisID".equalsIgnoreCase(attributeName)) 
 						  )  {
-						  if (attributeValue.equalsIgnoreCase("")) { continue; }	   
-                          rootNodesHashMap.put(attributeName, attributeValue); 
+						  //if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+                          //rootNodesHashMap.put(attributeName, attributeValue); 
+
+
+						   if (rootNodesHashMap.get(attributeName) == null) {
+  						      if (attributeValue.equalsIgnoreCase("")) { 
+								  continue; 
+							  }	   	  	   
+                              rootNodesHashMap.put(attributeName, attributeValue); 
+						  } else {
+                               if (attributeValue.equalsIgnoreCase("")) { 
+                                 rootNodesHashMap.put(attributeName, null); 
+							  } else {
+                                rootNodesHashMap.put(attributeName, attributeValue); 
+							  }
+						  }			
 					  }
 				 }
 			   %>
