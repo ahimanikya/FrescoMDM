@@ -153,9 +153,11 @@ public final class ProjectEar extends J2eeModuleProvider
         throw new UnsupportedOperationException("ProjectEar.removeModuleListener()--Not supported yet.");
     }  
     
-    public String getModuleVersion() {
-        throw new UnsupportedOperationException("ProjectEar.getModuleVersion()--Not supported yet.");
-    }
+    public String getModuleVersion () {
+       //Application app = getApplication();
+       //return (app == null) ? Application.VERSION_5 /* fallback */ : app.getVersion().toString();
+       return "5";
+   } 
     
     public String getUrl() {
         throw new UnsupportedOperationException("ProjectEar.getUrl()-- Not supported yet.");
