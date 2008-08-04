@@ -266,7 +266,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>MiddleName</field-name>
@@ -299,7 +299,7 @@
             <required>true</required>
             <code-module>ADDRTYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>AddressLine1</field-name>
@@ -442,7 +442,7 @@
             <required>true</required>
             <code-module>PHONTYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Phone</field-name>
@@ -475,7 +475,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>IssueDate</field-name>
@@ -518,7 +518,7 @@
             <required>true</required>
             <code-module>IDTYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Identification</field-name>
@@ -551,7 +551,7 @@
             <required>true</required>
             <code-module>MEMRTYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>MemberFirstName</field-name>
@@ -724,7 +724,7 @@
             <required>true</required>
             <code-module>CONTTYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>ContactFirstName</field-name>

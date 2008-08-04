@@ -213,7 +213,7 @@
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>MiddleName</name>
@@ -245,7 +245,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>ADDRTYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>AddressLine1</name>
@@ -332,7 +332,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>PHONTYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Phone</name>
@@ -365,7 +365,7 @@
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>IssueDate</name>
@@ -406,7 +406,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>IDTYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Identification</name>
@@ -439,7 +439,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>MEMRTYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>MemberFirstName</name>
@@ -604,7 +604,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>CONTTYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>ContactFirstName</name>
