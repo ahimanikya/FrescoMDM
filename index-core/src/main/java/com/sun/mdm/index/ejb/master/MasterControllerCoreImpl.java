@@ -1857,20 +1857,16 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * @throws UserException Invalid search object
      * @return count of the assumed match records matching the search criteria.
      */
-    public int countAssumedMatches(AssumedMatchSearchObject amso)
-        throws ProcessingException, UserException {
-        Connection con = null;
+    public int countAssumedMatches(Connection con, AssumedMatchSearchObject amso)
+            throws ProcessingException, UserException {
         int count = 0;
         try {
-            con = getConnection();
             count = mAssumedMatchMgr.countAssumedMatches(con, amso);
-           
+
         } catch (ProcessingException e) {
             throwProcessingException(e);
         } catch (RuntimeException e) {
             throwProcessingException(e);
-        } finally {
-            releaseResources(con);
         }
         return count;
     }
@@ -2156,23 +2152,20 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * @throws UserException Invalid search object
      * @return count of the potential duplicate records matching the search criteria.
      */
-    public int countPotentialDuplicates(PotentialDuplicateSearchObject pdso) 
+    public int countPotentialDuplicates(Connection con, PotentialDuplicateSearchObject pdso)
             throws ProcessingException, UserException {
-        Connection con = null;
         int count = 0;
         try {
-            con = getConnection();
             count = mPotDup.countPotentialDuplicates(con, pdso);
+
         } catch (ProcessingException e) {
             throwProcessingException(e);
         } catch (RuntimeException e) {
             throwProcessingException(e);
-        } finally {
-            releaseResources(con);
-        }
+        } 
         return count;
     }
-    
+
     /**
      * Return array of system definition
      * 

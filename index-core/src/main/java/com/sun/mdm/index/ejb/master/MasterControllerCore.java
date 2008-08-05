@@ -793,7 +793,7 @@ public interface MasterControllerCore {
      * @throws UserException Invalid search object
      * @return count of the potential duplicate records matching the search criteria.
      */
-    public int countPotentialDuplicates(PotentialDuplicateSearchObject pdso) 
+    public int countPotentialDuplicates(Connection con,PotentialDuplicateSearchObject pdso) 
             throws ProcessingException, UserException;
             
 	/**
@@ -828,7 +828,7 @@ public interface MasterControllerCore {
      * @throws UserException Invalid search object
      * @return count of the assumed match records matching the search criteria.
      */
-    public int countAssumedMatches(AssumedMatchSearchObject amso)
+    public int countAssumedMatches(Connection con,AssumedMatchSearchObject amso)
         throws ProcessingException, UserException;
         
 	/**
