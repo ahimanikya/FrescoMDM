@@ -61,11 +61,10 @@ public class ValidationConfigurationTest extends TestCase {
 		
 			assertTrue(configuration.getValidationEnabled() == false);
 			
-			ObjectValidator localIdValidator = registry.getObjectValidator("SystemObject");
-			
-			ObjectDescriptor ObjectDescriptor1 = registry.getObjectDescriptor("Person");
-			ObjectDescriptor ObjectDescriptor2 = registry.getObjectDescriptor("Alias");
-			ObjectDescriptor ObjectDescriptor3 = registry.getObjectDescriptor("Phone");
+			//ObjectValidator localIdValidator = registry.getObjectValidator("SystemObject");			
+			//ObjectDescriptor ObjectDescriptor1 = registry.getObjectDescriptor("Person");
+			//ObjectDescriptor ObjectDescriptor2 = registry.getObjectDescriptor("Alias");
+			//ObjectDescriptor ObjectDescriptor3 = registry.getObjectDescriptor("Phone");
 						
 			assertTrue(true);
 		} catch (Exception ex) {
