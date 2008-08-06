@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 public class ValidationConfigurationTest extends TestCase {
 
-	private static String default_config_file = "C:/MDM/open-dm-mi/loader/conf/loader-config.xml";
+	private static String default_config_file = "conf/loader-config.xml";
 	
 	/**
 	 * @param name
