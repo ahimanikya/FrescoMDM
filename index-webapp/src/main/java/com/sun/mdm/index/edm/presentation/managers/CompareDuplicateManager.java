@@ -1202,7 +1202,9 @@ public class CompareDuplicateManager {
                 if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
                         !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
                         !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
-                    returnHashMap.put(keyset[i], new Boolean(true));
+                    if (checkMinorObjectMap.get(keyset[i]) != null) {
+                        returnHashMap.put(keyset[i], new Boolean(true));
+                    }
                 }
             }
         }
