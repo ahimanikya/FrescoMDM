@@ -11,6 +11,7 @@
 <%@ page import="java.util.Collection"  %>
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="java.util.Enumeration"%>
+<%@ page import="java.util.TreeMap"  %>
 
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
@@ -152,6 +153,9 @@ boolean isSessionActive = true;
 
             HashMap unmergeHashMap  = new HashMap();
             HashMap unmergePreviewHashMap  = new HashMap();
+
+			TreeMap transDetailsMap = (TreeMap) session.getAttribute("transdetails");;
+
 			if(isCancelUnmerge) {
     %> 
 	  <table><tr><td>
@@ -190,6 +194,8 @@ boolean isSessionActive = true;
 					MergeResult unMergeResult  = (MergeResult) unmergeHashMap.get("unMergeResult");
 					String unmergeTransNumber  = unMergeResult.getTransactionObject().getTransactionNumber();
                     String unmergeFunction    = unMergeResult.getTransactionObject().getFunction();
+				    transDetailsMap.put(unmergeTransNumber,unmergeFunction);
+ 					session.setAttribute("transdetails",transDetailsMap);
 					%>
 				  <table>
 				    <tr>
@@ -198,6 +204,7 @@ boolean isSessionActive = true;
  					  document.getElementById('messages').innerHTML="<%=unMergeResult.getSourceEO().getEUID()%>&nbsp;<%=bundle.getString("unmerged_from")%>&nbsp;<%=unMergeResult.getDestinationEO().getEUID()%>";
 					  pages[thisIdx] = "<%=unmergeTransNumber%>";
 					  functions[thisIdx] = "<%=unmergeFunction%>";
+					  functionDesc[thisIdx] = "<%=ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, unmergeFunction)%>";
 					   
 					  ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?random=rand'+'&'+'transactionId='+pages[thisIdx]+'&function='+functions[thisIdx],'mainDupSource','');
                	   </script>
@@ -237,7 +244,7 @@ boolean isSessionActive = true;
 					<td> 
 						<script>
 								document.getElementById('messages').innerHTML  = ""; 
-			 document.getElementById("transDetailsDiv").innerHTML  = "<%=bundle.getString("datatable_transactionid_text")%>: <b>" + pages[thisIdx] + "</b> <%=bundle.getString("transaction_function")%> : <b>"+ functions[thisIdx] + "</b>"; 
+			 document.getElementById("transDetailsDiv").innerHTML  = "<%=bundle.getString("datatable_transactionid_text")%>: <b>" + pages[thisIdx] + "</b> <%=bundle.getString("transaction_function")%> : <b>"+ functionDesc[thisIdx] + "</b>"; 
 						</script>
 				   </td>
 				</tr>
@@ -265,6 +272,14 @@ boolean isSessionActive = true;
       		
 			HashMap resultArrayMapMain = new HashMap();
             HashMap resultArrayMapCompare = new HashMap();
+
+			HashMap minorObjectMapMain = new HashMap();
+            HashMap minorObjectMapCompare = new HashMap();
+
+            ArrayList  minorObjectMapListMain = new ArrayList();
+            HashMap  minorObjectCompareHashMap = new HashMap();
+            ArrayList  minorObjectMapListCompare = new ArrayList();
+
             SystemObject so = null;
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
@@ -399,8 +414,6 @@ boolean isSessionActive = true;
                                                                     <%
 
                                                                 String mainDOB;
-                                                                ValueExpression fnameExpression;
-                                                                ValueExpression fvalueVaueExpression;
                                                                 String epathValue;
 
                                                               for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
@@ -484,12 +497,11 @@ boolean isSessionActive = true;
                                                                 <table border="0" cellspacing="0" cellpadding="0">
 																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%>
 																</font></td></tr>
+																
                                                                     <%
 
                                     String mainDOB;
-                                    ValueExpression fnameExpression;
-                                    ValueExpression fvalueVaueExpression;
-                                    String epathValue;
+                                     String epathValue;
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
                                         if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
@@ -505,16 +517,16 @@ boolean isSessionActive = true;
                                             resultArrayMapMain.put(epathValue, personfieldValuesMapEO.get(epathValue));
                                         }
                                                                     %>  
+ 
+
                                                                         <tr>
-                                                                            <td>
+                                                                            <td> 
  
                                                                                 <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
                                                                                 
                                                                                 <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
             !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-        fnameExpression = ExpressionFactory.newInstance().createValueExpression(epathValue, epathValue.getClass());
-        fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
-
+  
                                                                                 %>
                                                                                     <font class="highlight">
 											<%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
@@ -572,6 +584,10 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 
                                                                     ArrayList  minorObjectMapList =  (ArrayList) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
+
+if (countEnt == 0) {
+     minorObjectCompareHashMap.put("EO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectMapList);
+ }
                                                                     HashMap minorObjectHashMap = new HashMap();
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
                                                                     %>
@@ -584,41 +600,75 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 																			<%}%>
 																	   </td>
 																	</tr>
+																 
                                                                     <%
+																    boolean sameMinorObject  = false;
                                                                     for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
-																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
-                                                                      for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);%>
+  
+<%if (countEnt > 0) {
+   minorObjectMapCompare =  compareDuplicateManager.getDifferenceMinorObjectMap((ArrayList)minorObjectCompareHashMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
+ }
+%>
+
+
+
+										 				  <%for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                        FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                        epathValue = fieldConfigMap.getFullFieldName();
-                                                                    %>  
+																	   %>
+  
                                                                     <tr>
                                                                         <td>
-                                                                         <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-										                                     <%if(fieldConfigMap.isKeyType()) {%> <!--if key type-->
-                                                                                <b>
-																		         <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>								      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                  <%}else {%>
-                                                                                    <%=minorObjectHashMap.get(epathValue)%>
-																				  <%}%>
-																				</b>
-										                                    <%}else{%> <!--if not key type-->
-																		         <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>								      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                  <%}else {%>
-                                                                                    <%=minorObjectHashMap.get(epathValue)%>
-																				  <%}%>
-										                                     <%}%>
-																				
-																		 <%} else {%>
-                                                                           &nbsp;
-                                                                         <%}%>
-                                                                        </td>
+
+                                                                                <!-- if minor objects exists -->
+                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+																				 															
+                                                                                <%if (countEnt > 0 && minorObjectMapCompare != null 
+																				   && minorObjectMapCompare.get(epathValue) != null  &&
+                                                                                minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+                                                                                      <font class="highlight">
+											                                         <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+                                                                                       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else{%>
+                                                                                       <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+                                                                                    </font>
+																			   <%} else {%>
+ 																				         <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                <%}%>
+  
+                                                                                <%} else {%>
+  
+                                                                               <%if (countEnt > 0 && minorObjectMapCompare !=null 
+																				   && minorObjectMapCompare.get(epathValue) != null  &&
+                                                                                minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+                                                                                     <font class="highlight">
+																				         <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+																						 <img src="./images/calup.gif" border="0" alt="Blank Value"/>
+                                                                                       <%}%>
+                                                                                    </font>
+                                                                                 <%} else {%>
+																				  &nbsp;
+																				 <%}%>
+  																			<%}%>
+                                                                         </td>
                                                                     </tr>
                                                                   <%
                                                                       } //FIELD CONFIG LOOP
 																 %>
                                                                   <tr><td>&nbsp;</td></tr>
 
-                                                                  <%  } // TOTAL MINOR OBJECTS LOOP
+                                                                  <%  
+																	  //minorObjectMapListCompare = new ArrayList(); 
+ 																	  minorObjectMapCompare = new HashMap();
+																	  } // TOTAL MINOR OBJECTS LOOP
 																  %>
 
                                                                   <%
