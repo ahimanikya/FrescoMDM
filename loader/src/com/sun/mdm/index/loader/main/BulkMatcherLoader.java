@@ -115,7 +115,6 @@ public class BulkMatcherLoader {
 			if (loadMode_ != BLOCKDISTRIBUTE_AFTER) {
 				clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
 				if (isMasterLoader_) { 
-
 					clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
 					BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, inputobd_, blockLk_, false);	
 					RuntimeStats();
@@ -157,7 +156,8 @@ public class BulkMatcherLoader {
 			logger.info(localizer.x("LDR011: EUID Assigner Done"));
 		}
 
-		if (loadMode_ != UPTO_EUIDASSIGN) {  // Do following operations only if mode is not EUIDASSIGN
+		if (loadMode_ != UPTO_EUIDASSIGN) {  
+			// Do following operations only if mode is not EUIDASSIGN
 			logger.info(localizer.x("LDR012: Master Index Generation Started"));
 			MasterIndex masterIndex = new MasterIndex();
 			masterIndex.generateMasterIndex();
@@ -197,10 +197,10 @@ public class BulkMatcherLoader {
 			logger.info(localizer.x("LDR018: Potential Duplicates Maching Completed"));			
 			FileManager.deleteSBRBlockDir(false);
 			FileManager.deleteSBRInputDir(false);
-			//if (isMasterLoader_) { 	 
-				PotDupGenerator potGen = new PotDupGenerator();
-				potGen.generatePotDups();
-			//}
+			
+			PotDupGenerator potGen = new PotDupGenerator();
+			potGen.generatePotDups();
+			
 			logger.info(localizer.x("LDR019: Potential Duplicates Completed"));
 			FileManager.deleteSBRMatchDir(false);
 
