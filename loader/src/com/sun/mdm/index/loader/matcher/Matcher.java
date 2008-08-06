@@ -233,6 +233,7 @@ public class Matcher {
 			clusterSynchronizer_.setSBRDone(output.getName());
 		}
 
+		/*
 		if (isMasterLoader_) {
 			if (isSBR_) {
 				clusterSynchronizer_.waitSBRDone();	
@@ -257,7 +258,44 @@ public class Matcher {
 				logger.info(localizer.x("LDR051: Merging match files"));
 				fileMerger.merge(finalMatchStageFileList, finalMatch);
 			}
+		} 
+		*/
+		if (isMasterLoader_) {
+			if (isSBR_) {
+				clusterSynchronizer_.waitSBRDone();	
+				File[] finalMatchStageFiles = FileManager.getAllSBRMatchStageFiles();
+				File finalMatch = FileManager.getFinalSBRMatchFile();
+				List<File> finalMatchStageFileList = new ArrayList<File>();
+				for (int i = 0; i < finalMatchStageFiles.length; i++) {
+					finalMatchStageFileList.add(finalMatchStageFiles[i]);
+				}
+				fileMerger = new MatchFileMerger(isSBR_);
+				logger.info(localizer.x("LDR051: Merging match files"));
+				fileMerger.merge(finalMatchStageFileList, finalMatch);
+			} else {
+				clusterSynchronizer_.waitMatchingDone();	
+				File[] finalMatchStageFiles = FileManager.getAllMatchStageFiles();
+				File finalMatch = FileManager.getFinalMatchFile();
+				List<File> finalMatchStageFileList = new ArrayList<File>();
+				for (int i = 0; i < finalMatchStageFiles.length; i++) {
+					finalMatchStageFileList.add(finalMatchStageFiles[i]);
+				}		 
+				fileMerger = new MatchFileMerger(isSBR_);
+				logger.info(localizer.x("LDR051: Merging match files"));
+				fileMerger.merge(finalMatchStageFileList, finalMatch);
+			}
+		} else if (isSBR_) {
+			File[] finalMatchStageFiles = FileManager.getAllSBRMatchStageFiles();
+			File finalMatch = FileManager.getFinalSBRMatchFile();
+			List<File> finalMatchStageFileList = new ArrayList<File>();
+			for (int i = 0; i < finalMatchStageFiles.length; i++) {
+				finalMatchStageFileList.add(finalMatchStageFiles[i]);
+			}
+			fileMerger = new MatchFileMerger(isSBR_);
+			logger.info(localizer.x("LDR051: Merging match files"));
+			fileMerger.merge(finalMatchStageFileList, finalMatch);			
 		}
+		
 		logger.info(localizer.x("LDR052: Merged match files"));
 	}
 
