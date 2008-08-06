@@ -1148,6 +1148,65 @@ public class CompareDuplicateManager {
         return eoStatus;
 
     } 
-    
+   /** 
+     * Addded  By Rajani Kanth  on 05/08/2008 <br>
+     * 
+     * This method is used to compare the minor objects hashmap with the arraylist of hashmap <br>
+     * 
+     * 
+     * @param minorObjectList 
+     * @param checkMinorObjectMap 
+     * @return HashMap  - null if minor object doesnot exists in the arraylist of hashmap <br>
+     *                  - HashMap with (K,true/false) <br>
+     *                         <b>true</b> - if the values are different or if hashmap is new <br>
+     *                         <b>false</b> - if the values are same <br>
+     * 
+     **/
+
+        public HashMap getDifferenceMinorObjectMap(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
+        HashMap returnHashMap = new HashMap();
+        Object[] keyset = checkMinorObjectMap.keySet().toArray();
+        
+        HashMap matchHashMap  = new HashMap();
+        for (Object object : minorObjectList) {
+            HashMap map = (HashMap) object;
+            //Check for the minor object id and the minor object type for comparing
+             if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(map.get(MasterControllerService.MINOR_OBJECT_ID).toString())) {
+                    matchHashMap = map;
+             }
+         }
+  
+        //If the matching map is not empty 
+        if (!matchHashMap.isEmpty()) {
+            if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
+                for (int i = 0; i < matchHashMap.size(); i++) {
+                    if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                            !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                            !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                        if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) == null) {
+                            returnHashMap.put(keyset[i], new Boolean(false));
+                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) == null) {
+                            returnHashMap.put(keyset[i], new Boolean(true));
+                        } else if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) != null) {
+                            returnHashMap.put(keyset[i], new Boolean(true));
+                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) != null && !matchHashMap.get(keyset[i]).toString().equals(checkMinorObjectMap.get(keyset[i]).toString())) {
+                            returnHashMap.put(keyset[i], new Boolean(true));
+                        } else {
+                            returnHashMap.put(keyset[i], new Boolean(false));
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < keyset.length; i++) {
+                if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                        !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                        !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                    returnHashMap.put(keyset[i], new Boolean(true));
+                }
+            }
+        }
+         return returnHashMap;
+    }
     
 }
