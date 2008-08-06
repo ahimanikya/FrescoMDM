@@ -32,6 +32,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager" %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
+
 <script>
 	function changecolor(v)   {
 				 if (v.style.backgroundColor == "#696969")   {
@@ -43,7 +45,9 @@
   
   // variable used to fix the view source/history issues
   var euidArray = [];
+
 </script>
+
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -76,11 +80,13 @@
  <script>
 var pages =[];
 var functions =[];
+var functionDesc =[];
 var thisIdx=0;
   <%for (int i=0; i<transactionIds.length;i++)    { %>
          pages.push("<%=transactionIds[i]%>");
          functions.push("<%=functions[i]%>");
-		 <% if(transactionIds[i].equalsIgnoreCase(transactionId)){%>
+         functionDesc.push("<%=ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, functions[i])%>");
+ 		 <% if(transactionIds[i].equalsIgnoreCase(transactionId)){%>
          thisIdx = <%=i%>;
 		<%}%>
 
