@@ -288,7 +288,8 @@ public class MatchTupleConverter
         ArrayList tempList = null;
         int childEPathNodePos = ePathNodePos + 1;
         for (int i = 0; i < childNodeTags.size(); i++) {
-            ArrayList childResults = new ArrayList();
+//            ArrayList childResults = new ArrayList();
+            ArrayList<String> childResults = new ArrayList();            
             
             //  Process all children of a given type
             
@@ -311,7 +312,8 @@ public class MatchTupleConverter
                                                          childEPathNodePos, 
                                                          j);
                         if (tempResults != null) {
-                            childResults.add(tempResults);
+//                            childResults.add(tempResults);
+                            childResults.addAll(tempResults);                            
                         }
                     } else {
                         tempResults = null;
