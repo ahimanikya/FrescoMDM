@@ -166,7 +166,8 @@ parse_args()
             DOTASK_REPORT=0
             DOINSTALL=1
             DOARCHIVEDOC=1
-            DOMAVEN_POP=1
+            #DOMAVEN_POP=1
+            DOMAVEN_POP=0
         else
             DOINTEGREPORT=0
             DORELEASE=0
@@ -1567,24 +1568,24 @@ run_background_tasks()
     bld_reset_watchdog
 
 
-    popmaven_failed=0
-    if [ $DOMAVEN_POP -eq 1 -a $release_failed -eq 0 -a $BUILD_FAILED -eq 0 ]; then
-        bldmsg -mark Populating maven repository - Log is $POPMAVENLOG
-        bldmsg -markbeg ${p}:populate_maven
-        populate_maven >> $POPMAVENLOG 2>&1
-        status=$?
-        if [ $status -ne 0 ]; then
-            bldmsg -error -p $p populate_maven failed. Check $POPMAVENLOG for errors.
-            popmaven_failed=1
-            BG_BUILD_STATUS=1
-            shprops -set $BG_RESULTS BG_BUILD_STATUS=$BG_BUILD_STATUS
-        fi
-        bldmsg -markend -status $status ${p}:populate_maven
-        bld_reset_watchdog
-    else
-        bldmsg -error Skipping populate_maven because release or build step failed
-    fi
-    bld_reset_watchdog
+#    popmaven_failed=0
+#    if [ $DOMAVEN_POP -eq 1 -a $release_failed -eq 0 -a $BUILD_FAILED -eq 0 ]; then
+#        bldmsg -mark Populating maven repository - Log is $POPMAVENLOG
+#        bldmsg -markbeg ${p}:populate_maven
+#        populate_maven >> $POPMAVENLOG 2>&1
+#        status=$?
+#        if [ $status -ne 0 ]; then
+#            bldmsg -error -p $p populate_maven failed. Check $POPMAVENLOG for errors.
+#            popmaven_failed=1
+#            BG_BUILD_STATUS=1
+#            shprops -set $BG_RESULTS BG_BUILD_STATUS=$BG_BUILD_STATUS
+#        fi
+#        bldmsg -markend -status $status ${p}:populate_maven
+#        bld_reset_watchdog
+#    else
+#        bldmsg -error Skipping populate_maven because release or build step failed
+#    fi
+#    bld_reset_watchdog
 
 
 #    pushkit_failed=0

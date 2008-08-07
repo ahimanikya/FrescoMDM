@@ -567,7 +567,8 @@ scm_update_tmp()
     bldmsg -p $p -mark "Running local subversion code update of open-dm-dq"
     cd $SRCROOT/..
     rm -rf open-dm-dq
-    svn checkout https://open-dm-dq.dev.java.net/svn/open-dm-dq/trunk open-dm-dq --username $JBI_USER_NAME
+    svn checkout https://open-dm-dq.dev.java.net/svn/open-dm-dq/branches/mdmpatch1 open-dm-dq --username $JBI_USER_NAME
+
     status=$?
 
     if [ $status -ne 0 ]; then
