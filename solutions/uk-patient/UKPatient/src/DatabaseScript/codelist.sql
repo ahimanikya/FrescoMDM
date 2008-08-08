@@ -165,7 +165,7 @@ declare
         tCode('L', 'MSTATUS', 'Marital Status'),
         tCode('V', 'S ' , 'Single'),
         tCode('V', 'M ' , 'Married/Civil Partner'),
-        tCode('V', 'D ' , 'Divorced/Person'),
+        tCode('V', 'D ' , 'Divorced/Civil Partner dissolved'),
         tCode('V', 'W ' , 'Widowed/Surviving Civil Partner'),
         tCode('V', 'P ' , 'Separated'),
         tCode('V', 'N ' , 'Not disclosed'),       

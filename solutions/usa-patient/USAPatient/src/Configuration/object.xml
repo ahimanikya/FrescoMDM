@@ -625,7 +625,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>StartDate</field-name>
@@ -635,7 +635,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Medicine01Name</field-name>
@@ -948,7 +948,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>ContactMName</field-name>
@@ -958,7 +958,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>ContactLName</field-name>
@@ -968,7 +968,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Relationship</field-name>
@@ -1061,7 +1061,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>ContactPersonFName</field-name>
@@ -1211,7 +1211,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>MembershipID</field-name>
@@ -1221,7 +1221,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>PolicyType</field-name>
@@ -1337,7 +1337,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
             <user-code>AUXIDDEF</user-code>
         </fields>
         <fields>
@@ -1348,7 +1348,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
             <constraint-by>AuxIdDef</constraint-by>
         </fields>
     </nodes>

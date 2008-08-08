@@ -196,7 +196,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>FamilyName_Std</field-name>
@@ -226,7 +226,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>GivenName_Std</field-name>
@@ -256,7 +256,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Title</field-name>
@@ -276,7 +276,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
     </nodes>
     <nodes>
@@ -289,7 +289,7 @@
             <required>true</required>
             <code-module>ADDRTYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>AddressLine1</field-name>
@@ -532,7 +532,7 @@
             <required>true</required>
             <code-module>TELETYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Root</field-name>
@@ -668,7 +668,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>FamilyName_Std</field-name>
@@ -698,7 +698,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>GivenName_Std</field-name>
@@ -728,7 +728,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Title</field-name>
@@ -748,7 +748,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Language</field-name>
@@ -971,7 +971,7 @@
             <required>false</required>
             <code-module>TELETYPE</code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Root</field-name>
@@ -1034,7 +1034,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
             <user-code>AUXIDDEF</user-code>
         </fields>
         <fields>
@@ -1045,7 +1045,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
             <constraint-by>AuxIDDef</constraint-by>
         </fields>
     </nodes>
@@ -1069,7 +1069,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
     </nodes>
     <relationships>

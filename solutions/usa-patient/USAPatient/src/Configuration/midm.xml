@@ -502,7 +502,7 @@
             <max-length>30</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>StartDate</name>
@@ -511,7 +511,7 @@
             <max-length>12</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>date</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Medicine01Name</name>
@@ -794,7 +794,7 @@
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>ContactMName</name>
@@ -803,7 +803,7 @@
             <max-length>30</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>ContactLName</name>
@@ -812,7 +812,7 @@
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Relationship</name>
@@ -901,7 +901,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>ContactPersonFName</name>
@@ -1038,7 +1038,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>MembershipID</name>
@@ -1047,7 +1047,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>PolicyType</name>
@@ -1157,7 +1157,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>AUXIDDEF</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Id</name>
@@ -1166,7 +1166,7 @@
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
     </node>
     <relationships>

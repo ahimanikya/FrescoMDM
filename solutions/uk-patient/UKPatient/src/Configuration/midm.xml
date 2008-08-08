@@ -180,7 +180,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>GivenName</name>
@@ -189,7 +189,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>OtherGivenName</name>
@@ -198,7 +198,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Title</name>
@@ -217,7 +217,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
     </node>
     <node>
@@ -231,7 +231,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>ADDRTYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>AddressLine1</name>
@@ -362,7 +362,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>TELETYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Root</name>
@@ -489,7 +489,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>GivenName</name>
@@ -498,7 +498,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>OtherGivenName</name>
@@ -507,7 +507,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Title</name>
@@ -526,7 +526,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Language</name>
@@ -732,7 +732,7 @@
             <gui-type>MenuList</gui-type>
             <value-list>TELETYPE</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Root</name>
@@ -791,16 +791,16 @@
             <gui-type>MenuList</gui-type>
             <value-list>AUXIDDEF</value-list>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>AuxID</name>
-            <display-name>Auxiliary ID</display-name>
+            <display-name>Aux ID</display-name>
             <display-order>2</display-order>
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
     </node>
     <node>
@@ -823,7 +823,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
     </node>
     <relationships>
