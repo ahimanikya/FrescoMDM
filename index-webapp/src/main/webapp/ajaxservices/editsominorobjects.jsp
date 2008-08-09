@@ -1221,7 +1221,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				   <%}%> 
 			   <!-- Generate the script to populate the form -->
 			   <script>
-			       <% for(int k=0;k<fcArray.length;k++) {					     
+			       <% 
+				     String thisminorObjectType = (String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE);
+				     for(int k=0;k<fcArray.length;k++) {					     
 
 				   %>
 					<%
@@ -1278,24 +1280,50 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 					   <%}%>
 					<%} else {%>
-					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
-						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+						<%	if(!thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW) && fcArray[k].isKeyType()) {
 				       %>
-                           if(elemType != 'HIDDEN') {
-						  
-							for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
-									thisFrm.elements[<%=k%>].options.selectedIndex = i
-								}
-						     }
-					       }
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+						   %>
+							  
+								thisFrm.elements[<%=k%>].readOnly = true;
+								thisFrm.elements[<%=k%>].disabled = true;
 
-						<%} else {%>
-							if(elemType != 'HIDDEN') {
-                              thisFrm.elements[<%=k%>].value = '<%=value%>'
-						    }
+								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
+									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+										thisFrm.elements[<%=k%>].options.selectedIndex = i
+									}
+								 }
+ 		
+							<%} else {%>
+								if(elemType != 'HIDDEN') {
+								   thisFrm.elements[<%=k%>].readOnly = true;
+								   thisFrm.elements[<%=k%>].disabled = true;
+								   thisFrm.elements[<%=k%>].value = '<%=value%>'
+								}
+							<%}%>
+						  <%}%>
+					   <%} else {%>
+
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+						   %>
+							   if(elemType != 'HIDDEN') {
+							  
+								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
+									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+										thisFrm.elements[<%=k%>].options.selectedIndex = i
+									}
+								 }
+							   }
+
+							<%} else {%>
+								if(elemType != 'HIDDEN') {
+								  thisFrm.elements[<%=k%>].value = '<%=value%>'
+								}
+							<%}%>
 						<%}%>
-					<%}%>
+				   <%}%>
 
 					<%}%>
 					

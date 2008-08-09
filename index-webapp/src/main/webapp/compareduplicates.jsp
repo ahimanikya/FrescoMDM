@@ -90,7 +90,7 @@
         <title><h:outputText value="#{msgs.application_heading}" /></title>
         <body>
             <%@include file="./templates/header.jsp"%>
-             <div id="mainContent" style="overflow:hidden;">
+             <div id="mainContent">
   			   <table width="100%"><tr><td>
                 <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
                     <h:form id="advancedformData">
