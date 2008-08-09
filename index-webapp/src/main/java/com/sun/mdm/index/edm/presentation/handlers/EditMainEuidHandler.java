@@ -1155,18 +1155,32 @@ public class EditMainEuidHandler {
 
             //BUILD AND THE VALUES FOR THE MINOR OBJECTS HERE
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+            HashMap enterprisObjectDBMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
 
             //get the child object node configs
             for (int i = 0; i < childNodeConfigs.length; i++) {
                 //get the child object node configs and build an array of minor objects here
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
                 ArrayList thisMinorObjectList = (ArrayList) this.editSingleEOHashMap.get("EOCODES" + objectNodeConfig.getName() + "ArrayList");
+                ArrayList thisMinorObjectListDB = (ArrayList) enterprisObjectDBMap.get("EOCODES" + objectNodeConfig.getName() + "ArrayList");
+ 
+                ArrayList updatedMinorObjectList = new ArrayList();
                 for (int j = 0; j < thisMinorObjectList.size(); j++) {
                     HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
-                    minorObjectMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName());
-                //add minor objects for SBR here 
+                     if (minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE).toString().equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
+                        //add minor objects for SBR here 
+                         minorObjectMap = getDifferenceMinorObjectMap(thisMinorObjectListDB, minorObjectMap);
+                         if (minorObjectMap != null) {
+                            updatedMinorObjectList.add(minorObjectMap);
+                        }
+                     } else {
+                        updatedMinorObjectList.add(minorObjectMap);
+                    }
 
+ 
                 }
+                 //update the minor object arraylist here
+                this.editSingleEOHashMap.put("EOCODES" + objectNodeConfig.getName() + "ArrayList", updatedMinorObjectList);
             }
 
         } catch (Exception ex) {
@@ -1209,7 +1223,7 @@ public class EditMainEuidHandler {
                 minorObjectMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName());
 
                 //add minor objects for SBR here 
-                //this.changedSBRArrayList.add(minorObjectMap);
+                this.changedSBRArrayList.add(minorObjectMap);
 
             }
         }
@@ -1360,6 +1374,67 @@ public class EditMainEuidHandler {
         }
         return map;
     }
+    
+/** 
+     * Addded  By Rajani Kanth  on 05/08/2008 <br>
+     * 
+     * This method is used to compare the minor objects hashmap with the arraylist of hashmap and will return the hash map with only modified values<br>
+     * 
+     * 
+     * @param minorObjectList 
+     * @param checkMinorObjectMap 
+     * @return HashMap  - HashMap with (K,true/false) <br>
+     * 
+     **/
+
+        public HashMap getDifferenceMinorObjectMap(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
+        HashMap returnHashMap = new HashMap();
+        Object[] keyset = checkMinorObjectMap.keySet().toArray();
+        
+        HashMap matchHashMap  = new HashMap();
+        for (Object object : minorObjectList) {
+            HashMap map = (HashMap) object;
+            //Check for the minor object id and the minor object type for comparing
+             if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(map.get(MasterControllerService.MINOR_OBJECT_ID).toString())) {
+                    matchHashMap = map;
+             }
+         }
+        int countDiff = 0;
+        //If the matching map is not empty 
+        if (!matchHashMap.isEmpty()) {
+            if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
+                for (int i = 0; i < matchHashMap.size(); i++) {
+                    if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                            !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                            !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                        if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) == null) {
+                            returnHashMap.put(keyset[i], checkMinorObjectMap.get(keyset[i]));
+                        } else if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) != null) {
+                            returnHashMap.put(keyset[i], checkMinorObjectMap.get(keyset[i]));
+                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) != null && !matchHashMap.get(keyset[i]).toString().equals(checkMinorObjectMap.get(keyset[i]).toString())) {
+                            returnHashMap.put(keyset[i], checkMinorObjectMap.get(keyset[i]));
+                        } else {
+                            checkMinorObjectMap.remove(i);
+                        }
+                    }
+                    
+                }
+                returnHashMap.put(MasterControllerService.MINOR_OBJECT_ID, checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID));
+                returnHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE));
+                returnHashMap.put(MasterControllerService.HASH_MAP_TYPE, checkMinorObjectMap.get(MasterControllerService.HASH_MAP_TYPE));
+            }
+
+        }
+        if(checkMinorObjectMap.size()==3) {
+            return null;
+        } else {
+            return returnHashMap;
+        }
+    } 
+    
+    
+    
+    
 }
  
     
