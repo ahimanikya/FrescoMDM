@@ -73,6 +73,7 @@ import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
 import com.sun.mdm.index.objects.SystemObjectPK;
+import com.sun.mdm.index.objects.factory.SimpleFactory;
 import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -1068,31 +1069,55 @@ public class CompareDuplicateManager {
         }
         return name;
     }
-    public boolean checkOverWrites(String editEuid, HashMap hm) throws ObjectException, ProcessingException, UserException {
+
+       /** 
+     * Addded  By Rajani Kanth  on 07/08/2008 <br>
+     * 
+     * This method is used to check the overwrites for the entered minor object.
+     * 
+     * 
+     * @param editEuid  - EUID
+     * @param minorObjectHashMap - Minor object hashmap
+     * @return boolean  
+        * <b>true</b> - if the overwrites are found for all the minor object keys <br>
+        * <b>false</b> - if total number of overwrites doesnot match the minor object keys<br>
+     * 
+     **/
+
+    
+    public boolean checkOverWrites(String editEuid, HashMap minorObjectHashMap) throws ObjectException, ProcessingException, UserException {
         boolean ovwerWriteFound = false;
-        SBR sbr = masterControllerService.getEnterpriseObject(editEuid).getSBR();
+        EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(editEuid);
+        SBR sbr = enterpriseObject.getSBR();
+
+        //calculate the total number of keys in the hashmap
+        int totalKeysSize = minorObjectHashMap.keySet().size() - 3;
+
+        int countOverwrites = 0;
 
         if (sbr != null) {
-            for (Object obj : hm.keySet()) {
+            ObjectNode minorObjectNode = sbr.getObject().getChild((String) minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE), (String) minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
+            for (Object obj : minorObjectHashMap.keySet()) {
                 // Object value = hm.get(obj);
                 String key = obj.toString();
-                if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
-                    // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
-                    ArrayList overWrites = sbr.getOverWrites();
-                    if (overWrites != null) {
-                        
-                        for (Object overWriteObj : overWrites) {
-                            SBROverWrite overWrite = (SBROverWrite) overWriteObj;
-                            if (overWrite.getEPath().indexOf(key) != -1) {
-                                ovwerWriteFound = true;
-                            }
-                        }
-
+                // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
+                if (!key.toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                        !key.toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                        !key.toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                     key = key.substring(key.indexOf(".")+1, key.length());
+                     SBROverWrite overWriteObj = QwsUtil.getOverWrite(sbr, minorObjectNode, key);
+                    if (overWriteObj != null) {
+                         //increment the number of overwrites here
+                        countOverwrites++;
                     }
                 }
             }
+
+             if (countOverwrites == totalKeysSize) {
+                ovwerWriteFound = true;
+            }
         }
-        return ovwerWriteFound;
+         return ovwerWriteFound;
     }
     
     // Method added by Anil to get Merged euid.
