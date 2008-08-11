@@ -698,28 +698,53 @@ public class MasterControllerService {
         return systemObject;
     }
 
-    public SystemObject addMinorObject(SBR sbr, String objectType, HashMap hm) throws ObjectException, ValidationException {
-//        ObjectNode minorObject = SimpleFactory.create(objectType); // objectType eg value "Address"
-       
-        ArrayList overWrites = new ArrayList();
+     public SystemObject addMinorObject(SBR sbr, String objectType, HashMap hm) throws ObjectException, ValidationException {
+        ObjectNode minorObject = SimpleFactory.create(objectType); // objectType eg value "Address"
+        ObjectNode majorObject = sbr.getObject();
+        majorObject.addChild(minorObject);
+         
+        // Two passes are required.  The first pass ensures that the key for keyed
+        // objects is stored correctly.  This is used in the second pass to 
+        // construct the EPath for the SBROverwrite overwrite.
+        
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
-                // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
-                SBROverWrite sbrOverWrite = new SBROverWrite();   
-                sbrOverWrite.setAddFlag(true);
-//                String createEPath = EPathBuilder.createEPath(minorObject, sbr.getObject().pGetTag() + "." + (String) obj);
-                sbrOverWrite.setPath( sbr.getObject().pGetTag() + "." + (String) obj); // This is Person.Address.AddresLine1
-                sbrOverWrite.setData(value);
-                overWrites.add(sbrOverWrite);
+                String path = (String) obj;
+                int startIndex = path.lastIndexOf('.') + 1;
+                if (value != null) {
+                    String strValue = (String) value;
+                    // If it is a key field, the strValue must be non-null and
+                    // not an empty string.
+                    if (minorObject.isKeyType(path.substring(startIndex))) {
+                        if (strValue == null || (strValue.trim().length() == 0)) {
+                            throw new ObjectException(mLocalizer.t("SRM531: key field[{$0}] cannot " +
+                                                                   "be null nor non-empty.", 
+                                                                    path.substring(startIndex)));
+                        }
+                        QwsUtil.setObjectNodeFieldValue(minorObject, path.substring(startIndex), strValue);
+                    }
+                }
             }
         }
-        // majorObject.addChild(minorObject);
-        // sbr.addChild(minorObject);
+        for (Object obj : hm.keySet()) {
+            Object value = hm.get(obj);
+            if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
+                String path = (String) obj;
+                int startIndex = path.lastIndexOf('.') + 1;
+                if (value != null) {
+                    String strValue = (String) value;
+                    QwsUtil.setObjectNodeFieldValue(minorObject, path.substring(startIndex), strValue, sbr);
+                 } else {
+                    QwsUtil.setObjectNodeFieldValue(minorObject, path.substring(startIndex), null, sbr);
+                  }
+            }
+        }
         
-        sbr.addOverWrites(overWrites);
-        return sbr;
+         return sbr;
     }
+    
+    
 
     public ObjectNode modifyMinorObject(ObjectNode minorObject, HashMap hm) throws ObjectException, ValidationException {
         for (Object obj : hm.keySet()) {
@@ -920,17 +945,11 @@ public class MasterControllerService {
                     ArrayList overWrites = sbr.getOverWrites();
                     for (Object overWriteObj : overWrites) {
                         SBROverWrite overWrite = (SBROverWrite) overWriteObj;
-                        if (overWrite.getEPath().indexOf(key) != -1) {
-                            overWrite.setRemoveFlag(true);
-                        }
-                    }
+                         overWrite.setRemoveFlag(true);
+                     }
                 }
             }
-        // majorObject.addChild(minorObject);
-        // sbr.addChild(minorObject);
-
-
-        }
+         }
     }
     public String[][] getSystemCodes() {
         int sysCount = ValidationService.getInstance().getValueCount(ValidationService.CONFIG_MODULE_SYSTEM);
