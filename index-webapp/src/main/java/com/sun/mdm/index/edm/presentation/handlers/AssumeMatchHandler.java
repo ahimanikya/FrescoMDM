@@ -274,10 +274,12 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     AssumedMatchSummary amSummary = (AssumedMatchSummary) amIter.next();
                     HashMap summaryHash = new HashMap();
                     startPosition++;
-                    EnterpriseObject beforeEO = amSummary.getBeforeEO();
+                   // EnterpriseObject beforeEO = amSummary.getBeforeEO
+                     EnterpriseObject beforeEO = masterControllerService.getEnterpriseObject(amSummary.getEUID());
                     //Insert audit log for AM search results 
                     masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            beforeEO.getEUID(),
+                            //beforeEO.getEUID(),
+                            amSummary.getEUID(),
                             "",
                             "Assumed Match Search Result",
                             new Integer(screenObject.getID()).intValue(),
