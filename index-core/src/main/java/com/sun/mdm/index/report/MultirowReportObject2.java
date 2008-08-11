@@ -79,8 +79,12 @@ public class MultirowReportObject2 extends MultirowReportObject1 {
             mObjectNode.removeChildren();
         }
         ArrayList list = new ArrayList();
-        list.add(node1);
-        list.add(node2);
+        if (node1 != null) {
+            list.add(node1);
+        }
+        if (node2 != null) {
+            list.add(node2);
+        }
         mObjectNode.addChildren(list);
     }
     

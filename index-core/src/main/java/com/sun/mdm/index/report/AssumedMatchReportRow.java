@@ -78,8 +78,11 @@ public class AssumedMatchReportRow extends MultirowReportObject2 {
         //Second child is the new SO image
         //Both objects need to be reduced because the MC lookup method returns all fields
         EPathArrayList fields = config.getObjectFields();
-        ObjectNode obj1 = 
+        ObjectNode obj1 = null;
+        if (summary.getBeforeSBR() != null) {
+            obj1 =
             ObjectNodeReducer.reduceObjectNode(summary.getBeforeSBR().getObject(), fields);
+        }
         ObjectNode obj2 = 
             ObjectNodeReducer.reduceObjectNode(summary.getNewSO().getObject(), fields);
         setObjects(obj1, obj2);
