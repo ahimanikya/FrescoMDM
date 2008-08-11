@@ -90,13 +90,13 @@ if(session!=null){
               function setEOEditIndex(editIndex)   {
 				editIndexid = editIndex;
 	   		  }
-              function cancelEdit(formName, thisDiv,minorObject)   {
+              function cancelEdit(formName, thisDiv,minorObject,buttonID)   {
                 ClearContents(formName); 
 				enableallfields(formName);
                 setEOEditIndex("-1");
 				document.getElementById(thisDiv).style.visibility = 'hidden';
 				document.getElementById(thisDiv).style.display  = 'none';
-                document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/>  '+ minorObject;
+                document.getElementById(buttonID).innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/>  '+ minorObject;
 		      }
 			 var userDefinedInputMask="";
              var URI_VAL = '<%=URI%>';

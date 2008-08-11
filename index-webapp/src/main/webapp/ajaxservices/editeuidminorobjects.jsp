@@ -1185,9 +1185,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</table>
 	</div>   
 	<%} else {
-		 //copy the content into the minor objects
-          //add to the array list of ONLY when mandatory fields are addded
-          thisMinorObjectList.add(thisMinorObject); 
+
+	  
+	  String thisminorObjectType = (String)thisMinorObject.get(MasterControllerService.HASH_MAP_TYPE);
+      //build the hashmap with null values for the newly added minor object to the SBR, this is used create locks for all the fields 
+	 if (thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) { 
+        for(int k=0;k<fcArrayLocal.length;k++) {
+	       if(thisMinorObject.get(fcArrayLocal[k].getFullFieldName()) == null ) {
+               thisMinorObject.put(fcArrayLocal[k].getFullFieldName(),null);
+		   }
+	   }
+	}
+ 	//copy the content into the minor objects
+    //add to the array list of ONLY when mandatory fields are addded
+    thisMinorObjectList.add(thisMinorObject); 
 		  
 	}
 	
@@ -1359,7 +1370,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				   <%}%> 
                <!-- Generate the script to populate the form -->
 			   <script>
-			       <% for(int k=0;k<fcArray.length;k++) {					     
+			       <% 
+				   	  String thisminorObjectType = (String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE);
+     		          for(int k=0;k<fcArray.length;k++) {					     
 				   %>
 					<%
 						String value = (minorObjectMap.get(fcArray[k].getFullFieldName())) != null ?minorObjectMap.get(fcArray[k].getFullFieldName()).toString():null;   
@@ -1415,24 +1428,51 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 					   <%}%>
 					<%} else {%>
-					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
-						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
-				       %>
-                           if(elemType != 'HIDDEN') {
-						  
-							for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
-									thisFrm.elements[<%=k%>].options.selectedIndex = i
-								}
-						     }
-					       }
 
-						<%} else {%>
-							if(elemType != 'HIDDEN') {
-                              thisFrm.elements[<%=k%>].value = '<%=value%>'
-						    }
+						<%	if(!thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW) && fcArray[k].isKeyType()) {
+				       %>
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%> 
+							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+						   %>
+							  
+								thisFrm.elements[<%=k%>].readOnly = true;
+								thisFrm.elements[<%=k%>].disabled = true;
+
+								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
+									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+										thisFrm.elements[<%=k%>].options.selectedIndex = i
+									}
+								 }
+ 		
+							<%} else {%>
+								if(elemType != 'HIDDEN') {
+								   thisFrm.elements[<%=k%>].readOnly = true;
+								   thisFrm.elements[<%=k%>].disabled = true;
+								   thisFrm.elements[<%=k%>].value = '<%=value%>'
+								}
+							<%}%>
 						<%}%>
-					<%}%>
+
+					   <%} else {%>
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+						   %>
+							   if(elemType != 'HIDDEN') {
+							  
+								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
+									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+										thisFrm.elements[<%=k%>].options.selectedIndex = i
+									}
+								 }
+							   }
+
+							<%} else {%>
+								if(elemType != 'HIDDEN') {
+								  thisFrm.elements[<%=k%>].value = '<%=value%>'
+								}
+							<%}%>
+						<%}%>
+				   <%}%>
 
 					<%}%>
 					
