@@ -21,6 +21,7 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.idgen.impl;
+
 import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.idgen.SEQException;
 import java.sql.CallableStatement;
@@ -36,6 +37,8 @@ import javax.naming.InitialContext;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.util.Localizer;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
 
@@ -47,18 +50,17 @@ public class DefaultEuidGenerator implements EuidGenerator {
 
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private transient final Localizer mLocalizer = Localizer.get();
-    
     private int mIdLength;
     private int mChecksumLength;
-    private int mChunkSize; 
+    private int mChunkSize;
     private long mNextEUID = -1;
-    
+
     /** Default constructor for DefaultEuidGenerator
      * @throws SEQException An exception occurred
      */
     public DefaultEuidGenerator() throws SEQException {
     }
-    
+
     /** Parameters of the euid generator represented in the configuration XML
      * file are set using this method.
      *
@@ -67,7 +69,7 @@ public class DefaultEuidGenerator implements EuidGenerator {
      * @exception SEQException An error occurred
      */
     public void setParameter(String parameterName, Object value)
-        throws SEQException {
+            throws SEQException {
         if (parameterName.equals("IdLength")) {
             mIdLength = ((Integer) value).intValue();
         } else if (parameterName.equals("ChecksumLength")) {
@@ -75,16 +77,16 @@ public class DefaultEuidGenerator implements EuidGenerator {
         } else if (parameterName.equals("ChunkSize")) {
             mChunkSize = ((Integer) value).intValue();
         } else {
-            throw new SEQException(mLocalizer.t("IDG504: Unknown parameter: (0}", 
-                                                parameterName));
-        }            
+            throw new SEQException(mLocalizer.t("IDG504: Unknown parameter: (0}",
+                    parameterName));
+        }
     }
 
     /** Generate the next EUID
      *
      * @exception SEQException an error occurred
      * @return next EUID
-     */    
+     */
     public synchronized String getNextEUID(Connection con) throws SEQException {
         String euid = null;
 
@@ -110,8 +112,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
             retVal = formatEUID(euid);
         }
         mNextEUID++;
-        
-        
+
+
         return retVal;
     }
 
@@ -122,7 +124,6 @@ public class DefaultEuidGenerator implements EuidGenerator {
     public int getEUIDLength() {
         return mIdLength + mChecksumLength;
     }
-    
 
     private void getDatabaseConnection() throws SEQException {
     }
@@ -130,64 +131,86 @@ public class DefaultEuidGenerator implements EuidGenerator {
     private long xgetNextEUID(Connection conn) throws SEQException {
         long nextValue;
         try {
-        	if (ObjectFactory.getDatabase().equalsIgnoreCase("Oracle")) {
-        		nextValue = getSeqNoByFunction(conn);
-        	} else {
-        		nextValue = getSeqNoByProcedure(conn);        		
-        	}
+            if (ObjectFactory.getDatabase().equalsIgnoreCase("Oracle")) {
+                nextValue = getSeqNoByFunction(conn);
+            } else if (ObjectFactory.getDatabase().equalsIgnoreCase("MySQL")) {
+                nextValue = getSeqNoByMySQLFunction(conn);
+            } else {
+                nextValue = getSeqNoByProcedure(conn);
+            }
         } catch (Exception exp) {
-            throw new SEQException(mLocalizer.t("IDG505: Could not retrieve the " + 
-                                                "next EUID: (0}", exp));
+            throw new SEQException(mLocalizer.t("IDG505: Could not retrieve the " +
+                    "next EUID: (0}", exp));
         }
         return nextValue;
-    }    
+    }
 
-	private long getSeqNoByFunction(Connection conn) throws SQLException {
-		long nextValue;
-		/* Prepare SP Call Statement.       */
-		String command = "{? = call SEQMGR(?, ?)}"; // 1 place holders + 1 return value
-		CallableStatement cstmt = conn.prepareCall(command);
+    private long getSeqNoByFunction(Connection conn) throws SQLException {
+        long nextValue;
+        /* Prepare SP Call Statement.       */
+        String command = "{? = call SEQMGR(?, ?)}"; // 1 place holders + 1 return value
 
-		// Register out parameters
-		cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
-		cstmt.setString(2, "EUID");
-		cstmt.setInt(3, mChunkSize);
-		cstmt.execute();
-		nextValue = cstmt.getLong(1);
-		cstmt.close();
-		return nextValue;
-	}    
-  
+        CallableStatement cstmt = conn.prepareCall(command);
 
-	/**
-	 * Get a sequence number by calling SEQMGR stored procedure.
-	 * The sequence number in the database will be increased by CHUNK_SIZE
-	 * 
-	 * @param connection database connection
-	 * @return a sequence number
-	 * @throws SQLException
-	 */
-	private long getSeqNoByProcedure(Connection conn) throws SQLException {
-		long nextValue;
-		/* Prepare SP Call Statement.       */
-		String command = "{call SEQMGR(?, ?, ?)}"; // 1 place holders + 1 return value
-		CallableStatement cstmt = conn.prepareCall(command);
+        // Register out parameters
+        cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
+        cstmt.setString(2, "EUID");
+        cstmt.setInt(3, mChunkSize);
+        cstmt.execute();
+        nextValue = cstmt.getLong(1);
+        cstmt.close();
+        return nextValue;
+    }
 
-		// Register out parameters
-		cstmt.registerOutParameter(3, java.sql.Types.INTEGER);
-		cstmt.setString(1, "EUID");
-		cstmt.setInt(2, mChunkSize);
-		cstmt.execute();
-		nextValue = cstmt.getLong(3);
-		cstmt.close();
-		return nextValue;
-	}    
+    private long getSeqNoByMySQLFunction(Connection conn) throws SQLException {
+        long nextValue = 0;
 
-    
+        PreparedStatement stmt = conn.prepareStatement("select SEQMGR(?, ?)");
+
+        stmt.setString(1, "EUID");
+        stmt.setInt(2, mChunkSize);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                nextValue = rs.getLong(1);
+            }
+        } catch (SQLException se) {
+            throw se;
+        }
+        rs.close();
+        stmt.close();
+        return nextValue;
+    }
+
+    /**
+     * Get a sequence number by calling SEQMGR stored procedure.
+     * The sequence number in the database will be increased by CHUNK_SIZE
+     * 
+     * @param connection database connection
+     * @return a sequence number
+     * @throws SQLException
+     */
+    private long getSeqNoByProcedure(Connection conn) throws SQLException {
+        long nextValue;
+        /* Prepare SP Call Statement.       */
+        String command = "{call SEQMGR(?, ?, ?)}"; // 1 place holders + 1 return value
+
+        CallableStatement cstmt = conn.prepareCall(command);
+
+        // Register out parameters
+        cstmt.registerOutParameter(3, java.sql.Types.INTEGER);
+        cstmt.setString(1, "EUID");
+        cstmt.setInt(2, mChunkSize);
+        cstmt.execute();
+        nextValue = cstmt.getLong(3);
+        cstmt.close();
+        return nextValue;
+    }
+
     private String formatEUID(String euid) throws SEQException {
         if (euid.length() > mIdLength) {
-            throw new SEQException(mLocalizer.t("IDG506: ID length exceeded: {0}. " + 
-                                    "Maximum length is {1}", euid.length(), mIdLength));
+            throw new SEQException(mLocalizer.t("IDG506: ID length exceeded: {0}. " +
+                    "Maximum length is {1}", euid.length(), mIdLength));
         }
         int padLength = mIdLength - euid.length();
         StringBuffer sb = new StringBuffer();
@@ -197,23 +220,22 @@ public class DefaultEuidGenerator implements EuidGenerator {
         sb.append(euid);
         return sb.toString();
     }
-    
+
     private String getChecksum(long value) {
-        int mod = (int) Math.pow(10, mChecksumLength); 
+        int mod = (int) Math.pow(10, mChecksumLength);
         value = (1103515243 * value + 12345) & 0x7FFFFFFF;
-        long ck = value % mod; 
-        String retVal = String.valueOf(ck); 
+        long ck = value % mod;
+        String retVal = String.valueOf(ck);
         int padLength = mChecksumLength - retVal.length();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < padLength; i++) {
             sb.append('0');
         }
         sb.append(retVal);
-        
+
         if (mLogger.isLoggable(Level.FINE)) {
-            mLogger.fine("Checksum for " + value + " is " + sb); 
+            mLogger.fine("Checksum for " + value + " is " + sb);
         }
         return sb.toString();
     }
-    
 }
