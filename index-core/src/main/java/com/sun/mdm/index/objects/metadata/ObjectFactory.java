@@ -1204,7 +1204,8 @@ public class ObjectFactory {
     public static boolean isDatabaseANSI() {
         boolean ansi = false;
     	init();
-        if ( mEIndexObject.getDataBase().equals("SQL Server")) {
+        String dbServer = mEIndexObject.getDataBase();
+        if ( dbServer.equals("SQL Server") || dbServer.equals("MySQL")) {
         //if ( mEIndexObject.getDataBase().equals("SQL Server") ||  mEIndexObject.getDataBase().equals("AxionDB")){
         	ansi = true;
         }
