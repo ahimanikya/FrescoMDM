@@ -440,18 +440,9 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>County</name>
-            <display-name>County</display-name>
-            <display-order>8</display-order>
-            <max-length>20</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
             <name>CountryCode</name>
             <display-name>Country Code</display-name>
-            <display-order>9</display-order>
+            <display-order>8</display-order>
             <max-length>20</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
@@ -1110,7 +1101,27 @@
             <display-order>24</display-order>
             <max-length>20</max-length>
             <gui-type>MenuList</gui-type>
-            <value-list>INSREL</value-list>
+            <value-list>REL</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PatientRelationship</name>
+            <display-name>Patient Realtionship to Insured</display-name>
+            <display-order>25</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>PATREL</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MedicareRel</name>
+            <display-name>Relationship for Medicare Claim</display-name>
+            <display-order>26</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>MEDREL</value-list>
             <value-type>string</value-type>
             <key-type>false</key-type>
         </field>
@@ -1125,7 +1136,7 @@
             <max-length>32</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>CommentDate</name>
@@ -1134,7 +1145,7 @@
             <max-length>12</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>date</value-type>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </field>
         <field>
             <name>Text</name>

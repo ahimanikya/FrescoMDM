@@ -140,7 +140,7 @@
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module>MSTATUS</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -526,7 +526,7 @@
             <field-type>string</field-type>
             <size>30</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -536,7 +536,7 @@
             <field-type>string</field-type>
             <size>10</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -556,17 +556,7 @@
             <field-type>string</field-type>
             <size>4</size>
             <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>County</field-name>
-            <field-type>string</field-type>
-            <size>20</size>
-            <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -1288,8 +1278,28 @@
             <field-type>string</field-type>
             <size>20</size>
             <updateable>true</updateable>
-            <required>true</required>
-            <code-module>INSREL</code-module>
+            <required>false</required>
+            <code-module>REL</code-module>
+            <pattern></pattern>
+            <key-type>false</key-type>
+        </fields>
+        <fields>
+            <field-name>PatientRelationship</field-name>
+            <field-type>string</field-type>
+            <size>32</size>
+            <updateable>false</updateable>
+            <required>false</required>
+            <code-module>PATREL</code-module>
+            <pattern></pattern>
+            <key-type>false</key-type>
+        </fields>
+        <fields>
+            <field-name>MedicareRel</field-name>
+            <field-type>string</field-type>
+            <size>32</size>
+            <updateable>false</updateable>
+            <required>false</required>
+            <code-module>MEDREL</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
@@ -1304,7 +1314,7 @@
             <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>CommentDate</field-name>
@@ -1314,7 +1324,7 @@
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
-            <key-type>false</key-type>
+            <key-type>true</key-type>
         </fields>
         <fields>
             <field-name>Text</field-name>

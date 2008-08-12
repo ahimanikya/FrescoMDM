@@ -46,10 +46,11 @@ declare
         tCode('V', 'MISS', 'MISS'),
 
         -- ****     GENDER   ****
+        --  MALE / Female from HIPAA Standard
+        --  UNKNOWN from CMS FISS Standard
         tCode('L', 'GENDER', 'Gender'),
         tCode('V', 'M', 'MALE'),
         tCode('V', 'F', 'FEMALE'),
-        tCode('V', 'O', 'OTHER'),
         tCode('V', 'U', 'UNKNOWN'),
 
 
@@ -232,6 +233,7 @@ declare
         tCode('L', 'POLTYPE', 'Policy Type'),
         tCode('V', 'HMO', 'HMO'),
         tCode('V', 'PPO', 'PPO'),
+        tCode('V', 'MED', 'MEDICARE'),
         tCode('V', 'OTHER', 'OTHER'),
         tCode('V', 'UNKNOWN', 'UNKNOWN'),
 
@@ -315,16 +317,70 @@ declare
         tCode('V', 'UNKNOWN', 'UNKNOWN'),
 
 
-        -- ****     INSURANCERELATIONSHIP   ****
-        tCode('L', 'INSREL', 'Insurance Relationship'),
-        tCode('V', 'SELF', 'SELF'),
-        tCode('V', 'SPOUSE', 'SPOUSE'),
-        tCode('V', 'CHILD', 'CHILD'),
-        tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),
-        tCode('V', 'DOMESTIC_PARTNER', 'DOMESTIC PARTNER'),
-        tCode('V', 'GUARDIAN', 'GUARDIAN'),
-        tCode('V', 'OTHER', 'OTHER'),
-        tCode('V', 'UNKNOWN', 'UNKNOWN')
+        -- **** REL ****
+        --   CMS FISS 
+        tCode('L', 'REL', 'Patients Relationship to Insured'),
+        tCode('V', '01' , 'Spouse'),
+        tCode('V', '04' , 'Grandfather or Grandmother'),
+        tCode('V', '05' , 'Grandson or Granddaughter'),
+        tCode('V', '07' , 'Nephew or Niece'),
+        tCode('V', '10' , 'Foster Child'),
+        tCode('V', '15' , 'Ward of the Court'),
+        tCode('V', '17' , 'Stepson or Stepdaughter'),
+        tCode('V', '18' , 'Self'),
+        tCode('V', '19' , 'Child'),
+        tCode('V', '20' , 'Employee'),
+        tCode('V', '21' , 'Unknown'),
+        tCode('V', '22' , 'Handicapped Dependent'),
+        tCode('V', '23' , 'Sponsored Dependent'),
+        tCode('V', '24' , 'Dependent of Minor Dependent'),
+        tCode('V', '29' , 'Significant Other'),
+        tCode('V', '32' , 'Mother'),
+        tCode('V', '33' , 'Father'),
+        tCode('V', '36' , 'Emancipated Minor'),
+        tCode('V', '39' , 'Organ Donor'),
+        tCode('V', '40' , 'Cadaver Donor'),
+        tCode('V', '41' , 'Injured Plaintiff'),
+        tCode('V', '43' , 'Child No Financial Resp.'),
+        tCode('V', '53' , 'Life Partner'),
+        tCode('V', 'G8' , 'Other'),
+
+        -- **** PATREL ****
+        --    CMS FISS
+        tCode('L', 'PATREL', 'Subscriber relationship to patient'),
+        tCode('V', '01' , 'Patient is insured'),
+        tCode('V', '02' , 'Spouse'),
+        tCode('V', '03' , 'Natural child'),
+        tCode('V', '04' , 'Natural child not responsible'),
+        tCode('V', '05' , 'Step-child'),
+        tCode('V', '06' , 'Foster child'),
+        tCode('V', '07' , 'Ward of the court'),
+        tCode('V', '08' , 'Employee'),
+        tCode('V', '09' , 'Unknown'),
+        tCode('V', '10' , 'Handicapped dependent'),
+        tCode('V', '11' , 'Organ donor'),
+        tCode('V', '12' , 'Cadaver donor'),
+        tCode('V', '13' , 'Grandchild'),
+        tCode('V', '14' , 'Niece/nephew'),
+        tCode('V', '15' , 'Injured plaintiff'),
+        tCode('V', '16' , 'Dependent sponsored'),
+        tCode('V', '17' , 'Minor dependent of a minor dependent'),
+        tCode('V', '18' , 'Parent'),
+        tCode('V', '19' , 'Grandparent'),
+
+        -- **** MEDREL ****
+        --   UB-04 CMS Pub 100-04 Medicare Claims Processing
+        tCode('L', 'MEDREL', 'Patients Relationship to Insured'),
+        tCode('V', '01' , 'Spouse'),
+        tCode('V', '18' , 'Self'),
+        tCode('V', '19' , 'Child'),
+        tCode('V', '20' , 'Employee'),
+        tCode('V', '21' , 'Unknown'),
+        tCode('V', '39' , 'Organ Donor'),
+        tCode('V', '40' , 'Cadaver Donor'),
+        tCode('V', '53' , 'Life Partner'),
+        tCode('V', 'G8' , 'Other')
+
     );
 
 begin
