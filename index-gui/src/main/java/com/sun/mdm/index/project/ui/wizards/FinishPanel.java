@@ -48,6 +48,7 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class FinishPanel implements WizardDescriptor.Panel {
     // The eVision generator 'factory factory' class to use
+
     static final String DEFAULT_EVISION_GENERATOR_FACTORY_FACTORY = "com.stc.dap.ui.gen.GeneratorFactoryFactory";
 
     // The identifier to pass to eVision to generate the Master Index site.
@@ -55,8 +56,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
     static final String DB_ORACLE = "oracle";
     static final String DB_SYBASE = "sybase";
     static final String DB_SQLSERVER = "sql server";
+    static final String DB_MYSQL = "mysql";
     static final String DB_DB2 = "db2";
     static final String CODE_LIST_ORACLE_TEMPLATE = "codelist.oracle.tmpl";
+    static final String CODE_LIST_MYSQL_TEMPLATE = "codelist.mysql.tmpl";
     static final String CODE_LIST_SYBASE_TEMPLATE = "codelist.sybase.tmpl";
     static final String CODE_LIST_SQLSERVER_TEMPLATE = "codelist.sqlserver.tmpl";
     static final String CODE_LIST_DB2_TEMPLATE = "codelist.db2.tmpl";
@@ -64,6 +67,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     static final String SYSTEMS_SYBASE_TEMPLATE = "system.sybase.tmpl";
     static final String SYSTEMS_SQLSERVER_TEMPLATE = "system.sqlserver.tmpl";
     static final String SYSTEMS_DB2_TEMPLATE = "system.db2.tmpl";
+    static final String SYSTEMS_MYSQL_TEMPLATE = "system.mysql.tmpl";
     static final String TAG_HEADER = "<header>";
     static final String TAG_TRAILER = "<trailer>";
     static final String TAG_REPEAT = "<repeat>";
@@ -86,7 +90,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
     static final String tab28 = "                        ";
     static final String tab32 = "                            ";
     static final String tab36 = "                                ";
-    
     /** The visual component that displays this panel.
      * If you need to access the component from this class,
      * just use getComponent().
@@ -98,9 +101,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private ConfigSettings mConfigSettings;
     final String xmlHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     private static final com.sun.mdm.index.util.Logger mLogger = com.sun.mdm.index.util.Logger.getLogger(
-            FinishPanel.class.getName()
-        );
-
+            FinishPanel.class.getName());
     String mViewName;
     String mDbName;
     String mMatchEngine;
@@ -111,7 +112,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
     final boolean bDEBUG = false;
 
     //Instance mInstance;  // Master Index App Instance
-
     /** Create the wizard panel descriptor. */
     public FinishPanel() {
     }
@@ -120,7 +120,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
     // is kept separate. This can be more efficient: if the wizard is created
     // but never displayed, or not all panels are displayed, it is better to
     // create only those which really need to be visible.
-
     /**
      *
      *@return FinishVisualPanel
@@ -147,11 +146,11 @@ public class FinishPanel implements WizardDescriptor.Panel {
         // If it is always OK to press Next or Finish, then:
         return true;
 
-        // If it depends on some condition (form filled out...), then:
-        // return someCondition();
-        // and when this condition changes (last form field filled in...) then:
-        // fireChangeEvent();
-        // and uncomment the complicated stuff below.
+    // If it depends on some condition (form filled out...), then:
+    // return someCondition();
+    // and when this condition changes (last form field filled in...) then:
+    // fireChangeEvent();
+    // and uncomment the complicated stuff below.
     }
 
     /** not implemented
@@ -169,24 +168,24 @@ public class FinishPanel implements WizardDescriptor.Panel {
     /*
     private final Set listeners = new HashSet(1); // Set<ChangeListener>
     public final void addChangeListener(ChangeListener l) {
-        synchronized (listeners) {
-            listeners.add(l);
-        }
+    synchronized (listeners) {
+    listeners.add(l);
+    }
     }
     public final void removeChangeListener(ChangeListener l) {
-        synchronized (listeners) {
-            listeners.remove(l);
-        }
+    synchronized (listeners) {
+    listeners.remove(l);
+    }
     }
     protected final void fireChangeEvent() {
-        Iterator it;
-        synchronized (listeners) {
-            it = new HashSet(listeners).iterator();
-        }
-        ChangeEvent ev = new ChangeEvent(this);
-        while (it.hasNext()) {
-            ((ChangeListener)it.next()).stateChanged(ev);
-        }
+    Iterator it;
+    synchronized (listeners) {
+    it = new HashSet(listeners).iterator();
+    }
+    ChangeEvent ev = new ChangeEvent(this);
+    while (it.hasNext()) {
+    ((ChangeListener)it.next()).stateChanged(ev);
+    }
     }
      */
 
@@ -194,15 +193,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
     // Normally the settings object will be the WizardDescriptor,
     // so you can use WizardDescriptor.getProperty & putProperty
     // to store information entered by the user.
-
     /** reade user inputs from previous panels
      *
      *@param settings WizardDescriptor
      */
     public void readSettings(Object settings) {
         WizardDescriptor wiz = (WizardDescriptor) settings;
-        String viewName = wiz.getProperty(Properties.PROP_TARGET_VIEW_NAME)
-                             .toString();
+        String viewName = wiz.getProperty(Properties.PROP_TARGET_VIEW_NAME).toString();
 
         // set the visual
         getComponent();
@@ -235,7 +232,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         mDateFormat = wiz.getProperty(Properties.PROP_DATE_FORMAT).toString();
         mTransaction = wiz.getProperty(Properties.PROP_TRANSACTION).toString();
         mMasterIndexEDM = wiz.getProperty(Properties.PROP_MASTER_INDEX_EDM).toString();
-        
+
         mEntityTreeModel = DefineEntityVisualPanel.getTreeModel();
         mRootNode = (EntityNode) mEntityTreeModel.getRoot();
         mPrimaryNode = (EntityNode) mRootNode.getChildAt(0);
@@ -263,7 +260,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
             String projectName = mPrimaryNode.getName();
 
             invokeEVisionGenerators(eViewInstanceName, businessObjectName,
-                projectName);
+                    projectName);
         } catch (Exception ex) {
             mLogger.debug(ex.toString());
         }
@@ -277,8 +274,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
      * @throws SiteGenerationException if an error was encountered during site generation
      */
     private void invokeEVisionGenerators(String eViewInstanceName,
-        String businessObjectName, String projectName)
-        throws SiteGenerationException {
+            String businessObjectName, String projectName)
+            throws SiteGenerationException {
         java.util.Map context = new java.util.HashMap();
 
         // in eVision terms, instance name is the view name defined in the wizard
@@ -311,47 +308,45 @@ public class FinishPanel implements WizardDescriptor.Panel {
             if (factoryFactory != null) {
                 // call the static factory factory 'getInstance' method
                 java.lang.reflect.Method getInstanceMeth = factoryFactory.getMethod("getInstance",
-                        new Class[] {String.class});
+                        new Class[]{String.class});
                 java.lang.Object factoryInstance = getInstanceMeth.invoke((java.lang.Object) null,
-                        new java.lang.Object[] {EVISION_GENERATOR_EVIEW});
+                        new java.lang.Object[]{EVISION_GENERATOR_EVIEW});
 
                 // call the factory 'createGenerator' method                                    
-                java.lang.reflect.Method createGeneratorMeth = factoryInstance.getClass()
-                                                                              .getMethod("createGenerator",
+                java.lang.reflect.Method createGeneratorMeth = factoryInstance.getClass().getMethod("createGenerator",
                         null);
                 java.lang.Object generatorInstance = createGeneratorMeth.invoke(factoryInstance,
                         null);
 
                 // call the Generator 'generate' method                
-                java.lang.reflect.Method generatorMeth = generatorInstance.getClass()
-                                                                          .getMethod("generate",
-                        new Class[] {java.util.Map.class});
+                java.lang.reflect.Method generatorMeth = generatorInstance.getClass().getMethod("generate",
+                        new Class[]{java.util.Map.class});
                 generatorMeth.invoke(generatorInstance,
-                    new java.lang.Object[] {context});
+                        new java.lang.Object[]{context});
             }
         } catch (Exception ex) {
             throw new SiteGenerationException("Failed to generate Master Index site in eVision.",
-                ex);
+                    ex);
         }
     }
 
     private StringBuffer getCodeListFromNode(EntityNode subNode, String sRepeat) {
         String code = subNode.getCodeModule();
         StringBuffer codeBuffer = null;
-        
+
         if ((code != null) && (code.length() != 0)) {
-	        codeBuffer = new StringBuffer(sRepeat);
+            codeBuffer = new StringBuffer(sRepeat);
             replaceString(codeBuffer, TAG_MODULE_COMMENT, code);
             replaceString(codeBuffer, TAG_MODULE, code);
             replaceString(codeBuffer, TAG_MODULE_DESCRIPTION,
-                "module description");
+                    "module description");
             replaceString(codeBuffer, TAG_CODE, "code");
             replaceString(codeBuffer, TAG_CODE_DESCRIPTION,
-                "code description");
+                    "code description");
         }
         return codeBuffer;
     }
-    
+
     private void createDatabaseCodeList(WizardDescriptor wiz) {
         String template = null;
 
@@ -363,6 +358,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
             template = CODE_LIST_SQLSERVER_TEMPLATE;
         } else if (mDbName.equalsIgnoreCase(DB_DB2)) {
             template = CODE_LIST_DB2_TEMPLATE;
+        } else if (mDbName.equalsIgnoreCase(DB_MYSQL)) {
+            template = CODE_LIST_MYSQL_TEMPLATE;
         } else {
             mLogger.debug("Unsupported database vendor type: " + mDbName);
         }
@@ -386,7 +383,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
             is.close();
         } catch (java.io.IOException e) {
             mLogger.debug("Error in accessing database script template: " +
-                e.getMessage());
+                    e.getMessage());
         }
 
         int from = sb.indexOf(TAG_HEADER) + TAG_HEADER.length();
@@ -430,13 +427,15 @@ public class FinishPanel implements WizardDescriptor.Panel {
             }
         }
         if (count > 0) {
-            strCodeList.setLength(strCodeList.lastIndexOf(","));
+            if (mDbName.equalsIgnoreCase(DB_ORACLE)) {
+                strCodeList.setLength(strCodeList.lastIndexOf(","));
+            }
         }
         strCodeList.append(sTrailer);
 
         if (wiz != null) {
             wiz.putProperty(Properties.PROP_DBSCRIPT_CODELIST,
-                strCodeList.toString());
+                    strCodeList.toString());
         }
     }
 
@@ -451,6 +450,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
             template = SYSTEMS_SQLSERVER_TEMPLATE;
         } else if (mDbName.equalsIgnoreCase(DB_DB2)) {
             template = SYSTEMS_DB2_TEMPLATE;
+        } else if (mDbName.equalsIgnoreCase(DB_MYSQL)) {
+            template = SYSTEMS_MYSQL_TEMPLATE;
         } else {
             mLogger.debug("Unsupported database vendor type: " + mDbName);
         }
@@ -474,8 +475,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
             is.close();
         } catch (java.io.IOException e) {
             mLogger.debug(
-                "Error in accessing database script template for systems: " +
-                e.getMessage());
+                    "Error in accessing database script template for systems: " +
+                    e.getMessage());
         }
 
         int from = sb.indexOf(TAG_HEADER) + TAG_HEADER.length();
@@ -492,8 +493,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         String sTrailer = sb.substring(from, to);
 
-        String systemList = wiz.getProperty(Properties.PROP_SOURCE_SYSTEMS)
-                               .toString();
+        String systemList = wiz.getProperty(Properties.PROP_SOURCE_SYSTEMS).toString();
         StringBuffer strSystems = new StringBuffer(sHeader);
 
         StringTokenizer st = new StringTokenizer(systemList, "\t");
@@ -517,20 +517,20 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         if (wiz != null) {
             wiz.putProperty(Properties.PROP_DBSCRIPT_SYSTEMS,
-                strSystems.toString());
+                    strSystems.toString());
         }
     }
 
     private void createObjectXml(WizardDescriptor wiz) {
         String tagHeaderObject = "<Configuration xmlns:xsi=" +
-            "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/object.xsd\">\n";
+                "\"http://www.w3.org/2001/XMLSchema-instance" +
+                "\" xsi:noNamespaceSchemaLocation=\"schema/object.xsd\">\n";
         String tagTailObject = "</Configuration>";
 
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + mViewName +
-            "</name>" + "\n    <database>" + mDbName + "</database>" +
-            "\n    <dateformat>" + mDateFormat + "</dateformat>\n" +
-            getSubNodes(mPrimaryNode) + getRelationships() + tagTailObject;
+                "</name>" + "\n    <database>" + mDbName + "</database>" +
+                "\n    <dateformat>" + mDateFormat + "</dateformat>\n" +
+                getSubNodes(mPrimaryNode) + getRelationships() + tagTailObject;
 
         // Write xml to repository
         try {
@@ -543,13 +543,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private void createClassicEDMXml(WizardDescriptor wiz) {
         // create edm.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
-            "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/edm.xsd\">\n";
+                "\"http://www.w3.org/2001/XMLSchema-instance" +
+                "\" xsi:noNamespaceSchemaLocation=\"schema/edm.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
-            getAllNodesForEDM(mPrimaryNode) + getRelationships() + getImpl() +
-            getGUIDefinition() + tagTailEDM;
+                getAllNodesForEDM(mPrimaryNode) + getRelationships() + getImpl() +
+                getGUIDefinition() + tagTailEDM;
 
         // Write xml to repository
         try {
@@ -560,7 +560,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     private void getFieldSettings(Vector vec, EntityNode currentNode,
-        String primaryNodeName, boolean bPrimaryNode) {
+            String primaryNodeName, boolean bPrimaryNode) {
         int cnt = currentNode.getChildCount();
         FieldSettings field = null;
 
@@ -580,9 +580,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
                         field.setFieldQualifier(primaryNodeName);
                     } else {
                         field.setDecoratedFieldQualifier(primaryNodeName + "." +
-                            currentNode.getName() + "[*]");
+                                currentNode.getName() + "[*]");
                         field.setFieldQualifier(primaryNodeName + "." +
-                            currentNode.getName());
+                                currentNode.getName());
                     }
 
                     field.setBlockOn(subNode.getBlocking());
@@ -611,6 +611,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 if (currentNode.isPrimary()) {
                     subNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                     getFieldSettings(vec, subNode, primaryNodeName, true);
                     i = 1;
                 }
@@ -633,8 +634,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 mConfigSettings.setFieldSettings(fds);
 
                 //
-                String systemList = wiz.getProperty(Properties.PROP_SOURCE_SYSTEMS)
-                                       .toString();
+                String systemList = wiz.getProperty(Properties.PROP_SOURCE_SYSTEMS).toString();
 
                 StringTokenizer st = new StringTokenizer(systemList, "\t");
                 int cntTokens = st.countTokens();
@@ -676,7 +676,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *
      */
     private String getFieldNodes(EntityNode currentNode, String tagName,
-        boolean bPrimaryNode) {
+            boolean bPrimaryNode) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
 
@@ -693,12 +693,12 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     nodes += (tab12 + "<field-type>" + subNode.getDataType() + "</field-type>\n");
                     nodes += (tab12 + "<size>" + subNode.getDataSize() + "</size>\n");
                     nodes += (tab12 + "<updateable>" +
-                    subNode.getUpdateable() + "</updateable>\n");
+                            subNode.getUpdateable() + "</updateable>\n");
                     nodes += (tab12 + "<required>" + subNode.getRequired() + "</required>\n");
-                    
+
                     nodes += (tab12 + "<code-module>" + subNode.getCodeModule() + "</code-module>\n");
                     nodes += (tab12 + "<pattern>" + subNode.getPattern() + "</pattern>\n");
-                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() +"</key-type>\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() + "</key-type>\n");
                     if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
                         nodes += (tab12 + "<user-code>" + subNode.getUserCode() + "</user-code>\n");
@@ -707,7 +707,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                             (subNode.getConstraintBy().length() > 0)) {
                         nodes += (tab12 + "<constraint-by>" + subNode.getConstraintBy() + "</constraint-by>\n");
                     }
-                    
+
                     nodes += (tab8 + "</fields>\n");
 
                     //
@@ -721,9 +721,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
                         field.setFieldQualifier(mPrimaryNode.getName());
                     } else {
                         field.setDecoratedFieldQualifier(mPrimaryNode.getName() +
-                            "." + currentNode.getName() + "[*]");
+                                "." + currentNode.getName() + "[*]");
                         field.setFieldQualifier(mPrimaryNode.getName() + "." +
-                            currentNode.getName());
+                                currentNode.getName());
                     }
 
                     field.setBlockOn(subNode.getBlocking());
@@ -731,10 +731,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     String fragment = "";
 
                     try {
-                        fragment = 
-                            ConfigGenerator.generateSingleFragment(
+                        fragment =
+                                ConfigGenerator.generateSingleFragment(
                                 com.sun.mdm.index.project.ui.wizards.generator.ObjectFieldWriter.FRAGMENT_TYPE_OBJECT_FIELD,
-                                field, 
+                                field,
                                 mConfigSettings);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -765,6 +765,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 nodes += getFieldNodes(targetNode, currentNode.getName(), true);
                 i = 1;
             }
@@ -787,14 +788,14 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *
      */
     private String getFieldNodesForEDM(EntityNode currentNode, String tagName,
-        int displayOrder) {
+            int displayOrder) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
 
         if (cnt > 0) {
             if (displayOrder > 0) {
                 nodes = tab4 + "<node-" + tagName + " display-order=\"" +
-                    displayOrder + "\">\n";
+                        displayOrder + "\">\n";
             } else {
                 nodes = tab4 + "<node-" + tagName + ">\n";
             }
@@ -806,13 +807,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 if (subNode.isField()) {
                     nodes += (tab8 + "<field-" + subNode.getName() +
-                    ">\n");
+                            ">\n");
                     nodes += (tab12 + "<display-name>" +
-                    subNode.getDisplayName() + "</display-name>\n");
+                            subNode.getDisplayName() + "</display-name>\n");
                     nodes += (tab12 + "<display-order>" +
-                    fieldDisplayOrder++ + "</display-order>\n");
+                            fieldDisplayOrder++ + "</display-order>\n");
                     nodes += (tab12 + "<max-length>" +
-                    subNode.getDataSize() + "</max-length>\n");
+                            subNode.getDataSize() + "</max-length>\n");
 
                     if ((subNode.getCodeModule() != null) &&
                             (subNode.getCodeModule().length() > 0)) {
@@ -846,9 +847,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         return nodes;
     }
-    
+
     private String getFieldNodesForMidm(EntityNode currentNode, String tagName,
-        int displayOrder) {
+            int displayOrder) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
 
@@ -867,13 +868,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 if (subNode.isField()) {
                     nodes += (tab8 + "<field>\n");
                     nodes += (tab12 + "<name>" +
-                        subNode.getName() + "</name>\n");
+                            subNode.getName() + "</name>\n");
                     nodes += (tab12 + "<display-name>" +
-                        subNode.getDisplayName() + "</display-name>\n");
+                            subNode.getDisplayName() + "</display-name>\n");
                     nodes += (tab12 + "<display-order>" +
-                        fieldDisplayOrder++ + "</display-order>\n");
+                            fieldDisplayOrder++ + "</display-order>\n");
                     nodes += (tab12 + "<max-length>" +
-                        subNode.getDataSize() + "</max-length>\n");
+                            subNode.getDataSize() + "</max-length>\n");
 
                     if ((subNode.getCodeModule() != null) &&
                             (subNode.getCodeModule().length() > 0)) {
@@ -917,6 +918,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 nodes.add(getFieldNodesForEDM(targetNode, currentNode.getName(), i));
                 i = 1;
             }
@@ -943,6 +945,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 nodes.add(getFieldNodesForMidm(targetNode, currentNode.getName(), i));
                 i = 1;
             }
@@ -975,8 +978,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 nodes += getFieldNodesForEDM(targetNode, currentNode.getName(),
-                    i);
+                        i);
                 i = 1;
             }
 
@@ -1012,10 +1016,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
             }
         }
         relationships += "    </relationships>\n";
-        
+
         return relationships;
     }
-    
+
     private ArrayList getSubObjects() {
         ArrayList relationships = new ArrayList();
         int cnt = mPrimaryNode.getChildCount();
@@ -1031,7 +1035,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         }
         return relationships;
     }
-    
+
     private ArrayList getAlGUIDefinition() {
         ArrayList guiDefinition = new ArrayList();
         //guiDefinition.add(getRecordDetails());
@@ -1096,7 +1100,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     }
 
                     alFieldGroup.add(tab + "    <field-ref required=\"" + subNode.getSearchRequired() + "\">" + tagName + "." +
-                                    subNode.getName() + "</field-ref>");
+                            subNode.getName() + "</field-ref>");
                 }
             }
 
@@ -1107,7 +1111,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         return alFieldGroup;
     }
-    
+
     /** Get field group for a subnode
      *  For edm.xml
      *
@@ -1131,7 +1135,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     }
 
                     fieldGroup += tab + "    <field-ref required=\"" + subNode.getSearchRequired() + "\">" + tagName + "." +
-                                    subNode.getName() + "</field-ref>\n";
+                            subNode.getName() + "</field-ref>\n";
                 }
             }
 
@@ -1150,7 +1154,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private String getInitialScreen() {
         return "EO Search";
     }
-    
+
     /**  Retrieve the local ID identifier
      *
      * @return  String containing the local ID identifier
@@ -1158,7 +1162,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private String geLocalIdIdentifier() {
         return "Local ID";
     }
-    
+
     /** Get simple search
      *  For edm.xml
      *
@@ -1181,6 +1185,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 simpleSearch += getFieldGroups(targetNode, currentNode.getName(), tab20);
                 i = 1;
             }
@@ -1311,6 +1316,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 searchResultList += getSearchResultFieldRef(targetNode, currentNode.getName(), tab20);
                 i = 1;
             }
@@ -1391,7 +1397,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         return s;
     }
-  
+
     private ArrayList getAlSimpleSearchFieldGroup() {
         EntityNode currentNode = mPrimaryNode;
         String fieldGroup = "";
@@ -1428,7 +1434,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         String fieldRef_end = ("\n" + tab + "</field-group>");
         ArrayList alRet = new ArrayList();
         boolean bDescription = false;
-        
+
         int cnt = currentNode.getChildCount();
         if (cnt > 0) {
             int i = 0;
@@ -1464,7 +1470,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         alRet.add(fieldRef_begin + fieldRef + fieldRef_end);
         return alRet;
     }
-    
+
     private ArrayList getAlReportFields() {
         EntityNode currentNode = mPrimaryNode;
         String fieldReport = "";
@@ -1503,7 +1509,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
                 if (subNode.isField() && subNode.getGenerateReport()) {
                     fieldReport += tab + "<field-ref>" + tagName + "." +
-                                   subNode.getName() + "</field-ref>\n";
+                            subNode.getName() + "</field-ref>\n";
                 }
             }
         }
@@ -1522,7 +1528,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         // reports
         reportGenerator = tab12 + "<reports>\n";
         reportGenerator += (tab16 + "<root-object>" + mPrimaryNode.getName() +
-        "</root-object>\n");
+                "</root-object>\n");
         reportGenerator += tab16 + "<tab-name>Reports</tab-name>\n";
         reportGenerator += tab16 + "<tab-entrance>/EnterReportSearchAction.do</tab-entrance>\n";
         reportGenerator += tab16 + "<search-page-field-per-row>2</search-page-field-per-row>\n";
@@ -1535,6 +1541,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 reportFields += getReportFields(targetNode, currentNode.getName(), tab24);
                 i = 1;
             }
@@ -1548,38 +1555,38 @@ public class FinishPanel implements WizardDescriptor.Panel {
             }
         }
         reportFields += tab20 + "</fields>\n";
-        
+
         // dynamic reports
         reportGenerator += tab16 + "<report name=\"Assumed Match\" title=\"Assumed Match Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Potential Duplicate\" title=\"Potential Duplicate Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Deactivated\" title=\"Deactivated Record Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Merged\" title=\"Merged Transaction Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Unmerged\" title=\"Unmerged Transaction Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Update\" title=\"Updated Record Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
@@ -1591,19 +1598,19 @@ public class FinishPanel implements WizardDescriptor.Panel {
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += tab20 + "<fields></fields>\n";
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Monthly Activity\" title=\"Transaction Summary Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += tab20 + "<fields></fields>\n";
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab16 + "<report name=\"Yearly Activity\" title=\"Transaction Summary Report\">\n";
         reportGenerator += tab20 + "<enable>true</enable>\n";
         reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += tab20 + "<fields></fields>\n";
         reportGenerator += tab16 + "</report>\n";
-        
+
         reportGenerator += tab12 + "</reports>\n";
 
         return reportGenerator;
@@ -1619,30 +1626,30 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     private String getImpl() {
-        String implDetails = 
-            tab4 + "<impl-details>\n" +
-            tab8 + "<master-controller-jndi-name>ejb/" + mViewName + "MasterController</master-controller-jndi-name>\n" +
-            tab8 + "<validation-service-jndi-name>ejb/" + mViewName + "CodeLookup</validation-service-jndi-name>\n" +
-            tab8 + "<usercode-jndi-name>ejb/" + mViewName + "UserCodeLookup</usercode-jndi-name>\n" +
-            tab8 + "<reportgenerator-jndi-name>ejb/" + mViewName + "ReportGenerator</reportgenerator-jndi-name>\n" +
-            tab8 + "<debug-flag>true</debug-flag>\n" + 
-            tab8 + "<debug-dest>console</debug-dest>\n" +
-            tab8 + "<enable-security>false</enable-security>\n" +
-            tab8 + "<object-sensitive-plug-in-class></object-sensitive-plug-in-class>\n" +
-            tab4 + "</impl-details>\n";
+        String implDetails =
+                tab4 + "<impl-details>\n" +
+                tab8 + "<master-controller-jndi-name>ejb/" + mViewName + "MasterController</master-controller-jndi-name>\n" +
+                tab8 + "<validation-service-jndi-name>ejb/" + mViewName + "CodeLookup</validation-service-jndi-name>\n" +
+                tab8 + "<usercode-jndi-name>ejb/" + mViewName + "UserCodeLookup</usercode-jndi-name>\n" +
+                tab8 + "<reportgenerator-jndi-name>ejb/" + mViewName + "ReportGenerator</reportgenerator-jndi-name>\n" +
+                tab8 + "<debug-flag>true</debug-flag>\n" +
+                tab8 + "<debug-dest>console</debug-dest>\n" +
+                tab8 + "<enable-security>false</enable-security>\n" +
+                tab8 + "<object-sensitive-plug-in-class></object-sensitive-plug-in-class>\n" +
+                tab4 + "</impl-details>\n";
 
         return implDetails;
     }
 
     /**
-    * @param str string to be coneverted to File.
-    * @param  outFileName file where str needs to put
-    * @throws IOException standard IOException
-    */
+     * @param str string to be coneverted to File.
+     * @param  outFileName file where str needs to put
+     * @throws IOException standard IOException
+     */
     private static void stringToFile(String str, String outFileName)
-        throws IOException {
+            throws IOException {
         BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(
-                    outFileName));
+                outFileName));
         os.write(str.getBytes());
         os.close();
     }
@@ -1695,7 +1702,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *
      */
     private void getFields(EntityNode currentNode, String tagName,
-        boolean bGetAvailable, boolean bForResult) {
+            boolean bGetAvailable, boolean bForResult) {
         int cnt = currentNode.getChildCount();
 
         if (cnt > 0) {
@@ -1720,7 +1727,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *
      */
     private String[] getFieldsForSearch(EntityNode currentNode,
-        boolean bGetAvailable, boolean bForResult) {
+            boolean bGetAvailable, boolean bForResult) {
         mList.clear();
 
         int cnt = currentNode.getChildCount();
@@ -1731,8 +1738,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 subNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+
                 getFields(subNode, currentNode.getName(), bGetAvailable,
-                    bForResult);
+                        bForResult);
                 i = 1;
             }
 
@@ -1741,7 +1749,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 if (subNode.isSub()) {
                     getFields(subNode, subNode.getName(), bGetAvailable,
-                        bForResult);
+                            bForResult);
                 }
             }
         }
@@ -1763,7 +1771,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     private StringBuffer replaceString(StringBuffer source, String sFind,
-        String sReplace) {
+            String sReplace) {
         if (sFind.length() > source.length()) {
             return source;
         }
