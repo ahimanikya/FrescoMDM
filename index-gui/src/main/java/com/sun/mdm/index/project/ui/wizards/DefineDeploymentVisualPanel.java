@@ -64,8 +64,9 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         cbDatabase.insertItemAt(NbBundle.getMessage(
                 DefineDeploymentVisualPanel.class, "MSG_db_Oracle"), 0);
         cbDatabase.insertItemAt(NbBundle.getMessage(
-            DefineDeploymentVisualPanel.class, "MSG_db_SQLServer"),
-            1);
+            DefineDeploymentVisualPanel.class, "MSG_db_SQLServer"), 1);
+        cbDatabase.insertItemAt(NbBundle.getMessage(
+            DefineDeploymentVisualPanel.class, "MSG_db_MySQL"), 2);
 
         // Future supported DB
 
