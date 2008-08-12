@@ -35,20 +35,25 @@ import com.sun.mdm.index.parser.RelationDef;
 import com.sun.mdm.index.parser.Utils;
 import java.io.File;
 
-
 /**
  * @author gzheng
  * @version
  */
 public class DDLWriter {
+
     private TemplateWriter mTW = null;
     private EIndexObject mEIndexObject;
     private String mPath;
     private final String ORACLE_DB_TYPE = "oracle";             // Oracle is being used
+
     private final String SQL_SERVER_DB_TYPE = "sql server";     // SQL Server is being used
+
     private final String DB2_DB_TYPE = "db2";                   // DB2 is being used
+
     private final String SYBASE_DB_TYPE = "sybase";             // Sybase is being used
-    
+
+    private final String MYSQL_DB_TYPE = "mysql";               // MySQL is being used
+
 
     /**
      * @param path output file path
@@ -57,7 +62,7 @@ public class DDLWriter {
      * @exception TemplateWriterException template writer exception
      */
     public DDLWriter(String outPath, EIndexObject eo, String tmplPath)
-        throws TemplateWriterException {
+            throws TemplateWriterException {
         try {
             // always create tables
             mTW = new TemplateWriter(tmplPath);
@@ -74,7 +79,7 @@ public class DDLWriter {
      * @exception UnmatchedTagsException unmatched tags exception
      */
     public void write(boolean full)
-        throws ParserException, InvalidTemplateFileException, UnmatchedTagsException {
+            throws ParserException, InvalidTemplateFileException, UnmatchedTagsException {
         RelationDef relDef = null;
         ArrayList relList = mEIndexObject.getRelationships();
         if (null != relList) {
@@ -92,55 +97,54 @@ public class DDLWriter {
             // creating 'drop' statetments
             ArrayList nodesList = new ArrayList();
 
-        if (relDef.getElements() != null) {
-             nodesList.addAll(relDef.getElements());
+            if (relDef.getElements() != null) {
+                nodesList.addAll(relDef.getElements());
             }
             nodesList.add(relDef.getName());
             values.add(nodesList);
             res += mTW.writeConstruct((String) cons.get(0), values);
 
             if (full) {
-            // creating root node tables
+                // creating root node tables
 
-            values.clear();
-            values.add(relDef.getName());
-            ArrayList vals;
-            vals = getRootFieldNames(relDef);
-            vals.remove(0);
-            values.add(vals);
-            vals = getRootFieldTypes(relDef);
-            vals.remove(0);
-            values.add(vals);
-            String keys = getRootFieldKeys(relDef);
-            values.add(keys);
-            res += mTW.writeConstruct((String) cons.get(1), values);
+                values.clear();
+                values.add(relDef.getName());
+                ArrayList vals;
+                vals = getRootFieldNames(relDef);
+                vals.remove(0);
+                values.add(vals);
+                vals = getRootFieldTypes(relDef);
+                vals.remove(0);
+                values.add(vals);
+                String keys = getRootFieldKeys(relDef);
+                values.add(keys);
+                res += mTW.writeConstruct((String) cons.get(1), values);
 
-            values.clear();
-            values = getLeafNodes(relDef);
-            if (values != null) {
-                for (int i = 0; i < values.size(); i++) {
-                    ArrayList al = (ArrayList) values.get(i);
+                values.clear();
+                values = getLeafNodes(relDef);
+                if (values != null) {
+                    for (int i = 0; i < values.size(); i++) {
+                        ArrayList al = (ArrayList) values.get(i);
+                    }
+                    res += mTW.writeConstruct((String) cons.get(2), values);
+                } else {
+                    values = new ArrayList();
                 }
-                res += mTW.writeConstruct((String) cons.get(2), values);
-            } else {
-                values = new ArrayList();
-            }
 
-              values.clear();
-              values.add(nodesList);
-              values.add(mEIndexObject.getSystems());
+                values.clear();
+                values.add(nodesList);
+                values.add(mEIndexObject.getSystems());
 
-            res += mTW.writeConstruct((String) cons.get(3), values);
+                res += mTW.writeConstruct((String) cons.get(3), values);
             }
         }
         //if there is a existing outPut file, then delete it. 
         File outFile = new File(mPath);
-        if (outFile.exists()){
+        if (outFile.exists()) {
             outFile.delete();
         }
         Utils.writeFile(mPath, res);
     }
-
 
     private ArrayList getLeafChildren(RelationDef rel) {
         ArrayList ret = null;
@@ -167,7 +171,6 @@ public class DDLWriter {
 
         return ret;
     }
-
 
     private ArrayList getLeafNodes(RelationDef rel) {
         ArrayList ret = null;
@@ -198,9 +201,9 @@ public class DDLWriter {
                     // for supporting unkeyed objects.
                     if (keyFound == false) {
                         okey += ", " + cname + "ID";
-                    } 
+                    }
                 }
-                
+
                 fieldtypes.remove(0);
                 ArrayList val = new ArrayList();
                 val.add(pname);
@@ -241,7 +244,7 @@ public class DDLWriter {
                     // for supporting unkeyed objects.
                     if (keyFound == false) {
                         okey += ", " + cname + "ID";
-                    } 
+                    }
                 }
                 ArrayList val = new ArrayList();
                 val.add(pname);
@@ -256,7 +259,6 @@ public class DDLWriter {
 
         return ret;
     }
-
 
     private ArrayList getLeafParents(RelationDef rel) {
         ArrayList ret = null;
@@ -287,12 +289,10 @@ public class DDLWriter {
         return ret;
     }
 
-
     private ArrayList getRootFieldNames(RelationDef rel) {
         NodeDef node = mEIndexObject.getNode(rel.getName());
         return node.createFieldNames();
     }
-
 
     private String getRootFieldKeys(RelationDef rel) {
         String ret = "";
@@ -306,21 +306,18 @@ public class DDLWriter {
                 }
             }
         }
-        
+
         return ret;
     }
-
 
     private ArrayList getRootFieldTypes(RelationDef rel) {
         NodeDef node = mEIndexObject.getNode(rel.getName());
         return dbTypeMap(node.createFieldTypeSizes());
     }
 
-
     private String getRootName(RelationDef rel) {
         return rel.getName();
     }
-
 
     private ArrayList dbTypeMap(ArrayList values) {
         ArrayList ret = new ArrayList();
@@ -328,12 +325,12 @@ public class DDLWriter {
         if (dbTypeID.equalsIgnoreCase(ORACLE_DB_TYPE) == true) {
             for (int i = 0; i < values.size(); i++) {
                 String type = (String) values.get(i);
-    
+
                 if (type.startsWith("String")) {
                     String s = type.substring(6);
                     ret.add("VARCHAR2(" + s + ")");
-                } else if (type.equals("Byte") || 
-                		   type.equals("Character")) {
+                } else if (type.equals("Byte") ||
+                        type.equals("Character")) {
                     ret.add("CHAR");
                 } else if (type.equals("Boolean")) {
                     ret.add("SMALLINT");
@@ -347,15 +344,15 @@ public class DDLWriter {
                     ret.add("DATE");
                 }
             }
-        } else if (dbTypeID.equalsIgnoreCase(SQL_SERVER_DB_TYPE) == true) { 
+        } else if (dbTypeID.equalsIgnoreCase(SQL_SERVER_DB_TYPE) == true) {
             for (int i = 0; i < values.size(); i++) {
                 String type = (String) values.get(i);
-    
+
                 if (type.startsWith("String")) {
                     String s = type.substring(6);
                     ret.add("varchar(" + s + ")");
-                } else if (type.equals("Byte") || 
-                		   type.equals("Character")) {
+                } else if (type.equals("Byte") ||
+                        type.equals("Character")) {
                     ret.add("char");
                 } else if (type.equals("Boolean")) {
                     ret.add("smallint");
@@ -369,7 +366,30 @@ public class DDLWriter {
                     ret.add("datetime");
                 }
             }
+        } else if (dbTypeID.equalsIgnoreCase(MYSQL_DB_TYPE) == true) {
+            for (int i = 0; i < values.size(); i++) {
+                String type = (String) values.get(i);
+
+                if (type.startsWith("String")) {
+                    String s = type.substring(6);
+                    ret.add("varchar(" + s + ")");
+                } else if (type.equals("Byte") ||
+                        type.equals("Character")) {
+                    ret.add("char");
+                } else if (type.equals("Boolean")) {
+                    ret.add("tinyint");
+                } else if (type.equals("Integer")) {
+                    ret.add("smallint");
+                } else if (type.equals("Long")) {
+                    ret.add("integer)");
+                } else if (type.equals("Float")) {
+                    ret.add("float");
+                } else if (type.equals("Date")) {
+                    ret.add("datetime");
+                }
+            }
         }   // TO DO:  Implement mappings for DB2 and Sybase
+
         return ret;
     }
 }
