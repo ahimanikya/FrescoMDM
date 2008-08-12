@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>US Patient</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>US Patient</title>
 
-<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css"></head>
+<link type="text/css" href="https://mural.dev.java.net/css/Mural.css" rel="stylesheet">
+</head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -21,13 +22,42 @@ States of America Patient Solution</big></big></big></td>
 by:</span></td>
 <td align="undefined" valign="undefined">Andrea
 Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; font-family: Arial;"><br>
-<a href="mailto:Andrea.Kendall@Sun.COM">AndreaKendall@dev.java.net</a></span><br>
-<a href="mailto:Andrea.Kendal@sun.com">
-</a></td>
+<a href="mailto:AndreaKendall@dev.java.net">AndreaKendall@dev.java.net</a></span><br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
 </tr>
 <tr>
 <td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
-<td align="undefined" valign="undefined">June 27th, 2008</td>
+<td align="undefined" valign="undefined">August
+11th, 2008</td>
+</tr>
+</tbody>
+</table>
+<br>
+<span style="font-weight: bold; font-style: italic;">Revision
+History</span><br>
+<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Date</td>
+<td align="undefined" valign="undefined">Revision
+Description</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">2008-08-11</td>
+<td align="undefined" valign="undefined">Updated
+various fields to use&nbsp; HIPAA, CMS 1500 and/or &nbsp;UB-92
+standards. </td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">2008-08-11</td>
+<td align="undefined" valign="undefined">Removed
+the County field from Address as it is no longer used in the HIPAA
+Standard,</td>
 </tr>
 </tbody>
 </table>
@@ -37,7 +67,8 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 <p><i><span style="font-style: italic;"></span></i><i><span style="font-style: italic;"></span></i>The
 purpose of this solution is to demonstate how a United States of
 America Patient model might be implemented in the Master Data
-Management (MDM) product suite. Specificaly the solution focuses on the&nbsp; Master Index portion of
+Management (MDM) product suite. Specificaly the solution focuses on
+the&nbsp; Master Index portion of
 MDM. <br>
 <br>
 This solution uses a patient definition geared towards the
@@ -45,6 +76,11 @@ United States of America. Since this is a USAPatient,
 fields
 such as the First Name, Last Name, Date of Birth and Social Security
 Number (SSN) are used for both blocker-search definitions and matches.</p>
+Additionally, since this is a United States model &nbsp;values in
+the codelist that coorespond to an existing HIPAA, CMS 1500 or UB-92
+use values from those standards. &nbsp;See &nbsp;comments in
+the <a href="#Code_Modules">Code Modules </a>for
+details.
 <h1>Data Model Overview<span style="font-style: italic;">.</span></h1>
 This
 overview of the data model shows each Sub Object Node of the
@@ -52,24 +88,28 @@ USAPatient. It highlights the main sections of the United
 States
 of America Patient model.&nbsp;<br>
 <br>
-<img style="width: 750px; height: 644px;" alt="Overview of USA Patient" title="Overview of USA Patient" src="images/USAPatient-Overview-small.png"><br>
+<img style="width: 802px; height: 2608px;" alt="The USAPatient UML Model" title="The UML model" src="images/USAPatient-UML-small.png"><br>
 <h1>Data Model</h1>
-This is the&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font> (UML) model used to create the USAPatient. You
+This is the&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font> (UML) model used to
+create the USAPatient. You
 will
 notice that the model shows inheritance since the USAPatient and the<a href="aus-patient.html"> Australian Patient</a>
 models are very similiar. The main difference being the use of a Social
 Security Number (SSN) in the United States as a unique identifier and
-the Medicare Card number (MedicareNo)&nbsp; in Australia as a unique identifier.
-Additionaly,&nbsp; this model represents differences in the healthcare
+the Medicare Card number (MedicareNo)&nbsp; in Australia as a
+unique identifier.
+Additionaly,&nbsp; this model represents differences in the
+healthcare
 system
 reflected by the <span style="font-weight: bold;">Insurance</span>
 Sub Object Node of the Australian Patient. &nbsp; Also, somedata is
 only collected in the United States (like a DriversLicence). &nbsp;
 Finally, some inheritance relects difference in names used for an item
-in the United States and&nbsp;Australia such as the cellphone (which is
+in the United States and&nbsp;Australia such as the cellphone
+(which is
 called a mobilephone in Australia).<br>
 <br>
-<img style="width: 802px; height: 2608px;" alt="UML model for USA Patient" title="UML model for USA Patient" src="images/USAPatient-UML-small.png"><br>
+<img style="width: 822px; height: 2044px;" alt="USA Patient UML Model" title="The UML Model for the USA Patient" src="images/USAPatient-Overview-small.png"><br>
 <h1>Master Index Properties</h1>
 <p>The following tables highlight fields that are used in the
 USAPatient for matching and blocking opertions. Additionally,
@@ -306,17 +346,433 @@ Target<br>
 </tbody>
 </table>
 <h1>Enumerations</h1>
-<h2>Code Modules</h2>
-<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.<br></pre>
-<br><pre> -- **** SUFFIX ****<br> tCode('L', 'SUFFIX', 'Suffix'),<br> tCode('V', '2ND', '2ND'),<br> tCode('V', '3RD', '3RD'),<br> tCode('V', 'DDS', 'DDS'),<br> tCode('V', 'ESQ', 'ESQ'),<br> tCode('V', 'II', 'II'),<br> tCode('V', 'III', 'III'),<br> tCode('V', 'IV', 'IV'),<br> tCode('V', 'JR', 'JR'),<br> tCode('V', 'MD', 'MD'),<br> tCode('V', 'RN', 'RN'),<br> tCode('V', 'SR', 'SR'),<br> tCode('V', 'PHD', 'PHD'),<br> tCode('V', 'MA', 'MA'),<br><br> -- **** TITLE ****<br> tCode('L', 'TITLE', 'Title'),<br> tCode('V', 'MD', 'MEDICAL DOCTOR'),<br> tCode('V', 'PHD', 'DOCTOR'),<br> tCode('V', 'RN', 'REGISTERED NURSE'),<br> tCode('V', 'CNA', 'CERTIFIED NURSES AID'),<br> tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),<br> tCode('V', 'REV', 'REVERAND'),<br> tCode('V', 'MR', 'MR'),<br> tCode('V', 'MRS', 'MRS'),<br> tCode('V', 'MISS', 'MISS'),<br><br> -- **** GENDER ****<br> tCode('L', 'GENDER', 'Gender'),<br> tCode('V', 'M', 'MALE'),<br> tCode('V', 'F', 'FEMALE'),<br> tCode('V', 'O', 'OTHER'),<br> tCode('V', 'U', 'UNKNOWN'),<br><br><br> -- **** MSTATUS ****<br> tCode('L', 'MSTATUS', 'Marital Status'),<br> tCode('V', 'D', 'DIVORCED'),<br> tCode('V', 'L', 'LEGALLY SEPARATED'),<br> tCode('V', 'M', 'MARRIED'),<br> tCode('V', 'P', 'PARTNER'),<br> tCode('V', 'S', 'SINGLE'),<br> tCode('V', 'U', 'UNKNOWN'),<br> tCode('V', 'W', 'WIDOWED'),<br><br> -- **** RACE ****<br> tCode('L', 'RACE', 'Race'),<br> tCode('V', 'I', 'AMERICAN INDIAN'),<br> tCode('V', 'A', 'ASIAN'),<br> tCode('V', 'B', 'BLACK'),<br> tCode('V', 'H', 'HISPANIC'),<br> tCode('V', 'O', 'OTHER'),<br> tCode('V', 'R', 'REFUSED'),<br> tCode('V', 'U', 'UNKNOWN'),<br> tCode('V', 'W', 'WHITE'),<br><br> -- **** ETHNIC ****<br> tCode('L', 'ETHNIC', 'Ethnicity'),<br> tCode('V', '1', 'PUERTO RICAN'),<br> tCode('V', '10', 'FILIPINO'),<br> tCode('V', '11', 'KOREAN'),<br> tCode('V', '12', 'VIETNAMESE'),<br> tCode('V', '13', 'CAMBODIAN'),<br> tCode('V', '14', 'LAOTIAN'),<br> tCode('V', '15', 'THAI'),<br> tCode('V', '16', 'HAWAIIAN'),<br> tCode('V', '17', 'OTHER ASIAN/PACIFIC'),<br> tCode('V', '19', 'PAKISTANI'),<br> tCode('V', '2', 'CUBAN'),<br> tCode('V', '22', 'HAITIAN'),<br> tCode('V', '23', 'JAMAICAN'),<br> tCode('V', '24', 'BARBADIAN'),<br> tCode('V', '25', 'WEST INDIAN'),<br> tCode('V', '26', 'ARMENIAN'),<br> tCode('V', '27', 'AUSTRIAN'),<br> tCode('V', '28', 'ENGLISH'),<br> tCode('V', '29', 'EGYPTIAN'),<br> tCode('V', '3', 'DOMINICAN'),<br> tCode('V', '30', 'FRENCH'),<br> tCode('V', '31', 'CANADIAN'),<br> tCode('V', '32', 'GERMAN'),<br> tCode('V', '33', 'GREEK'),<br> tCode('V', '34', 'IRANIAN'),<br> tCode('V', '35', 'IRISH'),<br> tCode('V', '36', 'LEBANESE'),<br> tCode('V', '37', 'LITHUANIAN'),<br> tCode('V', '38', 'POLISH'),<br> tCode('V', '39', 'RUSSIAN'),<br> tCode('V', '4', 'MEXICAN'),<br> tCode('V', '40', 'SCOTTISH'),<br> tCode('V', '42', 'OTHER'),<br> tCode('V', '43', 'EUROPEAN'),<br> tCode('V', '44', 'COLOMBIAN'),<br> tCode('V', '45', 'SALVADORAN'),<br> tCode('V', '46', 'AFRICAN AMERICAN'),<br> tCode('V', '47', 'NIGERIAN'),<br> tCode('V', '48', 'OTHER AFRICAN'),<br> tCode('V', '50', 'ISRAELI'),<br> tCode('V', '51', 'OTHER MIDDLE EASTERN'),<br> tCode('V', '52', 'NATIVE AMERICAN'),<br> tCode('V', '6', 'OTHER HISPANIC'),<br> tCode('V', '7', 'AUSTRALIAN'),<br> tCode('V', '8', 'JAPANESE'),<br> tCode('V', '9', 'CHINESE'),<br><br> -- **** RELIGION ****<br> tCode('L', 'RELIGION', 'Religion'),<br> tCode('V', 'AG', 'AGNOSTIC'),<br> tCode('V', 'AN', 'ANGLICAN'),<br> tCode('V', 'AT', 'ATHEIST'),<br> tCode('V', 'BP', 'BAPTIST'),<br> tCode('V', 'BU', 'BUDHIST'),<br> tCode('V', 'CH', 'CHRISTIAN'),<br> tCode('V', 'CO', 'CONGREGATIONAL'),<br> tCode('V', 'CS', 'CHRISTIAN SCIENTIST'),<br> tCode('V', 'DE', 'DEFERRED'),<br> tCode('V', 'EP', 'EPISCOPAL'),<br> tCode('V', 'GO', 'GREEK ORTHODOX'),<br> tCode('V', 'HI', 'HINDU'),<br> tCode('V', 'JW', 'JEHOVAHS WITNESS'),<br> tCode('V', 'JH', 'JEWISH'),<br> tCode('V', 'LU', 'LUTHERAN'),<br> tCode('V', 'ME', 'METHODIST'),<br> tCode('V', 'MO', 'MORMON'),<br> tCode('V', 'MU', 'MUSLIM'),<br> tCode('V', 'NO', 'NONE'),<br> tCode('V', 'OR', 'ORTHODOX'),<br> tCode('V', 'OT', 'OTHER'),<br> tCode('V', 'PS', 'PRESBYTERIAN'),<br> tCode('V', 'QU', 'QUAKER'),<br> tCode('V', 'RC', 'ROMAN CATHOLIC'),<br> tCode('V', 'SD', 'SEVENTH DAY ADVENTI'),<br> tCode('V', 'UA', 'UNAFFILIATED'),<br> tCode('V', 'UN', 'UNKNOWN'),<br> tCode('V', 'UU', 'UNITARIAN'),<br><br> -- **** LANGUAGE ****<br> tCode('L', 'LANGUAGE', 'Language'),<br> tCode('V', 'ARAB', 'ARABIC'),<br> tCode('V', 'CHIN', 'CHINESE'),<br> tCode('V', 'CZEK', 'CZECH'),<br> tCode('V', 'CREO', 'CREOLE FRENCH'),<br> tCode('V', 'DANE', 'DANISH'),<br> tCode('V', 'ENGL', 'ENGLISH'),<br> tCode('V', 'FRN', 'FRENCH'),<br> tCode('V', 'GERM', 'GERMAN'),<br> tCode('V', 'GREK', 'GREEK'),<br> tCode('V', 'HATI', 'HATIAN'),<br> tCode('V', 'HEBR', 'HEBREW'),<br> tCode('V', 'HNDI', 'HINDI'),<br> tCode('V', 'ITAL', 'ITALIAN'),<br> tCode('V', 'JAPA', 'JAPANESE'),<br> tCode('V', 'KORE', 'KOREAN'),<br> tCode('V', 'OTHE', 'OTHER'),<br> tCode('V', 'PORT', 'PORTUGUESE'),<br> tCode('V', 'PRCI', 'PERSIAN/FARSI'),<br> tCode('V', 'RUSS', 'RUSSIAN'),<br> tCode('V', 'SIGN', 'SIGN LANGUAGE'),<br> tCode('V', 'SPAN', 'SPANISH'),<br> tCode('V', 'SWED', 'SWEDISH'),<br> tCode('V', 'THAI', 'THAI'),<br> tCode('V', 'TURK', 'TURKISH'),<br> tCode('V', 'UNKN', 'UNKNOWN'),<br> tCode('V', 'YDSH', 'YIDDISH'),<br><br><br> -- **** NATIONAL ****<br> tCode('L', 'NATIONAL', 'Nationality'),<br> tCode('V', 'USA', 'AMERICAN'),<br> tCode('V', 'CAN', 'CANADIAN'),<br> tCode('V', 'MEX', 'MEXICAN'),<br><br><br> -- **** CITIZEN ****<br> tCode('L', 'CITIZEN', 'Citizenship'),<br> tCode('V', 'USA', 'UNITED STATES'),<br> tCode('V', 'CAN', 'CANADA'),<br> tCode('V', 'MEX', 'MEXICO'),<br><br> -- **** ADDRTYPE ****<br> tCode('L', 'ADDRTYPE', 'Address Type'),<br> tCode('V', 'O', 'OFFICE'),<br> tCode('V', 'H', 'HOME'),<br> tCode('V', 'V', 'VACATION'),<br> tCode('V', 'H2','HOME 2'),<br> tCode('V', 'M', 'MAILING'),<br> tCode('V', 'W', 'WORK'),<br> tCode('V', 'W2', 'WORK 2'),<br> tCode('V', 'T', 'TEMPORARY'),<br><br> -- **** PHONTYPE ****<br> tCode('L', 'PHONTYPE', 'Phone Type'),<br> tCode('V', 'CH', 'HOME'),<br> tCode('V', 'CO', 'OFFICE'),<br> tCode('V', 'CF', 'FAX'),<br> tCode('V', 'CB', 'BUSINESS'),<br> tCode('V', 'CBD', 'BUSINESS DIRECT'),<br> tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br> tCode('V', 'CP', 'PAGER'),<br> tCode('V', 'CC', 'CELLULAR'),<br><br> -- **** RELATIONSHIP ****<br> tCode('L', 'RELATION', 'Relationship'),<br> tCode('V', 'PARENT', 'PARENT'),<br> tCode('V', 'CHILD', 'CHILD'),<br> tCode('V', 'SPOUSE', 'SPOUSE'),<br> tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br> -- **** POLICYTYPE ****<br> tCode('L', 'POLTYPE', 'Policy Type'),<br> tCode('V', 'HMO', 'HMO'),<br> tCode('V', 'PPO', 'PPO'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br> -- **** STATE ****<br> tCode('L', 'STATE', 'State'),<br> tCode('V', 'AL', 'ALABAMA'),<br> tCode('V', 'AK', 'ALASKA'),<br> tCode('V', 'AZ', 'ARIZONA'),<br> tCode('V', 'AR', 'ARKANSAS'),<br> tCode('V', 'CA', 'CALIFORNIA'),<br> tCode('V', 'CO', 'COLORADO'),<br> tCode('V', 'CT', 'CONNECTICUT'),<br> tCode('V', 'DE', 'DELAWARE'),<br> tCode('V', 'DC', 'DISTRICT OF COLUMBIA'),<br> tCode('V', 'FL', 'FLORIDA'),<br> tCode('V', 'GA', 'GEORGIA'),<br> tCode('V', 'HI', 'HAWAII'),<br> tCode('V', 'ID', 'IDAHO'),<br> tCode('V', 'IL', 'ILLINOIS'),<br> tCode('V', 'IN', 'INDIANA'),<br> tCode('V', 'IA', 'IOWA'),<br> tCode('V', 'KS', 'KANSAS'),<br> tCode('V', 'KY', 'KENTUCKY'),<br> tCode('V', 'LA', 'LOUISIANA'),<br> tCode('V', 'ME', 'MAINE'),<br> tCode('V', 'MD', 'MARYLAND'),<br> tCode('V', 'MA', 'MASSACHUSETTS'),<br> tCode('V', 'MI', 'MICHIGAN'),<br> tCode('V', 'MN', 'MINNESOTA'),<br> tCode('V', 'MS', 'MISSISSIPPI'),<br> tCode('V', 'MO', 'MISSOURI'),<br> tCode('V', 'MT', 'MONTANA'),<br> tCode('V', 'NE', 'NEBRASKA'),<br> tCode('V', 'NV', 'NEVADA'),<br> tCode('V', 'NH', 'NEW HAMPSHIRE'),<br> tCode('V', 'NJ', 'NEW JERSEY'),<br> tCode('V', 'NM', 'NEW MEXICO'),<br> tCode('V', 'NY', 'NEW YORK'),<br> tCode('V', 'NC', 'NORTH CAROLINA'),<br> tCode('V', 'ND', 'NORTH DAKOTA'),<br> tCode('V', 'OH', 'OHIA'),<br> tCode('V', 'OK', 'OKLAHOMA'),<br> tCode('V', 'OR', 'OREGON'),<br> tCode('V', 'PA', 'PENNSYLVANIA'),<br> tCode('V', 'PR', 'PUERTO RICO'),<br> tCode('V', 'RI', 'RHODE ISLAND'),<br> tCode('V', 'SC', 'SOUTH CAROLINA'),<br> tCode('V', 'SD', 'SOUTH DAKOTA'),<br> tCode('V', 'TN', 'TENNESSEE'),<br> tCode('V', 'TX', 'TEXAS'),<br> tCode('V', 'UT', 'UTAH'),<br> tCode('V', 'VT', 'VERMONT'),<br> tCode('V', 'VI', 'VIRGIN ISLANDS'),<br> tCode('V', 'VA', 'VIRGINIA'),<br> tCode('V', 'WA', 'WASHINGTON'),<br> tCode('V', 'WI', 'WISCONSIN'),<br> tCode('V', 'WV', 'WEST VIRGINIA'),<br> tCode('V', 'WY', 'WYOMING'),<br><br> -- **** COUNTRY ****<br> tCode('L', 'COUNTRY', 'Country'),<br> tCode('V', 'AUST', 'AUSTRALIA'),<br> tCode('V', 'BAHA', 'BAHAMAS'),<br> tCode('V', 'BERM', 'BERMUDA'),<br> tCode('V', 'CANA', 'CANADA'),<br> tCode('V', 'ENGL', 'ENGLAND'),<br> tCode('V', 'FRAN', 'FRANCE'),<br> tCode('V', 'GRBR', 'GREAT BRITAIN'),<br> tCode('V', 'IREL', 'IRELAND'),<br> tCode('V', 'MEXI', 'MEXICO'),<br> tCode('V', 'UNST', 'UNITED STATES'),<br> tCode('V', 'VIRU', 'US VIRGIN ISLANDS'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br> -- **** CONTACTROLE ****<br> tCode('L', 'CONTROLE', 'Contact Role'),<br> tCode('V', 'EMERGENCY', 'EMERGENCY'),<br> tCode('V', 'GUARANTOR', 'GUARANTOR'),<br> tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br><br> -- **** INSURANCERELATIONSHIP ****<br> tCode('L', 'INSREL', 'Insurance Relationship'),<br> tCode('V', 'SELF', 'SELF'),<br> tCode('V', 'SPOUSE', 'SPOUSE'),<br> tCode('V', 'CHILD', 'CHILD'),<br> tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br> tCode('V', 'DOMESTIC_PARTNER', 'DOMESTIC PARTNER'),<br> tCode('V', 'GUARDIAN', 'GUARDIAN'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN')<br> <br><br></pre>
+<h2><a name="Code_Modules"></a>Code Modules</h2>
+<em><strong>SUFFIX</strong></em>
+<ul>
+<li>2ND</li>
+<li> 3RD<br>
+</li>
+<li>DDS<br>
+</li>
+<li>ESQ<br>
+</li>
+<li>II<br>
+</li>
+<li>III<br>
+</li>
+<li>IV<br>
+</li>
+<li>JR<br>
+</li>
+<li>MD<br>
+</li>
+<li>RN<br>
+</li>
+<li>SR<br>
+</li>
+<li>PHD<br>
+</li>
+<li>MA</li>
+</ul>
+<p><em><strong>TITLE</strong></em><br>
+</p>
+<ul>
+<li>MEDICAL DOCTOR<br>
+</li>
+<li>DOCTOR<br>
+</li>
+<li>REGISTERED NURSE<br>
+</li>
+<li>CERTIFIED NURSES AID<br>
+</li>
+<li>LICENSED VOCATIONAL NURSE<br>
+</li>
+<li>REVERAND<br>
+</li>
+<li>MR<br>
+</li>
+<li>MRS<br>
+</li>
+<li>MISS<br>
+</li>
+</ul>
+<p><em><strong>GENDER</strong></em></p>
+<p>This uses the HIPAA standard for Male and Female.
+&nbsp;Unknown is
+added from the CMS FISS Standard.</p>
+<ul>
+<li>MALE<br>
+</li>
+<li>FEMALE<br>
+</li>
+<li>UNKNOWN</li>
+</ul>
+<p><em><strong>MSTATUS</strong></em> - Marital Status<br>
+</p>
+<ul>
+<li>DIVORCED<br>
+</li>
+<li>LEGALLY SEPARATED<br>
+</li>
+<li>MARRIED<br>
+</li>
+<li>PARTNER<br>
+</li>
+<li>SINGLE<br>
+</li>
+<li>UNKNOWN<br>
+</li>
+<li>WIDOWED</li>
+</ul>
+<p><em><strong>RACE</strong></em><br>
+</p>
+<ul>
+<li>AMERICAN INDIAN<br>
+</li>
+<li>ASIAN<br>
+</li>
+<li>BLACK<br>
+</li>
+<li>HISPANIC<br>
+</li>
+<li>OTHER<br>
+</li>
+<li>REFUSED<br>
+</li>
+<li>UNKNOWN<br>
+</li>
+<li>WHITE</li>
+</ul>
+<p><em><strong>ETHNIC</strong></em><br>
+</p>
+<ul>
+<li>PUERTO RICAN</li>
+<li>FILIPINO</li>
+<li>KOREAN</li>
+<li>VIETNAMESE</li>
+<li>CAMBODIAN</li>
+<li>LAOTIAN</li>
+<li>THAI</li>
+<li>HAWAIIAN</li>
+<li>OTHER ASIAN/PACIFIC</li>
+<li>PAKISTANI</li>
+<li>CUBAN</li>
+<li>HAITIAN</li>
+<li>JAMAICAN</li>
+<li>BARBADIAN</li>
+<li>WEST INDIAN</li>
+<li>ARMENIAN</li>
+<li>AUSTRIAN</li>
+<li>ENGLISH</li>
+<li>EGYPTIAN</li>
+<li>DOMINICAN</li>
+<li>FRENCH</li>
+<li>CANADIAN</li>
+<li>GERMAN</li>
+<li>GREEK</li>
+<li>IRANIAN</li>
+<li>IRISH</li>
+<li>LEBANESE</li>
+<li>LITHUANIAN</li>
+<li>POLISH</li>
+<li>RUSSIAN</li>
+<li>MEXICAN</li>
+<li>SCOTTISH</li>
+<li>OTHER</li>
+<li>EUROPEAN</li>
+<li>COLOMBIAN</li>
+<li>SALVADORAN</li>
+<li>AFRICAN AMERICAN</li>
+<li>NIGERIAN</li>
+<li>OTHER AFRICAN</li>
+<li>ISRAELI</li>
+<li>OTHER MIDDLE EASTERN</li>
+<li>NATIVE AMERICAN</li>
+<li>OTHER HISPANIC</li>
+<li>AUSTRALIAN</li>
+<li>JAPANESE</li>
+<li>CHINESE</li>
+</ul>
+<p>
+<em><strong>RELIGION</strong></em></p>
+<ul>
+<li>AGNOSTIC</li>
+<li>ANGLICAN</li>
+<li>ATHEIST</li>
+<li>BAPTIST</li>
+<li>BUDHIST</li>
+<li>CHRISTIAN</li>
+<li>CONGREGATIONAL</li>
+<li>CHRISTIAN SCIENTIST</li>
+<li>DEFERRED</li>
+<li>EPISCOPAL</li>
+<li>GREEK ORTHODOX</li>
+<li>HINDU</li>
+<li>JEHOVAHS WITNESS</li>
+<li>JEWISH</li>
+<li>LUTHERAN</li>
+<li>METHODIST</li>
+<li>MORMON</li>
+<li>MUSLIM</li>
+<li>NONE</li>
+<li>ORTHODOX</li>
+<li>OTHER</li>
+<li>PRESBYTERIAN</li>
+<li>QUAKER</li>
+<li>ROMAN CATHOLIC</li>
+<li>SEVENTH DAY ADVENTI</li>
+<li>UNAFFILIATED</li>
+<li>UNKNOWN</li>
+<li>UNITARIAN <br>
+</li>
+</ul>
+<p>
+<em><strong>LANGUAGE</strong></em>
+</p>
+<ul>
+<li>ARABIC</li>
+<li>CHINESE</li>
+<li>CZECH</li>
+<li>CREOLE FRENCH</li>
+<li>DANISH</li>
+<li>ENGLISH</li>
+<li>FRENCH</li>
+<li>GERMAN</li>
+<li>GREEK</li>
+<li>HATIAN</li>
+<li>HEBREW</li>
+<li>HINDI</li>
+<li>ITALIAN</li>
+<li>JAPANESE</li>
+<li>KOREAN</li>
+<li>OTHER</li>
+<li>PORTUGUESE</li>
+<li>PERSIAN/FARSI</li>
+<li>RUSSIAN</li>
+<li>SIGN LANGUAGE</li>
+<li>SPANISH</li>
+<li>SWEDISH</li>
+<li>THAI</li>
+<li>TURKISH</li>
+<li>UNKNOWN</li>
+<li>YIDDISH</li>
+</ul>
+<p>
+<em><strong>NATIONAL</strong></em></p>
+<ul>
+<li>AMERICAN</li>
+<li>CANADIAN</li>
+<li>MEXICAN</li>
+</ul>
+<p>
+<em><strong>CITIZEN</strong></em></p>
+<ul>
+<li>UNITED STATES</li>
+<li>CANADA</li>
+<li>MEXICO</li>
+</ul>
+<p>
+<em><strong>ADDRTYPE</strong></em></p>
+<ul>
+<li>OFFICE</li>
+<li>HOME</li>
+<li>VACATION</li>
+<li>HOME 2</li>
+<li>MAILING</li>
+<li>WORK</li>
+<li>WORK 2</li>
+<li>TEMPORARY</li>
+</ul>
+<p>
+<em><strong>PHONTYPE</strong></em></p>
+<ul>
+<li>HOME</li>
+<li>OFFICE</li>
+<li>FAX</li>
+<li>BUSINESS</li>
+<li>BUSINESS DIRECT</li>
+<li>BUSINESS ALTERNATE</li>
+<li>PAGER</li>
+<li>CELLULAR</li>
+</ul>
+<em><strong></strong></em><em><strong>POLICYTYPE</strong></em>
+<ul>
+<li>HMO</li>
+<li>PPO</li>
+<li>MEDICARE</li>
+<li>OTHER</li>
+<li>UNKNOWN</li>
+</ul>
+<p>
+<em><strong>STATE</strong></em></p>
+<ul>
+<li>ALABAMA</li>
+<li>ALASKA</li>
+<li>ARIZONA</li>
+<li>ARKANSAS</li>
+<li>CALIFORNIA</li>
+<li>COLORADO</li>
+<li>CONNECTICUT</li>
+<li>DELAWARE</li>
+<li>DISTRICT OF COLUMBIA</li>
+<li>FLORIDA</li>
+<li>GEORGIA</li>
+<li>HAWAII</li>
+<li>IDAHO</li>
+<li>ILLINOIS</li>
+<li>INDIANA</li>
+<li>IOWA</li>
+<li>KANSAS</li>
+<li>KENTUCKY</li>
+<li>LOUISIANA</li>
+<li>MAINE</li>
+<li>MARYLAND</li>
+<li>MASSACHUSETTS</li>
+<li>MICHIGAN</li>
+<li>MINNESOTA</li>
+<li>MISSISSIPPI</li>
+<li>MISSOURI</li>
+<li>MONTANA</li>
+<li>NEBRASKA</li>
+<li>NEVADA</li>
+<li>NEW HAMPSHIRE</li>
+<li>NEW JERSEY</li>
+<li>NEW MEXICO</li>
+<li>NEW YORK</li>
+<li>NORTH CAROLINA</li>
+<li>NORTH DAKOTA</li>
+<li>OHIA</li>
+<li>OKLAHOMA</li>
+<li>OREGON</li>
+<li>PENNSYLVANIA</li>
+<li>PUERTO RICO</li>
+<li>RHODE ISLAND</li>
+<li>SOUTH CAROLINA</li>
+<li>SOUTH DAKOTA</li>
+<li>TENNESSEE</li>
+<li>TEXAS</li>
+<li>UTAH</li>
+<li>VERMONT</li>
+<li>VIRGIN ISLANDS</li>
+<li>VIRGINIA</li>
+<li>WASHINGTON</li>
+<li>WISCONSIN</li>
+<li>WEST VIRGINIA</li>
+<li>WYOMING<br>
+</li>
+</ul>
+<p>
+<em><strong>COUNTRY</strong></em></p>
+<ul>
+<li>AUSTRALIA</li>
+<li>BAHAMAS</li>
+<li>BERMUDA</li>
+<li>CANADA</li>
+<li>ENGLAND</li>
+<li>FRANCE</li>
+<li>GREAT BRITAIN</li>
+<li>IRELAND</li>
+<li>MEXICO</li>
+<li>UNITED STATES</li>
+<li>US VIRGIN ISLANDS</li>
+<li>UNKNOWN<br>
+</li>
+</ul>
+<p>
+<em><strong>CONTACTROLE</strong></em></p>
+<ul>
+<li>EMERGENCY</li>
+<li>GUARANTOR</li>
+<li>NEXT OF KIN</li>
+<li>OTHER</li>
+<li>UNKNOWN</li>
+</ul>
+<p>
+<em><strong>REL</strong></em> - Relationship to
+(Insurance) Holder</p>
+List is based on CMS FISS standard.
+<ul>
+<li>Spouse</li>
+<li>Grandfather or Grandmother</li>
+<li>Grandson or Granddaughter</li>
+<li>Nephew or Niece</li>
+<li>Foster Child</li>
+<li>Ward of the Court</li>
+<li>Stepson or Stepdaughter</li>
+<li>Self</li>
+<li>Child</li>
+<li>Employee</li>
+<li>Unknown</li>
+<li>Handicapped Dependent</li>
+<li>Sponsored Dependent</li>
+<li>Dependent of Minor Dependent</li>
+<li>Significant Other</li>
+<li>Mother</li>
+<li>Father</li>
+<li>Emancipated Minor</li>
+<li>Organ Donor</li>
+<li>Cadaver Donor</li>
+<li>Injured Plaintiff</li>
+<li>Child No Financial Resp.</li>
+<li>Life Partner</li>
+<li>Other<br>
+</li>
+</ul>
+<p>
+<em><strong>PATREL</strong></em> - Patient's
+Relationship to Insured
+</p>
+<p>
+List is based on CMS FISS standard.
+</p>
+<ul>
+<li>Patient is insured</li>
+<li>Spouse</li>
+<li>Natural child</li>
+<li>Natural child not responsible</li>
+<li>Step-child</li>
+<li>Foster child</li>
+<li>Ward of the court</li>
+<li>Employee</li>
+<li>Unknown</li>
+<li>Handicapped dependent</li>
+<li>Organ donor</li>
+<li>Cadaver donor</li>
+<li>Grandchild</li>
+<li>Niece/Nephew</li>
+<li>Injured plaintiff</li>
+<li>Dependent sponsored</li>
+<li>Minor dependent of a minor dependent</li>
+<li>Parent</li>
+<li>Grandparent</li>
+</ul>
+<p>
+<em><strong>MEDREL</strong></em> - Relationship for Medicare Claim
+</p>
+<p>
+Based on UB-04 CMS Pub 100-04 Medicare Claims Processing values.
+</p>
+<ul>
+<li>Spouse</li>
+<li>Self</li>
+<li>Child</li>
+<li>Employee</li>
+<li>Unknown</li>
+<li>Organ Donor</li>
+<li>Cadaver Donor</li>
+<li>Life Partner</li>
+<li>Other</li>
+</ul>
+
 <h2>User Codes</h2>
-When the user-code is selected in the MIDM GUI then the corresponding&nbsp;format, input_mask and value_mask are used. The
-input_mask shows the characters that can be typed.correspondingcorresponding<br>
+When the user-code is selected in the MIDM GUI then the corresponding
+format, input_mask and value_mask are used. The
+input_mask shows the characters that can be typed.<br>
 <br>
 For the input_mask and value_mask:<br>
 <div style="margin-left: 40px;">A = an alphanumeric
 character [A-Za-z0-9]<br>
-D = a &nbsp;decimal number [0-9]<br>
+D = a decimal number [0-9]<br>
 L = an alphabetic character [A-Za-z]<br>
 </div>
 <br>
@@ -324,6 +780,7 @@ For the value_mask:<br>
 <div style="margin-left: 40px;">^ = remove the
 corresponding character from the input string when storing in the data.<br>
 </div>
+<br>
 <br>
 Example:
 The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD
@@ -333,7 +790,17 @@ the Household ID they can type in four deciimal numbers, a
 space, four deciimal numbers, a space and then four
 deciimal
 numbers (example: 1111 2222 3333 4444). This will be converted
-to 1111222233334444 and stored in the database.<br>
-<span style="font-family: monospace;"></span>
+to 1111222233334444 and stored in the database. <span style="font-family: monospace;"></span>
 <pre style="margin-left: 40px; overflow: scroll;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
+<h2>References</h2>
+The following references may be useful to those implementing
+the United States of America patient solution:<br>
+<ul>
+<li>CMS FISS (Fiscal Intermediary Standard System Provider
+Online Manual)</li>
+<div style="margin-left: 40px;"><a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://www.empiremedicare.com/traina/fiss/fisscomplete.pdf">http://www.empiremedicare.com/traina/fiss/fisscomplete.pdf</a></div>
+<br>
+<li>UB-04 CMS Pub 100-04 Medicare Claims Processing</li>
+<div style="margin-left: 40px;"><a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://www.cms.hhs.gov/Transmittals/downloads/R1104CP.pdf">http://www.cms.hhs.gov/Transmittals/downloads/R1104CP.pdf</a></div>
+</ul>
 </body></html>

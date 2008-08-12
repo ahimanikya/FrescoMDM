@@ -2,7 +2,8 @@
 <html><head>
 <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>UK Patient</title>
 
-<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css"></head>
+<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css">
+</head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -21,17 +22,43 @@ Kingdom Patient Solution</big></big></big></td>
 by:</span></td>
 <td style="vertical-align: top;">Andrea
 Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; font-family: Arial;"><br>
-<a href="mailto:Andrea.Kendall@Sun.COM">AndreaKendall@dev.java.net</a></span><br>
-<a href="mailto:Andrea.Kendal@sun.com">
+<a href="mailto:AndreaKendall@dev.java.net">AndreaKendall@dev.java.net</a></span><br>
+<a href="mailto:AndreaKendall@dev.java.net">
 </a></td>
 </tr>
 <tr>
 <td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
-<td align="undefined" valign="undefined">June
-27th, 2008</td>
+<td align="undefined" valign="undefined">August
+8th, 2008</td>
 </tr>
 </tbody>
-</table><br><span style="font-weight: bold;">Credits<br><br></span>Thanks goes to Christopher Selwyn, <a href="mailto:Chris.Selwyn@Sun.COM">Chris.Selwyn@Sun.COM</a>, for reviewing this solution and providing the link to the NHS Data Model. &nbsp;<br><br>
+</table>
+<br>
+<br>
+<span style="font-weight: bold; font-style: italic;">Revision
+History</span><br>
+<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Date</td>
+<td align="undefined" valign="undefined">Revision
+Description</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">2008-08-11</td>
+<td align="undefined" valign="undefined">Updated
+&nbsp;to better format for Enumerations </td>
+</tr>
+</tbody>
+</table>
+<span style="font-weight: bold;"><br>
+Credits<br>
+<br>
+</span>Thanks goes to Christopher Selwyn, <a href="mailto:Chris.Selwyn@Sun.COM">Chris.Selwyn@Sun.COM</a>,
+for reviewing this solution and providing the link to the NHS Data
+Model. &nbsp;<br>
+<br>
 <hr style="width: 100%; height: 2px;">
 <h1>Description</h1>
 <p>The purpose of this solution is to demonstate how a United
@@ -127,7 +154,11 @@ UKPatient.DOB<i><br>
 <td align="undefined" valign="undefined">UKPatient.Gender</td>
 <td align="undefined" valign="undefined">Gender</td>
 </tr>
-<tr><td align="undefined" valign="undefined">UKPatient.NI</td><td align="undefined" valign="undefined">NI</td></tr><tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.NI</td>
+<td align="undefined" valign="undefined">NI</td>
+</tr>
+<tr>
 <td align="undefined" valign="undefined">UKPatient.HealthID[*].IdNumType</td>
 <td align="undefined" valign="undefined">String</td>
 </tr>
@@ -247,7 +278,12 @@ Name</td>
 <td align="undefined" valign="undefined">(UKPatient.HealthID.IdNumType
 == UKPatient.HealthID.IdNumType) and <br>
 (UKPatient.HealthID.IdNum == UKPatient.HealthID.IdNum)</td>
-</tr><tr><td align="undefined" valign="undefined">NI</td><td align="undefined" valign="undefined">(UKPatient.NI == UKPatient.NI)</td></tr>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">NI</td>
+<td align="undefined" valign="undefined">(UKPatient.NI
+== UKPatient.NI)</td>
+</tr>
 </tbody>
 </table>
 <h2>Standardization</h2>
@@ -351,8 +387,188 @@ Target<br>
 </table>
 <h1>Enumerations</h1>
 <h2>Code Modules</h2>
-<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.<br></pre>
-<pre>-- ****     GENDER   ****<br>tCode('L', 'GENDER', 'Gender'),<br>tCode('V', '0', 'Not Known'),<br>tCode('V', '1', 'Male'),<br>tCode('V', '2', 'Female'),<br>tCode('V', '9', 'Not Specified'),<br><br>-- ****     LANGUAGE   ****<br>tCode('L', 'LANGUAGE', 'Language'),<br>tCode('V', '001' , 'Akan/Ashanti'),<br>tCode('V', '002' , 'Albanian'),<br>tCode('V', '003' , 'Amharic'),<br>tCode('V', '004' , 'Arabic'),<br>tCode('V', '005' , 'Bengali and Sylheti'),<br>tCode('V', '006' , 'Brawa and Somali'),<br>tCode('V', '007' , 'British Signing Language'),<br>tCode('V', '008' , 'Cantonese'),<br>tCode('V', '009' , 'Cantonese and Vietnamese'),<br>tCode('V', '010' , 'Creole'),<br>tCode('V', '011' , 'Dutch'),<br>tCode('V', '012' , 'English'),<br>tCode('V', '013' , 'Ethiopian'),<br>tCode('V', '014' , 'Farsi/Persian'),<br>tCode('V', '015' , 'Finnish'),<br>tCode('V', '016' , 'Flemish'),<br>tCode('V', '017' , 'French'),<br>tCode('V', '018' , 'French creole'),<br>tCode('V', '019' , 'Gaelic'),<br>tCode('V', '020' , 'German'),<br>tCode('V', '021' , 'Greek'),<br>tCode('V', '022' , 'Gujarati'),<br>tCode('V', '023' , 'Hakka'),<br>tCode('V', '024' , 'Hausa'),<br>tCode('V', '025' , 'Hebrew'),<br>tCode('V', '026' , 'Hindi'),<br>tCode('V', '027' , 'Igbo/Ibo'),<br>tCode('V', '028' , 'Italian'),<br>tCode('V', '029' , 'Japanese'),<br>tCode('V', '030' , 'Korean'),<br>tCode('V', '031' , 'Kurdish'),<br>tCode('V', '032' , 'Lingala'),<br>tCode('V', '033' , 'Luganda'),<br>tCode('V', '034' , 'Makaton '),<br>tCode('V', '035' , 'Malayalam'),<br>tCode('V', '036' , 'Mandarin'),<br>tCode('V', '037' , 'Norwegian'),<br>tCode('V', '038' , 'Pashto/Pushtoo'),<br>tCode('V', '039' , 'Patois'),<br>tCode('V', '040' , 'Polish'),<br>tCode('V', '041' , 'Portuguese'),<br>tCode('V', '042' , 'Punjabi'),<br>tCode('V', '043' , 'Russian'),<br>tCode('V', '044' , 'Serbian/Croatian'),<br>tCode('V', '045' , 'Sinhala'),<br>tCode('V', '046' , 'Somali'),<br>tCode('V', '048' , 'Spanish'),<br>tCode('V', '049' , 'Swahili'),<br>tCode('V', '050' , 'Swedish'),<br>tCode('V', '051' , 'Sylheti'),<br>tCode('V', '052' , 'Tagalog Filipino'),<br>tCode('V', '053' , 'Tamil'),<br>tCode('V', '054' , 'Thai'),<br>tCode('V', '055' , 'Tigrinya'),<br>tCode('V', '056' , 'Turkish'),<br>tCode('V', '057' , 'Urdu'),<br>tCode('V', '058' , 'Vietnamese'),<br>tCode('V', '059' , 'Welsh'),<br>tCode('V', '060' , 'Yoruba'),<br>tCode('V', '200' , 'Other'),<br><br>-- ****     CONTACT_METHOD   ****<br>tCode('L', 'CONMETH', 'Contact Method'),<br>tCode('V', 'a' , 'UK Telephone Number'),<br>tCode('V', 'b' , 'Other non UK Telephone Number'),<br>tCode('V', 'c' , 'UK Facsimile Number'),<br>tCode('V', 'd' , 'Internet e-Mail Address'),<br>tCode('V', 'e' , 'Uniform Resource Locator / URL'),<br>tCode('V', 'f' , 'Pager'),<br><br>-- ****     RELATIONSHIP   ****<br>tCode('L', 'RELATION', 'Relationship'),<br>tCode('V', 'PARENT', 'PARENT'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     TITLE   ****<br>tCode('L', 'TITLE', 'Title'),<br>tCode('V', 'Mr' , 'Mr'),<br>tCode('V', 'Mrs' , 'Mrs'),<br>tCode('V', 'Ms' , 'Ms'),<br>tCode('V', 'Dr' , 'Dr'),<br>tCode('V', 'Rev' , 'Rev'),<br>tCode('V', 'Sir' , 'Sir'),<br>tCode('V', 'Lady' , 'Lady'),<br>tCode('V', 'Lord' , 'Lord'),<br>tCode('V', 'Dame' , 'Dame'),<br>tCode('V', 'OTHER', 'OTHER'),<br><br>-- ****     ADDRTYPE   ****<br>tCode('L', 'ADDRTYPE', 'Address Type'),<br>tCode('V', 'O',  'OFFICE'),<br>tCode('V', 'H',  'HOME'),<br>tCode('V', 'V',  'VACATION'),<br>tCode('V', 'H2', 'HOME 2'),<br>tCode('V', 'M',  'MAILING'),<br>tCode('V', 'W',  'WORK'),<br>tCode('V', 'W2', 'WORK 2'),<br>tCode('V', 'T',  'TEMPORARY'),<br><br>-- ****     TELECOMTYPE   ****<br>tCode('L', 'TELETYPE', 'Telecom Type'),<br>tCode('V', 'CH', 'HOME'),<br>tCode('V', 'CO', 'OFFICE'),<br>tCode('V', 'CF', 'FAX'),<br>tCode('V', 'CB', 'BUSINESS'),<br>tCode('V', 'CBD', 'BUSINESS DIRECT'),<br>tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'CC', 'MOBILE'),<br><br>-- ****    ETHNIC_CODE   ****<br>tCode('L', 'ETHNIC', 'Ethnic Category Code'),<br>tCode('V', 'A', 'British'), <br>tCode('V', 'B', 'Irish'), <br>tCode('V', 'C', 'Any other White background'), <br>tCode('V', 'D', 'White and Black Caribbean'),<br>tCode('V', 'E', 'White and Black African'),<br>tCode('V', 'F', 'White and Asian'), <br>tCode('V', 'G', 'Any other mixed background'), <br>tCode('V', 'H', 'Indian'), <br>tCode('V', 'J', 'Pakistani'),<br>tCode('V', 'K', 'Bangladeshi'), <br>tCode('V', 'L', 'Any other Asian background'), <br>tCode('V', 'M', 'Caribbean'), <br>tCode('V', 'N', 'African'), <br>tCode('V', 'P', 'Any other Black background'),  <br>tCode('V', 'R', 'Chinese'), <br>tCode('V', 'S', 'Any other ethnic group'), <br>tCode('V', 'Z', 'Not stated'), <br><br>-- ****     MSTATUS   ****<br>tCode('L', 'MSTATUS', 'Marital Status'),<br>tCode('V', 'S ' , 'Single'),<br>tCode('V', 'M ' , 'Married/Civil Partner'),<br>tCode('V', 'D ' , 'Divorced/Person'),<br>tCode('V', 'W ' , 'Widowed/Surviving Civil Partner'),<br>tCode('V', 'P ' , 'Separated'),<br>tCode('V', 'N ' , 'Not disclosed'),       <br><br>-- ****     CONTACTROLE  ****<br>tCode('L', 'CONROLE', 'Contact Role'),<br>tCode('V', 'EMERGENCY', 'EMERGENCY'),<br>tCode('V', 'GUARANTOR', 'GUARANTOR'),<br>tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     IDNUM_TYPE   ****<br>tCode('L', 'IDTYPE', 'Id Number Type'),<br>tCode('V', 'NHS', 'NHS NUMBER'),<br>tCode('V', 'CHI', 'CHI NUMBER'),<br>tCode('V', 'HC', 'HEATH AND CARE NUMBER'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN')<br><br></pre>
+<p><em><strong>GENDER</strong></em></p>
+<ul>
+<li>Not Known</li>
+<li>Male<br>
+</li>
+<li>Female</li>
+<li>Not Specified</li>
+</ul>
+<p><em><strong>LANGUAGE</strong></em></p>
+<ul>
+<li>Akan/Ashanti</li>
+<li>Albanian</li>
+<li>Amharic</li>
+<li>Arabic</li>
+<li>Bengali and Sylheti</li>
+<li>Brawa and Somali</li>
+<li>British Signing Language</li>
+<li>Cantonese</li>
+<li>Cantonese and Vietnamese</li>
+<li>Creole</li>
+<li>Dutch</li>
+<li>English</li>
+<li>Ethiopian</li>
+<li>Farsi/Persian</li>
+<li>Finnish</li>
+<li>Flemish</li>
+<li>French</li>
+<li>French creole</li>
+<li>Gaelic</li>
+<li>German</li>
+<li>Greek</li>
+<li>Gujarati</li>
+<li>Hakka</li>
+<li>Hausa</li>
+<li>Hebrew</li>
+<li>Hindi</li>
+<li>Igbo/Ibo</li>
+<li>Italian</li>
+<li>Japanese</li>
+<li>Korean</li>
+<li>Kurdish</li>
+<li>Lingala</li>
+<li>Luganda</li>
+<li>Makaton </li>
+<li>Malayalam</li>
+<li>Mandarin</li>
+<li>Norwegian</li>
+<li>Pashto/Pushtoo</li>
+<li>Patois</li>
+<li>Polish</li>
+<li>Portuguese</li>
+<li>Punjabi</li>
+<li>Russian</li>
+<li>Serbian/Croatian</li>
+<li>Sinhala</li>
+<li>Somali</li>
+<li>Spanish</li>
+<li>Swahili</li>
+<li>Swedish</li>
+<li>Sylheti</li>
+<li>Tagalog Filipino</li>
+<li>Tamil</li>
+<li>Thai</li>
+<li>Tigrinya</li>
+<li>Turkish</li>
+<li>Urdu</li>
+<li>Vietnamese</li>
+<li>Welsh</li>
+<li>Yoruba</li>
+<li>Other<br>
+</li>
+</ul>
+<p><em><strong>CONTACT_METHOD</strong></em></p>
+<ul>
+<li>UK Telephone Number</li>
+<li>Other non UK Telephone Number</li>
+<li>UK Facsimile Number</li>
+<li>Internet e-Mail Address</li>
+<li>Uniform Resource Locator / URL</li>
+<li>Pager<br>
+</li>
+</ul>
+<p>
+<em><strong>RELATIONSHIP</strong></em></p>
+<ul>
+<li>PARENT</li>
+<li>CHILD</li>
+<li>SPOUSE</li>
+<li>FAMILY_MEMBER</li>
+<li>OTHER</li>
+<li>UNKNOWN<br>
+</li>
+</ul>
+<p>
+<em><strong>TITLE</strong></em></p>
+<ul>
+<li>Mr</li>
+<li>Mrs</li>
+<li>Ms</li>
+<li>Dr</li>
+<li>Rev</li>
+<li>Sir</li>
+<li>Lady</li>
+<li>Lord</li>
+<li>Dame</li>
+<li>OTHER<br>
+</li>
+</ul>
+<p>
+<em><strong>ADDRTYPE</strong></em></p>
+<ul>
+<li>OFFICE</li>
+<li>HOME</li>
+<li>VACATION</li>
+<li>HOME 2</li>
+<li>MAILING</li>
+<li>WORK</li>
+<li>WORK 2</li>
+<li>TEMPORARY</li>
+</ul>
+<em><strong>TELECOMTYPE</strong></em>
+<ul>
+<li>HOME</li>
+<li>OFFICE</li>
+<li>FAX</li>
+<li>BUSINESS</li>
+<li>BUSINESS DIRECT</li>
+<li>BUSINESS ALTERNATE</li>
+<li>PAGER</li>
+<li>MOBILE</li>
+</ul>
+<p>
+<em><strong>ETHNIC</strong></em></p>
+<ul>
+<li>British</li>
+<li>Irish</li>
+<li>Any other White background</li>
+<li>White and Black Caribbean</li>
+<li>White and Black African</li>
+<li>White and Asian</li>
+<li>Any other mixed background</li>
+<li>Indian</li>
+<li>Pakistani</li>
+<li>Bangladeshi</li>
+<li>Any other Asian background</li>
+<li>Caribbean</li>
+<li>African</li>
+<li>Any other Black background</li>
+<li>Chinese</li>
+<li>Any other ethnic group</li>
+<li>Not stated</li>
+</ul>
+<p>
+<em><strong>MSTATUS</strong></em> - Marital
+Status</p>
+<ul>
+<li>Single</li>
+<li>Married/Civil Partner</li>
+<li>Divorced/Person</li>
+<li>Widowed/Surviving Civil Partner</li>
+<li>Separated</li>
+<li>Not disclosed</li>
+</ul>
+<p>
+<em><strong>CONTACTROLE</strong></em></p>
+<ul>
+<li>EMERGENCY</li>
+<li>GUARANTOR</li>
+<li>NEXT OF KIN</li>
+<li>OTHER</li>
+<li>UNKNOWN<br>
+</li>
+</ul>
+<em><strong>IDTYPE</strong></em> - Id Number Type
+<ul>
+<li>NHS NUMBER</li>
+<li>CHI NUMBER</li>
+<li>HEATH AND CARE NUMBER</li>
+<li>OTHER</li>
+<li>UNKNOWN</li>
+</ul>
+
 <h2>User Codes</h2>
 When the user-code is selected in the MIDM GUI then the corresponding
 format,
@@ -389,5 +605,13 @@ in the database.&nbsp;<span style="font-family: monospace;"></span>
 <pre style="margin-left: 40px; overflow: scroll;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
 <h2>References</h2>
 The following references may be useful to those implementing
-an United Kingdom patient solution:<br><ul><li>NHS Data Model and Dictionary, Version 3</li></ul><div style="margin-left: 40px;"><a href="http://www.datadictionary.nhs.uk">http://www.datadictionary.nhs.uk</a><br><br>The attributes for codelist that are defined in this specification where used in this solution.</div><br>
+an United Kingdom patient solution:<br>
+<ul>
+<li>NHS Data Model and Dictionary, Version 3</li>
+</ul>
+<div style="margin-left: 40px;"><a href="http://www.datadictionary.nhs.uk">http://www.datadictionary.nhs.uk</a><br>
+<br>
+The attributes for codelist that are defined in this specification
+where used in this solution.</div>
+<br>
 </body></html>
