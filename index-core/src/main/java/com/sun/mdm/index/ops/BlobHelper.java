@@ -21,6 +21,7 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.ops;
+
 import com.sun.mdm.index.ops.exception.OPSException;
 import java.sql.ResultSet;
 
@@ -28,11 +29,11 @@ import java.sql.ResultSet;
  * @author jwu
  */
 abstract public class BlobHelper {
-    
+
     /** Creates a new instance of BlobHelper */
     public BlobHelper() {
     }
-    
+
     /**
      * Get the Blob Helper for the specified database type
      * @param dbType database type (only Oracle and SQL Server are supported)
@@ -43,15 +44,16 @@ abstract public class BlobHelper {
         if (dbType.equalsIgnoreCase("oracle")) {
             helper = new OracleBlobHelper();
         } else if (dbType.equalsIgnoreCase("sql server")) {
-            // support Oracle only
             helper = new SQLServerBlobHelper();
+        } else if (dbType.equalsIgnoreCase("mysql")) {
+            helper = new MySQLBlobHelper();
         } else {
             // default to Oracle 
             helper = new OracleBlobHelper();
         }
         return helper;
     }
-    
+
     /** Gets the blob value.
      *
      * @param rs  Result set that includes the blob value.
@@ -60,7 +62,7 @@ abstract public class BlobHelper {
      * @return value of the blob.
      */
     abstract Object getValue(ResultSet rs, String column) throws OPSException;
-    
+
     /** Set the blob parameter.  
      *
      * @param rs  ResultSet.
@@ -68,15 +70,15 @@ abstract public class BlobHelper {
      * @param value  Value of the blob.
      * @throws  OPSException if error occurs.
      */
-    abstract void setParamBlob(ResultSet rs, String column, Object value) 
+    abstract void setParamBlob(ResultSet rs, String column, Object value)
             throws OPSException;
-    
+
     /** Set the blob parameter.
      *
      * @param bhp  Parameters for the blob helper.
      * @param value  Value of blob.
      * @throws  OPSException if error occurs.
      */
-    abstract void setParamBlob(BlobHelperParameters bhp, Object value) 
+    abstract void setParamBlob(BlobHelperParameters bhp, Object value)
             throws OPSException;
 }

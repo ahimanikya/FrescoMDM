@@ -32,7 +32,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -142,7 +144,8 @@ import java.util.Date;
             + "    ?, \n" 
             + "    ?, \n" 
             + "    ?, \n" 
-            + "    to_timestamp(to_char(systimestamp, 'YYYY-MM-DD HH24.MI.SSXFF'), 'YYYY-MM-DD HH24.MI.SSXFF'), \n"             
+         //   + "    to_timestamp(to_char(?, 'YYYY-MM-DD HH24.MI.SSXFF'), 'YYYY-MM-DD HH24.MI.SSXFF'), \n"   
+            + "    to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF'), \n"             
             + "    empty_blob(), \n" 
             + "    ?, \n" 
             + "    ?, \n" 
@@ -591,7 +594,7 @@ import java.util.Date;
      * @return  Conversion function.
      */
     public String getVarcharToNumberConversion(String val) { 
-        return ("to_number(" + val + ")");
+        return ("to_number(" + val + ", '999D999', 'NLS_NUMERIC_CHARACTERS=''. '''" + ")");
     }
     
     /**
@@ -652,22 +655,29 @@ import java.util.Date;
     public void createTransactionObjectDB(Connection con, 
                                           TransactionObject tObj)
             throws OPSException  {
-                
+        
+        Calendar cal = Calendar.getInstance();
+        char decSep = new DecimalFormatSymbols().getDecimalSeparator();
+        String pattern = "yyyy-MM-dd HH:mm:ss" + decSep + "SSS";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
         // executes insert SQL statement
         PreparedStatement stmt = null;
         PreparedStatement stmt2 = null;
+
         try {
             stmt = mOps.getStatement(getTransObjInsertStmt(), con);
             mOps.setParam(stmt, 1, "String", tObj.getTransactionNumber());
             mOps.setParam(stmt, 2, "String", tObj.getLID1());
             mOps.setParam(stmt, 3, "String", tObj.getLID2());
             mOps.setParam(stmt, 4, "String", tObj.getEUID1());
-            mOps.setParam(stmt, 5, "String", tObj.getEUID2());
+            mOps.setParam(stmt, 5, "String", tObj.getEUID2()); 
             mOps.setParam(stmt, 6, "String", tObj.getFunction());
             mOps.setParam(stmt, 7, "String", tObj.getSystemUser());
-            mOps.setParam(stmt, 8, "String", tObj.getSystemCode());
-            mOps.setParam(stmt, 9, "String", tObj.getLID());
-            mOps.setParam(stmt, 10, "String", tObj.getEUID());
+            mOps.setParam(stmt, 8, "String", sdf.format(cal.getTime()));
+            mOps.setParam(stmt, 9, "String", tObj.getSystemCode());
+            mOps.setParam(stmt, 10, "String", tObj.getLID());
+            mOps.setParam(stmt, 11, "String", tObj.getEUID()); 
             stmt.executeUpdate();
             
             Object delta = tObj.getDelta();
@@ -699,6 +709,7 @@ import java.util.Date;
                 params = mOps.addobject(params, tObj.getEUID2());
                 params = mOps.addobject(params, tObj.getFunction());                
                 params = mOps.addobject(params, tObj.getSystemUser());
+                params = mOps.addobject(params, sdf.format(cal.getTime()));
                 params = mOps.addobject(params, tObj.getSystemCode());
                 params = mOps.addobject(params, tObj.getLID());
                 params = mOps.addobject(params, tObj.getEUID());

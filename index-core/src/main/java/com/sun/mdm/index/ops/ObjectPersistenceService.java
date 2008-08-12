@@ -51,19 +51,19 @@ import com.sun.mdm.index.objects.metadata.ObjectFactory;
  * base Object Persistence Service class
  */
 public class ObjectPersistenceService implements java.io.Serializable {
+
     static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     static final String DBDATEFORMAT = "yyyy-MM-dd hh24:MI:ss";
     private static final int ORACLE = 1;
     private static final int SQLSERVER = 2;
+    private static final int MYSQL = 3;
     private static final String SQLServer = "SQL Server";
-    
+    private static final String MySQL = "MySQL";
     private int dbType = ORACLE;
-    
     private BlobHelper mBlobHelper = null;
-    
     private transient static final Logger mLogger = Logger.getLogger(ObjectPersistenceService.class);
     private transient static final Localizer mLocalizer = Localizer.get();
-    
+
     /**
      * Default constructor: jdbc connection is obtained here (future
      * enhancements to be done for performance
@@ -74,13 +74,15 @@ public class ObjectPersistenceService implements java.io.Serializable {
         String db = ObjectFactory.getDatabase();
         if (db.equals(SQLServer)) {
             dbType = SQLSERVER;
+        } else if (db.equals(MySQL)) {
+            dbType = MYSQL;
         }
-        
+
         mBlobHelper = BlobHelper.getBlobHelper(db);
         if (mBlobHelper == null) {
-            throw new OPSException(mLocalizer.t("OPS552: Failed to " + 
-                                    "obtain an instance of BlobHelper for " + 
-                                    "this database type: {0}", dbType));
+            throw new OPSException(mLocalizer.t("OPS552: Failed to " +
+                    "obtain an instance of BlobHelper for " +
+                    "this database type: {0}", dbType));
         }
     }
 
@@ -92,14 +94,14 @@ public class ObjectPersistenceService implements java.io.Serializable {
      * @throws OPSException if an error occurs.
      */
     public PreparedStatement getStatement(String sqlstr, Connection conn)
-        throws OPSException {
+            throws OPSException {
         PreparedStatement stmt = null;
 
         try {
             stmt = conn.prepareStatement(sqlstr);
         } catch (SQLException ex) {
-            throw new OPSException(mLocalizer.t("OPS553: Could not " + 
-                                    "retrieve a PreparedStatement: {0}", ex));
+            throw new OPSException(mLocalizer.t("OPS553: Could not " +
+                    "retrieve a PreparedStatement: {0}", ex));
         }
 
         return stmt;
@@ -114,7 +116,7 @@ public class ObjectPersistenceService implements java.io.Serializable {
      */
     static ArrayList addobject(ArrayList list, boolean b) {
         list.add(Boolean.valueOf(b));
-        
+
         return (list);
     }
 
@@ -202,8 +204,7 @@ public class ObjectPersistenceService implements java.io.Serializable {
                 if (null == param) {
                     ret = err.substring(0, pos - 1) + "null" + err.substring(pos + 1, err.length());
                 } else if (param instanceof String || param instanceof java.util.Date) {
-                    ret = err.substring(0, pos - 1) 
-                        + " '" + param.toString() + "'" + err.substring(pos + 1, err.length());
+                    ret = err.substring(0, pos - 1) + " '" + param.toString() + "'" + err.substring(pos + 1, err.length());
                 } else {
                     ret = err.substring(0, pos - 1) + " " + param.toString() + err.substring(pos + 1, err.length());
                 }
@@ -273,11 +274,11 @@ public class ObjectPersistenceService implements java.io.Serializable {
                     ret = null;
                 }
             } else if (type.equals("Byte")) {
-                ret = new Byte(rs.getByte(column.toUpperCase()));               
+                ret = new Byte(rs.getByte(column.toUpperCase()));
                 if (rs.wasNull()) {
                     ret = null;
                 }
-            } else if (type.equals("Character")) {      
+            } else if (type.equals("Character")) {
                 String value = rs.getString(column.toUpperCase());
                 if (value != null && !rs.wasNull()) {
                     ret = new Character(value.charAt(0));
@@ -296,23 +297,31 @@ public class ObjectPersistenceService implements java.io.Serializable {
                     ret = new java.util.Date(t.getTime());
                 } else {
                     ret = null;
+
                 }
-            } else if ( type.equals("Timestamp")) {
+            } else if (type.equals("Date") && dbType == MYSQL) {
                 java.sql.Timestamp t = rs.getTimestamp(column.toUpperCase());
                 if (t != null) {
-                    ret = t; 
+                    ret = new java.util.Date(t.getTime());
+                } else {
+                    ret = null;
+                }
+            } else if (type.equals("Timestamp")) {
+                java.sql.Timestamp t = rs.getTimestamp(column.toUpperCase());
+                if (t != null) {
+                    ret = t;
                 } else {
                     ret = null;
                 }
             } else if (type.equals("Blob")) {
                 ret = mBlobHelper.getValue(rs, column);
             } else {
-                throw new UnsupportedDataType(mLocalizer.t("OPS554: This is " + 
-                                    "an unsupported data type: {0}", type));
+                throw new UnsupportedDataType(mLocalizer.t("OPS554: This is " +
+                        "an unsupported data type: {0}", type));
             }
         } catch (SQLException ex) {
-            throw new OPSException(mLocalizer.t("OPS555: getValue() " + 
-                                    "encountered a SQLException: {0}", ex));
+            throw new OPSException(mLocalizer.t("OPS555: getValue() " +
+                    "encountered a SQLException: {0}", ex));
         }
 
         return ret;
@@ -326,13 +335,13 @@ public class ObjectPersistenceService implements java.io.Serializable {
      * @param value The value to be set.
      * @throws OPSException if an error is encountered.
      */
-    public void setParamBlob(ResultSet rs, String column, Object value) 
+    public void setParamBlob(ResultSet rs, String column, Object value)
             throws OPSException {
         BlobHelperParameters bhp = new BlobHelperParameters();
         bhp.setResultSet(rs);
         bhp.setColumnName(column);
         mBlobHelper.setParamBlob(bhp, value);
-    
+
     }
 
     /**
@@ -343,14 +352,14 @@ public class ObjectPersistenceService implements java.io.Serializable {
      * @param value The value to be set.
      * @throws OPSException if an error is encountered.
      */
-    public void setParamBlob(PreparedStatement ps, int columnIndex, Object value) 
+    public void setParamBlob(PreparedStatement ps, int columnIndex, Object value)
             throws OPSException {
         BlobHelperParameters bhp = new BlobHelperParameters();
         bhp.setPreparedStatement(ps);
         bhp.setColumnIndex(columnIndex);
         mBlobHelper.setParamBlob(bhp, value);
     }
-    
+
     /**
      * Binds parameters to a PreparedStatement by position and type.
      *
@@ -361,7 +370,7 @@ public class ObjectPersistenceService implements java.io.Serializable {
      * @throws OPSException if an error is encountered.
      */
     public void setParam(PreparedStatement stmt, int pos, String type,
-                         Object value) throws OPSException {
+            Object value) throws OPSException {
         try {
             if (null != value) {
                 if (type.equals("String") && value instanceof String) {
@@ -378,18 +387,18 @@ public class ObjectPersistenceService implements java.io.Serializable {
                     stmt.setByte(pos, ((Byte) value).byteValue());
                 } else if (value instanceof Character) {
                     stmt.setObject(pos, ((Character) value).toString(), java.sql.Types.CHAR);
-                } else if ((type.equals("Date") && dbType == ORACLE) && value instanceof java.util.Date) {
+                } else if ((type.equals("Date") && (dbType == ORACLE || dbType == MYSQL)) && value instanceof java.util.Date) {
                     stmt.setDate(pos,
-                        new java.sql.Date(((java.util.Date) value).getTime()));
+                            new java.sql.Date(((java.util.Date) value).getTime()));
                 } else if (type.equals("Timestamp") && value instanceof java.sql.Timestamp) {
-                    stmt.setTimestamp(pos,(Timestamp)value);
-                } else if ( ((type.equals("Date") && dbType == SQLSERVER) ||type.equals("Timestamp")) && value instanceof java.util.Date) {
+                    stmt.setTimestamp(pos, (Timestamp) value);
+                } else if (((type.equals("Date") && dbType == SQLSERVER) || type.equals("Timestamp")) && value instanceof java.util.Date) {
                     stmt.setTimestamp(pos,
-                        new java.sql.Timestamp(
+                            new java.sql.Timestamp(
                             ((java.util.Date) value).getTime()));
                 } else {
-                    throw new UnsupportedDataType(mLocalizer.t("OPS556: This is " + 
-                                    "an unsupported data type: {0}", type));
+                    throw new UnsupportedDataType(mLocalizer.t("OPS556: This is " +
+                            "an unsupported data type: {0}", type));
                 }
             } else {
                 if (type.equals("String")) {
@@ -406,21 +415,21 @@ public class ObjectPersistenceService implements java.io.Serializable {
                     stmt.setNull(pos, java.sql.Types.CHAR);
                 } else if (type.equals("Character")) {
                     stmt.setNull(pos, java.sql.Types.CHAR);
-                } else if (type.equals("Date") && dbType == ORACLE) {
+                } else if (type.equals("Date") && (dbType == ORACLE || dbType == MYSQL)) {
                     stmt.setNull(pos, java.sql.Types.DATE);
                 } else if ((type.equals("Date") && dbType == SQLSERVER) || type.equals("Timestamp")) {
                     stmt.setNull(pos, java.sql.Types.TIMESTAMP);
                 } else if (type.equals("Blob")) {
                     stmt.setNull(pos, java.sql.Types.BLOB);
                 } else {
-                    throw new UnsupportedDataType(mLocalizer.t("OPS557: This is " + 
-                                    "an unsupported data type: {0}", type));
+                    throw new UnsupportedDataType(mLocalizer.t("OPS557: This is " +
+                            "an unsupported data type: {0}", type));
                 }
             }
         } catch (SQLException ex) {
-            throw new OPSException(mLocalizer.t("OPS558: Error in binding parameter " + 
-                                    "({0}) of type=\"{1}\" to value=\"{2}\": {3}",
-                                    pos, type, value, ex)); 
+            throw new OPSException(mLocalizer.t("OPS558: Error in binding parameter " +
+                    "({0}) of type=\"{1}\" to value=\"{2}\": {3}",
+                    pos, type, value, ex));
         }
     }
 
@@ -437,7 +446,7 @@ public class ObjectPersistenceService implements java.io.Serializable {
      */
     public void init() throws OPSException {
     }
-    
+
     /**
      * Message logger.
      * @param msg Message to log.

@@ -35,6 +35,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -48,29 +50,42 @@ import net.java.hulp.i18n.Logger;
 public final class TransactionObjectDB extends ObjectPersistenceService {
 
     private static String mSelectString = null;     // Select string
+
     private static String mFindByEUID = null;       // Find by EUID
+
     private static String mFindByEUID1 = null;      // Find by EUID and after a specified time
+
     private static String mFindByEUID2 = null;      // Find by EUID and before a specified time
+
     private static String mFindByEUID3 = null;      // Find by EUID and between two specified times
+
     private static String mFindByEUID4 = null;      // Find by EUID and after a specified time 
-                                                    // (non-merged records only)
+    // (non-merged records only)
+
     private static String mFindByEUID5 = null;      // Find by EUID and after a specified timestamp 
-                                                    // for recovery.
+    // for recovery.
+
     private static String mFindNextTranByEUID = null;   // Find the next Transaction Object for an EUID
+
     private static String mFindBySystemCodeLID = null;  // Find by system code SQL statement 
-                                                        // for TransactionObjectDB
+    // for TransactionObjectDB
+
     private static String mFindBySystemCodeLID1 = null; // Find by system code SQL statement for 
-                                                        // TransactionObjectDB and after a 
-                                                        // specified time.
+    // TransactionObjectDB and after a 
+    // specified time.
+
     private static String mFindBySystemCodeLID2 = null; // Find by system code SQL statement for 
-                                                        // TransactionObjectDB and before a 
-                                                        // specified time.
+    // TransactionObjectDB and before a 
+    // specified time.
+
     private static String mFindBySystemCodeLID3 = null; // Find by system code SQL statement for 
-                                                        // TransactionObjectDB and between two  
-                                                        // specified times.
+    // TransactionObjectDB and between two  
+    // specified times.
+
     private static String mSelectDelta = null;          // Find the delta by EUID
+
     private static String mOperationColumnName = null;  // Name of the operation column.
-    
+
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private transient final Localizer mLocalizer = Localizer.get();
 
@@ -81,58 +96,57 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      */
     public TransactionObjectDB() throws OPSException {
         if (mOperationColumnName == null) {
-            mOperationColumnName 
-                = DBAdapter.getDBAdapterInstance().getOperationColumnName();
+            mOperationColumnName = DBAdapter.getDBAdapterInstance().getOperationColumnName();
         }
         if (mSelectString == null) {
-            mSelectString = 
-                DBAdapter.getDBAdapterInstance().getTransObjSelectStmt();
+            mSelectString =
+                    DBAdapter.getDBAdapterInstance().getTransObjSelectStmt();
         }
         if (mFindNextTranByEUID == null) {
-            mFindNextTranByEUID = 
-                DBAdapter.getDBAdapterInstance().getTransObjNextTOByEUIDStmt();
+            mFindNextTranByEUID =
+                    DBAdapter.getDBAdapterInstance().getTransObjNextTOByEUIDStmt();
         }
         if (mFindBySystemCodeLID == null) {
-            mFindBySystemCodeLID = 
-                DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDStmt();
+            mFindBySystemCodeLID =
+                    DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDStmt();
         }
         if (mFindBySystemCodeLID1 == null) {
-            mFindBySystemCodeLID1 = 
-                DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDAfterTimeStmt();
+            mFindBySystemCodeLID1 =
+                    DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDAfterTimeStmt();
         }
         if (mFindBySystemCodeLID2 == null) {
-            mFindBySystemCodeLID2 = 
-                DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDBeforeTimeStmt();
+            mFindBySystemCodeLID2 =
+                    DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDBeforeTimeStmt();
         }
         if (mFindBySystemCodeLID3 == null) {
-            mFindBySystemCodeLID3 = 
-                DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDBetweenTimesStmt();
+            mFindBySystemCodeLID3 =
+                    DBAdapter.getDBAdapterInstance().getTransObjBySysCodeLIDBetweenTimesStmt();
         }
         if (mFindByEUID == null) {
-            mFindByEUID = 
-                DBAdapter.getDBAdapterInstance().getTransObjByEUIDStmt();
+            mFindByEUID =
+                    DBAdapter.getDBAdapterInstance().getTransObjByEUIDStmt();
         }
         if (mFindByEUID1 == null) {
-            mFindByEUID1 = 
-                DBAdapter.getDBAdapterInstance().getTransObjByEUIDAfterTimeStmt();
+            mFindByEUID1 =
+                    DBAdapter.getDBAdapterInstance().getTransObjByEUIDAfterTimeStmt();
         }
         if (mFindByEUID2 == null) {
-            mFindByEUID2 = 
-                DBAdapter.getDBAdapterInstance().getTransObjByEUIDBeforeTimeStmt();
+            mFindByEUID2 =
+                    DBAdapter.getDBAdapterInstance().getTransObjByEUIDBeforeTimeStmt();
         }
         if (mFindByEUID3 == null) {
-            mFindByEUID3 = 
-                DBAdapter.getDBAdapterInstance().getTransObjByEUIDBetweenTimesStmt();
+            mFindByEUID3 =
+                    DBAdapter.getDBAdapterInstance().getTransObjByEUIDBetweenTimesStmt();
         }
         if (mFindByEUID4 == null) {
-            mFindByEUID4 = 
-                DBAdapter.getDBAdapterInstance().getTransObjByEUIDAfterTimeNonMergedStmt();
+            mFindByEUID4 =
+                    DBAdapter.getDBAdapterInstance().getTransObjByEUIDAfterTimeNonMergedStmt();
         }
         if (mFindByEUID5 == null) {
-            mFindByEUID5 = 
-                DBAdapter.getDBAdapterInstance().getTransObjForRecoveryStmt();
+            mFindByEUID5 =
+                    DBAdapter.getDBAdapterInstance().getTransObjForRecoveryStmt();
         }
-         
+
     }
 
     /**
@@ -145,13 +159,13 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      */
     public TransactionObject get(Connection conn, String transactionnumber)
             throws OPSException {
-                
+
         TransactionObject ret = null;
 
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
-            
+
             stmt = getStatement(mSelectString, conn);
             stmt.setString(1, transactionnumber);
 
@@ -181,14 +195,13 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             ArrayList params = new ArrayList();
             params.add(transactionnumber);
             String sql = sql2str(mSelectString, params);
-            throw new OPSException(mLocalizer.t("OPS679: Could not retrieve " + 
-                                        "a TransactionObject from the database " + 
-                                        "with this SQL statement: {0}: {1}", 
-                                        sql, e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS679: Could not retrieve " +
+                    "a TransactionObject from the database " +
+                    "with this SQL statement: {0}: {1}",
+                    sql, e.getMessage()));
         } catch (ObjectException e) {
-            throw new OPSException(mLocalizer.t("OPS680: Could not retrieve " + 
-                                        "a TransactionObject from the database : {0}"
-                                        , e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS680: Could not retrieve " +
+                    "a TransactionObject from the database : {0}", e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -198,15 +211,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS681: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS681: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
 
         return ret;
     }
-
 
     /**
      * Retrieves the next TransactionObject for an EUID.
@@ -216,27 +228,27 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @throws OPSException if an error is encountered.
      * @return TransactionObject.
      */
-    public TransactionObject getNext(Connection conn, 
-                                     String transactionnumber,
-                                     String EUID)
+    public TransactionObject getNext(Connection conn,
+            String transactionnumber,
+            String EUID)
             throws OPSException {
-        
+
         TransactionObject tObj = null;
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
-            
+
             stmt = getStatement(mFindNextTranByEUID, conn);
             stmt.setString(1, transactionnumber);
             stmt.setString(2, EUID);
             stmt.setString(3, EUID);
             rSet = stmt.executeQuery();
             tObj = null;
-    
+
             if (null != rSet) {
                 while (rSet.next()) {
                     tObj = new TransactionObject();
-    
+
                     tObj.setTransactionNumber(getValue(rSet,
                             "TransactionNumber", "String"));
                     tObj.setLID1(getValue(rSet, "LID1", "String"));
@@ -257,14 +269,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             params.add(EUID);
             params.add(EUID);
             String sql = sql2str(mFindNextTranByEUID, params);
-            throw new OPSException(mLocalizer.t("OPS682: Could not retrieve the " + 
-                                        "next TransactionObject from the database " + 
-                                        "with this SQL statement: {0}: {1}", 
-                                        sql, e));
+            throw new OPSException(mLocalizer.t("OPS682: Could not retrieve the " +
+                    "next TransactionObject from the database " +
+                    "with this SQL statement: {0}: {1}",
+                    sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(mLocalizer.t("OPS683: Could not retrieve the " + 
-                                        "next TransactionObject from the database: {0}", 
-                                        e));
+            throw new OPSException(mLocalizer.t("OPS683: Could not retrieve the " +
+                    "next TransactionObject from the database: {0}",
+                    e));
         } finally {
             try {
                 if (rSet != null) {
@@ -274,16 +286,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS684: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS684: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
-    
+
         return tObj;
     }
-    
-    
+
     /**
      * Persists a TransactionObject into the database.
      *
@@ -292,10 +303,10 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @throws OPSException if an error is encountered.
      */
     public void create(Connection con, TransactionObject tObj)
-        throws OPSException {
-            DBAdapter.getDBAdapterInstance().createTransactionObjectDB(con, tObj);
+            throws OPSException {
+        DBAdapter.getDBAdapterInstance().createTransactionObjectDB(con, tObj);
     }
-            
+
     /**
      * Retrieves an array of TransactionObjects by SystemCode and LocalID.
      * If starting or ending times are specified, they are added to the
@@ -310,18 +321,18 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @return an array of TransactionObject instances.
      */
     public TransactionObject[] findTransactionObject(Connection conn,
-                                                     String systemcode, 
-                                                     String lid, 
-                                                     Date beginTS, 
-                                                     Date endTS)
+            String systemcode,
+            String lid,
+            Date beginTS,
+            Date endTS)
             throws OPSException {
-                
+
         TransactionObject[] ret = null;
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
             if ((beginTS == null) && (endTS == null)) {
-                
+
                 stmt = getStatement(mFindBySystemCodeLID, conn);
                 setParam(stmt, 1, "String", systemcode);
                 setParam(stmt, 2, "String", lid);
@@ -393,14 +404,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 params.add(endTS);
                 sql = sql2str(mFindBySystemCodeLID3, params);
             }
-            throw new OPSException(mLocalizer.t("OPS685: Could not retrieve the " + 
-                                        "TransactionObjects from the database " + 
-                                        "with this SQL statement: {0}: {1}", 
-                                        sql, e));
+            throw new OPSException(mLocalizer.t("OPS685: Could not retrieve the " +
+                    "TransactionObjects from the database " +
+                    "with this SQL statement: {0}: {1}",
+                    sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(mLocalizer.t("OPS686: Could not retrieve the " + 
-                                        "TransactionObjects from the database : {0}", 
-                                        e));
+            throw new OPSException(mLocalizer.t("OPS686: Could not retrieve the " +
+                    "TransactionObjects from the database : {0}",
+                    e));
         } finally {
             try {
                 if (rSet != null) {
@@ -410,9 +421,9 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS687: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS687: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
 
@@ -431,11 +442,11 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @return an array of TransactionObject instances.
      */
     public TransactionObject[] findTransactionObject(Connection conn,
-                                                     String euid, 
-                                                     Date beginTS,
-                                                     Date endTS) 
+            String euid,
+            Date beginTS,
+            Date endTS)
             throws OPSException {
-            
+
         TransactionObject[] ret = null;
 
         PreparedStatement stmt = null;
@@ -543,14 +554,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 params.add(endTS);
                 sql = sql2str(mFindByEUID3, params);
             }
-            throw new OPSException(mLocalizer.t("OPS688: Could not retrieve the " + 
-                                        "TransactionObjects from the database " + 
-                                        "with this SQL statement: {0}: {1}", 
-                                        sql, e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS688: Could not retrieve the " +
+                    "TransactionObjects from the database " +
+                    "with this SQL statement: {0}: {1}",
+                    sql, e.getMessage()));
         } catch (ObjectException e) {
-            throw new OPSException(mLocalizer.t("OPS689: Could not retrieve the " + 
-                                        "TransactionObjects from the database : {0}", 
-                                        e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS689: Could not retrieve the " +
+                    "TransactionObjects from the database : {0}",
+                    e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -560,9 +571,9 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS690: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS690: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
 
@@ -580,10 +591,10 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @return an array of TransactionObject instances.
      */
     public TransactionObject[] findTransactionObject(Connection conn,
-                                                     String euid, 
-                                                     Date beginTS) 
+            String euid,
+            Date beginTS)
             throws OPSException {
-                
+
         TransactionObject[] ret = null;
         PreparedStatement stmt = null;
         ResultSet rSet = null;
@@ -639,14 +650,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             params.add(euid);
             params.add(beginTS);
             String sql = sql2str(mFindByEUID4, params);
-            throw new OPSException(mLocalizer.t("OPS691: Could not retrieve the " + 
-                                        "TransactionObjects from the database " + 
-                                        "with this SQL statement: {0}: {1}", 
-                                        sql, e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS691: Could not retrieve the " +
+                    "TransactionObjects from the database " +
+                    "with this SQL statement: {0}: {1}",
+                    sql, e.getMessage()));
         } catch (ObjectException e) {
-            throw new OPSException(mLocalizer.t("OPS692: Could not retrieve the " + 
-                                        "TransactionObjects from the database : {0}", 
-                                        e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS692: Could not retrieve the " +
+                    "TransactionObjects from the database : {0}",
+                    e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -656,9 +667,9 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS693: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS693: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
 
@@ -679,14 +690,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @return an array of TransactionObject instances.
      */
     public TransactionObject[] findTransactionObject(Connection conn,
-                                                     TransactionObject tObj, 
-                                                     Date beginTS, 
-                                                     Date endTS)
-                throws OPSException {
-                    
-            return findTransactionObject(conn, tObj, beginTS, endTS, "timestamp desc");
+            TransactionObject tObj,
+            Date beginTS,
+            Date endTS)
+            throws OPSException {
+
+        return findTransactionObject(conn, tObj, beginTS, endTS, "timestamp desc");
     }
-    
+
     /**
      * Retrieves array of TransactionObjects by TransactionObject. A dynamic 
      * Statement is going to be created according to what's populated in 
@@ -702,12 +713,12 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @return an array of TransactionObject instances.
      */
     public TransactionObject[] findTransactionObject(Connection conn,
-                                                     TransactionObject tObj, 
-                                                     Date beginTS, 
-                                                     Date endTS, 
-                                                     String orderBy)
+            TransactionObject tObj,
+            Date beginTS,
+            Date endTS,
+            String orderBy)
             throws OPSException {
-                
+
         TransactionObject[] ret = null;
         String queryStr = null;
         Statement queryStmt = null;
@@ -716,23 +727,21 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
         try {
             boolean first = true;
             DBAdapter db = DBAdapter.getDBAdapterInstance();
-            queryStr = 
-                db.getTransObjCreateSelectStmt();
+            queryStr =
+                    db.getTransObjCreateSelectStmt();
 
             if ((beginTS != null) && (endTS == null)) {
                 first = false;
                 queryStr += ("               timestamp >= " +
-                        db.getDateFormattedString(beginTS) );
+                        db.getDateFormattedString(beginTS));
             } else if ((beginTS == null) && (endTS != null)) {
                 first = false;
-                queryStr += ("               timestamp <= " + 
-                        db.getDateFormattedString(endTS)  );
+                queryStr += ("               timestamp <= " +
+                        db.getDateFormattedString(endTS));
             } else if ((beginTS != null) && (endTS != null)) {
                 first = false;
-                queryStr += ("               timestamp >= " 
-                    + db.getDateFormattedString(beginTS) );
-                queryStr += (" and \n               timestamp <= " 
-                    + db.getDateFormattedString(endTS) );
+                queryStr += ("               timestamp >= " + db.getDateFormattedString(beginTS));
+                queryStr += (" and \n               timestamp <= " + db.getDateFormattedString(endTS));
             }
 
             ArrayList fields = tObj.pGetFieldNames();
@@ -744,15 +753,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                         continue;
                     }
                     if (!tObj.isNull(fieldName)) {
-                        if (first) {                    
+                        if (first) {
                             first = false;
                         } else {
-                            queryStr += " and \n         " ;                          
+                            queryStr += " and \n         ";
                         }
                         // If it is EUID, then we query from both EUID and EUID2.
                         if (fieldName.equals("EUID")) {
                             String euid = (String) tObj.getValue(fieldName);
-                            queryStr +=  " ( EUID = '" + euid + "'  OR  EUID2 = '" + euid + "'  )";                 
+                            queryStr += " ( EUID = '" + euid + "'  OR  EUID2 = '" + euid + "'  )";
                         } else {
                             String column = fieldName;
                             if (fieldName.equalsIgnoreCase("FUNCTION")) {
@@ -764,12 +773,10 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             }
 
-            queryStr +=  "\n       order by \n" 
-                     + "               " + orderBy + " \n";
-            
+            queryStr += "\n       order by \n" + "               " + orderBy + " \n";
+
             if (mLogger.isLoggable(Level.FINE)) {
-                mLogger.fine("TransactionObjectDB: the transaction log query " 
-                               + "string is: \n" + queryStr);
+                mLogger.fine("TransactionObjectDB: the transaction log query " + "string is: \n" + queryStr);
             }
 
             queryStmt = conn.createStatement();
@@ -804,9 +811,9 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             }
         } catch (Exception e) {
-            throw new OPSException(mLocalizer.t("OPS695: Could not retrieve the " + 
-                                        "TransactionObjects from the database: {0}", 
-                                        e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS695: Could not retrieve the " +
+                    "TransactionObjects from the database: {0}",
+                    e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -816,16 +823,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     queryStmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS696: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS696: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
 
         return ret;
     }
 
-    
     /**
      * Retrieves array of TransactionObjects by by EUID and after a specified 
      * timestamp for recovery. 
@@ -839,10 +845,10 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
      * @return an array of TransactionObject instances.
      */
     public TransactionObject[] findTransactionObjectForRecovery(Connection conn,
-                                                                String euid, 
-                                                                Date beginTS) 
+            String euid,
+            Date beginTS)
             throws OPSException {
-                
+
         TransactionObject[] ret = null;
 
         PreparedStatement stmt = null;
@@ -858,7 +864,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             }
 
             stmt = getStatement(mFindByEUID5, conn);
-            stmt.setString(1,beginTS.toString());
+            char decSep = new DecimalFormatSymbols().getDecimalSeparator();
+            String pattern = "yyyy-MM-dd HH:mm:ss" + decSep + "SSS";
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+            String ts = sdf.format(beginTS);
+
+            stmt.setString(1, ts);
+
+            //stmt.setString(1,beginTS.toString());
             setParam(stmt, 2, "String", euid);
             setParam(stmt, 3, "String", euid);
             rSet = stmt.executeQuery();
@@ -899,18 +912,22 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             }
         } catch (SQLException e) {
             ArrayList params = new ArrayList();
-            params.add(beginTS);
+            char decSep = new DecimalFormatSymbols().getDecimalSeparator();
+            String pattern = "yyyy-MM-dd HH:mm:ss" + decSep + "SSS";
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+            String ts = sdf.format(beginTS);
+            params.add(ts);
             params.add(euid);
             params.add(euid);
             String sql = sql2str(mFindByEUID5, params);
-            throw new OPSException(mLocalizer.t("OPS697: Could not retrieve the " + 
-                                        "TransactionObjects from the database " + 
-                                        "with this SQL statement: {0}: {1}", 
-                                        sql, e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS697: Could not retrieve the " +
+                    "TransactionObjects from the database " +
+                    "with this SQL statement: {0}: {1}",
+                    sql, e.getMessage()));
         } catch (ObjectException e) {
-            throw new OPSException(mLocalizer.t("OPS698: Could not retrieve the " + 
-                                        "TransactionObjects from the database: {0}", 
-                                        e.getMessage()));
+            throw new OPSException(mLocalizer.t("OPS698: Could not retrieve the " +
+                    "TransactionObjects from the database: {0}",
+                    e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -920,12 +937,11 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException(mLocalizer.t("OPS699: Could not close " + 
-                                        "an SQL statement or result set: {0}", 
-                                        e.getMessage()));
+                throw new OPSException(mLocalizer.t("OPS699: Could not close " +
+                        "an SQL statement or result set: {0}",
+                        e.getMessage()));
             }
         }
         return ret;
     }
-
 }
