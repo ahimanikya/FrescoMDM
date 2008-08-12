@@ -361,7 +361,7 @@ declare
         tCode('V', '11' , 'Organ donor'),
         tCode('V', '12' , 'Cadaver donor'),
         tCode('V', '13' , 'Grandchild'),
-        tCode('V', '14' , 'Niece/nephew'),
+        tCode('V', '14' , 'Niece/Nephew'),
         tCode('V', '15' , 'Injured plaintiff'),
         tCode('V', '16' , 'Dependent sponsored'),
         tCode('V', '17' , 'Minor dependent of a minor dependent'),
