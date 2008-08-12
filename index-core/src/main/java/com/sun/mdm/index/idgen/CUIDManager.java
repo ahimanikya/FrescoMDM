@@ -37,6 +37,8 @@ import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.master.ConnectionInvalidException;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.util.Localizer;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * <p>Title: </p>
@@ -47,30 +49,28 @@ import com.sun.mdm.index.util.Localizer;
  * @version 1.0
  */
 public class CUIDManager {
-    
+
     private static final int CHUNK_SIZE = 1000;
     private static final int ID_LENGTH = 20;    // for the legth of the unique ID field of tables
+
     private static HashMap mSeqCache;
     private static EuidGenerator mEuidGenerator;
-
     private static boolean isInitialized = false;
-
     private transient static final Localizer mLocalizer = Localizer.get();
 
-    private static void init() throws  SEQException {
+    private static void init() throws SEQException {
         mSeqCache = new HashMap();
 
-        
+
         try {
 
-            
-            EuidGeneratorConfiguration dmConfig = (EuidGeneratorConfiguration)
-                    ConfigurationService.getInstance().getConfiguration(
+
+            EuidGeneratorConfiguration dmConfig = (EuidGeneratorConfiguration) ConfigurationService.getInstance().getConfiguration(
                     EuidGeneratorConfiguration.EUID_GENERATOR);
             if (dmConfig == null) {
                 throw new Exception(mLocalizer.t("IDG500: EUID generator configuration not found."));
             }
-            mEuidGenerator = dmConfig.getEuidGenerator();        
+            mEuidGenerator = dmConfig.getEuidGenerator();
             if (mEuidGenerator == null) {
                 throw new Exception(mLocalizer.t("IDG501: EUID generator not defined."));
             }
@@ -78,12 +78,11 @@ public class CUIDManager {
 
         } catch (Exception ex) {
             throw new SEQException(mLocalizer.t("IDG502: EUID generator could not be initialized: (0}", ex));
-        } 
+        }
     }
 
     private CUIDManager() {
     }
-
 
     /**
      * get next id
@@ -92,17 +91,17 @@ public class CUIDManager {
      * @return String sequence id
      * @exception SEQException sequence exception
      */
-    public static String getNextUID(Connection con, String seqName) throws  SEQException {
-     
-       String uid = null;
-        
-       synchronized (com.sun.mdm.index.idgen.CUIDManager.class) {
-         if (!isInitialized) {
-           init();
-         }
-       }       
+    public static String getNextUID(Connection con, String seqName) throws SEQException {
 
-         try {
+        String uid = null;
+
+        synchronized (com.sun.mdm.index.idgen.CUIDManager.class) {
+            if (!isInitialized) {
+                init();
+            }
+        }
+
+        try {
             if (seqName.equals("EUID")) {
                 uid = mEuidGenerator.getNextEUID(con);
             } else {
@@ -113,7 +112,7 @@ public class CUIDManager {
                         if (nextId % CHUNK_SIZE == 0) {
                             Integer nextChunk = xgetNextUID(con, seqName);
                             nextId = nextChunk.intValue();
-                        } 
+                        }
                         mSeqCache.put(seqName, new Integer(nextId));
                         uid = String.valueOf(nextId);
                     }
@@ -125,7 +124,7 @@ public class CUIDManager {
                         uid = nextChunk.toString();
                     }
                 }
-                
+
                 //  to set the leading 0 for the sorting of transaction number field.
                 // Transaction manager internally sort on transaction number.
                 int numOfLeadingZero = ID_LENGTH - uid.length();
@@ -137,81 +136,113 @@ public class CUIDManager {
             throw e;
         }
 
-        
-        
+
+
         return uid;
     }
 
     private static Integer xgetNextUID(Connection con, String seqName)
-        throws SEQException /* ,ConnectionInvalidException */{
+            throws SEQException /* ,ConnectionInvalidException */ {
         int nextValue;
 
-        
+
         try {
             /* Prepare SP Call Statement.       */
             if (ObjectFactory.getDatabase().equalsIgnoreCase("Oracle")) {
-            nextValue = getSeqNoByFunction(seqName, con);	
+                nextValue = getSeqNoByFunction(seqName, con);
+            } else if (ObjectFactory.getDatabase().equalsIgnoreCase("MySQL")) {
+                nextValue = getSeqNoByMySQLFunction(seqName, con);
             } else {
-                    nextValue = getSeqNoByProcedure(seqName, con);
+                nextValue = getSeqNoByProcedure(seqName, con);
             }
         } catch (SQLException exp) {
-            throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " + 
-                                                "ID from the EUID generator: (0}", exp.getMessage()));
+            throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " +
+                    "ID from the EUID generator: (0}", exp.getMessage()));
         }
 
-        
-        
+
+
         return new Integer(nextValue);
     }
 
+    /**
+     * Get a sequence number by calling SEQMGR function.
+     * The sequence number in the database will be increased by CHUNK_SIZE
+     * 
+     * @param seqName name of the sequence
+     * @param connection database connection
+     * @return a sequence number
+     * @throws SQLException
+     */
+    private static int getSeqNoByFunction(String seqName, Connection connection) throws SQLException {
+        int nextValue;
+        /* Prepare SP Call Statement.       */
+        String command = "{? = call SEQMGR(?, ?)}"; // 2 place holder + 1 return value
 
-	/**
-	 * Get a sequence number by calling SEQMGR function.
-	 * The sequence number in the database will be increased by CHUNK_SIZE
-	 * 
-	 * @param seqName name of the sequence
-	 * @param connection database connection
-	 * @return a sequence number
-	 * @throws SQLException
-	 */
-	private static int getSeqNoByFunction(String seqName, Connection connection) throws SQLException {
-		int nextValue;
-		/* Prepare SP Call Statement.       */
-		String command = "{? = call SEQMGR(?, ?)}"; // 2 place holder + 1 return value
-		CallableStatement cstmt = connection.prepareCall(command);
+        CallableStatement cstmt = connection.prepareCall(command);
 
-		// Register out parameters
-		cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
-		cstmt.setString(2, seqName);
-		cstmt.setInt(3, CHUNK_SIZE);
-		cstmt.execute();
-		nextValue = cstmt.getInt(1);
-		cstmt.close();
-		return nextValue;
-	}
+        // Register out parameters
+        cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
+        cstmt.setString(2, seqName);
+        cstmt.setInt(3, CHUNK_SIZE);
+        cstmt.execute();
+        nextValue = cstmt.getInt(1);
+        cstmt.close();
+        return nextValue;
+    }
 
-	/**
-	 * Get a sequence number by calling SEQMGR stored procedure.
-	 * The sequence number in the database will be increased by CHUNK_SIZE
-	 * 
-	 * @param seqName name of the sequence
-	 * @param connection database connection
-	 * @return a sequence number
-	 * @throws SQLException
-	 */
-	private static int getSeqNoByProcedure(String seqName, Connection connection) throws SQLException {
-		int nextValue;
-		/* Prepare SP Call Statement.       */
-		String command = "{call SEQMGR(?, ?, ?)}"; // 3 place holders
-		CallableStatement cstmt = connection.prepareCall(command);
+    /**
+     * Get a sequence number by calling SEQMGR stored procedure.
+     * The sequence number in the database will be increased by CHUNK_SIZE
+     * 
+     * @param seqName name of the sequence
+     * @param connection database connection
+     * @return a sequence number
+     * @throws SQLException
+     */
+    private static int getSeqNoByProcedure(String seqName, Connection connection) throws SQLException {
+        int nextValue;
+        /* Prepare SP Call Statement.       */
+        String command = "{call SEQMGR(?, ?, ?)}"; // 3 place holders
 
-		// Register out parameters
-		cstmt.registerOutParameter(3, java.sql.Types.INTEGER);
-		cstmt.setString(1, seqName);
-		cstmt.setInt(2, CHUNK_SIZE);
-		cstmt.execute();
-		nextValue = cstmt.getInt(3);
-		cstmt.close();
-		return nextValue;
-	}
+        CallableStatement cstmt = connection.prepareCall(command);
+
+        // Register out parameters
+        cstmt.registerOutParameter(3, java.sql.Types.INTEGER);
+        cstmt.setString(1, seqName);
+        cstmt.setInt(2, CHUNK_SIZE);
+        cstmt.execute();
+        nextValue = cstmt.getInt(3);
+        cstmt.close();
+        return nextValue;
+    }
+
+    /**
+     * Get a sequence number by calling SEQMGR MySQL function.
+     * The sequence number in the database will be increased by CHUNK_SIZE
+     * 
+     * @param seqName name of the sequence
+     * @param connection database connection
+     * @return a sequence number
+     * @throws SQLException
+     */
+    private static int getSeqNoByMySQLFunction(String seqName, Connection connection) throws SQLException {
+        int nextValue = 0;
+
+        PreparedStatement stmt = connection.prepareStatement("select SEQMGR(?, ?)");
+
+        stmt.setString(1, seqName);
+        stmt.setInt(2, CHUNK_SIZE);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                nextValue = rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            throw se;
+        }
+        rs.close();
+        stmt.close();
+        return nextValue;
+    }
 }
