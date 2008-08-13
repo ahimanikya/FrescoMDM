@@ -1,0 +1,89 @@
+<header>
+set sql_mode = '';
+set autocommit = 0;
+drop temporary table if exists tCodelist;
+drop procedure if exists codelist;
+delimiter $
+create procedure codelist()
+modifies SQL data
+codelist: begin 
+    declare v_objtype       varchar(1);
+    declare v_code          varchar(8);
+    declare v_descr         varchar(50);
+    declare v_appl_id	    int;
+    declare v_header_seq    int;
+    declare v_detail_seq    int;
+    declare v_date	        datetime;
+    declare v_user          varchar(20);
+    declare v_idx           int;
+    declare v_no_row_found  int default 0;
+
+    declare cur1 cursor for select * from tCodelist;
+
+    declare continue handler for not found set v_no_row_found =1;
+    declare exit handler for sqlexception 
+    begin
+	    select 'An SQLEXCEPTION error has occurred.' as Error;
+	    rollback;
+    end;
+
+    create temporary table tCodelist (
+	objtype varchar(1) not null, 
+	code varchar(8) not null,
+	descr varchar(50) not null);
+</header>
+<repeat>
+    -- ****   $<module-comment>   ****
+    insert into tCodeList values('L', '$<module>', '$<module-description>');
+    insert into tCodeList values('V', '$<code>', '$<code-description>');
+</repeat>
+<trailer>
+    select now() into v_date;
+    select user() into v_user;
+
+    select appl_id into v_appl_id  from sbyn_appl where code = 'EV';
+    if v_no_row_found > 0 then
+	    select 'ERROR: appl_id not found for EV.' as Error;
+	    rollback;
+	leave codelist;
+    end if;
+
+    delete from sbyn_common_detail where common_header_id in 
+        (select common_header_id from sbyn_common_header
+        where appl_id = v_appl_id);
+		
+    update sbyn_seq_table set seq_count = seq_count + 1 
+	where seq_name = 'SBYN_COMMON_HEADER';
+
+    select seq_count - 1 into v_header_seq from sbyn_seq_table 
+	where seq_name = 'SBYN_COMMON_HEADER';
+	
+	update sbyn_seq_table set seq_count = seq_count + 1 
+    where seq_name = 'SBYN_COMMON_DETAIL';
+
+    select seq_count - 1 into v_detail_seq from sbyn_seq_table 
+    where seq_name = 'SBYN_COMMON_DETAIL';
+
+    open cur1;
+    fetch cur1 into v_objtype, v_code, v_descr;
+    while v_no_row_found = 0 do
+        if v_objtype = 'L' then
+            insert into sbyn_common_header (common_header_id, appl_id, code, descr, read_only, max_input_len, typ_table_code, create_date, create_userid)
+            values (v_header_seq, v_appl_id, v_code, v_descr , 'Y', 8, 'XX', v_date, v_user );
+            set v_header_seq = v_header_seq + 1;
+	    else
+            insert into sbyn_common_detail (common_detail_id, common_header_id, code, descr, read_only, create_date, create_userid)
+            values (v_detail_seq, v_header_seq-1, v_code , v_descr, 'N', v_date, v_user );
+            set v_detail_seq = v_detail_seq + 1;
+        end if;
+        fetch cur1 into v_objtype, v_code, v_descr;
+    end while;
+    close cur1;
+    drop temporary table tCodelist;
+    commit;
+end; 
+$
+delimiter ;
+call codelist();
+drop procedure if exists codelist;
+</trailer>
