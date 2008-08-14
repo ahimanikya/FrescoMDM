@@ -594,7 +594,7 @@ import java.util.Date;
      * @return  Conversion function.
      */
     public String getVarcharToNumberConversion(String val) { 
-        return ("to_number(" + val + ", '999D999', 'NLS_NUMERIC_CHARACTERS=''. '''" + ")");
+        return ("to_number(" + val + ")");
     }
     
     /**
