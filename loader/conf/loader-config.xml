@@ -101,10 +101,12 @@
 		<properties>
 			<property name="loaderName" value="master-loader" />
 			<property name="isMasterLoader" value="true" />
+			<property name="distributionMode" value="master" />
 			<property name="matchAnalyzerMode" value="false" />
-                  <property name="BulkLoad" value="false" />
-                  <property name="standardizationMode" value="true" />
-                  <property name="deleteIntermediateDirs" value="false" />
+      <property name="BulkLoad" value="false" />
+      <property name="standardizationMode" value="true" />
+      <property name="deleteIntermediateDirs" value="false" />
+      <property name="optimizeDuplicates" value="true" />
 
 			<property name="rmiPort" value="9999" />
 			<property name="workingDir" value="test/data/eview/loader" />
