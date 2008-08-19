@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/relationships.xsd">
+		<participants>
+     		<!-- Domain References-->
+     		<domain name="Employee">
+     				<!-- Detailed domain properties -->
+        		<deployment>
+        				<jndi></jndi>
+        		</deployment>
+        </domain>
+		</participants>
+
+		<relationship-type name="TypeManagerOf">
+				<plugin></plugin>
+   			<source-domain>Employee</source-domain>
+				<target-domain>Employee</target-domain>
+				<fixed-attributes>
+     			<display-name>Manager Of</display-name>
+     			<start-date>01/01/2000</start-date>
+     			<end-date>12/31/2007</end-date>
+     			<validation></validation>
+     		</fixed-attributes>
+     		<extended-attributes>
+     			<attribute name="DepartmentID">
+     				<data-type>String</data-type>
+     			</attribute>
+     		</extended-attributes>
+    </relationship-type>
+
+		<relationship-type name="TypeEmployeeOf">
+				<plugin></plugin>
+     		<source-domain>Employee</source-domain>
+				<target-domain>Employee</target-domain>
+				<fixed-attributes>
+     			<display-name>Employee Of</display-name>
+     			<start-date>01/01/1980</start-date>
+     			<end-date>12/31/2007</end-date>
+     			<validation></validation>
+     		</fixed-attributes>
+     		<extended-attributes>
+     			<attribute name="ReportTo">
+     				<data-type>String</data-type>
+     			</attribute>
+     		</extended-attributes>
+    </relationship-type>
+    
+    <hierarchy-type name="OrgChart">
+    		<plugin></plugin>
+    		<parent-relationship name="TypeManagerOf"/>
+    		<child-relationship name="TypeEmployeeOf"/>
+				<fixed-attributes>
+     			<display-name>Org Chart</display-name>
+     			<start-date>01/01/2000</start-date>
+     			<end-date>12/31/2007</end-date>
+     			<validation></validation>
+     		</fixed-attributes>
+     		<extended-attributes>
+     			<attribute name="ABC">
+     				<data-type>String</data-type>
+     			</attribute>
+     		</extended-attributes>
+    </hierarchy-type>
+</Relationships>
