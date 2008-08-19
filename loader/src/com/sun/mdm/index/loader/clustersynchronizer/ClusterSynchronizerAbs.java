@@ -38,8 +38,11 @@ public abstract class ClusterSynchronizerAbs {
 	}
 
 	protected String getBlockBucket(String loaderName) {
-		String file = bucketDAO.getBlockBucket(loaderName);
-	
+		
+		String file = null;		
+		if (!isSlaveDistributionMode()) {			
+			file = bucketDAO.getBlockBucket(loaderName);			
+		}		
 		// get the file using ftp
 		if (file != null) {
 			retrieveBlockBucketFromMaster(file);
@@ -49,13 +52,15 @@ public abstract class ClusterSynchronizerAbs {
 	}
 
 	protected String getSBRBucket(String loaderName) {
-		String file =  bucketDAO.getSBRBucket(loaderName);
 		
+		String file = null;
+		if (!isSlaveDistributionMode()) {			
+			file =  bucketDAO.getSBRBucket(loaderName);
+		}
 		if(file != null){
 			retrieveSBRBlockBucketFromMaster(file);
 		}
-		
-		
+				
 		return file;
 	}
 
@@ -104,6 +109,17 @@ public abstract class ClusterSynchronizerAbs {
 		return Boolean.parseBoolean(isMasterLoader);
 	}
 
+	public boolean isSlaveDistributionMode() {
+		String isSlaveDistributionMode = loaderConfig.getSystemProperty("distributionMode");
+		if (isSlaveDistributionMode != null && 
+		    isSlaveDistributionMode.toLowerCase().equals("slave") &&
+		    isMasterLoader()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	private void copyMatchFileToStagingArea(String matchFile) {
 	
 		String localDir = loaderConfig.getSystemProperty("workingDir")
