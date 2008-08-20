@@ -11,123 +11,65 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script>
-</head>
+</script></head>
 <body>
-<div>
-<h1><a class="mozTocH1" name="mozTocId146799"></a>Relationship
+<h1>Relationship
 Functional and Architecture Spec</h1>
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-MultiDomainAndRelationshipSupport"><a class="mozTocH2" name="mozTocId967646"></a>
 <b>Multi-domain and Relationship support</b></h2>
-<a class="mozTocH2" name="mozTocId672445"></a>
 <br />
 <h3><a class="mozTocH3" name="mozTocId741137"></a>Table
 of Contents</h3>
-<ul id="mozToc">
-<li><a href="#mozTocId981334">Overview</a></li>
-<li><a href="#mozTocId268480">Project Goal</a></li>
-<li><a href="#mozTocId822821">Terms </a>
-<ul>
-<li><a href="#mozTocId89631">Actors</a>
-<ul>
-<li><a href="#mozTocId644740">Developer</a></li>
-<li><a href="#mozTocId722239">Multi-domain
-Administrator</a></li>
-<li><a href="#mozTocId485743">Multi-domain
-Data Managers</a></li>
-<li><a href="#mozTocId322389">Master
-Data Managers (MIDM users)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#mozTocId768287">Components
+<ul id="mozToc"><li><a href="FuncArchSpec.htm#mozTocId981334">Overview</a></li><li><a href="FuncArchSpec.htm#mozTocId268480">Project Goal</a></li><li><a href="FuncArchSpec.htm#mozTocId822821">Terms </a>
+<ul><li><a href="FuncArchSpec.htm#mozTocId89631">Actors</a>
+<ul><li><a href="FuncArchSpec.htm#mozTocId644740">Developer</a></li><li><a href="FuncArchSpec.htm#mozTocId722239">Multi-domain
+Administrator</a></li><li><a href="FuncArchSpec.htm#mozTocId485743">Multi-domain
+Data Managers</a></li><li><a href="FuncArchSpec.htm#mozTocId322389">Master
+Data Managers (MIDM users)</a></li></ul>
+</li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId768287">Components
 Overview</a>
-<ul>
-<li><a href="#mozTocId571500">Existing
-Component</a></li>
-<li><a href="#mozTocId663870">Multi-Domain MDM
-Project</a></li>
-<li><a href="#mozTocId108954">Multi-domain
-service</a></li>
-<li><a href="#mozTocId987382">Relationship GUI</a></li>
-<li><a href="#mozTocId862770">Relationship Tab
-addition to MIDM</a></li>
-</ul>
-</li>
-<li><a href="#mozTocId130686">Architecture</a>
-<ul>
-<li><a href="#mozTocId376510">Design Time</a></li>
-<li><a href="#mozTocId139514">Run Time</a></li>
-</ul>
-</li>
-<li><a href="#mozTocId60136">Detailed Specification</a>
-<ul>
-<li><a href="#mozTocId864234">Multi-Domain MDM
+<ul><li><a href="FuncArchSpec.htm#mozTocId571500">Existing
+Component</a></li><li><a href="FuncArchSpec.htm#mozTocId663870">Multi-Domain MDM
+Project</a></li><li><a href="FuncArchSpec.htm#mozTocId108954">Multi-domain
+service</a></li><li><a href="FuncArchSpec.htm#mozTocId987382">Relationship GUI</a></li><li><a href="FuncArchSpec.htm#mozTocId862770">Relationship Tab
+addition to MIDM</a></li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId130686">Architecture</a>
+<ul><li><a href="FuncArchSpec.htm#mozTocId376510">Design Time</a></li><li><a href="FuncArchSpec.htm#mozTocId139514">Run Time</a></li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId60136">Detailed Specification</a>
+<ul><li><a href="FuncArchSpec.htm#mozTocId864234">Multi-Domain MDM
 Project</a>
-<ul>
-<li><a href="#mozTocId742084">Project
-Build System</a></li>
-<li><a href="#mozTocId12540">Relationship
-Modeling Editor</a></li>
-<li><a href="#mozTocId268355">Rules for
-automatic relationship/hierarchy/classification </a></li>
-</ul>
-</li>
-<li><a href="#mozTocId204164">Multi-Domain
+<ul><li><a href="FuncArchSpec.htm#mozTocId742084">Project
+Build System</a></li><li><a href="FuncArchSpec.htm#mozTocId12540">Relationship
+Modeling Editor</a></li><li><a href="FuncArchSpec.htm#mozTocId268355">Rules for
+automatic relationship/hierarchy/classification </a></li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId204164">Multi-Domain
 Meta Data service</a>
-<ul>
-<li><a href="#mozTocId938651">
+<ul><li><a href="FuncArchSpec.htm#mozTocId938651">
 Notes/Assumptions: by
-Andrea Kendall 09/01/2008 </a></li>
-</ul>
-</li>
-<li><a href="#mozTocId530578">Multi-Domain
+Andrea Kendall 09/01/2008 </a></li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId530578">Multi-Domain
 Service</a>
-<ul>
-<li><a href="#mozTocId803865">Provides
-Relationship creation API within one domain and across domains.</a></li>
-<li><a href="#mozTocId710668">Provides
-Relationship Modification API</a></li>
-<li><a href="#mozTocId857550">Provides
-Multi-Domain Relationship Search API across domains.</a></li>
-<li><a href="#mozTocId242534">Provides
-Hierarchy creation/deletion/search API </a></li>
-<li><a href="#mozTocId152024">Provides
-Group API</a></li>
-<li><a href="#mozTocId880736">Provides API
-to create/modify relationship between entities and a group.</a></li>
-<li><a href="#mozTocId777033">Provide API
-to create/modify Category structure</a></li>
-<li><a href="#mozTocId316146">Merge
-Synchronization</a></li>
-</ul>
-</li>
-<li><a href="#mozTocId258476">Communication
-across Multi-Domain Service and Master Index</a></li>
-<li><a href="#mozTocId275549">Data Access
-Control</a></li>
-<li><a href="#mozTocId278317">Relationship
+<ul><li><a href="FuncArchSpec.htm#mozTocId803865">Provides
+Relationship creation API within one domain and across domains.</a></li><li><a href="FuncArchSpec.htm#mozTocId710668">Provides
+Relationship Modification API</a></li><li><a href="FuncArchSpec.htm#mozTocId857550">Provides
+Multi-Domain Relationship Search API across domains.</a></li><li><a href="FuncArchSpec.htm#mozTocId242534">Provides
+Hierarchy creation/deletion/search API </a></li><li><a href="FuncArchSpec.htm#mozTocId152024">Provides
+Group API</a></li><li><a href="FuncArchSpec.htm#mozTocId880736">Provides API
+to create/modify relationship between entities and a group.</a></li><li><a href="FuncArchSpec.htm#mozTocId777033">Provide API
+to create/modify Category structure</a></li><li><a href="FuncArchSpec.htm#mozTocId316146">Merge
+Synchronization</a></li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId258476">Communication
+across Multi-Domain Service and Master Index</a></li><li><a href="FuncArchSpec.htm#mozTocId275549">Data Access
+Control</a></li><li><a href="FuncArchSpec.htm#mozTocId278317">Relationship
 Manager GUI</a>
-<ul>
-<li><a href="#mozTocId37072">Overview</a></li>
-<li><a href="#mozTocId813767">Features</a></li>
-<li><a href="#mozTocId307978">Not in scope
-for first release (but intended for future releases)</a></li>
-<li><a href="#mozTocId684512">Mock up</a></li>
-</ul>
-</li>
-<li><a href="#mozTocId425537">MIDM
-relationship enhancement</a></li>
-</ul>
-</li>
-</ul>
-<ul id="mozToc">
-<li><a href="#otherfiles">Miscellaneous &nbsp;Files</a></li>
-</ul>
-<ul>
-<!--mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6-->
-</ul>
+<ul><li><a href="FuncArchSpec.htm#mozTocId37072">Overview</a></li><li><a href="FuncArchSpec.htm#mozTocId813767">Features</a></li><li><a href="FuncArchSpec.htm#mozTocId307978">Not in scope
+for first release (but intended for future releases)</a></li><li><a href="FuncArchSpec.htm#mozTocId684512">Mock up</a></li></ul>
+</li><li><a href="FuncArchSpec.htm#mozTocId425537">MIDM
+relationship enhancement</a></li></ul>
+</li></ul>
+<ul id="mozToc"><li><a href="FuncArchSpec.htm#otherfiles">Miscellaneous &nbsp;Files</a></li></ul>
+<ul><comment title="mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6" xmlns="http://disruptive-innovations.com/zoo/nvu"><img src="chrome://editor/content/images/tag-comment.gif" /><!--mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6--></comment></ul>
 <br />
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-Overview"><a class="mozTocH2" name="mozTocId981334"></a><b>Overview</b></h2>
 <p>The current Master Index offering provides the
@@ -136,8 +78,7 @@ netbeans "Master Index Application" project is created for each master
 data entity (e.g. customer, product, etc), which in turn are deployed
 separately.
 </p>
-<p></p>
-</div>
+<p></p><br /><br />
 <table>
 </table>
 <table class="imageplugin" align="center" border="0">
