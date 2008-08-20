@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><title>Mock up - Administer Groups</title>
+
+<link type="text/css" href="https://mural.dev.java.net/css/muraldoc.css" rel="stylesheet" />
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1277259-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+<body class="view">
+<br />
+<h1 class="pagename">Administer-&gt;Groups</h1>
+<p>Define what domains are in a group. Also define what
+attributes are with each group relationship.
+</p><h2>Use Cases&nbsp;</h2><ul><li>View and maintain group definitions.
+</li><li> View and maintain attributes that are associated
+with a specific group -&gt; domain relationship. Such as how long
+the relationship is good for. i.e. how long is a record in a group. </li>
+<li> View and maintain extended attributes a specific
+group -&gt; domain relationship. </li>
+</ul>
+
+<br />
+
+<h2>Screen<b> </b></h2>&nbsp;<br />
+<table class="imageplugin" align="center" border="0">
+<tbody>
+<tr>
+<td><img src="../attach/AdministerGroups.png" /></td>
+</tr>
+</tbody>
+</table>
+<br />
+<br />
+
+
+
+<h2><span style="color: blue;">Updates
+Needed</span></h2><br /><ul>
+<li> Select Group should read 'Group Definitions'
+</li>
+<li> 'Domains in Group' should read 'Define Domains in
+Group'
+</li>
+<li> Change Add to Add... and bring up the property box
+when the Add button is selected. Users can save without completing all
+information, but the pop up dialog will show each time. </li>
+<li> Change title of Property window to 'Define
+Properties for'. NOTE: from should have been for.
+</li>
+<li> Display Name for the Group should be shown by the
+selected <b>domain</b>. Group Display Name | Domain. At
+first the Display name is the same as the Group name. </li>
+<li> Nice to have. Allow user to suppress show showing
+the display name
+</li>
+<li> Remove filter as we do not expect that many domains
+in one system
+</li>
+<li> Add a button that allows all properties to be
+selected. This should be in the table column
+</li>
+<li> Allow the user to indicate that a property is
+'searchable' - the GUI would restrict these to N searchable properties
+by type. (Example: 10 dates, 4 strings...). The GUI should indicated
+how many searchable fields of each type are still available. </li>
+<li> Add the option to select a plug in that will handle
+this relationship. </li>
+</ul>
+<span style="color: red;"> Swaranjit - IMO group
+should not traverse across domains, because a group attributes may well
+be different in different domains. Any benefit of using same group
+across domains? Moreover a group name such as Household represents a
+group Type name since there would be many 'household' groups. Or we can
+use group Type name as group name, and assume there are many groups
+with same name 'household'.<br />
+<br />
+08/19/2008<br />
+Andrea - A group is just a name. &nbsp;Each domain - group has its
+own set of attributes. &nbsp;The screen represents that a users
+thinks of the group name first, not the domain. &nbsp;Example, I
+can have a group called household associated with a UK Patient.
+&nbsp;I can have a different group called household associated with
+USA Patient. &nbsp;<br />
+<br />
+So while I expect that the group is stored for a domain I believe it
+would be nice to implement the groups as per this screen.
+&nbsp;What this suggest is a convenience API that gives all the
+groups defined for all the domains.&nbsp; &nbsp;If we can not
+then we can have a list of domains first. &nbsp;And then add all
+groups for that domain. &nbsp;<br /><br />
+</span>
+<div class="pageactions"> <i>This page last
+changed on 19-Aug-2008
+10:13:10 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a>.</i>
+</div>
+</body></html>
