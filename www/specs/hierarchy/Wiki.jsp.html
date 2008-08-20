@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head><title>SOA-BI WIKI: Master.Index.Relationship.ArchitectureSpec</title>
+<html><head><title>Relationship Functional and Architecture Spec</title>
 
 <link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -14,55 +14,121 @@ pageTracker._trackPageview();
 </script>
 </head>
 <body>
-f
 <div>
-<h1><a class="mozTocH1" name="mozTocId146799"></a><a name="Top"></a>Master Index -
-Relationship Architecture Spec</h1>
+<h1><a class="mozTocH1" name="mozTocId146799"></a>Relationship
+Functional and Architecture Spec</h1>
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-MultiDomainAndRelationshipSupport"><a class="mozTocH2" name="mozTocId967646"></a>
 <b>Multi-domain and Relationship support</b></h2>
 <a class="mozTocH2" name="mozTocId672445"></a>
 <br />
 <h3><a class="mozTocH3" name="mozTocId741137"></a>Table
-of Contents</h3><ul id="mozToc"><li><a href="#mozTocId981334">Overview</a></li><li><a href="#mozTocId268480">
-Project Goal</a></li><li><a href="#mozTocId822821">
-Terms </a><ul><li><a href="#mozTocId89631">
-Actors</a><ul><li><a href="#mozTocId644740">Developer</a></li><li><a href="#mozTocId722239">Multi-domain
-Administrator</a></li><li><a href="#mozTocId485743">Multi-domain
-Data Managers</a></li><li><a href="#mozTocId322389">Master
-Data Managers (MIDM users)</a></li></ul></li></ul></li><li><a href="#mozTocId768287">Components
-Overview</a><ul><li><a href="#mozTocId571500">
-Existing Component</a></li><li><a href="#mozTocId663870">
-Multi-Domain MDM Project</a></li><li><a href="#mozTocId108954">
-Multi-domain service</a></li><li><a href="#mozTocId987382">
-Relationship GUI</a></li><li><a href="#mozTocId862770">
-Relationship Tab addition to MIDM</a></li></ul></li><li><a href="#mozTocId130686">
-Architecture</a><ul><li><a href="#mozTocId376510">
-Design Time</a></li><li><a href="#mozTocId139514">
-Run Time</a></li></ul></li><li><a href="#mozTocId60136">
-Detailed Specification</a><ul><li><a href="#mozTocId864234">
-Multi-Domain MDM Project</a><ul><li><a href="#mozTocId742084">
-Project Build System</a></li><li><a href="#mozTocId12540">Relationship Modeling Editor</a></li><li><a href="#mozTocId268355">
-Rules for automatic relationship/hierarchy/classification </a></li></ul></li><li><a href="#mozTocId204164">
-Multi-Domain Meta Data service</a><ul><li><a href="#mozTocId938651"> Notes/Assumptions: by
-Andrea Kendall 09/01/2008 </a></li></ul></li><li><a href="#mozTocId530578">
-Multi-Domain Service</a><ul><li><a href="#mozTocId803865">
-Provides Relationship creation API within one domain and across domains.</a></li><li><a href="#mozTocId710668">
-Provides Relationship Modification API</a></li><li><a href="#mozTocId857550">
-Provides Multi-Domain Relationship Search API across domains.</a></li><li><a href="#mozTocId242534">
-Provides Hierarchy creation/deletion/search API </a></li><li><a href="#mozTocId152024">
-Provides Group API</a></li><li><a href="#mozTocId880736">
-Provides API to create/modify relationship between entities and a group.</a></li><li><a href="#mozTocId777033">
-Provide API to create/modify Category structure</a></li><li><a href="#mozTocId316146">
-Merge Synchronization</a></li></ul></li><li><a href="#mozTocId258476">
-Communication across Multi-Domain Service and Master Index</a></li><li><a href="#mozTocId275549">
-Data Access Control</a></li><li><a href="#mozTocId278317">
-Relationship Manager GUI</a><ul><li><a href="#mozTocId37072">
-Overview</a></li><li><a href="#mozTocId813767">Features</a></li><li><a href="#mozTocId307978">
-Not in scope for first release (but intended for future releases)</a></li><li><a href="#mozTocId684512">
-Mock up</a></li></ul></li><li><a href="#mozTocId425537">
-MIDM relationship enhancement</a></li></ul></li></ul>
+of Contents</h3>
+<ul id="mozToc">
+<li><a href="#mozTocId981334">Overview</a></li>
+<li><a href="#mozTocId268480">Project Goal</a></li>
+<li><a href="#mozTocId822821">Terms </a>
 <ul>
-<!--mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6--></ul><br />
+<li><a href="#mozTocId89631">Actors</a>
+<ul>
+<li><a href="#mozTocId644740">Developer</a></li>
+<li><a href="#mozTocId722239">Multi-domain
+Administrator</a></li>
+<li><a href="#mozTocId485743">Multi-domain
+Data Managers</a></li>
+<li><a href="#mozTocId322389">Master
+Data Managers (MIDM users)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#mozTocId768287">Components
+Overview</a>
+<ul>
+<li><a href="#mozTocId571500">Existing
+Component</a></li>
+<li><a href="#mozTocId663870">Multi-Domain MDM
+Project</a></li>
+<li><a href="#mozTocId108954">Multi-domain
+service</a></li>
+<li><a href="#mozTocId987382">Relationship GUI</a></li>
+<li><a href="#mozTocId862770">Relationship Tab
+addition to MIDM</a></li>
+</ul>
+</li>
+<li><a href="#mozTocId130686">Architecture</a>
+<ul>
+<li><a href="#mozTocId376510">Design Time</a></li>
+<li><a href="#mozTocId139514">Run Time</a></li>
+</ul>
+</li>
+<li><a href="#mozTocId60136">Detailed Specification</a>
+<ul>
+<li><a href="#mozTocId864234">Multi-Domain MDM
+Project</a>
+<ul>
+<li><a href="#mozTocId742084">Project
+Build System</a></li>
+<li><a href="#mozTocId12540">Relationship
+Modeling Editor</a></li>
+<li><a href="#mozTocId268355">Rules for
+automatic relationship/hierarchy/classification </a></li>
+</ul>
+</li>
+<li><a href="#mozTocId204164">Multi-Domain
+Meta Data service</a>
+<ul>
+<li><a href="#mozTocId938651">
+Notes/Assumptions: by
+Andrea Kendall 09/01/2008 </a></li>
+</ul>
+</li>
+<li><a href="#mozTocId530578">Multi-Domain
+Service</a>
+<ul>
+<li><a href="#mozTocId803865">Provides
+Relationship creation API within one domain and across domains.</a></li>
+<li><a href="#mozTocId710668">Provides
+Relationship Modification API</a></li>
+<li><a href="#mozTocId857550">Provides
+Multi-Domain Relationship Search API across domains.</a></li>
+<li><a href="#mozTocId242534">Provides
+Hierarchy creation/deletion/search API </a></li>
+<li><a href="#mozTocId152024">Provides
+Group API</a></li>
+<li><a href="#mozTocId880736">Provides API
+to create/modify relationship between entities and a group.</a></li>
+<li><a href="#mozTocId777033">Provide API
+to create/modify Category structure</a></li>
+<li><a href="#mozTocId316146">Merge
+Synchronization</a></li>
+</ul>
+</li>
+<li><a href="#mozTocId258476">Communication
+across Multi-Domain Service and Master Index</a></li>
+<li><a href="#mozTocId275549">Data Access
+Control</a></li>
+<li><a href="#mozTocId278317">Relationship
+Manager GUI</a>
+<ul>
+<li><a href="#mozTocId37072">Overview</a></li>
+<li><a href="#mozTocId813767">Features</a></li>
+<li><a href="#mozTocId307978">Not in scope
+for first release (but intended for future releases)</a></li>
+<li><a href="#mozTocId684512">Mock up</a></li>
+</ul>
+</li>
+<li><a href="#mozTocId425537">MIDM
+relationship enhancement</a></li>
+</ul>
+</li>
+</ul>
+<ul id="mozToc">
+<li>Miscellaneous &nbsp;Files</li>
+</ul>
+<ul>
+<!--mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6-->
+</ul>
+<br />
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-Overview"><a class="mozTocH2" name="mozTocId981334"></a><b>Overview</b></h2>
 <p>The current Master Index offering provides the
 capability for supporting Master Data Management for a single domain. A
@@ -106,7 +172,8 @@ centric view. </p>
 integration with multiple ERP, PDL, suppliers, vendors, consumers and
 the relationships thereof. Different manufacturing companies have
 disparate ERP systems. PIM provides uniform representation of same
-product represented as different part number in different systems.</p><p> </p>
+product represented as different part number in different systems.</p>
+<p> </p>
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-ProjectGoal"><a class="mozTocH2" name="mozTocId268480"></a>
 <b>Project Goal</b></h2>
 <p>The goal of this project is to provide a "Multi-Domain
@@ -320,7 +387,9 @@ data within a domain (e.g. resolve duplicates, review assumed matches,
 etc). They may also view and manage relationships from this domain's
 perspective. For example, if the domain is customer, these group of
 users may need to see the relationships/hierarchies associated with any
-customer master records.<br /><br /><br />
+customer master records.<br />
+<br />
+<br />
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-ComponentsOverview"><a class="mozTocH2" name="mozTocId768287"></a><b>Components
 Overview</b></h2>
 <p>The following diagram shows what currently exists today
@@ -572,7 +641,9 @@ project files are deleted.
 </p>
 <p>For detail informatin, Please see <a class="external" href="attach/Multi-Domain-MDM-Project-Functional-Specification.sdw">Multi-Domain-MDM-Project-Functional-Specification.sdw</a><img class="outlink" src="images/out.png" alt="" />
 </p>
-<h4 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipModelingEditor"><a class="mozTocH4" name="mozTocId65758"></a></h4><h4 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipModelingEditor"><a class="mozTocH4" name="mozTocId12540"></a>Relationship Modeling Editor</h4>
+<h4 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipModelingEditor"><a class="mozTocH4" name="mozTocId65758"></a></h4>
+<h4 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipModelingEditor"><a class="mozTocH4" name="mozTocId12540"></a>Relationship
+Modeling Editor</h4>
 Netbeans support consists of 2 parts - wizard and editor.
 A simple new project wizard (Picture 1) will be used to create
 Multi-Domain MDM Project (Picture 2).
@@ -613,16 +684,17 @@ categories).
 configuration files are used to hold the information required for
 “Multi-Domain Services” and “Relationship Manager Web GUI”.
 </p>
-<p>RelationshipModel.xml – Used by “Multi-Domain Service”
-for relationship related services. Attached sample xml file.
+<p><a href="attach/RelationshipModel.xml">RelationshipModel.xml
+</a>– Used by “Multi-Domain Service”
+for relationship related services.&nbsp;
 </p>
-<p>RelationshipWebManager.xml – Similar to midm.xml , this
+<p><a href="attach/RelationshipWebManager.xml">RelationshipWebManager.xml</a>
+– Similar to midm.xml , this
 file is used by “Relationship Manager Web GUI”.
 </p>
 <p>CreateRelationship.sql – To create Relationship Manager
 database tables
 </p>
-
 <h4 id="section-Master.Index.Relationship.ArchitectureSpec-RulesForAutomaticRelationshiphierarchyclassification"><a class="mozTocH4" name="mozTocId268355"></a>
 Rules for automatic relationship/hierarchy/classification </h4>
 <ul>
@@ -692,13 +764,16 @@ getDomainNames()
 fields for a particular domain.
 </li>
 </ul>
-<p style="margin-left: 40px;"> 1. getRelationshipModelSearchAttributes(). Input -
+<p style="margin-left: 40px;"> 1.
+getRelationshipModelSearchAttributes(). Input -
 Domain name Return - List of fully qualified field name (FQFN). Ex.
-{Person.firstName, Person.lastName}</p><p style="margin-left: 40px;"> 2.
+{Person.firstName, Person.lastName}</p>
+<p style="margin-left: 40px;"> 2.
 getRelationshipModelSearchResultAttributes() Input - Domain name Return
 - List of FQFN.
 </p>
-<p style="margin-left: 40px;"> 3. get RelationshipModelDisplayAttributes() on a
+<p style="margin-left: 40px;"> 3. get
+RelationshipModelDisplayAttributes() on a
 Relationship/Hierarchy tree.
 </p>
 <h4 style="font-weight: normal;" id="section-Master.Index.Relationship.ArchitectureSpec-NotesAssumptionsByAndreaKendall09012008"><a class="mozTocH4" name="mozTocId938651"></a><span style="color: green;"> Notes/Assumptions: by
@@ -736,13 +811,16 @@ settings. </li>
 <li> Provides Relationship-Type API to get attributes
 </li>
 </ul>
-<p style="margin-left: 40px;">1. getRelationshipTypes(domain) Input - domain name
+<p style="margin-left: 40px;">1.
+getRelationshipTypes(domain) Input - domain name
 </p>
-<p style="margin-left: 40px;">2. getFixedAttributes(String domain, String
+<p style="margin-left: 40px;">2. getFixedAttributes(String
+domain, String
 relationshipType) - relationship name, role name, source domain, target
 domain, start Date, end Date
 </p>
-<p style="margin-left: 40px;">3. getExtendedAttributes(String domain, String
+<p style="margin-left: 40px;">3.
+getExtendedAttributes(String domain, String
 relationshipType) List of extended attributes for each relationship
 name. Each attribute has property searchable/non-searchable field, type
 - string, date, int, float, double. list of values for display. Actor -
@@ -750,10 +828,12 @@ Multi-domain GUI, MIDM
 </p>
 <ul>
 <li> Provides "Group" get API&nbsp;</li>
-</ul><div style="margin-left: 40px;">1. getGroupTypes(String
-domain)<br /></div>
-
-<p style="margin-left: 40px;"> 2. getGroupAttributes(String groupType) for each group
+</ul>
+<div style="margin-left: 40px;">1. getGroupTypes(String
+domain)<br />
+</div>
+<p style="margin-left: 40px;"> 2.
+getGroupAttributes(String groupType) for each group
 type. Each attribute has property searchable/non-searchable field. type
 - string, date, int, float, double. list of values for display. </p>
 <h3 id="section-Master.Index.Relationship.ArchitectureSpec-MultiDomainService"><a class="mozTocH3" name="mozTocId530578"></a>
@@ -830,7 +910,6 @@ sourceDomain, targetDomain);
 targetSystemCode, targetLUID, sourceDomain, targetDomain);
 </li>
 </ul>
-
 <h4 id="section-Master.Index.Relationship.ArchitectureSpec-ProvidesMultiDomainRelationshipSearchAPIAcrossDomains."><a class="mozTocH4" name="mozTocId857550"></a>
 Provides Multi-Domain Relationship Search API across domains.</h4>
 This takes input filter condition from source domain, and retrieve
@@ -980,7 +1059,8 @@ each group / domain.</span>
 <span style="color: red;"> Swaranjit Dua -
 createGroupType takes domain that in turns associate a specific domain
 with a group. ExtendedAttributes will be be different per each
-groupType. For each group extended attributes values may be different<br /></span>
+groupType. For each group extended attributes values may be different<br />
+</span>
 <ul>
 <li> createGroup(domain, groupName,
 extendedAttributesValues)
@@ -1045,7 +1125,8 @@ parentCategory, category);
 parentCategory, category);
 </li>
 </ul>
-<p style="margin-left: 80px;">category are associated with instances of Master Data.
+<p style="margin-left: 80px;">category are associated with
+instances of Master Data.
 queryRules are the query filter conditions on which SBRs are retrieved
 and displayed for a category. Associates category with a query Rule.
 </p>
@@ -1101,7 +1182,8 @@ Communication across Multi-Domain Service and Master Index</h3>
 <li> communication from Multi-Domain Service to Master
 Index </li>
 </ul>
-<p style="margin-left: 40px;">A registry (well known database account) will maintain
+<p style="margin-left: 40px;">A registry (well known
+database account) will maintain
 JNDI address for each Master Index. All Multi-domain services will have
 access to this registry and so can communicate to any Master Index.
 </p>
@@ -1111,7 +1193,8 @@ access to this registry and so can communicate to any Master Index.
 Service.
 </li>
 </ul>
-<p style="margin-left: 40px;">Since there may be many multi-domain services that may
+<p style="margin-left: 40px;">Since there may be many
+multi-domain services that may
 have same domain information and so Master Index may communicate to
 Multi-domain service via outbound JMS. Multi domain services will
 subscribe to all outbound JMS that they are interested in, and so get
@@ -1220,7 +1303,8 @@ is closer to a paper drawing.
 <h5><a class="mozTocH5" name="mozTocId977796"></a>
 Tab Organization </h5>
 <ul>
-<li> <b>Administer</b>&nbsp;Allows administrative
+<li> <b>Administer</b>&nbsp;Allows
+administrative
 users to create/maintain definitions that are used by other portions of
 the Relationship Manager.
 </li>
@@ -1235,7 +1319,6 @@ diagrams. These can form a network of nodes.
 Kendall: Not planed for first release
 </li>
 </ul>
-
 </ul>
 <ul>
 <li> <b>Manage</b>
@@ -1278,14 +1361,16 @@ Kendall: Not planed for first release
 </ul>
 </li>
 </ul>
-<p>
+<p style="margin-left: 40px;">
 <span style="color: green;"><b>Notes:</b></span>
 </p>
+<ul>
 <ul>
 <li>In the future the tabs may evolve to a menu system or
 a tab system with more layers in order to include building
 relationships using rules.<br />
 </li>
+</ul>
 </ul>
 <h5><a class="mozTocH5" name="mozTocId101530"></a>Assumptions
 </h5>
@@ -1315,11 +1400,10 @@ is most likely outside the scope of the first release. </li>
 </li>
 <li style="font-weight: bold;"></li>
 <li style="color: blue;">
-<p>09/05/2008 Andrea Kendall
-</p>
+<p>09/05/2008 Andrea Kendall</p>
 </li>
+<li style="color: blue;"></li>
 <li>
-
 <p>There are some differences in the terminology shown on
 the GUI and what is shown on the back end. Andrea Kendall has used
 terms that she believes are more user friendly. She is hoping to get
@@ -1346,14 +1430,16 @@ shown on the GUI. </p>
 <td> Properties </td>
 </tr>
 </tbody>
-</table></li><li></li>
+</table>
+</li>
+<li></li>
 <li>
 <h5><a class="mozTocH5" name="mozTocId381677"></a>Screens</h5>
 <ul>
 <li> <a class="wikipage" href="Mockup/Masthead.htm">General
 Layout and Masthead</a>
 </li>
-<li> <a class="wikipage" href="Wiki.jsp?page=Administer">Administer</a>
+<li> <a class="wikipage" href="Mockup/Administer.htm">Administer</a>
 </li>
 <li> <a class="wikipage" href="Wiki.jsp?page=Manage">Manage</a></li>
 </ul>
@@ -1365,8 +1451,12 @@ hierarchies, categories and groups screens. The only difference being
 that these shall not allow viewing data from other domains. </li>
 </ul>
 <ul>
-<li> MIDM shall also allow viewing of history data.
-</li>
+<li> MIDM shall also allow viewing of history data.</li>
+</ul>
+<h2><a name="otherfiles"></a>Miscellaneous
+Files</h2>
+<ul>
+<li><a href="attach/HierarchyModel.xml">HierarchyModel.xml</a></li>
 </ul>
 </li>
 </body></html>
