@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><title>Mock up - Manage-&gt;Groups-&gt;Maintain</title>
+
+<link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1277259-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+<body class="view">
+<h1 class="pagename">Manage-&gt;Groups-&gt;Maintain</h1>
+<p>Displays information about records and how they are
+grouped. Either a user can find records associated with a group or find
+the groups that a specific record is associated with.
+<br />
+<span style="font-weight: bold;"></span></p>
+<h2>Use Cases<span style="font-weight: bold;"></span></h2>
+<ul>
+<li> Maintain groups of records.<br />
+<br />
+An example of a group is household.&nbsp; Where the household group
+shows all
+the members of the same household. </li>
+<li> View the groups associated with a specific
+record.
+</li>
+<li> View the records within a group.
+</li>
+<li> View details about a specific records within a
+group.
+</li>
+<li> View the properties (fixed and extended
+attributes) associated with a specific record in a group. </li>
+</ul>
+<h2>Records in a Group</h2>
+<br />
+<ul>
+<li> User wants to find records associated with a
+group. </li>
+<li> User may want to add records to the selected
+group.</li>
+<li>User may want to remove records from a selected group</li>
+</ul>
+<span style="font-weight: bold;"><br />
+</span>
+<table class="imageplugin" align="center" border="0">
+<tbody>
+<tr>
+<td><img src="../attach/ViewGroupsS1.png" /></td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3><span style="color: green;">Notes:</span></h3>
+<br />
+<ul>
+<li> If no records are associated with a group
+the table should have a single 'No Records Found' entry.
+</li>
+<li> The View Associated Groups button should
+only be enabled if at least one different group is associated with the
+same record. Also the associated groups must be viewable based on the
+current access role.
+</li>
+</ul>
+<h2>Groups for a Single Record</h2>
+<h3>1. Initial Screen</h3>
+User wants to find what groups a record belongs to (if
+any).
+<p></p>
+<table class="imageplugin" align="center" border="0">
+<tbody>
+<tr>
+<td><img src="../attach/ViewGroupsS2.png" /></td>
+</tr>
+</tbody>
+</table>
+<br />
+<h4><span style="color: green;">Notes</span>
+<span style="color: green;"></span></h4>
+<ul>
+<li>If no groups are associated with a record
+the table should have a single 'No Groups are associated with this
+record.' entry.
+</li>
+</ul>
+<br />
+<h3>2. View Associated Groups</h3>
+<br />
+<p>View other groups associated with the currently selected
+record.
+</p>
+<p></p>
+<table class="imageplugin" align="center" border="0">
+<tbody>
+<tr>
+<td><img src="../attach/ViewGroupsS3.png" /></td>
+</tr>
+</tbody>
+</table>
+<br />
+<h4><span style="color: green;">Notes:</span>
+<br />
+</h4>
+<ul>
+<li> As shown here the screen changes to the
+Search by Group option and sets the domain and filter as appropriate. </li>
+<li> The back button will need to update its text
+depending on what screen was navigated from. Additionally selecting it
+should restore the GUI to the previous screen. </li>
+<li> The back button should allow an arbitrary
+number of undo levels however for the first release we may not support
+this.</li>
+</ul>
+
+<h2><span style="color: blue;">Updates
+Needed </span></h2>
+<ul>
+<li> Add a button to allow select all for
+multi-select tables
+</li>
+<li> Add a button to allow drill down from record
+summary to details.</li><br /></ul><hr style="width: 100%; height: 2px;" /><ul>
+</ul>
+<table class="main" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="page">
+<div class="pageactions"><i>This page
+last
+changed on 06-Aug-2008
+22:03:00 PDT <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</body></html>
