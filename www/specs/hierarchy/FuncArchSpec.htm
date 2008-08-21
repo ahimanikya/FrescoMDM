@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head><title>Relationship Functional and Architecture Spec</title>
+<html><head><title>Future Ideas</title>
 
 <link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -11,14 +11,16 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script></head>
+</script>
+</head>
 <body>
+<h1>Future Ideas&nbsp;</h1>
 <h1>Relationship
 Functional and Architecture Spec</h1>
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-MultiDomainAndRelationshipSupport"><a class="mozTocH2" name="mozTocId967646"></a>
 <b>Multi-domain and Relationship support</b></h2>
 <br />
-<h3><a name="mozTocId741137"></a>Table
+<h3 class="colapse"><a name="mozTocId741137"></a>Table
 of Contents</h3>
 <ul id="mozToc">
 <li><a href="FuncArchSpec.htm#mozTocId981334">Overview</a></li>
@@ -234,7 +236,8 @@ Currently, a domain corresponds to a Master Index project.</dd>
 <dt><b>Relationship</b></dt>
 <dd> A link between two master data entities.
 Relationship can be within a single domain or across domains. The two
-entities are “source” and “target”. (Alternative names - “from”, “to”).<br />
+entities are;"source" and"target". (Alternative
+names -"from","to").<br />
 <br />
 By definition Relationship implies Relationship instance. <br />
 <br />
@@ -321,8 +324,8 @@ the set of extended attributes.</dd>
 </dl>
 <dl>
 <dt><b>Hierarchy</b></dt>
-<dd> A Special kind of relationship in which “target” is
-linked with only one “source”. This is “Parent-child” relationship. In
+<dd> A Special kind of relationship in which"target" is
+linked with only one"source". This is"Parent-child" relationship. In
 other words, a Parent can have many children but a child can have only
 one parent.</dd>
 </dl>
@@ -695,16 +698,16 @@ categories).
 </tbody>
 </table>
 <p>Behind the graphical representation, several
-configuration files are used to hold the information required for
-“Multi-Domain Services” and “Relationship Manager Web GUI”.
+configuration files are used to hold the information required for"Multi-Domain Services" and"Relationship
+Manager Web GUI".
 </p>
 <p><a href="attach/RelationshipModel.xml">RelationshipModel.xml
-</a>– Used by “Multi-Domain Service”
+</a>– Used by"Multi-Domain Service"
 for relationship related services.&nbsp;
 </p>
 <p><a href="attach/RelationshipWebManager.xml">RelationshipWebManager.xml</a>
 – Similar to midm.xml , this
-file is used by “Relationship Manager Web GUI”.
+file is used by"Relationship Manager Web GUI".
 </p>
 <p>CreateRelationship.sql – To create Relationship Manager
 database tables
@@ -1410,8 +1413,14 @@ allow the user to switch these formats on a global basis or by each
 widget. However since currency conversion requires real time data this
 is most likely outside the scope of the first release. </li>
 </ol>
-<h5><a class="mozTocH5" name="mozTocId95581"></a>Terminology</h5></li><br /><li style="color: blue;">
-<p>09/05/2008 Andrea Kendall</p></li><br /><li>
+<h5><a class="mozTocH5" name="mozTocId95581"></a>Terminology</h5>
+</li>
+<br />
+<li style="color: blue;">
+<p>09/05/2008 Andrea Kendall</p>
+</li>
+<br />
+<li>
 <p>There are some differences in the terminology shown on
 the GUI and what is shown on the back end. Andrea Kendall has used
 terms that she believes are more user friendly. She is hoping to get
