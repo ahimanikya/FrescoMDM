@@ -11,20 +11,7 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script>
-</head>
-
-
-
-
-
-
-
-
-
-
-
-
+</script></head>
 <body class="view">
 <h1 class="pagename">Manage-&gt;Groups-&gt;Maintain</h1>
 <p>Displays information about records and how they are
@@ -69,7 +56,7 @@ group.</li>
 </tbody>
 </table>
 <br />
-<h3><span style="color: green;">Notes:</span></h3>
+<h3><span style="color: green;">Notes</span></h3>
 <br />
 <ul>
 <li> If no records are associated with a group
@@ -78,12 +65,13 @@ the table should have a single 'No Records Found' entry.
 <li> The View Associated Groups button should
 only be enabled if at least one different group is associated with the
 same record. Also the associated groups must be viewable based on the
-current access role.
-</li>
-</ul>
+current access role.</li>
+</ul><h3><span style="color: blue;">Updates
+Needed </span></h3>
+<ul><li> Add a button to allow drill down from record
+summary to details.</li></ul>
 <h2>Groups for a Single Record</h2>
-<h3>1. Initial Screen</h3>
-User wants to find what groups a record belongs to (if
+<br />User wants to find what groups a record belongs to (if
 any).
 <p></p>
 <table class="imageplugin" align="center" border="0">
@@ -94,16 +82,21 @@ any).
 </tbody>
 </table>
 <br />
-<h4><span style="color: green;">Notes</span>
-<span style="color: green;"></span></h4>
+<h3><span style="color: green;">Notes</span>
+<span style="color: green;"></span></h3>
 <ul>
 <li>If no groups are associated with a record
 the table should have a single 'No Groups are associated with this
 record.' entry.
 </li>
 </ul>
-<br />
-<h3>2. View Associated Groups</h3>
+<br /><h3><span style="color: blue;">Updates
+Needed </span></h3>
+<ul><li> Add a button to allow select all for
+multi-select tables
+</li><li> Add a button to allow drill down from record
+summary to details.</li></ul><br /><br />
+<h2>View Associated Groups</h2>
 <br />
 <p>View other groups associated with the currently selected
 record.
@@ -117,9 +110,9 @@ record.
 </tbody>
 </table>
 <br />
-<h4><span style="color: green;">Notes:</span>
+<h3><span style="color: green;">Notes:</span>
 <br />
-</h4>
+</h3>
 <ul>
 <li> As shown here the screen changes to the
 Search by Group option and sets the domain and filter as appropriate. </li>
@@ -131,8 +124,8 @@ number of undo levels however for the first release we may not support
 this.</li>
 </ul>
 
-<h2><span style="color: blue;">Updates
-Needed </span></h2>
+<h3><span style="color: blue;">Updates
+Needed </span></h3>
 <ul>
 <li> Add a button to allow select all for
 multi-select tables
