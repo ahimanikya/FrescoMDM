@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<relationship xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/RelationshipWebManager.xsd">
+	<relationship-types>
+		<type>TypeCustomerOf</type>
+		<type>TypeProductOf</type>
+		<type>TypeSupplierOf</type>
+	</relationship-types>
+	<page-definition>
+		<page>
+			<identifier>Relationships</identifier>
+			<tab name="Maintain">
+			</tab>
+			<tab name="History">
+			</tab>
+		</page>
+		<page>
+			<identifier>Hierarchies</identifier>
+			<tab name="Maintain">
+			</tab>
+			<tab name="History">
+			</tab>
+		</page>
+		<page>
+			<identifier>Groups</identifier>
+			<tab name="Maintain">
+			</tab>
+			<tab name="History">
+			</tab>
+		</page>
+		<page>
+			<identifier>Categories</identifier>
+			<tab name="Maintain">
+			</tab>
+			<tab name="History">
+			</tab>
+		</page>
+	</page-definition>
+</relationship>
