@@ -21,6 +21,7 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.decision;
+import com.sun.mdm.index.decision.DecisionMakerStruct;
 
 
 /**
@@ -31,6 +32,7 @@ public class DecisionMakerResult {
 
     private final DecisionMakerStruct mAssumedMatch;
     private final DecisionMakerStruct[] mPotentialDuplicates;
+    private boolean mAllowAssumedMatch;
 
 
     /** Creates a new instance of DecisionMakerResult
@@ -41,6 +43,7 @@ public class DecisionMakerResult {
     public DecisionMakerResult(DecisionMakerStruct assumedMatch, DecisionMakerStruct[] potentialDuplicates) {
         mAssumedMatch = assumedMatch;
         mPotentialDuplicates = potentialDuplicates;
+	mAllowAssumedMatch = true;
     }
 
 
@@ -48,7 +51,7 @@ public class DecisionMakerResult {
      * @return assumed match records
      */
     public DecisionMakerStruct getAssumedMatch() {
-        return mAssumedMatch;
+        return (mAllowAssumedMatch ? mAssumedMatch : null);
     }
 
 
@@ -56,7 +59,31 @@ public class DecisionMakerResult {
      * @return array of duplicates or null
      */
     public DecisionMakerStruct[] getPotentialDuplicates() {
-        return mPotentialDuplicates;
+	if (mAllowAssumedMatch || mAssumedMatch == null) {
+	    return mPotentialDuplicates;
+	}
+	// Add the rejected assumed match to the pot dup list
+	int nDups = 0;
+	if (mPotentialDuplicates != null) {
+	    nDups = mPotentialDuplicates.length;
+	}
+	DecisionMakerStruct[] dms = new DecisionMakerStruct[nDups+1];
+	dms[0] = mAssumedMatch;
+	for (int i=0; i<nDups; i++) {
+	    dms[i+1] = mPotentialDuplicates[i];
+	}
+	return dms;
     }
 
+    /** Flag the assumed match, if any, as being rejected
+     */
+    public void rejectAssumedMatch() {
+	mAllowAssumedMatch = false;
+    }
+
+    /** Flag the assumed match, if any, as being accepted
+     */
+    public void allowAssumedMatch() {
+	mAllowAssumedMatch = true;
+    }
 }

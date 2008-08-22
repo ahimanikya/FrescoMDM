@@ -1656,6 +1656,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                 }
                                 resultCode = MatchResult.ADD_NOT_ALLOWED;
                             } else {
+				// flag the assumed match as rejected
+				dmr.rejectAssumedMatch();
                                 createNewEO = true;
                             }
                         } else {
