@@ -43,7 +43,8 @@
 				<xs:element ref="database"/>
 				<xs:element ref="dateformat"/>
 				<xs:element ref="nodes" maxOccurs="unbounded"/>
-				<xs:element ref="relationships"/>
+				<xs:element ref="relationships" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="hierarchy" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -90,6 +91,23 @@
 		<xs:simpleType>
 			<xs:restriction base="xs:string"/>
 		</xs:simpleType>
+	</xs:element>
+	<!-- multi-level object data model -->
+	<xs:element name="node">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element ref="node" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- multi-level object data model -->
+	<xs:element name="hierarchy">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element ref="node" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
 	</xs:element>
 	<xs:element name="relationships">
 		<xs:complexType>
