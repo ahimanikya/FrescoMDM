@@ -90,6 +90,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     static final String tab28 = "                        ";
     static final String tab32 = "                            ";
     static final String tab36 = "                                ";
+
     /** The visual component that displays this panel.
      * If you need to access the component from this class,
      * just use getComponent().
@@ -101,7 +102,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private ConfigSettings mConfigSettings;
     final String xmlHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     private static final com.sun.mdm.index.util.Logger mLogger = com.sun.mdm.index.util.Logger.getLogger(
-            FinishPanel.class.getName());
+                                                                 FinishPanel.class.getName());
     String mViewName;
     String mDbName;
     String mMatchEngine;
@@ -112,6 +113,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     final boolean bDEBUG = false;
 
     //Instance mInstance;  // Master Index App Instance
+
     /** Create the wizard panel descriptor. */
     public FinishPanel() {
     }
@@ -527,10 +529,15 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 "\" xsi:noNamespaceSchemaLocation=\"schema/object.xsd\">\n";
         String tagTailObject = "</Configuration>";
 
+        // multi-level object data model
+        // relationships need to b removed.
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + mViewName +
                 "</name>" + "\n    <database>" + mDbName + "</database>" +
                 "\n    <dateformat>" + mDateFormat + "</dateformat>\n" +
-                getSubNodes(mPrimaryNode) + getRelationships() + tagTailObject;
+                getSubNodes(mPrimaryNode) + 
+                getRelationships() + 
+                getHierarchy() + 
+                tagTailObject;
 
         // Write xml to repository
         try {
@@ -611,7 +618,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 if (currentNode.isPrimary()) {
                     subNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                     getFieldSettings(vec, subNode, primaryNodeName, true);
                     i = 1;
                 }
@@ -752,9 +758,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get all nodes for current node
-     *
      *@return XML string
-     *
      */
     private String getSubNodes(EntityNode currentNode) {
         String nodes = "";
@@ -918,7 +922,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 nodes.add(getFieldNodesForEDM(targetNode, currentNode.getName(), i));
                 i = 1;
             }
@@ -945,7 +948,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 nodes.add(getFieldNodesForMidm(targetNode, currentNode.getName(), i));
                 i = 1;
             }
@@ -978,7 +980,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 nodes += getFieldNodesForEDM(targetNode, currentNode.getName(),
                         i);
                 i = 1;
@@ -997,10 +998,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
         return nodes;
     }
 
-    /** get Relationship
-     *
+    /** Gets Relationship
      *@return XML string
-     *
      */
     private String getRelationships() {
         String relationships = tab4 + "<relationships>\n";
@@ -1016,10 +1015,57 @@ public class FinishPanel implements WizardDescriptor.Panel {
             }
         }
         relationships += "    </relationships>\n";
-
         return relationships;
     }
-
+    
+   /** Gets data objects hierarchy
+    *  @param node EntityNode
+    *  @param tab 
+    *  @return XML string
+    */ 
+    private String getHierarchy(EntityNode entityNode, String tabs) {
+        String hierarchy = tabs + "<node>\n";
+        hierarchy += tabs + tab4 + "<name>" + entityNode.getName() + "</name>\n";
+        
+        int cnt = entityNode.getChildCount();
+        int subNodeCnt = cnt - entityNode.getFieldCnt();
+        if (subNodeCnt > 0) {
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) entityNode.getChildAt(i);
+                if (subNode.isSub()) {
+                    hierarchy += getHierarchy(subNode, tabs + tab4);
+                }
+            }          
+        }
+       
+        hierarchy += tabs + "</node>\n";
+        return hierarchy;
+    }
+     
+  /** Gets data objects hierarchy
+   *  @return XML string
+   */
+   private String getHierarchy() {
+        String hierarchy = tab4 + "<hierarchy>\n";
+        hierarchy += tab8 + "<node>\n";
+        hierarchy += tab12 + "<name>" + mPrimaryNode.getName() + "</name>\n";
+        
+        int cnt = mPrimaryNode.getChildCount();
+        int subNodeCnt = cnt - mPrimaryNode.getFieldCnt();
+        if (subNodeCnt > 0) {
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) mPrimaryNode.getChildAt(i);
+                if (subNode.isSub()) {              
+                    hierarchy += getHierarchy(subNode, tab12);
+                }
+            }
+        }
+        
+        hierarchy += tab8 + "</node>\n";  
+        hierarchy += "    </hierarchy>\n";
+        return hierarchy;
+    }
+    
     private ArrayList getSubObjects() {
         ArrayList relationships = new ArrayList();
         int cnt = mPrimaryNode.getChildCount();
@@ -1185,7 +1231,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 simpleSearch += getFieldGroups(targetNode, currentNode.getName(), tab20);
                 i = 1;
             }
@@ -1316,7 +1361,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 searchResultList += getSearchResultFieldRef(targetNode, currentNode.getName(), tab20);
                 i = 1;
             }
@@ -1541,7 +1585,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 reportFields += getReportFields(targetNode, currentNode.getName(), tab24);
                 i = 1;
             }
@@ -1738,7 +1781,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 subNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-
                 getFields(subNode, currentNode.getName(), bGetAvailable,
                         bForResult);
                 i = 1;

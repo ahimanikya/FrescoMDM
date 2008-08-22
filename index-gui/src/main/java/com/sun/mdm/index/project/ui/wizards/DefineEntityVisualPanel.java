@@ -602,10 +602,12 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
             mMenu.add(smTemplates);
         }
 
-        if (node.isPrimary()) {
+        if (node.isPrimary() || node.isSub()) {
+            // multi-level data object model
+            mMenu.addSeparator();
+
             mMenu.add(createMenuItem(NbBundle.getMessage(
-                        DefineEntityVisualPanel.class, "MSG_menu_NewSubEntity"),
-                    null));
+                        DefineEntityVisualPanel.class, "MSG_menu_NewSubEntity"), null));
             mButtonAddSub.setEnabled(true);
         }
 
@@ -617,7 +619,8 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         }
 
         // SubMenu for templates
-        if (node.isPrimary()) {
+        if (node.isPrimary() || node.isSub()) {
+            // multi-level data object model
             mMenu.addSeparator();
 
             JMenu smTemplates = new JMenu(NbBundle.getMessage(
@@ -642,10 +645,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
             mMenu.add(smTemplates);
         }
 
-        if (!node.isRoot() && !node.isPrimaryFields()) {
-            if (!node.isField()) {
-                mMenu.addSeparator();
-            }
+        if (node.isPrimary() || node.isSub() || node.isField()) {
+            // multi-tiered object model
+            mMenu.addSeparator();
 
             mMenu.add(createMenuItem(NbBundle.getMessage(
                         DefineEntityVisualPanel.class, "MSG_menu_Delete"), null));
