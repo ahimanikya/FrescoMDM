@@ -68,6 +68,7 @@
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
         <script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>  
 		<script type="text/javascript" >
+    	   var previewEuidDivs=[];
            var rand = "";
            function setRand(thisrand)  {
  	        rand = thisrand;
@@ -125,7 +126,8 @@
                                 <td>                                    
                                        <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
 										       href="javascript:void(0)"
-                                               onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'mainDupSource','')">  
+                                               onclick="javascript:getFormValues('advancedformData');setRand(Math.random());
+ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&random='+rand+'&'+queryStr,'outputdiv','')">  
                                                 <span><h:outputText value="#{msgs.search_button_label}"/></span></a>
                                  </td>                                    
                                 <td>                             

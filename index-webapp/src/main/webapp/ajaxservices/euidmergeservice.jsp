@@ -328,14 +328,24 @@ boolean isSessionActive = true;
             <table>
             <tr>
               <td>
+					<%StringBuffer message = new StringBuffer("<font style=\'padding-top:100px;color:green;\'>");
+						for (int i = 1; i<srcDestnEuids.length; i++) {
+						    message.append(srcDestnEuids[i]).append(",");
+					    }
+						message.replace(message.lastIndexOf(","),message.lastIndexOf(",")+1," ");
+						message.append(bundle.getString("so_merge_confirm_text")).append(" ");
+						message.append(srcDestnEuids[0]);
+					    message.append("</font>");
+						System.out.println(" message " + message);
+					%>
+
                <script> 
   	               euids="";
                    euidArray = [];
                     alleuidsArray = [];
-					//merge_destnEuid
+					document.getElementById('populatePreviewDiv').innerHTML = "<%=message%>";
 					document.getElementById('mergeDiv').style.visibility ='hidden';
-					document.getElementById('mergeDiv').style.display ='none';
-				      
+					document.getElementById('mergeDiv').style.display ='none';				      
 		       </script>
               </td>
              </tr>
@@ -816,7 +826,9 @@ boolean isSessionActive = true;
                                                                                                  </font>
                                                                                             </a>  
                                                                                         </div>
-																						<%}%>
+																						<%} else {%>
+																						   &nbsp;
+																						<% }%>
                                                                                         <%} else {%>
                                                                                         &nbsp;
                                                                                         <%}%>
