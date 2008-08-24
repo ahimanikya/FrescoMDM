@@ -419,7 +419,7 @@ HashMap previewEuidsHashMap  = new HashMap();
  finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):searchDuplicatesHandler.performSubmit();
 
 %>
-<% if (finalArrayList != null)   {
+<% if (!iscompareEuids && finalArrayList != null)   {
 %>
 
  <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
@@ -443,6 +443,18 @@ HashMap previewEuidsHashMap  = new HashMap();
 
 
 <% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
+<%if(iscompareEuids) {%>
+   <%String finalEuidsString = searchDuplicatesHandler.buildDuplicateEuids(finalArrayList);%> 
+    <table><tr><td>
+    <script>
+     window.location = '/<%=URI%>/compareduplicates.jsf?fromPage=duplicaterecords&duplicateEuids=<%=finalEuidsString%>';
+   </script>
+   </td>
+   </tr>
+   </table>
+
+<%}%>
+
 <%if(!isMultiMergeEOs) {%>
  <!-- Output here -->
 <table>
@@ -460,7 +472,7 @@ HashMap previewEuidsHashMap  = new HashMap();
 
                 <br>   
                  <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
+                    if(!iscompareEuids && finalArrayList != null && finalArrayList.size() >0 ) {
 
                 %>
                 <div id="dataDiv" style="overflow:auto;height:1024px;border: 1px solid #6B757B;">
@@ -468,7 +480,7 @@ HashMap previewEuidsHashMap  = new HashMap();
                         <table cellspacing="0" cellpadding="0" border="0">
                             <tr>
                             <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
+                            if( finalArrayList != null && finalArrayList.size() >0 ) {
                                 
                                 for(int fac=0;fac<finalArrayList.size();fac++) {
                                    

@@ -1505,6 +1505,41 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
  
 }        
 
+   /** 
+     * Addded  By Rajani Kanth  on 22/08/2008 <br>
+     * 
+     * This method is used to build String of duplicate euids delimited by commas (,) <br>
+     * 
+     * 
+     * @param finalArrayList 
+     * @return String  - String of duplicate euids <br>
+     * 
+     **/
+
+    public String buildDuplicateEuids(ArrayList finalArrayList) {
+        String finalEuidsString = new String();
+        StringBuffer arlInnerEuids = new StringBuffer();
+
+        try {
+            for (int fac = 0; fac < finalArrayList.size(); fac++) {
+                ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
+                //accumilate the duplicate euids here
+                for (int j = 0; j < arlInner.size(); j++) {
+                    HashMap eoHashMapValues = (HashMap) arlInner.get(j);
+                    arlInnerEuids.append((String) eoHashMapValues.get("EUID") + ",");
+                }
+            }
+
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("SDP020: Encountered an Exception : {0} ", ex.getMessage()), ex);
+        }
+        finalEuidsString = arlInnerEuids.toString();
+        finalEuidsString = finalEuidsString.substring(0, finalEuidsString.length() - 1);
+        return finalEuidsString;
+    }
+
+
+
 }
 
 
