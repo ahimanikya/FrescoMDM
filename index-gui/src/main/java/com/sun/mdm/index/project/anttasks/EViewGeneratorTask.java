@@ -162,7 +162,7 @@ public class EViewGeneratorTask extends Task {
                 mLog.info("Master Index Files are generated Successfully.");
             } catch (Exception ex) {
                 String mode = System.getProperty("run.mode");
-                if (mode == null || !mode.equals("run")) {
+                if (mode == null || !mode.equals("debug")) {
                    //delete "files-generated" folder when generation fails
                    String projPath = getProject().getProperty("basedir");
                    File destDir = new File(projPath,
