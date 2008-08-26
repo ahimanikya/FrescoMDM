@@ -336,8 +336,7 @@ boolean isSessionActive = true;
 						message.append(bundle.getString("so_merge_confirm_text")).append(" ");
 						message.append(srcDestnEuids[0]);
 					    message.append("</font>");
-						System.out.println(" message " + message);
-					%>
+ 					%>
 
                <script> 
   	               euids="";

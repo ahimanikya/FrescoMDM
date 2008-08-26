@@ -97,6 +97,7 @@ String print_text = bundle.getString("print_text");
 String total_records_text = bundle.getString("total_records_text");
 
 ArrayList fullFieldNamesList  = new ArrayList();
+String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/2008 for incorporate back button
 
 %>
 
@@ -152,7 +153,7 @@ if (results != null)   {
                          <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>&nbsp;
 			</td>
 			<td>
-				<% if (results.size() > 0)   {%>
+				<% if (results.size() > 0){%>
                     <h:panelGrid rendered="#{Operations.transLog_Print}"  >
                         <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/transactions.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
 					</h:panelGrid>             
@@ -184,7 +185,7 @@ if (results != null)   {
 								  transDetailsMap.put(valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber")),valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode")));
 								  %>
 
-                                        <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode"))%>" >										
+                                        <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode"))%>&previousQuery=<%=previousQuery%>&fromUrl=transactions.jsf" >										
 										<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 										</a>
 								   <%  }  else { %>

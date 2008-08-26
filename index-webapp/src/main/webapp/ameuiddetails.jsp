@@ -140,6 +140,12 @@ var thisIdx=0;
 		<%}%>
    <% }%>
 </script>
+<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in ameuiddetails.jsp  -->                                                                 
+ <% 
+ 	String pageName = request.getParameter("fromUrl");
+	String previousQuery = request.getQueryString();
+	String URL= pageName+"?"+previousQuery+"&back=true";
+ %>
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent">
                     <div id="header" class="detailedresults">
@@ -148,9 +154,15 @@ var thisIdx=0;
                                 <th align="left" class="euidHeadMessage">
                                     <b> <h:outputText value="Assumed Matches Details"/></b>
                                 </th>
+                                
+                                <td>
+                                    <a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
+						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
+					            </a>
+                                </td>
                             </tr>                
 							<tr>
-							   <td align="left"><div class="detailedresults" id="outputdiv"></div></td>
+							   <td align="left" colspan="2"><div class="detailedresults" id="outputdiv"></div></td>
 							</tr>
                         </table>
                     </div>

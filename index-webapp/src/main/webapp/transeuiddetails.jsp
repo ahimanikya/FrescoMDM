@@ -141,12 +141,23 @@ var thisIdx=0;
                                 <th align="left" class="euidHeadMessage">
                                      <b> <%=bundle.getString("transaction_details_title")%></b>
                                  </th>
+								 <!-- added by Narahari.M on 22/08/2008 for incorporate back button -->
+								 <% 
+ 								    String pageName = request.getParameter("fromUrl");
+								    String previousQuery = request.getQueryString();
+									String URL= pageName+"?"+previousQuery+"&back=true";
+								 %>
+								 <td>
+			               		      <a  href="<%=URL%>"  class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>">
+									  <span><h:outputText  value="#{msgs.back_button_text}"/></span>
+					                  </a>
+                                 </td>
                                </tr>               
                               <tr>
-                                <td align="center" style="align:center;text-align:center;color:green;"><div id="messages"></div></td>
+                                <td align="center" colspan="2" style="align:center;text-align:center;color:green;"><div id="messages"></div></td>
                                </tr>               							   
 			                   <tr>
-				                  <td valign="top">
+				                  <td valign="top" colspan="2">
                                       <div id="mainDupSource" class="duplicateresults"></div>                                       
 				                  </td>
 				               </tr>

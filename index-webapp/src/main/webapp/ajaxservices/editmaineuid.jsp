@@ -160,12 +160,18 @@ if(session!=null){
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td align="left" colspan="2">
-					                 <a title="<h:outputText  value="#{msgs.back_button_text}"/>" class="button" href="#" onclick="history.back()" >
-						               <span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					                 </a>
-                                    </td>
-                                </tr>
+
+  								<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->                                                                 
+								<% 
+ 								 String URL= "euiddetails.jsf?euid="+euidValue;
+								 %>
+
+                              <td align="left" colspan="2">
+ 			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
+						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
+					            </a>
+                               </td>
+                                 </tr>
 						       <tr>
                                     <td class="tablehead">
                                         <h:outputText value="#{msgs.edit_main_euid_label_text}" /> <%=euidValue%> &nbsp;&nbsp;

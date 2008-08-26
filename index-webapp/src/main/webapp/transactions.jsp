@@ -15,6 +15,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
+<%@ page import="java.util.Enumeration"%>
 <%@ page import="java.util.ArrayList"  %>
 
 <%
@@ -63,6 +64,7 @@ function setRand(thisrand)  {
 </script>
       </head>
 <%
+   Enumeration parameterNames = request.getParameterNames();
    double rand = java.lang.Math.random();
    String URI = request.getRequestURI();
    URI = URI.substring(1, URI.lastIndexOf("/"));
@@ -218,7 +220,7 @@ function setRand(thisrand)  {
                                             <td>
                                                     <nobr>
 													<% if(operations.isTransLog_SearchView()){%>	
-                                                        <a title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/transactionservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+														<a title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/transactionservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                             <span>
                                                                 <h:outputText value="#{msgs.search_button_label}"/>
                                                             </span>
@@ -264,8 +266,6 @@ function setRand(thisrand)  {
                     <div class="reportresults" id="outputdiv"> </div>   				
             </div>           
         </div>
-
-        
         
         
         
@@ -334,7 +334,20 @@ function setRand(thisrand)  {
       }         
     </script>
      
-
+<!-- added by Narahari.M on 22/08/2008 for incorporate back button -->
+<% if(request.getParameter("back") != null )  {%>
+<script>
+    var queryStr = '<%=request.getQueryString()%>';
+	setRand(Math.random());
+	ajaxURL('/<%=URI%>/ajaxservices/transactionservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');
+  <% while(parameterNames.hasMoreElements())   { 
+        String attributeName = (String) parameterNames.nextElement();
+        String attributeValue = (String) request.getParameter(attributeName);%>
+		populateContents('advancedformData','<%=attributeName%>','<%=attributeValue%>');
+  <%} %>
+	   
+</script>
+<% } %>        
    
    </html>
 </f:view>
