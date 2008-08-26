@@ -36,9 +36,11 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Collection"  %>
 <%@ page import="java.util.Iterator"  %>
+<%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
+<%@ page import="javax.faces.context.FacesContext" %>
 
 <f:view>
 <html>
@@ -107,6 +109,7 @@ function align(thisevent,divID) {
    ArrayList labelsList  = new ArrayList();
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
+   Enumeration parameterNames = request.getParameterNames();
    Operations operations=new Operations();
 %>
 
@@ -371,6 +374,9 @@ function align(thisevent,divID) {
 <div class="alert" id="ajaxOutputdiv"></div> 
 
         <%
+		  
+		  HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+
           PatientDetailsHandler  patientDetailsHandler = new PatientDetailsHandler();
           String[][] lidMaskingArray = patientDetailsHandler.getAllSystemCodes();
           
@@ -434,8 +440,38 @@ function align(thisevent,divID) {
 			}
 		}
      }         
-    </script>
-<script type="text/javascript">
+
+
+</script>
+<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->
+    <%if(request.getParameter("back")!=null){%>
+    <script>
+		 <% 
+		  String qryString  = request.getQueryString();
+	      qryString  = qryString.replaceAll("collectEuids=true","");
+		%>
+         var queryStr = '<%=qryString%>';
+         setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');
+   
+   <% while(parameterNames.hasMoreElements())   { 
+        String attributeName = (String) parameterNames.nextElement();
+        String attributeValue = (String) request.getParameter(attributeName);
+		//replace the wild character
+        attributeValue  = attributeValue.replaceAll("~~","%");
+   %>
+    populateContents('advancedformData','<%=attributeName%>','<%=attributeValue%>');
+   <%}%>
+   </script>
+   <%
+	patientDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));   
+	patientDetailsHandler.setSearchType(request.getParameter("selectedSearchType")); 
+	
+	facesSession.setAttribute("PatientDetailsHandler",patientDetailsHandler);
+
+   %>
+   <%}%>
+      
+    <script type="text/javascript">
      function closeDiv()    {                            
         document.getElementById('ajaxOutputdiv').style.visibility='hidden';
         document.getElementById('ajaxOutputdiv').style.display='none';
@@ -444,6 +480,7 @@ function align(thisevent,divID) {
      
 </html>
 </f:view>
+
 
 
 

@@ -35,12 +35,17 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
+    <!-- Modified by Narayan Bhat on 22-aug-2008 for the incorparte with the functionality of back button in euiddetails.jsp  
+    added String previousQueryStr = request.getQueryString();
+    and appended the same with every href link
+--> 
 <%
 //set locale value
+String previousQueryStr = null;
 if(session!=null){
  LocaleHandler localeHandler = new LocaleHandler();
  localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
-
+previousQueryStr = request.getQueryString();
 }
 %>
     <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />  
@@ -244,7 +249,7 @@ for(int i = 0 ; i < keysObj.length;i++) {
 
 												   <%  }  else if ((screenObject.getRootObj().getName()+"."+"EUID").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 												       <% if (!euidPrinted) { %>
-														<a href="ameuiddetails.jsf?AMID=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>&euids=<%=sbr.toString()%>" >
+														<a href="ameuiddetails.jsf?AMID=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>&euids=<%=sbr.toString()%>&<%=previousQueryStr%>&fromUrl=assumedmatches.jsf" >
 														<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 														</a>
 
