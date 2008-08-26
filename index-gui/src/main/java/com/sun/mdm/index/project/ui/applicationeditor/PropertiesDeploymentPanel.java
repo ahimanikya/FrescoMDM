@@ -123,6 +123,8 @@ public class PropertiesDeploymentPanel extends JPanel {
                 PropertiesDeploymentPanel.class, "MSG_db_Oracle"), 0);
         cbDatabase.insertItemAt(NbBundle.getMessage(
                 PropertiesDeploymentPanel.class, "MSG_db_SQLServer"), 1);
+        cbDatabase.insertItemAt(NbBundle.getMessage(
+                PropertiesDeploymentPanel.class, "MSG_db_MySQL"), 2);
         cbDatabase.setEnabled(false);
         
         cbMatchEngine = new JComboBox();
