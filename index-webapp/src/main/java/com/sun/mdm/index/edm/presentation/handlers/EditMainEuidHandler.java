@@ -1155,7 +1155,7 @@ public class EditMainEuidHandler {
 
             //BUILD AND THE VALUES FOR THE MINOR OBJECTS HERE
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
-            HashMap enterprisObjectDBMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            HashMap enterprisObjectDBMap = compareDuplicateManager.getEnterpriseObjectAsHashMapFromDB(eo, screenObject);
 
             //get the child object node configs
             for (int i = 0; i < childNodeConfigs.length; i++) {
