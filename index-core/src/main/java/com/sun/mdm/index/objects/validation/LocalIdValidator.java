@@ -172,19 +172,20 @@ public class LocalIdValidator implements ObjectValidator {
         public void validate(String id) throws ValidationException {
 
             if (id.length() > localIddLength) {
-                throw new ValidationException(mLocalizer.t("OBJ675: The value " + 
+                throw new ValidationException(systemId, null, format, id, 
+                                    mLocalizer.t("OBJ675: The value " + 
                                     "for ID {0} exceeds the maximum length " +
                                     "allowed for a Local ID: {1}", id, localIddLength));
             }
             
             if (pattern != null) {
                 if (!pattern.matcher(id).matches()) {
-                    throw new ValidationException(mLocalizer.t("OBJ676: The value " + 
+                    throw new ValidationException(systemId, null, format ,id,
+                                        mLocalizer.t("OBJ676: The value " + 
                                         "of the Local ID ({0}) does not conform " + 
                                         "to the format of the Local ID for {1}, " +
                                         "which is this pattern \"{2}\"", 
                                         id, systemId, format));
-                    
                 }
             }
                 

@@ -86,25 +86,25 @@ public class StandardizerImpl implements Standardizer{
             standardizerAPIImpl.initialize(standardizerEngineConfig);
         } catch (StandardizationException ex) {
             throw new StandardizationException(mLocalizer.t("MAT546: Initializing the standardization " + 
-                                        "engine failed: {0}", ex));
+                                        "engine failed: {0}", ex.getMessage()));
         } catch (InstantiationException ex) {
             throw new InstantiationException(mLocalizer.t("MAT547: StandardizerImpl failed to " + 
                                         "instantiate the user API implementation " + 
-                                        "class: {0}", ex));
+                                        "class: {0}", ex.getMessage()));
         } catch (ClassNotFoundException ex) {
             throw new ClassNotFoundException(mLocalizer.t("MAT548: StandardizerImpl failed to " + 
                                         "load the user API implementation class: " + 
-                                        "{0}", ex));
+                                        "{0}", ex.getMessage()));
         } catch (IllegalAccessException ex) {
             throw new IllegalAccessException(mLocalizer.t("MAT549: StandardizerImpl failed to " + 
                                         "access the user API implementation " + 
-                                        "class: {0}", ex));
+                                        "class: {0}", ex.getMessage()));
         } catch (RuntimeException ex) {
             throw new RuntimeException(mLocalizer.t("MAT550: Initialization failed for " + 
-                                        "StandardizerImpl: {0}", ex));
+                                        "StandardizerImpl: {0}", ex.getMessage()));
         } catch (LinkageError ex) {
             throw new LinkageError(mLocalizer.t("MAT551: Failed to load a native library: {0}", 
-                                        ex));
+                                        ex.getMessage()));
         }
     }
     
