@@ -13,49 +13,39 @@ pageTracker._initData();
 pageTracker._trackPageview();
 </script></head>
 <body class="view">
-<h1 class="pagename">Manage-&gt;Groups-&gt;Maintain</h1>
+<h1 class="pagename">Manage-&gt;Groups Instance-&gt;Maintain</h1>
 <p>Displays information about records and how they are
-grouped. Either a user can find records associated with a group or find
-the groups that a specific record is associated with.
+grouped. Either a user can find records associated with a group instance or find
+the group instances that a specific record is associated with.
 <br />
 <span style="font-weight: bold;"></span></p>
 <h2>Use Cases<span style="font-weight: bold;"></span></h2>
 <ul>
-<li> Maintain groups of records.<br />
-<br />
-An example of a group is household.&nbsp; Where the household group
-shows all
-the members of the same household. </li>
-<li> View the groups associated with a specific
+<li> Maintain group instance. <br /><br />For example, a group called
+Household was created. &nbsp;This group has many household instances
+such as "333 33rd St Apt2", "Broadway and 10th", ... that represent the
+people who live at a specific address. &nbsp;&nbsp;</li></ul><ul>
+<li> View the group instances associated with a specific
 record.
 </li>
-<li> View the records within a group.
+<li> View the records within a group instance.
 </li>
 <li> View details about a specific records within a
-group.
+group instance.
 </li>
 <li> View the properties (fixed and extended
-attributes) associated with a specific record in a group. </li>
+attributes) associated with a specific group instance.&nbsp; </li>
 </ul>
-<h2>Records in a Group</h2>
+<h2>Records in a Group Instance</h2>
 <br />
 <ul>
 <li> User wants to find records associated with a
-group. </li>
+group instance </li>
 <li> User may want to add records to the selected
-group.</li>
-<li>User may want to remove records from a selected group</li>
+group instance</li>
+<li>User may want to remove records from a selected group instance</li>
 </ul>
-<span style="font-weight: bold;"><br />
-</span>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><img src="../attach/ViewGroupsS1.png" /></td>
-</tr>
-</tbody>
-</table>
-<br />
+<span style="font-weight: bold;"></span><br /><h3>Functional Wireframe</h3>This is a crude representation of the layout and functionality of the screen. &nbsp;<br /><br /><img style="width: 799px; height: 660px;" alt="Functional Wireframe Records in a Group Instance" src="../attach/GroupInstancesByGroupRough.png" />
 <h3><span style="color: green;">Notes</span></h3>
 <br />
 <ul>
@@ -66,22 +56,12 @@ the table should have a single 'No Records Found' entry.
 only be enabled if at least one different group is associated with the
 same record. Also the associated groups must be viewable based on the
 current access role.</li>
-</ul><h3><span style="color: blue;">Updates
-Needed </span></h3>
-<ul><li> Add a button to allow drill down from record
-summary to details.</li><li>Change Group Properties to Group Attribtutes</li><li>Add label "Other Attributes" to area that shows 'extended attributes'</li></ul>
-<h2>Groups for a Single Record</h2>
+</ul><br /><h2>Groups for a Single Record</h2>
 <br />User wants to find what groups a record belongs to (if
 any).
-<p></p>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><img src="../attach/ViewGroupsS2.png" /></td>
-</tr>
-</tbody>
-</table>
-<br />
+<p></p><h3>Functional Wireframe</h3>This is a crude representation of
+the layout and functionality of the screen. &nbsp;It will be updated
+with a better wireframe later.<p></p><p><img style="width: 752px; height: 680px;" alt="Functional Wireframe Groups for a Single Record" src="../attach/GroupInstancesByRecordRough.png" /></p><br />
 <h3><span style="color: green;">Notes</span>
 <span style="color: green;"></span></h3>
 <ul>
@@ -90,48 +70,18 @@ the table should have a single 'No Groups are associated with this
 record.' entry.
 </li>
 </ul>
-<br /><h3><span style="color: blue;">Updates
-Needed </span></h3>
-<ul><li> Add a button to allow select all for
-multi-select tables
-</li><li> Add a button to allow drill down from record
-summary to details.</li><li>Change Group Properties to Group Attribtutes</li><li>Add label "Other Attributes" to area that shows 'extended attributes'</li></ul><br /><br />
+<br /><h3><span style="color: blue;"></span></h3><br /><br />
 <h2>View Associated Groups</h2>
 <br />
 <p>View other groups associated with the currently selected
 record.
 </p>
-<p></p>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><img src="../attach/ViewGroupsS3.png" /></td>
-</tr>
-</tbody>
-</table>
-<br />
-<h3><span style="color: green;">Notes:</span>
-<br />
-</h3>
-<ul>
-<li> As shown here the screen changes to the
-Search by Group option and sets the domain and filter as appropriate. </li>
-<li> The back button will need to update its text
-depending on what screen was navigated from. Additionally selecting it
-should restore the GUI to the previous screen. </li>
-<li> The back button should allow an arbitrary
-number of undo levels however for the first release we may not support
-this.</li>
+<p>Show Records in Group Screen filtered to show all Group Instances&nbsp; associated with a Record.</p>
+<h3><span style="color: green;">Notes - nice to have</span>.</h3>
+<ul><li>Back button to return to orginal screen with selected values. &nbsp;This should support an arbitray number of levels.</li>
 </ul>
 
-<h3><span style="color: blue;">Updates
-Needed </span></h3>
-<ul>
-<li> Add a button to allow select all for
-multi-select tables
-</li>
-<li> Add a button to allow drill down from record
-summary to details.</li><br /></ul><hr style="width: 100%; height: 2px;" /><ul>
+<h3><span style="color: blue;"></span></h3><hr style="width: 100%; height: 2px;" /><ul>
 </ul>
 <table class="main" border="0" cellpadding="0" cellspacing="0">
 <tbody>
