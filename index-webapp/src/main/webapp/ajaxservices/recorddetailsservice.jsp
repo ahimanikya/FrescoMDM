@@ -27,7 +27,6 @@
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
-<%@ page import="javax.faces.context.FacesContext" %>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -38,17 +37,12 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
-<!-- Modified by Narayan Bhat on 22-aug-2008 for the incorparte with the functionality of back button in euiddetails.jsp  
-    added String previousQueryStr = request.getQueryString();
-    and appended the same with every href link
--->        
 <%
- String previousQueryStr = null;
 //set locale value
 if(session!=null){
  LocaleHandler localeHandler = new LocaleHandler();
  localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
- previousQueryStr = request.getQueryString();
+
 }
 %>
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
@@ -134,8 +128,8 @@ ArrayList collectedEuidsList = new ArrayList();
 <%
   boolean isValidationErrorOccured = false;
   //HashMap valiadtions = new HashMap();
-   ArrayList requiredValuesArray = new ArrayList(); 
-   
+   ArrayList requiredValuesArray = new ArrayList();
+
 %>
 
 <% //Build the request Map 
@@ -243,7 +237,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
      <%if(compareEuidsList != null && compareEuidsList.size() > 0) { %>
 		<table><tr><td>
   		<script>
-           window.location = '/<%=URI%>/compareduplicates.jsf?euids=<%=allEuidsString%>&previousQueryStr=<%=previousQueryStr%>&fromUrl=dashboard.jsf';
+           window.location = '/<%=URI%>/compareduplicates.jsf?euids=<%=allEuidsString%>';
  		</script>
  		</td></tr>
 		</table>
@@ -274,13 +268,12 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 		<table><tr><td>
           <div class="ajaxalert">
 		<script>
- 		if (checkedItems.length >= 2)  { 
+		if (checkedItems.length >= 2)  { 
 		  var euids = "";
 		  for(var j=0;j<checkedItems.length;j++) {
 			euids +=checkedItems[j] + ",";
 		  }
-		  
-		  window.location = '/<%=URI%>/compareduplicates.jsf?euids='+checkedItems+'&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
+		  window.location = '/<%=URI%>/compareduplicates.jsf?euids='+checkedItems;
 	    } else {
 	        var messages = document.getElementById("messages");
 	        messages.innerHTML= "<ul> <li>Please select at least two EUID to compare </li> </ul>";
@@ -305,15 +298,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 <table>
   <tr><td>
   <script>
-	   <%if("euiddetails.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-         window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=euidValue%>';
-	   <%} else if("compareduplicates.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-         window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=euidValue%>';
-	   <%} else if("dashboard.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-         window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=euidValue%>&<%=previousQueryStr%>&fromUrl=dashboard.jsf';
-	   <%} else {%>
-         window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=euidValue%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
-	   <%}%>
+      window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=euidValue%>';
   </script>
   </td>
   </tr>
@@ -357,15 +342,8 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
          <tr><td>
          <script>
       	     alert("'<%=megredEuid%>'  <%=active_euid_text%>  '<%=euidValue%>'.");			   
- 			 <%if("euiddetails.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-				 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
-			 <%} else if("dashboard.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-				 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=dashboard.jsf';
-			 <%} else {%>
-				 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
-			 <%}%>
-		  
-		  </script>
+             window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+         </script>
          </td>
          </tr>
          </table>
@@ -399,8 +377,8 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 <table>
   <tr><td>
   <script>
-        window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=eo.getEUID()%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
-   </script>
+           window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=eo.getEUID()%>';
+  </script>
   </td>
   </tr>
   </table>
@@ -524,11 +502,8 @@ if (results != null)   {
          <tr>
              <td width="30%">
 			   <% if (operations.isEO_Compare() && results.size() > 1)   {%>
-  
- 					  <a  
-					     href="javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&<%=previousQueryStr%>&fromUrl=recorddetails.jsf','messages','')" 
-						 class="button" 
-						 title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>">
+ 					  <a class="button" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"
+					     href="javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true','messages','')" >
                          <span>
                               <h:outputText value="#{msgs.dashboard_compare_tab_button}"/>
                          </span>
@@ -564,11 +539,10 @@ if (results != null)   {
                   	   <tbody>
                        <% for (int i3 = 0; i3 < results.size(); i3++) { %>
                         <tr> 
-                            <%
-                            
-                            HashMap valueMap = (HashMap) results.get(i3);
+                            <%HashMap valueMap = (HashMap) results.get(i3);
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
- 								    String keyValue = (String) keys.toArray()[kc];
+								 //+ "Sridhar ==== " + (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc])));
+								    String keyValue = (String) keys.toArray()[kc];
 								    String fullfieldValue = (String) fullFieldNamesList.toArray()[kc];
 									
 				              %>
@@ -582,12 +556,10 @@ if (results != null)   {
 									  <%} else {%>
                                         <input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
 									  <%}%>
-									  <%}
-                                                                           %>
-                                                                          
-		                          <a href="euiddetails.jsf?euid=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf">
-                                           <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%>
-										</a>                                                                                
+									  <%}%>
+									    <a href="euiddetails.jsf?euid=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>">
+                                           <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 
+										</a>
 									<%}else if(!keyValue.equalsIgnoreCase("Weight") && fullfieldValue.indexOf(screenObject.getRootObj().getName()) != 0) {
                                   String minorObjectType = fullfieldValue.substring(0,fullfieldValue.indexOf("."));
                                   
@@ -665,7 +637,13 @@ if (results != null)   {
 		  msgs.append("</ul>");		  
      %>     	 
 </p>
-</div>
+	 <script>
+		 var messages = document.getElementById("messages");
+	     
+	     messages.innerHTML= escape('<%=msgs%>');
+		 messages.style.visibility="visible";
+	 </script>
+	 </div>
 
 <% } %>
 

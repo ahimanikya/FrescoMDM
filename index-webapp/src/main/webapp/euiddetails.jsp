@@ -29,8 +29,6 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Collection"  %>
 <%@ page import="java.util.Iterator"  %>
-<%@ page import="java.util.Enumeration"  %>
-
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
@@ -144,7 +142,7 @@ if(session!=null){
                                                          value="<%=requestEuidVE%>" /> 
                                 </td>
                                 <td>                                    
-                                    <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('potentialDupBasicForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails.jsf&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
+                                    <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('potentialDupBasicForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
 							    </td>
                                 <td>                                    
                                      <h:commandLink  title="#{msgs.Advanced_search_text}" styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
@@ -156,31 +154,13 @@ if(session!=null){
                                     </h:commandLink>                                     
                                 </td>
                              </h:form>
-							    <%if(request.getParameter("fromUrl") != null ) {%>
-							 <td>
-								<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->                                                                 
-								<% 
-								 String pageName = request.getParameter("fromUrl");
-								 String previousQuery = request.getQueryString();
-								 String URL= pageName+"?"+previousQuery+"&back=true";
-								 %>
- 			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
-						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					            </a>
-
- 							 </td>
-						   <%} else {%>
 							 <td>	
                                 <FORM>
-			               		<a href="#" 
-								   onclick="history.back()" 
-								   class="button" 
-								   title="<h:outputText  value="#{msgs.back_button_text}"/>" >
+			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="#" onclick="history.back()" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					            </a>
   				              </FORM>
 							 </td>
- 						   <%}%>
                             </tr>
  				             <tr>
                                 <td colspan="5">
@@ -1365,6 +1345,6 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
     makeDraggable("unLinkSoDiv");
     makeDraggable("linkSoDiv");
 </script>
-     </html>
+    </html>
     </f:view>
     

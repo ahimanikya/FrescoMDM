@@ -31,7 +31,6 @@
 <%@ page import="java.util.Collection"  %>
 <%@ page import="java.sql.Timestamp"  %>
 <%@ page import="java.util.Iterator"  %>
-<%@ page import="java.util.Enumeration"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -105,7 +104,6 @@ function align(thisevent,divID) {
 
 <% 
    FacesContext facesContext = FacesContext.getCurrentInstance(); 
-   HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
    String from = (String)facesContext.getExternalContext().getRequestParameterMap().get("where");
    Integer size = 0; 
    double rand = java.lang.Math.random();
@@ -116,7 +114,6 @@ function align(thisevent,divID) {
    ArrayList labelsList  = new ArrayList();
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
-   Enumeration parameterNames = request.getParameterNames();
 %>
 
 <div id="mainContent" style="overflow:hidden">   
@@ -469,25 +466,5 @@ function align(thisevent,divID) {
  	    ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random=<%=rand%>&<%=queryStr%>','outputdiv','')
      </script>
 <% }  %>
-<!-- added by Narahari.M on 22/08/2008 for incorporate back button -->
-<% if(request.getParameter("back") != null )  {%>
-<script>
-    var queryStr = '<%=request.getQueryString()%>'
-	setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');
-  <% while(parameterNames.hasMoreElements())   { 
-        String attributeName = (String) parameterNames.nextElement();
-        String attributeValue = (String) request.getParameter(attributeName);%>
-        populateContents('advancedformData','<%=attributeName%>','<%=attributeValue%>');
-  <%} %>
-	   
-</script>
- <%
-	searchDuplicatesHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));   
-	searchDuplicatesHandler.setSearchType(request.getParameter("selectedSearchType")); 
-	
-	facesSession.setAttribute("SearchDuplicatesHandler",searchDuplicatesHandler);
-
-   %>
-<% } %>   
     </html> 
 </f:view>

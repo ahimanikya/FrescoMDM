@@ -100,7 +100,7 @@
                                 <td align="left">
                                     <h:outputText value="#{msgs.datatable_euid_text}"/>
                                 </td>
-                                <td align="left">
+                                   <td align="left">
                                     <h:inputText   
                                         id="euidField"
                                         title="EUID"
@@ -108,12 +108,10 @@
 								        maxlength="#{SourceHandler.euidLength}" 
 										/>
                                 </td>
-								 <!-- added by Narahari.M on 22/08/2008 for incorporate back button -->
-								 
+
                                   <% if(request.getParameter("euids") != null) { %>
                                 <td>                                    
-                                     <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=compareduplicates.jsf&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
- 
+                                     <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
                                 </td>                                    
                                 <td>                                    
 									 <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
@@ -123,33 +121,7 @@
                                             <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
                                        </span>
                                     </h:commandLink>                          
-							</td>
-							<%if(request.getParameter("fromUrl") != null ) {%>
-							 <td>
-								                                                            
-								<% 
-								 String pageName = request.getParameter("fromUrl");
-								 String previousQuery = request.getQueryString();
-								 String URL= pageName+"?"+previousQuery+"&back=true";
-								 %>
- 			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
-						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					            </a>
-
- 							 </td> 
-							 <%} else {%>
-							 <td>	
-                                <FORM>
-			               		<a href="#" 
-								   onclick="history.back()" 
-								   class="button" 
-								   title="<h:outputText  value="#{msgs.back_button_text}"/>" >
-						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					            </a>
-  				              </FORM>
-							 </td>
- 						   <%}%>
-                                   
+							</td>                                    
                             <%}else {%>
                                 <td>                                    
                                        <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
@@ -159,41 +131,15 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
                                                 <span><h:outputText value="#{msgs.search_button_label}"/></span></a>
                                  </td>                                    
                                 <td>                             
-                                        <a  href="duplicaterecords.jsf" 
-									       class="button" 
-										   title="<h:outputText value="#{msgs.Advanced_search_text}"/>" >  
-  										<span>
+								      <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
+                                        <span>
                                             <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
                                             <h:outputText  value="#{msgs.Advanced_search_text}"/>
                                             <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
                                        </span>
-									   </a>
-                                </td> 
-								<%if(request.getParameter("fromUrl") != null ) {%>
-							 <td>
-								
-								<% 
-								 String pageName = request.getParameter("fromUrl");
-								 String previousQuery = request.getQueryString();
-								 String URL= pageName+"?"+previousQuery+"&back=true";
-								 %>
- 			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
-						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					            </a>
-
- 							 </td><%} else {%>
-							 <td>	
-                                <FORM>
-			               		<a href="#" 
-								   onclick="history.back()" 
-								   class="button" 
-								   title="<h:outputText  value="#{msgs.back_button_text}"/>" >
-						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					            </a>
-  				              </FORM>
-							 </td>
- 						   <%}%>
-	<%}%>
+                                    </h:commandLink>                          
+                                </td>                                    
+									<%}%>
                              </tr>
                             <tr>
                                 <td colspan="2">                           

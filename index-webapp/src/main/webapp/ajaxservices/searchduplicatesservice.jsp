@@ -113,9 +113,7 @@ ArrayList fullFieldNamesList  = new ArrayList();
 
 //Variables required compare euids
 String compareEuids = request.getParameter("compareEuids");
-boolean iscompareEuids  = (null == compareEuids?false:true);
-
-boolean isEuidValueNotEntered = false;
+boolean iscompareEuids = (null == compareEuids?false:true);
 
 //Variables required for compare euids
 String collectedEuids = request.getParameter("collecteuid");
@@ -145,8 +143,8 @@ boolean isCancelMultiMergeEOs= (null == cancelMultiMergeEOs?false:true);
 
 String keyParam = new String();
 ArrayList collectedEuidsList = new ArrayList();
+
 HashMap previewEuidsHashMap  = new HashMap();
-String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/2008 for incorporate back button
 %>
 
 <%
@@ -192,19 +190,6 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
 				 
 %>                
 
-<%if (iscompareEuids && request.getParameter("EUID") != null && request.getParameter("EUID").trim().length() == 0 ) {
-	isEuidValueNotEntered = true;
-	%>
-   <div class="ajaxalert">
-		   <table cellpadding="0" cellspacing="0" border="0">
-			 <tr>
-				 <td>
-                    <b><%=bundle.getString("enter_euid_text")%> </b>
-				 </td>
-			 </tr>
-		   </table>
-   </div>
-   <%}%>
 
 
 <%if(isPreviewMerge) {%>  <!--if is Preview Merge-->
@@ -431,18 +416,18 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
 	 }
  
  //Final duplicates array list here
- finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):(!isEuidValueNotEntered)?searchDuplicatesHandler.performSubmit():new ArrayList();
- Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
- 
+ finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):searchDuplicatesHandler.performSubmit();
+
 %>
-<% if (!iscompareEuids && finalArrayList != null)   {%>
+<% if (!iscompareEuids && finalArrayList != null)   {
+%>
 
  <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
          <tr>
-           <td  align="left" >
+           <td  align="left" width="50%">
 			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=finalArrayList.size()%>
             </td>
-            <td colspan="2" style="align:left;">
+            <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
 				    <% if (operations.isPotDup_Print()) { %>
                          <a class="button" title="<%=bundle.getString("print_text")%>" href="javascript:void(0)"
@@ -456,18 +441,6 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
        </table>    
 <% } %>
 
-<%if (!isEuidValueNotEntered && iscompareEuids && finalArrayList != null && finalArrayList.size() == 0) {%>
-   <div class="ajaxalert">
-		   <table cellpadding="0" cellspacing="0" border="0">
-			 <tr>
-				 <td>
-				     <% String messages = "EUID '" + request.getParameter("EUID") + "' " + bundle.getString("euid_not_found_text"); %>     	 <b><%=messages%> </b>
-				 </td>
-			 </tr>
-		   </table>
-   </div>
-   <%}%>
-   
 
 <% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
 <%if(iscompareEuids) {%>
@@ -1007,7 +980,7 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                                <a href="compareduplicates.jsf?fromPage=duplicaterecords&duplicateEuids=<%=finalEuidsString%>&previousQuery=<%=previousQuery%>&fromUrl=duplicaterecords.jsf" 
+                                                                <a href="compareduplicates.jsf?fromPage=duplicaterecords&duplicateEuids=<%=finalEuidsString%>" 
 															  class="downlink"  title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>" 
 															  >   
 															  </a>
@@ -1028,6 +1001,19 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                          <%}%> <!-- final Array list  condition in session-->
                </div> 
                <%}%>  
+               <%
+                   if (finalArrayList != null && finalArrayList.size() == 0) {
+               %>
+               <div class="printClass">
+                       <table cellpadding="0" cellspacing="0" border="0">
+                         <tr>
+                             <td>
+                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
+                             </td>
+                         </tr>
+                       </table>
+               </div>
+               <%}%>
                
             </div>
             
@@ -1037,29 +1023,29 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
     <div class="ajaxalert">
     <table>
 	   <tr>
-	     <td> 
-	 
-		 <%
-			  StringBuffer msgs = new StringBuffer("<ul>");	
-		
-			  while (messagesIter.hasNext()) {
- 						 FacesMessage facesMessage = (FacesMessage) messagesIter.next();
-						 msgs.append("<li>");
-						 msgs.append(facesMessage.getSummary());
-						 msgs.append("</li>");
-			  }
-			  msgs.append("</ul>");		  
-		 %>     	 
+	     <td>
+     <%
+		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+	      StringBuffer msgs = new StringBuffer("<ul>");	
+          while (messagesIter.hasNext()) {
+                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
+                     msgs.append("<li>");
+					 msgs.append(facesMessage.getSummary());
+					 msgs.append("</li>");
+          }
+		  msgs.append("</ul>");		  
+     %>     	 
 
-		 <script>
-			 var messages = document.getElementById("messages");
-			 messages.innerHTML= "<%=msgs%>";
-		 </script>
-	    </td>
+	 <script>
+		 var messages = document.getElementById("messages");
+	     messages.innerHTML= "<%=msgs%>";
+	 </script>
+	   </td>
 	   </tr>
 	 <table>
 	 </div>
- <% } %>
+
+<% } %>
 
 
   <%} %>  <!-- Session check -->

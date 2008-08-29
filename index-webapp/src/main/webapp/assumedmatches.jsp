@@ -15,7 +15,6 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.sql.Timestamp"  %>
 <%@ page import="java.util.HashMap"  %>
-<%@ page import="java.util.Enumeration"%>
 
 
 <%
@@ -79,7 +78,6 @@ function setRand(thisrand)  {
    String from = (String)facesContext.getExternalContext().getRequestParameterMap().get("where");
   AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
   Operations operations=new Operations();
-  Enumeration parameterNames = request.getParameterNames();
 %>
     <div id ="assumedmatches " class="basicSearch">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
@@ -388,22 +386,5 @@ function setRand(thisrand)  {
  	     ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=<%=rand%>&<%=queryStr%>','outputdiv','')
      </script>
 <% }  %>
-<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in ameuiddetails.jsp  -->
-    <%
-    
-    if(request.getParameter("back")!=null){%>
-    <script>
-         var queryStr = '<%=request.getQueryString()%>';
-         setRand(Math.random());
-		 ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');
-   
-   <% while(parameterNames.hasMoreElements())   { 
-        String attributeName = (String) parameterNames.nextElement();
-        String attributeValue = (String) request.getParameter(attributeName);
-   %>
-    populateContents('advancedformData','<%=attributeName%>','<%=attributeValue%>');
-   <%}%>
-   </script>
-   <%}%>
 </html>
 </f:view>              

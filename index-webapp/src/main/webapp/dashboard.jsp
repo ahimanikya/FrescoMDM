@@ -7,7 +7,6 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
 <%@ page import="javax.faces.context.FacesContext"  %>
 <%@ page import="java.util.ResourceBundle"  %>
-<%@ page import="java.util.Enumeration"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%
@@ -157,7 +156,7 @@
                       </td>
                       <td>
                            <a href="javascript:void(0)" 
-							 onclick="javascript:getFormValues('QuickSearchForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=dashboard.jsf&pageFrom=dashboard&singleEuidSearch=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"						  class="button" 
+							 onclick="javascript:getFormValues('QuickSearchForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=dashboard&pageFrom=dashboard&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"						  class="button" 
 						     title="<h:outputText value="#{msgs.search_button_label}"/>" >
 							 <span><h:outputText value="#{msgs.search_button_label}"/></span></a>
 
@@ -290,7 +289,7 @@
                     <td><h:inputText  id="euid4Field"  title="EUID 4"  onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td align="left">
                             <a href="javascript:void(0)"   
-                             onclick="javascript:getFormValues('compareform');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&pageFrom=dashboard&compareEuids=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"
+                             onclick="javascript:getFormValues('compareform');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&pageFrom=dashboard&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"
 							 class="button" 
 						     title="<h:outputText value="#{msgs.search_button_label}"/>" >   
 							 <span><h:outputText value="#{msgs.dashboard_compare_but_text}"/></span>
@@ -325,30 +324,6 @@
     }
 </script>                
 
-
-<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->
- <%
-    Enumeration parameterNames = request.getParameterNames();
-  %>
-    <%if(request.getParameter("back")!=null ){%>
-     <script>
-    <% while(parameterNames.hasMoreElements())   { 
-        String attributeName = (String) parameterNames.nextElement();
-        String attributeValue = (String) request.getParameter(attributeName);
-		//replace the wild character
-        attributeValue  = attributeValue.replaceAll("~~","%");
-		if(request.getParameter("singleEuidSearch")!=null) {
-   %>
-    populateContents('QuickSearchForm','<%=attributeName%>','<%=attributeValue%>');
-    <%} else if(request.getParameter("compareEuids")!=null){%>
-	 populateContents('compareform','<%=attributeName%>','<%=attributeValue%>');
-	<%}%>
-   <%}%>
-   </script>
-   <%
- 
-   %>
-   <%}%>
     </body>
     </html>
 </f:view>
