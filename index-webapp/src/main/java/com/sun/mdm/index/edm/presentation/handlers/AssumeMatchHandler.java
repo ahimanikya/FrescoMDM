@@ -477,6 +477,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         //Array list of field configs
         ArrayList fcArrayList = super.getResultsConfigArray();
         String epathValue = new String();
+       
         
         ArrayList amArrayList = new ArrayList();
         HashMap summaryMap = new HashMap();
@@ -484,16 +485,21 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         HashMap beforeMap = new HashMap();
         HashMap afterMap = new HashMap();
         try {
+             ConfigManager.init();
+            
             for (int j = 0; j < amList.size(); j++) { //Each Summary has Before and After
 
                 HashMap hashMap = (HashMap) amList.get(j); //Values always are in 0th index
-
+                
                 if (j == 0) {
                     ams = (AssumedMatchSummary) hashMap.get("summary");
                     before = (EnterpriseObject) hashMap.get("before");
                     after = (EnterpriseObject) hashMap.get("after");
                     SystemObject assumedSystemObject = masterControllerService.getSystemObject(ams.getSystemCode(), ams.getLID());
 
+                    //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
+                    //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
+                    boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null ) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(assumedSystemObject.getObject()):true;
  
                     //get the system object of tht original assumed match from the before image of the EO
                     //Collect before and after at the 0th index
@@ -524,7 +530,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                             if (fieldConfig.getValueType() == 6) {
                                 //afterMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //afterMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject())));
-                                if (EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject()) != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+                                if (EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject()) != null && hasSensitiveData && !operations.isField_VIP() && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                                     afterMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
@@ -534,7 +540,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                             } else {
                                 //Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                                 Object value = EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject());
-                                if (value != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+                                if (value != null && hasSensitiveData  && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                                     afterMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
@@ -577,6 +583,10 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     
                     SystemObject assumedSystemObject = masterControllerService.getSystemObject(ams.getSystemCode(), ams.getLID());
 
+                    //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
+                    //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
+                    boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null ) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(assumedSystemObject.getObject()):true;
+
                     eo = after;
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
@@ -605,7 +615,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                             if (fieldConfig.getValueType() == 6) {
                                 //afterMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //afterMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject())));
-                                if (EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject()) != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+                                if (EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject()) != null && hasSensitiveData  && !operations.isField_VIP() && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
 
                                     afterMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                 } else {
@@ -615,7 +625,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                             } else {
                                 //Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                                 Object value = EPathAPI.getFieldValue(epathValue, assumedSystemObject.getObject());
-                                if (value != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+                                if (value != null && hasSensitiveData  && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                                     afterMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 

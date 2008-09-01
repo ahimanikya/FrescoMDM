@@ -122,6 +122,7 @@ if(session!=null){
             String euidValue = request.getParameter("euid");
         
 		    HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			//SourceHandler sourceHandler = new  SourceHandler(); facesSession.setAttribute("SourceHandler",sourceHandler);
    	        ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             String rootNodeName = objScreenObject.getRootObj().getName();
             EditMainEuidHandler editMainEuidHandler =  new EditMainEuidHandler();
@@ -208,8 +209,7 @@ if(session!=null){
 											   <tr>
 											     <td valign="top">
 											       <form id="EORootNodeForm" >
-
-                                             <h:dataTable                                         
+                                              <h:dataTable                                         
                                                            id="hashIdEdit" 
 														   style="verticle-align:top;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;background-color:#efefef"
                                                            var="fieldConfigPer" 
@@ -224,7 +224,7 @@ if(session!=null){
                                                 </h:outputText>													  
 												<h:outputText value="#{fieldConfigPer.displayName}" />
                                                       <h:outputText value=":"/>
-													 </nobr>
+ 													 </nobr>
                                                  </h:column>                                                        
                                                  <h:column>
 												    <table border="0" cellpadding="0" cellspacing="0">
@@ -233,7 +233,7 @@ if(session!=null){
                                                      <div id='linkSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'  style="valign:top;">
 
                                                     <h:graphicImage url="./images/spacer.gif" style="border:1px;"height="14px" width="18px" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] || EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"  />  
-													 <h:outputLink  rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP) && !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><h:graphicImage  alt="#{msgs.link_text}"  url="./images/link.PNG" style="border:0px;" /><img alt="link" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
+													 <h:outputLink  rendered="#{!(EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && fieldConfigPer.sensitive && !Operations.field_VIP) && !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><h:graphicImage  alt="#{msgs.link_text}"  url="./images/link.PNG" style="border:0px;" /><img alt="link" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
                                                      </div> 
                                                      <div id='linkSourceDivData:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'             style='visibility:hidden;display:none;'>
                                                            <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><img alt="link" height="14px" width="14px" border="0" src="images/link.PNG"/></h:outputLink>
@@ -243,7 +243,7 @@ if(session!=null){
 												   <td valign="center"> 										 
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
 													 <h:panelGrid style="border:1;cellpadding:0;cellspacing:0;" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
-													 <h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}" ><a href ="javascript:void(0)" 
+													 <h:panelGroup rendered="#{fieldConfigPer.sensitive && (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}" ><a href ="javascript:void(0)" 
                                                      onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>
 													 
 													 <h:panelGroup rendered="#{!fieldConfigPer.sensitive}" ><a href ="javascript:void(0)" 
@@ -252,7 +252,7 @@ if(session!=null){
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
 													 <h:panelGrid style="border:1;cellpadding:0;cellspacing:0;" >
-													  <h:panelGroup rendered="#{  fieldConfigPer.sensitive &&  Operations.field_VIP }">
+													  <h:panelGroup rendered="#{  fieldConfigPer.sensitive &&  (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}">
  													  <h:outputLink 
                                                            rendered="#{ !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
 														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
@@ -298,7 +298,7 @@ if(session!=null){
  														<h:selectOneMenu 
 																readonly="true" 
 																disabled="true" 
-																rendered="#{!Operations.field_VIP }">
+																rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP }">
                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                          </h:selectOneMenu>
 
@@ -307,7 +307,7 @@ if(session!=null){
 														value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}" 
                                                                          disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" 
                                                                          readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
-																		 rendered="#{Operations.field_VIP}">
+																		 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}">
                                                             <f:selectItem itemLabel="" itemValue="" />
                                                             <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
@@ -342,14 +342,14 @@ if(session!=null){
                                                                      onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
 																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)"   
-																	 rendered="#{Operations.field_VIP}"
+																	 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
                                                                  />
 																 
 																 <h:inputText label="#{fieldConfigPer.displayName}"  
 														             maxlength="#{fieldConfigPer.maxLength}"
 																	 disabled="true"
                                                                      readonly="true" 
- 																	 rendered="#{!Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] eq null}"
+ 																	 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] eq null}"
                                                                  />
 																 <h:inputText label="#{fieldConfigPer.displayName}"  
 														               value="#{msgs.SENSITIVE_FIELD_MASKING}"  
@@ -357,7 +357,7 @@ if(session!=null){
                                                                       maxlength="#{fieldConfigPer.maxLength}"
 																	  disabled="true"
                                                                      readonly="true" 
- 																	 rendered="#{!Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] ne null}"
+ 																	 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName] ne null}"
                                                                  />
                                                          </div>            
                                                     </h:column> 
@@ -391,7 +391,7 @@ if(session!=null){
 												           <font class="dateFormat">(<%=dateFormat%>)</font>
 														   </h:panelGroup>
 
-														   <h:panelGroup rendered="#{fieldConfigPer.sensitive && !Operations.field_VIP}">
+														   <h:panelGroup rendered="#{fieldConfigPer.sensitive && EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}">
                                                             <input type="text" 
 															       readonly="true"
 															       disabled="true"
@@ -399,7 +399,7 @@ if(session!=null){
                                                                    />
                                                                    <img  border="0"  title="<h:outputText value="#{fieldConfigPer.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/>												           <font class="dateFormat">(<%=dateFormat%>)</font>
 														       </h:panelGroup>
-														   <h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}">
+														   <h:panelGroup rendered="#{fieldConfigPer.sensitive && (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}">
                                                             <input type="text" 
 															       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                    id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
@@ -456,13 +456,13 @@ if(session!=null){
                                                                      readonly="#{!fieldConfigPer.updateable ||   EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
-																	 rendered="#{Operations.field_VIP}"/>
+																	 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"/>
 
                                                     <h:inputTextarea disabled="true"
                                                                      readonly="true" 
                                                                      value="#{msgs.SENSITIVE_FIELD_MASKING}" 
                                                                      required="#{fieldConfigPer.required}"
-																	 rendered="#{!Operations.Operations.field_VIP}"/>
+																	 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}"/>
                                                 </h:column>
 
                                                 <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
@@ -825,7 +825,7 @@ if(session!=null){
 																			disabled="#{!fieldConfigPer.updateable}"
 																			readonly="#{ !fieldConfigPer.updateable}"
 																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"
-																			rendered="#{Operations.field_VIP}"
+																			rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
 																			>
                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                                 <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
@@ -835,7 +835,7 @@ if(session!=null){
  																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
 																			disabled="true"
 																			readonly="true"
- 																			rendered="#{!Operations.field_VIP}"
+ 																			rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}"
 																			>
                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                              </h:selectOneMenu>
@@ -868,18 +868,18 @@ if(session!=null){
 																						 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                 onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
-																				rendered="#{Operations.field_VIP}"/>
+																				rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"/>
 
                                                                             <h:inputText  disabled="true"
 																			             readonly="true"
                                                                                          value="#{msgs.SENSITIVE_FIELD_MASKING}" 
                                                                                           required="#{fieldConfigPer.required}"
-																				           rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
+																				           rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
 
                                                                             <h:inputText disabled="true"
 																			             readonly="true"
                                                                                          required="#{fieldConfigPer.required}"
-																				         rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
+																				         rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
                                                                         </h:column>
  
 
@@ -902,7 +902,7 @@ if(session!=null){
 																		   </nobr>
                                                                        </h:column>
 
-                                                                        <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 && fieldConfigPer.sensitive}">
+                                                                        <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 }">
 																		    <nobr>
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
@@ -949,7 +949,7 @@ if(session!=null){
 
 																		   </nobr>
 																		   </h:panelGroup>
-																		   <h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}">
+																		   <h:panelGroup rendered="#{fieldConfigPer.sensitive && (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}">
 																		    <nobr> 
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
@@ -979,7 +979,7 @@ if(session!=null){
 
 																		   </h:panelGroup>
 
-																		   <h:panelGroup rendered="#{fieldConfigPer.sensitive && !Operations.field_VIP}">
+																		   <h:panelGroup rendered="#{fieldConfigPer.sensitive &&  EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}">
 																		    <nobr> 
                                                                             <input type="text" 
 																			       readonly="true"
@@ -1011,16 +1011,16 @@ if(session!=null){
 																			                 title="#{fieldConfigPer.fullFieldName}"
                                                                                               value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                              required="#{fieldConfigPer.required}"
-																							 rendered="#{Operations.field_VIP}"/>
+																							 rendered="#{Operations.field_VIP || EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true'}"/>
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                                              value="#{msgs.SENSITIVE_FIELD_MASKING}" 
                                                                                              readonly="true"
 																							 disabled="true"
-																							 rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
+																							 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                                              readonly="true"
 																							 disabled="true"
-																							 rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
+																							 rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
                                                                         </h:column>
                                                             </h:dataTable>
 															<%} else {%>
@@ -1091,7 +1091,7 @@ if(session!=null){
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
                                                                                 onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
-																				rendered="#{Operations.field_VIP}"
+																				rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' ||  Operations.field_VIP}"
                                                                                          />
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
@@ -1103,7 +1103,7 @@ if(session!=null){
                                                                                value="#{msgs.SENSITIVE_FIELD_MASKING}" 
                                                                                onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
                                                                                 onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
-																				rendered="#{!Operations.field_VIP}"
+																				rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}"
                                                                                          />
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
@@ -1126,7 +1126,7 @@ if(session!=null){
 																		   </nobr>
 																		   </h:panelGroup>
 
-																			<h:panelGroup rendered="#{fieldConfigPer.sensitive && Operations.field_VIP}">
+																			<h:panelGroup rendered="#{fieldConfigPer.sensitive && (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}">
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
 																				   readonly="true"
@@ -1141,7 +1141,7 @@ if(session!=null){
                                                                                 <h:graphicImage   alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>    
 																			</h:panelGroup>
 
-																			<h:panelGroup rendered="#{fieldConfigPer.sensitive && !Operations.field_VIP}">
+																			<h:panelGroup rendered="#{fieldConfigPer.sensitive && EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}">
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
 																				   readonly="true"
@@ -1172,16 +1172,16 @@ if(session!=null){
 																			                 title="#{fieldConfigPer.fullFieldName}"
                                                                                               readonly="true"
                                                                                              value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
- 																							 rendered="#{Operations.field_VIP}"/>
+ 																							 rendered="#{Operations.field_VIP ||  EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' }"/>
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
 																			                 title="#{fieldConfigPer.fullFieldName}"
                                                                                              readonly="true"
                                                                                              value="#{msgs.SENSITIVE_FIELD_MASKING}" 
-                                                                                             rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
+                                                                                             rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] ne null}"/>
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
 																			                 title="#{fieldConfigPer.fullFieldName}"
                                                                                              readonly="true"
-                                                                                              rendered="#{!Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
+                                                                                              rendered="#{EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName] eq null}"/>
                                                                         </h:column>
                                                             </h:dataTable>
 

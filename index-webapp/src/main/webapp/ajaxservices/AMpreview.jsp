@@ -141,7 +141,7 @@ SourceHandler sourceHandler = new SourceHandler();
                                                                             %>
                                                                             
                                                                             <%if (mergePersonfieldValuesMapEO.get(epathValue) != null) {%>
-                                                                            <%if (fieldConfigMap.isSensitive()) {%>
+                                                                            <%if (eoAssumeMatchPreviewMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=mergePersonfieldValuesMapEO.get(epathValue)%>
@@ -203,14 +203,14 @@ SourceHandler sourceHandler = new SourceHandler();
                                                                             <%if (minorObjectMapList.size() > 0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                             <%if (fieldConfigMap.isKeyType()) {%>
                                                                             <b>
-                                                                                <%if (fieldConfigMap.isSensitive()) {%>
+                                                                            <%if (eoAssumeMatchPreviewMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                 <%} else {%>
                                                                                 <%=minorObjectHashMap.get(epathValue)%>
                                                                                 <%}%>
                                                                             </b>
                                                                             <%} else {%>
-                                                                            <%if (fieldConfigMap.isSensitive()) {%>
+                                                                            <%if (eoAssumeMatchPreviewMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=minorObjectHashMap.get(epathValue)%>

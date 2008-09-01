@@ -412,11 +412,15 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 String dateField = new String();
                 ArrayList resultsConfigArray = super.getResultsConfigArray();
                 String strVal = new String();
-                
+                ConfigManager.init();
+
                 while (eoSearchResultIterator!=null && eoSearchResultIterator.hasNext()) {
                     EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
                     
                     ObjectNode objectNode = eoSearchResultRecord.getObject();
+                    //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
+                    //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
+                    boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(objectNode) : true;
                    
                     HashMap fieldvalues = new HashMap();
 
@@ -434,14 +438,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                            if(value instanceof java.util.Date) {
                                dateField = simpleDateFormatFields.format(value);
                                 
-                               if (value != null && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
+                               if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
                                     fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                } else {
                                     fieldvalues.put(fieldConfig.getFullFieldName(), dateField);
                                 }
                                 
                            } else {
-                               if (value != null  && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
+                               if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { //if the field is senstive then mask the value accordingly
                                     fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                                } else {
                                    if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {

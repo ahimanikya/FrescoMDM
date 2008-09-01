@@ -142,7 +142,7 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
 				                  <%=fcArray[k].getDisplayName()%>: 
 							    </td>
 							    <td align="left">
-								 <%if( fcArray[k].isSensitive() && !operations.isField_VIP() ) { %>
+								 <%if(eoHashMap.get("hasSensitiveData") != null &&  fcArray[k].isSensitive() && !operations.isField_VIP() ) { %>
                                         <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":bundle.getString("SENSITIVE_FIELD_MASKING"))%>
                                 <%} else {%>
 								  <% if(fcArray[k].isKeyType()) { %>

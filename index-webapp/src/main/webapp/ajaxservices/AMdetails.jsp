@@ -335,7 +335,7 @@ boolean isSessionActive = true;
                                                                                 <font class="highlight">
                                                                                     <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                     
-                                                                                    <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
+                                                                                    <%if (eoHashMapValues.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                     <%} else {%>
                                                                                     <%=personfieldValuesMapEO.get(epathValue)%>
@@ -344,7 +344,7 @@ boolean isSessionActive = true;
                                                                                 </font>
                                                                             </a>  
                                                                             <%} else {%>
-                                                                            <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
+                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=personfieldValuesMapEO.get(epathValue)%>
@@ -394,13 +394,14 @@ boolean isSessionActive = true;
                                                                             <%if (minorObjectMapList.size() > 0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                             <%if (fieldConfigMap.isKeyType()) {%> <!--if key type-->
                                                                             <b>
-                                                                                <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>								      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                <%if (eoHashMapValues.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>								      
+																				  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                 <%} else {%>
                                                                                 <%=minorObjectHashMap.get(epathValue)%>
                                                                                 <%}%>
                                                                             </b>
                                                                             <%} else {%> <!--if not key type-->
-                                                                            <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>								      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>	    <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=minorObjectHashMap.get(epathValue)%>
                                                                             <%}%>
@@ -511,7 +512,7 @@ boolean isSessionActive = true;
                                                                         <td>
                                                                             <%if (soHashMapValues.get(epathValue) != null) {%>
                                                                             
-                                                                            <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>  <!-- if sensitive fields-->
+                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null &&  fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>  <!-- if sensitive fields-->
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=soHashMapValues.get(epathValue)%>
@@ -569,14 +570,14 @@ boolean isSessionActive = true;
                                                                             <%if (minorObjectMapList.size() > 0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                             <%if (fieldConfigMap.isKeyType()) {%>
                                                                             <b>
-                                                                                <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
+                                                                                <%if (eoHashMapValues.get("hasSensitiveData") != null &&  fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                 <%} else {%>
                                                                                 <%=minorObjectHashMap.get(epathValue)%>
                                                                                 <%}%>
                                                                             </b>
                                                                             <%} else {%>
-                                                                            <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
+                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null &&  fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=minorObjectHashMap.get(epathValue)%>
@@ -678,7 +679,7 @@ boolean isSessionActive = true;
                                                                     <tr>
                                                                         <td>
                                                                             <%if (eoValuesMap.get(epathValue) != null) {%>
-                                                                            <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
+                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null &&  fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=eoValuesMap.get(epathValue)%>
@@ -733,14 +734,14 @@ boolean isSessionActive = true;
                                                                             <%if (minorObjectMapList.size() > 0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                             <%if (fieldConfigMap.isKeyType()) {%>
                                                                             <b>
-                                                                                <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%> <!-- if sensitive fields-->
+                                                                                <%if (eoHashMapValues.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%> <!-- if sensitive fields-->
                                                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                 <%} else {%>
                                                                                 <%=minorObjectHashMap.get(epathValue)%>
                                                                                 <%}%>
                                                                             </b>
                                                                             <%} else {%>
-                                                                            <%if (fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
+                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()) {%>
                                                                             <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                             <%} else {%>
                                                                             <%=minorObjectHashMap.get(epathValue)%>

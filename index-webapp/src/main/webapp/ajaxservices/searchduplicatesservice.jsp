@@ -776,7 +776,7 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                                                                                     <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
  
                                                                                         <font class="highlight">
-                                                                                            <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
                                                                                             <%=fieldValuesMapSource.get(epathValue)%>
                                                                                             <%}%>
@@ -785,7 +785,7 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                                                                                     <%} else {%>
  																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
  																					  <font class="highlight">
-																				         <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
+																				         <%if(eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
 																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                         <%}else{%>
                                                                                          <%=fieldValuesMapSource.get(epathValue)%>

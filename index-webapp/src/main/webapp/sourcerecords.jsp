@@ -275,7 +275,7 @@ if(session!=null){
                                                           <%=fieldConfigMap.getDisplayName()%>
                                                         </th>
                                                         <td>
-															<%if(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>   
+															<%if(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) != null && systyemObjectAsHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>   
                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                             <%}else{%>
                                                                <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
@@ -327,7 +327,7 @@ if(session!=null){
                                                         <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
                                                           <td>
 														  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-   															<%if( fieldConfigArrayMinor[k].isSensitive() && !operations.isField_VIP()){%>   
+   															<%if( systyemObjectAsHashMap.get("hasSensitiveData") != null &&  fieldConfigArrayMinor[k].isSensitive() && !operations.isField_VIP()){%>   
                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                             <%}else{%>
                                                					<%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
@@ -504,11 +504,11 @@ if(session!=null){
 																	<h:selectOneMenu 
 																	        readonly="true" 
 																			disabled="true" 
-																			rendered="#{!Operations.field_VIP }">
+																			rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP }">
                                                                         <f:selectItem itemLabel="" itemValue="" />
                                                                     </h:selectOneMenu>
                                                                     <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
-																	                 rendered="#{Operations.field_VIP  }"
+																	                 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
                                                                                      value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
                                                                         <f:selectItem itemLabel="" itemValue="" />
                                                                         <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
@@ -526,18 +526,18 @@ if(session!=null){
                                                                                  maxlength="#{fieldConfigPerAdd.maxLength}"
                                                                                  onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"
-																				rendered="#{Operations.field_VIP}"/>
+																				rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' ||  Operations.field_VIP}"/>
 																
 																	<h:inputText label="#{fieldConfigPerAdd.displayName}"  
                                                                                  value="#{msgs.SENSITIVE_FIELD_MASKING}"
 																				 readonly="true"
 																				 disabled="true"
- 																				rendered="#{!Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] ne null}"/>	
+ 																				rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] ne null}"/>	
 
 																	<h:inputText label="#{fieldConfigPerAdd.displayName}"  
                                                                                  readonly="true"
 																				 disabled="true"
- 																				rendered="#{!Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] eq null}"/>	
+ 																				rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' &&  !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] eq null}"/>	
 
                                                                 </h:column>                     
 
@@ -584,7 +584,7 @@ if(session!=null){
                                                                         
                                                                 </h:column>
 
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && Operations.field_VIP }">
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && (SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP) }">
                                                                     <nobr><!--Sridhar -->
                                                                         <input type="text" 
                                                                                title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
@@ -612,7 +612,7 @@ if(session!=null){
                                                                     </nobr>
                                                                 </h:column>
 
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && !Operations.field_VIP }">
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true'  && fieldConfigPerAdd.sensitive && !Operations.field_VIP }">
                                                                     <nobr><!--Sridhar -->
                                                                         <input type="text" 
                                                                                 value="<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}"/>"
@@ -629,8 +629,7 @@ if(session!=null){
                                                                     <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
                                                                                      title="#{fieldConfigPerAdd.fullFieldName}"
                                                                                      value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-                                                                                    
-																					 id="fieldConfigIdTextArea"   
+ 																					 id="fieldConfigIdTextArea"   
                                                                                      required="#{fieldConfigPerAdd.required}"
                                                                                       />
                                                                 </h:column>
@@ -640,13 +639,13 @@ if(session!=null){
 																					 disabled="true"
                                                                                      value="#{msgs.SENSITIVE_FIELD_MASKING}" 
                                                                                      required="#{fieldConfigPerAdd.required}"
-																					 rendered="#{!Operations.field_VIP}"
+																					 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}"
                                                                                      />
                                                                     <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
                                                                                      title="#{fieldConfigPerAdd.fullFieldName}"
                                                                                      value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}" 
                                                                                      required="#{fieldConfigPerAdd.required}"
-																					 rendered="#{Operations.field_VIP}"
+																					 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
                                                                                      />
                                                                 </h:column>
                                                                     

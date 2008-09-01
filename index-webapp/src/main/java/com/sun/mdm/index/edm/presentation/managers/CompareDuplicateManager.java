@@ -69,6 +69,7 @@ import java.util.Set;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
@@ -347,6 +348,12 @@ public class CompareDuplicateManager {
         HashMap systemObjectHashMap = new HashMap();
 
         try {
+            
+            ConfigManager.init();
+            //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
+            //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
+            boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(systemObject.getObject()) : true;
+            
             //add SystemCode and LID value to the new Hash Map
             systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
             systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));
@@ -366,6 +373,11 @@ public class CompareDuplicateManager {
             editSystemObjectHashMapUpdate.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
             editSystemObjectHashMapUpdate.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
             systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMapUpdate); // Set the edit SystemObject here
+            
+            if(hasSensitiveData) {
+               systemObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
+            }
+            
             FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
 
             String strVal = new String();
@@ -510,7 +522,6 @@ public class CompareDuplicateManager {
             SourceHandler sourceHandler = new SourceHandler();
             String rootNodeName = screenObject.getRootObj().getName();
          try {
-
             //add SystemCode and LID value to the new Hash Map
             HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
             HashMap codesEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
@@ -585,6 +596,15 @@ public class CompareDuplicateManager {
             enterpriseObjectHashMap.put("EO_STATUS", enterpriseObject.getStatus()); // Set the edit EnterpriseObject here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_LINKED", newLinkedHashMap); // Set the edit EnterpriseObject here
 
+            ConfigManager.init();
+            //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
+            //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
+            boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null ) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(enterpriseObject.getSBR()):true;
+
+            if(hasSensitiveData) {
+               enterpriseObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
+            }
+             
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
             //Build and array of minor object values from the screen object child object nodes

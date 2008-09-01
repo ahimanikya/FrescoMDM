@@ -484,7 +484,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								    <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
                                        	   <%if( fcArray[k].isSensitive()){%>
-												<%if( !operations.isField_VIP() ) {%> 
+												<%if( sourceAddHandler.getNewSOHashMap().get("hasSensitiveData")  != null && !operations.isField_VIP() ) {%> 
 													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
 												<%} else {%> 
 												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
@@ -626,7 +626,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								    <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
                                        	   <%if( fcArray[k].isSensitive()){%>
-												<%if( !operations.isField_VIP() ) {%> 
+												<%if( sourceAddHandler.getNewSOHashMap().get("hasSensitiveData") != null && !operations.isField_VIP() ) {%> 
 													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
 												<%} else {%> 
 												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
@@ -838,7 +838,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		   //copy the content into the minor objects
 		  for(int k=0;k<fcArrayLocal.length;k++) {
 		   
-			  if( fcArrayLocal[k].isSensitive() && !operations.isField_VIP() ) { 
+			  if( fcArrayLocal[k].isSensitive() && sourceAddHandler.getNewSOHashMap().get("hasSensitiveData") != null && !operations.isField_VIP() ) { 
 				 
 				  continue;
 			   }
@@ -902,7 +902,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
                                        	   <%if( fcArray[k].isSensitive()){%>
-												<%if( !operations.isField_VIP() ) {%> 
+												<%if( sourceAddHandler.getNewSOHashMap().get("hasSensitiveData")  != null && !operations.isField_VIP() ) {%> 
 													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
 												<%} else {%> 
 												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
@@ -1098,7 +1098,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								   <td>
 								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
                                        	   <%if( fcArray[k].isSensitive()){%>
-												<%if( !operations.isField_VIP() ) {%> 
+												<%if( sourceAddHandler.getNewSOHashMap().get("hasSensitiveData")  != null &&  !operations.isField_VIP() ) {%> 
 													<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>
 												<%} else {%> 
 												   <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
@@ -1212,7 +1212,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
   					    var thisFrm = document.getElementById('<%=formName%>');
                         elemType = thisFrm.elements[<%=k%>].type.toUpperCase()
-					<%if( fcArray[k].isSensitive() && !operations.isField_VIP()){%>
+					<%if( fcArray[k].isSensitive() && sourceAddHandler.getNewSOHashMap().get("hasSensitiveData")  != null && !operations.isField_VIP()){%>
 					
 					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 						<%	if(fcArray[k].isRequired()) {

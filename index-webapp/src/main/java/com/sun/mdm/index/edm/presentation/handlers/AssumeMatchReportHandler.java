@@ -436,12 +436,17 @@ public class AssumeMatchReportHandler  {
 
     }
    
-   private HashMap buildHashMapValues(SystemObject systemObject) throws ObjectException, EPathException {
+   private HashMap buildHashMapValues(SystemObject systemObject) throws ObjectException, EPathException, Exception {
        ArrayList fcArrayList = getResultsConfigArrayList();
        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
        String strVal;
        String epathValue;
        HashMap newValuesMap = new HashMap();
+       ConfigManager.init();
+       //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
+       //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
+       boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null ) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(systemObject.getObject()):true;
+
        for (int i = 0; i < fcArrayList.size(); i++) {
            FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
            if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
@@ -452,14 +457,14 @@ public class AssumeMatchReportHandler  {
 
            if (fieldConfig.getValueType() == 6) { // For date related fields
 
-               if (EPathAPI.getFieldValue(epathValue, systemObject.getObject())!=null && !operations.isField_VIP()  && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+               if (EPathAPI.getFieldValue(epathValue, systemObject.getObject())!=null && hasSensitiveData && !operations.isField_VIP()  && fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
                     newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
                } else {
                    newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, systemObject.getObject())));
                }
            } else {
                Object value = EPathAPI.getFieldValue(epathValue, systemObject.getObject());
-               if (value != null && !operations.isField_VIP() && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
+               if (value != null && !operations.isField_VIP() && hasSensitiveData && fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly                                  
 
                    newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
 
