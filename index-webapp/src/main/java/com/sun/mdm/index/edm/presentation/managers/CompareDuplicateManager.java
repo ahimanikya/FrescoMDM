@@ -352,8 +352,8 @@ public class CompareDuplicateManager {
             ConfigManager.init();
             //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
             //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
-            boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(systemObject.getObject()) : true;
-            
+            boolean hasEOSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(masterControllerService.getEnterpriseObjectForSO(systemObject).getSBR()) : true;
+ 
             //add SystemCode and LID value to the new Hash Map
             systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
             systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));
@@ -374,7 +374,7 @@ public class CompareDuplicateManager {
             editSystemObjectHashMapUpdate.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
             systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMapUpdate); // Set the edit SystemObject here
             
-            if(hasSensitiveData) {
+            if(hasEOSensitiveData) {
                systemObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
             }
             
