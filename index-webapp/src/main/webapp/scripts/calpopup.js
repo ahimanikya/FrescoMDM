@@ -111,6 +111,7 @@ Calendar.prototype.show = function(e,
 	if(!this.containerLayer) {
 		this.containerLayer = document.createElement('div');
 		this.containerLayer.id = 'calcontainer';
+		this.containerLayer.style.zIndex= 10;
 		this.containerLayer.onmouseout=calendarTimeout;
 		this.containerLayer.onmouseover=calendarClearTimeout;
 		this.containerLayer.onclick=this.handleClick;

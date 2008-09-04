@@ -1255,7 +1255,67 @@ public class CompareDuplicateManager {
         }
          return returnHashMap;
     }
-
+/** 
+     * Addded  By Narayan Bhat  on 28/08/2008 <br>
+     * 
+     * This method is used to compare the minor objects hashmap with the arraylist of hashmap <br>
+     * 
+     * 
+     * @param minorObjectList 
+     * @param checkMinorObjectMap 
+     * @return HashMap  - null if minor object doesnot exists in the arraylist of hashmap <br>
+     *                  - HashMap with (K,true/false) <br>
+     *                         <b>true</b> - if the values are different or if hashmap is new <br>
+     *                         <b>false</b> - if the values are same <br>
+     * 
+     **/
+ public HashMap getDifferenceMinorObjectMapWithKeyType(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
+        HashMap returnHashMap = new HashMap();
+        Object[] keyset = checkMinorObjectMap.keySet().toArray();
+         SourceHandler sourceHandler = new SourceHandler();
+         HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
+         FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE));
+         String keyType  = new String();
+        for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+         FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+         if(fieldConfigMap.isKeyType()) keyType = fieldConfigMap.getFullFieldName();
+        }
+         HashMap matchHashMap  = new HashMap();
+        for (Object object : minorObjectList) {            
+            HashMap map = (HashMap) object;         
+            //Check for the minor object id and the minor object type for comparing            
+            if(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals("Alias")){
+                matchHashMap = map;
+            }
+            else if (checkMinorObjectMap.get(keyType).toString().equals(map.get(keyType).toString())) {
+                    matchHashMap = map;
+             }
+         }
+  
+        //If the matching map is not empty 
+         if (!matchHashMap.isEmpty()) {
+            //if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
+                for (int i = 0; i < matchHashMap.size(); i++) {                    
+                    if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                            !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                            !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                        if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) == null) {
+                            returnHashMap.put(keyset[i], new Boolean(false));
+                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) == null) {
+                            returnHashMap.put(keyset[i], new Boolean(true));
+                        } else if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) != null) {
+                            returnHashMap.put(keyset[i], new Boolean(true));
+                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) != null && !matchHashMap.get(keyset[i]).toString().equals(checkMinorObjectMap.get(keyset[i]).toString())) {
+                            returnHashMap.put(keyset[i], new Boolean(true));
+                        } else {
+                            returnHashMap.put(keyset[i], new Boolean(false));
+                        }
+                    }
+                }
+           // }
+        }  
+         return returnHashMap;
+    }
         
     /** 
      * Modified  By Rajani Kanth  on 11/07/2008

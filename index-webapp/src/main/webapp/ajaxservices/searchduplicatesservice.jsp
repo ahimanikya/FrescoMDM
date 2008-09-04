@@ -556,12 +556,8 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                                                //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
                                                for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
                                                 FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-
+                                                     epathValue = fieldConfigMap.getFullFieldName();
+                                                 
 									         keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 
 												
@@ -776,7 +772,7 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                                                                                     <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
  
                                                                                         <font class="highlight">
-                                                                                            <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                            <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
                                                                                             <%=fieldValuesMapSource.get(epathValue)%>
                                                                                             <%}%>
@@ -785,7 +781,7 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                                                                                     <%} else {%>
  																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
  																					  <font class="highlight">
-																				         <%if(eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
+																				         <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
 																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                         <%}else{%>
                                                                                          <%=fieldValuesMapSource.get(epathValue)%>
