@@ -6,13 +6,7 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script>
-
-
-
-
-
-</head>
+</script></head>
 <body class="view">
 <h1 id="section-RelationshipsMaintain-ManageRelationshipsMaintain">Manage-&gt;Relationships-&gt;Maintain</h1>
 <p>View and maintain existing relationships depending on
@@ -44,7 +38,7 @@ relationship</li>
 Needed</span></h2>
 <br />
 <ul>
-<li>Details</li>
+<li>When the user selects the screen a find relationship search overlay is shown as with the following</li><ul><li>Select source domain</li><ul><li>Optionally filter by search critera for source records</li><li>Search criteria is as defined in source domain</li></ul><li>Select &nbsp;destaition domain</li><ul><li>Optinoally filter by search critera for destination records</li><li>Search criteria is as defined in destination domain</li></ul><li>Select relationship type</li><ul><li>Optionally filter by search critera of relationship</li><li>Search criteria is as defined in multi domain config </li></ul></ul><li>Record relationships is now a summary of domains selected by search</li><li>By relationship choice has a search button by it</li><li>There is a search button in the record relationships that brings up the search overlay&nbsp;</li><li>Filtering from columns is no longer needed</li><li>Details</li>
 <ul>
 <li>Change to Record Summary</li>
 </ul>
@@ -61,26 +55,26 @@ record summary to MIDM (to show full details)</li>
 attributes</li>
 <li>Add title "Attributes Specific to Relationship: Tracksl"</li>
 </ul>
-</ul>
+</ul>An even better design might be to have the search area
+(Relationship records for) expand to take up most of the screen with
+the search area appearing below an area that collapses and expands to
+show the search. &nbsp;After the search the area would colapse to the
+above view except that this is just a summary. &nbsp;<br /><br />For now we will go with the overlay. ...
 <h2><span style="color: blue;">Notes</span></h2>
 <ul>
-<li>The Add Records... button brings up a search dialog with
-the following:</li>
+<li>The Add Records... button brings up a search dialog overlay as defined by in a configuration screen this might include</li>
 <ul>
 <li>Search and select <span style="font-weight: bold;">multiple</span>
 records from the <span style="font-weight: bold;">source
 domain</span></li>
 <li>Search and select <span style="font-weight: bold;">multiple</span>
 records from the <span style="font-weight: bold;">destination
-domain</span></li>
-<li>All
-records selected will be linked using the &nbsp;selected
-&nbsp;Relationship. &nbsp;So
+domain</span></li><li>Search by Relationship attributes as defined by the user in the Multi-Domain configuration file.</li><li>All
+records found by the search will be linked. &nbsp;So
 if the user selected the records A, B, C &nbsp;from the
 source domain and the&nbsp; records 1,2, 3 from the
-destination domain, they would be defining the following
-relationships. (where -- is the relationship type).</li>
-<ul>
+destination domain and specified no relationship attributes, they would be defining the following
+relationships. (where -- is the relationship type).<br /><br />A summary of all selected records will be shown with the option to remove unwanted relationships. &nbsp;The overlay </li></ul></ul><ul><ul><ul>
 <li>A &nbsp;-- &nbsp;1</li>
 <li>A&nbsp;&nbsp;-- &nbsp;2</li>
 <li>A &nbsp;-- &nbsp;3</li>
@@ -89,72 +83,8 @@ relationships. (where -- is the relationship type).</li>
 <li>B&nbsp;&nbsp;-- &nbsp;3</li>
 <li>C &nbsp;-- &nbsp;1</li>
 <li>C &nbsp;--&nbsp; 2</li>
-<li>C&nbsp; -- &nbsp;3</li>
-</ul>
-<li><span style="font-weight: bold;"><span style="color: rgb(153, 0, 0);">Andrea Kendall</span></span><span style="color: rgb(153, 0, 0);"> comments that she thinks
-that it would be better to have the user select a single source record
-and multiple destination records as follows. &nbsp;What do you
-think?<br />
-<br />
-<br />
-Another option &nbsp;that makes sense is to allow the user to
-choose to define all relationships from a certain source record or to a
-certain destination record. &nbsp;<br />
-<br />
-If select source only this would look like this:<br />
-<br />
-</span></li>
-<ul>
-<li>The Add Records... button&nbsp; brings up a search
-dialog with the following:</li>
-<ul>
-<li>Search and select a <b>single records </b>from
-the <b>source </b>domain</li>
-<li>Search and select <b>multiple records </b>from
-the <b>destination </b>domain</li>
-<li>All
-records selected will be linked using the &nbsp;selected
-&nbsp;Relationship. So
-if the user selected the record A&nbsp; from the
-source domain and records 1,2, 3 from the
-destination domain, they would be defining the following
-relationships. (where -- is the relationship type).</li>
-<ul>
-<li>A &nbsp;-- &nbsp;1</li>
-<li>A&nbsp;&nbsp;-- &nbsp;2</li>
-<li>A &nbsp;-- &nbsp;3</li>
-</ul>
-</ul>
-</ul>
-<br /><span style="color: rgb(153, 0, 0);">
-If the user can choice to select to define relationships from a single
-source record or to a single destination record then this would look
-like this:</span><br style="color: rgb(153, 0, 0);" />
-<br />
-
-<ul>
-<li>The Add Records... button&nbsp; brings up a search
-dialog with the following:</li><ul><li>Select to define relationships from a source record&nbsp;</li></ul><ul>
-<ul><li>Search and select a <b>single records </b>from
-the <b>source </b>domain</li><li>Search and select <b>multiple records </b>from
-the <b>destination </b>domain</li><li>All
-records selected will be linked using the &nbsp;selected
-&nbsp;Relationship. So
-if the user selected the record A&nbsp; from the
-source domain and records 1,2, 3 from the
-destination domain, they would be defining the following
-relationships. (where -- is the relationship type).</li><ul><li>A &nbsp;-- &nbsp;1</li><li>A&nbsp;&nbsp;-- &nbsp;2</li><li>A &nbsp;-- &nbsp;3</li></ul></ul><li>Select to define relationships to a destination record</li><ul><li>Search and select a <b>single records </b>from
-the <span style="font-weight: bold;">destination</span><b> </b>domain</li><li>Search and select <b>multiple records </b>from
-the &nbsp;<span style="font-weight: bold;">source&nbsp;</span>domain</li><li>All
-records selected will be linked using the &nbsp;selected
-&nbsp;Relationship. So
-if the user selected the record A&nbsp; from the destination domain and
-records 1,2, 3 from the source domain, they would be defining the
-following
-relationships. (where -- is the relationship type).</li><ul><li>1&nbsp;&nbsp;-- &nbsp;A</li><li>2&nbsp;&nbsp;-- &nbsp;A</li><li>3&nbsp;&nbsp;-- &nbsp;A</li></ul></ul>
-
-
-<ul>
+<li>C&nbsp; -- &nbsp;3<br /><br /></li>
+</ul><ul><ul><ul>
 
 
 
@@ -186,7 +116,7 @@ relationship.
 <br />
 <h4>1. Select by Record </h4>
 <br />
-When first selected a Search Dialog is shown with a message to Select
+When first selected a Search Dialog Overlay is shown with a message to Select
 the record to find relationships to.<br />
 <ul>
 </ul>
