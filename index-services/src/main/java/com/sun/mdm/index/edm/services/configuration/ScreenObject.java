@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 
 /**
- * ScreenObject class representing eView screens.
+ * ScreenObject class representing MIDM screens.
  *
  * @author rtam
  * @created July 27, 2007
@@ -45,7 +45,7 @@ public class ScreenObject implements java.io.Serializable {
     private Integer mID;                    // screen ID
     private String mDisplayTitle;           // title to be displayed 
     private ObjectNodeConfig mRootObj;      // object configuration
-    private int mDisplayOrder;     // order in which the screen is displayed
+    private int mDisplayOrder;              // order in which the screen is displayed
     private ArrayList mSearchResultsConfig;   // ArrayList of SearchResultsConfig
                                               // objects that define the search 
                                               // result configurations
