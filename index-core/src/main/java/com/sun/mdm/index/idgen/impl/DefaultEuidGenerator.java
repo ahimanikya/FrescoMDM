@@ -24,6 +24,7 @@ package com.sun.mdm.index.idgen.impl;
 
 import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.idgen.SEQException;
+import com.sun.mdm.index.idgen.ChecksumCalculator;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -54,6 +55,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
     private int mChecksumLength;
     private int mChunkSize;
     private long mNextEUID = -1;
+    private String mChecksumClassname = "com.sun.mdm.index.idgen.impl.DefaultChecksumCalculator";
+    private ChecksumCalculator mChecksumCalculator = null;
 
     /** Default constructor for DefaultEuidGenerator
      * @throws SEQException An exception occurred
@@ -76,6 +79,9 @@ public class DefaultEuidGenerator implements EuidGenerator {
             mChecksumLength = ((Integer) value).intValue();
         } else if (parameterName.equals("ChunkSize")) {
             mChunkSize = ((Integer) value).intValue();
+        } else if (parameterName.equals("ChecksumCalculatorClass")) {
+            mChecksumClassname = (String) value;
+            mChecksumCalculator = null;
         } else {
             throw new SEQException(mLocalizer.t("IDG504: Unknown parameter: (0}",
                     parameterName));
@@ -90,31 +96,59 @@ public class DefaultEuidGenerator implements EuidGenerator {
     public synchronized String getNextEUID(Connection con) throws SEQException {
         String euid = null;
 
-        try {
-            if (mNextEUID != -1) {
-                if (mNextEUID % mChunkSize == 0) {
+        /*
+         * Loop until a valid EUID is found. An upper limit could be placed
+         * here, but that would be putting a restriction on the checksum
+         * algorithm implementations.
+         */
+        for (;;) {
+            try {
+                if (mNextEUID != -1) {
+                    if (mNextEUID % mChunkSize == 0) {
+                        mNextEUID = xgetNextEUID(con);
+                    }
+                    euid = String.valueOf(mNextEUID);
+                } else {
                     mNextEUID = xgetNextEUID(con);
+                    euid = String.valueOf(mNextEUID);
                 }
-                euid = String.valueOf(mNextEUID);
-            } else {
-                mNextEUID = xgetNextEUID(con);
-                euid = String.valueOf(mNextEUID);
+            } catch (SEQException e) {
+                throw e;
             }
-        } catch (SEQException e) {
-            throw e;
-        }
-        String retVal;
-        String sChecksum;
-        if (mChecksumLength > 0) {
-            sChecksum = String.valueOf(getChecksum(mNextEUID));
-            retVal = formatEUID(euid) + sChecksum;
-        } else {
-            retVal = formatEUID(euid);
-        }
-        mNextEUID++;
+            String retVal;
+            String sChecksum;
+            if (mChecksumLength > 0) {
+                if (mChecksumCalculator == null) {
+                    Class mChecksumCalculatorClass = null;
+                    try {
+                        mChecksumCalculatorClass = Class.forName(mChecksumClassname.trim());
+                    } catch (Exception e) {
+                        throw new SEQException(mLocalizer.t("IDG507: DefaultEuidGenerator " + 
+                                    "could not load class {0}: {1}", mChecksumClassname, e));
+                    }
+                    try {
+                        mChecksumCalculator = (ChecksumCalculator) mChecksumCalculatorClass.newInstance();
+                    } catch (Exception e) {
+                        throw new SEQException(mLocalizer.t("IDG508: Encountered an " + 
+                                "error while retrieving the Checksum Calculator: {0}", e));
+                    }
+                    mChecksumCalculator.setParameter("ChecksumLength", Integer.valueOf(mChecksumLength));
+                }
+                sChecksum = mChecksumCalculator.calcChecksum(formatEUID(euid));
+                if (sChecksum == null) {
+                    // skip this EUID because no checksum could be calculated
+                    mNextEUID++;
+                    continue;
+                }
+                retVal = formatEUID(euid) + sChecksum;
+            } else {
+                retVal = formatEUID(euid);
+            }
+            mNextEUID++;
 
+            return retVal;
 
-        return retVal;
+        }
     }
 
     /** Get the EUID length
@@ -218,24 +252,6 @@ public class DefaultEuidGenerator implements EuidGenerator {
             sb.append('0');
         }
         sb.append(euid);
-        return sb.toString();
-    }
-
-    private String getChecksum(long value) {
-        int mod = (int) Math.pow(10, mChecksumLength);
-        value = (1103515243 * value + 12345) & 0x7FFFFFFF;
-        long ck = value % mod;
-        String retVal = String.valueOf(ck);
-        int padLength = mChecksumLength - retVal.length();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < padLength; i++) {
-            sb.append('0');
-        }
-        sb.append(retVal);
-
-        if (mLogger.isLoggable(Level.FINE)) {
-            mLogger.fine("Checksum for " + value + " is " + sb);
-        }
         return sb.toString();
     }
 }

@@ -168,24 +168,25 @@ public class ObjectNodeXML {
             return "";
         }
         String myPath = "Enterprise." + name;
-        String[] fldNames = null;
+        Object[] fldNames = null;
         StringBuffer sb = new StringBuffer();
-        try {
-            fldNames = ObjectFactory.getFields(myPath);
-        } catch (ObjectException e) {
-        }
+	ArrayList fns = sbr.getFieldNames();
+	if (fns != null) {
+	    fldNames = fns.toArray();
+	}
         for (int i = 0; i < fldNames.length; i++) {
             Object value = null;
-            if (fldNames[i].equals("SystemCode")) {
+            String fieldName = (String) fldNames[i];
+            if (fieldName.equals("SystemCode")) {
                 continue;
-            } else if (fldNames[i].equals("LocalID")) {
+            } else if (fieldName.equals("LocalID")) {
                 continue;
             }
             try {
-                value = sbr.getValue(fldNames[i]);
+                value = sbr.getValue(fieldName);
             } catch (ObjectException e) {
             }
-            sb.append(" ").append(fldNames[i]).append("=\"");
+            sb.append(" ").append(fieldName).append("=\"");
             if (value != null) {
                 sb.append(convert(value));
             }
@@ -279,23 +280,27 @@ public class ObjectNodeXML {
         
         String myName = node.pGetTag();
         String myPath = ePath + "." + myName;
-        String[] fldNames = null;
+        Object[] fldNames = null;
         StringBuffer sb = new StringBuffer();
         sb.append("<").append(myName);
-        try {
-            fldNames = ObjectFactory.getFields(myPath);
-        } catch (ObjectException e) {
-            throw new OutBoundException(mLocalizer.t("OUT502: Could not convert " + 
-                                    "an ObjectNode to an XML string: {0}", e));
-        }
-        // start from the 2nd field
-        for (int i = 1; i < fldNames.length; i++) {
+	ArrayList fns = node.pGetFieldNames();
+	if (fns != null) {
+	    fldNames = fns.toArray();
+	}
+        // loop over the fields, but ignore the ID field
+        String idFieldName = node.pGetTag() + "Id";
+        for (int i = 0; i < fldNames.length; i++) {
             Object value = null;
+            String fieldName = (String) fldNames[i];
+            if (fieldName.equals(idFieldName)) {
+                // Not sure if this is required. The outbound XSD appears to allow ID fields
+                continue;
+            }
             try {
-                value = node.getValue(fldNames[i]);
+                value = node.getValue(fieldName);
             } catch (ObjectException e) {
             }
-            sb.append(" ").append(fldNames[i]).append("=\"");
+            sb.append(" ").append(fieldName).append("=\"");
             if (value != null) {
                 sb.append(convert(value));
             }
