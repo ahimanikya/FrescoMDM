@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <loader>
-
-
 	<threshold-config>
 		<duplicateThreshold>20.0</duplicateThreshold>
 		<matchThreshold>30.0</matchThreshold>
@@ -90,26 +87,23 @@
 	<!-- the user can  plugin their own EuidGenerator -->
 	<EuidGenerator class="com.sun.mdm.index.loader.euid.LoaderEuidGenerator"/>
 	
-
-
-
 	<!-- all configuration with regard to the initial loader components
 		specific config needs to be put in like isMasterLoader... -->
 
-
 	<system>
 		<properties>
+		
 			<property name="loaderName" value="master-loader" />
 			<property name="isMasterLoader" value="true" />
 			<property name="distributionMode" value="master" />
 			<property name="matchAnalyzerMode" value="false" />
-      <property name="BulkLoad" value="false" />
-      <property name="standardizationMode" value="true" />
-      <property name="deleteIntermediateDirs" value="false" />
-      <property name="optimizeDuplicates" value="true" />
+            <property name="BulkLoad" value="false" />
+            <property name="standardizationMode" value="true" />
+            <property name="deleteIntermediateDirs" value="false" />
+            <property name="optimizeDuplicates" value="true" />
 
 			<property name="rmiPort" value="9999" />
-			<property name="workingDir" value="test/data/eview/loader" />
+			<property name="workingDir" value="/mdm/loader" />
 			<property name="ftp.workingDir" value="/loader" />
 
 			<property name="numBlockBuckets" value="10" />
@@ -119,11 +113,9 @@
 			<property name="numEUIDBuckets" value="10" />
 			<property name="totalNoOfRecords" value="400" />
 
-
 			<!-- time in milli seconds -->
 			<property name="pollInterval" value="1000" />
 			<property name="maxWaitTime" value="1000000000" />
-
 
 			<!-- ftp properties -->
 			<property name="ftp.server" value="master-index" />
@@ -137,19 +129,24 @@
 			<property name="cluster.database.password" value="mdm" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
-
-
-			<!-- oracle SQL loader properties -->
+			<!-- Record delimiter -->
+			<property name="record.delimiter" value="$$$" />
+			
+			<!-- Oracle loader properties -->
 			<property name="sqlldr.userid" value="eview/eview@mdm" />
-			<property name="sqlldr.record.delimiter" value="$$$" />
-
+			
+			<!-- MySQL loader properties -->
+			<property name="mysql.host" value="localhost"/>
+			<property name="mysql.database.name" value="mdm"/>
+			<property name="mysql.user" value="mdm"/>
+			<property name="mysql.password" value="mdm"/>
+			
 		</properties>
 		<monitoring-control>
 			<!-- info to support standard jmx based monitoring and management 
 				this can be made part of the properties-->
 		</monitoring-control>
 		<dataObjectReader>
-
 
 			<beans>
 				<bean id="dataObjectReader"
@@ -159,11 +156,6 @@
 					<constructor-arg type="boolean" value="false" />
 				</bean>
 			</beans>
-
-
 		</dataObjectReader>
-
-
 	</system>
-
 </loader>
