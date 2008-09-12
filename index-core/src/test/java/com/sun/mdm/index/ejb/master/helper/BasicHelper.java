@@ -220,6 +220,8 @@ public class BasicHelper {
             systemDate = "sysdate";
         } else if (dbType.equalsIgnoreCase("SQL Server")) {
             systemDate = "getdate()";
+        } else if (dbType.equalsIgnoreCase("MySQL")){
+            systemDate = "current_date()";
         } else {
             throw new SQLException("Error. Unsupported database: " + dbType);
         }
