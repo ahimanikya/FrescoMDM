@@ -378,7 +378,7 @@ String  dateFormat = ConfigManager.getDateFormat();
 									   onclick="javascript:highlighTabs('tabsForm',event)"
                                                   actionListener="#{NavigationHandler.setHeaderByTabName}" > 
                                           <f:attribute name="screenId" value="<%=screenID%>"/>
-                                          <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=screenObject.getDisplayTitle()%>"><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+                                          <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>"><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
                                       </h:commandLink>
 								 <%}%>
                                  <%}%>
