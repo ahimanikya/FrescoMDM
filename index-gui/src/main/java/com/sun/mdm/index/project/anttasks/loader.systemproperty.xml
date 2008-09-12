@@ -34,8 +34,6 @@
 			<property name="ftp.username" value="user" />
 			<property name="ftp.password" value="password" />
 
-
-
 			<!-- cluster database properties -->
 			<property name="cluster.database" value="Oracle" />
 			<property name="cluster.database.url" value="jdbc:oracle:thin:@server:1521:SID" />
@@ -43,12 +41,17 @@
 			<property name="cluster.database.password" value="password" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
-
-
-
-			<!-- oracle SQL loader properties -->
+			<!-- Oracle SQL loader properties -->
 			<property name="sqlldr.userid" value="user/password@mdm.stc.com" />
-			<property name="sqlldr.record.delimiter" value="$$$" />
+                        
+                        <!-- Record delimiter -->
+			<property name="record.delimiter" value="$$$" />
+			
+			<!-- MySQL loader properties -->
+			<property name="mysql.host" value="hostname"/>
+			<property name="mysql.database.name" value="databasename"/>
+			<property name="mysql.user" value="user"/>
+			<property name="mysql.password" value="password"/>
 
 		</properties>
 		<monitoring-control>
