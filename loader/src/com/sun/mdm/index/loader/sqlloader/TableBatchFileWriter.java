@@ -20,7 +20,6 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
 package com.sun.mdm.index.loader.sqlloader;
 
 import java.io.FileWriter;
@@ -32,76 +31,94 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
  * generate .bat for windows and .sh file for unix for each of the mdm tables
  * whose images will be loaded by the oracle sql loader
  * 
- * @author Sujit Biswas
+ * @author Sujit Biswas, David Peh
  * 
  */
 public class TableBatchFileWriter implements Writer {
 
-	private String table;
-	private String baseDir;
+    private String table;
+    private String baseDir;
+    private String database;
+    LoaderConfig config = LoaderConfig.getInstance();
+    private static String ls = System.getProperty("line.separator");
+    private static String fs = System.getProperty("file.separator");
 
-	LoaderConfig config = LoaderConfig.getInstance();
+    /**
+     * @param userid
+     * @param table
+     */
+    public TableBatchFileWriter(String table, String baseDir) {
+        this.baseDir = baseDir;
+        this.table = table;
+        this.database = config.getSystemProperty("database");
+    }
 
-	/**
-	 * @param userid
-	 * @param table
-	 */
-	public TableBatchFileWriter(String table, String baseDir) {
-		this.baseDir = baseDir;
-		this.table = table;
-	}
+    /* (non-Javadoc)
+     * @see com.sun.mdm.index.loader.sqlloader.Writer#write()
+     */
+    public void write() {
+        try {
+            FileWriter w = new FileWriter(baseDir + fs + table + ".bat");// windows
 
-	/* (non-Javadoc)
-	 * @see com.sun.mdm.index.loader.sqlloader.Writer#write()
-	 */
-	public void write() {
+            if (database.equalsIgnoreCase("Oracle")) {
+                w.write(getOracleExeScript());
+            } else {  // default to MySQL
 
-		try {
-			FileWriter w = new FileWriter(baseDir + "/" + table + ".bat");// windows
+                w.write(getMySQLExeScript());
+            }
+            w.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-			w.write(getExeScript());
+        try {
+            FileWriter w = new FileWriter(baseDir + fs + table + ".sh");// unix,
+            // linux,
+            // solaris
 
-			w.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            if (database.equalsIgnoreCase("Oracle")) {
+                w.write(getOracleExeScript());
+            } else { // default to MySQL
 
-		try {
-			FileWriter w = new FileWriter(baseDir + "/" + table + ".sh");// unix,
-			// linux,
-			// solaris
+                w.write(getMySQLExeScript());
+            }
+            w.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
-			w.write(getExeScript());
+    private String getOracleExeScript() {
+        StringBuilder sb = new StringBuilder();
 
-			w.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        sb.append("sqlldr ");
+        sb.append(" userid=" + config.getSystemProperty("sqlldr.userid"));
 
-	}
+        sb.append(" control=control/" + table + ".ctl");
+        sb.append(" bad=bad/" + table + ".bad");
+        sb.append(" log=log/" + table + ".log");
 
-	private String getExeScript() {
-		StringBuilder sb = new StringBuilder();
+        // TODO make this true after testing
+        sb.append(" direct=true");
+        sb.append(" parallel=true");
+        sb.append(" discard=discard/" + table + ".discard");
 
-		sb.append("sqlldr ");
-		sb.append(" userid=" + getUserID());
+        return sb.toString();
+    }
 
-		sb.append(" control=control/" + table + ".ctl");
-		sb.append(" bad=bad/" + table + ".bad");
-		sb.append(" log=log/" + table + ".log");
+    private String getMySQLExeScript() {
+        StringBuilder sb = new StringBuilder();
 
-		// TODO make this true after testing
-		sb.append(" direct=true");
-		sb.append(" parallel=true");
-		sb.append(" discard=discard/" + table + ".discard");
+        sb.append("mysql");
+        sb.append(" --host=" + config.getSystemProperty("mysql.host"));
+        sb.append(" --database=" + config.getSystemProperty("mysql.database.name"));
+        sb.append(" --user=" + config.getSystemProperty("mysql.user"));
+        sb.append(" --password=" + config.getSystemProperty("mysql.password"));
+        sb.append(" --show-warnings --execute=");
+        sb.append("\"source " + "control" + "/" + table + ".sql\"");
 
-		return sb.toString();
-	}
-
-	private String getUserID() {
-		return config.getSystemProperty("sqlldr.userid");
-	}
-
+        return sb.toString();
+    }
 }
