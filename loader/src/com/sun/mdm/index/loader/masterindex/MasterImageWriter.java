@@ -59,7 +59,7 @@ public class MasterImageWriter {
 	private String masterImageDir_;
 	private static LoaderConfig config = LoaderConfig.getInstance();
 	private DataObjectWriter dwriter_; // used for Input SBR file, that is eventually used for potential dups
-	private static String recordDelim = config.getSystemProperty("sqlldr.record.delimiter");
+	private static String recordDelim = config.getSystemProperty("record.delimiter");
 	private final static String DATA = ".data";
 	private final static String SBYN = "SBYN_";
 
