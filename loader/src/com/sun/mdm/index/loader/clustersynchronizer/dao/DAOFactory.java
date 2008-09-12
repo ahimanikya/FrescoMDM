@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.clustersynchronizer.dao.javadb.JavadbDAOFactory;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.mssql.MssqlDAOFactory;
+import com.sun.mdm.index.loader.clustersynchronizer.dao.mysql.MySQLDAOFactory;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.oracle.OracleDAOFactory;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 
@@ -39,51 +40,48 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
  */
 public abstract class DAOFactory {
 
-	public static final int JAVADB = 1;
+    public static final int JAVADB = 1;
+    public static final int ORACLE = 2;
+    public static final int MSSQL = 3;
+    public static final int MYSQL = 4;
+    protected static Connection connection;
+    protected static LoaderConfig loaderConfig = LoaderConfig.getInstance();
 
-	public static final int ORACLE = 2;
+    public abstract BucketDAO getBucketDAO();
 
-	public static final int MSSQL = 3;
+    public abstract LoaderDAO getLoaderDAO();
+    private static Logger logger = Logger.getLogger(DAOFactory.class.getName());
 
-	protected static Connection connection;
+    public static DAOFactory getDAOFactory(int dbType) {
+        switch (dbType) {
+            case JAVADB:
+                return new JavadbDAOFactory();
+            case ORACLE:
+                return new OracleDAOFactory();
+            case MSSQL:
+                return new MssqlDAOFactory();
+            case MYSQL:
+                return new MySQLDAOFactory();
+            default:
+                return null;
+        }
+    }
 
-	protected static LoaderConfig loaderConfig = LoaderConfig.getInstance();
+    public static DAOFactory getDAOFactory(String dbType) {
+        if (dbType.equalsIgnoreCase("Oracle")) {
+            return getDAOFactory(DAOFactory.ORACLE);
+        } else if (dbType.equalsIgnoreCase("JavaDB")) {
+            return getDAOFactory(DAOFactory.JAVADB);
+        } else if (dbType.equalsIgnoreCase("Mssql")) {
+            return getDAOFactory(DAOFactory.MSSQL);
+        } else if (dbType.equalsIgnoreCase("MySQL")) {
+            return getDAOFactory(DAOFactory.MYSQL);
+        }
+        return null;
+    }
 
-	public abstract BucketDAO getBucketDAO();
-
-	public abstract LoaderDAO getLoaderDAO();
-	
-	private static Logger logger = Logger.getLogger(DAOFactory.class.getName());
-
-	public static DAOFactory getDAOFactory(int dbType) {
-
-		switch (dbType) {
-		case JAVADB:
-			return new JavadbDAOFactory();
-		case ORACLE:
-			return new OracleDAOFactory();
-		case MSSQL:
-			return new MssqlDAOFactory();
-
-		default:
-			return null;
-		}
-	}
-
-	public static DAOFactory getDAOFactory(String dbType) {
-		if (dbType.equalsIgnoreCase("Oracle"))
-			return getDAOFactory(DAOFactory.ORACLE);
-		else if (dbType.equalsIgnoreCase("JavaDB"))
-			return getDAOFactory(DAOFactory.JAVADB);
-		else if (dbType.equalsIgnoreCase("Mssql"))
-			return getDAOFactory(DAOFactory.MSSQL);
-
-		return null;
-	}
-
-	//private static Lock lock = new ReentrantLock();
-
-	public static Connection getConnection() throws SQLException {
+    //private static Lock lock = new ReentrantLock();
+    public static Connection getConnection() throws SQLException {
 
 //		lock.lock();
 //		if (connection != null) {
@@ -91,20 +89,16 @@ public abstract class DAOFactory {
 //		}
 //		lock.unlock();
 
-		String driver = loaderConfig
-				.getSystemProperty("cluster.database.jdbc.driver");
+        String driver = loaderConfig.getSystemProperty("cluster.database.jdbc.driver");
 
-		try {
-			Class.forName(driver).newInstance();
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "check classpath has jdbc driver", e);
-		}
-		String username = loaderConfig
-				.getSystemProperty("cluster.database.user");
-		String password = loaderConfig
-				.getSystemProperty("cluster.database.password");
-		String url = loaderConfig.getSystemProperty("cluster.database.url");
-		return DriverManager.getConnection(url, username, password);
-	}
-
+        try {
+            Class.forName(driver).newInstance();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "check classpath has jdbc driver", e);
+        }
+        String username = loaderConfig.getSystemProperty("cluster.database.user");
+        String password = loaderConfig.getSystemProperty("cluster.database.password");
+        String url = loaderConfig.getSystemProperty("cluster.database.url");
+        return DriverManager.getConnection(url, username, password);
+    }
 }
