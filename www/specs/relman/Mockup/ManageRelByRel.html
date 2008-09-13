@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>Manage-&gt;Relationships-&gt;Maintain-&gt;by
+Relationship</title>
+
+<link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1277259-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</head>
+<body class="view">
+<h1>Manage-&gt;Relationship-&gt;Maintain-&gt;by
+Relationship&nbsp;&nbsp;<a href="ManageRelMaintain.htm#ByRecord">
+</a></h1>
+<a href="ManageRelMaintain.htm#ByRelationship">&nbsp;</a>
+<h2>Use Cases&nbsp;</h2>
+<ul>
+<li>User wants to see records that are associated with a
+Relationship Type between two specific domains.</li>
+<li>User selects the Relationship type and optionally supplies
+search criteria for records in the selected relationship.</li>
+<li>User selects a relationship instance to view record
+summararies and view / update Relationship properties.</li>
+</ul>
+<h2>Screen Overview and Main Screen Flow</h2>
+<dl>
+<dt>Main Screen</dt>
+<dd>
+<ul>
+<li>Displays relationship summary of records</li>
+<li>Displays records in relationship as per search</li>
+<li>Allows user to select a relationship instance to view
+record summaries and associated relationship attributes<br>
+</li>
+</ul>
+</dd>
+<dt>Search for Relationship Overlay</dt>
+<dd>
+<ul>
+<li>Select a Relationship Type and specifiy search criteria
+for
+the records to retrieve<br>
+<br>
+</li>
+</ul>
+</dd>
+<dt>Add Records to Relationship</dt>
+<dd>
+<ul>
+<li>Add a Relationship of the currently selected type
+between
+selected records </li>
+</ul>
+</dd>
+</dl>
+<br>
+<img style="width: 330px; height: 291px;" alt="Screen Flow" src="../attach/MaintainByRelationshipScreenFlow.png"><br>
+<br>
+<br>
+<br>
+<h2>Screen Parts</h2>
+<h3>Search for Relationship Overlay</h3>
+<br>
+When the user choices the By Relationship option or Search... option
+the following will be shown.&nbsp;<br>
+<br>
+<span class="note-highlight"><span style="font-weight: bold;">Note:</span>
+This is a wireframe of the Search for Realtionship Overlay.</span><br><br>The Screen Flow for this Overlay can be seen by opening the following:<br>
+<br><a style="font-weight: bold;" href="Search4Relationship.html">View Search for
+Relationship Screen Flow&nbsp;</a><br>
+<br>
+&nbsp;<img style="width: 1110px; height: 902px;" alt="Search for Relationships" src="../attach/SearchForRelationshipsRough.png"><br>
+<br>
+<h4>Nice to
+have&nbsp;</h4>
+&nbsp;<br>
+<ul>
+<li>Show the number of records the search will retrieve.
+&nbsp;This allows the user to fine tune the search criteria prior
+to actually getting all the records.</li>
+</ul>
+<br>
+<h3>Main By Relationship Type Screen</h3>
+<br>
+The following screen is an example after the search and a record has
+been selected by the user by choosing a hyperlink Record Identifier.<br>
+<br>
+When the user choices the By Relationship option or Search... option
+the following will be shown. <br>
+<br>
+<span class="note-highlight"><span style="font-weight: bold;"></span></span><br>
+<br>
+If no relationship type has bee
+<table class="imageplugin" align="center" border="0">
+<tbody>
+<tr>
+<td><img style="width: 1020px; height: 767px;" alt="Maintain by Relationship" src="../attach/RecordRelationshipByRelS1.png"><br>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h4><span style="color: blue;">Updates
+Needed</span></h4>
+<br>
+<ul>
+<li>A submit button for the Relationship Attributes area</li>
+</ul>
+An even better design might be to have the search area
+(Relationship records for) expand to take up most of the screen with
+the search area appearing below an area that collapses and expands to
+show the search. &nbsp;After the search the area would colapse to
+the
+above view except that this is now just a summary. &nbsp;<br>
+<br>
+For now we will go with the overlay. ...<br>
+<br>
+<br>
+<h3>Add Records to Relationship Overlay</h3>
+<br>
+<span class="note-highlight"><span style="font-weight: bold;">Note:</span>
+This is a
+functional wireframe of the Add Records to Relationship Overlay.<br>
+<br>
+</span><span class="note-highlight"><span style="font-weight: bold;"></span></span><span class="note-highlight"><span style="font-weight: bold;"></span></span>
+<table class="imageplugin" align="center" border="0">
+<tbody>
+<tr>
+<td><img style="width: 725px; height: 598px;" alt="Add Record to Relationship" src="../attach/MaintainByRelationshipAddRecordRough.png"></td>
+</tr>
+</tbody>
+</table>
+<span class="note-highlight"><br>
+</span><span class="note-highlight"></span><br>
+<br>
+<h4>Notes</h4>
+<ul>
+<li>The Add Records... button brings up a search dialog overlay
+as defined by in a configuration screen this might include</li>
+<ul>
+<li>Search and select <span style="font-weight: bold;">multiple</span>
+records from the <span style="font-weight: bold;">source
+domain</span></li>
+<li>Search and select <span style="font-weight: bold;">multiple</span>
+records from the <span style="font-weight: bold;">destination
+domain</span></li>
+<li>Search by Relationship attributes as defined by the user
+in the Multi-Domain configuration file.</li>
+<li>All
+records found by the search will be linked. &nbsp;So
+if the user selected the records A, B, C &nbsp;from the
+source domain and the&nbsp; records 1,2, 3 from the
+destination domain and specified no relationship attributes, they would
+be defining the following
+relationships. (where -- is the relationship type).<br>
+<br>
+A summary of all selected records will be shown with the option to
+remove unwanted relationships. &nbsp;The overlay </li>
+</ul>
+</ul>
+<ul>
+<li>A &nbsp;-- &nbsp;1</li>
+<li>A&nbsp;&nbsp;-- &nbsp;2</li>
+<li>A &nbsp;-- &nbsp;3</li>
+<li>B&nbsp;&nbsp;-- &nbsp;1</li>
+<li>B&nbsp;&nbsp;-- &nbsp;2</li>
+<li>B&nbsp;&nbsp;-- &nbsp;3</li>
+<li>C &nbsp;-- &nbsp;1</li>
+<li>C &nbsp;--&nbsp; 2</li>
+<li>C&nbsp; -- &nbsp;3</li>
+</ul>
+<br>
+<br>
+<br>
+<div class="pageactions"> <i>This page last
+changed on 12-Sept-2008 17:23:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+</div>
+</body></html>
