@@ -864,10 +864,18 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
  
 ArrayList  minorObjectMapList =  (ArrayList) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
- if (countEnt == 0) {
-     minorObjectCompareHashMap.put("EO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectMapList);
- }
-                                                                   HashMap minorObjectHashMap = new HashMap();
+
+ int  maxMinorObjectsPreview =  (eoMultiMergePreview  != null) ?((Integer) eoMultiMergePreview.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
+
+ArrayList minorObjectsListPreview =  (eoMultiMergePreview  != null) ?((ArrayList) eoMultiMergePreview.get("EO" + childObjectNodeConfig.getName() + "ArrayList")):new ArrayList();
+                                       if(eoMultiMergePreview  != null) {
+											 minorObjectCompareHashMap.put("EO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectsListPreview);
+										} else {
+											 if(countEnt  == 0 ) {
+ 											    minorObjectCompareHashMap.put("EO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectMapList);
+											 }
+										}
+                                                                    HashMap minorObjectHashMap = new HashMap();
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
                                                                     %>
                                                                     <tr>
@@ -884,9 +892,9 @@ ArrayList  minorObjectMapList =  (ArrayList) eoHashMapValues.get("EO" + childObj
                                                                     for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
                                                                          minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
                                                                     %>
-                                                                    <%if (countEnt > 0) {
+                                                                    <%
                                                                         minorObjectMapCompare =  compareDuplicateManager.getDifferenceMinorObjectMapWithKeyType((ArrayList)minorObjectCompareHashMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
-                                                                    }%>
+                                                                    %>
                                                                     <%
                                                                       for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                        FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
@@ -895,40 +903,54 @@ ArrayList  minorObjectMapList =  (ArrayList) eoHashMapValues.get("EO" + childObj
                                                               <tr>
                                                                   <td>
                                                                       
-         <!-- if minor objects exists -->
-      <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-        <%if (countEnt > 0 && minorObjectMapCompare != null 
-                && minorObjectMapCompare.get(epathValue) != null  &&
-                minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
-                <font class="highlight">
-                    <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
-                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                    <%}else{%>
-                         <%=minorObjectHashMap.get(epathValue)%>
-                         <%}%>
-                         </font>
-                         <%} else {%>
-                         <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
-                           <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                         <%}else{%>
-                         <%=minorObjectHashMap.get(epathValue)%>
-                         <%}%>
-                         <%}%>
-                         <%} else {%>
-                            <%if (countEnt > 0 && minorObjectMapCompare !=null 
-                                    && minorObjectMapCompare.get(epathValue) != null  
-                                    && minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
-                                    <font class="highlight">
-                                        <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
-																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                        <%}else{%>
-																						 <img src="./images/calup.gif" border="0" alt="Blank Value"/>
-                                                                                       <%}%>
-                                                                                    </font>
-                                                                                 <%} else {%>
-																				  &nbsp;
-																				 <%}%>
-  																			<%}%>
+												 <!-- if minor objects exists --><!-- modified by bhat on 16-09-08 -->
+											  <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+												     <%if ( eoMultiMergePreview != null&& minorObjectMapCompare != null 
+														&& minorObjectMapCompare.get(epathValue) != null  &&
+														minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+															<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("EUID")) != null ) {%>
+ 														         <font class="highlight">
+															<%}%>
+                                                               	<%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+                                                               		<h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                               	<%}else{%>
+                                                               		 <%=minorObjectHashMap.get(epathValue)%>
+                                                               		 <%}%>
+															<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null ) {%>
+                                                               </font>
+															<%}%>
+												     <%} else if (countEnt > 0 && minorObjectMapCompare != null 
+														&& minorObjectMapCompare.get(epathValue) != null  &&
+														minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+															        <font class="highlight">
+                                                                	<%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+                                                               		<h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                               	<%}else{%>
+                                                               		 <%=minorObjectHashMap.get(epathValue)%>
+                                                               		 <%}%>
+                                                              </font>
+												      <%} else {%>
+															 <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+															   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+															 <%}else{%>
+															  <%=minorObjectHashMap.get(epathValue)%>
+															 <%}%>
+													  <%}%>
+												<%} else {%>
+																     <%if (countEnt > 0 && minorObjectMapCompare !=null 
+																		&& minorObjectMapCompare.get(epathValue) != null  
+																		&& minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+																		<font class="highlight">
+																			  <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																				 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                              <%}else{%>
+																				 <img src="./images/calup.gif" border="0" alt="Blank Value"/>
+                                                                              <%}%>
+                                                                             </font>
+                                                                       <%} else {%>
+																		&nbsp;
+																	  <%}%>
+  												<%}%>
                                                                          </td>
                                                                     </tr>
  

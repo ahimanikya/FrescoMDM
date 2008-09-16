@@ -654,12 +654,99 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
  
                                                     <tr>
                                                         <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
+                                                                                 <%if (fieldValuesMapSource.get(epathValue) != null) {%>
+                                                                                    
+                                                                                <div id="highlight<%=fieldValuesMapSource.get("EUID")%>:<%=epathValue%>" style="background-color:none;">
+                                                                                  <%if (eoMultiMergePreviewHashMap != null) {%> <!-- if preview is then display the links-->
+                                                                                 <%if (previewEuidsHashMap.get((String) fieldValuesMapSource.get("EUID")+ new Integer(fac).toString() ) != null) {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
+																					
+                                                                                    <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+ 
+                                                                                        <font class="highlight">
+                                                                                            <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                            <%} else {%> 
+                                                                                            <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                            <%}%>
+                                                                                        </font>
+                                                                                   
+                                                                                    <%} else {%>
+ 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
+ 																					  <font class="highlight">
+																				         <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
+																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%}else{%>
+                                                                                         <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                     </font>
+                                                                                   <%} else {%> 
+                                                                                       <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%} else {%> 
+                                                                                       <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                      <%}%>
+                                                                                    <%}%>
+																				 <%}%>
+                                                                       <%} else {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
+                                                                                       <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%} else {%> 
+                                                                                        <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                      <%}%>
 
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
+                                                                       <%}%>
+                                                                              <%} else {%> <!--if not [preview -->
+                                                                                    <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+                                                                                     <font class="highlight">
+                                                                                        <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                          <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                        <%} else {%> 
+                                                                                          <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                        <%}%>
+                                                                                    </font>
+                                                                                    <%} else {%>
+
+ 																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
+ 																					    <font class="highlight">
+																				          <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
+																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                          <%}else{%>
+                                                                                           <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                        <%}%>
+                                                                                       </font>
+                                                                                     <%} else {%> 
+                                                                                       <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                      <%} else {%> 
+                                                                                       <%=fieldValuesMapSource.get(epathValue)%>
+                                                                                      <%}%>
+                                                                                    <%}%> 
+
+
+                                                                                    <%}%>
+                                                                                        
+                                                                                    <%}%>
+                                                                                        
+                                                                                </div>
+                                                                                    
+                                                                                <%} else {%> <!-- Not null condition  -->
+                                                                                    <%if (eoMultiMergePreviewHashMap != null) {%> <!-- if preview is then display the links-->
+                                                                                        <%if (previewEuidsHashMap.get((String) fieldValuesMapSource.get("EUID")) != null) {%>
+ 		                                                                                <%if(eoMapPreview.get(epathValue) != null) { %> 
+                                                                                                 <font class="highlight">
+                                                                                                     <!-- blank image -->
+                                                                                                     <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
+                                                                                                 </font>
+  																						<%}%>
+                                                                                        <%} else {%>
+                                                                                        &nbsp;
+                                                                                        <%}%>
+                                                                                    <%} else {%>		
+                                                                                      <%if(resultArrayMapMain.get(epathValue) != null ) { %>
+                                                                                       <font class="highlight">
+ 																						   <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
+                                                                                       </font>
+																					 <%}else {%>
+                                                                                        &nbsp; 
+                                                                                     <%}%>
+
+																					<%}%>
+                                                                                <%}%>
 
                                                         </td>                                                        
                                                     </tr>
@@ -768,7 +855,7 @@ String previousQuery=request.getQueryString(); //added by Narahari.M on 22/08/20
                                                                                 <div id="highlight<%=fieldValuesMapSource.get("EUID")%>:<%=epathValue%>" style="background-color:none;">
                                                                                   <%if (eoMultiMergePreviewHashMap != null) {%> <!-- if preview is then display the links-->
                                                                                  <%if (previewEuidsHashMap.get((String) fieldValuesMapSource.get("EUID")+ new Integer(fac).toString() ) != null) {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
-
+																					
                                                                                     <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
  
                                                                                         <font class="highlight">
