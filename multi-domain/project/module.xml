@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+<nbm>
+    <moduleType>normal</moduleType>
+    <codeNameBase>com.sun.mdm.multidomain.project</codeNameBase>
+    <cluster>soa2</cluster>
+    <manifest>./manifest.mf</manifest>
+    <distributionUrl>http://download.java.net/mural</distributionUrl>
+    <licenseName>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)</licenseName>
+    <licenseFile>../../bootstrap/legal/license.txt</licenseFile>
+    <libraries>
+        <!-- these dependencies get copied to modules/ext directory in the mevenide cluster and
+            get referenced from the module's jar usign the Class-Path manifest entry. 
+            Not necessary since 2.5 version of nbm-maven-plugin
+         -->
+        <!--library>org.netbeans.api:org-jdesktop-layout</library-->
+        <!--library>../../index-core/target/index-core.jar</library-->
+    </libraries>
+    <dependencies>        
+        <dependency>
+            <id>org.netbeans.api:org-apache-tools-ant-module</id>
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-api-progress</id>		
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-api-visual</id>		
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-api-xml</id>          
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-core-multiview</id>          
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-j2ee-metadata</id>            
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-j2eeserver</id>           
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-java-project</id>     
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-project-ant</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-projectapi</id>
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-projectuiapi</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-queries</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-xml-retriever</id>          
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-modules-xml-xam</id>          
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-spi-navigator</id>
+        </dependency>        
+        <dependency>
+            <id>org.netbeans.api:org-netbeans-spi-palette</id>		
+        </dependency>                      
+        <dependency>
+            <id>org.netbeans.api:org-openide-actions</id>           
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-awt</id>           
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-dialogs</id>          
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-execution</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-explorer</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-filesystems</id>           
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-loaders</id>           
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-modules</id>           
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-nodes</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-text</id>          
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-util</id>         
+        </dependency>
+        <dependency>
+            <id>org.netbeans.api:org-openide-windows</id>          
+        </dependency>
+    </dependencies>
+    <nbmResources>
+       <!--nbmResource>
+           <baseDirectory>../index-core/target</baseDirectory>
+           <relativeClusterPath>modules/ext/index</relativeClusterPath>
+           <includes>
+               <include>ejb-source.zip</include>
+               <include>index-core.jar</include>
+           </includes>
+       </nbmResource-->
+    </nbmResources>
+    
+</nbm>
+            

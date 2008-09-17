@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>multi-domain</artifactId>
+        <groupId>mural</groupId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>mural</groupId>
+    <artifactId>com-sun-mdm-multidomain-project</artifactId>
+    <name>Multi-Domain Netbeans Project</name>
+    <version>${mural.currentVersion}</version>
+    <packaging>nbm</packaging>
+    <url>http://mural.dev.java.net</url>
+    <build>
+        <finalName>com-sun-mdm-multidomain-project</finalName>
+        <sourceDirectory>src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src</directory>
+                <excludes>
+                    <exclude>*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <version>2.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <descriptor>./module.xml</descriptor>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-anttask-jar</id>
+                        <phase>compile</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <tasks>
+                                <!--mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm"></mkdir>
+                                <jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/com-sun-mdm-index-project-anttasks.jar" compress="false">
+                                    <fileset dir="${project.build.directory}/classes">
+                                        <include name="com/sun/mdm/index/project/anttasks/**/*.class"></include>
+                                        <include name="com/sun/mdm/index/project/anttasks/**/*.xml"></include>
+                                    </fileset>
+                                </jar-->
+                                <!--delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"></delete-->
+                            </tasks>          
+                        </configuration>
+                    </execution>	     	            
+                    <execution>
+                        <id>copy-files-for-nbm</id>
+                        <phase>compile</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <tasks>
+                                
+                            </tasks>          
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-to-netbeans</id>
+                        <phase>package</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <tasks>
+                                <!--zip destfile="${project.build.directory}/open-dm-mi-netbeans.zip" basedir="${project.build.directory}/nbm/netbeans" excludes="module_tracking.xml"></zip-->  
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+                                    <classpath refid="maven.compile.classpath"></classpath>
+                                </taskdef>
+                                <property name="install.dir" value="${env.NB_HOME}"></property>
+                                <available file="${install.dir}" type="dir" property="install.dir.present"></available>
+                                <if>
+                                    <isset property="install.dir.present"></isset>
+                                    <then>
+                                        <delete file="${install.dir}/${netbeans.cluster}/update_tracking/com-sun-mdm-multidomain-project.xml"></delete>
+                                        <delete file="${install.dir}/${netbeans.cluster}/config/Modules/com-sun-mdm-multidomain-project.xml"></delete>
+                                        <delete file="${install.dir}/${netbeans.cluster}/modules/com-sun-mdm-multidomain-project.jar"></delete>
+                                        <copy todir="${install.dir}">
+                                            <fileset dir="${project.build.directory}/nbm/netbeans">
+                                                <exclude name="module_tracking.xml"></exclude>
+                                                <exclude name="soa2/modules/ext/*.jar"></exclude>                 
+                                            </fileset>
+                                        </copy>
+                                        <echo>*** INFO: Install to netbeans: ${install.dir} successfully! ***</echo>                    
+                                    </then>
+                                    <else>
+                                        <echo>*** WARNING: NO NB_HOME is set. Fail to install to netbeans. ***</echo>
+                                    </else>
+                                </if>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>1.0b2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.6.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.hulp.i18n</groupId>
+            <artifactId>net.java.hulp.i18n</artifactId>
+            <version>2.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.swing-layout</groupId>
+            <artifactId>swing-layout</artifactId>
+            <version>1.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-apache-tools-ant-module</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-jdesktop-layout</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-j2eeserver</artifactId>
+            <version>${netbeans.version}</version>			
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-windows</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-api-progress</artifactId>
+            <version>${netbeans.version}</version>			
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-api-visual</artifactId>
+            <version>${netbeans.version}</version>			
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-core-multiview</artifactId>
+            <version>${netbeans.version}</version>			
+        </dependency>
+    </dependencies>
+</project>
+

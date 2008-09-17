@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+<?xml-stylesheet type="text/xml" href="http://openide.netbeans.org/fs/filesystem.xsl"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Templates">
+        <folder name="Project">        
+            <folder name="CAPS">
+                <!-- Add template for the Master Index enterprize project -->
+                <folder name="MDM">
+                    <attr name="position" intvalue="3000"/>
+                    <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
+                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/project.html"/>
+
+                    <file name="Multi-Domain MDM Project">
+                        <attr name="template" boolvalue="true"/>
+                        <attr name="templateWizardIterator" newvalue="com.sun.mdm.multidomain.project.wizard.NewProjectIterator"/>
+                        <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/MultiDomainMDMProjectIcon.png"/>
+                        <attr name="templateWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/emptyProject.html"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>
