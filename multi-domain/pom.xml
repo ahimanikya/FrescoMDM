@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>open-dm-mi</artifactId>
+        <groupId>mural</groupId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>mural</groupId>
+    <artifactId>multi-domain</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <name>Master Index Multi-Domain</name>
+    <url>http://maven.apache.org</url>
+    <modules>
+        <!--module>services</module-->
+        <!--module>webapp</module-->
+        <module>project</module>        
+    </modules>
+</project>
