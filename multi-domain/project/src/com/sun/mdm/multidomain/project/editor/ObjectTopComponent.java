@@ -22,7 +22,6 @@
  */
 package com.sun.mdm.multidomain.project.editor;
 
-//import com.sun.mdm.index.project.ui.applicationeditor.*;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.beans.PropertyChangeEvent;
@@ -35,7 +34,7 @@ import org.openide.windows.TopComponent;
 import org.openide.cookies.SaveCookie;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
-//import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.util.Logger;
 
 
@@ -59,8 +58,9 @@ public class ObjectTopComponent
     private String mObjectName;
     private String mPath;
     private EditorMainApp mEditorMainApp;
-    //private EditorMainPanel mEditorMainPanel;
+    private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
+    private RelationshipModel mRelationshipModel;
 
     /**
      * an empty constructor is required by Netbeans
@@ -221,15 +221,19 @@ public class ObjectTopComponent
             mNodeName = path; //mMultiDomainApplication.getName();
             
             //mObjectName = mMultiDomainApplication.getObjectName();
-            
-            //mEditorMainPanel = mEditorMainApp.newEviewEditorMainPanel();
+            //ToDo-
+            //getRelationshipModel
+            mRelationshipModel = mMultiDomainApplication.getRelationshipModel(false);
+            //from RelationshipModel get all object model from participating domains
+            //-ToDo
+            mEditorMainPanel = mEditorMainApp.newEditorMainPanel();
 
             // init main panel, which init the data model and all the views
             boolean ret = true;
             if (ret) {
                 // add the Main Panel to this Top Component
                 this.setLayout(new BorderLayout(0, 0));
-                //this.add(mEditorMainPanel, BorderLayout.CENTER);
+                this.add(mEditorMainPanel, BorderLayout.CENTER);
                 return true;
             } else {
                 return false;

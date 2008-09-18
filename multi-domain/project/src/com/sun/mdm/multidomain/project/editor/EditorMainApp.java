@@ -43,7 +43,6 @@ import org.xml.sax.InputSource;
 
 import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
-//import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
 
 /**
@@ -66,9 +65,6 @@ public class EditorMainApp {
     private static Map mMapInstances = new HashMap();  // path, instance
     private MultiDomainApplication mMultiDomainApplication;
     private EditorMainPanel mEditorMainPanel;
-    //private PropertiesDeploymentPanel mPropertiesDeploymentPanel;
-    //private TabDeploymentPanel mTabDeploymentPanel = null;
-    private ArrayList candidateFields;
     private String validationMsg = "";
     private boolean bCheckedOut = true;
     
