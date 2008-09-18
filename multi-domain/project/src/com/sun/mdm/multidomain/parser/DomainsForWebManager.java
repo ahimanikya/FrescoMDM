@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.sun.mdm.multidomain.parser;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author wee
+ * @version 
+ */
+public class DomainsForWebManager {
+    
+    private ArrayList<DomainForWebManager> mDomains;
+    
+    public ArrayList<DomainForWebManager> getDomains() {
+        return this.mDomains;
+    }
+    
+    public void addDomain(DomainForWebManager domain) {
+        this.mDomains.add(domain);
+    }
+    
+    public void removeDomain(DomainForWebManager domain) {
+        this.mDomains.remove(domain);
+    }
+
+}
