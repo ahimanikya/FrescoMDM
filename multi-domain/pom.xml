@@ -15,8 +15,8 @@
     <name>Master Index Multi-Domain</name>
     <url>http://maven.apache.org</url>
     <modules>
-        <!--module>services</module-->
-        <!--module>webapp</module-->
         <module>project</module>        
+        <module>services</module>        
+        <!--module>webapp</module-->        
     </modules>
 </project>
