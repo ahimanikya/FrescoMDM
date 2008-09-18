@@ -16,6 +16,10 @@
   <build>
 		<finalName>multidomain-services</finalName>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+    </resources>
+    <plugins>
+    </plugins>    
   </build>
   <dependencies>
   	<dependency>
