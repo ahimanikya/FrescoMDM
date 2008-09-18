@@ -718,8 +718,10 @@ public class QueryManagerTest extends TestCase {
         if (ObjectFactory.getDatabase().equals("Oracle")) {
           String hint = "FIRST_ROWS";
           qo.setHints(new String[][]{{hint, " /*+ ALL_ROWS */"}} );
-        } else {        
+        } else if (ObjectFactory.getDatabase().equalsIgnoreCase("SQLServer")){        
           qo.setHints(new String[][]{{"", "MAXRECURSION 2"}} );
+        } else {
+          qo.setHints(new String[][]{{"", ""}} );
         }
                 
         //qo.parse();
