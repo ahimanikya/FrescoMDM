@@ -77,7 +77,8 @@ public class UpdateRecord extends TestCase {
     protected void setUp() throws Exception {
         mDbType = new String(ObjectFactory.getDatabase());
         if (mDbType.equalsIgnoreCase("Oracle") &&
-            mDbType.equalsIgnoreCase("SQL Server")) {
+            mDbType.equalsIgnoreCase("SQL Server") &&
+            mDbType.equalsIgnoreCase("MySQL")) {
             throw new Exception("Error. Unsupported database: " + mDbType);
         }
     }
@@ -1258,7 +1259,7 @@ public class UpdateRecord extends TestCase {
                                     + "null but retrieved: '" + value + "'");
                 return false;
             }        
-        } else if (mDbType.compareToIgnoreCase("SQL Server") == 0) {
+        } else if (mDbType.compareToIgnoreCase("SQL Server") == 0 || mDbType.compareToIgnoreCase("MySQL") == 0) {
             if (!value.equals("")) {
                 System.out.println("System Object expected " + fieldName + " to be " 
                                     + "an empty string but retrieved: '" 
