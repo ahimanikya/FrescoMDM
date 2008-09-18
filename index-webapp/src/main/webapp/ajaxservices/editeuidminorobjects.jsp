@@ -210,7 +210,7 @@ if(isSave) {
 	isSaveEditedValues = false;
 %>
    <script> 
-        setEOEditIndex('-1')
+        setEOEditIndex('-1');
    </script>
 
 <%
@@ -527,7 +527,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
  <%}%>
 <%}else if (isLoad) {%>
    <script> 
-        setEOEditIndex('-1')
+        setEOEditIndex('-1');
         document.getElementById('EO<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
    	    document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.visibility = 'hidden';
         document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.display = 'none'; 
@@ -671,7 +671,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
  <!-- End Regenerate -->
 <% } else if (isDelete) { %>   <!-- Delete Minor Object  -->
     <script>
-    setEOEditIndex('-1')
+    setEOEditIndex('-1');
     document.getElementById('EO<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
 	document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.visibility = 'hidden';
     document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.display = 'none';
@@ -1111,7 +1111,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.display = 'none'; 
    </script>
    <script> 
-    setEOEditIndex('-1')
+    setEOEditIndex('-1');
    </script>
    <script>
 	   document.getElementById('<%=request.getParameter("MOT")%>EOInnerForm').reset();	
@@ -1369,7 +1369,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				      <%}%> 
 				   <%}%> 
                <!-- Generate the script to populate the form -->
-			   <script>
+			   
 			       <% 
 				   	  String thisminorObjectType = (String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE);
      		          for(int k=0;k<fcArray.length;k++) {					     
@@ -1383,9 +1383,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           }
                         } 
 					%> 
-
+					<script>
   					    var thisFrm = document.getElementById('<%=formName%>');
-                        elemType = thisFrm.elements[<%=k%>].type.toUpperCase();
+                        var elemType = thisFrm.elements['<%=k%>'].type.toUpperCase();
+					</script>
 					<%if( fcArray[k].isSensitive() && editMainEuidHandler.getEditSingleEOHashMap().get("hasSensitiveData") != null && !operations.isField_VIP()){%>
 					
 					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
@@ -1394,35 +1395,41 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
- 						  
-                            thisFrm.elements[<%=k%>].readOnly = true;
-                            thisFrm.elements[<%=k%>].disabled = true;
-							thisFrm.elements[<%=k%>].options.selectedIndex = 0;
+ 						 <script> 
+                            thisFrm.elements['<%=k%>'].readOnly = true;
+                            thisFrm.elements['<%=k%>'].disabled = true;
+							thisFrm.elements['<%=k%>'].options.selectedIndex = 0;
+						</script>
    
 						<%} else {%>
+						<script>
 							if(elemType != 'HIDDEN') {
-                               thisFrm.elements[<%=k%>].readOnly = true;
-                               thisFrm.elements[<%=k%>].disabled = true;
- 							   thisFrm.elements[<%=k%>].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
+                               thisFrm.elements['<%=k%>'].readOnly = true;
+                               thisFrm.elements['<%=k%>'].disabled = true;
+ 							   thisFrm.elements['<%=k%>'].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
 						    }
+						</script>
 						<%}%>
 
 					    <%} else {%>
 						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
- 						  
-                            thisFrm.elements[<%=k%>].readOnly = true;
-                            thisFrm.elements[<%=k%>].disabled = true;
-							thisFrm.elements[<%=k%>].options.selectedIndex = 0;
-                            thisFrm.elements[<%=k%>].title = '';
+ 						  <script>
+                            thisFrm.elements['<%=k%>'].readOnly = true;
+                            thisFrm.elements['<%=k%>'].disabled = true;
+							thisFrm.elements['<%=k%>'].options.selectedIndex = 0;
+                            thisFrm.elements['<%=k%>'].title = '';
+						</script>
   
 						<%} else {%>
+						<script>
 							if(elemType != 'HIDDEN') {
-                               thisFrm.elements[<%=k%>].readOnly = true;
-                               thisFrm.elements[<%=k%>].disabled = true;
- 							   thisFrm.elements[<%=k%>].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
-                               thisFrm.elements[<%=k%>].title = '';
+                               thisFrm.elements['<%=k%>'].readOnly = true;
+                               thisFrm.elements['<%=k%>'].disabled = true;
+ 							   thisFrm.elements['<%=k%>'].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
+                               thisFrm.elements['<%=k%>'].title = '';
 						    }
+						</script>
 						<%}%>
 						<%}%>
 
@@ -1434,22 +1441,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%> 
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
-							  
-								thisFrm.elements[<%=k%>].readOnly = true;
-								thisFrm.elements[<%=k%>].disabled = true;
+							  <script>
+								thisFrm.elements['<%=k%>'].readOnly = true;
+								thisFrm.elements['<%=k%>'].disabled = true;
 
-								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
-										thisFrm.elements[<%=k%>].options.selectedIndex = i
+								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
+									if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  '<%=value%>')   {
+										thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
 									}
 								 }
- 		
+ 							</script>
 							<%} else {%>
+							<script>
 								if(elemType != 'HIDDEN') {
-								   thisFrm.elements[<%=k%>].readOnly = true;
-								   thisFrm.elements[<%=k%>].disabled = true;
-								   thisFrm.elements[<%=k%>].value = '<%=value%>'
+								   thisFrm.elements['<%=k%>'].readOnly = true;
+								   thisFrm.elements['<%=k%>'].disabled = true;
+								   thisFrm.elements['<%=k%>'].value = '<%=value%>';
 								}
+							</script>
 							<%}%>
 						<%}%>
 
@@ -1457,19 +1466,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
+						   <script>
 							   if(elemType != 'HIDDEN') {
 							  
-								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
-										thisFrm.elements[<%=k%>].options.selectedIndex = i
+								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
+									if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  '<%=value%>')   {
+										thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
 									}
 								 }
 							   }
+							</script>
 
 							<%} else {%>
+							<script>
 								if(elemType != 'HIDDEN') {
-								  thisFrm.elements[<%=k%>].value = '<%=value%>'
+								  thisFrm.elements['<%=k%>'].value = '<%=value%>';
 								}
+							</script>
 							<%}%>
 						<%}%>
 				   <%}%>
@@ -1478,7 +1491,6 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					
 						
 		           <%}%>
-			   </script>
 <% } else if (isLinking){ %> 	<!-- Linking the SBR fields-->
      
      <% String sbrFullFieldName = request.getParameter("sbrfullfieldname");%>

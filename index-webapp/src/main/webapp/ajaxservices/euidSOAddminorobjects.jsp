@@ -647,7 +647,7 @@ if (isCancel){
 		  </script>
          
 		  <script> 
-            setEOEditIndex('-1')
+            setEOEditIndex('-1');
           </script>
          
 		  <% Object[] keysSetMinorObjects  = allNodeFieldConfigsMap.keySet().toArray();
@@ -1317,7 +1317,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 				      <%}%> 
 				   <%}%> 
 			   <!-- Generate the script to populate the form -->
-			   <script>
+			   
 			       <% for(int k=0;k<fcArray.length;k++) {					     
 				   %>
 					<%
@@ -1329,33 +1329,34 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
                           }
                         } 
 					%> 
-
+					<script>
   					    var thisFrm = document.getElementById('<%=formName%>');
-                        elemType = thisFrm.elements[<%=k%>].type.toUpperCase()
+                        var elemType = thisFrm.elements['<%=k%>'].type.toUpperCase();
+					</script>
 					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {
 							if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
+					   <script>
                            if(elemType != 'HIDDEN') {
 						  
-							for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
-									thisFrm.elements[<%=k%>].options.selectedIndex = i
+							for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
+								if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  '<%=value%>')   {
+									thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
 								}
 						     }
 					       }
-
+						   
+					  </script>
 						<%} else {%>
+						<script>
 							if(elemType != 'HIDDEN') {
-                              thisFrm.elements[<%=k%>].value = '<%=value%>'
+                              thisFrm.elements['<%=k%>'].value = '<%=value%>';
 						    }
+						</script>
 						<%}%>
 					<%}%>
 						
 		           <%}%>
-			       
-
-			   </script>
-
 
 <% } %>
 
