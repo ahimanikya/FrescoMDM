@@ -222,6 +222,7 @@ public class BasicHelper {
             systemDate = "getdate()";
         } else if (dbType.equalsIgnoreCase("MySQL")){
             systemDate = "current_date()";
+            con.setAutoCommit(false);
         } else {
             throw new SQLException("Error. Unsupported database: " + dbType);
         }
