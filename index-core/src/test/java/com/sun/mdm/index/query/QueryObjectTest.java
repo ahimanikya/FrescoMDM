@@ -136,7 +136,7 @@ public class QueryObjectTest extends TestCase {
 //      The Query Parser for this test creates two Select statements. 
     	// Reason: It is specified to be not Tuples and there are two children Phone and Address for Person
     	// specified in the QueryObject. So one query is for Person, Phone data and other for Person, Address data.
-    	String[] sqlserver = 
+    	String[] ansisql = 
     	{"SELECT  SBYN_PERSONSBR.EUID , SBYN_PERSONSBR.LASTNAME , SBYN_PERSONSBR.PERSONID " +
     			     ", SBYN_PHONESBR.PHONE , SBYN_PHONESBR.PHONEID , SBYN_PHONESBR.PHONETYPE " +
     		" FROM  ( SBYN_PERSONSBR left outer join SBYN_PHONESBR " +
@@ -208,7 +208,7 @@ public class QueryObjectTest extends TestCase {
               
               System.out.println(sql);
               if (ObjectFactory.isDatabaseANSI()) {
-                  checkSQLStrings(sqlserver[i], sql);
+                  checkSQLStrings(ansisql[i], sql);
               } else {
             	  checkSQLStrings(sqloracle[i], sql);
               }
@@ -247,7 +247,7 @@ public class QueryObjectTest extends TestCase {
             };
         qo.setCondition(conditions);
         
-        String sqlserver[] = 
+        String ansisql[] = 
         { "SELECT  SBYN_PERSONSBR.EUID , SBYN_PERSONSBR.LASTNAME , SBYN_PERSONSBR.PERSONID , " +
         	  "SBYN_PHONESBR.PHONE , SBYN_PHONESBR.PHONEID , SBYN_PHONESBR.PHONETYPE " +
         	"FROM  ( SBYN_PERSONSBR left outer join SBYN_PHONESBR " +
@@ -301,7 +301,7 @@ public class QueryObjectTest extends TestCase {
             
             System.out.println(sql);
             if (ObjectFactory.isDatabaseANSI()) {
-                checkSQLStrings(sqlserver[i], sql);
+                checkSQLStrings(ansisql[i], sql);
             } else {
             	checkSQLStrings(sqloracle[i], sql);
             }
@@ -398,7 +398,7 @@ public class QueryObjectTest extends TestCase {
             };
         qo.setCondition(conditions);
 
-        String[] sqlserver = {
+        String[] ansisql = {
         	        
          "SELECT  SBYN_PERSONSBR.EUID , SBYN_PERSONSBR.LASTNAME , SBYN_PERSONSBR.PERSONID , SBYN_PHONESBR.PHONE , " +
           "SBYN_PHONESBR.PHONEID , SBYN_PHONESBR.PHONETYPE " +
@@ -469,7 +469,7 @@ public class QueryObjectTest extends TestCase {
             
             System.out.println(sql);
             if (ObjectFactory.isDatabaseANSI()) {
-                checkSQLStrings(sqlserver[i], sql);
+                checkSQLStrings(ansisql[i], sql);
             } else {
             	checkSQLStrings(sqloracle[i], sql);
             }
@@ -508,7 +508,7 @@ public class QueryObjectTest extends TestCase {
                         "LIKE", "KA%", true)
                 
             };
-        String sqlserver[] = {
+        String ansisql[] = {
         		"SELECT  SBYN_PERSONSBR.EUID , SBYN_PERSONSBR.LASTNAME , SBYN_PERSONSBR.PERSONID , " +
         		  "SBYN_PHONESBR.PHONE , SBYN_PHONESBR.PHONEID , SBYN_PHONESBR.PHONETYPE " +
         		"FROM  ( SBYN_PERSONSBR left outer join SBYN_PHONESBR " +
@@ -550,7 +550,7 @@ public class QueryObjectTest extends TestCase {
           String sql = sqlDesc[i].getSQL();
           System.out.println(sql);   
           if (ObjectFactory.isDatabaseANSI()) {
-              checkSQLStrings(sqlserver[i], sql);
+              checkSQLStrings(ansisql[i], sql);
           } else {
         	  checkSQLStrings(sqloracle[i], sql);
           }
@@ -594,7 +594,7 @@ public class QueryObjectTest extends TestCase {
                 }
             };
         
-        String[] sqlserver = {
+        String[] ansisql = {
         		"SELECT  SBYN_PERSONSBR.LASTNAME , SBYN_PERSONSBR.PERSONID , SBYN_PHONESBR.PHONE , " +
         		  "SBYN_PHONESBR.PHONEID , SBYN_PHONESBR.PHONETYPE " +
         		 "FROM  ( SBYN_PERSONSBR left outer join SBYN_PHONESBR " +
@@ -663,7 +663,7 @@ public class QueryObjectTest extends TestCase {
           String sql = sqlDesc[i].getSQL();
           System.out.println(sql);   
           if (ObjectFactory.isDatabaseANSI()) {
-              checkSQLStrings(sqlserver[i], sql);
+              checkSQLStrings(ansisql[i], sql);
           } else {
         	  checkSQLStrings(sqloracle[i], sql);
           }
@@ -707,7 +707,7 @@ public class QueryObjectTest extends TestCase {
         qo.setCondition(conditions);
         qo.setQueryOption(qo.SINGLE_QUERY);
 
-        String sqlserver[] ={ 
+        String ansisql[] ={ 
         		"SELECT  SBYN_PERSONSBR.SSN , SBYN_PERSONSBR.LASTNAME , SBYN_PHONESBR.PHONE " +
         		"FROM  SBYN_PERSONSBR  " +
         		  "left outer join SBYN_PHONESBR on  SBYN_PERSONSBR.PERSONID = SBYN_PHONESBR.PERSONID  " +
@@ -742,7 +742,7 @@ public class QueryObjectTest extends TestCase {
           String sql = sqlDesc[i].getSQL();
           System.out.println(sql);   
           if (ObjectFactory.isDatabaseANSI()) {
-              checkSQLStrings(sqlserver[i], sql);
+              checkSQLStrings(ansisql[i], sql);
           } else {
         	  checkSQLStrings(sqloracle[i], sql);
           }
@@ -783,7 +783,7 @@ public class QueryObjectTest extends TestCase {
         //qo.setRootObject("Enterprise.SystemSBR.Person");
         qo.setQueryOption(qo.SINGLE_QUERY);
 
-        String sqlserver[] =  {
+        String ansisql[] =  {
         		"SELECT  SBYN_PERSONSBR.SSN , SBYN_PERSONSBR.LASTNAME , SBYN_PHONESBR.PHONE " +
         		"FROM  SBYN_PERSONSBR  left outer join SBYN_PHONESBR " +
         		  "on  SBYN_PERSONSBR.PERSONID = SBYN_PHONESBR.PERSONID  " +
@@ -805,7 +805,7 @@ public class QueryObjectTest extends TestCase {
           String sql = sqlDesc[i].getSQL();
           System.out.println(sql);   
           if (ObjectFactory.isDatabaseANSI()) {
-              checkSQLStrings(sqlserver[i], sql);
+              checkSQLStrings(ansisql[i], sql);
           } else {
         	  checkSQLStrings(sqloracle[i], sql);
           }
@@ -845,7 +845,7 @@ public class QueryObjectTest extends TestCase {
         
         qo.setQueryOption(qo.SINGLE_QUERY);
 
-        String[] sqlserver = {
+        String[] ansisql = {
           "SELECT  SBYN_PERSONSBR.EUID , SBYN_PERSONSBR.PERSONID , SBYN_PERSONSBR.SSN , SBYN_PERSONSBR.FIRSTNAME , " +
           "SBYN_PERSONSBR.LASTNAME , SBYN_ADDRESSSBR.POSTALCODE , SBYN_ADDRESSSBR.ADDRESSID " +
           "FROM  SBYN_PERSONSBR  left outer join SBYN_ADDRESSSBR " +
@@ -871,7 +871,7 @@ public class QueryObjectTest extends TestCase {
           String sql = sqlDesc[i].getSQL();
           System.out.println(sql);   
           if (ObjectFactory.isDatabaseANSI()) {
-              checkSQLStrings(sqlserver[i], sql);
+              checkSQLStrings(ansisql[i], sql);
           } else {
         	  checkSQLStrings(sqloracle[i], sql);
           }
