@@ -66,56 +66,30 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     String mOldPrimaryObjName = null;
     String mOldText = null;
 
-    static final ImageIcon ROOTIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/Root.gif"));
-    static final ImageIcon PRIMARYNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/PrimaryObject.png"));
-    static final ImageIcon SUBNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/SubObject.png"));
-    static final ImageIcon FIELDNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/Field.png"));
     static final ImageIcon DELETENODEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/index/project/ui/wizards/resources/images/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/index/project/ui/wizards/resources/images/Save.png"));
-    static final ImageIcon TEMPLATESIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/TemplateDropdown.png"));
-    static final ImageIcon TEMPLATECOMPANYIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/TemplateCompany.png"));
-    static final ImageIcon TEMPLATEPERSONIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/TemplatePerson.png"));
-    static final ImageIcon TABAPPLICATIONPROPERTIESIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/applicationeditor/edit_properties.png"));
 
     private JSplitPane mSplitPane = null;
     private JScrollPane entityTreePane;
     private JScrollPane entityPropertyPane = new JScrollPane();
     //private EntityNode mRootNode;
     private JPopupMenu mMenu;
-    private JPopupMenu mTemplatesMenu;
-    private JPopupMenu mSubTemplatesMenu;
     private JLabel jLabelNoProperties;
-    private JButton mButtonAddPrimary;
-    private JButton mButtonAddSub;
-    private JButton mButtonAddField;
-    private JButton mButtonTemplates;
-    private JButton mButtonTemplateCompany;
-    private JButton mButtonTemplatePerson;
     private JButton mButtonDelete;
     private JButton mButtonSave;
-    private JButton mButtonTabApplicationProperties;
     private EditorMainApp mEditorMainApp;
     private MultiDomainApplication mMultiDomainApplication;
-    private boolean bCheckedOut;
     
     /**
      * Create the panel and set up some basic properties.
      *
      */
-    public EditorMainPanel(EditorMainApp eviewEditorMainApp, MultiDomainApplication eviewApplication) {
+    public EditorMainPanel(EditorMainApp eviewEditorMainApp, MultiDomainApplication application) {
         mEditorMainApp = eviewEditorMainApp;
-        mMultiDomainApplication = eviewApplication;
-        bCheckedOut = eviewEditorMainApp.isCheckedOut();
+        mMultiDomainApplication = application;
+
         initComponents();
     }
 
@@ -189,12 +163,6 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         mMenu = new JPopupMenu();
 
         String commandName = null;
-        mButtonAddPrimary.setEnabled(false);
-        mButtonAddSub.setEnabled(false);
-        mButtonAddField.setEnabled(false);
-        mButtonTemplates.setEnabled(false);
-        mButtonTemplateCompany.setEnabled(false);
-        mButtonTemplatePerson.setEnabled(false);
         mButtonDelete.setEnabled(false);
     }
 

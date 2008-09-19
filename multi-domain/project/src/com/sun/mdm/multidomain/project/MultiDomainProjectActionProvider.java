@@ -40,8 +40,6 @@ import org.openide.ErrorManager;
 
 import org.apache.tools.ant.module.api.support.ActionUtils;
 
-//import org.netbeans.modules.compapp.projects.base.ui.NoSelectedServerWarning;
-//import org.netbeans.modules.compapp.projects.base.IcanproConstants;
 import org.netbeans.spi.project.ui.support.DefaultProjectOperations;
 
 /** Action provider of the Web project. This is the place where to do

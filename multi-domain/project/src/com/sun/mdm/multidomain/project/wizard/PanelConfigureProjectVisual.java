@@ -28,7 +28,7 @@ import org.openide.util.NbBundle;
 
 public class PanelConfigureProjectVisual 
     extends JPanel 
-    implements com.sun.mdm.multidomain.project.IcanproConstants {
+    implements com.sun.mdm.multidomain.project.ProjectConstants {
     private PanelConfigureProject panel;
     private PanelProjectLocationVisual projectLocationPanel;
     private PanelOptionsVisual optionsPanel;

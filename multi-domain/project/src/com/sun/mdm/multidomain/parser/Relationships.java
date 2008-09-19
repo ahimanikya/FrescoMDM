@@ -33,9 +33,9 @@ import java.util.ArrayList;
             RelationshipType relationshipType = null;
             for (int i=0; alRelationshipTypes.size() > i; i++) {
                 relationshipType = (RelationshipType) alRelationshipTypes.get(i);
-                if (relationshipType.name.equals(name) &&
-                    relationshipType.sourceDomain.equals(sourceDomain) &&
-                    relationshipType.targetDomain.equals(targetDomain)) {
+                if (relationshipType.getRelTypeName().equals(name) &&
+                    relationshipType.getSource().equals(sourceDomain) &&
+                    relationshipType.getDestionation().equals(targetDomain)) {
                     break; 
                 }
             }

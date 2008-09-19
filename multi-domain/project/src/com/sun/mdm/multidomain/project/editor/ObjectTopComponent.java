@@ -47,9 +47,7 @@ public class ObjectTopComponent
 
     /** The log4j message logger. */
     private static Logger mLog = Logger.getLogger(ObjectTopComponent.class.getName());
-    private static Image mIcon = Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/applicationeditor/InstanceNode.png");
-    public static final String MODE_NAME = "EVIEW_MODE";
+    public static final String MODE_NAME = "MULTI_DOMAIN_MDM";
 
     /**
      * name of this TopComponent

@@ -77,17 +77,6 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         cbTransactions.setSelectedIndex(0);
         
         setName(NbBundle.getMessage(PanelConfigureProjectVisual.class, "TITLE_DefineDeploymentEnvironment")); //NOI18N
-        /*
-        // Optional: provide a special description for this pane.
-        // You must have turned on WizardDescriptor.WizardPanel_helpDisplayed
-        // (see descriptor in standard iterator template for an example of this).
-        try {
-            putClientProperty("WizardPanel_helpURL", // NOI18N
-                new URL("nbresloc:/eview/src/java/com/sun/mdm/index/project/ui/wizards/DeploymentVisualHelp.html")); // NOI18N
-        } catch (MalformedURLException mfue) {
-            throw new IllegalStateException(mfue.toString());
-        }
-         */
     }
 
     /** This method is called from within the constructor to
