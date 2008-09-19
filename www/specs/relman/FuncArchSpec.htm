@@ -11,34 +11,37 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script></head>
+</script>
+</head>
 <body>
 <h1>Future Ideas for&nbsp;<span style="font-weight: bold;">Relationship
 Management</span></h1>
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-MultiDomainAndRelationshipSupport"><a class="mozTocH2" name="mozTocId967646"></a>
 <b>Multi-domain and Relationship support</b></h2>
 <br />
-<h3><a name="mozTocId741137"></a>Main Points of Interest&nbsp;</h3>
+<h3><a name="mozTocId741137"></a>Main Points
+of Interest&nbsp;</h3>
 <ul id="mozToc">
 <li><a href="FuncArchSpec.htm#mozTocId981334">Overview</a></li>
 <li><a href="FuncArchSpec.htm#mozTocId268480">Project
 Goal</a></li>
-<li><a href="FuncArchSpec.htm#mozTocId822821">Terms</a></li><li><a href="FuncArchSpec.htm#mozTocId768287">Components
-Overview</a></li><li><a href="FuncArchSpec.htm#mozTocId822821"></a>
-<ul><li><a href="FuncArchSpec.htm#mozTocId89631"></a>
-<ul></ul></li>
-</ul>
-</li><li><a href="FuncArchSpec.htm#mozTocId130686">Architecture</a>
+<li><a href="FuncArchSpec.htm#mozTocId822821">Terms</a></li>
+<li><a href="FuncArchSpec.htm#mozTocId768287">Components
+Overview</a></li>
+<li><a href="FuncArchSpec.htm#mozTocId130686">Architecture</a>
 <ul>
 <li><a href="FuncArchSpec.htm#mozTocId376510">Design
 Time</a></li>
 <li><a href="FuncArchSpec.htm#mozTocId139514">Run
-Time</a></li><li><a href="DesignDocs/DesignDocs.html">Design Documents</a> </li>
+Time</a></li>
+<li><a href="DesignDocs/DesignDocs.html">Design
+Documents</a> </li>
 </ul>
 </li>
 <li><a href="FuncArchSpec.htm#mozTocId60136">Detailed
 Specification</a>
-<ul><li><a href="FuncArchSpec.htm#mozTocId278317">Relationship
+<ul>
+<li><a href="FuncArchSpec.htm#mozTocId278317">Relationship
 Manager GUI</a>
 <ul>
 <li><a href="FuncArchSpec.htm#mozTocId37072">Overview</a></li>
@@ -60,7 +63,7 @@ relationship enhancement</a></li>
 &nbsp;Files</a></li>
 </ul>
 <ul>
-<comment title="mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6" xmlns="http://disruptive-innovations.com/zoo/nvu"><img src="chrome://editor/content/images/tag-comment.gif" /><!--mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6--></comment>
+<comment title="mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6" xmlns="http://disruptive-innovations.com/zoo/nvu"><!--mozToc h2 1 h3 2 h4 3 h5 4 h6 5 h6 6--></comment>
 </ul>
 <br />
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-Overview"><a class="mozTocH2" name="mozTocId981334"></a><b>Overview</b></h2>
@@ -256,9 +259,19 @@ customer. It can be formal (business, organizations, legal entities).
 It has similar attributes to that of a entity that it represents.<br />
 <br />
 There is one to many relationship between a group and individuals, as
-in a household group.</dd><dt></dt><dt><span style="font-weight: bold;">Group Instance</span></dt><dd>A specific set of records that is grouped together.<br /><br />Attributes for Groups are associated with the Group Instance not the records that belong to the group. &nbsp;<br /><br />Example,&nbsp;if
-the Group is&nbsp;Household, the Group Instances might look something
-like '33rd Str 99999, NY' and 'Creek Road &amp; Marrow St, UK'. &nbsp;</dd>
+in a household group.</dd>
+<dt></dt>
+<dt><span style="font-weight: bold;">Group Instance</span></dt>
+<dd>A specific set of records that is grouped together.<br />
+<br />
+Attributes for Groups are associated with the Group Instance not the
+records that belong to the group. &nbsp;<br />
+<br />
+Example,&nbsp;if
+the Group is&nbsp;Household, the Group Instances might look
+something
+like '33rd Str 99999, NY' and 'Creek Road &amp; Marrow St, UK'.
+&nbsp;</dd>
 </dl>
 <dl>
 <dt><b>Access Control</b></dt>
@@ -326,7 +339,8 @@ etc). They may also view and manage relationships from this domain's
 perspective. For example, if the domain is customer, these group of
 users may need to see the relationships/hierarchies associated with any
 customer master records.<br />
-<br /><br />
+<br />
+<br />
 <br />
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-ComponentsOverview"><a class="mozTocH2" name="mozTocId768287"></a><b>Components
 Overview</b></h2>
@@ -471,8 +485,13 @@ Run Time</h3>
 </tbody>
 </table>
 <p><br />
-<br /></p><h3><a name="otherfiles" class="mozTocH2"></a> <span style="font-weight: bold;">Design Documentation</span></h3><a href="DesignDocs/DesignDocs.html">
-The design for Relationship Manager. &nbsp;APIS, etc..</a>. <br /><p><br />
+<br />
+</p>
+<h3><a name="otherfiles" class="mozTocH2"></a>
+<span style="font-weight: bold;">Design Documentation</span></h3>
+<a href="DesignDocs/DesignDocs.html">The design for
+Relationship Manager. &nbsp;APIS, etc..</a>. <br />
+<p><br />
 </p>
 <h2 id="section-Master.Index.Relationship.ArchitectureSpec-DetailedSpecification"><a class="mozTocH2" name="mozTocId60136"></a>
 <b>Detailed Specification</b></h2>
@@ -1176,15 +1195,26 @@ attributes - Hide/View certain attributes and values.
 </ol>
 <span style="color: red;"> Currently not in scope
 for release 1. Does this access control provided by Data Mashup? </span>
-<p></p><h3 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipManagerGUI">Miscellaneous &nbsp;Features</h3><h4>Extended Attributes</h4><br /><ul><li>An
+<p></p>
+<h3 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipManagerGUI">Miscellaneous
+&nbsp;Features</h3>
+<h4>Extended Attributes</h4>
+<br />
+<ul>
+<li>An
 administrator can define a set of attributes that are associated with
 records in Relationships,&nbsp; Hierarchies, Categories or Group
-Instances</li><li>An administrator can search for&nbsp;Relationships,
+Instances</li>
+<li>An administrator can search for&nbsp;Relationships,
 Hierarchies, Categories or Group Instances using these attributes. In
 order to make an attribute searchable the administrator first
-predefines a set amount of attributes per data type. &nbsp;Example: 50
-ints, 5 dates, 50 strings. &nbsp; &nbsp;Next, &nbsp;when definining
-attributes she indicates which attributes are searchable.&nbsp;</li></ul><p></p>
+predefines a set amount of attributes per data type. &nbsp;Example:
+50
+ints, 5 dates, 50 strings. &nbsp; &nbsp;Next, &nbsp;when
+definining
+attributes she indicates which attributes are searchable.&nbsp;</li>
+</ul>
+<p></p>
 <h3 id="section-Master.Index.Relationship.ArchitectureSpec-RelationshipManagerGUI"><a class="mozTocH3" name="mozTocId278317"></a>
 Relationship Manager GUI</h3>
 <h4><a class="mozTocH4" name="mozTocId37072"></a>
@@ -1242,18 +1272,44 @@ for the first release the plug in that handles merges will need logic
 to handle such conflicts. </li>
 </ol>
 <h4><a class="mozTocH4" name="mozTocId684512"></a>
-Mock up</h4><br /><h5><a class="mozTocH4" name="RelTerms"></a>Terms</h5><br />Terms used in the Mock up that may not be familiar to the redear of this page.<br /><br /><dl><li>Wireframe</li><dd>A basic visual guide 
-used in web design to suggest 
-the layout of fundamental elements in the interface</dd><li></li><li>Functional Wireframe</li><dd>A basic visual guide 
-used in web design
-to suggest the layout of fundamental elements in the interface. &nbsp;
+Mock up</h4>
+<br />
+<h5><a class="mozTocH4" name="RelTerms"></a>Terms</h5>
+<br />
+Terms used in the Mock up that may not be familiar to the redear of
+this page.<br />
+<br />
+<dl>
+<li>Wireframe</li>
+<dd>A basic visual guide used in web design to suggest the
+layout of fundamental elements in the interface</dd>
+<li></li>
+<li>Functional Wireframe</li>
+<dd>A basic visual guide used in web design
+to suggest the layout of fundamental elements in the interface.
+&nbsp;
 These show the funcitons that each area of the screen will supported
-and contain no actual controls.</dd></dl><dl><dt>Mock Up</dt><dd>Shows what a screen will look up. May include a semi-working prototype.&nbsp;</dd></dl><dl><dt>Screen Overlay&nbsp;</dt><dd>An
+and contain no actual controls.</dd>
+</dl>
+<dl>
+<dt>Mock Up</dt>
+<dd>Shows what a screen will look up. May include a
+semi-working prototype.&nbsp;</dd>
+</dl>
+<dl>
+<dt>Screen Overlay&nbsp;</dt>
+<dd>An
 area that is overlayed on top of a window. &nbsp;It is not a popup
 window because it is attached to the window and usually appears close
-to the control that caused it to appear.<br /></dd><dt>Screen Flow</dt><dd>Shows the navigation been screens or screen elements</dd></dl><dl><dd></dd></dl>
+to the control that caused it to appear.<br />
+</dd>
+<dt>Screen Flow</dt>
+<dd>Shows the navigation been screens or screen elements</dd>
+</dl>
+<dl>
+<dd></dd>
+</dl>
 <span style="color: green;"><b>
-
 Note:</b></span>
 This is a feature mock up. A feature mock does <b>not</b>
 represent the exact look and feel of the screen but rather the way a
@@ -1431,7 +1487,9 @@ that these shall not allow viewing data from other domains. </li>
 </ul>
 <ul>
 <li> MIDM shall also allow viewing of history data.</li>
-</ul><br /><div class="pageactions"> <i>This page last
+</ul>
+<br />
+<div class="pageactions"> <i>This page last
 changed on 21-Aug-2008
 01:10:10&nbsp; PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
