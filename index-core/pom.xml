@@ -158,7 +158,7 @@
                                     <classpath refid="maven.test.classpath"/>
                                 </taskdef>
                                 <!--You may overwrite database properties in 
-                                ProxyJNDI.properties.Oracle file and ProxyJNDI.properties.SQLServer 
+                                ProxyJNDI.properties.Oracle file , ProxyJNDI.properties.SQLServer and ProxyJNDI.properties.MySQL
                                 file by setting corresponding properties in setting.xml file-->
                                 <if>
                                     <equals arg1="${database.properties.overwrite}" 
@@ -177,6 +177,13 @@
                                         <entry key="proxy.datasource.port.number" value="${sqlserver.datasource.port.number}"/>                                    
                                         <entry key="proxy.datasource.server.name" value="${sqlserver.datasource.server.name}"/>
                                         <entry key="proxy.datasource.name" value="${sqlserver.datasource.name}"/>
+                                    </propertyfile> 
+                                     <propertyfile file="${project.build.directory}/test-classes/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.MySQL">
+                                        <entry key="proxy.datasource.user.id" value="${mysql.datasource.user.id}" />
+                                        <entry key="proxy.datasource.password" value="${mysql.datasource.password}" />
+                                        <entry key="proxy.datasource.port.number" value="${mysql.datasource.port.number}" />                                    
+                                        <entry key="proxy.datasource.server.name" value="${mysql.datasource.server.name}" />
+                                        <entry key="proxy.datasource.name" value="${mysql.datasource.name}" />
                                     </propertyfile> 
                                 </then>
                                 </if>
@@ -205,6 +212,20 @@
                                         <property name="run.test.classpath" refid="maven.test.classpath"/>
                                         <property name="compile.classpath" refid="maven.compile.classpath"/>
                                         <property name="localRepository.path" value="${settings.localRepository}"/>
+                                    </ant>
+                                </then>
+                                </elseif>
+                                <elseif>
+                                    <equals arg1="${env.RUN_JUNIT}" arg2="mysql" />
+                                <then>
+                                    <echo>::MySQL JUnit Test</echo>
+                                    <ant antfile="junitTest.xml" target="runtests_mysql">
+                                        <property name="build.dir" value="${project.build.directory}" />
+                                        <property name="test.src.dir" value="${project.build.testSourceDirectory}" />
+                                        <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}" />
+                                        <property name="run.test.classpath" refid="maven.test.classpath" />
+                                        <property name="compile.classpath" refid="maven.compile.classpath" />
+                                        <property name="localRepository.path" value="${settings.localRepository}" />
                                     </ant>
                                 </then>
                                 </elseif>
@@ -377,6 +398,11 @@
             <version>1.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+           <groupId>mysql</groupId>
+           <artifactId>mysql-connector-java</artifactId>
+           <version>5.1.6</version>
+        </dependency>   
         <dependency>
             <groupId>mural</groupId>
             <artifactId>matchengine</artifactId>

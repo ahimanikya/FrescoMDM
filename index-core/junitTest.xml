@@ -46,6 +46,19 @@
         </antcall>
         <echo message="##### [JUnit tests on SQL Server completed!] #####"/>
     </target>
+    
+    <target name="runtests_mysql">
+		<echo>::Runing JUnit Test on MySQL database</echo>
+		<delete dir="${test.report}/mysql"/>
+		<mkdir dir="${test.report}/mysql"/>
+		<copy file="${test.src.dir}/../eindex-templates/object-mysql.xml" tofile="${build.test.classes.dir}/object.xml" overwrite="true"/>
+		<copy file="${build.test.classes.dir}/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.MySQL" tofile="${build.test.classes.dir}/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties" overwrite="true"/>
+		<antcall target="do-testing">
+			<param name="test.report.db" value="${test.report}/mysql"/>
+			<param name="test.report.html.db" value="${test.report}/html/mysql"/>
+		</antcall>
+		<echo message="##### [JUnit tests on MySQL completed!] #####"/>
+	</target>
         
     <target name="do-testing">
     
