@@ -26,9 +26,8 @@ package com.sun.mdm.multidomain.project;
  * Used by sub-type project
  */
 
-public interface IcanproConstants {
-    public static final String 
-	WIZARD_BUNDLE="com/sun/mdm/index/project/ui/wizards/Bundle";
+public interface ProjectConstants {
+    public static final String WIZARD_BUNDLE="com/sun/mdm/multidomain/project/wizard/Bundle";
 
     public static final String COMMAND_REDEPLOY = "redeploy";
     public static final String COMMAND_DEPLOY = "deploy";
