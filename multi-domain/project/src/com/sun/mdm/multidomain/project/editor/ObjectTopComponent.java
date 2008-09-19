@@ -39,7 +39,7 @@ import com.sun.mdm.multidomain.util.Logger;
 
 
 /**
- * A wapper top component contains Master Index configuration editor
+ * A wapper top component contains Multi-Domain MDM configuration editor
  *
  */
 public class ObjectTopComponent
@@ -129,29 +129,6 @@ public class ObjectTopComponent
                     } else {
                         return false;
                     }
-                } else if (mMultiDomainApplication.getNeedToCheckIn() == true) {
-                    /*
-                    String comment = "";
-                    SaveDialog dlg = new SaveDialog(true);
-                    dlg.setVisible(true);
-                    if (dlg.getSaveOption() == SaveDialog.CHECKIN_OPTION) {
-                        comment = dlg.getComment();
-                        this.mMultiDomainApplication.checkinAllConfigurableFiles(comment);
-                    }
-                     */
-                } else {
-                    /*
-                    int ret = JOptionPane.showConfirmDialog(
-                                this,
-                                NbBundle.getMessage(ObjectTopComponent.class, "Msg_Do_you_want_to_undo_checkout"), 
-                                NbBundle.getMessage(ObjectTopComponent.class, "LBL_Editor"),
-                                JOptionPane.YES_NO_CANCEL_OPTION);
-                    if (ret == JOptionPane.YES_OPTION) {
-                        this.mMultiDomainApplication.undoCheckoutAllConfigurableFiles();
-                    } else if (ret == JOptionPane.CANCEL_OPTION) {
-                        return false;
-                    }
-                     */ 
                 }
             }
 

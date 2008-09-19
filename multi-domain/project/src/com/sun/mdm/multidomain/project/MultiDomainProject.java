@@ -397,7 +397,7 @@ public class MultiDomainProject implements Project, AntProjectListener {
                 Map<String, J2eeModuleProvider> mods = new HashMap<String, J2eeModuleProvider>();
                 FileObject multiDomaindir= helper.getProjectDirectory();
                 EditableProperties ep = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
-                //add EJB project to Master Index project for deployment
+                //add EJB project to Multi-Domain MDM project for deployment
                 String path = ep.getProperty(MultiDomainProjectProperties.EJB_DIR);
                 FileObject subAppDirFO = multiDomaindir.getFileObject(path);
                 Project p = ProjectManager.getDefault().findProject(subAppDirFO);
@@ -408,7 +408,7 @@ public class MultiDomainProject implements Project, AntProjectListener {
                         mods.put(path+".jar", jmp);
                     }
                 }
-                //add Web Project to Master Index project for deployment
+                //add Web Project to Multi-Domain MDM project for deployment
                 path = ep.getProperty(MultiDomainProjectProperties.WAR_DIR);
                 subAppDirFO = multiDomaindir.getFileObject(path);
                 p = ProjectManager.getDefault().findProject(subAppDirFO);

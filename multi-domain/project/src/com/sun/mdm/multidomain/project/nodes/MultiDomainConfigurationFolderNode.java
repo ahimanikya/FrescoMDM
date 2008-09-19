@@ -70,7 +70,7 @@ public class MultiDomainConfigurationFolderNode extends MultiDomainFolderNode {
     }
     
     /**
-     * @return project top Master Index project node
+     * @return project top Multi-Domain MDM project node
      */ 
     public Project getProject() {
         return this.project;

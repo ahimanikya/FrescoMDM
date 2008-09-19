@@ -38,7 +38,6 @@ import org.xml.sax.InputSource;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.project.editor.ObjectTopComponent;
-//import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
 
 public class MultiDomainApplication extends MultiDomainProject {
@@ -60,9 +59,6 @@ public class MultiDomainApplication extends MultiDomainProject {
     private FileObject fileRelationshipMappings;
     private FileObject fileRelationshipModel;
     
-    private String msgCheckedOut = "";
-    private boolean bNeedToCheckIn;
-
     
     /** Creates a new instance of MultiDomainApplication */
     public MultiDomainApplication(final AntProjectHelper helper) throws IOException  {
@@ -90,6 +86,7 @@ public class MultiDomainApplication extends MultiDomainProject {
                 }
             }
         } catch (Exception ex) {
+            mLog.severe(ex.getMessage());
         }
         return mRelationshipModel;
     }
@@ -154,26 +151,7 @@ public class MultiDomainApplication extends MultiDomainProject {
         boolean validated = true;
         return validated;
     }
-    
-    /**
-     * Not used in Open Source version
-     * @param flag
-     */
-    public void setNeedToCheckIn(boolean flag) {
-        bNeedToCheckIn = flag;
-        String value = (flag == true) ? "true" : "false";
-    }
-    
-    /**
-     * Not used in Open Source version
-     * @return
-     */
-    public boolean getNeedToCheckIn() {
-        //String flag = (String) this.getPartOfProperty(NEED_TO_CHECKIN);
-        //bNeedToCheckIn = flag != null && flag.equals("true");
-        return bNeedToCheckIn;
-    }
-    
+       
     /** chaeck out RelationshipWebManager
      *
      *@return boolean checked out
@@ -183,7 +161,7 @@ public class MultiDomainApplication extends MultiDomainProject {
         try {
             fileRelationshipMappings = getRelationshipWebManagerFile();
         } catch (Exception ex) {
-            msgCheckedOut += ex.getMessage() + "\n";
+            mLog.severe(ex.getMessage());
             checkedOut = false;
         }
         return checkedOut;
@@ -212,7 +190,7 @@ public class MultiDomainApplication extends MultiDomainProject {
         try {
             fileRelationshipModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
         } catch (Exception ex) {
-            msgCheckedOut += ex.getMessage() + "\n";
+            mLog.severe(ex.getMessage());
             checkedOut = false;
         }
         return checkedOut;
@@ -238,14 +216,6 @@ public class MultiDomainApplication extends MultiDomainProject {
     public void resetModified(boolean flag) {
         mModified = flag; 
         setModified(flag);
-    }
-    
-    /* Show it to user if check out failed
-     *
-     *@return msgCheckedOut
-     */
-    public String getMsgCheckedOut() {
-        return msgCheckedOut;
     }
     
     /** return the FileObject for object.xml
@@ -281,7 +251,7 @@ public class MultiDomainApplication extends MultiDomainProject {
                 file = confDir.createData(name);
             }
         } catch (IOException ex) {
-
+            mLog.severe(ex.getMessage());
         }
         return file;
     }
@@ -306,7 +276,7 @@ public class MultiDomainApplication extends MultiDomainProject {
                 writer.close();
                 fileLock.releaseLock();
             } catch (Exception ex) {
-                String msg = ex.getMessage();
+                mLog.severe(ex.getMessage());
             }
         }
     }

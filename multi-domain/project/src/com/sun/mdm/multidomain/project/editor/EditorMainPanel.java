@@ -54,7 +54,7 @@ import javax.swing.tree.TreePath;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 
-/** The main panel for Master Index Configuration Editor.
+/** The main panel for Multi-Domain MDM Configuration Editor.
  *
  */
 public class EditorMainPanel extends javax.swing.JPanel implements ActionListener  {
@@ -86,8 +86,8 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
      * Create the panel and set up some basic properties.
      *
      */
-    public EditorMainPanel(EditorMainApp eviewEditorMainApp, MultiDomainApplication application) {
-        mEditorMainApp = eviewEditorMainApp;
+    public EditorMainPanel(EditorMainApp editorMainApp, MultiDomainApplication application) {
+        mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
 
         initComponents();

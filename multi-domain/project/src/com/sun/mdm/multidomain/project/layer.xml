@@ -28,7 +28,7 @@
     <folder name="Templates">
         <folder name="Project">        
             <folder name="CAPS">
-                <!-- Add template for the Master Index enterprize project -->
+                <!-- Add template for the Multi-Domain MDM enterprize project -->
                 <folder name="MDM">
                     <attr name="position" intvalue="3000"/>
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>

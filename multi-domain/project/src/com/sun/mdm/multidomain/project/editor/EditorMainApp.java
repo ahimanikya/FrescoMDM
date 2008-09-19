@@ -46,7 +46,7 @@ import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.util.Logger;
 
 /**
- * Main application class for Master Index Configuration Editor
+ * Main application class for Multi-Domain MDM Configuration Editor
  *
  */
 public class EditorMainApp {
@@ -84,7 +84,7 @@ public class EditorMainApp {
      /**
      * get the singalton instance per name
      *
-     * @param name Master Index Configuration Editor name
+     * @param name Multi-Domain MDM Configuration Editor name
      * @return EditorMainApp instance
      */
     public static EditorMainApp createInstance(String instanceName) {
@@ -106,7 +106,7 @@ public class EditorMainApp {
      /**
      * get the singalton instance per name
      *
-     * @param name Master Index Configuration Editor name
+     * @param name Multi-Domain MDM Configuration Editor name
      * @return EditorMainApp instance
      */
     public static EditorMainApp getInstance(String instanceName) {
@@ -123,14 +123,13 @@ public class EditorMainApp {
     void checkOutAll() {
         bCheckedOut = mMultiDomainApplication.getAllConfigurableFiles();
         if (bCheckedOut == false) {
-            String msg = mMultiDomainApplication.getMsgCheckedOut();
-            msg += "\n\n" + NbBundle.getMessage(EditorMainApp.class, "MSG_Read_Only");
+            String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_FAILED_TO_OBTAIN_FILES");
             NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
             DialogDisplayer.getDefault().notify(desc);
         }
     }
     /**
-     * Stating point of Master Index Configuration Editor from editable Master Index Instance
+     * Stating point of Multi-Domain MDM Configuration Editor from editable Multi-Domain MDM Instance
      *
      * @param MultiDomainApplication
      */

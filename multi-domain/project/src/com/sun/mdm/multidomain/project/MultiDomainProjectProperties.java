@@ -39,13 +39,13 @@ public class MultiDomainProjectProperties {
     public static final String AUTO_GENERATE = "AutoGenerate";
 
     public static final String CONF_FOLDER = "conf"; //NOI18N    
-    // Master Index Configuration Folder
+    // Multi-Domain MDM Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
-    // Master Index Match Engine Folder
+    // Multi-Domain MDM Match Engine Folder
     public static final String SCHEMA_FOLDER = "schema"; //NOI18N
-    // Master Index Database Script Folder
+    // Multi-Domain MDM Database Script Folder
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
-    // Master Index Custom Plug-ins Folder
+    // Multi-Domain MDM Custom Plug-ins Folder
     public static final String RELATIONSHIP_PLUGINS_FOLDER = "Plug-ins"; //NOI18N
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
     

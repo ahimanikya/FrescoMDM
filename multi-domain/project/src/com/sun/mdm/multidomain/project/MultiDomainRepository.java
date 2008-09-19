@@ -36,7 +36,7 @@ import org.openide.loaders.DataObject;
 
 
 /**
- * Used by Netbeans Master Index Project to retrieve files from Netbeans Installation and Project location.   
+ * Used by Netbeans Multi-Domain MDM Project to retrieve files from Netbeans Installation and Project location.   
  */
     public class MultiDomainRepository {
     /*
