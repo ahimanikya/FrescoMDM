@@ -27,6 +27,7 @@ import javax.naming.Name;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import oracle.jdbc.pool.OracleDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import java.sql.SQLException;
 import com.sun.mdm.index.util.LogUtil;
@@ -188,6 +189,23 @@ public class ProxyInitialContext
                     return ocpds;
                 } else if (vendor.equalsIgnoreCase("SQL Server")) {
                     SQLServerDataSource ds = new SQLServerDataSource();
+                    String serverName = System.getProperty("proxy.datasource.server.name");
+                    int portNumber = Integer.parseInt(System.getProperty("proxy.datasource.port.number"));
+                    String networkProtocol = System.getProperty("proxy.datasource.network.protocol");
+                    String driverType = System.getProperty("proxy.datasource.driver.type");
+                    String userName = System.getProperty("proxy.datasource.user.id");
+                    String password = System.getProperty("proxy.datasource.password");
+                    String databaseName = System.getProperty("proxy.datasource.name");
+                    ds.setServerName(serverName);
+                    ds.setPortNumber(portNumber);
+//                    ds.setNetworkProtocol(networkProtocol);
+//                    ds.setDriverType(driverType);
+                    ds.setDatabaseName(databaseName); 
+                    ds.setUser(userName);
+                    ds.setPassword(password);
+                    return ds;
+                }else if (vendor.equalsIgnoreCase("MySQL")) {
+                    MysqlDataSource ds = new MysqlDataSource();
                     String serverName = System.getProperty("proxy.datasource.server.name");
                     int portNumber = Integer.parseInt(System.getProperty("proxy.datasource.port.number"));
                     String networkProtocol = System.getProperty("proxy.datasource.network.protocol");
