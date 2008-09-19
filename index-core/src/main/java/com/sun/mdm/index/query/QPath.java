@@ -453,7 +453,7 @@ class QPath {
         if (hints.length > 0) {
             hnt = hints[0];
         }
-
+        int dbType = ConnectionUtil.getDBProductID();
         if (conditionMap != null) {
             for (int i = 0; i < conditionMap.length; i++) {
                 if (i > 0) {
@@ -467,8 +467,7 @@ class QPath {
                 StringBuffer fromTables = createFromTable(i);
                 StringBuffer joinbuf = createJoins(i);
                 conditionbuf = createConditions(conditionMap[i], i);
-
-                int dbType = ConnectionUtil.getDBProductID();
+                
                 if (i != conditionMap.length - 1 && dbType == ConnectionUtil.DB_SQLSERVER) {
                     // For SQL Server supporting only OPTION hint that is added to the SQL after last union.
                     hnt = "";
@@ -489,7 +488,6 @@ class QPath {
             }
         } else {
 
-
             StringBuffer fromTables = createFromTable(0);
             StringBuffer joinbuf = createJoins(0);
             sql = createSQL(selectbuf, fromTables, joinbuf, null, maxRows, hnt);
@@ -498,7 +496,11 @@ class QPath {
         }
 
         StringBuffer orderBy = createOrderBy(sqlDesc);
-        sqlbuf.append(orderBy);
+        if (dbType == ConnectionUtil.DB_MYSQL && maxRows > 0) {
+            sqlbuf.insert(sqlbuf.indexOf("LIMIT"), orderBy);
+        } else {
+            sqlbuf.append(orderBy);
+        }
         sqlDesc.setSQL(sqlbuf.toString());
 
 
