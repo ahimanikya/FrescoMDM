@@ -34,145 +34,144 @@ import com.sun.mdm.index.objects.metadata.MetaDataService;
  */
 public class MySQLSQLObject {
 
-	private static Pattern blankPattern = Pattern.compile("[\\s]*");
+    private static Pattern blankPattern = Pattern.compile("[\\s]*");
+
+    /**
+     * forms Join clause. Use MySQL specific syntax
+     * @param pTable
+     * @param pk
+     * @param sTable
+     * @param fkey
+     * @param outerJoin if true, use outer join
+     * @return join clause
+     */
+    static String createJoin(String pTable, String[] pk, String sTable, String[] fkey, boolean outerJoin) {
+        StringBuffer joinFields = new StringBuffer();
 
 
-	/**
-	 * forms Join clause. Use MySQL specific syntax
-	 * @param pTable
-	 * @param pk
-	 * @param sTable
-	 * @param fkey
-	 * @param outerJoin if true, use outer join
-	 * @return join clause
-	 */
-	static String createJoin(String pTable, String[] pk, String sTable, String[] fkey, boolean outerJoin) {
-	    StringBuffer joinFields = new StringBuffer();
-	    
-	    
-	    for (int i = 0; i < pk.length && i < fkey.length; i++) {
-			if (i > 0) {
-				joinFields.append(" AND ");
-			}
-			joinFields.append(" ");
-			joinFields.append(pTable);
-			joinFields.append(".");
-			joinFields.append(pk[i]);
-			joinFields.append(" = ");
-			joinFields.append(sTable);
-			joinFields.append(".");
-			joinFields.append(fkey[i]);
-			if (outerJoin == false) {
-				joinFields.append(" ");
-			} else {
-				joinFields.append(" (+) ");
-			}
-		}
-	    return joinFields.toString();
-	}
-	    
+        for (int i = 0; i < pk.length && i < fkey.length; i++) {
+            if (i > 0) {
+                joinFields.append(" AND ");
+            }
+            joinFields.append(" ");
+            joinFields.append(pTable);
+            joinFields.append(".");
+            joinFields.append(pk[i]);
+            joinFields.append(" = ");
+            joinFields.append(sTable);
+            joinFields.append(".");
+            joinFields.append(fkey[i]);
+            if (outerJoin == false) {
+                joinFields.append(" ");
+            } else {
+                joinFields.append(" (+) ");
+            }
+        }
+        return joinFields.toString();
+    }
 
-	
-	
-	/* create SQL statement
-	 * @param selectbuf select string 
-	 * @param fromTable tables for non-ansi form, if ansi, then fromTable is null
-	 * @joinbuf  join criteria. If ansi then join also includes table names
-	 *  
-	 * 
-	 */
-	
-	static StringBuffer createSQL(StringBuffer selectbuf,
-			StringBuffer fromTable, StringBuffer joinbuf, StringBuffer conditionbuf, 
-			int maxRows, String hint) {
-		StringBuffer sql = new StringBuffer();
-		if (conditionbuf == null) {
-			conditionbuf = new StringBuffer();
-		}
+    /* create SQL statement
+     * @param selectbuf select string 
+     * @param fromTable tables for non-ansi form, if ansi, then fromTable is null
+     * @joinbuf  join criteria. If ansi then join also includes table names
+     *  
+     * 
+     */
+    static StringBuffer createSQL(StringBuffer selectbuf,
+            StringBuffer fromTable, StringBuffer joinbuf, StringBuffer conditionbuf,
+            int maxRows, String hint) {
+        StringBuffer sql = new StringBuffer();
+        if (conditionbuf == null) {
+            conditionbuf = new StringBuffer();
+        }
 
-		boolean ansi = false;
-		boolean and = false; // and == true indicates use AND otherwise Where in conditions
-		if (fromTable == null) {
-			ansi = true;
-		}
-		hint = convertHint(hint);
+        boolean ansi = false;
+        boolean and = false; // and == true indicates use AND otherwise Where in conditions
 
-		sql.append("SELECT ");
-		sql.append(hint);
-		sql.append(" ");
-		
-		String maxstr = null;
-		if (maxRows > -1) {
-			maxstr = getMaxRowsCondition(maxRows);
-		}
-				
-		sql.append(selectbuf);
-		sql.append(" FROM ");
-		if (ansi == false) { // non-ansi sql
-			sql.append(fromTable);
-		} else {
-			sql.append(joinbuf);
-		}
-		
-		if (ansi == false) {  //non-ansi sql		
-		  if ((joinbuf.length() > 0) || (conditionbuf.length() > 0)) {
-			sql.append(" WHERE ");			
-			sql.append(joinbuf);
-			
-			if ((joinbuf.length() > 0) && (conditionbuf.length() > 0)) {
-				sql.append(" AND ");
-			}
-			and = true;
-			sql.append(conditionbuf);
-		  }
-		} else { // IN ansi join is not part of Where
-			if (conditionbuf.length() > 0) {
-				sql.append(" WHERE ");			
-				sql.append(conditionbuf);
-				and = true;
-			}
-		}
-		if (maxstr != null) {
-		   if (and == true) {
-		      sql.append(" AND ");
-			} else {
-				sql.append(" Where ");
-			}
-		   sql.append(maxstr);
-		}
-		
-		return sql;
-	}
+        if (fromTable == null) {
+            ansi = true;
+        }
+        hint = convertHint(hint);
 
+        sql.append("SELECT ");
+        sql.append(hint);
+        sql.append(" ");
 
-	private static String getMaxRowsCondition(int maxRows) {
-		String rows = String.valueOf(maxRows);
-		return "  LIMIT  " + rows;
-	}
+        String maxstr = null;
+        if (maxRows > -1) {
+            maxstr = getMaxRowsCondition(maxRows);
+        }
 
-	/*
-	 * add hint delimiter to hint
-	 */
-	private static String convertHint(String hint) {
+        sql.append(selectbuf);
+        sql.append(" FROM ");
+        if (ansi == false) { // non-ansi sql
 
-		if (hint == null || hint.equals("")) {
+            sql.append(fromTable);
+        } else {
+            sql.append(joinbuf);
+        }
 
-			return "";
-		}
-		if (hint.indexOf("/*+") > -1) {
-			return hint;
-		}
+        if (ansi == false) {  //non-ansi sql		
 
-		/*
-		 * return same if it is blank string
-		 * 
-		 */
-		Matcher m = blankPattern.matcher(hint);
-		if (m.matches()) {
-			return hint;
-		}
+            if ((joinbuf.length() > 0) || (conditionbuf.length() > 0)) {
+                sql.append(" WHERE ");
+                sql.append(joinbuf);
 
-		hint = "/*+ " + hint + " */";
-		return hint;
-	}
+                if ((joinbuf.length() > 0) && (conditionbuf.length() > 0)) {
+                    sql.append(" AND ");
+                }
+                and = true;
+                sql.append(conditionbuf);
+            }
+        } else { // IN ansi join is not partconditionbuf.length() of Where
+
+            if (conditionbuf.length() > 0) {
+                sql.append(" WHERE ");
+                sql.append(conditionbuf);
+                and = true;
+            }
+        }
+        if (maxstr != null) {
+            if (and == true) {
+                sql.append(" AND ");
+            } 
+            /* else {
+                sql.append(" Where ");
+            } */
+            sql.append(maxstr);
+        }
+
+        return sql;
+    }
+
+    private static String getMaxRowsCondition(int maxRows) {
+        String rows = String.valueOf(maxRows);
+        return "  LIMIT  " + rows;
+    }
+
+    /*
+     * add hint delimiter to hint
+     */
+    private static String convertHint(String hint) {
+
+        if (hint == null || hint.equals("")) {
+
+            return "";
+        }
+        if (hint.indexOf("/*+") > -1) {
+            return hint;
+        }
+
+        /*
+         * return same if it is blank string
+         * 
+         */
+        Matcher m = blankPattern.matcher(hint);
+        if (m.matches()) {
+            return hint;
+        }
+
+        hint = "/*+ " + hint + " */";
+        return hint;
+    }
 }
