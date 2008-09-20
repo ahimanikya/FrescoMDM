@@ -9,9 +9,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mural</groupId>
   <artifactId>multidomain-services</artifactId>
-  <packaging>jar</packaging>
-  <version>>${mural.currentVersion}</version>
   <name>Multi-Domain Web-Tier Services</name>
+  <version>${mural.currentVersion}</version>
   <url>http://mural.dev.java.net</url>
   <build>
 		<finalName>multidomain-services</finalName>
@@ -26,6 +25,20 @@
       </resource> 
     </resources>
     <plugins>
+    	<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+        	<execution>
+          	<goals>
+            	<goal>jar</goal>
+            </goals>
+          </execution>
+         </executions>
+         <configuration>
+         	<classesDirectory>${project.build.directory}/classes</classesDirectory>
+         </configuration>
+      	</plugin>    
     	<plugin>
       	<groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
