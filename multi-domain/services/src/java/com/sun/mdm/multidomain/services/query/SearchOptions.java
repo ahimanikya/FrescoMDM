@@ -34,8 +34,9 @@ import com.sun.mdm.index.objects.epath.EPathArrayList;
 public class SearchOptions {
   private Map<String, EPathArrayList> ePathLists;
   private int pageSize;
-  private int maximumSize;
+  private int maxElements;
   private boolean isWeighted;
+  private String searchId;
   
   /**
    * Public constructor.
@@ -44,7 +45,7 @@ public class SearchOptions {
 	  ePathLists = new HashMap<String, EPathArrayList>();
 	  isWeighted = true;
 	  pageSize = 10;
-	  maximumSize = 100;;
+	  maxElements = 100;;
   }
   
   /**
@@ -61,6 +62,54 @@ public class SearchOptions {
    */
   public void setPageSize(int pageSize) {
     this.pageSize = pageSize;
+  }
+  
+  /**
+   * Get maxElements.
+   * @return maxElements;
+   */
+  public int getMaxElements() {
+	  return maxElements;
+  }
+  
+  /**
+   * Set maxElements.
+   * @param maxElements
+   */
+  public void setMaxElements(int maxElements) {
+	  this.maxElements = maxElements;
+  }
+  
+  /**
+   * Get isWeighted.
+   * @return isWeighted
+   */
+  public boolean getIsWeighted() {
+	  return isWeighted;
+  }
+  
+  /**
+   * Set IsWeighted.
+   * @param isWeighted
+   */
+  public void setIsWeighted(boolean isWeighted) {
+	  this.isWeighted = isWeighted;
+  }
+  
+  /**
+   * Get searchId.
+   * @return searchId
+   */
+  public String getSearchId() {
+	  return searchId;
+  }
+  
+  /**
+   * Set searchId.
+   * @param searchId
+   */
+  public void setSearchId(String searchId) {
+	  this.searchId = searchId;
   }
   
   /**
