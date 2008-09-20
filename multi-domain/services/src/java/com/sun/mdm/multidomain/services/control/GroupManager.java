@@ -24,6 +24,8 @@ package com.sun.mdm.multidomain.services.control;
 
 import java.util.List;
 
+import net.java.hulp.i18n.Logger;
+
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.services.core.MultiDomainService;
@@ -33,13 +35,16 @@ import com.sun.mdm.multidomain.services.core.ServiceLocator;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
 import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.query.RelationshipObject;
+import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
  * GroupManager class.
  * @author cye
  */
 public class GroupManager implements ServiceManager {
-    
+	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.GroupManager");
+	private static Localizer localizer = Localizer.getInstance();
+   
 	private MultiDomainService multiDomainService;
 	private ServiceLocator serviceLocator;
 	

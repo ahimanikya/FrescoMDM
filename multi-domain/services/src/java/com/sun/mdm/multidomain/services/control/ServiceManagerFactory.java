@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.multidomain.services.control;
 
+import net.java.hulp.i18n.Logger;
+
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.control.GroupManager;
 import com.sun.mdm.multidomain.services.control.HierarchyManager;
@@ -29,6 +31,7 @@ import com.sun.mdm.multidomain.services.control.MetaDataManager;
 import com.sun.mdm.multidomain.services.core.ServiceLocator;
 import com.sun.mdm.multidomain.services.core.MultiDomainService;
 import com.sun.mdm.multidomain.services.core.ServiceException;
+import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
  * ServiceManagerFactory class
@@ -36,9 +39,11 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
  *
  */
 public class ServiceManagerFactory {
+	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.ServiceManagerFactory");
+	private static Localizer localizer = Localizer.getInstance();
 
-	private  ServiceLocator serviceLocator;
-	private MultiDomainService multiDomainService;
+	private static ServiceLocator serviceLocator;
+	private static MultiDomainService multiDomainService;
 
 	/**
 	 * Create an instance of ServiceManagerFactory

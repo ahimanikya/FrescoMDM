@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Date;
 
+import net.java.hulp.i18n.Logger;
+
 import com.sun.mdm.index.master.SystemDefinition;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.EnterpriseObject;
@@ -40,12 +42,15 @@ import com.sun.mdm.multidomain.relationship.Attribute;
 import com.sun.mdm.multidomain.relationship.AttributeType;
 import com.sun.mdm.multidomain.services.core.MultiDomainService;
 import com.sun.mdm.multidomain.services.core.ServiceException;
+import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
  * MultiDomainManager
  * @author cye
  */
 public class MetaDataManager {
+	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.MetaDataManager");
+	private static Localizer localizer = Localizer.getInstance();
 
     public static final int METADATA_MANAGER = 0;	
     public static final int RELATIONSHIP_MANAGER = 1;
@@ -317,6 +322,7 @@ public class MetaDataManager {
      */
     public List<EnterpriseObject> searchEnterpriseObject(String domain, EOSearchCriteria eoSearchCriteria, EOSearchOptions eoSearchOptions)throws ServiceException {
     	List<EnterpriseObject> enterpriseObjects = null;
+    	// demo data
     	return enterpriseObjects;
     }
     

@@ -40,7 +40,7 @@ import com.sun.mdm.multidomain.services.core.ServiceLocator;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
 import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.query.RelationshipObject;
-import com.sun.mdm.multidomain.services.core.Localizer;
+import com.sun.mdm.multidomain.services.util.Localizer;
 
 import com.sun.mdm.multidomain.services.util.ObjectBuilder;
 
@@ -217,6 +217,7 @@ public class RelationshipManager implements ServiceManager {
     public String addRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
                                   Relationship relationTypeValue) 
         throws ServiceException {        
+    	// demo data
         throw new ServiceException("Not Implemented Yet");                        
     }
 
@@ -284,6 +285,7 @@ public class RelationshipManager implements ServiceManager {
     public void deleteRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
                                    Relationship relationTypeValue) 
         throws ServiceException {        
+    	// demo data
         throw new ServiceException("Not Implemented Yet");                        
     }
 

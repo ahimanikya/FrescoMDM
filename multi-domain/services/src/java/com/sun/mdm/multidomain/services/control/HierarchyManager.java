@@ -24,6 +24,8 @@ package com.sun.mdm.multidomain.services.control;
 
 import java.util.List;
 
+import net.java.hulp.i18n.Logger;
+
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.services.core.MultiDomainService;
@@ -32,12 +34,15 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
 import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.query.RelationshipObject;
+import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
  * HierarchyManager class.
  * @author cye
  */
 public class HierarchyManager implements ServiceManager {
+	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.HierarchyManager");
+	private static Localizer localizer = Localizer.getInstance();
 
 	private MultiDomainService multiDomainService;
 	
