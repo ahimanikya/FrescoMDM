@@ -8,9 +8,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>mural</groupId>
-  <artifactId>com-sun-mdm-multidomain-services</artifactId>
+  <artifactId>multidomain-services</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>>${mural.currentVersion}</version>
   <name>Multi-Domain Web-Tier Services</name>
   <url>http://mural.dev.java.net</url>
   <build>
@@ -39,7 +39,7 @@
               	<taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
                 	<classpath refid="maven.test.classpath"/>
                 </taskdef>
-                <i18n dir="${project.build.directory}/classes" file="${basedir}/src/java/com/sun/mdm/multidomain/services/util/messages.properties" prefix="MDM-MULTIDOMAIN-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+                <i18n dir="${project.build.directory}/classes" file="${basedir}/src/resources/com/sun/mdm/multidomain/services/util/messages.properties" prefix="MDM-MULTIDOMAIN-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
               </tasks> 
             </configuration>
          </execution>
