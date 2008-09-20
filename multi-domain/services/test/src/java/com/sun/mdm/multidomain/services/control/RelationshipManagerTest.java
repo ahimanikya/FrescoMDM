@@ -73,7 +73,7 @@ public class RelationshipManagerTest extends TestCase {
     	}
     }
 
-    public void test002() {
+    public void xxxtest002() {
     	try {
     		SearchOptions searchOptions = new SearchOptions();
     		
