@@ -27,17 +27,22 @@ import java.util.Hashtable;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import net.java.hulp.i18n.Logger;
+
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.control.MetaDataManager.ServiceManagerType;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.control.ServiceManager;
+import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
  * ServiceLocator class.
  * @author cye
  */
 public class ServiceLocator {
-	
+	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.ServiceLocator");
+	private static Localizer localizer = Localizer.getInstance();
+
     private static ServiceLocator serviceLocator;
     private InitialContext initialContext;
     private MultiDomainService multiDomainService;
@@ -67,20 +72,22 @@ public class ServiceLocator {
     		try {
     			if (factoryInitial != null &&
     				providerUrl != null	) {
+    				// internal resources
     				Hashtable<String, String> env = new Hashtable<String, String>();
     				env.put("java.naming.factory.initial", factoryInitial);
     				env.put("java.naming.provider.url", providerUrl);	  			
     				initialContext = new InitialContext(env);		    		
     			} else {
+    				// external resources
     				initialContext = new InitialContext();		    		    		
     			}
+    			logger.info(localizer.x("WS001: Initialcontext({0}) is successfully initialized", providerUrl));
     		} catch(NamingException nex) {
     			throw new ServiceException(nex);
     		}
     	}
     	return initialContext;
     }
-    
     
     /**
      * Get a multi-domain service.
