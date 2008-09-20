@@ -81,7 +81,7 @@ public class ServiceLocator {
     				// external resources
     				initialContext = new InitialContext();		    		    		
     			}
-    			logger.info(localizer.x("WS001: Initialcontext({0}) is successfully initialized", providerUrl));
+    			logger.info(localizer.x("WTS001: Initialcontext({0}) is successfully initialized", providerUrl));
     		} catch(NamingException nex) {
     			throw new ServiceException(nex);
     		}
