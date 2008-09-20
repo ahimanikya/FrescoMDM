@@ -24,7 +24,7 @@ package com.sun.mdm.multidomain.relationship;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 
 /**
  * RelationshipType class.
@@ -63,7 +63,6 @@ public class RelationshipType {
      */
     public RelationshipType() {    	
     }
-    
     /**
      * Create an instance of RelationshipType.
      * @param name
@@ -84,7 +83,6 @@ public class RelationshipType {
     	this.purgeDate = true;
     	this.attributes = new ArrayList<Attribute>();    	
     }
-    
     public String getName() {
         return name;
     }
@@ -177,6 +175,16 @@ public class RelationshipType {
 	}    
     public List<Attribute> getAttributes() {
         return attributes;
+    }
+    public Attribute getAttribute(String name) {
+    	Iterator<Attribute> attrs = attributes.iterator();
+    	while(attrs.hasNext()) {
+    		Attribute attr = (Attribute)attrs.next();
+    		if (attr.getName().equals(name)) {
+    			return attr;
+    		}
+    	}
+    	return null;
     }
     public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;

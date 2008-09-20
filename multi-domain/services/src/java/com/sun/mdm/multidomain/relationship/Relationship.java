@@ -32,12 +32,19 @@ import java.util.HashMap;
  */
 public class Relationship {
     private RelationshipType relationshipType;
+    private String id;
     private Date startDate;
     private Date endDate;
     private Date purgeDate;
     private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
     
     public Relationship() {    	
+    }
+    public String getId() {
+    	return id;
+    }
+    public void setId(String id){
+    	this.id = id;
     }
     public RelationshipType getRelationshipType() {
         return relationshipType;
@@ -57,7 +64,6 @@ public class Relationship {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
     public Date getPurgeDate() {
         return purgeDate;
     }

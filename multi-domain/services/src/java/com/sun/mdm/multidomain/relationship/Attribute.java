@@ -35,11 +35,9 @@ public class Attribute {
     private boolean isRequired;
     private int dataType;
     private String defaultValue;
-    // validation rule and display rule
-    
+  
     public Attribute() {    	
     }
-    
     public Attribute(String name, String displayName, int type, String value) {
     	this.name = name;
     	this.displayName = displayName;
@@ -48,8 +46,7 @@ public class Attribute {
     	this.isRequired = true;
     	this.dataType = type;
     	this.defaultValue = value;
-    }
-    
+    } 
     public String getName() {
         return name;
     }
@@ -80,10 +77,10 @@ public class Attribute {
     public void setIsRequired(boolean isRequired) {
         this.isRequired = isRequired;;
     }
-    public void setAttributeType(int attributeType) {
-        this.dataType = attributeType;
+    public void setDataType(int dataType) {
+        this.dataType = dataType;
     }    
-    public int getAttributeType() {
+    public int getDataType() {
         return dataType;
     }    
     public void setDefaultValue(String defaultValue) {
