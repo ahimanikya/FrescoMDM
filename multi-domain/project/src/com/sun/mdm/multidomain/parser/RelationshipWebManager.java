@@ -6,12 +6,25 @@ package com.sun.mdm.multidomain.parser;
 
 import java.util.ArrayList;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import org.jdom.DocType;
-import org.jdom.JDOMException;
+import java.util.HashMap;
+import java.util.Iterator;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  *
@@ -42,59 +55,246 @@ public class RelationshipWebManager {
         return this.mJndiResources;
     }
 
-    public String writeToString() throws IOException, JDOMException, Exception {
+    public byte[] writeToString() throws IOException, Exception {
 
 
 
-        XMLWriterUtil xmlDoc = new XMLWriterUtil();
-        DocType type = new DocType(RELATIONSHIP_WEB_MANAGER, "schema/RelationshipWebManager.xsd");
-        xmlDoc.setRoot("modulelist", "schema/RelationshipWebManager.xsd", "schema/RelationshipWebManager.xsd");
-        getRelationTypeToStr(xmlDoc);
-        getPageDefinitionTypeToStr(xmlDoc);
-        getDomainsToStr(xmlDoc);
-        getJndiResToStr(xmlDoc);
-        String webXmlStr = new String(xmlDoc.getXMLStream());
-        return webXmlStr;
+        //XMLWriterUtil xmlDoc = new XMLWriterUtil();
+        Document xmldoc = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        DOMImplementation impl = builder.getDOMImplementation();
+        xmldoc = impl.createDocument(null, "RelationshipWebManager", null);
+
+        Element root = xmldoc.getDocumentElement();
+        root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "C:/Projects/Multi-Domains/xsd/RelationshipWebManager.xsd");
+        root.appendChild(getRelationTypeToStr(xmldoc));
+        root.appendChild(getPageDefinitionTypeToStr(xmldoc));
+        root.appendChild(getDomainsToStr(xmldoc));
+        root.appendChild(getJndiResToStr(xmldoc));
+        byte[] webXml = transformToXML(xmldoc);
+        return webXml;
 
     }
+    
+    public byte[] transformToXML(Document xmldoc) throws Exception {
+            DOMConfiguration domConfig = xmldoc.getDomConfig();
+            //domConfig.setParameter("format-pretty-print", "true");
+            DOMSource domSource = new DOMSource(xmldoc);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            StreamResult streamResult = new StreamResult(out);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer serializer = tf.newTransformer();
+            serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-    private void getRelationTypeToStr(XMLWriterUtil xmlDoc) throws Exception{
+            //serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "RelationshipWebManager.xsd");
+            serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+            serializer.setOutputProperty(OutputKeys.VERSION, "1.0");
+            //serializer.setOutputProperty(OutputKeys., "yes");
+            serializer.transform(domSource, streamResult);
+            //serializer.
+            
+            return out.toByteArray();
         
-        org.jdom.Element relTypes = xmlDoc.addElement("relationship-types");
+    }
+
+    private Element getRelationTypeToStr(Document xmlDoc) throws Exception{
+        
+        Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
         for (RelationshipType relType : mRelationshipTypes) {
             String relTypeName = relType.getRelTypeName();
             String destination = relType.getDestionation();
             String source = relType.getSource();
-            org.jdom.Element elm = xmlDoc.addElement(relTypes, "relationship-types");
-            org.jdom.Element relTypeElm = xmlDoc.addElement("relationship-type");
-            org.jdom.Attribute relAttrName = new org.jdom.Attribute(WebManagerProperties.mTAG_NAME, relTypeName);
-            relTypeElm.setAttribute(relAttrName);
-            org.jdom.Attribute relAttrSource = new org.jdom.Attribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_SOURCE, source);
-            relTypeElm.setAttribute(relAttrSource);
-            org.jdom.Attribute relAttrDest = new org.jdom.Attribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_DESTINATION, destination);
-            relTypeElm.setAttribute(relAttrDest);
+            //Element elm = xmlDoc.createElement("relationship-types");
+            Element relTypeElm = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
+            //org.jdom.Attribute relAttrName = new org.jdom.Attribute(WebManagerProperties.mTAG_NAME, relTypeName);
+            relTypeElm.setAttribute(WebManagerProperties.mTAG_NAME, relTypeName);
+            relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_SOURCE, source);
+            relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_DESTINATION, destination);
             ArrayList<RelationFieldReference> fieldRefs = relType.getRelFieldRefs();
             for (RelationFieldReference fieldRef : fieldRefs) {
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_NAME, fieldRef.getFieldName());
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_REL_FIELD_DISPLAY_NAME, fieldRef.getDisplayOrder());
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_REL_FIELD_MAX_LENGTH, fieldRef.getMaxLength());
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_REL_FIELD_GUI_TYPE, fieldRef.getGuiType());
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_REL_FIELD_VALUE_LIST, fieldRef.getValueList());
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_REL_FIELD_VALUE_TYPE, fieldRef.getValueType());
-                xmlDoc.setElement(relTypeElm, WebManagerProperties.mTAG_REL_FIELD_KEY_TYPE, Boolean.toString(fieldRef.getKeyType()));                
+                Element eFieldName = xmlDoc.createElement(WebManagerProperties.mTAG_NAME);
+                eFieldName.appendChild(xmlDoc.createTextNode( fieldRef.getFieldName()));
+                Element eDisplayName = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_DISPLAY_NAME);
+                eDisplayName.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getDisplayOrder())));
+                Element eMaxLen = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_MAX_LENGTH);
+                eMaxLen.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getMaxLength())));
+                Element eGuiType = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_GUI_TYPE);
+                eGuiType.appendChild(xmlDoc.createTextNode(fieldRef.getGuiType()));
+                Element eValueList = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_VALUE_LIST);
+                eGuiType.appendChild(xmlDoc.createTextNode(fieldRef.getValueList()));
+                Element eValueType = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_VALUE_TYPE);
+                eValueType.appendChild(xmlDoc.createTextNode(fieldRef.getValueType()));
+                Element eKeyType = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_KEY_TYPE);
+                eKeyType.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.getKeyType())));
+                relTypeElm.appendChild(eFieldName);
+                relTypeElm.appendChild(eDisplayName);
+                relTypeElm.appendChild(eMaxLen);
+                relTypeElm.appendChild(eGuiType);
+                relTypeElm.appendChild(eValueList);
+                relTypeElm.appendChild(eValueType);
+                relTypeElm.appendChild(eKeyType);               
             }
+            relTypes.appendChild(relTypeElm);
             
         }
+        
+        return relTypes;
     }
 
-    private void getPageDefinitionTypeToStr(XMLWriterUtil xmlDoc) {
+    private Element getPageDefinitionTypeToStr(Document xmlDoc) {
+        Element elmPageDefs = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_DEFINITION);
+        
+        for (PageDefinition page : mPageDefinitions) {
+            Element elmPage = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE);
+            
+            Element elmIdentifier = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_IDENTIFIER);
+            elmIdentifier.appendChild(xmlDoc.createTextNode(page.getPageIdentifier()));
+            ArrayList<RelationshipPageTabDefination> pageTabs = page.getPageTabs();
+            
+            for (RelationshipPageTabDefination tab : pageTabs ) {
+                Element elmTab = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_TAB);
+                elmTab.setAttribute(WebManagerProperties.mTAG_NAME, tab.getTabName());
+                
+                ArrayList<PageRelationType> relTypes = tab.getPageRelationType();
+                for (PageRelationType tabRelType : relTypes) {
+                    Element elmTabRelType = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPE);
+                    elmTabRelType.setAttribute(WebManagerProperties.mTAG_NAME, tabRelType.getRelType());
+                    
+                    if (tabRelType.getFieldGroups().size() > 0) {
+                        ArrayList<FieldGroup> relFieldGroups = tabRelType.getFieldGroups();
+                        getFieldGroup(relFieldGroups, xmlDoc, elmTabRelType, WebManagerProperties.mTAG_REL_FIELD_GROUP);
+                    }
+                    
+                    elmTab.appendChild(elmTabRelType);
+                    
+                }
+                elmPage.appendChild(elmTab);
+            }
+            elmPageDefs.appendChild(elmPage);
+            
+        }
+        
+        return elmPageDefs;
     }
 
-    private void getDomainsToStr(XMLWriterUtil xmlDoc) throws Exception {
-        org.jdom.Element relTypes = xmlDoc.addElement(WebManagerProperties.mTAG_DOMAINS);
+    private Element getDomainsToStr(Document xmlDoc) throws Exception {
+        Element elmDomains = xmlDoc.createElement(WebManagerProperties.mTAG_DOMAINS);
+        ArrayList<DomainForWebManager> domains = mDomains.getDomains();
+        for (DomainForWebManager domain : domains) {
+            Element elmDomain = xmlDoc.createElement(WebManagerProperties.mTAG_DOMAIN);
+            elmDomains.appendChild(elmDomain);
+            String domainName = domain.getDomainName();
+            Element elmDomainName = xmlDoc.createElement(WebManagerProperties.mTAG_NAME);
+            elmDomainName.appendChild(xmlDoc.createTextNode(domain.getDomainName()));
+            
+            //search-pages
+            HashMap searchPages = domain.getSearchType();
+            Iterator searchPagesItr = searchPages.entrySet().iterator();
+            
+            Element elmSearchPages = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_PAGES);
+
+            while (searchPagesItr.hasNext()) {
+                SimpleSearchType simpleSearch = (SimpleSearchType) searchPagesItr.next();
+                Element elmSimpleSearch = xmlDoc.createElement(WebManagerProperties.mTAG_SIMPLE_SEARCH_PAGE);
+                
+                Element elmScreenTitle = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_TITLE);
+                elmScreenTitle.appendChild(xmlDoc.createTextNode(simpleSearch.getScreenTitle()));
+                elmSimpleSearch.appendChild(elmScreenTitle);
+
+                Element elmSearchId = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_ID);
+                elmSearchId.appendChild(xmlDoc.createTextNode(Integer.toString(simpleSearch.getScreenResultID())));
+                elmSimpleSearch.appendChild(elmSearchId);
+
+                Element elmInstruction = xmlDoc.createElement(WebManagerProperties.mTAG_INSTRUCTION);
+                elmInstruction.appendChild(xmlDoc.createTextNode(simpleSearch.getInstruction()));
+                elmSimpleSearch.appendChild(elmInstruction);
+
+
+                ArrayList<FieldGroup> fieldGroups = simpleSearch.getFieldGroups();
+                getFieldGroup(fieldGroups, xmlDoc, elmSimpleSearch, WebManagerProperties.mTAG_FIELD_GROUP);
+                elmSearchPages.appendChild(elmSimpleSearch);
+           
+            }
+            
+            elmDomainName.appendChild(elmSearchPages);
+            
+            Iterator searchDetails = domain.getSearchDetail().entrySet().iterator();
+            Element elmSearchDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES);
+            
+            while (searchDetails.hasNext()) {
+                SearchDetail searchDetail = (SearchDetail) searchDetails.next();
+                Element elmSDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_DETAILL);
+                elmSearchDetail.appendChild(elmSDetail);
+                
+                Element elmResultId = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_ID);
+                elmResultId.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getSearchResultID())));
+                elmSearchDetail.appendChild(elmResultId);
+                
+                Element elmItem = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_ITEM_PER_PAGE);
+                elmItem.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getItemPerPage())));
+                elmSearchDetail.appendChild(elmItem);
+
+                Element elmMax = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_MAX_RESULT_SIZE);
+                elmMax.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getMaxResultSize())));
+                elmSearchDetail.appendChild(elmMax);
+
+                ArrayList<FieldGroup> fieldGroups = searchDetail.getFieldGroups();
+                getFieldGroup(fieldGroups, xmlDoc, elmSDetail, WebManagerProperties.mTAG_FIELD_GROUP);
+                
+            }
+            
+            elmDomainName.appendChild(elmSearchDetail);
+            
+            
+            RecordDetail recordDetail = domain.getRecordDetail();
+            Element elmRecDetail =  xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL);
+            elmDomain.appendChild(elmRecDetail);
+            ArrayList<FieldGroup> fieldGroups = recordDetail.getFieldGroups();
+            getFieldGroup(fieldGroups, xmlDoc, elmRecDetail, WebManagerProperties.mTAG_FIELD_GROUP);
+            elmDomainName.appendChild(elmRecDetail);
+            
+        }
+        
+        return elmDomains;
+    }
+    
+    
+    private void getFieldGroup (ArrayList<FieldGroup> fieldGroups, Document xmlDoc, Node parent, String elmName){
+        for (FieldGroup fieldGroup : fieldGroups) {
+            Element elmGroup = xmlDoc.createElement(elmName);
+            ArrayList<FieldGroup.FieldRef> fields = fieldGroup.getFeildRefs();
+            for (FieldGroup.FieldRef field : fields) {
+                Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
+                elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
+                elmGroup.appendChild(elmField);
+            }
+            parent.appendChild(elmGroup);
+        }
+
     }
 
-    private void getJndiResToStr(XMLWriterUtil xmlDoc) {
+    private Element getJndiResToStr(Document xmlDoc) {
+        Element elmJNDI = xmlDoc.createElement(WebManagerProperties.mTAG_JNDIRESOURCES);
+        Element elmProperties = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTIES);
+        elmJNDI.appendChild(elmProperties);
+        ArrayList<RelationshipProperty> properties = mJndiResources.getProperties();
+        for (RelationshipProperty property : properties) {
+            Element elmProperty = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTY);
+            elmProperty.setAttribute(WebManagerProperties.mTAG_PROPERTY_NAME, property.getPropertyName());
+            elmProperty.setAttribute(WebManagerProperties.mTAG_PROPERTY_VALUE, property.getPropertyValue());
+            elmProperties.appendChild(elmProperty);
+        }
+        ArrayList<RelationshipJDNIResources> jndiRes = mJndiResources.getJDNIResources();
+        for (RelationshipJDNIResources res : jndiRes) {
+            Element elmJDNIRes = xmlDoc.createElement(WebManagerProperties.mTAG_JNDIRESOURCES);
+            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_NAME, res.getJNDIName());
+            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_ID, res.getID());
+            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_RESOURCE_TYPE, res.getResourceType());
+            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_DESCRIPTION, res.getDescription());
+            elmJNDI.appendChild(elmJDNIRes);
+        }
+        return elmJNDI;
     }
 
     /**

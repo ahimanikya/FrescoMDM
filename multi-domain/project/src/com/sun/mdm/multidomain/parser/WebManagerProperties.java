@@ -13,7 +13,11 @@ public class WebManagerProperties {
     
     public static String mTAG_RELATIONSHIP_WEB_MANAGER = "RelationshipWebManager";
     
-    public static String mTAG_RELATIONSHIP_TYPE = "relationship-types";
+    public static String mTAG_RELATIONSHIP_TYPES = "relationship-types";
+    
+    public static String mTAG_RELATIONSHIP_TYPE = "relationship-type";
+    
+    public static String mTAG_REL_FIELD_GROUP = "rs-field-group";
     
     public static String mTAG_RELATIONSHIP_TYPE_SOURCE = "Source";
     
@@ -21,7 +25,11 @@ public class WebManagerProperties {
     
     public static String mTAG_PAGE_DEFINITION = "page-definition";
     
+    public static String mTAG_PAGE = "page";
+    
     public static String mTAG_DOMAINS = "domains";
+    
+    public static String mTAG_DOMAIN = "domain";
     
     public static String mTAG_ELATIONSHIP_JNDI = "jndi-resources";
     
@@ -68,6 +76,8 @@ public class WebManagerProperties {
     public static String mTAG_JNDIRESOURCES = "resource";
     
     public static String mTAG_PROPERTIES = "properties";
+    
+    public static String mTAG_PROPERTY = "property";
     
     public static String mTAG_PROPERTY_NAME = "name";
 
