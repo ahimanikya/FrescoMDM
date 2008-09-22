@@ -292,7 +292,7 @@
                             <a href="javascript:void(0)"   
                              onclick="javascript:getFormValues('compareform');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&pageFrom=dashboard&compareEuids=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"
 							 class="button" 
-						     title="<h:outputText value="#{msgs.search_button_label}"/>" >   
+						     title="<h:outputText value="#{msgs.dashboard_compare_but_text}"/>" >   
 							 <span><h:outputText value="#{msgs.dashboard_compare_but_text}"/></span>
                       </a>
                     </td>

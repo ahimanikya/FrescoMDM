@@ -127,8 +127,9 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
 	<table align="right">			   
                     <tr align="right" >			   
                      <td align="right" colspan="2">
-                       <a href="javascript:void(0);" onclick="javascript:closeDiv();"><%=bundle.getString("View_MergeTree_close_text")%></a>
-                       <a href="javascript:void(0);" onclick="javascript:closeDiv();"><img src="images/close.gif" width="12" height="12" border="0" alt='<%=bundle.getString("View_MergeTree_close_text")%>'/></a>
+					 <!-- Fix for Bug #173 -->
+                       <a href="javascript:void(0);" title="<%=bundle.getString("View_MergeTree_close_text")%>" onclick="javascript:closeDiv();"><%=bundle.getString("View_MergeTree_close_text")%></a>
+                       <a href="javascript:void(0);" title="<%=bundle.getString("View_MergeTree_close_text")%>"onclick="javascript:closeDiv();"><img src="images/close.gif" width="12" height="12" border="0" alt='<%=bundle.getString("View_MergeTree_close_text")%>'/></a>
                      </td>
 		           </tr>
     </table>			   
@@ -136,8 +137,8 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
                     <% } %>
                      <% for(int k=0;k<fcArray.length;k++) {
 					  	  String styleClass = ((k%2==0)?"even":"odd");
-					  %>
-                          <tr class="<%=styleClass%>">			   
+					  %>	
+                          <tr>			   
  			                    <td align="left">
 				                  <%=fcArray[k].getDisplayName()%>: 
 							    </td>
@@ -151,12 +152,10 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
 								  <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":minorObjectMap.get(fcArray[k].getFullFieldName()))%>							
 								 <%}%>
 								<%}%>
-
-
-								</td>
+  								</td>
 						   </tr>	
 					<% } %>
-				 <tr><td>&nbsp;</td></tr>	
+				 <tr><td colspan="2">&nbsp;</td></tr>	
                 <% if ( i == thisMinorObjectList.size()-1)  { %>
                   </table>  
                </div>

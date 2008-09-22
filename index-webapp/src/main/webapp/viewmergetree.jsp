@@ -34,10 +34,10 @@ if(session!=null ){
 <body>	
      <table  width="100%">
          <tr>
-             <td align="left"><font style="font-size:14px;font-style:bold;">Merge Tree</font></td>
+             <td align="left"><font style="font-size:14px;font-style:bold;"><h:outputText value="#{msgs.merge_tree_text}"/></font></td>
              <td align="right">
                  <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:closeTree();"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
-                 <a href="javascript:void(0);" onclick="javascript:closeTree();"><img src="images/close.gif" width="12" height="12" border="0" alt="close"/></a>
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:closeTree();"><img src="images/close.gif" width="12" height="12" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
              </td>
          </tr>
 
