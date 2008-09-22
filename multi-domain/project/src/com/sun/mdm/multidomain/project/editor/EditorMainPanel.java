@@ -51,6 +51,7 @@ import javax.swing.JTextField;
 
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import javax.swing.JTabbedPane;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 
@@ -73,7 +74,7 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
 
     private JSplitPane mSplitPane = null;
     private JScrollPane multiViewPane;
-    private JScrollPane entityPropertyPane = new JScrollPane();
+    private JScrollPane propertiesPane = new JScrollPane();
     //private EntityNode mRootNode;
     private JPopupMenu mMenu;
     private JLabel jLabelNoProperties;
@@ -81,6 +82,9 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     private JButton mButtonSave;
     private EditorMainApp mEditorMainApp;
     private MultiDomainApplication mMultiDomainApplication;
+    private final RelationshipCanvas canvas = new RelationshipCanvas(); //The component the user draws on
+    private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
+    JTabbedPane propertiesTabbedPane = new JTabbedPane();
     
     /**
      * Create the panel and set up some basic properties.
@@ -118,14 +122,18 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         multiViewPane = new JScrollPane();
         multiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                    NbBundle.getMessage(EditorMainPanel.class, "LBL_Object_Definition")));
-        entityPropertyPane.setViewportView(jLabelNoProperties);
-        entityPropertyPane.setBorder(new javax.swing.border.TitledBorder(
+                                    NbBundle.getMessage(EditorMainPanel.class, "LBL_Relationship_Model")));
+        //propertiesPane.setViewportView(jLabelNoProperties);
+        propertiesPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
+        multiViewPane.setViewportView(canvas);
+        propertiesTabbedPane.add(propertiesModelPanel);
+        //Wee add web properties tab here
+        propertiesPane.setViewportView(propertiesTabbedPane);
         
         mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                multiViewPane, entityPropertyPane);
+                multiViewPane, propertiesPane);
         mSplitPane.setOneTouchExpandable(true);
         mSplitPane.setDividerLocation(250);
 
