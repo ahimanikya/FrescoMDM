@@ -177,12 +177,6 @@
             <artifactId>org-netbeans-core-multiview</artifactId>
             <version>${netbeans.version}</version>			
         </dependency>
-        <dependency>
-            <groupId>jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>${mural.currentVersion}</version>
-            <scope>compile</scope>
-        </dependency>      
     </dependencies>
 </project>
 
