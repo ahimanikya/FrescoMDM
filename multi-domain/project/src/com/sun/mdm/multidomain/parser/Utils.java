@@ -33,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 
+import com.sun.mdm.multidomain.util.Logger;
 
 /**
  * @author gzheng
@@ -40,8 +41,12 @@ import java.io.File;
  */
 public class Utils {
     
-    private transient static final Localizer mLocalizer = Localizer.get();
-    
+    //private transient static final Localizer mLocalizer = Localizer.get();
+    private static final Logger mLog = Logger.getLogger(
+            Utils.class.getName()
+        
+        );
+
     private static Document mDoc;
     public static final String LINE = "\r";
     public static final String TAB = "    ";    // each tab = 4 spaces
@@ -82,48 +87,6 @@ public class Utils {
         }
     }
     
-    
-    /**
-     * @param path target file path
-     * @exception ParserException parser exception
-     */
-    public static void createFolder(String path) throws ParserException {
-        try {
-            java.io.File newPath = new java.io.File(path);
-            
-            if (newPath.exists()) {
-                if (recursiveDelete(newPath) == false) {
-                    throw new ParserException(mLocalizer.t("PAR500: Failed to " + 
-                                                     "delete the directory: {0}", path));
-                }
-            }
-            
-            newPath = new java.io.File(path);
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\com\\stc\\eindex\\objects");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\com\\stc\\eindex\\collab");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\com\\stc\\eindex\\objects\\validation");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\com\\stc\\eindex\\ops");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\ddl");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\schema");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\config");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\application");
-            newPath.mkdirs();
-            newPath = new java.io.File(path + "\\usersrc\\java");
-            newPath.mkdirs();
-        } catch (Exception e) {
-            throw new ParserException(mLocalizer.t("PAR501: Failed to set " + 
-                                        "up the temporary build directory: {0}:{1}", 
-                                        path, e.getMessage()));
-        }
-    }
     
     /**
      * Recursively deletes a directory.
@@ -183,8 +146,8 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(mLocalizer.t("PAR502: Failed to parse: {0}:{1}", 
-                                                    xmlPath, e.getMessage()));
+            throw new ParserException("PAR502: Failed to parse: " + 
+                                                    xmlPath + ":" + e.getMessage());
         }
     }
     
@@ -202,8 +165,8 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(mLocalizer.t("PAR503: Failed to parse: {0}:{1}", 
-                                                    xmlSource.getPublicId(), e.getMessage()));
+            throw new ParserException("PAR503: Failed to parse: " + 
+                                                    xmlSource.getPublicId() + ":" + e.getMessage());
         }
     }
     
@@ -224,9 +187,8 @@ public class Utils {
             foutput.write(data.getBytes("UTF-8"));
             foutput.close();
         } catch (IOException e) {
-            throw new ParserException(mLocalizer.t("PAR509: Failed to write " +
-                                                "file: {0}:{1}", 
-                                                path, e.getMessage()));
+            throw new ParserException("PAR509: Failed to write " +
+                                                "file: " + path + ":" + e.getMessage());
         }
     }
     
