@@ -118,10 +118,8 @@ public class MultiDomainProjectLogicalViewProvider implements LogicalViewProvide
         public multiDomainLogicalViewRootNode() {
             super( new MultiDomainProjectViews.LogicalViewChildren( helper, evaluator, project ), createLookup( project ) );
             setIconBaseWithExtension("com/sun/mdm/multidomain/project/resources/MultiDomainMDMProjectIcon.png" ); // NOI18N
-            String name = this.getDisplayName();
-            name = ProjectUtils.getInformation( project ).getDisplayName();
+            String name = ProjectUtils.getInformation( project ).getDisplayName();
             this.setDisplayName(name);
-            name = this.getName();
             name = ProjectUtils.getInformation( project ).getName();
             setName( name );
             if (hasBrokenLinks(helper, resolver)) {

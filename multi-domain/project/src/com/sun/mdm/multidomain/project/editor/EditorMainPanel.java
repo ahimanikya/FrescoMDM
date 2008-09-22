@@ -72,7 +72,7 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
                 "com/sun/mdm/index/project/ui/wizards/resources/images/Save.png"));
 
     private JSplitPane mSplitPane = null;
-    private JScrollPane entityTreePane;
+    private JScrollPane multiViewPane;
     private JScrollPane entityPropertyPane = new JScrollPane();
     //private EntityNode mRootNode;
     private JPopupMenu mMenu;
@@ -115,8 +115,8 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     
     private void createSplitPane() {
         // Put tree and table in a split pane mSplitPane
-        entityTreePane = new JScrollPane();
-        entityTreePane.setBorder(new javax.swing.border.TitledBorder(
+        multiViewPane = new JScrollPane();
+        multiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_Object_Definition")));
         entityPropertyPane.setViewportView(jLabelNoProperties);
@@ -125,13 +125,13 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
         
         mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                entityTreePane, entityPropertyPane);
+                multiViewPane, entityPropertyPane);
         mSplitPane.setOneTouchExpandable(true);
         mSplitPane.setDividerLocation(250);
 
         //Provide minimum sizes for the two components in the split pane
         Dimension minimumSize = new Dimension(250, 100);
-        entityTreePane.setMinimumSize(minimumSize);
+        multiViewPane.setMinimumSize(minimumSize);
     }
 
     private JToolBar createToolBar() {
