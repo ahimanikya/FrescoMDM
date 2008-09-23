@@ -40,6 +40,8 @@ public class MasterType {
     private final String mTagParserClass = "parser-class";
     
     private final String mTagMasterControllerConfig = "MasterControllerConfig";
+    private final String mTagLogicClass = "logic-class";
+    private final String mTagLogicClassGui = "logic-class-gui";
     private final String mTagUpdateMode = "update-mode";   // Optimistic
     private final String mTagMergedRecordUpdate = "merged-record-update";  // Disabled
     private final String mTagExecuteMatch = "execute-match";
@@ -137,6 +139,8 @@ public class MasterType {
     class MasterControllerConfig {
         String moduleName = "MasterController";
         String parserClass = "com.sun.mdm.index.configurator.impl.master.MasterControllerConfiguration";
+        String logicClass = null;
+        String logicClassGui = null;
         String updateMode = "Pessimistic";
         String mergedRecordUpdate = "Disabled";
         String transaction = "LOCAL"; // CONTAINER, BEAN or LOCAL
@@ -157,6 +161,14 @@ public class MasterType {
         
         public String getParserClass() {
             return parserClass;
+        }
+        
+        public String getLogicClass () {
+            return logicClass;
+        }
+        
+        public String getLogicClassGui () {
+            return logicClassGui;
         }
         
         public String getUpdateMode () {
@@ -194,7 +206,11 @@ public class MasterType {
         for (int i = 0; i < nl.getLength(); i++) {
             if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                 String name = ((Element) nl.item(i)).getTagName();
-                if (mTagUpdateMode.equals(name)) {
+                if (mTagLogicClass.equals(name)) {
+                    mMasterControllerConfig.logicClass = Utils.getStrElementValue(nl.item(i));
+                } else if (mTagLogicClassGui.equals(name)) {
+                    mMasterControllerConfig.logicClassGui = Utils.getStrElementValue(nl.item(i));
+                } else if (mTagUpdateMode.equals(name)) {
                     mMasterControllerConfig.updateMode = Utils.getStrElementValue(nl.item(i));
                 } else if (mTagMergedRecordUpdate.equals(name)) {
                     mMasterControllerConfig.mergedRecordUpdate = Utils.getStrElementValue(nl.item(i));
@@ -473,6 +489,12 @@ public class MasterType {
         bufSegment.append(Utils.quoteAttribute(mTagModuleName, mMasterControllerConfig.getModuleName()));
         bufSegment.append(Utils.quoteAttribute(mTagParserClass, mMasterControllerConfig.getParserClass()));
         bufSegment.append(">" + Utils.LINE);
+        if (mMasterControllerConfig.getLogicClass() != null) {
+            bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagLogicClass) + mMasterControllerConfig.getLogicClass() + Utils.endTag(mTagLogicClass));
+        }
+        if (mMasterControllerConfig.getLogicClassGui() != null) {
+            bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagLogicClassGui) + mMasterControllerConfig.getLogicClassGui() + Utils.endTag(mTagLogicClassGui));
+        }
         bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagUpdateMode) + mMasterControllerConfig.getUpdateMode() + Utils.endTag(mTagUpdateMode));
         bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagMergedRecordUpdate) + mMasterControllerConfig.getMergedRecordUpdate() + Utils.endTag(mTagMergedRecordUpdate));
         
