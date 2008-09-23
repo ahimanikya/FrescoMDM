@@ -902,6 +902,7 @@ ArrayList minorObjectsListPreview =  (eoMultiMergePreview  != null) ?((ArrayList
                                                                     %>  
                                                               <tr>
                                                                   <td>
+                                              <%if(fieldConfigMap.isKeyType()) {%><b><%}%>
                                                                       
 												 <!-- if minor objects exists --><!-- modified by bhat on 16-09-08 -->
 											  <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
@@ -951,7 +952,9 @@ ArrayList minorObjectsListPreview =  (eoMultiMergePreview  != null) ?((ArrayList
 																		&nbsp;
 																	  <%}%>
   												<%}%>
-                                                                         </td>
+                                              <%if(fieldConfigMap.isKeyType()) {%></b><%}%>
+                                              
+																		 </td>
                                                                     </tr>
  
                                                                   <%
@@ -1395,7 +1398,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                               
                                                                               <%if(mergePersonfieldValuesMapEO.get(epathValue) != null ) {%>
                                                                                <span id="<%=epathValue%>">
-                                                                                      <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
+                                                                                      <%if (eoMultiMergePreview.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=mergePersonfieldValuesMapEO.get(epathValue)%>
@@ -1461,9 +1464,10 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                                     %>  
                                                                     <tr>
                                                                         <td>
-										                                 <%if( eoMultiMergePreview != null  ) {%>
+                                                                         <%if(fieldConfigMap.isKeyType()) {%><b><%}%>
+ 										                                 <%if( eoMultiMergePreview != null  ) {%>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-                                                                                     <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (eoMultiMergePreview.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>
@@ -1475,7 +1479,8 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 											                                 <%} else {%>
 											                                  &nbsp;
 											                                 <%}%>
-                                                                        </td>
+                                                                         <%if(fieldConfigMap.isKeyType()) {%></b><%}%>
+ 																		</td>
                                                                     </tr>
                                                                     <%}%> <!-- FILED CONFIG LOOP -->
                                                                      <tr><td>&nbsp;</td></tr>

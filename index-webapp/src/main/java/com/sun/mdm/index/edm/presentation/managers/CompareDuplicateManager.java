@@ -1208,19 +1208,19 @@ public class CompareDuplicateManager {
      * 
      **/
 
-        public HashMap getDifferenceMinorObjectMap(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
+    public HashMap getDifferenceMinorObjectMap(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
         HashMap returnHashMap = new HashMap();
         Object[] keyset = checkMinorObjectMap.keySet().toArray();
-        
-        HashMap matchHashMap  = new HashMap();
+
+        HashMap matchHashMap = new HashMap();
         for (Object object : minorObjectList) {
             HashMap map = (HashMap) object;
             //Check for the minor object id and the minor object type for comparing
-             if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(map.get(MasterControllerService.MINOR_OBJECT_ID).toString())) {
-                    matchHashMap = map;
-             }
-         }
-  
+            if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(map.get(MasterControllerService.MINOR_OBJECT_ID).toString())) {
+                matchHashMap = map;
+            }
+        }
+
         //If the matching map is not empty 
         if (!matchHashMap.isEmpty()) {
             if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
@@ -1253,10 +1253,12 @@ public class CompareDuplicateManager {
                 }
             }
         }
-         return returnHashMap;
+        return returnHashMap;
     }
-/** 
-     * Addded  By Narayan Bhat  on 28/08/2008 <br>
+
+    /** 
+     * Added  By Narayan Bhat  on 28/08/2008 <br>
+     * Modified By Narayan Bhat  on 18/09/2008 <br>
      * 
      * This method is used to compare the minor objects hashmap with the arraylist of hashmap <br>
      * 
@@ -1272,52 +1274,45 @@ public class CompareDuplicateManager {
  public HashMap getDifferenceMinorObjectMapWithKeyType(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
         HashMap returnHashMap = new HashMap();
         Object[] keyset = checkMinorObjectMap.keySet().toArray();
-         SourceHandler sourceHandler = new SourceHandler();
-         HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
-         FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE));
-         String keyType  = new String();
+        SourceHandler sourceHandler = new SourceHandler();
+        HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
+        FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE));
+        ArrayList keyTypeList = new ArrayList();
         for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-         FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-         if(fieldConfigMap.isKeyType()) keyType = fieldConfigMap.getFullFieldName();
+            FieldConfig fieldConfigMap = fieldConfigArrayMinor[ifc];
+            if (fieldConfigMap.isKeyType()) {
+                keyTypeList.add(fieldConfigMap.getFullFieldName());
+            }
         }
-         HashMap matchHashMap  = new HashMap();
-        for (Object object : minorObjectList) {            
-            HashMap map = (HashMap) object;  
-            //Check for the minor object id and the minor object type for comparing    
-			if(checkMinorObjectMap!=null && map!=null){ // adedd by narayan bhat on 09-09-2008
-				if(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals("Alias")){
-					matchHashMap = map;
-				}
-				else if (checkMinorObjectMap.get(keyType)!=null && map.get(keyType)!=null && checkMinorObjectMap.get(keyType).toString().equals(map.get(keyType).toString())) { //checking for keytype other than alias  modified by narayan bhat on 09-09-2008
-						matchHashMap = map;
-				}
-			}
-         }		
+        HashMap matchHashMap = new HashMap();
+        if (keyTypeList.size() == 1) {
+            matchHashMap = getMatchHashMap(minorObjectList, checkMinorObjectMap);
+        }
         //If the matching map is not empty 
-         if (!matchHashMap.isEmpty()) {
+        if (!matchHashMap.isEmpty()) {
             //if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
-                for (int i = 0; i < matchHashMap.size(); i++) {                    
-                    if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
-                            !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
-                            !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
-                        if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) == null) {
-                            returnHashMap.put(keyset[i], new Boolean(false));
-                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) == null) {
-                            returnHashMap.put(keyset[i], new Boolean(true));
-                        } else if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) != null) {
-                            returnHashMap.put(keyset[i], new Boolean(true));
-                        } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) != null && !matchHashMap.get(keyset[i]).toString().equalsIgnoreCase(checkMinorObjectMap.get(keyset[i]).toString())) {
-                            returnHashMap.put(keyset[i], new Boolean(true));
-                        } else {
-                            returnHashMap.put(keyset[i], new Boolean(false));
-                        }
+            for (int i = 0; i < matchHashMap.size(); i++) {
+                if (!keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                        !keyset[i].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                        !keyset[i].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                    if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) == null) {
+                        returnHashMap.put(keyset[i], new Boolean(false));
+                    } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) == null) {
+                        returnHashMap.put(keyset[i], new Boolean(true));
+                    } else if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) != null) {
+                        returnHashMap.put(keyset[i], new Boolean(true));
+                    } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) != null && !matchHashMap.get(keyset[i]).toString().equalsIgnoreCase(checkMinorObjectMap.get(keyset[i]).toString())) {
+                        returnHashMap.put(keyset[i], new Boolean(true));
+                    } else {
+                        returnHashMap.put(keyset[i], new Boolean(false));
                     }
                 }
-           // }
-        }  
-         return returnHashMap;
+            }
+        // }
+        }
+        return returnHashMap;
     }
-        
+    
     /** 
      * Modified  By Rajani Kanth  on 11/07/2008
      * 
@@ -1508,7 +1503,43 @@ public class CompareDuplicateManager {
                }
                    
 
-            return enterpriseObjectHashMap;
+
+        return enterpriseObjectHashMap;
+    }
+ 
+    /** 
+     * Added  By Rajani Kanth  on 18/09/2008
+     * 
+     * This method is used to get the map (minorObjectMap from minorObjectList) to be compared with checkMinorObjectMap.
+     * 
+     * 
+     * @param minorObjectList 
+     * @param checkMinorObjectMap 
+     * @return HashMap 
+     * 
+     */
+    HashMap getMatchHashMap(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
+        ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+        ObjectNodeConfig rootNodeConfig = screenObject.getRootObj();
+        ObjectNodeConfig childNodeConfig = rootNodeConfig.getConfigForNode(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString());
+        FieldConfig[] keyFieldConfigs = childNodeConfig.getKeyFieldConfigs();
+        for (Object minorObjectListObject : minorObjectList) {
+            HashMap minorObjectMap = (HashMap) minorObjectListObject;
+            int countKeys = 0;
+            for (int i = 0; i < keyFieldConfigs.length; i++) {
+                String keyTypeValue = keyFieldConfigs[i].getFullFieldName();
+                if (checkMinorObjectMap.get(keyTypeValue) != null &&
+                        minorObjectMap.get(keyTypeValue) != null &&
+                        checkMinorObjectMap.get(keyTypeValue).toString().equalsIgnoreCase(minorObjectMap.get(keyTypeValue).toString())) {
+                    countKeys++;
+                }
+            }
+            //check if the key types are more then 1
+            if (countKeys == keyFieldConfigs.length) {
+                return minorObjectMap;
+            }
+        }
+        return new HashMap();
     }
     
 }

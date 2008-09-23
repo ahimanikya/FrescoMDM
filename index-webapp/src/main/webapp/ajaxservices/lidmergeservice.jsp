@@ -145,6 +145,8 @@ HashMap soMergePreviewMap = null;
 HashMap mergePersonfieldValuesMapEO = new HashMap();
 String previewEuidValue = new String();
 HashMap previewEuidsHashMap = new HashMap();
+HashMap minorObjectMapCompare = new HashMap();
+HashMap  minorObjectCompareHashMap = new HashMap();
 
 //showEuid variables
 //Variables for lid merge preview 
@@ -248,7 +250,7 @@ if (duplicateFound != null && duplicateFound.length() > 0 ) {
                   </script>
  				</td>  
 			</tr>
-
+                    </table>
 <%
 sourceMergeHandler.setLid1(request.getParameter(localIdDesignation+" 1"));
  sourceMergeHandler.setLid2(request.getParameter(localIdDesignation+" 2"));
@@ -294,7 +296,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 	   document.getElementById("mergeDiv").style.display = "none";
 
 	   //Final success full message
-       document.getElementById("duplicateIdsDiv").innerHTML  = "<b><%=sourceHandler.getSystemCodeDescription(lidsSource)%>/<%=srcs[0]%></b> <%=bundle.getString("so_merge_confirm_text")%> <b><%=sourceHandler.getSystemCodeDescription(lidsSource)%>/<%=srcs[1]%></b>" ;
+       document.getElementById("duplicateIdsDiv").innerHTML  = "<font style='color:green;'><b><%=sourceHandler.getSystemCodeDescription(lidsSource)%>/<%=srcs[0]%></b> <%=bundle.getString("so_merge_confirm_text")%> <b><%=sourceHandler.getSystemCodeDescription(lidsSource)%>/<%=srcs[1]%></b></font>" ;
 	   
 	   ClearContents("basicMergeformData");
      </script>
@@ -540,6 +542,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                     <%
                                                                       } // field config loop
  																	  %>
+                                                                   <tr><td>&nbsp;</td></tr>
 
 																	<%
                                                                       } // max minor objects loop
@@ -644,7 +647,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                         <font class="highlight">
                                                                                             <%if (soHashMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
-                                                                                            <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                            <%=personfieldValuesMapEO.get(epathValue)%> 
                                                                                             <%}%>
                                                                                         </font>
                                                                                     </a>  
@@ -827,10 +830,16 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                     int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                 int  maxMinorObjectsPreview =  (soMergePreviewMap  != null) ?((Integer) soMergePreviewMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
                                                 ArrayList minorObjectsListPreview =  (soMergePreviewMap  != null) ?((ArrayList) soMergePreviewMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList")):new ArrayList();
+                                       if(soMergePreviewMap  != null) {
+										  	 minorObjectCompareHashMap.put("SO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectsListPreview);
+										} else {
+											 if(countEnt  == 0 ) {
+											    minorObjectCompareHashMap.put("SO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectMapList);
+											 }
+										}
 												String minorObjectStatus = new String();
                                                  int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
 												 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
-
                                                  FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
  			 %>
                                                                     <tr>
@@ -842,76 +851,112 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																			 <%}%>
 																	     </td>
 																     </tr>
-
-		     <%
-								for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
-                                                                   %>
+		                                                        <% for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
+                                                                         minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
+                                                                    %>
+                                                                    <!-- modified by bhat on 17-09-08 (removed if countEnt>0 condition) -->	
+																	<%
+																	minorObjectMapCompare =  compareDuplicateManager.getDifferenceMinorObjectMapWithKeyType((ArrayList)minorObjectCompareHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
+                                                                    %>
                                                                     <%
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                      epathValue = fieldConfigMap.getFullFieldName();
                                                                     %>  
-                                                                    <tr>
-                                                                        <td> 
-                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-																				<%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
-																			<%if(soMergePreviewMap != null && previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null) {%>
-																			 <!-- Condition to check if the minor object type is already found in the preview and render the action buttons accordingly -->
-   																			  <%if(!((String)minorObjectHashMap.get("LID")).equalsIgnoreCase((String)soMergePreviewMap.get("LID")) ){%> 
- 																			    <%if(sourceMergeHandler.isNotAvailableInPreview(minorObjectsListPreview, minorObjectHashMap, epathValue)) {%>
-                                                                                                 <font class="highlight">
-                                                                                                     <!-- blank image -->
-                                                                                                     <img src="./images/calup.gif" border="0" alt="MOVE <%=minorObjectHashMap.get(epathValue)%> <%=minorObjectHashMap.get("MINOR_OBJECT_TYPE")%> TO PREVIEW"/>
-                                                                                                 </font>
-  																			   <%} else {%>
-                                                                                                 <font class="highlight">
-                                                                                                     <!-- blank image -->
-                                                                                                     <img src="./images/calup.gif" border="0" alt="UPDATE  <%=minorObjectHashMap.get(epathValue)%> <%=minorObjectHashMap.get("MINOR_OBJECT_TYPE")%> VALUE"/>
-                                                                                                 </font>
-     																		   <%}%>
+                                                              <tr>
+                                                                  <td>
+																	 <%if(fieldConfigMap.isKeyType()) {%><b><%}%>
+                                                                      
+																	 <!-- if minor objects exists -->
+																  <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+																	<%if (soMergePreviewMap != null  && minorObjectMapCompare != null 
+																			&& minorObjectMapCompare.get(epathValue) != null  &&
+																			minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){  %>
+																			
+																			<!-- added by bhat on 17-09-08 -->
+																			<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
+																				%>
+																				  <font class="highlight">
+																				<%}%>
+																					   <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																						 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+																					  <%}else{%>
+																						  <%=minorObjectHashMap.get(epathValue)%>
+																					 <%}%>
+																			<!-- added by bhat on 17-09-08 -->
+																			<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
+																			%>
+																			   </font>
 																			<%}%>
-
-
-																				<%}%>
-																				<%} else {%>
-                                                                                 <%if (soHashMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()) {%>     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-																				 <%} else {%> 
-                                                                                  <%=minorObjectHashMap.get(epathValue)%>
-                                                                                 <%}%> 
-																				<%}%>
-                                                                                <%} else {%>
-                                                                                &nbsp;
-                                                                                <%}%>
-                                                                        </td>
+																					
+																	   <%}else if (countEnt > 0 && minorObjectMapCompare != null 
+																			&& minorObjectMapCompare.get(epathValue) != null  &&
+																			minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+																				  <font class="highlight">
+																					   <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																						 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+																					  <%}else{%>
+																						  <%=minorObjectHashMap.get(epathValue)%>
+																					 <%}%>
+																					 </font>
+																	   <%}	
+																		else {%>
+																					 <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																					   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+																					 <%}else{%>
+																					 <%=minorObjectHashMap.get(epathValue)%>
+																					 <%}%>
+																	   <%}%>
+																  <%} else {%>
+																	   <%if (countEnt > 0 && minorObjectMapCompare !=null 
+																		   && minorObjectMapCompare.get(epathValue) != null  
+																		   && minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+																			<font class="highlight">
+																			 <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
+																				 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+																			 <%}else{%>
+																				 <img src="./images/calup.gif" border="0" alt="Blank Value"/>
+																			 <%}%>
+																			 </font>
+																	   <%} else {%>
+																		 &nbsp;
+																	   <%}%>
+																<%}%>
+																	 <%if(fieldConfigMap.isKeyType()) {%></b><%}%>
+                                                                      </td>
                                                                     </tr>
-                                                                    <%
-                                                                      }//field config loop
-								       } //minor objects values list
-                                                                      %>
+ 
+                                                                  <%
+                                                                      } //FIELD CONFIG LOOP
+																 %>
+                                                                 <tr><td>&nbsp;</td></tr>
 
-                                                                    <%
-								    for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
-								   %>
+                                                                  <%  } // TOTAL MINOR OBJECTS LOOP
+																  %>
 
-								 <%
+
+                                                                  <%
+								                                  for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
+								                                  %>
+
+								                                  <%
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
 													                 %>  
                                                                     <tr><td>&nbsp;</td></tr>
                                                                     <%                                                                                     }//field config loop
+																	 %>
+                                                                       <tr><td>&nbsp;</td></tr> 
+																	 <%
                                                                         }//Extra minor objects loop
 								 %>
 
 
-								 <%  
-                                                                    } //total minor objects loop
+                                                                    <%} //MINOR OBJECT TYPES LOOPS
                                                                     %>
 
-                                                                    </table>
-                                                                </div>
-                                                                     </div>
+                                                                </table>
+                                                            </div>                                                         </div>
                                                                   </td>
                                                                <% if (soMergePreviewMap != null && countEnt + 1 == soHashMapArrayListObjects.length)   {%>
                                                                   <td  valign="top">
@@ -967,11 +1012,19 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                             <td>
                                                                                 <%if(soMergePreviewMap != null) {%>
                                                                                      <%if (previewpersonfieldValuesMapEO.get(previewepathValue) != null) {%> 
+																					  <!-- Added by narayan bhat on 05-09-08  -->
+                                                                                        <%if(soMergePreviewMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
+																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                          <%}else{%>
                                                                                           <span id="<%=previewepathValue%>"><%=previewpersonfieldValuesMapEO.get(previewepathValue)%></span>
+                                                                                        <%}%>
+
                                                                                     <%} else {%>
                                                                                         <span id="<%=previewepathValue%>">&nbsp;</span>
                                                                                     <%}%>
-                                                                                
+
+																					 <!-- Added by narayan bhat on 05-09-08  ends here-->																
+
                                                                                 <%}else{  %>
                                                                                     &nbsp;
                                                                                 <%} %>
@@ -999,7 +1052,6 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																	         &nbsp;
 																			 <%}%>
 																	  </td></tr>
-
                                                                     <%
                                                                      for(int ar = 0; ar < mergePreviewMinorObjectList.size() ;ar ++) {
                                                                        minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);                                                                    %>
@@ -1012,19 +1064,30 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                     <tr>
                                                                         <td>
                                                                                 <%if(soMergePreviewMap != null) {%>
-                                                                                    <%if (minorObjectHashMapPreview.get(previewepathValue) != null) {%> 
+ <!-- Added by narayan bhat on 05-09-08  -->
+                                                                                         <%if(soMergePreviewMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
+																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                          <%}else{%>
+                                                                                          <%if (minorObjectHashMapPreview.get(previewepathValue) != null) {%> 
                                                                                      <span id="<%=previewepathValue%>">
 																						<%if(fieldConfigMap.isKeyType()) {%>
                                                                                           <b><%=minorObjectHashMapPreview.get(previewepathValue)%></b>
 																					   <%}else {%>
 																					      <%=minorObjectHashMapPreview.get(previewepathValue)%>
 																					   <%}%>
+
+
+
+
   																					  </span>
                                                                                     <%} else {%>
                                                                                         <span id="<%=previewepathValue%>">&nbsp;</span>
                                                                                     <%}%>
-                                                                                
-                                                                                <%}else{  %>
+                                                                                        <%}%>
+
+ <!-- Added by narayan bhat on 05-09-08  ends here-->
+                                                                                    
+																																					                                                                                <%}else{  %>
                                                                                     &nbsp;
                                                                                 <%} %>
                                                                         </td>
@@ -1032,11 +1095,11 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                     <%
                                                                       } // field config loop
 								    %>
-
+																	 <tr><td>&nbsp;</td></tr>
 								    <%
                                                                       } // max minor objects loop
 								     %>
-
+																				
                                     <%
 								    for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
 								   %>
@@ -1045,11 +1108,15 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
 													                 %>  
-                                                                    <tr><td>&nbsp;</td></tr>
+                                                                   <tr><td>&nbsp;</td></tr>
                                                                     <%                                                                                     }//field config loop
+																	 %>
+																	   <tr><td>&nbsp;</td></tr> 
+																	 <%
                                                                         }//Extra minor objects loop
 								  %>
 
+                                                               
                                                                       
 							       <%
                                                                      } // all child nodes loop
