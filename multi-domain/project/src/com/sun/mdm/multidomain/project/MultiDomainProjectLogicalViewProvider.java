@@ -46,10 +46,7 @@ import org.netbeans.spi.project.support.ant.ReferenceHelper;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 import org.netbeans.spi.project.ui.support.ProjectSensitiveActions;
 import org.netbeans.spi.java.project.support.ui.BrokenReferencesSupport;
-//import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
 
-
-//import org.netbeans.spi.project.ui.support.DefaultProjectOperations;
 /**
  * Support for creating logical views.
  */
