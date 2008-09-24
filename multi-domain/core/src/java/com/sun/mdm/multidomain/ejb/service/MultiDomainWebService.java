@@ -24,38 +24,33 @@ package com.sun.mdm.multidomain.ejb.service;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.ejb.Stateless;
 
 import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.Relationship;
 
 /**
- * MultiDomainMetaWebService class.
+ * MultiDomainWebService class.
  * @author cye
  */
 @WebService()
 @Stateless()
-public class MultiDomainMetaWebService {
+public class MultiDomainWebService {
     @EJB
-    private MultiDomainMetaServiceLocal multiDomainMetaService;
+    private MultiDomainServiceLocal multiDomainServiceLocal;
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getDomains() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getGroups() 
      */            
-    @WebMethod(operationName = "getDomains")
-    public java.lang.String[] getDomains() 
-        throws ProcessingException {
-        return multiDomainMetaService.getDomains();
+    @WebMethod(operationName = "getGroups")
+    public Relationship[] getGroups(@WebParam(name = "domain")
+    String domain, @WebParam(name = "EUID")
+    String EUID) throws ProcessingException, UserException {        
+        return multiDomainServiceLocal.getGroups(domain, EUID);
     }
-
-    /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipTypes() 
-     */    
-    @WebMethod(operationName = "getRelationshipTypes")
-    public RelationshipType[] getRelationshipTypes() 
-        throws ProcessingException {
-         return multiDomainMetaService.getRelationshipTypes();
-    }
+    
 }
