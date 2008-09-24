@@ -46,7 +46,7 @@ public class MultiDomainConfigurationFolderNode extends MultiDomainFolderNode {
         super(displayName, folder);
         this.project = project;
         ((MultiDomainApplication) this.project).setAssociatedNode(this);
-        this.getCookieSet().add(new MultiDomainConfigurationFolderCookieImpl(this));                
+        this.getCookieSet().add(new MultiDomainConfigurationCookieImpl(this));                
     }
     
     @Override

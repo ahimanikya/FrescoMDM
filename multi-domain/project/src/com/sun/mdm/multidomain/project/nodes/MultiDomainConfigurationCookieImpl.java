@@ -26,19 +26,15 @@ package com.sun.mdm.multidomain.project.nodes;
 /**
  */
 class MultiDomainConfigurationCookieImpl implements MultiDomainCookie {
-    private MultiDomainConfigurationNode mMultiDomainConfigurationNode;
+    private MultiDomainConfigurationFolderNode mMultiDomainConfigurationFolderNode;
 
     /**
-     * Creates a new MultiDomainConfigurationCookieImpl object.
+     * Creates a new MultiDomainConfigurationFolderCookieImpl object.
      *
      * @param MultiDomainConfigurationNode DOCUMENT ME!
      */
-    public MultiDomainConfigurationCookieImpl(MultiDomainConfigurationNode multiDomainConfigurationNode) {
-        mMultiDomainConfigurationNode = multiDomainConfigurationNode;
-    }
-    
-    public MultiDomainConfigurationFolderNode getMultiDomainFolderNode() {
-        return null;
+    public MultiDomainConfigurationCookieImpl(MultiDomainConfigurationFolderNode multiDomainConfigurationFolderNode) {
+        mMultiDomainConfigurationFolderNode = multiDomainConfigurationFolderNode;
     }
 
     /**
@@ -46,7 +42,7 @@ class MultiDomainConfigurationCookieImpl implements MultiDomainCookie {
      *
      * @return DOCUMENT ME!
      */
-    public MultiDomainConfigurationNode getMultiDomainNode() {
-        return mMultiDomainConfigurationNode;
+    public MultiDomainConfigurationFolderNode getMultiDomainFolderNode() {
+        return mMultiDomainConfigurationFolderNode;
     }
 }

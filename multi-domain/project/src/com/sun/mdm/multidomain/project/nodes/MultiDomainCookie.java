@@ -26,12 +26,6 @@ import org.openide.nodes.Node;
 
 
 public interface MultiDomainCookie extends Node.Cookie {
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public MultiDomainConfigurationNode getMultiDomainNode();
 
     /**
      * DOCUMENT ME!

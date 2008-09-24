@@ -67,7 +67,8 @@ public class MultiDomainConfigurationDataObject extends MultiDataObject {
     }
 
     @Override    protected Node createNodeDelegate() {
-        return new MultiDomainFileNode(new MultiDomainConfigurationNode(this));
+        return null;
+        //return new MultiDomainFileNode(new MultiDomainConfigurationFolderNode(this));
     }
  
     @Override
