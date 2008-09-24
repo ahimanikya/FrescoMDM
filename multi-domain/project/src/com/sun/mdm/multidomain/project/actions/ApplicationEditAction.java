@@ -20,8 +20,9 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.project.nodes;
+package com.sun.mdm.multidomain.project.actions;
 
+import com.sun.mdm.multidomain.project.nodes.*;
 import org.openide.ErrorManager;
 import org.openide.util.actions.NodeAction;
 import org.openide.util.actions.CookieAction;

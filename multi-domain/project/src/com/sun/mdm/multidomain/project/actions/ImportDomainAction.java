@@ -98,7 +98,9 @@ public class ImportDomainAction extends CookieAction {
                                 NbBundle.getMessage(ImportDomainAction.class, "MSG_Importing_Domain"));
                             mLoadProgress.start();
                             mLoadProgress.switchToIndeterminate();
-                            
+                            //ToDo
+                            //Load MDM object.xml and midm.xml
+
 
                             mLoadProgress.finish();
                             

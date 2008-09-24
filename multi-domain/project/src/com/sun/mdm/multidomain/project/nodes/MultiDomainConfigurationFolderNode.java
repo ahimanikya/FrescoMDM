@@ -60,7 +60,7 @@ public class MultiDomainConfigurationFolderNode extends MultiDomainFolderNode {
 
         } else {
             return new Action[] {
-                SystemAction.get(ApplicationEditAction.class),
+                SystemAction.get(com.sun.mdm.multidomain.project.actions.ApplicationEditAction.class),
                 null,           
                 SystemAction.get(org.openide.actions.FindAction.class),
                 null,
