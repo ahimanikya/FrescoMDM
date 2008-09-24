@@ -6,17 +6,39 @@
 	<META NAME="GENERATOR" CONTENT="StarOffice 8  (Win32)">
 	<META NAME="CREATED" CONTENT="20080924;11240212">
 	<META NAME="CHANGEDBY" CONTENT="Charles Ye">
-	<META NAME="CHANGED" CONTENT="20080924;11440422">
+	<META NAME="CHANGED" CONTENT="20080924;14174857">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<H1>Multi-tiered Data Object Model</H1>
-<P STYLE="margin-bottom: 0in">Ability to support data object models
-with deeper levels in order to extend coverage to additional
-entities.</P>
+<H1 ALIGN=CENTER>Multi-tiered Data Object Model</H1>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-weight: medium">    
+    <FONT SIZE=3>The data object model is the model that describes
+how data is represented and accessed and is the fundamental of  the
+master index data management. The multi-tiered data object model,
+a.k.a. multi-level data object model, or  the depth of data model,
+defines how deep the customer data model can be constructed. It is a
+hierarchy data model. Ideally the depth should be unlimited. In the
+hierarchical data model, data is organized into a tree-like structure
+which allows repeating information using parent/child relationships,
+each parent can have many children and each child can have many
+children, each child could have many parents.  All attributes of a
+specific entity node are listed under an entry type node. Therefore,
+with the support of the unlimited multi-tiered object model, the
+master data management extends coverage to additional entities.</FONT></P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; font-weight: medium">    
+   <FONT SIZE=3>The current data object model in the mural master
+data management only supports two-tiered. More specifically data
+object node only processes two layers: parent object node and
+children object nodes. Each parent object node can have many children
+object nodes, but each child object node can not have any child
+object node, each child object node only can have one parent object
+node.  With this  two-layer data structures capability the coverage
+of data model of the master data management is limited. The goal of
+the project is to extend coverage to multi-tiered data object
+modeling from the design time to runtime.</FONT></P>
 <P STYLE="margin-bottom: 0in"><BR>
 </P>
-<P><FONT COLOR="#ff6633"><FONT FACE="Thorndale, serif"><FONT SIZE=4>Functional
-Specification Documents</FONT></FONT></FONT></P>
+<P><FONT COLOR="#ff6633"><FONT FACE="Thorndale, serif"><FONT SIZE=4><B>Functional
+Specification Documents</B></FONT></FONT></FONT></P>
 <P><A HREF="attach/Multi-tieredObjectModelSupportFunctionalSpecification.pdf"><U>Multi-tiered
 Data Object Model Support Functional Specification</U></A> 
 </P>
