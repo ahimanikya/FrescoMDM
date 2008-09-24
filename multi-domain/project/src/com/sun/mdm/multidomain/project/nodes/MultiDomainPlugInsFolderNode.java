@@ -45,7 +45,7 @@ public class MultiDomainPlugInsFolderNode extends MultiDomainFolderNode {
     @Override
     public Action[] getActions( boolean context ) {
         return new Action[] {
-            SystemAction.get(ImportRelationshipPluginAction.class),
+            SystemAction.get(com.sun.mdm.multidomain.project.actions.ImportRelationshipPluginAction.class),
             null,
             SystemAction.get(org.openide.actions.FindAction.class),
             null,

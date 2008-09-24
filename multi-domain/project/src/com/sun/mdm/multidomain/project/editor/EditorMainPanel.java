@@ -67,10 +67,12 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     String mOldPrimaryObjName = null;
     String mOldText = null;
 
+    static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
     static final ImageIcon DELETENODEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/Remove.png"));
+                "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/Save.png"));
+                "com/sun/mdm/multidomain/project/resources/Save.png"));
 
     private JSplitPane mSplitPane = null;
     private JScrollPane multiViewPane;
@@ -78,6 +80,7 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     //private EntityNode mRootNode;
     private JPopupMenu mMenu;
     private JLabel jLabelNoProperties;
+    private JButton mButtonAddDomain;
     private JButton mButtonDelete;
     private JButton mButtonSave;
     private EditorMainApp mEditorMainApp;
@@ -147,7 +150,23 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         toolBar.setFloatable(false);
         toolBar.setBorder(null);
         toolBar.setFocusCycleRoot(true);
-        
+        //separator for object buttons
+        mButtonAddDomain = new JButton(new AddDomainAction(
+                    this.DOMAINIMAGEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_AddDomain")));
+        mButtonAddDomain.setBorder(null);
+        mButtonAddDomain.setMnemonic('P');
+        toolBar.add(mButtonAddDomain);
+        toolBar.addSeparator();
+        mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_Save")));
+        mButtonSave.setBorder(null);
+        mButtonSave.setMnemonic('S');
+        mButtonSave.setEnabled(false);
+        toolBar.add(mButtonSave);
+
         return toolBar;
     }
     /** Create context sensitive menu
@@ -226,6 +245,27 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         mButtonSave.setEnabled(flag);
     }
     
+    /** Add a Domain
+     *
+     */
+    public class AddDomainAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public AddDomainAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            // ToDo
+        }
+    }
+
     /** Save configuration
      *
      */

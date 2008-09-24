@@ -37,7 +37,6 @@ import org.openide.loaders.DataFolder;
 import org.openide.nodes.Children;
 import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
-import org.openide.util.NbBundle;
 import org.openide.util.Utilities;
 
 import org.netbeans.spi.java.project.support.ui.PackageView;
@@ -53,6 +52,10 @@ import javax.swing.Action;
 import com.sun.mdm.multidomain.project.nodes.MultiDomainConfigurationFolderNode;
 import com.sun.mdm.multidomain.project.nodes.MultiDomainDBScriptFolderNode;
 import com.sun.mdm.multidomain.project.nodes.MultiDomainPlugInsFolderNode;
+//import com.sun.mdm.multidomain.project.editor.MiDataObject;
+//import com.sun.mdm.multidomain.project.editor.MiDataLoader;
+import org.openide.nodes.CookieSet;
+import org.openide.loaders.DataObject;
 
 class MultiDomainProjectViews {
 

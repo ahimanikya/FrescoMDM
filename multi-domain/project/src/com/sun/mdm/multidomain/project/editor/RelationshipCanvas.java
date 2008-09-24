@@ -45,10 +45,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.SwingUtilities;
+
 /**
  * @author Timothy Boudreau
  */
-public class RelationshipCanvas extends JComponent implements MouseListener, MouseMotionListener {
+public class RelationshipCanvas extends JComponent implements MouseListener, MouseMotionListener, PropertyChangeListener {
     
     private int diam = 10;
     private Paint paint = Color.BLUE;
@@ -59,6 +63,21 @@ public class RelationshipCanvas extends JComponent implements MouseListener, Mou
         addMouseListener(this);
         addMouseMotionListener(this);
         setBackground(Color.WHITE);
+    }
+    
+    public void propertyChange(final PropertyChangeEvent evt) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                propertyUpdate(evt);
+            }
+        });
+    }
+
+    private void propertyUpdate(PropertyChangeEvent evt) {
+        String name   = evt.getPropertyName();
+        Object source = evt.getSource();
+        // ToDo
+        // Get domain's object.xml etc
     }
     
     public void setBrush(int diam) {
