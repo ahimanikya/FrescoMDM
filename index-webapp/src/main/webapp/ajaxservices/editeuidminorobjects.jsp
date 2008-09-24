@@ -218,6 +218,7 @@ if(isSave) {
 %>
 
 <f:view>
+<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 <body>	
 
 <%   boolean isValidationErrorOccured = false;
@@ -434,11 +435,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td>
+				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  				          <script>
- 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
@@ -481,10 +483,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		  <%
 			}
           %>
+		  <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  		 <script>
 			 window.location = "#top";
-		     alert('<%=bundle.getString("eo_edit_update_success_text")%>');
-             ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+ 			 document.getElementById("successMessageDiv").innerHTML = '<%=bundle.getString("eo_edit_update_success_text")%>';
+			 document.getElementById("successDiv").style.visibility="visible";
+			 document.getElementById("successDiv").style.display="block";
 	     </script>
 
 
@@ -515,10 +519,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
      <%}%>
  <%} else {%> <!-- merged euid condition-->
         <table>
-         <tr><td>
+         <tr><td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
          <script>
-      	     alert("'<%=megredEuid%>'  <%=bundle.getString("active_euid_text")%>  '<%=editEuid%>'.");			   
-             window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+			window.location = "#top";
+			document.getElementById("successMessageDiv").innerHTML = '<%=megredEuid%>  <%=bundle.getString("active_euid_text")%>  <%=editEuid%>.';
+			document.getElementById("successDiv").style.visibility="visible";
+			document.getElementById("successDiv").style.display="block";
          </script>
          </td>
          </tr>
@@ -1511,18 +1517,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td>
+				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  				          <script>
- 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
 		</table>
 		</div>
 
-	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
+	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 	
+	 <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
   <script>
 
 	  document.getElementById('linkSoDiv').style.visibility='hidden';
@@ -1536,10 +1544,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
      document.getElementById('<%=sbrFullFieldName%>:<%=systemCodeWithLid%>').style.display = 'block';
 	 
 	 window.location = "#top";
- 
-	 alert(' <%=fieldDisplayName%> <%=bundle.getString("link_field_success_text")%>');
-     
-	 ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+	 document.getElementById("successMessageDiv").innerHTML = '<%=fieldDisplayName%> <%=bundle.getString("link_field_success_text")%>';
+	 document.getElementById("successDiv").style.visibility="visible";
+	 document.getElementById("successDiv").style.display="block";
   </script>
 
           <% //reset all the fields here for root node and minor objects  
@@ -1588,11 +1595,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td>
+				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  				          <script>
- 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%> <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
@@ -1616,9 +1624,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 
   </script>
+  <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
   <script>
-     window.location = "#top";
-	 alert('<%=fieldDisplayName%> <%=bundle.getString("unlink_field_success_text")%>');     ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent',''); 	 
+	window.location = "#top";
+	document.getElementById("successMessageDiv").innerHTML = '<%=fieldDisplayName%> <%=bundle.getString("unlink_field_success_text")%>';
+	document.getElementById("successDiv").style.visibility="visible";
+	document.getElementById("successDiv").style.display="block";
   </script>
 
           <% //reset all the fields here for root node and minor objects  
@@ -1671,11 +1682,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td>
+				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  				          <script>
- 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
@@ -1684,12 +1696,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 	 <%}else if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
  		 %>
+		 <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
        <script>
 		   document.getElementById('lockSBRDiv').style.visibility = 'hidden';
-       	   window.location = "#top";
-		   //lock_field_success_text
-	        alert('<%=request.getParameter("hiddenLockDisplayValue")%> <%=bundle.getString("lock_field_success_text")%>');
-            ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+			window.location = "#top";
+			document.getElementById("successMessageDiv").innerHTML = '<%=request.getParameter("hiddenLockDisplayValue")%> <%=bundle.getString("lock_field_success_text")%>';
+			document.getElementById("successDiv").style.visibility="visible";
+			document.getElementById("successDiv").style.display="block";
       </script>
  <% //reset all the fields here for root node and minor objects  
    } else { //servicelayererror			    %>
@@ -1733,11 +1746,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td>
+				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  				          <script>
- 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%> ';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
@@ -1745,11 +1759,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</div>
 
 	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
-  <table><tr><td>
+  <table><tr><td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
   <script>
-    	    window.location = "#top";
-	        alert('<%=request.getParameter("hiddenUnLockFieldDisplayName")%> <%=bundle.getString("unlock_field_success_text")%>');
-            ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+			window.location = "#top";
+			document.getElementById("successMessageDiv").innerHTML = '<%=request.getParameter("hiddenUnLockFieldDisplayName")%> <%=bundle.getString("unlock_field_success_text")%> ';
+			document.getElementById("successDiv").style.visibility="visible";
+			document.getElementById("successDiv").style.display="block";
   </script>
   </td></tr></table>
  <% //reset all the fields here for root node and minor objects  
@@ -1786,11 +1801,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td>
+				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
  				          <script>
- 								alert("EUID ' <%=editEuid%> ' <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%> ';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
@@ -1837,6 +1853,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <% } %>
 
  </body>
+ <!-- Added By Narahari.M on 23-09-2008 to make information popups dragable -->
+ <script>
+dd=new YAHOO.util.DD("successDiv");
+</script>
+
 </f:view>
 <%} %>  <!-- Session check -->
 </html>

@@ -611,9 +611,10 @@ if (isCancel){
 			<tr>
 				<td>
  				          <script>
- 								alert("EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%> ");
-                                window.location = "#top";
-                                ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
 				          </script>
  			   <td>
 			<tr>
@@ -621,10 +622,6 @@ if (isCancel){
 		</div>
 
 	 <%}else if ("EO_EDIT_SUCCESS".equalsIgnoreCase(isSuccess))  { %>
-		<script>
-		    alert('<%=sourceHandler.getSystemCodeDescription(request.getParameter("SystemCode"))%>/<%=request.getParameter("LID")%> <%=bundle.getString("lid_system_added_succes_text")%>');
- 	         window.location = "#top";  
-	    </script>
 			   <!-- // close the Minor objects 
 			   // Close the Root node fields
 			   // Hide the Save button -->
@@ -642,8 +639,9 @@ if (isCancel){
 
 				document.getElementById(systemField).readOnly = false;
                 document.getElementById(systemField).disabled = false;
-                document.getElementById(systemField).style.backgroundColor  = '';
-				ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+                document.getElementById(systemField).style.backgroundColor  = '';	
+				document.getElementById('AddSO').style.display = 'none';
+			    document.getElementById('AddSO').style.visibility = 'hidden';
 		  </script>
          
 		  <script> 
@@ -677,16 +675,12 @@ if (isCancel){
 		 //reset all the fields here for root node and minor objects
 		    editMainEuidHandler.getNewSOHashMapArrayList().clear();
             editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().clear();%>
-	<div class="ajaxsuccess">
-	  <table>
-			<tr>
-				<td>
-				      <ul>
-				      </ul>
-				<td>
-			<tr>
-		</table>
-	</div>
+		<script>
+		 window.location = "#top";
+		 document.getElementById("successMessageDiv").innerHTML = "<%=sourceHandler.getSystemCodeDescription(request.getParameter("SystemCode"))%>/<%=request.getParameter("LID")%> <%=bundle.getString("lid_system_added_succes_text")%>";
+		 document.getElementById("successDiv").style.visibility="visible";
+		 document.getElementById("successDiv").style.display="block";
+	    </script>
 
 	<% } else { %> <!-- In case of service layer exception -->
 	<div class="ajaxalert">
@@ -1364,6 +1358,9 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 
 <%}%> <!-- IF NOT CANCEL-->
  </body>
+ <script>
+	 dd=new YAHOO.util.DD("successDiv");
+ </script>
 </f:view>
 <%} %>  <!-- Session check -->
 </html>

@@ -68,9 +68,7 @@ boolean isSessionActive = true;
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
  URI = URI.substring(1, URI.lastIndexOf("/"));
-
  String URICSS = URI.replaceAll("/ajaxservices","");
-
 %>
 <f:view>
 <%
@@ -1524,48 +1522,68 @@ if(session!=null){
                     </div>         
                 </div>         
     <!-- END Extra divs for NEW  SO-->
-
-           <div id="lockSBRDiv" class="alert" style="TOP:620px;LEFT:450px;height:120px;VISIBILITY:hidden;overflow:auto;">
+	<!-- Modified By Narahari.M on 23-09-2008 to incorporate confirmation pop up windows -->
+           <div id="lockSBRDiv" class="confirmPreview" style="TOP:620px;LEFT:450px;height:100px;VISIBILITY:hidden;display:none;">
                <form id="lockFieldsForm">
 				<input type="hidden" id="hiddenLockFields" name="hiddenLockFields" title="hiddenLockFields"/>
  				<input type="hidden" id="hiddenLockFieldValue" name="hiddenLockFieldValue" title="hiddenLockFieldValue"/>
  				<input type="hidden" id="hiddenLockDisplayValue" name="hiddenLockDisplayValue" title="hiddenLockDisplayValue"/>
-                <table valign="center"  border="0">
-                    <tr><td>&nbsp;</td></tr>    
-                    <tr>
-                        <td>
-                             <nobr><b><h:outputText value="#{msgs.lock_text}"/> '<span id="lockSBRFieldValue" style="color:white;"></span>' <h:outputText value="#{msgs.field_question_text}"/></b></nobr> 
-                        </td>
-                    </tr>    
-                    <tr>
-                        <td align="right">
-                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('lockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&locking=true','euidFinalErrorMessages','')">                          
-                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
-                            </a>
-                           <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('lockSBRDiv',event)">
-                                <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                            </h:outputLink>
-                        </td>
-                    </tr>
-					<tr><td><div id="lockMessagesDiv"></div></td></tr>
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('lockSBRDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('lockSBRDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<nobr><b><h:outputText value="#{msgs.lock_text}"/> '<span id="lockSBRFieldValue" style="color:white;"></span>' <h:outputText value="#{msgs.field_question_text}"/></b></nobr> 
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('lockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&locking=true','euidFinalErrorMessages','');document.getElementById('lockSBRDiv').style.visibility='hidden';document.getElementById('lockSBRDiv').style.display='none';">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+								<td>
+								<a  class="button"  href="javascript:void(0)" onclick="javascript:showExtraDivs('lockSBRDiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+								</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+					<tr><td colspan="2"><div id="lockMessagesDiv"></div></td></tr>
                 </table> 
                 </form>
             </div> 
 
 
-            <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;height:140px;VISIBILITY:hidden;overflow:auto;">
+            <div id="linkSoDiv"  class="confirmPreview" style="TOP:620px;LEFT:450px;height:120px;VISIBILITY:hidden;display:none;">
                 <form name="linkForm"  id="linkForm">
 				<input type="hidden" name="sbrfullfieldname" id="sbrfullfieldname" title="sbrfullfieldname">
 				<input type="hidden" name="fieldDisplayName" id="fieldDisplayName" title="fieldDisplayName">
-                <table border="0" cellpadding="0" cellspacing="0" valign="center">
+                <table border="0" cellpadding="0" cellspacing="0" >
+				<tr><th colspan="2" align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('linkSoDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('linkSoDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="2" align="center">
                             <div id="linkedValueDiv" style="visibility:hidden"></div>
-                            <nobr><b><h:outputText value="#{msgs.link_to_text}"/> '<span id="linkedDisplayValueDiv" style="color:white;"></span>' <h:outputText value="#{msgs.field_of_text}"/> :</b></nobr> 
-                        </td>
-                    </tr>    
-                    <tr>
-                        <td colspan="2">
+                            <nobr><b>&nbsp;&nbsp;&nbsp;<h:outputText value="#{msgs.link_to_text}"/> '<span id="linkedDisplayValueDiv" style="color:white;"></span>' <h:outputText value="#{msgs.field_of_text}"/> :&nbsp;</b></nobr> 
+                        
                             <h:selectOneMenu id="systemCodeWithLid" title="systemCodeWithLid" value="#{EditMainEuidHandler.linkedSoWithLidByUser}">
                                 <f:selectItems  value="#{EditMainEuidHandler.eoSystemObjectCodesWithLids}" />
                             </h:selectOneMenu>
@@ -1574,50 +1592,115 @@ if(session!=null){
                     <tr>
                         <td  colspan="2">&nbsp;</td>
                     </tr>    
-                    <tr>
-                        <td align="right">
-                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('linkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&linking=true','euidFinalErrorMessages','')">                          
+                    <tr id="actions">
+                        <td colspan="2">
+							<table align="center">
+							<tr>
+							<td>
+                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('linkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&linking=true','euidFinalErrorMessages','');document.getElementById('linkSoDiv').style.visibility='hidden';document.getElementById('linkSoDiv').style.display='none';">                          
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
 							</a>
-                        </td>
-                        <td align="left">
-                            <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('linkSoDiv',event)">
-                                <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                            </h:outputLink>
-                        </td>
+							</td>
+							<td>
+							<a  class="button"  href="javascript:void(0)" onclick="javascript:showExtraDivs('linkSoDiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+								</a>
+							</td>
+							</tr>
+							</table>
+						</td>
                     </tr>
                 </table> 
                 </form>
             </div> 
-           <div id="unLinkSoDiv" class="alert" style="TOP:620px;LEFT:450px;HEIGHT:120px;WIDTH:350px;VISIBILITY:hidden;">
+           <div id="unLinkSoDiv" class="confirmPreview" style="TOP:620px;LEFT:450px;HEIGHT:100px;VISIBILITY:hidden;display:none;">
                <form name="unlinkForm" id="unlinkForm" >
 				<input type="hidden" name="sbrfullfieldname" id="sbrfullfieldname" title="sbrfullfieldname">
 				<input type="hidden" name="fieldDisplayName" id="fieldDisplayName" title="fieldDisplayName">
-                <table valign="center" style="padding-top:20px">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr><th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unLinkSoDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unLinkSoDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <div id="unLinkedValueDiv" style="visibility:hidden"></div>
                             <div id="unLinkedFullFieldDiv" style="visibility:hidden"></div>
                             <nobr><b><h:outputText value="#{msgs.unlink_from_text}"/> '<span id="unLinkedDisplayValueDiv" style="color:white;"></span>' <h:outputText value="#{msgs.field_question_text}"/> </b></nobr> 
                         </td>
-                    </tr>    
-                    <tr>
-                        <td align="right">
-                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('unlinkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinking=true','euidFinalErrorMessages','')">                          
+                    </tr>
+					<tr>
+                        <td  colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr id="actions">
+                        <td colspan="2">
+						<table align="center">
+						</tr>
+						<td>
+                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('unlinkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinking=true','euidFinalErrorMessages','');document.getElementById('unLinkSoDiv').style.visibility='hidden';document.getElementById('unLinkSoDiv').style.display='none';">                          
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
                             </a>
-                           <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('unLinkSoDiv',event)">
-                                <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                            </h:outputLink>
+						</td>
+						<td>
+						<a  class="button"  href="javascript:void(0)" onclick="javascript:showExtraDivs('unLinkSoDiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+								</a>
+						</td>
+						</tr>
+						</table>
                         </td>
                     </tr>
                 </table> 
                 </form>
             </div> 
-  
+         <!-- Added By Narahari.M on 23-09-2008 for all information popups -->
+  		 <div id="successDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+               <form id="successDiv">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:ajaxURL('/<%=URI%>/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:ajaxURL('/<%=URI%>/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="successMessageDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" onclick="javascript:ajaxURL('/<%=URI%>/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+
+
   
         </body>
     </html>
+ <!-- Added By Narahari.M on 23-09-2008 to make confirmation popups dragable -->
+	<script>
+	dd_link=new YAHOO.util.DD("linkSoDiv");
+	dd_unlink=new YAHOO.util.DD("unLinkSoDiv");
+	dd_lock=new YAHOO.util.DD("lockSBRDiv");
+	</script>
     </f:view>
     <%} %>  <!-- Session check -->
     

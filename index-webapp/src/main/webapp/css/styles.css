@@ -1684,7 +1684,6 @@ a.button:active span {
 }
 
 
-
 .alertSource {
     padding-top:0px;
     padding-left:0px;
@@ -2840,6 +2839,8 @@ a.navbuttonselected:active span {
    font-family: Arial, Helvetica, sans-serif;
    filter:alpha(opacity=70);-moz-opacity:.70;opacity:.70;
    color:#ffffff;
+   z-index:5;
+   background-color:#000000;
    border-right: 3px solid #000000;
    border-left: 3px solid #000000;
    border-top: 3px solid #000000;
@@ -2854,7 +2855,8 @@ a.navbuttonselected:active span {
    font-weight:normal;
    background-color:#000000;
    color:#ffffff;
-
+   padding-left:3px; 
+   padding-right:3px;
 }
 
 .confirmPreview th {
@@ -2862,20 +2864,21 @@ a.navbuttonselected:active span {
    font-weight: bold;
    cursor:move;
    font-size: 12px;
-   text-align:center;
+   padding-left:3px; 
+   padding-right:3px; 
+   text-align:left;
    background-color:#ffffff;
    color:#000000;
 }
 
-.confirmPreview th em {
+.confirmPreview em {
    text-decoration:none;
    font-family: sans-serif,Arial, Helvetica ;
    font-size: 12px;
    text-align:right;
    text-decoration:none;
-   padding-top:10px;
-   background-color:#000000;
-   color:#ffffff;
+   background-color:#ffffff;
+   color:#000000;
 }
 
 .confirmPreview #actions td {
@@ -2885,6 +2888,21 @@ a.navbuttonselected:active span {
    background-color:#000000;
    color:#ffffff;
 }
+
+.confirmPreview table td select {
+     font-family: Arial, Helvetica, sans-serif;
+     font-size:10px;
+	 color:#837F74;
+     text-align:left;
+	 vertical-align:middle;	      
+     font-weight:bold;
+     padding-left:1px; 
+	 padding-right:1px;
+	 padding-top:1px; 
+	 padding-bottom:1px;   
+}
+
+
 .dateFormat
 {
     font-family: sans-serif,Arial, Helvetica ;
@@ -2892,5 +2910,3 @@ a.navbuttonselected:active span {
  font-weight:normal;
     color:#000000;
  }
-
- 

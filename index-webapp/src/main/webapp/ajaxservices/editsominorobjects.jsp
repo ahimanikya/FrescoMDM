@@ -1369,9 +1369,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
   </script>
 <%} else {%>
   <script>
-      window.location = "#top";
-	  alert('<%=selectedSoLID%>/<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%><%=bundle.getString("deactivate_success_message_text")%>');
-      ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=systemObjectEO.getEUID()%>','ajaxContent','');
+	  window.location = "#top";
+	  document.getElementById("successMessageDiv").innerHTML = "<%=selectedSoLID%>/<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%> <%=bundle.getString("deactivate_success_message_text")%>";
+	  document.getElementById("successDiv").style.visibility="visible";
+	  document.getElementById("successDiv").style.display="block";
   </script>
 <%}%>
 <% } else if(isactivateSO){%>
@@ -1387,14 +1388,19 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
   %>
 
   <script>
-      window.location = "#top";
-      alert('<%=selectedSoLID%>/<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%> <%=bundle.getString("activate_success_message_text")%>');
-      ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=systemObjectEO.getEUID()%>','ajaxContent','');
+	  window.location = "#top";
+	  document.getElementById("successMessageDiv").innerHTML = "<%=selectedSoLID%>/<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%> <%=bundle.getString("activate_success_message_text")%>";
+	  document.getElementById("successDiv").style.visibility="visible";
+	  document.getElementById("successDiv").style.display="block";
   </script>
 
 <% } %>
 
  </body>
+ 
+ <script>
+	 dd=new YAHOO.util.DD("successDiv");
+ </script>
 </f:view>
 <%} %>  <!-- Session check -->
 </html>
