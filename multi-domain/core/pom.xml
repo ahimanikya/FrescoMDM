@@ -65,6 +65,7 @@
             	<move todir="${project.build.testOutputDirectory}">
               <fileset dir="${project.build.directory}/classes" >
               	<include name="com/sun/mdm/multidomain/ejb/service/*Bean.class"/>
+              	<include name="com/sun/mdm/multidomain/ejb/service/*WebService.class"/>              	
               </fileset>
               </move>   
               <zip destfile="${project.build.directory}/ejb-source.zip">
