@@ -1,0 +1,117 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>multi-domain</artifactId>
+    <groupId>mural</groupId>
+    <version>1.0</version>
+  	<relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mural</groupId>
+  <artifactId>multidomain-core</artifactId>
+  <name>Multi-Domain Core Services</name>
+  <version>${mural.currentVersion}</version>
+  <url>http://mural.dev.java.net</url>
+  <build>
+		<finalName>multidomain-core</finalName>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <resources>
+    	<resource>
+    		<directory>src/resources</directory>
+      	<includes>
+        	<include>com/**</include>
+        </includes>
+      </resource> 
+    </resources>
+    <plugins>
+    	<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+        	<execution>
+          	<goals>
+            	<goal>jar</goal>
+            </goals>
+          </execution>
+         </executions>
+         <configuration>
+         	<classesDirectory>${project.build.directory}/classes</classesDirectory>
+         </configuration>
+      	</plugin>    
+    	<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+        	<execution>
+          	<id>extract-globalized-messages</id>
+            <phase>process-classes</phase>
+            <goals><goal>run</goal></goals>
+            <configuration>
+            	<tasks>
+              	<taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
+                	<classpath refid="maven.test.classpath"/>
+                </taskdef>
+                <i18n dir="${project.build.directory}/classes" file="${basedir}/src/resources/com/sun/mdm/multidomain/util/messages.properties" prefix="MDM-MULTIDOMAIN-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />
+              </tasks> 
+            </configuration>
+         </execution>
+         <execution>
+         	<id>make-ejb-source-zip</id>
+          <phase>process-classes</phase>
+          <goals><goal>run</goal></goals>
+          <configuration>
+          	<tasks>
+            	<move todir="${project.build.testOutputDirectory}">
+              <fileset dir="${project.build.directory}/classes" >
+              	<include name="com/sun/mdm/multidomain/ejb/service/*Bean.class"/>
+              </fileset>
+              </move>   
+              <zip destfile="${project.build.directory}/ejb-source.zip">
+              <fileset dir="${basedir}/src/java">
+              	<include name="com/sun/mdm/multidomain/ejb/service/*Bean.java"/>
+              </fileset>
+              </zip>
+            </tasks> 
+          </configuration>
+         </execution>         
+    		</executions>
+    	</plugin>
+    </plugins>    
+  </build>
+  <dependencies>
+  	<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>mural</groupId>
+      <artifactId>index-core</artifactId>
+      <version>${mural.currentVersion}</version>
+   	</dependency>
+        <dependency>
+            <groupId>net.java.hulp.i18ntask</groupId>
+            <artifactId>net.java.hulp.i18ntask</artifactId>
+            <version>2.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.hulp.i18n</groupId>
+            <artifactId>net.java.hulp.i18n</artifactId>
+            <version>2.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>oracle.jdbc</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.1.0.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javaee</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>5</version>
+            <scope>provided</scope>
+        </dependency>   	    
+  </dependencies>
+</project>
