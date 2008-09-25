@@ -36,6 +36,10 @@ import com.sun.mdm.multidomain.query.PageSingleIterator;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
  
+/**
+ * MultiDomainService interface.
+ * @author cye
+ */
 public interface MultiDomainService {
 
     /***
