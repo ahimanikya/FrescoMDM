@@ -72,5 +72,10 @@
       <artifactId>index-core</artifactId>
       <version>${mural.currentVersion}</version>
    	</dependency>    
+    <dependency>
+    	<groupId>mural</groupId>
+      <artifactId>multidomain-core</artifactId>
+      <version>${mural.currentVersion}</version>
+   	</dependency>       	
   </dependencies>
 </project>
