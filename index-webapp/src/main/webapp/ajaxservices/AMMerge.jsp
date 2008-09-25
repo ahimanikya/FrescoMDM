@@ -35,6 +35,7 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+
 <f:view>
 <%
 //set locale value
@@ -75,22 +76,30 @@ boolean isSessionActive = true;
 		String newEuid = assumeMatchHandler.undoMatch(undoAssumedMatchId);
 %>
 											       <table border="0" cellpadding="0" cellspacing="0" >
-											         <tr><th colspan="2">Information</th></tr>
+											         <tr><th title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+													 <th>
+														<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:window.location.reload();"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+														<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:window.location.reload();"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+													</th>
+													<tr><td colspan="2">&nbsp;</td></tr>
+													 </tr>
 											         <tr>
-													       <td colspan="2"><nobr><img src="/<%=URI%>/images/info_medium_.gif">&nbsp;<%=bundle.getString("merge_result")%></nobr>
+													       <td colspan="2"><nobr>&nbsp;<%=bundle.getString("merge_result")%></nobr>
 														   </td>
 													 </tr>
 													 <tr><td colspan="2"><nobr><%=bundle.getString("view_new_EO")%></nobr></td></tr>
+													 <tr><td colspan="2">&nbsp;</td></tr>
 											         <tr id="actions">
-											            <td align="center">
-														  <table>
+											            <td colspan="2">
+														  <table align="center">
 														    <tr>
 															 <td>&nbsp;</td>
 															 <td>
                                                                 <a class="button" href="/<%=URI%>/euiddetails.jsf?euid=<%=newEuid%>"> <span><%=bundle.getString("ok_text_button")%></span></a>
 														     </td>
 														     <td>
-                                                                <a class="button"  href='javascript:void(0)' onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=prev&random=rand'+'&'+'AMID='+pages[thisIdx],'outputdiv','');"><span><%=bundle.getString("login_cancel_button_prompt")%></span></a>
+                                                                <a class="button"  href='javascript:void(0)' onclick="javascript:window.location.reload();"><span><%=bundle.getString("login_cancel_button_prompt")%></span></a>
 															</td>
 														   </tr>
 														 </table>

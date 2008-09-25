@@ -35,6 +35,7 @@
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="javax.faces.context.FacesContext"  %>
+
 <f:view>
 <%
 //set locale value
@@ -248,20 +249,28 @@ SourceHandler sourceHandler = new SourceHandler();
                                                                     
                                                                     
                                                                     <!-- end displaying minor objects -->
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                    
+                                                                </table>                                      
                                                 </div>                                                
 											   <div id="confirmPreview" class="confirmPreview">
-											       <table border="0" cellpadding="0" cellspacing="0" >
-											         <tr><th colspan="2" title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th></tr>
-											         <tr>
-													       <td colspan="2"><nobr><img src="/<%=URI%>/images/warning_medium.gif">&nbsp;&nbsp;<%=bundle.getString("undo_assume_match")%></td>
+											      <table border="0" cellpadding="0" cellspacing="0" >
+											       <tr>
+												   <th title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%>
+												   </th>
+													<th>
+														<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:cancelPreview(<%=divId%>);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+														<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:cancelPreview(<%=divId%>);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+													</th>
+
 													 </tr>
+													 <tr><td colspan="2">&nbsp;</td></tr>
+											         <tr>
+													       <td colspan="2">&nbsp;&nbsp;<%=bundle.getString("undo_assume_match")%></td>
+													 </tr>
+													 <tr><td colspan="2">&nbsp;</td></tr>
 											         <tr id="actions">
-											            <td align="center">
-														  <table>
+											            <td colspan="2">
+														  <table align="center">
 														    <tr>
 															 <td>&nbsp;</td>
 															 <td>
@@ -274,7 +283,7 @@ SourceHandler sourceHandler = new SourceHandler();
                                                           </a>
 														 </td>
 														 <td>
-                                                          <a href="javascript:void(0)"  class="button" onclick="javascript:cancelPreview(<%=divId%>)"  title="<h:outputText value="#{msgs.cancel_but_text}" />" >
+                                                          <a href="javascript:void(0)"  class="button" onclick="javascript:cancelPreview(<%=divId%>);"  title="<h:outputText value="#{msgs.cancel_but_text}" />" >
 														     <span>
                                                                <h:outputText value="#{msgs.cancel_but_text}" /> 
 														     </span>
