@@ -43,7 +43,8 @@ import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
 //import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
-
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+//import com.sun.mdm.index.project.EviewApplication;
 
 /**
  * To get Relationship jar with dataTypeDescription.xml
@@ -88,8 +89,9 @@ public class ImportDomainAction extends CookieAction {
                     JFileChooser fc = new JFileChooser();
                     try {
                         fc.setMultiSelectionEnabled(false);
-                        fc.setFileFilter(new DomainFilter()); // look for MDM domains
-                        //fc.setAcceptAllFileFilterUsed(false);
+                        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        fc.setFileFilter(new DomainFilter(fc)); // look for MDM domains
+                        fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -99,7 +101,9 @@ public class ImportDomainAction extends CookieAction {
                             mLoadProgress.switchToIndeterminate();
                             //ToDo
                             //Load MDM object.xml and midm.xml
-
+                            File selected = fc.getSelectedFile();
+                            String path = selected.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
+                            FileObject objectxml = getConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
 
                             mLoadProgress.finish();
                             
@@ -157,21 +161,25 @@ public class ImportDomainAction extends CookieAction {
         return CookieAction.MODE_EXACTLY_ONE;
     }
 
-    private FileObject getDir(String category, String locale) {
-        if ( category == null) {
-            return null;
+    private boolean isMasterIndexProject(File file) {
+        //if (file instanceof EviewApplication) {
+        //    return true;
+        //}
+        File dir = new File(MultiDomainProjectProperties.SRC_FOLDER);
+        if (dir != null) {
+            try {
+                FileObject fobjSrc = FileUtil.toFileObject(dir);
+                if (fobjSrc != null) {
+                    FileObject fobjConfiguration = fobjSrc.getFileObject(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
+                    if (fobjConfiguration != null) {
+                        dir = new File(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
+                    }
+                }
+            } catch (Exception ex) {
+                String msg = ex.getMessage();
+            }
         }
-        String name = category;
-      
-        if (locale != null) {
-            name = category + File.separator + locale;
-        }
-        File dir = new File(name);
-        FileObject fileObject = FileUtil.toFileObject(dir);
-        if (!fileObject.isFolder()) {
-            return null;
-        }
-        return fileObject;
+        return (dir != null && dir.isDirectory());
     }
 
     public FileObject getConfigurationFile(String folder, String name) {
@@ -191,10 +199,17 @@ public class ImportDomainAction extends CookieAction {
     }
 
     private class DomainFilter extends FileFilter {
+        JFileChooser fc;
+        public DomainFilter(JFileChooser fc) {
+            this.fc = fc;
+        }
         
         public boolean accept(java.io.File file) {
-            FileObject fobj = getDir("src", "Configuration");
-            return ( file.isDirectory() || fobj != null); //
+            boolean accepted = isMasterIndexProject(file);
+            if (accepted) {
+                fc.setSelectedFile(file);
+            }
+            return (file.isDirectory() || accepted);
         }
         
         public String getDescription() {

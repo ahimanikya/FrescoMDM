@@ -49,6 +49,8 @@ public class MultiDomainProjectProperties {
     public static final String RELATIONSHIP_PLUGINS_FOLDER = "Plug-ins"; //NOI18N
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
     
+    public static final String OBJECT_XML = "object.xml";
+    public static final String MIDM_XML = "midm.xml";
     public static final String RELATIONSHIP_MODEL_XML = "RelationshipModel.xml";
     public static final String RELATIONSHIP_MODEL_XSD = "RelationshipModel.xsd";
     public static final String RELATIONSHIP_WEB_MANAGER_XML = "RelationshipWebManager.xml";
@@ -96,6 +98,7 @@ public class MultiDomainProjectProperties {
     public static final String JAVAC_DEBUG = "javac.debug"; //NOI18N
     public static final String JAVAC_DEPRECATION = "javac.deprecation"; //NOI18N
     public static final String JAVAC_TARGET = "javac.target"; //NOI18N
+    public static final String SRC_FOLDER = "src"; //NOI18N
     public static final String SRC_DIR = "src.dir"; //NOI18N
     public static final String META_INF = "meta.inf"; //NOI18N
     public static final String RESOURCE_DIR = "resource.dir"; //NOI18N
