@@ -89,11 +89,10 @@ public class ImportDomainAction extends CookieAction {
                     try {
                         fc.setMultiSelectionEnabled(false);
                         fc.setFileFilter(new DomainFilter()); // look for MDM domains
-                        fc.setAcceptAllFileFilterUsed(false);
+                        //fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
-
                             mLoadProgress = ProgressHandleFactory.createHandle(
                                 NbBundle.getMessage(ImportDomainAction.class, "MSG_Importing_Domain"));
                             mLoadProgress.start();
@@ -115,7 +114,7 @@ public class ImportDomainAction extends CookieAction {
                 }
             });
         } catch (Exception ex) {
-            String msg = NbBundle.getMessage(ImportDomainAction.class, "MSG_FAILED_To_Perform") + ex.getMessage();
+            String msg = NbBundle.getMessage(ImportDomainAction.class, "MSG_FAILED_To_Perform_ImportDomainAction") + ex.getMessage();
             mLog.info(msg);
             NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
             DialogDisplayer.getDefault().notify(desc);
@@ -157,11 +156,45 @@ public class ImportDomainAction extends CookieAction {
     protected int mode() {
         return CookieAction.MODE_EXACTLY_ONE;
     }
-    
+
+    private FileObject getDir(String category, String locale) {
+        if ( category == null) {
+            return null;
+        }
+        String name = category;
+      
+        if (locale != null) {
+            name = category + File.separator + locale;
+        }
+        File dir = new File(name);
+        FileObject fileObject = FileUtil.toFileObject(dir);
+        if (!fileObject.isFolder()) {
+            return null;
+        }
+        return fileObject;
+    }
+
+    public FileObject getConfigurationFile(String folder, String name) {
+        FileObject file = null;
+        try{
+            if (folder != null) {
+                FileObject dir = FileUtil.toFileObject(new File(folder));
+                if (dir == null || !dir.isFolder()) {
+                    return null;
+                }
+      
+                file = dir.getFileObject(name);
+            }
+        } catch (Exception ex) {
+        }
+        return file;
+    }
+
     private class DomainFilter extends FileFilter {
         
         public boolean accept(java.io.File file) {
-            return ( file.isDirectory());
+            FileObject fobj = getDir("src", "Configuration");
+            return ( file.isDirectory() || fobj != null); //
         }
         
         public String getDescription() {

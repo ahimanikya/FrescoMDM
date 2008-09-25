@@ -88,7 +88,7 @@ public class ImportRelationshipPluginAction extends CookieAction {
                     JFileChooser fc = new JFileChooser();
                     try {
                         fc.setMultiSelectionEnabled(false);
-                        fc.setFileFilter(new ZipFileFilter()); // look for implementation zip
+                        fc.setFileFilter(new RelationsipPlugInFilter()); // look for relationship plug-in
                         fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
@@ -113,7 +113,7 @@ public class ImportRelationshipPluginAction extends CookieAction {
                 }
             });
         } catch (Exception ex) {
-            String msg = NbBundle.getMessage(ImportRelationshipPluginAction.class, "MSG_FAILED_To_Perform") + ex.getMessage();
+            String msg = NbBundle.getMessage(ImportRelationshipPluginAction.class, "MSG_FAILED_To_Perform_ImportRelationshipPluginAction") + ex.getMessage();
             mLog.info(msg);
             NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
             DialogDisplayer.getDefault().notify(desc);
@@ -156,14 +156,14 @@ public class ImportRelationshipPluginAction extends CookieAction {
         return CookieAction.MODE_EXACTLY_ONE;
     }
     
-    private class ZipFileFilter extends FileFilter {
+    private class RelationsipPlugInFilter extends FileFilter {
         
         public boolean accept(java.io.File file) {
             return ( file.isDirectory() || file.getName().endsWith(".zip") );
         }
         
         public String getDescription() {
-            return "Zip Files";
+            return NbBundle.getMessage(ImportRelationshipPluginAction.class, "MSG_Relationship_Plugin_Files");
         }
         
     }    

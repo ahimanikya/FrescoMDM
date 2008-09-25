@@ -53,6 +53,9 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JTabbedPane;
 
+import org.openide.util.actions.SystemAction;
+import javax.swing.Action;
+
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
@@ -262,7 +265,8 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
          *@param e Action event
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {
-            // ToDo
+            Action action = SystemAction.get(com.sun.mdm.multidomain.project.actions.ImportDomainAction.class);
+            action.actionPerformed(null);
         }
     }
 
