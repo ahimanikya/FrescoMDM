@@ -33,59 +33,140 @@ public class Attribute {
     private String displayName;
     private boolean searchable;
     private boolean isRequired;
-    private int dataType;
+    private AttributeType type;
     private String defaultValue;
   
+    /**
+     * Create an instance of relationship Attribute class.
+     */
     public Attribute() {    	
     }
-    public Attribute(String name, String displayName, int type, String value) {
+    
+    /**
+     * Create an instance of relationship Attribute class.
+     * @param name Attribute name.
+     * @param displayName Attribute displayname.
+     * @param type Attribute type.
+     * @param value Attribute value.
+     */
+    public Attribute(String name, String displayName, AttributeType type, String value) {
     	this.name = name;
     	this.displayName = displayName;
     	this.columnName = name;
     	this.searchable = true;
     	this.isRequired = true;
-    	this.dataType = type;
+    	this.type = type;
     	this.defaultValue = value;
     } 
+    
+    /**
+     * Get name attribute.
+     * @return String Name attribute.
+     */
     public String getName() {
         return name;
     }
+    
+    /**
+     * Set name attribute.
+     * @param name Name attribute.
+     */
     public void setName(String name) {
         this.name = name;;
     }
+    
+    /**
+     * Get display name attribute.
+     * @return String Display name.
+     */
     public String getDisplayName() {
         return displayName;
     }
+    
+    /**
+     * Set display name attribute.
+     * @param String displayName
+     */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;;
     }
+    
+    /**
+     * Get colummn name attribute.
+     * @return String columnName.
+     */
     public String getColumnName() {
         return columnName;
     }
+    
+    /**
+     * Set column name attribute.
+     * @param String columnName
+     */
     public void setColumnName(String columnName) {
         this.columnName = columnName;
     }    
+    
+    /**
+     * Get searchable attribute.
+     * @return boolean Searchable attribute.
+     */
     public boolean getSearchable() {
         return searchable;
     }
+    
+    /**
+     * Set searchable attribute.
+     * @param searchable Searchable attribute.
+     */
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;;
     }
+    
+    /**
+     * Get isRequired attribute.
+     * @return boolean IsRequired attribute.
+     */
     public boolean getIsRequired() {
         return isRequired;
     }
+    
+    /**
+     * Set isRequired attribute.
+     * @param isRequired IsRequired attribute.
+     */
     public void setIsRequired(boolean isRequired) {
         this.isRequired = isRequired;;
     }
-    public void setDataType(int dataType) {
-        this.dataType = dataType;
+    
+    /**
+     * Set attribute date type attribute.
+     * @param type Attribute data type attribute.
+     */
+    public void setType(AttributeType type) {
+        this.type = type;
+    }   
+    
+    /**
+     * Get attribute data type attribute.
+     * @return AttributeType Attribute data type attribute.
+     */
+    public AttributeType getType() {
+        return type;
     }    
-    public int getDataType() {
-        return dataType;
-    }    
+    
+    /**
+     * Set attribute default value.
+     * @param defaultValue Default value.
+     */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }    
+    
+    /**
+     * Get attribute default value.
+     * @return String attribute default value.
+     */
     public String getDefaultValue() {
         return defaultValue;
     }    

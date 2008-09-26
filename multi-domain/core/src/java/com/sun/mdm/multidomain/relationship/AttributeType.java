@@ -49,15 +49,53 @@ public class AttributeType {
     /** Character */
     public static final int CHAR = 9;
     /** Max number of attribute types */
-    static final int MAX_TYPES = 9;
+    static final int MAX_TYPES = 10;
 
-    static final String[] DESCRIPTION = {"Integer", "Boolean", "String", "Byte",
+    static final String[] DESCRIPTION = {"unknown", "Integer", "Boolean", "String", "Byte",
                           "Long", "Blob", "Float", "Date", "Timestamp", "Character"};
-
+            
+    private int type = UNKNOWN;
+            
     /**
-     * public constructor.
+     * Create an instance of AttributeType.
      */
     public AttributeType() {
     }
-
+        
+    /**
+     * Create an instance of AttributeType.
+     * @param type Attribute type.
+     */
+    public AttributeType(int type) {
+        this.type = type;
+    }
+    
+    /**
+     * Set type.
+     * @param type Type.
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+    
+    /**
+     * Get type.
+     * @return int Type.
+     */
+    public int getType() {
+        return type;
+    }
+    
+    /**
+     * Get description in string.
+     * @return String Description.
+     */
+    public String getDescription() {
+        if (type > -1 &&
+            type < 10) {
+            return DESCRIPTION[type + 1];    
+        } else {
+            return DESCRIPTION[0];
+        }
+    }
 }

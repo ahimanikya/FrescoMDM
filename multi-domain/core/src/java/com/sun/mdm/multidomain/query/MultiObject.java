@@ -31,11 +31,24 @@ import com.sun.mdm.multidomain.relationship.RelationshipObject;
 public class MultiObject {
     private RelationshipObject[] relationshipObjects;
     
+    /**
+     * Create an instance of MultiObject.
+     */
     public void MultiObject(){
     }
+    
+    /**
+     * Set an array of RelationshipObject.
+     * @param relationshipObjects Array of RelationshipObject.
+     */
     public void setRelationshipObjects(RelationshipObject[] relationshipObjects) {
         this.relationshipObjects = relationshipObjects;
     }
+    
+    /**
+     * Get an array of RelationshipObject.
+     * @return RelationshipObject[] Array of RelationshipObject.
+     */
     public RelationshipObject[] getRelationshipObjects() {
         return relationshipObjects;
     }

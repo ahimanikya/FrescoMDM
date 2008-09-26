@@ -20,34 +20,30 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.query;
+package com.sun.mdm.multidomain.relationship;
+
+import junit.framework.TestCase;
 
 /**
- * MultiPairValue class.
+ * AttributeTypeTest class.
  * @author cye
  */
-public class MultiFieldValuePair {
-    private FieldValuePair[] fieldValues;
-    
-    /**
-     * Create an instance of MultiFieldValuePair.
-     */
-    public void MultiFieldValuePair(){
+public class AttributeTypeTest extends TestCase {
+
+    public AttributeTypeTest(String name) {
+        super(name);
     }
     
-    /**
-     * Set an array of FieldValuePair.
-     * @param fieldValues An array of FieldValuePair.
-     */
-    public void setFieldValurPairs(FieldValuePair[] fieldValues) {
-        this.fieldValues = fieldValues;
+    public void setUp() {
     }
     
-    /**
-     * Gte an array of FieldValuePair.
-     * @return FieldValuePair[] An array of FieldValuePair.
-     */
-    public FieldValuePair[] getFieldValurPairs() {
-        return fieldValues;
-    }       
+    public void test001() {  
+        AttributeType type = new AttributeType();
+        assertTrue("unknown".equals(type.getDescription()));
+        assertTrue(type.getType() == AttributeType.UNKNOWN);
+        
+        type.setType(AttributeType.INTEGER);
+        assertTrue("Integer".equals(type.getDescription()));
+        assertTrue(type.getType() == AttributeType.INTEGER);
+    }
 }

@@ -42,4 +42,58 @@ public class HierarchyObject {
      * All the children of the current object.
      */
     private ObjectNode[] children;
+    
+    /**
+     * Create an instance of HierarchyObject.
+     */
+    public HierarchyObject(){
+    }
+    
+    /**
+     * Set object.
+     * @param object Object.
+     */
+    public void setObject(ObjectNode object){
+         this.object =  object;
+    }
+    
+    /**
+     * Get object.
+     * @return ObjectNode Object.
+     */
+    public ObjectNode getObject(){
+         return object;
+    }   
+    
+    /**
+     * Set ancestors of the object. 
+     * @param ancestors Ancestors of the object.
+     */
+    public void setAncestors(ObjectNode[] ancestors){
+         this.ancestors =  ancestors;
+    }
+    
+    /**
+     * Get ancestors of the object.  
+     * @return ObjectNode[] Ancestors of the object. 
+     */
+    public ObjectNode[] getAncestors(){
+         return ancestors;
+    }
+    
+    /**
+     * Set children of the object.
+     * @param children Children of the object.
+     */
+    public void setChildren(ObjectNode[] children){
+         this.children =  children;
+    }
+    
+    /**
+     * Get children of the object.
+     * @return ObjectNode[] Children of the object.
+     */
+    public ObjectNode[] getchildren(){
+         return children;
+    }
 }
