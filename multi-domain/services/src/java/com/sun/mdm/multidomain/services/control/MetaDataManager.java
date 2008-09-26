@@ -163,19 +163,19 @@ public class MetaDataManager {
     	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
     	rt1.setSourceDomain("Person");
     	rt1.setTargetDomain("Company");    	
-    	Attribute a1 = new Attribute("salary", "yearly income", AttributeType.FLOAT, "500000.0");
+    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
     	rt1.setAttribute(a1);
     	
     	RelationshipType rt2 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
     	rt2.setSourceDomain("Company");
     	rt2.setTargetDomain("Product");
-    	Attribute a2 = new Attribute("invest", "total investment", AttributeType.FLOAT, "500000.0");
+    	Attribute a2 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
     	rt2.setAttribute(a2);
     	
     	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
     	rt3.setSourceDomain("Person");
     	rt3.setTargetDomain("Product");
-    	Attribute a3 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
+    	Attribute a3 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
     	rt3.setAttribute(a3);
     	
     	ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
