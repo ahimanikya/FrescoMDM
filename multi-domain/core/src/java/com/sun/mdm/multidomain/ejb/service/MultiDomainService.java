@@ -32,9 +32,9 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.HierarchyObject;
 
+import com.sun.mdm.multidomain.query.PageIterator;
+import com.sun.mdm.multidomain.query.MultiObject;
 import com.sun.mdm.multidomain.query.MultiFieldValuePair;
-import com.sun.mdm.multidomain.query.PageMultiIterator;
-import com.sun.mdm.multidomain.query.PageSingleIterator;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
  
@@ -137,7 +137,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid searchOptions or searchCriteria is passed as a parameter.
      */
-    public PageMultiIterator searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
+    public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
         throws ProcessingException, UserException;
     
     /**
@@ -153,8 +153,8 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid searchOptions is passed as a parameter.
      */
-    public PageMultiIterator searchRelationships(String sourceDomain, EPathArrayList[] sourceEPathList, 
-                                                 String targetDomain, EPathArrayList[] targetEPathList, MultiDomainSearchCriteria searchCriteria) 
+    public PageIterator<MultiObject> searchRelationships(String sourceDomain, EPathArrayList[] sourceEPathList, 
+                                                         String targetDomain, EPathArrayList[] targetEPathList, MultiDomainSearchCriteria searchCriteria) 
         throws ProcessingException, UserException;
     
     /**
@@ -166,7 +166,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid searchOptions or searchCriteria is passed as a parameter.
      */
-    public PageSingleIterator searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria)
+    public PageIterator<ObjectNode> searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria)
         throws ProcessingException, UserException;
     
     /**

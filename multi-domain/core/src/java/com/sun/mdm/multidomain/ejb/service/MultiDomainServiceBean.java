@@ -28,6 +28,8 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionAttribute;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -45,9 +47,9 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.HierarchyObject;
 
+import com.sun.mdm.multidomain.query.MultiObject;
 import com.sun.mdm.multidomain.query.MultiFieldValuePair;
-import com.sun.mdm.multidomain.query.PageMultiIterator;
-import com.sun.mdm.multidomain.query.PageSingleIterator;
+import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 
@@ -61,6 +63,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 @Remote(MultiDomainServiceRemote.class)
 @Local(MultiDomainServiceLocal.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(value=TransactionAttributeType.REQUIRED)
 @DeclareRoles({"MultiDomain.Admin","MultiDomain.User"})
 public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDomainServiceLocal {
 
@@ -148,7 +151,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchRelationships()
      */                
-    public PageMultiIterator searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
+    public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -156,7 +159,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchRelationships()
      */                    
-    public PageMultiIterator searchRelationships(String sourceDomain, EPathArrayList[] sourceEPathList, 
+    public PageIterator<MultiObject> searchRelationships(String sourceDomain, EPathArrayList[] sourceEPathList, 
                                                  String targetDomain, EPathArrayList[] targetEPathList, MultiDomainSearchCriteria searchCriteria) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
@@ -165,7 +168,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchEnterprises()
      */                    
-    public PageSingleIterator searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria)
+    public PageIterator<ObjectNode> searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }

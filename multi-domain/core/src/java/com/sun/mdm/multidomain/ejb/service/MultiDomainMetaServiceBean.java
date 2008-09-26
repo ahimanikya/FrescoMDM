@@ -28,7 +28,9 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionAttribute;
+        
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
@@ -49,6 +51,7 @@ import com.sun.mdm.multidomain.relationship.RelationshipType;
 @Remote(MultiDomainMetaServiceRemote.class)
 @Local(MultiDomainMetaServiceLocal.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(value=TransactionAttributeType.REQUIRED)
 @DeclareRoles({"MultiDomain.Admin","MultiDomain.User"})
 public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote, MultiDomainMetaServiceLocal {
     
