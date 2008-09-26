@@ -74,7 +74,9 @@ public class PageIterator<E> implements Iterator<E> {
        if (entries != null && 
            size > 0 ) {
            position = 0;
-           return entries[position]; 
+           E element = entries[position]; 
+           position++;
+           return element;
        } else {
             throw new NoSuchElementException();
        }
