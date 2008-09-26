@@ -42,7 +42,11 @@ public class PageIterator<E> implements Iterator<E> {
      */
     public PageIterator(E[] entries) {
         this.entries = entries;
-        size = entries.length;
+        if (this.entries != null) {
+            size = entries.length;
+        } else {
+            size = 0;
+        }
         if (size > 0) {
             position = 0;
         } else {
@@ -55,8 +59,12 @@ public class PageIterator<E> implements Iterator<E> {
      * @param entries Data.
      */
     public PageIterator(List<E> entries) {
-        this.entries = (E[])entries.toArray();
-        size = entries.size();
+        if (entries != null) {            
+            this.entries = (E[])entries.toArray();
+            size = entries.size();
+        } else {
+            size = 0;
+        }
         if (size > 0) {
             position = 0;
         } else {
