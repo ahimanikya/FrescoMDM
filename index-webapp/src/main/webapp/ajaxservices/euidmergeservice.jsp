@@ -1652,7 +1652,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                         <td>
                                                             <form  id="previewForm">
  							                                    <%if(operations.isEO_Merge()) {%>
-																 <a href="javascript:void(0)"  class="button" tilte="<h:outputText value="#{msgs.preview_column_text}"/>"
+																 <a href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>"  class="button" tilte="<h:outputText value="#{msgs.preview_column_text}"/>"
                                                                     onclick="javascript:getFormValues('previewForm');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&mergePreview=true&rand=<%=rand%>','mainDupSource','');"   >
                                                                      <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                  </a>	

@@ -1549,12 +1549,12 @@ if(session!=null){
 					    <table align="center">
 							<tr>
 								<td>
-									<a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('lockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&locking=true','euidFinalErrorMessages','');document.getElementById('lockSBRDiv').style.visibility='hidden';document.getElementById('lockSBRDiv').style.display='none';">                          
+									<a  class="button"  href="javascript:void(0)"  title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:getFormValues('lockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&locking=true','euidFinalErrorMessages','');document.getElementById('lockSBRDiv').style.visibility='hidden';document.getElementById('lockSBRDiv').style.display='none';">                          
 										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
 									</a>
 								</td>
 								<td>
-								<a  class="button"  href="javascript:void(0)" onclick="javascript:showExtraDivs('lockSBRDiv',event)">
+								<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />" onclick="javascript:showExtraDivs('lockSBRDiv',event)">
 										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
 								</a>
 								</td>
@@ -1597,12 +1597,12 @@ if(session!=null){
 							<table align="center">
 							<tr>
 							<td>
-                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('linkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&linking=true','euidFinalErrorMessages','');document.getElementById('linkSoDiv').style.visibility='hidden';document.getElementById('linkSoDiv').style.display='none';">                          
+                            <a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />"  onclick="javascript:getFormValues('linkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&linking=true','euidFinalErrorMessages','');document.getElementById('linkSoDiv').style.visibility='hidden';document.getElementById('linkSoDiv').style.display='none';">                          
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
 							</a>
 							</td>
 							<td>
-							<a  class="button"  href="javascript:void(0)" onclick="javascript:showExtraDivs('linkSoDiv',event)">
+							<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />" onclick="javascript:showExtraDivs('linkSoDiv',event)">
 										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
 								</a>
 							</td>
@@ -1639,12 +1639,12 @@ if(session!=null){
 						<table align="center">
 						</tr>
 						<td>
-                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('unlinkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinking=true','euidFinalErrorMessages','');document.getElementById('unLinkSoDiv').style.visibility='hidden';document.getElementById('unLinkSoDiv').style.display='none';">                          
+                            <a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:getFormValues('unlinkForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinking=true','euidFinalErrorMessages','');document.getElementById('unLinkSoDiv').style.visibility='hidden';document.getElementById('unLinkSoDiv').style.display='none';">                          
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
                             </a>
 						</td>
 						<td>
-						<a  class="button"  href="javascript:void(0)" onclick="javascript:showExtraDivs('unLinkSoDiv',event)">
+						<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />"  onclick="javascript:showExtraDivs('unLinkSoDiv',event)">
 										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
 								</a>
 						</td>
@@ -1679,7 +1679,7 @@ if(session!=null){
 					    <table align="center">
 							<tr>
 								<td>
-									<a  class="button"  href="javascript:void(0)" onclick="javascript:ajaxURL('/<%=URI%>/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');">                          
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:ajaxURL('/<%=URI%>/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');">                          
 										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
 									</a>
 								</td>
@@ -1703,5 +1703,3 @@ if(session!=null){
 	</script>
     </f:view>
     <%} %>  <!-- Session check -->
-    
-    

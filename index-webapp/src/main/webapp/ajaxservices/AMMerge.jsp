@@ -96,10 +96,10 @@ boolean isSessionActive = true;
 														    <tr>
 															 <td>&nbsp;</td>
 															 <td>
-                                                                <a class="button" href="/<%=URI%>/euiddetails.jsf?euid=<%=newEuid%>"> <span><%=bundle.getString("ok_text_button")%></span></a>
+                                                                <a class="button" title="<h:outputText value="#{msgs.ok_text_button}" />" href="/<%=URI%>/euiddetails.jsf?euid=<%=newEuid%>"> <span><%=bundle.getString("ok_text_button")%></span></a>
 														     </td>
 														     <td>
-                                                                <a class="button"  href='javascript:void(0)' onclick="javascript:window.location.reload();"><span><%=bundle.getString("login_cancel_button_prompt")%></span></a>
+                                                                <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}" />"  href='javascript:void(0)' onclick="javascript:window.location.reload();"><span><%=bundle.getString("login_cancel_button_prompt")%></span></a>
 															</td>
 														   </tr>
 														 </table>
