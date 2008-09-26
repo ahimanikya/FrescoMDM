@@ -74,21 +74,19 @@ public interface MultiDomainMetaService {
     /**
      * Update an existing relationship type and persist in the database.
      * @param relationshipType RelationshipType.
-     * @return String Relationship type identifier which is newly updated.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid relationship type is passed as a parameter.
      */
-    public String updateRelationshipType(RelationshipType relationshipType)  
+    public void updateRelationshipType(RelationshipType relationshipType)  
         throws ProcessingException, UserException;
     
     /**
      * Delete an existing relation type from the database.
      * @param relationshipType RelationshipType.
-     * @return String Relationship type identifier which is newly deleted.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid relationship type is passed as a parameter.
      */
-    public String deleteRelationshipType(RelationshipType relationshipType)  
+    public void deleteRelationshipType(RelationshipType relationshipType)  
         throws ProcessingException, UserException;
 
     /**
@@ -97,12 +95,11 @@ public interface MultiDomainMetaService {
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
      * @param relationshipType Relationship type name.
-     * @return String Relationship type identifier which is newly deleted.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source domain or target domain or 
      * relationship type name is passed as a parameter.
      */
-    public String deleteRelationshipType(String sourceDomain, String targetDomain, String relationshipTypeName)  
+    public void deleteRelationshipType(String sourceDomain, String targetDomain, String relationshipTypeName)  
         throws ProcessingException, UserException;
     
     /**
@@ -129,21 +126,19 @@ public interface MultiDomainMetaService {
     /**
      * Update an existing hierarchy type and persist the hierarchy type in the database.
      * @param hierarchyType RelationshipType.
-     * @return String Hierarchy type identifier which is newly updated. 
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
      */
-    public String updateHierarchyType(RelationshipType hierarchyType)  
+    public void updateHierarchyType(RelationshipType hierarchyType)  
         throws ProcessingException, UserException;
 
     /**
      * Delete an existing hierarchy type from the database for the given hierarchy type.
      * @param hierarchyType RelationshipType.
-     * @return String Hierarchy type identifier which is newly deleted.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
      */
-    public String deleteHierarchyType(RelationshipType hierarchyType) 
+    public void deleteHierarchyType(RelationshipType hierarchyType) 
         throws ProcessingException, UserException;
     
     /**
@@ -151,12 +146,11 @@ public interface MultiDomainMetaService {
      * hierarchy type name.
      * @param domain Domain name.
      * @param name HierarchyType name.
-     * @return String Hierarchy type identifier which is newly deleted.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid domain name or hierarchy name is 
      * passed as a parameter.
      */
-    public String deleteHierarchyType(String domain, String name) 
+    public void deleteHierarchyType(String domain, String name) 
         throws ProcessingException, UserException;
          
     /**
@@ -181,34 +175,31 @@ public interface MultiDomainMetaService {
     /**
      * Update an existing group type and persist in the database.
      * @param groupType RelationshipType.
-     * @return String Group type identifier which is newly updated.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid group type is passed as a parameter.
      */
-    public String updateGroupType(RelationshipType groupType) 
+    public void updateGroupType(RelationshipType groupType) 
         throws ProcessingException, UserException;
     
 
     /**
      * Delete an existing group type for the given group type.
      * @param groupType RelationshipType
-     * @return String Group type identifier which is newly deleted.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid group type is passed as a parameter.
      */
-    public String deleteGroupType(RelationshipType groupType) 
+    public void deleteGroupType(RelationshipType groupType) 
         throws ProcessingException, UserException;
     
     /**
      * Delete an existing group type for the given domain name.
      * @param domain Domain name.
      * @param name Group type name.
-     * @return String Group type identifier which is newly deleted.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid domain name or group type name is 
      * passed as a parameter.
      */
-    public String deleteGroupType(String domain, String name) 
+    public void deleteGroupType(String domain, String name) 
         throws ProcessingException, UserException;
             
 }
