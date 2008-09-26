@@ -58,6 +58,7 @@ import org.openide.filesystems.FileObject;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
+import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
@@ -248,9 +249,14 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     /** Add a Domain Node to the canvas
      *
      */
-     public boolean addDomainNode() {
+     public boolean addDomainNode(String domainName) {
          boolean added = false;
+         DomainNode node = new DomainNode();
          
+         canvas.add(new JLabel(domainName));
+         //ToDo
+         //Load object.xml
+         //populate properties
          return added;
      }
      

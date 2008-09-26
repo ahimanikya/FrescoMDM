@@ -105,24 +105,23 @@ public class ImportDomainAction extends CookieAction {
                                 NbBundle.getMessage(ImportDomainAction.class, "MSG_Importing_Domain"));
                             mLoadProgress.start();
                             mLoadProgress.switchToIndeterminate();
-                            //Get MDM object.xml and midm.xml
+                            //Get MDM object.xml
                             File selectedDomain = fc.getSelectedFile();
                             String domainName = selectedDomain.getName();
                             boolean added = editorMainApp.addDomain(selectedDomain);
                             if (added && editorMainPanel != null) {
-                                //ToDo
+
                                 //Add DomainNode to the canvas
+                                editorMainPanel.addDomainNode(domainName);
                                 //editorMainPanel.addDomainNode(new DomainNode(domainName, selectedDomain);
                             }
                             mLoadProgress.finish();
-                            
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportDomainAction.class, "MSG_FAILED_To_Import_Domain")); // NOI18N
                         ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                         ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                     } finally {
-
                     }
                 }
             });
@@ -174,21 +173,22 @@ public class ImportDomainAction extends CookieAction {
         //if (file instanceof EviewApplication) {
         //    return true;
         //}
-        File dir = new File(MultiDomainProjectProperties.SRC_FOLDER);
-        if (dir != null) {
+        boolean bRet = false;
+        FileObject fobj = FileUtil.toFileObject(file);
+        if (fobj != null) {
             try {
-                FileObject fobjSrc = FileUtil.toFileObject(dir);
+                FileObject fobjSrc = fobj.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
                 if (fobjSrc != null) {
                     FileObject fobjConfiguration = fobjSrc.getFileObject(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
                     if (fobjConfiguration != null) {
-                        dir = new File(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
+                        bRet = true;
                     }
                 }
             } catch (Exception ex) {
                 String msg = ex.getMessage();
             }
         }
-        return (dir != null && dir.isDirectory());
+        return bRet;
     }
 
     private class DomainFilter extends FileFilter {
@@ -201,6 +201,8 @@ public class ImportDomainAction extends CookieAction {
             boolean accepted = isMasterIndexProject(file);
             if (accepted) {
                 fc.setSelectedFile(file);
+            } else {
+                fc.setSelectedFile(null);
             }
             return (file.isDirectory() || accepted);
         }

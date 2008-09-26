@@ -37,6 +37,8 @@ import org.openide.filesystems.FileUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
@@ -46,6 +48,7 @@ import org.xml.sax.InputSource;
 import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+import com.sun.mdm.multidomain.project.nodes.MultiDomainConfigurationFolderNode;
 import com.sun.mdm.multidomain.util.Logger;
 
 /**
@@ -66,10 +69,10 @@ public class EditorMainApp {
     private static EditorMainApp mInstance;
     private static ObjectTopComponent mObjectTopComponent = null;
     private static Map mMapInstances = new HashMap();  // path, instance
-    private static Map mMapDomains = new HashMap();  // domain, File
+    private static Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
     private MultiDomainApplication mMultiDomainApplication;
     private EditorMainPanel mEditorMainPanel;
-    private String validationMsg = "";
+    //private String validationMsg = "";
     private boolean bCheckedOut = true;
     
     /**
@@ -118,46 +121,77 @@ public class EditorMainApp {
         return mInstance;
     }
     
-    public boolean addDomain(File file) {
+    private void loadDomainMaps() {
+        // Load mMapDomainObjectXmls
+        MultiDomainConfigurationFolderNode node = mMultiDomainApplication.getAssociatedNode();
+        FileObject srcFolder = node.getFileObject().getParent();
+        FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+        FileObject[] children = domainsFolder.getChildren();
+        for (int j = 0; j < children.length; j++) {
+            FileObject domain = children[j];
+            if (domain.isFolder()) {
+                FileObject objectXml = domain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
+                if (objectXml != null) {
+                    mMapDomainObjectXmls.put(domain.getName(), objectXml);
+                }
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param selectedDomain
+     * @return
+     * @throws java.io.IOException
+     */
+    public boolean addDomain(File selectedDomain) throws IOException {
         boolean added = false;
-        String domainName = file.getName();
-        if (!mMapDomains.containsKey(domainName)) {
-            mMapDomains.put(domainName, file);
+        String domainName = selectedDomain.getName();
+        if (!mMapDomainObjectXmls.containsKey(domainName)) {
+            //Copy domain's object.xml
+            String path = selectedDomain.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
+            FileObject objectXml = getConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
+            MultiDomainConfigurationFolderNode node = mMultiDomainApplication.getAssociatedNode();
+            FileObject srcFolder = node.getFileObject().getParent();
+            FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+            FileObject newDomainFolder = domainsFolder.createFolder(domainName);
+            FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
+            mMapDomainObjectXmls.put(domainName, objectXml);
             added = true;
         }
         return added;
     }
     
+    /**
+     * 
+     * @param domainName
+     * @return
+     */
     public FileObject getDomainObjectXml(String domainName) {
-        File file = (File) mMapDomains.get(domainName);
-        String path = file.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
-        FileObject xml = getConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
-
-        return xml;
-    }
-    
-    public FileObject getDomainMidmXml(String domainName) {
-        File file = (File) mMapDomains.get(domainName);
-        String path = file.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
-        FileObject xml = getConfigurationFile(path, MultiDomainProjectProperties.MIDM_XML);
-
-        return xml;
-    }
-
-    public FileObject getConfigurationFile(String folder, String name) {
-        FileObject file = null;
-        try{
-            if (folder != null) {
-                FileObject dir = FileUtil.toFileObject(new File(folder));
-                if (dir == null || !dir.isFolder()) {
-                    return null;
-                }
-      
-                file = dir.getFileObject(name);
-            }
-        } catch (Exception ex) {
+        FileObject objectXml = null;
+        if (!mMapDomainObjectXmls.containsKey(domainName)) {
+            objectXml = (FileObject) mMapDomainObjectXmls.get(domainName);
         }
-        return file;
+        return objectXml;
+    }
+
+    /**
+     * 
+     * @param folder
+     * @param name
+     * @return
+     * @throws java.io.IOException
+     */
+    public FileObject getConfigurationFile(String folder, String name) throws IOException {
+        FileObject fileObj = null;
+        if (folder != null) {
+            FileObject dir = FileUtil.toFileObject(new File(folder));
+            if (dir == null || !dir.isFolder()) {
+                return null;
+            }
+            fileObj = dir.getFileObject(name);
+        }
+        return fileObj;
     }
 
     /** Make TopComponent on focus
@@ -184,6 +218,11 @@ public class EditorMainApp {
         mMultiDomainApplication = application;
         try {
             checkOutAll();
+            
+            // Load mMapDomainObjectXmls
+            loadDomainMaps();
+            // Let TopObjectComponent to do DomainNodes loading
+
             String path = mMultiDomainApplication.getProjectDirectory().getName();
 
             mObjectTopComponent = new ObjectTopComponent();

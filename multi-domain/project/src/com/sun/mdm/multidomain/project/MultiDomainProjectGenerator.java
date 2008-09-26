@@ -223,7 +223,10 @@ public class MultiDomainProjectGenerator {
             MultiDomainRepository repository  = MultiDomainRepository.getMultiDomainRepository();  
             
             // *** Sub folder - Configuration ***
-            FileObject folder = srcRoot.createFolder(MultiDomainProjectProperties.CONFIGURATION_FOLDER); // NOI18N     
+            FileObject folder = srcRoot.createFolder(MultiDomainProjectProperties.DOMAINS_FOLDER); // NOI18N
+            
+            // *** Sub folder - Configuration ***
+            folder = srcRoot.createFolder(MultiDomainProjectProperties.CONFIGURATION_FOLDER); // NOI18N     
             String str;            
             // RELATIONSHIP_MODEL_XML
             str = "";

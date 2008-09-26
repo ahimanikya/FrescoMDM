@@ -39,6 +39,8 @@ public class MultiDomainProjectProperties {
     public static final String AUTO_GENERATE = "AutoGenerate";
 
     public static final String CONF_FOLDER = "conf"; //NOI18N    
+    // Multi-Domain MDM Domains Folder
+    public static final String DOMAINS_FOLDER = "Domains"; //NOI18N
     // Multi-Domain MDM Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
     // Multi-Domain MDM Match Engine Folder
