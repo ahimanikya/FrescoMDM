@@ -98,4 +98,21 @@ public class AttributeType {
             return DESCRIPTION[0];
         }
     }
+    
+    /**
+     * @see java.lang.Object#equals().
+     */
+    @Override
+    public boolean equals(Object that) {
+        if(this == that) {
+            return true;
+        }
+        AttributeType thatType = (AttributeType)that;
+        if (thatType != null &&
+            this.getType() == thatType.getType()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

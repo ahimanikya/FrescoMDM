@@ -46,4 +46,19 @@ public class AttributeTypeTest extends TestCase {
         assertTrue("Integer".equals(type.getDescription()));
         assertTrue(type.getType() == AttributeType.INTEGER);
     }
+    
+    public void test002() { 
+        AttributeType type1 = new AttributeType();
+        AttributeType type2 = new AttributeType();
+        assertTrue(type1.equals(type2));
+      
+        type1.setType(AttributeType.INTEGER);
+        assertTrue(!type1.equals(type2));
+        
+        type2.setType(AttributeType.INTEGER);
+        assertTrue(type1.equals(type2));
+        
+        type2.setType(AttributeType.STRING);
+        assertTrue(!type1.equals(type2)); 
+    }
 }
