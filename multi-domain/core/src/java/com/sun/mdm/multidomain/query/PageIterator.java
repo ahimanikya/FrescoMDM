@@ -24,6 +24,7 @@ package com.sun.mdm.multidomain.query;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Generic PageIterator class.
@@ -35,6 +36,10 @@ public class PageIterator<E> implements Iterator<E> {
     private int size;
     private int position;
     
+    /**
+     * Create an instance of PageIterator.
+     * @param entries Data.
+     */
     public PageIterator(E[] entries) {
         this.entries = entries;
         size = entries.length;
@@ -44,6 +49,11 @@ public class PageIterator<E> implements Iterator<E> {
             position = -1;
         }
     }
+    
+    /**
+     * Create an instance of PageIterator.
+     * @param entries Data.
+     */
     public PageIterator(List<E> entries) {
         this.entries = (E[])entries.toArray();
         size = entries.size();
@@ -53,14 +63,27 @@ public class PageIterator<E> implements Iterator<E> {
             position = -1;
         }        
     }
-    public E first() {
+    
+    /**
+     * Get the first element.
+     * @return E Element.
+     * @exception NoSuchElementException Thrown if no element.
+     */
+    public E first() 
+       throws NoSuchElementException {
        if (entries != null && 
            size > 0 ) {
            position = 0;
-           return entries[position];
+           return entries[position]; 
+       } else {
+            throw new NoSuchElementException();
        }
-       return null;
     }
+    
+    /**
+     * Returns true if the iteration has more elements.
+     * @return boolean If has next element, return true otherise return false.
+     */
     public boolean hasNext() {
         if (entries != null && 
             size > 0 &&
@@ -71,20 +94,40 @@ public class PageIterator<E> implements Iterator<E> {
             return false;
         }
     }
-    public E next() {
-        E element = null;
+    /**
+     * Returns the next element in the iteration. Calling this method repeatedly until 
+     * the hasNext() method returns false will return each element in the underlying 
+     * collection exactly once. 
+     * @return the next element in the iteration.
+     * @throws NoSuchElementException Iteration has no more elements.
+     */
+    public E next() 
+        throws NoSuchElementException {
         if (entries != null && 
             size > 0 &&
             position > 0 &&
             position < size) {
-            element = entries[position];
+            E element = entries[position];
             position++;
-        }      
-        return element;
+            return element;
+        } else {
+           throw new NoSuchElementException(); 
+        }     
+       
     }
+    
+    /**
+     * Removes from the underlying collection the last element returned by the iterator 
+     * (optional operation). 
+     */
     public void remove() {
         throw new UnsupportedOperationException("not supported optional operation.");
     }
+    
+    /**
+     * Get number of elements in iteration.
+     * @return Size Number of elements.
+     */
     public int size(){
         return size;
     }
