@@ -24,50 +24,17 @@ package com.sun.mdm.multidomain.project.editor;
 
 import org.openide.util.NbBundle;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 public class PropertiesModelPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify
-    private JLabel jLabelName;
-    private JTextField txtName;
 
     /** Creates a new instance of PropertiesNamePanel */
     public PropertiesModelPanel(boolean bCheckedOut) {
         initComponents();
-        txtName.setEnabled(bCheckedOut);
+        this.setName(NbBundle.getMessage(PropertiesModelPanel.class,
+                "LBL_Model"));
     }
     
     private void initComponents() {
         setLayout(null);
-        jLabelName = new JLabel();
-        txtName = new JTextField();
-        jLabelName.setText(NbBundle.getMessage(PropertiesModelPanel.class,
-                "MSG_Name"));
-        
-        add(jLabelName);
-        add(txtName);
-        jLabelName.setBounds(5, 30, 80, 20);
-        txtName.setBounds(90, 30, 230, 20);
-
-        txtName.addFocusListener(new java.awt.event.FocusListener() {
-                String oldName;
-                public void focusGained(java.awt.event.FocusEvent ev) {
-                    oldName = txtName.getText();
-                    txtName.selectAll();
-                }
-
-                public void focusLost(java.awt.event.FocusEvent ev) {
-                }
-            });
-        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-            }
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-
-            }
-        });
     }
 }

@@ -44,6 +44,8 @@ import org.netbeans.api.progress.ProgressHandleFactory;
 //import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+import com.sun.mdm.multidomain.project.editor.EditorMainApp;
+import com.sun.mdm.multidomain.project.editor.EditorMainPanel;
 //import com.sun.mdm.index.project.EviewApplication;
 
 /**
@@ -83,6 +85,10 @@ public class ImportDomainAction extends CookieAction {
      * @param activatedNodes data nodes that activate the elected action
      */
     public void performAction(final Node[] activatedNodes) {
+        
+    }
+    
+    public void perform(final EditorMainPanel editorMainPanel, final EditorMainApp editorMainApp) {
         try {
             RequestProcessor.getDefault().post(new Runnable() {
                 public void run() {
@@ -99,12 +105,15 @@ public class ImportDomainAction extends CookieAction {
                                 NbBundle.getMessage(ImportDomainAction.class, "MSG_Importing_Domain"));
                             mLoadProgress.start();
                             mLoadProgress.switchToIndeterminate();
-                            //ToDo
-                            //Load MDM object.xml and midm.xml
-                            File selected = fc.getSelectedFile();
-                            String path = selected.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
-                            FileObject objectxml = getConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
-
+                            //Get MDM object.xml and midm.xml
+                            File selectedDomain = fc.getSelectedFile();
+                            String domainName = selectedDomain.getName();
+                            boolean added = editorMainApp.addDomain(selectedDomain);
+                            if (added && editorMainPanel != null) {
+                                //ToDo
+                                //Add DomainNode to the canvas
+                                //editorMainPanel.addDomainNode(new DomainNode(domainName, selectedDomain);
+                            }
                             mLoadProgress.finish();
                             
                         }                          
@@ -180,22 +189,6 @@ public class ImportDomainAction extends CookieAction {
             }
         }
         return (dir != null && dir.isDirectory());
-    }
-
-    public FileObject getConfigurationFile(String folder, String name) {
-        FileObject file = null;
-        try{
-            if (folder != null) {
-                FileObject dir = FileUtil.toFileObject(new File(folder));
-                if (dir == null || !dir.isFolder()) {
-                    return null;
-                }
-      
-                file = dir.getFileObject(name);
-            }
-        } catch (Exception ex) {
-        }
-        return file;
     }
 
     private class DomainFilter extends FileFilter {

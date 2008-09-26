@@ -48,28 +48,21 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.JTextField;
-
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JTabbedPane;
-
-import org.openide.util.actions.SystemAction;
 import javax.swing.Action;
 
+import org.openide.util.actions.SystemAction;
+import org.openide.filesystems.FileObject;
+
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
+import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
  */
 public class EditorMainPanel extends javax.swing.JPanel implements ActionListener  {
-    //private EntityTree mEntityTree = null;
-    private boolean mIgnoreSelection = false;    
-    final JTextField mText = new JTextField();
-    //EntityNode mPreviousSelectedNode = null;
-    //EntityNode mCurrentSelectedNode = null;
-    String mOldPrimaryObjName = null;
-    String mOldText = null;
-
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
     static final ImageIcon DELETENODEIMAGEICON = new ImageIcon(Utilities.loadImage(
@@ -80,13 +73,13 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     private JSplitPane mSplitPane = null;
     private JScrollPane multiViewPane;
     private JScrollPane propertiesPane = new JScrollPane();
-    //private EntityNode mRootNode;
     private JPopupMenu mMenu;
     private JLabel jLabelNoProperties;
     private JButton mButtonAddDomain;
     private JButton mButtonDelete;
     private JButton mButtonSave;
     private EditorMainApp mEditorMainApp;
+    private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
     private final RelationshipCanvas canvas = new RelationshipCanvas(); //The component the user draws on
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
@@ -99,6 +92,7 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     public EditorMainPanel(EditorMainApp editorMainApp, MultiDomainApplication application) {
         mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
+        mEditorMainPanel = this;
 
         initComponents();
     }
@@ -244,11 +238,23 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         }
     }
    
+    /* Enable save button when configuration changed
+     * 
+     */
     public void enableSaveButton(boolean flag) {
         mButtonSave.setEnabled(flag);
     }
     
-    /** Add a Domain
+    /** Add a Domain Node to the canvas
+     *
+     */
+     public boolean addDomainNode() {
+         boolean added = false;
+         
+         return added;
+     }
+     
+    /** Add a Domain action
      *
      */
     public class AddDomainAction extends AbstractAction {
@@ -264,9 +270,10 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            Action action = SystemAction.get(com.sun.mdm.multidomain.project.actions.ImportDomainAction.class);
-            action.actionPerformed(null);
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            Action action = SystemAction.get(ImportDomainAction.class);
+            ((ImportDomainAction) action).perform(mEditorMainPanel, mEditorMainApp);
+            action = null;
         }
     }
 
@@ -310,20 +317,6 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {
 
-        }
-    }
-    
-    private class EntityTreeKeyAdapter extends java.awt.event.KeyAdapter {
-        /**
-         * key typed
-         * @param evt event
-         */
-        @Override
-        public void keyPressed(KeyEvent evt) {
-
-            if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
-
-            }
         }
     }
 }

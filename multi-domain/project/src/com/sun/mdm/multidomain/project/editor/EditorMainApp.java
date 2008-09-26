@@ -32,9 +32,11 @@ import org.openide.DialogDisplayer;
 import org.openide.util.NbBundle;
 import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.File;
 
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
@@ -43,6 +45,7 @@ import org.xml.sax.InputSource;
 
 import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 
 /**
@@ -63,6 +66,7 @@ public class EditorMainApp {
     private static EditorMainApp mInstance;
     private static ObjectTopComponent mObjectTopComponent = null;
     private static Map mMapInstances = new HashMap();  // path, instance
+    private static Map mMapDomains = new HashMap();  // domain, File
     private MultiDomainApplication mMultiDomainApplication;
     private EditorMainPanel mEditorMainPanel;
     private String validationMsg = "";
@@ -113,6 +117,49 @@ public class EditorMainApp {
         mInstance = (EditorMainApp) mMapInstances.get(instanceName);
         return mInstance;
     }
+    
+    public boolean addDomain(File file) {
+        boolean added = false;
+        String domainName = file.getName();
+        if (!mMapDomains.containsKey(domainName)) {
+            mMapDomains.put(domainName, file);
+            added = true;
+        }
+        return added;
+    }
+    
+    public FileObject getDomainObjectXml(String domainName) {
+        File file = (File) mMapDomains.get(domainName);
+        String path = file.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
+        FileObject xml = getConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
+
+        return xml;
+    }
+    
+    public FileObject getDomainMidmXml(String domainName) {
+        File file = (File) mMapDomains.get(domainName);
+        String path = file.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
+        FileObject xml = getConfigurationFile(path, MultiDomainProjectProperties.MIDM_XML);
+
+        return xml;
+    }
+
+    public FileObject getConfigurationFile(String folder, String name) {
+        FileObject file = null;
+        try{
+            if (folder != null) {
+                FileObject dir = FileUtil.toFileObject(new File(folder));
+                if (dir == null || !dir.isFolder()) {
+                    return null;
+                }
+      
+                file = dir.getFileObject(name);
+            }
+        } catch (Exception ex) {
+        }
+        return file;
+    }
+
     /** Make TopComponent on focus
      * 
      */
