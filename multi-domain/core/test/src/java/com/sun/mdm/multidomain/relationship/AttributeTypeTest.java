@@ -60,5 +60,7 @@ public class AttributeTypeTest extends TestCase {
         
         type2.setType(AttributeType.STRING);
         assertTrue(!type1.equals(type2)); 
+        
+        assertTrue(!type1.equals(null)); 
     }
 }

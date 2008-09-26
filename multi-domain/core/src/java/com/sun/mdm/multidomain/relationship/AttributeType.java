@@ -106,6 +106,8 @@ public class AttributeType {
     public boolean equals(Object that) {
         if(this == that) {
             return true;
+        } else if (that == null) {
+            return false;
         }
         AttributeType thatType = (AttributeType)that;
         if (thatType != null &&
