@@ -30,4 +30,13 @@ import com.sun.mdm.multidomain.relationship.RelationshipObject;
  */
 public class MultiObject {
     private RelationshipObject[] relationshipObjects;
+    
+    public void MultiObject(){
+    }
+    public void setRelationshipObjects(RelationshipObject[] relationshipObjects) {
+        this.relationshipObjects = relationshipObjects;
+    }
+    public RelationshipObject[] getRelationshipObjects() {
+        return relationshipObjects;
+    }
 }

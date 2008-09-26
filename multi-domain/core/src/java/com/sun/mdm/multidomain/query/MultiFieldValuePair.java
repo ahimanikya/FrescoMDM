@@ -28,4 +28,13 @@ package com.sun.mdm.multidomain.query;
  */
 public class MultiFieldValuePair {
     private FieldValuePair[] fieldValues;
+    
+    public void MultiFieldValuePair(){
+    }
+    public void setFieldValurPairs(FieldValuePair[] fieldValues) {
+        this.fieldValues = fieldValues;
+    }
+    public FieldValuePair[] getFieldValurPairs() {
+        return fieldValues;
+    }       
 }
