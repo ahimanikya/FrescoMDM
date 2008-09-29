@@ -984,7 +984,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     <script>
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
 	  document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'hidden';
-      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'none'; 
+      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'none';
+	  
    </script>
 		  <% 
 		  int minorObjCount = 0;
@@ -1191,6 +1192,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     
     <script>
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
+ 
+	document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'visible';
+      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'block';
     </script>
   <%  
 		  ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");

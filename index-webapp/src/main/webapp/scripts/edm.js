@@ -617,6 +617,7 @@ function ClearContents(thisForm)  {
 		   thisFrm.elements[i].name !=  'layer')   {
 		   var elemType = thisFrm.elements[i].type.toUpperCase();
 		   if (elemType.indexOf("SELECT") != -1)  {
+			   if(thisFrm.elements[i].readOnly != true)
               thisFrm.elements[i].selectedIndex = "0";
 		   }  else {
               thisFrm.elements[i].value = "";
@@ -2270,6 +2271,7 @@ function enableallfields(thisForm)  {
  for(i=0; i< thisFrm.elements.length; i++)   {        
      thisFrm.elements[i].readOnly = false;
      thisFrm.elements[i].disabled = false;
+     thisFrm.elements[i].value = "";
 
   }
  return;
@@ -2306,3 +2308,4 @@ function enableallfields(thisForm)  {
 	}
 
 }
+

@@ -84,6 +84,7 @@ if(session!=null){
         <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
         <script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
+		<script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>  
         <script type="text/javascript" >
            var fieldNameValuesLocal="";
            var fieldNamesLocal="";
@@ -797,19 +798,27 @@ if(session!=null){
                                                                                     <!--EDIT SO buttons START-->
                                                                                     <tr>                                                                                                                
 																					  <td colspan="2">
-                                                                                           <nobr>
+																					     <table cellpadding="0" cellspacing="0" border="0">
+																						   <tr>
+																						   <td>
                                                                                                 <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=singleSystemObjectLID.getLID()%>&SYS=<%=singleSystemObjectLID.getSystemCode()%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event)">
-                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
-                                                                                                 </a>     
+                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/> </span>
+                                                                                                 </a> 
+																							 </td>
+																							 <td>
                                                                                                   <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
                                                                                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                                                                    </h:outputLink> 
+																						     </td>
+																							 <td>
                                                                                                    <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelEdit">
                                                                                                       <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>  <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                                                                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
+                                                                                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
                                                                                                        </a>     
                                                                                                     </div>
-											                                                 </nobr>																		    
+																							   </td>
+																							  </tr>
+																							</table>
 																					  </td>
 																					</tr>
                                                                                     <!--EDIT SO buttons ENDS-->
@@ -1476,21 +1485,27 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                     <!--Add New SO buttons START-->
 					<tr>
 					  <td>
-                            <nobr>
-                                <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
-                                        <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
-                                 </a>     
-                                  <h:outputLink  title ="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm');setEditIndex('-1')">
-                                          <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                   </h:outputLink>
-
-                                    <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelSOEdit">
-                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelSOEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
-                                         </a>     
-                                   </div>
-                             </nobr>
-                      
+                       <table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+						<td>
+						   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+                           <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/> </span>
+                           </a>
+						</td>
+						<td>
+						   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');setEditIndex('-1');">
+						   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+						   </a>
+						</td>
+						<td>
+						   <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelSOEdit">
+                              <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelSOEdit', '<h:outputText value='#{childNodesName}'/>')">
+                               <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
+                              </a>     
+                            </div>
+						</td>
+						</tr>
+					   </table>
 					  </td>
 					</tr>
                     <!--Add New SO buttons ENDS -->
@@ -1705,29 +1720,40 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
             
         </div> <!--end source records div -->
          <!-- START Extra divs for add  SO-->
-         <div id="mergeDiv" class="alert" style="top:500px;left:560px;visibility:hidden">
+		 <!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
+         <div id="mergeDiv" class="confirmPreview" style="top:500px;left:560px;visibility:hidden">
              <h:form id="mergeFinalForm">
-                 <table cellspacing="0" cellpadding="0" border="0" width="100%">
-                     <tr><th align="left" colspan="2"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th> </tr>
-                      <tr><td colspan="2">&nbsp;</td></tr>
+                 <table cellspacing="0" cellpadding="0" border="0">
+                     <tr><th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th> 
+					     <th>
+				          <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                          <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				        </th>
+					</tr>
                       <tr><td colspan="2">&nbsp;</td></tr>
                       <tr>
 					     <td colspan="2" style="color:#ffffff;">&nbsp;<h:outputText value="#{msgs.source_keep_btn}"/>&nbsp;<%=localIdDesignation%>&nbsp;&nbsp;<span style="color:#ffffff;font-weight:bold;" id="soMergeConfirmContent"></span>&nbsp;&nbsp;?</td>
 					 </tr>
                      <tr><td colspan="2">&nbsp;</td></tr>
-                     <tr>
-                         <td colspan="2"  align="center" valign="top" width="100%">
-                              <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
+                     <tr id="actions">
+                         <td colspan="2">
+						 <table align="center">
+						<tr>
+						<td>
+                            <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
                                 href="javascript:void(0)"
                                 onclick="javascript:getDuplicateFormValues('basicMergeformData','mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&mergeFinal=true&rand=<%=rand%>','sourceRecordMergeDiv','');"  
                                 class="button" >
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
-                                </a>                                     
-  							 <h:outputLink title="#{msgs.cancel_but_text}"  onclick="javascript:showExtraDivs('mergeDiv',event)" 
-                                            styleClass="button"          
-                                            value="javascript:void(0)">
-                                 <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                             </h:outputLink>   
+                             </a>
+						</td>
+						<td>
+						     <a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />"  onclick="javascript:showExtraDivs('mergeDiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+						     </a>
+						</td>
+						</tr>
+						</table>
   							 <input type="hidden" id="mergeFinalForm:previewhiddenLid1" title="mergeFinalForm_LIDS" />
 							 <input type="hidden" id="mergeFinalForm:previewhiddenLid1source" title="mergeFinalForm_SOURCE" />
 							 <input type="hidden" id="mergeFinalForm:selectedMergeFields" title="mergeFinalForm_MODIFIED_VALUES" />
@@ -1937,7 +1963,9 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
   <script>
    ClearContents("basicMergeformData");
   </script>
-
-
 </html>
+
+  <script type="text/javascript">
+  makeDraggable("mergeDiv");
+  </script>
 </f:view>

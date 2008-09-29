@@ -757,7 +757,7 @@ if (isCancel){
 								  %>						  
 
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1030,7 +1030,7 @@ if (isCancel){
 								  %>						  
 
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1084,6 +1084,9 @@ if (isCancel){
 <!-- reset the Edit index -->
 <script>
     document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
+	document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.visibility = 'hidden';
+    document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.display = 'none';
+
 	//document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'hidden';
     //document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'none';
 </script>
@@ -1105,8 +1108,8 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 
     <script>
     document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
-	//document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'hidden';
-    //document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'none';
+	document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.visibility = 'hidden';
+    document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.display = 'none';
 
     </script>
 		  <% 
@@ -1224,7 +1227,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 								  %>						  
 
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1284,8 +1287,8 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 <% } else if (isEdit) { %>  <!-- Edit Minor Object -->
     <script>
     document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
-	//document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'visible';
-    //document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'block';
+	document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.visibility = 'visible';
+    document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.display = 'block';
     </script>
 		     <%
 		      // HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();

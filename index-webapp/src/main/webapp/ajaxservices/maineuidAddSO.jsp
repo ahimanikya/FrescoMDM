@@ -393,18 +393,32 @@ boolean isSessionActive = true;
                                 </tr>
 								<tr>
 					             <td>
-                 					<a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+								<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+								  <td>
+								   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
 								   <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/> </span>
-                                 </a>     
-                                 <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm')">
-                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                 </h:outputLink>
+                                   </a>
+								  </td>
+								  <td>
+								   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');">
+								   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+							       </a>
+								  </td>
+								  <td>
+								   <div style="visibility:hidden;display:none;" id="AddSo<h:outputText value="#{childNodesName}"/>">
+											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
+											  <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
+											 </a>
+								  </td>
+								 </tr>
+								</table>
 								 </td>
 								</tr>
                             </table>   
                         </div>   
                     </td>
-                    <td><div id="<h:outputText value='#{childNodesName}'/>EditMessages" >   </div></td>
+                    <td><div id="<h:outputText value='#{childNodesName}'/>SOEditMessages" >   </div></td>
                 </tr>
                 <!--Minor objects loop ends-->
 
