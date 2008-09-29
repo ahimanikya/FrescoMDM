@@ -31,10 +31,26 @@
             <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
             <link type="text/css" href="./css/styles.css"  rel="stylesheet">            
            <script type="text/javascript" src="scripts/edm.js"></script>
+
+		   <!--CSS file (default YUI Sam Skin) -->
+            <link  type="text/css" rel="stylesheet" href="./css/yui/datatable/assets/skins/sam/datatable.css">
+            <!-- Dependencies -->
+            <script type="text/javascript" src="./scripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+            <script type="text/javascript" src="./scripts/yui/element/element-beta-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/datasource/datasource-beta-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/json/json-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/calendar/calendar-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/connection/connection-min.js"></script>
+            <!-- Source files -->
+            <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
+
 			<script>
 				//not used in dashboard, but since its require in the script we fake it
 				var editIndexid = ""; 
  				var rand = "";
+				var popUrl;
+
 				function setRand(thisrand)  {
 					rand = thisrand;
 				}
@@ -307,6 +323,41 @@
 
 </table>
 </div> <!-- End Main Content -->
+<!-- Added By Narahari.M on 27-09-2008, to change alert pop up window to information pop up window -->
+<div id="activeDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
+             <form id="activeMerge" name="activeMerge" >
+                 <table cellspacing="0" cellpadding="0" border="0">
+ 					 <tr>
+					     <th title="<%=bundle.getString("move")%>">&nbsp;<h:outputText value="#{msgs.popup_information_text}"/></th> 
+					     <th>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('activeDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('activeDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+						</th>
+					  </tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr>
+					     <td colspan="2" ><b><div id="activemessageDiv"></div></b></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2" border="2"  align="right" valign="top" >
+                            <table align="center">
+						      <tr>
+							 <td>&nbsp;</td>
+							 <td>
+                              <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
+                                href="javascript:void(0)"
+                                onclick="javascript:window.location = popUrl;" class="button" >
+                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                                </a>
+							  </td>
+							 </tr>
+							 </table>
+					     </td>
+                     </tr> 
+                 </table>
+             </form>
+         </div>
 
 <script>
     function setFocusOnFirstField(formName) {
@@ -350,5 +401,9 @@
    %>
    <%}%>
     </body>
+	<script type="text/javascript">
+     makeDraggable("activeDiv");
+    </script>
+
     </html>
 </f:view>
