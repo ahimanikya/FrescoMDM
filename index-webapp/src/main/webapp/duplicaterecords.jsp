@@ -44,18 +44,33 @@
         <head>
             <title><h:outputText value="#{msgs.application_heading}"/></title>  
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <link type="text/css" href="./css/styles.css"  rel="stylesheet" media="screen">
-            <link type="text/css" href="./css/calpopup.css" rel="stylesheet" media="screen">
-            <link type="text/css" href="./css/DatePicker.css" rel="stylesheet" media="screen">
-            
-            <script type="text/javascript" src="scripts/yui/yahoo-dom-event.js"></script>             
-            <script type="text/javascript" src="scripts/yui/animation.js"></script>            
-            <script type="text/javascript" src="scripts/events.js"></script>            
-            <script language="JavaScript" src="scripts/edm.js"></script>
-            <script type="text/javascript" src="scripts/calpopup.js"></script>
-            <script type="text/javascript" src="scripts/Validation.js"></script>
-            <script type="text/javascript" src="scripts/Control.js"></script>
-            <script type="text/javascript" src="scripts/dateparse.js"></script>
+            <!-- YAHOO Global Object source file --> 
+        <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo/yahoo-min.js" ></script>
+        
+        <!-- Additional source files go here -->
+        <link type="text/css" href="./css/balloontip.css"  rel="stylesheet" media="screen">
+        <link type="text/css" href="./css/styles.css"  rel="stylesheet" media="screen">
+        <link type="text/css" href="./css/calpopup.css" rel="stylesheet" media="screen">
+        <link type="text/css" href="./css/DatePicker.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" type="text/css" href="./css/yui/fonts/fonts-min.css" />
+        <link rel="stylesheet" type="text/css" href="./css/yui/tabview/assets/skins/sam/tabview.css" />
+                
+        <script type="text/javascript" src="scripts/edm.js"></script>
+        <script type="text/javascript" src="scripts/Validation.js"></script>
+        <script type="text/javascript" src="scripts/calpopup.js"></script>
+        <script type="text/javascript" src="scripts/Control.js"></script>
+        <script type="text/javascript" src="scripts/dateparse.js"></script>
+        <script type="text/javascript" src="scripts/balloontip.js"></script>
+        <script type="text/javascript" src="scripts/validation.js"></script>
+        <script type="text/javascript" src="./scripts/yui/yahoo/yahoo.js"></script>
+        <script type="text/javascript" src="./scripts/yui/event/event.js"></script>
+        <script type="text/javascript" src="./scripts/yui/dom/dom.js"></script>
+        <script type="text/javascript" src="./scripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+        <script type="text/javascript" src="./scripts/yui/animation/animation.js"></script>
+        <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
+        <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
+        <script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
+		<script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script> 
 <script>
 //not used in transactions, but since its require in the script we fake it
 var editIndexid = ""; 
@@ -329,36 +344,43 @@ function align(thisevent,divID) {
 </table>
 
 </div>  
-
+ <!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
   <!-- Resolve popup div starts here  -->
-    <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:195px;WIDTH: 300px;visibility:hidden; ">
+    <div id="resolvePopupDiv" class="confirmPreview" style="TOP:250px;LEFT:300px;visibility:hidden;display:none">
        <h:form id="reportYUISearch">
          <input type="hidden" id="potentialDuplicateId" name="potentialDuplicateId" title="potentialDuplicateId" />
-         <table width="100%" border="0">
-           <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
-           <tr><td colspan="2"> &nbsp;</td></tr>
-           <tr><td colspan="2" align="left"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
-           <tr>
-               <td  colspan="2" align="left">
-                 <div class="selectContent">
+         <table cellspacing="0" cellpadding="0" border="0">
+           <tr><th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
+		   <th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('resolvePopupDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('resolvePopupDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+		   </th>
+		   </tr>
+           <tr><td colspan="2">&nbsp;</td></tr>
+           <tr><td colspan="2"><b><h:outputText value="#{msgs.different_person_dailog_text}"/>&nbsp;
                   <h:selectOneMenu id="diffperson" title="resolveType">
                       <f:selectItem  itemValue="AutoResolve" itemLabel="Resolve Until Recalculation"/>
                       <f:selectItem  itemValue="Resolve" itemLabel="Resolve Permanently"/>
                  </h:selectOneMenu> 
-                 </div> 
-                </td>
+                &nbsp;</b></td>
           </tr>
           <tr><td colspan="2"> &nbsp;</td></tr>
-          <tr>
-             <td align="right"  colspan="2">
+          <tr id="actions">
+             <td colspan="2">
+			 <table align="center">
+			 <tr>
+			 <td>
                <a  title="<h:outputText value="#{msgs.ok_text_button}" />" class="button" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?resolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                            <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                </a>
-                <h:outputLink title="#{msgs.cancel_but_text}" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
-                               styleClass="button"  
-                               value="javascript:void(0)">
-                      <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                </h:outputLink>   
+              </td>
+			  <td>
+			  <a href="javascript:void(0)"  class="button" onclick="javascript:showResolveDivs('resolvePopupDiv',event,'123467');"  title="<h:outputText value="#{msgs.cancel_but_text}" />" >
+			    <span>  <h:outputText value="#{msgs.cancel_but_text}" />  </span>
+             </a>
+			  </td>
+              </tr>
+             </table>  
              </td>
            </tr>
          </table>
@@ -490,4 +512,7 @@ function align(thisevent,divID) {
    %>
 <% } %>   
     </html> 
+	<script type="text/javascript">
+  makeDraggable("resolvePopupDiv");
+  </script>
 </f:view>

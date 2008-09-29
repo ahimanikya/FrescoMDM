@@ -59,7 +59,6 @@ String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/")
 URI = URI.replaceAll("/ajaxservices","");
 boolean isSessionActive = true;
 %>
-
 <% if(session!=null && session.isNew()) {
 	isSessionActive = false;
 %>
@@ -355,20 +354,26 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
      <%}else{%>
        <table>
          <tr><td>
+		 <!-- Modified By Narahari.M on 27-09-2008, to change alert pop up window to information pop up window -->
          <script>
-      	     alert("'<%=megredEuid%>'  <%=active_euid_text%>  '<%=euidValue%>'.");			   
+		     window.location = "#top";
+             document.getElementById("activemessageDiv").innerHTML='<%=megredEuid%> <%=active_euid_text%> <%=euidValue%>.';
+			 document.getElementById('activeDiv').style.visibility='visible';
+			 document.getElementById('activeDiv').style.display='block';
  			 <%if("euiddetails.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-				 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+				 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
 			 <%} else if("dashboard.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-				 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=dashboard.jsf';
+				 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=dashboard.jsf';
 			 <%} else {%>
-				 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
+				 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
 			 <%}%>
 		  
 		  </script>
          </td>
          </tr>
          </table>
+		 
+
      <%}%>
 <%}%>
 
@@ -674,4 +679,5 @@ if (results != null)   {
 <%}%> <!-- if not euid or systemcode/lid values entered -->
 
 <%} %>  <!-- Session check -->
+
 </f:view>

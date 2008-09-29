@@ -229,79 +229,101 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
 
               	</script>
              <%}%>
-
-                         <div id="mergeDiv" class="alert" style="TOP:2050px; LEFT:300px; VISIBILITY: hidden; ">
+					<!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
+                         <div id="mergeDiv" class="confirmPreview" style="TOP:250px;LEFT:300px;VISIBILITY:hidden;display:none;">
                              <table cellspacing="0" cellpadding="0" border="0">
-                                    <tr><th colspan="2" align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th></tr>
-                                    <tr><td colspan="2"> &nbsp;</td></tr>
-                                     <tr>
-									   <td colspan="2" align="left"> 
-									      <nobr>
-									      <table border="0" align="left">
-										     <tr>
-											    <td align="left"><b><h:outputText value="#{msgs.mergediv_popup_text}"/></b></td>
-											    <td align="left"><b><div id="merge_destnEuid"></div></b></td>
- 											  </tr>
-										  </table> 
-										  </nobr>
-									   </td>
-									 </tr>
-                                     <tr><td colspan="2"> &nbsp;</td></tr>
-                                     <tr>
-                                        <td colspan="2">
+                                <tr>
+								<th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
+								<th>
+									<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+									<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+							    </th>	
+							    </tr>
+                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                <tr>
+							    <td colspan="2" align="left"> 
+							     <nobr>
+							     <table border="0" align="center">
+								  <tr>
+								   <td align="left"><b>&nbsp;<h:outputText value="#{msgs.mergediv_popup_text}"/></b></td>
+								   <td align="left"><b><div id="merge_destnEuid"></div></b></td>
+ 								  </tr>
+								 </table> 
+								 </nobr>
+								</td> 
+								</tr>
+                                <tr><td colspan="2">&nbsp;</td></tr>
+                                <tr>
+                                  <td colspan="2" align="center">
                                             <h:form  id="mergeFinalForm">
  							                      <%if(operations.isEO_Merge()) {%>
+												  <table align="center">
+												  <tr>
+												  <td>&nbsp;&nbsp;</td>
+												  <td>
 														<a href="javascript:void(0)"  
 														   class="button" 
 														    title="<h:outputText value="#{msgs.ok_text_button}" />"
-                                                            onclick="javascript:getFormValues('mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&mergeFinal=true&rand=<%=rand%>','mainDupSource','');showExtraDivs('mergeDiv',event)"   >
+                                                            onclick="javascript:getFormValues('mergeFinalForm');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&mergeFinal=true&rand=<%=rand%>','mainDupSource','');showExtraDivs('mergeDiv',event);"   >
                                                                      <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                                                       </a>	
+                                                       </a>
+												  </td>
+												  <td>
+													  <a href="javascript:void(0)"  class="button" onclick="javascript:showExtraDivs('mergeDiv',event);"  title="<h:outputText value="#{msgs.cancel_but_text}" />" >
+			                                          <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                                                      </a>
+											      </td>
+											      </tr>
+											      </table>
 												 <%}%>
                                                   <input type="hidden" id="mergeFinalForm:srcDestnEuids" title="MERGE_SRC_DESTN_EUIDS" />
                                                 <h:inputHidden id="destinationEO" value="#{PatientDetailsHandler.destnEuid}" />
                                                 <h:inputHidden id="selectedMergeFields" value="#{PatientDetailsHandler.selectedMergeFields}" />
-                                                <h:outputLink styleClass="button"  title="#{msgs.cancel_but_text}"
-                                                          value="javascript:void(0)" 
-                                                          onclick="javascript:showExtraDivs('mergeDiv',event)" >
-                                                 <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                            </h:outputLink>
                                             </h:form>
                                         </td>
                                     </tr>
                                     
                                 </table>
                         </div>  
-                                   <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; visibility:hidden; ">
+						<!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
+                                   <div id="resolvePopupDiv" class="confirmPreview" style="TOP:250px;LEFT:300px;visibility:hidden;display:none;">
                                      
                                        <h:form id="reportYUISearch">
  										   <input type="hidden" title="resolvePotentialDuplicateId" id="resolvePotentialDuplicateId" />
-                                           <table width="100%">
-                                               <tr><th colspan="2" align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th></tr>
-                                               <tr><td colspan="2"> &nbsp;</td></tr>
-                                               <tr><td  colspan="2" align="center"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
-                                               <tr>
-                                                   <td  colspan="2">
+                                           <table cellspacing="0" cellpadding="0" border="0">
+                                               <tr><th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
+											   <th>
+													<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('resolvePopupDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+													<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('resolvePopupDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+											   </th>
+											   </tr>
+                                               <tr><td colspan="2">&nbsp;</td></tr>
+                                               <tr><td  colspan="2" align="center"><b><h:outputText															     value="#{msgs.different_person_dailog_text}"/>&nbsp;
                                                          <h:selectOneMenu id="diffperson" title="resolveType">
                                                            <f:selectItem  itemValue="AutoResolve" itemLabel="#{msgs.AutoResolve_Label}"/>
                                                            <f:selectItem  itemValue="Resolve"     itemLabel="#{msgs.Resolve_Perm_Label}"/>
                                                         </h:selectOneMenu>                                                        
-                                                   </td>
+                                                   &nbsp;</b></td>
                                                </tr>
-                                                <tr><td colspan="2"> &nbsp;</td></tr>
-                                               <tr>
+                                                <tr><td colspan="2">&nbsp;</td></tr>
+                                               <tr id="actions">
                                                    <td colspan="2">
+												   <table align="center">
+												   <tr>
+												   <td>
                   										<a class="button" title="<h:outputText value="#{msgs.ok_text_button}" />"
                                                             href="javascript:void(0)"
-                                                            onclick="javascript:getFormValues('reportYUISearch');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&resolveDuplicate=true&rand=<%=rand%>','mainDupSource','');"   >
+                                                            onclick="javascript:getFormValues('reportYUISearch');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&resolveDuplicate=true&rand=<%=rand%>','mainDupSource','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';"   >
                                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                                                       </a>   
-
-                                                       <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" title="#{msgs.cancel_but_text}"
-                                                                      styleClass="button"  
-                                                                      value="javascript:void(0)">
-                                                         <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                                                       </h:outputLink>   
+                                                       </a>
+												   </td>
+												   <td>
+												      <a href="javascript:void(0)"  class="button" onclick="javascript:showResolveDivs('resolvePopupDiv',event,'123467');"  title="<h:outputText value="#{msgs.cancel_but_text}" />" >
+													  <span>  <h:outputText value="#{msgs.cancel_but_text}" />  </span>
+													   </a>
+												   </td>
+												   </tr>
+												   </table>
                                                    </td>
                                                </tr>
                                            </table>
