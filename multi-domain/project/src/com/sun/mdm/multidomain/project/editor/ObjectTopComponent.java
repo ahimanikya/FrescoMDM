@@ -107,31 +107,28 @@ public class ObjectTopComponent
     @Override
     public boolean canClose() {
         try {
-            if (this.mEditorMainApp.isCheckedOut()) { 
-                if (mMultiDomainApplication.isValidated() &&  mMultiDomainApplication.isModified()) {
-                    int ret = JOptionPane.showConfirmDialog(
-                                this,
-                                NbBundle.getMessage(ObjectTopComponent.class, "Msg_Do_you_want_to_save_Configuration")
-                                    + mObjectName
-                                    + "?",
-                                NbBundle.getMessage(ObjectTopComponent.class, "LBL_Editor"),
-                                JOptionPane.YES_NO_CANCEL_OPTION);
-                    if (ret == JOptionPane.YES_OPTION) {
-                        this.mEditorMainApp.save(true);
-                        this.mEditorMainApp.removeInstance(mPath);
-                        return super.canClose();
-                    } else if (ret == JOptionPane.NO_OPTION) {
-                        // Reload eIndexObject and others
-                        //this.mMultiDomainApplication.undoCheckoutAllConfigurableFiles();
-                        this.mMultiDomainApplication.loadAll();
-                        this.mEditorMainApp.removeInstance(mPath);
-                        return super.canClose();
-                    } else {
-                        return false;
-                    }
+            if (mMultiDomainApplication.isValidated() &&  mMultiDomainApplication.isModified()) {
+                int ret = JOptionPane.showConfirmDialog(
+                            this,
+                            NbBundle.getMessage(ObjectTopComponent.class, "Msg_Do_you_want_to_save_Configuration")
+                                + mObjectName
+                                + "?",
+                            NbBundle.getMessage(ObjectTopComponent.class, "LBL_Editor"),
+                            JOptionPane.YES_NO_CANCEL_OPTION);
+                if (ret == JOptionPane.YES_OPTION) {
+                    this.mEditorMainApp.save(true);
+                    this.mEditorMainApp.removeInstance(mPath);
+                    return super.canClose();
+                } else if (ret == JOptionPane.NO_OPTION) {
+                    // Reload eIndexObject and others
+                    //this.mMultiDomainApplication.undoCheckoutAllConfigurableFiles();
+                    this.mMultiDomainApplication.loadAll();
+                    this.mEditorMainApp.removeInstance(mPath);
+                    return super.canClose();
+                } else {
+                    return false;
                 }
             }
-
         } catch (Exception ex) {
             // this is an intermittent bug of Netbeans. Do nothing
             mLog.severe(ex.getMessage());
@@ -182,7 +179,7 @@ public class ObjectTopComponent
      * @param multiDomainApplication instance
      * @return boolean successful
      */
-    public boolean startTopComponent(EditorMainApp editorMainApp, String path, MultiDomainApplication multiDomainApplication) {
+    public boolean startTopComponent(EditorMainApp editorMainApp, String path, MultiDomainApplication multiDomainApplication, EditorMainPanel editorMainPanel) {
         // get static copy of Mode name from Tools App Context
         if (multiDomainApplication == null
             || path == null) {
@@ -201,7 +198,7 @@ public class ObjectTopComponent
             mRelationshipModel = mMultiDomainApplication.getRelationshipModel(false);
             //from RelationshipModel get all object model from participating domains
             //-ToDo
-            mEditorMainPanel = mEditorMainApp.newEditorMainPanel();
+            mEditorMainPanel = editorMainPanel;
 
             // init main panel, which init the data model and all the views
             boolean ret = true;

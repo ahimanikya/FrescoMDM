@@ -286,6 +286,7 @@ public class MultiDomainApplication extends MultiDomainProject {
      */
     public void loadAll() {
         try {
+            getAllConfigurableFiles();
             setModified(false);
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());

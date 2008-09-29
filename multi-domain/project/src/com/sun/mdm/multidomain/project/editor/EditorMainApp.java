@@ -22,7 +22,6 @@
  */
 package com.sun.mdm.multidomain.project.editor;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.awt.Cursor;
@@ -37,7 +36,6 @@ import org.openide.filesystems.FileUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.xml.sax.SAXParseException;
@@ -48,7 +46,6 @@ import org.xml.sax.InputSource;
 import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
-import com.sun.mdm.multidomain.project.nodes.MultiDomainConfigurationFolderNode;
 import com.sun.mdm.multidomain.util.Logger;
 
 /**
@@ -72,8 +69,6 @@ public class EditorMainApp {
     private static Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
     private MultiDomainApplication mMultiDomainApplication;
     private EditorMainPanel mEditorMainPanel;
-    //private String validationMsg = "";
-    private boolean bCheckedOut = true;
     
     /**
      * Creates a new instance of EditorMainApp the constructor is decleared private
@@ -123,16 +118,18 @@ public class EditorMainApp {
     
     private void loadDomainMaps() {
         // Load mMapDomainObjectXmls
-        MultiDomainConfigurationFolderNode node = mMultiDomainApplication.getAssociatedNode();
-        FileObject srcFolder = node.getFileObject().getParent();
+        FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
+        FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
         FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
-        FileObject[] children = domainsFolder.getChildren();
-        for (int j = 0; j < children.length; j++) {
-            FileObject domain = children[j];
-            if (domain.isFolder()) {
-                FileObject objectXml = domain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
-                if (objectXml != null) {
-                    mMapDomainObjectXmls.put(domain.getName(), objectXml);
+        if (domainsFolder != null) {
+            FileObject[] children = domainsFolder.getChildren();
+            for (int j = 0; j < children.length; j++) {
+                FileObject domain = children[j];
+                if (domain.isFolder()) {
+                    FileObject objectXml = domain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
+                    if (objectXml != null) {
+                        mMapDomainObjectXmls.put(domain.getName(), objectXml);
+                    }
                 }
             }
         }
@@ -150,9 +147,9 @@ public class EditorMainApp {
         if (!mMapDomainObjectXmls.containsKey(domainName)) {
             //Copy domain's object.xml
             String path = selectedDomain.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
-            FileObject objectXml = getConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
-            MultiDomainConfigurationFolderNode node = mMultiDomainApplication.getAssociatedNode();
-            FileObject srcFolder = node.getFileObject().getParent();
+            FileObject objectXml = getDomainConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
+            FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
+            FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
             FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
             FileObject newDomainFolder = domainsFolder.createFolder(domainName);
             FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
@@ -160,6 +157,19 @@ public class EditorMainApp {
             added = true;
         }
         return added;
+    }
+    
+    public boolean removeDomain(String domainName) throws IOException {
+        boolean removed = false;
+        if (mMapDomainObjectXmls.containsKey(domainName)) {
+            mMapDomainObjectXmls.remove(domainName);
+            FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
+            FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
+            FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+            domainsFolder.delete();
+            removed = true;
+        }
+        return removed;
     }
     
     /**
@@ -182,14 +192,14 @@ public class EditorMainApp {
      * @return
      * @throws java.io.IOException
      */
-    public FileObject getConfigurationFile(String folder, String name) throws IOException {
+    public FileObject getDomainConfigurationFile(String folder, String fileName) throws IOException {
         FileObject fileObj = null;
         if (folder != null) {
             FileObject dir = FileUtil.toFileObject(new File(folder));
             if (dir == null || !dir.isFolder()) {
                 return null;
             }
-            fileObj = dir.getFileObject(name);
+            fileObj = dir.getFileObject(fileName);
         }
         return fileObj;
     }
@@ -201,14 +211,6 @@ public class EditorMainApp {
         mObjectTopComponent.requestActive();
     }
 
-    void checkOutAll() {
-        bCheckedOut = mMultiDomainApplication.getAllConfigurableFiles();
-        if (bCheckedOut == false) {
-            String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_FAILED_TO_OBTAIN_FILES");
-            NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
-            DialogDisplayer.getDefault().notify(desc);
-        }
-    }
     /**
      * Stating point of Multi-Domain MDM Configuration Editor from editable Multi-Domain MDM Instance
      *
@@ -217,8 +219,9 @@ public class EditorMainApp {
     public void startEditorApp(MultiDomainApplication application) {
         mMultiDomainApplication = application;
         try {
-            checkOutAll();
-            
+            mMultiDomainApplication.loadAll();
+            mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
+
             // Load mMapDomainObjectXmls
             loadDomainMaps();
             // Let TopObjectComponent to do DomainNodes loading
@@ -228,7 +231,7 @@ public class EditorMainApp {
             mObjectTopComponent = new ObjectTopComponent();
             mObjectTopComponent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             mMultiDomainApplication.setObjectTopComponent(mObjectTopComponent);
-            if (mObjectTopComponent.startTopComponent(getInstance(path), path, application)) {
+            if (mObjectTopComponent.startTopComponent(getInstance(path), path, application, mEditorMainPanel)) {
                 mObjectTopComponent.open();
             }
         } catch (Exception ex) {
@@ -237,25 +240,6 @@ public class EditorMainApp {
             mObjectTopComponent.setCursor(Cursor.getDefaultCursor());
         }
     }
-
-    /**
-     * @return EditorMainPanel
-     */
-    public EditorMainPanel newEditorMainPanel() {
-        if (mEditorMainPanel == null) {
-            mMultiDomainApplication.loadAll();
-            mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
-        }
-        return mEditorMainPanel;
-    }
-
-    /**
-     * @return EditorMainPanel
-     */
-    public EditorMainPanel getEditorMainPanel() {
-        return mEditorMainPanel;
-    }
-    
     
     /**
      *@return xml string for RelationshipModel.xml
@@ -263,11 +247,6 @@ public class EditorMainApp {
     public String getRelationshipModelXmlString() throws Exception {
         String data = null;
         return data;
-    }
-    
-    public void enableSaveAction(boolean flag) {
-        this.mMultiDomainApplication.setModified(flag);
-        this.mEditorMainPanel.enableSaveButton(bCheckedOut && flag);
     }
     
     public RelationshipModel getRelationshipModel(String objectXml) {
@@ -282,90 +261,17 @@ public class EditorMainApp {
         return relationshipModel;
     }
     
-    /*
-    public boolean validateXML(EIndexObject eIndexObject, String xmlFileName, String xmlString) {
-        boolean bValid = true;
-
-        try {              
-            DocumentBuilderFactory builderFact = DocumentBuilderFactory.newInstance();
-                
-            builderFact.setNamespaceAware(true);
-            builderFact.setAttribute("http://apache.org/xml/features/validation/schema", Boolean.TRUE);
-            builderFact.setValidating(false);
-                
-            DocumentBuilder builder = builderFact.newDocumentBuilder();
-               
-            //builder.setEntityResolver(new RepositoryEntityResolver());
-            builder.setErrorHandler(new Handler());
-                
-            ObjectFactory.setObject(eIndexObject);
-            ByteArrayInputStream bais = new ByteArrayInputStream(xmlString.getBytes());
-            InputSource input = new InputSource(bais);
-            // Static, using xsd
-            Document doc = builder.parse(input);
-                
-            // Dynamic, using epath
-            EpathParser ret = new EpathParser();
-            try {
-                ret.parse(doc);
-            } catch (ValidationException ex) {
-                validationMsg += xmlFileName + "\n" + "\n \"" + ex.getMessage() + "\"";
-                return false;
-            }
-
-            java.util.ArrayList al = ret.getEpath();
-            Iterator i = al.iterator();
-
-            validationMsg += "\n\"" + xmlFileName + "\"" + " - Invalid epath:";
-            while (i.hasNext()) {
-                String epath = (String) i.next();
-                boolean b = ObjectFactory.isEPathValid(epath);
-                if (!b) {
-                    bValid = false;
-                    validationMsg += "\n\"" + epath + "\"";
-                }
-            }
-            if (bValid) {
-                validationMsg += "\n\"" + xmlFileName + "\"" + " is valid";
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception rex) {
-            // Static against XSD
-            validationMsg += "\n\"" + xmlFileName + "\"" + rex.getMessage();
-            mLog.severe(rex.getMessage());
-            return false;
-        }
-    }
-
-    
-    public boolean validate(EIndexObject eIndexObject) {
-        boolean bValid = true;
-        validationMsg = "";
-
-        bValid = bValid && validateXML(eIndexObject, "EDM", getEDMXmlString());
-        bValid = bValid && validateXML(eIndexObject, "Mefa", getMefaXmlString());
-        bValid = bValid && validateXML(eIndexObject, "Query", getQueryXmlString());
-        bValid = bValid && validateXML(eIndexObject, "Master", getMasterXmlString());
-        bValid = bValid && validateXML(eIndexObject, "Update", getUpdateXmlString());
-        return bValid;
-    }
-    */
-    
-    /* Running editor in read only mode in not bCheckedOut
-     *
-     *@return bCheckedOut
+    /**
+     * Enable save button
+     * @param flag
      */
-    public boolean isCheckedOut() {
-        // Always true
-        // Use cvs to do check in/check out
-        return bCheckedOut;
+    public void enableSaveAction(boolean flag) {
+        this.mMultiDomainApplication.setModified(flag);
+        this.mEditorMainPanel.enableSaveButton(flag);
     }
-    
+
     /* Save all edited files
-     * object.xml, edm.xml, mefa.xml, query.xml, master.xml, update.xml
-     * and matchConfigFile.cfg
+     * RelationshipModel.xml and RelationshipWebManager.xml
      *
      *@param bClosing == true when closing the editor, user will be promted fo checking in
      *                == false when save icon is pressed and will save changes to work space only
@@ -380,7 +286,6 @@ public class EditorMainApp {
                 mMultiDomainApplication.saveRelationshipModelXml(relationshipModelXml, comment, checkIn);
             } else {
                 String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
-
                 NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
                 DialogDisplayer.getDefault().notify(desc);
             }
