@@ -37,6 +37,7 @@ import org.xml.sax.InputSource;
 
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.editor.ObjectTopComponent;
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -56,8 +57,13 @@ public class MultiDomainApplication extends MultiDomainProject {
     // and need to be synched up with xml files or reloaded
     private boolean mModified = false;
     private RelationshipModel mRelationshipModel = null;      // OBJECT_XML
+
+    private RelationshipWebManager mRelationshipWebManager = null;      // RelationshipWebManager.xml
+    private FileObject fileRelationshipMappings;
+    private FileObject fileRelationshipModel;
     private FileObject fileobjRelationshipWebManager;
     private FileObject fileobjRelationshipModel;
+    private FileObject fileRelationshipWebManager;
     
     
     /** Creates a new instance of MultiDomainApplication */
@@ -90,7 +96,27 @@ public class MultiDomainApplication extends MultiDomainProject {
         }
         return mRelationshipModel;
     }
-    
+
+    /** Parses object.xml and returns com.sun.mdm.index.parser.RelationshipWebManager by parsing object.xml
+     * @throws RepositoryException failed to get value
+     * @return the RelationshipWebManager
+     */    
+    public RelationshipWebManager getRelationshipWebMAnager(boolean bRefresh) {
+        try {
+            if (mRelationshipWebManager == null || bRefresh == true) {
+                FileObject cf = this.getRelationshipWebManagerFile();
+                if (cf != null) {
+                    InputStream objectdef = cf.getInputStream();
+                    InputSource source = new InputSource(objectdef);
+                    mRelationshipWebManager = Utils.parseRelationshipWebManager(source);
+                }
+            }
+        } catch (Exception ex) {
+            mLog.severe(ex.getMessage());
+        }
+        return mRelationshipWebManager;
+    }
+        
     /**
      * 
      * @param MultiDomainConfigurationFolderNode node
@@ -162,6 +188,7 @@ public class MultiDomainApplication extends MultiDomainProject {
         }
         return fileobjRelationshipModel;
     }
+    
 
     /** update UpdateConfigurationFile in repository
      *
@@ -175,6 +202,29 @@ public class MultiDomainApplication extends MultiDomainProject {
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
+    }
+
+    
+    /** update UpdateConfigurationFile in repository
+     *
+     *@param data
+     */
+    public void saveRelationshipWebManagerXml(String strXml, String comment, boolean checkIn) {
+        try {
+            if (fileRelationshipWebManager != null) {
+                writeConfigurationFile(fileRelationshipWebManager, strXml);
+            }
+        } catch (Exception ex) {
+            mLog.severe(ex.getMessage());
+        }
+    }    
+    
+    /* Reset all modified flag
+     *@param flag
+     */
+    public void resetModified(boolean flag) {
+        mModified = flag; 
+        setModified(flag);
     }
     
     /** return the FileObject for object.xml
@@ -281,11 +331,5 @@ public class MultiDomainApplication extends MultiDomainProject {
         return validated;
     }
 
-    /* Reset all modified flag
-     *@param flag
-     */
-    public void resetModified(boolean flag) {
-        mModified = flag; 
-        setModified(flag);
-    }
+
 }
