@@ -33,20 +33,18 @@ import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
 
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
 
 import com.sun.mdm.multidomain.parser.RelationshipModel;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
+import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 
 /**
  * Main application class for Multi-Domain MDM Configuration Editor
@@ -63,11 +61,12 @@ public class EditorMainApp {
     /**
      * this is a singleton
      */
-    private static EditorMainApp mInstance;
-    private static ObjectTopComponent mObjectTopComponent = null;
-    private static Map mMapInstances = new HashMap();  // path, instance
-    private static Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
     private MultiDomainApplication mMultiDomainApplication;
+    //private EditorMainApp mInstance;
+    private ObjectTopComponent mObjectTopComponent = null;
+    private static Map mMapInstances = new HashMap();  // projName, instance
+    private Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
+    private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
     private EditorMainPanel mEditorMainPanel;
     
     /**
@@ -90,11 +89,11 @@ public class EditorMainApp {
      * @return EditorMainApp instance
      */
     public static EditorMainApp createInstance(String instanceName) {
-        mInstance = (EditorMainApp) mMapInstances.get(instanceName);
-        if (mInstance == null) {
-            mInstance = new EditorMainApp(instanceName);
+        EditorMainApp instance = (EditorMainApp) mMapInstances.get(instanceName);
+        if (instance == null) {
+            instance = new EditorMainApp(instanceName);
         }
-        return mInstance;
+        return instance;
     }
 
     /**
@@ -112,12 +111,16 @@ public class EditorMainApp {
      * @return EditorMainApp instance
      */
     public static EditorMainApp getInstance(String instanceName) {
-        mInstance = (EditorMainApp) mMapInstances.get(instanceName);
-        return mInstance;
+        EditorMainApp instance = (EditorMainApp) mMapInstances.get(instanceName);
+        return instance;
     }
     
+    /**
+     * Look for src\Domains dir for participating domains
+     * Need to verify the list against RelationshipModel.xml?
+     */
     private void loadDomainMaps() {
-        // Load mMapDomainObjectXmls
+        // Load mMapDomainObjectXmls and mMapDomainNodes
         FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
         FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
         FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
@@ -128,7 +131,9 @@ public class EditorMainApp {
                 if (domain.isFolder()) {
                     FileObject objectXml = domain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
                     if (objectXml != null) {
-                        mMapDomainObjectXmls.put(domain.getName(), objectXml);
+                        String domainName = domain.getName();
+                        mMapDomainObjectXmls.put(domainName, objectXml);
+                        mMapDomainNodes.put(domainName, new DomainNode(domainName, FileUtil.toFile(domain)));
                     }
                 }
             }
@@ -141,37 +146,49 @@ public class EditorMainApp {
      * @return
      * @throws java.io.IOException
      */
-    public boolean addDomain(File selectedDomain) throws IOException {
+    public boolean addDomain(File selectedDomain) {
         boolean added = false;
         String domainName = selectedDomain.getName();
         if (!mMapDomainObjectXmls.containsKey(domainName)) {
             //Copy domain's object.xml
-            String path = selectedDomain.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
-            FileObject objectXml = getDomainConfigurationFile(path, MultiDomainProjectProperties.OBJECT_XML);
-            FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
-            FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
-            FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
-            FileObject newDomainFolder = domainsFolder.createFolder(domainName);
-            FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
-            mMapDomainObjectXmls.put(domainName, objectXml);
-            added = true;
+            try {
+                FileObject objectXml = getDomainConfigurationFile(selectedDomain, MultiDomainProjectProperties.OBJECT_XML);
+                FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
+                FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
+                FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+                if (domainsFolder == null) {
+                    domainsFolder = srcFolder.createFolder(MultiDomainProjectProperties.DOMAINS_FOLDER);
+                }
+                FileObject newDomainFolder = domainsFolder.createFolder(domainName);
+                FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
+                mMapDomainObjectXmls.put(domainName, objectXml);
+                mMapDomainNodes.put(domainName, new DomainNode(domainName, FileUtil.toFile(newDomainFolder)));
+                added = true;
+            } catch (IOException ex) {
+                mLog.severe(ex.getMessage());
+            }
         }
         return added;
     }
     
-    public boolean removeDomain(String domainName) throws IOException {
+    public boolean removeDomain(String domainName) {
         boolean removed = false;
         if (mMapDomainObjectXmls.containsKey(domainName)) {
-            mMapDomainObjectXmls.remove(domainName);
-            FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
-            FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
-            FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
-            domainsFolder.delete();
-            removed = true;
+            try {
+                mMapDomainObjectXmls.remove(domainName);
+                mMapDomainNodes.remove(domainName);
+                FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
+                FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
+                FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+                domainsFolder.delete();
+                removed = true;
+            } catch (IOException ex) {
+                mLog.severe(ex.getMessage());
+            }
         }
         return removed;
     }
-    
+
     /**
      * 
      * @param domainName
@@ -187,12 +204,28 @@ public class EditorMainApp {
 
     /**
      * 
+     * @param selectedDomain
+     * @return
+     */
+    public static FileObject getDomainObjectXml(File selectedDomain) {
+        FileObject objectXml = null;
+        try {
+            objectXml = getDomainConfigurationFile(selectedDomain, MultiDomainProjectProperties.OBJECT_XML);
+        } catch (IOException ex) {
+            mLog.severe(ex.getMessage());
+        }
+        return objectXml;
+    }
+
+    /**
+     * 
      * @param folder
      * @param name
      * @return
      * @throws java.io.IOException
      */
-    public FileObject getDomainConfigurationFile(String folder, String fileName) throws IOException {
+    public static FileObject getDomainConfigurationFile(File selectedDomain, String fileName) throws IOException {
+        String folder = selectedDomain.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
         FileObject fileObj = null;
         if (folder != null) {
             FileObject dir = FileUtil.toFileObject(new File(folder));
@@ -204,10 +237,11 @@ public class EditorMainApp {
         return fileObj;
     }
 
+
     /** Make TopComponent on focus
      * 
      */
-    public static void requestFocus() {
+    public void requestFocus() {
         mObjectTopComponent.requestActive();
     }
 
@@ -224,14 +258,14 @@ public class EditorMainApp {
 
             // Load mMapDomainObjectXmls
             loadDomainMaps();
-            // Let TopObjectComponent to do DomainNodes loading
+            // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
 
-            String path = mMultiDomainApplication.getProjectDirectory().getName();
+            String projName = mMultiDomainApplication.getProjectDirectory().getName();
 
             mObjectTopComponent = new ObjectTopComponent();
             mObjectTopComponent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             mMultiDomainApplication.setObjectTopComponent(mObjectTopComponent);
-            if (mObjectTopComponent.startTopComponent(getInstance(path), path, application, mEditorMainPanel)) {
+            if (mObjectTopComponent.startTopComponent(getInstance(projName), projName, application, mEditorMainPanel)) {
                 mObjectTopComponent.open();
             }
         } catch (Exception ex) {
@@ -249,15 +283,8 @@ public class EditorMainApp {
         return data;
     }
     
-    public RelationshipModel getRelationshipModel(String objectXml) {
-        RelationshipModel relationshipModel = null;
-        try {
-            InputStream objectdef = new ByteArrayInputStream(objectXml.getBytes());
-            InputSource source = new InputSource(objectdef);
-            relationshipModel = com.sun.mdm.multidomain.parser.Utils.parseRelationshipModel(source);
-        } catch (Exception ex) {
-            displayError(ex);
-        }
+    public RelationshipModel getRelationshipModel() {
+        RelationshipModel relationshipModel = mMultiDomainApplication.getRelationshipModel(true);
         return relationshipModel;
     }
     
@@ -277,13 +304,11 @@ public class EditorMainApp {
      *                == false when save icon is pressed and will save changes to work space only
      */
     public void save(boolean bClosing) {
-        boolean checkIn = true;
-        String comment = "";
         try {
             // RelationshipModel.xml
             String relationshipModelXml = getRelationshipModelXmlString();
             if (relationshipModelXml != null) {
-                mMultiDomainApplication.saveRelationshipModelXml(relationshipModelXml, comment, checkIn);
+                mMultiDomainApplication.saveRelationshipModelXml(relationshipModelXml);
             } else {
                 String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
                 NotifyDescriptor desc = new NotifyDescriptor.Message(msg);

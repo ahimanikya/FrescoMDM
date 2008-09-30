@@ -110,10 +110,7 @@ public class ImportDomainAction extends CookieAction {
                             String domainName = selectedDomain.getName();
                             boolean added = editorMainApp.addDomain(selectedDomain);
                             if (added && editorMainPanel != null) {
-
-                                //Add DomainNode to the canvas
-                                editorMainPanel.addDomainNode(domainName);
-                                //editorMainPanel.addDomainNode(new DomainNode(domainName, selectedDomain);
+                                editorMainPanel.addDomainNode(domainName, selectedDomain);
                             }
                             mLoadProgress.finish();
                         }                          
@@ -200,9 +197,9 @@ public class ImportDomainAction extends CookieAction {
         public boolean accept(java.io.File file) {
             boolean accepted = isMasterIndexProject(file);
             if (accepted) {
-                fc.setSelectedFile(file);
+                //fc.setSelectedFile(file);
             } else {
-                fc.setSelectedFile(null);
+                //fc.setSelectedFile(null);
             }
             return (file.isDirectory() || accepted);
         }

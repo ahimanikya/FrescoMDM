@@ -50,23 +50,169 @@ import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import org.openide.filesystems.FileObject;
+
+import java.io.File;
+import java.io.InputStream;
+import org.xml.sax.InputSource;
+import java.util.Iterator;
+import java.util.Set;
+
+import com.sun.mdm.multidomain.parser.MiNodeDef;
+import com.sun.mdm.multidomain.parser.MiFieldDef;
+import com.sun.mdm.multidomain.parser.MiObject;
+import com.sun.mdm.multidomain.parser.Utils;
+import com.sun.mdm.multidomain.util.Logger;
+import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 
 /**
  *
  * @author kkao
  */
 public class DomainNode extends AbstractNode {
+    /** The logger. */
+    private static final Logger mLog = Logger.getLogger(
+            EditorMainApp.class.getName()
+        
+        );
+    ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
+    private ArrayList alRelationshipTypes = new ArrayList();  // <RelationshipTypeName, DomainName>
+    String miObjectName;
+    File selectedDomain = null;
+    String domainName = null;
     
+    /**
+     * 
+     */
     public DomainNode() {
         super(Children.LEAF);
     }
 
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     */
     public DomainNode(Children arg0, Lookup arg1) {
         super(arg0, arg1);
     }
 
+    /**
+     * 
+     * @param arg0
+     */
     public DomainNode(Children arg0) {
         super(arg0);
     }
+    
+    /**
+     * 
+     * @param domainName
+     * @param selectedDomain
+     */
+    public DomainNode(String domainName, File selectedDomain) {
+        super(Children.LEAF);
+        this.domainName = domainName;
+        this.selectedDomain = selectedDomain;
+        
+        loadMiObjectNodes(selectedDomain);
+    }
+    
+    private MiObject getMiObject(File selectedDomain) {
+        MiObject mMiObject = null;
+        try {
+            FileObject objectXml = EditorMainApp.getDomainObjectXml(selectedDomain);
+            if (objectXml != null) {
+                InputStream objectdef = objectXml.getInputStream();
+                InputSource source = new InputSource(objectdef);
+                mMiObject = Utils.parseMiObject(source);
+            }
+        } catch (Exception ex) {
+                mLog.severe(ex.getMessage());
+        }
+        return mMiObject;
+    }
 
+    private void loadMiObjectNodes(File selectedDomain) {       
+        MiObject miObject = getMiObject(selectedDomain);
+        ArrayList alMiNodes = miObject.getNodes();
+        if ((alMiNodes != null) && (alMiNodes.size() > 0)) {
+            miObjectName = miObject.getObjectName();
+
+            Iterator it = alMiNodes.iterator();
+            while (it.hasNext()) {
+                MiNodeDef node = (MiNodeDef) it.next();
+                alMiNodeDefs.add(node);
+                if (node.getTag().equals(miObjectName)) { // check if is the Primary Node
+                } else {
+                }
+                addChildren(node);
+            }
+        }
+    }
+    
+    private void addChildren(MiNodeDef node) {
+        ArrayList children = node.getChildren();
+        Iterator it = children.iterator();
+        while (it.hasNext()) {
+            MiNodeDef child = (MiNodeDef) it.next();
+            addChildren(child); // Support multi-tier object
+        }
+        ArrayList fields = node.getFields();
+        for (int i = 0; i < fields.size(); i++) {
+            MiFieldDef field = (MiFieldDef) fields.get(i);
+            addMiField(field);
+        }
+    }
+    
+    private void addMiFieldNodes(MiNodeDef node) {
+        ArrayList fields = node.getFields();
+        for (int i = 0; i < fields.size(); i++) {
+            MiFieldDef field = (MiFieldDef) fields.get(i);
+            addMiField(field);
+        }
+    }
+
+    private void addMiField(MiFieldDef fieldDef) {
+        if (fieldDef != null) {
+            String nodeName = fieldDef.getFieldName();
+        }
+    }
+
+    /**
+     * 
+     * @return ArrayList<MiNodeDef> alMiNodeDefs
+     */
+    public ArrayList<MiNodeDef> getMiNodeDefs() {
+        return alMiNodeDefs;
+    }
+    
+    /**
+     * 
+     * @param MiNodeDef node
+     * @return ArrayList<MiNodeDef>
+     */
+    public ArrayList<MiNodeDef> getMiNodeDefs(MiNodeDef node) {
+        return node.getChildren();
+    }
+    
+    /**
+     * 
+     * @param MiNodeDef node
+     * @return ArrayList<MiFieldDef>
+     */
+    public ArrayList<MiFieldDef> getMiFieldDefs(MiNodeDef node) {
+        return node.getFields();
+    }
+    
+    public void addRelationshipType(String relationshipTypeName, String domainName) {
+
+    }
+    
+    public void removeRelationshipType(String relationshipTypeName, String domainName) {
+    }
+    
+    public ArrayList getRelationshipTypes() {
+        return null;
+    }
 }

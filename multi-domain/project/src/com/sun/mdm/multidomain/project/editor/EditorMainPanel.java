@@ -52,18 +52,29 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JTabbedPane;
 import javax.swing.Action;
+import javax.swing.JPanel;
 
 import org.openide.util.actions.SystemAction;
 import org.openide.filesystems.FileObject;
+import java.io.File;
+import java.io.IOException;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+import com.sun.mdm.multidomain.util.Logger;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
  */
-public class EditorMainPanel extends javax.swing.JPanel implements ActionListener  {
+public class EditorMainPanel extends JPanel implements ActionListener  {
+    /** The logger. */
+    private static final Logger mLog = Logger.getLogger(
+            EditorMainPanel.class.getName()
+        
+        );
+
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
     static final ImageIcon DELETENODEIMAGEICON = new ImageIcon(Utilities.loadImage(
@@ -82,7 +93,8 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     private EditorMainApp mEditorMainApp;
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
-    private final RelationshipCanvas canvas = new RelationshipCanvas(); //The component the user draws on
+    private RelationshipCanvas canvas = new RelationshipCanvas(); //The component the user draws on
+    //private JPanel canvas = new JPanel();
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     JTabbedPane propertiesTabbedPane = new JTabbedPane();
     
@@ -109,6 +121,9 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
 
         this.add(createToolBar(), BorderLayout.PAGE_START);
         // ToDo load domains etc
+        // Read RelationshipModel
+        // Populate Model structures
+        // Populate canvas with DomainNodes (EditorMainApp has a map for DomainNodes)
         createSplitPane(); // Put tree and table in a split pane mSplitPane
 
         this.add(mSplitPane, BorderLayout.CENTER);
@@ -128,6 +143,7 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
         propertiesPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
+
         multiViewPane.setViewportView(canvas);
         propertiesTabbedPane.add(propertiesModelPanel);
         //Wee add web properties tab here
@@ -249,16 +265,24 @@ public class EditorMainPanel extends javax.swing.JPanel implements ActionListene
     /** Add a Domain Node to the canvas
      *
      */
-     public boolean addDomainNode(String domainName) {
-         boolean added = false;
-         DomainNode node = new DomainNode();
-         
-         canvas.add(new JLabel(domainName));
-         //ToDo
-         //Load object.xml
-         //populate properties
-         return added;
-     }
+    public boolean addDomainNode(String domainName, File selectedDomain) {
+        boolean added = false;
+        DomainNode node = new DomainNode(domainName, selectedDomain);
+        
+        int cnt = this.getComponentCount() + 1;
+        JLabel label = new JLabel(domainName);
+        canvas.add(new JLabel(domainName), new java.awt.GridBagConstraints());
+        label.setBounds(90, cnt * 30, 80, 20);
+        //ToDo Load object.xml
+        try {
+            FileObject objectXml = mEditorMainApp.getDomainConfigurationFile(selectedDomain, MultiDomainProjectProperties.OBJECT_XML);
+        } catch (IOException ex) {
+            mLog.severe(ex.getMessage());
+        }
+
+        //populate properties
+        return added;
+    }
      
     /** Add a Domain action
      *

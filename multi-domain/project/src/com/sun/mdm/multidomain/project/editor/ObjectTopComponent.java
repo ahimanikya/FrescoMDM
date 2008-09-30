@@ -52,8 +52,7 @@ public class ObjectTopComponent
     /**
      * name of this TopComponent
      */
-    private String mNodeName;
-    private String mObjectName;
+    private String mTabName;
     private String mPath;
     private EditorMainApp mEditorMainApp;
     private EditorMainPanel mEditorMainPanel;
@@ -75,14 +74,14 @@ public class ObjectTopComponent
      */
     @Override
     public String getName() {
-        if (mNodeName == null) {
+        if (mTabName == null) {
             try {
-                mNodeName = mMultiDomainApplication.getName();
+                mTabName = mMultiDomainApplication.getName();
             } catch (Exception ex) {
                 mLog.severe(ex.getMessage());
             }
         }
-        return mNodeName;
+        return mTabName;
     }
 
     /** called by MultiDomainApplication
@@ -91,11 +90,11 @@ public class ObjectTopComponent
      */
     public void setModified(boolean flag) {
         if (flag) {
-            mNodeName = mPath + "*";
+            mTabName = mPath + "*";
         } else {
-            mNodeName = mPath;
+            mTabName = mPath;
         }
-        super.setDisplayName(mNodeName);
+        super.setDisplayName(mTabName);
     }
 
     /**
@@ -111,7 +110,7 @@ public class ObjectTopComponent
                 int ret = JOptionPane.showConfirmDialog(
                             this,
                             NbBundle.getMessage(ObjectTopComponent.class, "Msg_Do_you_want_to_save_Configuration")
-                                + mObjectName
+                                + mPath
                                 + "?",
                             NbBundle.getMessage(ObjectTopComponent.class, "LBL_Editor"),
                             JOptionPane.YES_NO_CANCEL_OPTION);
@@ -120,8 +119,7 @@ public class ObjectTopComponent
                     this.mEditorMainApp.removeInstance(mPath);
                     return super.canClose();
                 } else if (ret == JOptionPane.NO_OPTION) {
-                    // Reload eIndexObject and others
-                    //this.mMultiDomainApplication.undoCheckoutAllConfigurableFiles();
+                    // Reload RelationshipModel and others
                     this.mMultiDomainApplication.loadAll();
                     this.mEditorMainApp.removeInstance(mPath);
                     return super.canClose();
@@ -130,7 +128,6 @@ public class ObjectTopComponent
                 }
             }
         } catch (Exception ex) {
-            // this is an intermittent bug of Netbeans. Do nothing
             mLog.severe(ex.getMessage());
         }
         mEditorMainApp.removeInstance(mPath);
@@ -188,17 +185,15 @@ public class ObjectTopComponent
 
         try {
             mPath = path;
-            mEditorMainApp = editorMainApp;
+            mTabName = path;
             mMultiDomainApplication = multiDomainApplication;
-            mNodeName = path; //mMultiDomainApplication.getName();
-            
-            //mObjectName = mMultiDomainApplication.getObjectName();
+            mEditorMainApp = editorMainApp;
+            mEditorMainPanel = editorMainPanel;
             //ToDo-
             //getRelationshipModel
             mRelationshipModel = mMultiDomainApplication.getRelationshipModel(false);
             //from RelationshipModel get all object model from participating domains
             //-ToDo
-            mEditorMainPanel = editorMainPanel;
 
             // init main panel, which init the data model and all the views
             boolean ret = true;
@@ -259,8 +254,8 @@ public class ObjectTopComponent
                 @Override
                 public void propertyChange(PropertyChangeEvent ev) {
                     if (ev.getPropertyName().equals(Node.PROP_DISPLAY_NAME)) {
-                        mNodeName = node.getDisplayName();
-                        ObjectTopComponent.this.setName(mNodeName);
+                        mTabName = node.getDisplayName();
+                        ObjectTopComponent.this.setName(mTabName);
                         if (ObjectTopComponent.this.isOpened()) {
                             ObjectTopComponent.this.close();
                             ObjectTopComponent.this.open();

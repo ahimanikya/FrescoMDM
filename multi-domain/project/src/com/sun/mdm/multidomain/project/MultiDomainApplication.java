@@ -56,8 +56,8 @@ public class MultiDomainApplication extends MultiDomainProject {
     // and need to be synched up with xml files or reloaded
     private boolean mModified = false;
     private RelationshipModel mRelationshipModel = null;      // OBJECT_XML
-    private FileObject fileRelationshipMappings;
-    private FileObject fileRelationshipModel;
+    private FileObject fileobjRelationshipWebManager;
+    private FileObject fileobjRelationshipModel;
     
     
     /** Creates a new instance of MultiDomainApplication */
@@ -78,9 +78,9 @@ public class MultiDomainApplication extends MultiDomainProject {
     public RelationshipModel getRelationshipModel(boolean bRefresh) {
         try {
             if (mRelationshipModel == null || bRefresh == true) {
-                FileObject cf = this.getRelationshipModelFile();
-                if (cf != null) {
-                    InputStream objectdef = cf.getInputStream();
+                FileObject rmf = this.getRelationshipModelFile();
+                if (rmf != null) {
+                    InputStream objectdef = rmf.getInputStream();
                     InputSource source = new InputSource(objectdef);
                     mRelationshipModel = Utils.parseRelationshipModel(source);
                 }
@@ -122,59 +122,28 @@ public class MultiDomainApplication extends MultiDomainProject {
     public ObjectTopComponent getObjectTopComponent() {
         return mObjectTopComponent;
     }
-
-    /* set dirty bit by various configuration panels
-     * so we know we need to rewrite xml files
-     */
-    public void setModified(boolean flag) {
-        mModified = flag;
-        if (flag == false) {
-            return;
-        }
-        mAssociatedNode.setModified(flag);
-        mObjectTopComponent.setModified(flag);
-    }
-    
-    /** Check if configuration is modified
-     * 
-     * @return mModified
-     */
-    public boolean isModified() {
-        return mModified;
-    }
-    
-    /**
-     * Not implemented
-     * @return
-     */
-    public boolean isValidated() {
-        boolean validated = true;
-        return validated;
-    }
        
     /** chaeck out RelationshipWebManager
      *
      *@return boolean checked out
      */
-    private boolean getRelationshipWebManagerXml() {
-        boolean checkedOut = true;
+    private FileObject getRelationshipWebManagerXml() {
         try {
-            fileRelationshipMappings = getRelationshipWebManagerFile();
+            fileobjRelationshipWebManager = getRelationshipWebManagerFile();
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
-            checkedOut = false;
         }
-        return checkedOut;
+        return fileobjRelationshipWebManager;
     }
 
     /** Save OBJECT_DEF_FILE
      *
      *@param data
      */
-    public void saveRelationshipMappingsXml(String strXml, String comment, boolean checkIn) {
+    public void saveRelationshipWebManagerXml(String strXml) {
         try {
-            if (fileRelationshipMappings != null) {
-                writeConfigurationFile(fileRelationshipMappings, strXml);
+            if (fileobjRelationshipWebManager != null) {
+                writeConfigurationFile(fileobjRelationshipWebManager, strXml);
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
@@ -185,45 +154,35 @@ public class MultiDomainApplication extends MultiDomainProject {
      *
      *@return boolean checked out
      */
-    private boolean getRelationshipModelXml() {
-        boolean checkedOut = true;
+    private FileObject getRelationshipModelXml() {
         try {
-            fileRelationshipModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
+            fileobjRelationshipModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
-            checkedOut = false;
         }
-        return checkedOut;
+        return fileobjRelationshipModel;
     }
 
     /** update UpdateConfigurationFile in repository
      *
      *@param data
      */
-    public void saveRelationshipModelXml(String strXml, String comment, boolean checkIn) {
+    public void saveRelationshipModelXml(String strXml) {
         try {
-            if (fileRelationshipModel != null) {
-                writeConfigurationFile(fileRelationshipModel, strXml);
+            if (fileobjRelationshipModel != null) {
+                writeConfigurationFile(fileobjRelationshipModel, strXml);
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
     }
     
-    /* Reset all modified flag
-     *@param flag
-     */
-    public void resetModified(boolean flag) {
-        mModified = flag; 
-        setModified(flag);
-    }
-    
     /** return the FileObject for object.xml
      * @return FileObject fo
      */ 
     public FileObject getRelationshipModelFile() {
-        FileObject fo = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
-        return fo;
+        fileobjRelationshipModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
+        return fileobjRelationshipModel;
     }
     
     /** return the FileObject for object.xml
@@ -262,8 +221,8 @@ public class MultiDomainApplication extends MultiDomainProject {
      *
      */
     public boolean getAllConfigurableFiles() {
-        return getRelationshipModelXml() &&
-               getRelationshipWebManagerXml();
+        return (getRelationshipModelXml() != null) &&
+               (getRelationshipWebManagerXml() != null);
     }
     
     private void writeConfigurationFile(FileObject file, String str) {
@@ -291,5 +250,42 @@ public class MultiDomainApplication extends MultiDomainProject {
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
+    }
+
+    /* set dirty bit by various configuration panels
+     * so we know we need to rewrite xml files
+     */
+    public void setModified(boolean flag) {
+        mModified = flag;
+        if (flag == false) {
+            return;
+        }
+        mAssociatedNode.setModified(flag);
+        mObjectTopComponent.setModified(flag);
+    }
+    
+    /** Check if configuration is modified
+     * 
+     * @return mModified
+     */
+    public boolean isModified() {
+        return mModified;
+    }
+    
+    /**
+     * Not implemented
+     * @return
+     */
+    public boolean isValidated() {
+        boolean validated = true;
+        return validated;
+    }
+
+    /* Reset all modified flag
+     *@param flag
+     */
+    public void resetModified(boolean flag) {
+        mModified = flag; 
+        setModified(flag);
     }
 }
