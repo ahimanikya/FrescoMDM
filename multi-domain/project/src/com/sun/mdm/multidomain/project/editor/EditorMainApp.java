@@ -33,6 +33,7 @@ import org.openide.ErrorManager;
 import org.openide.filesystems.FileUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.io.IOException;
 
 import org.xml.sax.SAXParseException;
@@ -71,6 +72,7 @@ public class EditorMainApp {
     private static Map mMapInstances = new HashMap();  // projName, instance
     private Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
+    private ArrayList mAlRelationshipTypeNodes = new ArrayList();
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
     
@@ -167,8 +169,9 @@ public class EditorMainApp {
                 FileObject newDomainFolder = domainsFolder.createFolder(domainName);
                 FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
                 mMapDomainObjectXmls.put(domainName, objectXml);
-                mMapDomainNodes.put(domainName, new DomainNode(domainName, FileUtil.toFile(newDomainFolder)));
-                added = true;
+                DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(newDomainFolder));
+                mMapDomainNodes.put(domainName, domainNode);
+                mEditorMainPanel.addDomainNode(domainNode);
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }
@@ -192,6 +195,22 @@ public class EditorMainApp {
             }
         }
         return removed;
+    }
+
+    /**
+     * 
+     * @param selectedDomain
+     * @return
+     */
+    public static FileObject getSavedDomainObjectXml(File selectedDomain) {
+        FileObject objectXml = null;
+        try {
+            FileObject fobjSavedSomain = FileUtil.toFileObject(selectedDomain);
+            objectXml = fobjSavedSomain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
+        } catch (Exception ex) {
+            mLog.severe(ex.getMessage());
+        }
+        return objectXml;
     }
 
     /**
@@ -264,6 +283,7 @@ public class EditorMainApp {
             // Load mMapDomainObjectXmls
             loadDomainMaps();
             // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
+            //loadRelationshipTypeNodes();
 
             String projName = mMultiDomainApplication.getProjectDirectory().getName();
 

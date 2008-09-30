@@ -280,20 +280,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     /** Add a Domain Node to the canvas
      *
      */
-    public boolean addDomainNode(String domainName, File selectedDomain) {
+    public boolean addDomainNode(DomainNode node) {
         boolean added = false;
-        DomainNode node = new DomainNode(domainName, selectedDomain);
         
         int cnt = this.getComponentCount() + 1;
-        JLabel label = new JLabel(domainName);
-        canvas.add(new JLabel(domainName), new java.awt.GridBagConstraints());
+        JLabel label = new JLabel(node.getName());
+        canvas.add(new JLabel(node.getName()), new java.awt.GridBagConstraints());
         label.setBounds(90, cnt * 30, 80, 20);
-        //ToDo Load object.xml
-        try {
-            FileObject objectXml = mEditorMainApp.getDomainConfigurationFile(selectedDomain, MultiDomainProjectProperties.OBJECT_XML);
-        } catch (IOException ex) {
-            mLog.severe(ex.getMessage());
-        }
 
         //populate properties
         return added;
@@ -317,7 +310,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {           
             Action action = SystemAction.get(ImportDomainAction.class);
-            ((ImportDomainAction) action).perform(mEditorMainPanel, mEditorMainApp);
+            ((ImportDomainAction) action).perform(mEditorMainApp);
             action = null;
         }
     }
