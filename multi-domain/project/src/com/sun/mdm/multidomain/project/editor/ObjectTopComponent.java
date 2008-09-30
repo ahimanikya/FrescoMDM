@@ -23,10 +23,8 @@
 package com.sun.mdm.multidomain.project.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JOptionPane;
-import org.openide.util.Utilities;
 import org.openide.nodes.Node;
 import org.openide.nodes.NodeAdapter;
 import org.openide.util.NbBundle;
@@ -35,6 +33,7 @@ import org.openide.cookies.SaveCookie;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.util.Logger;
 
 
@@ -58,6 +57,7 @@ public class ObjectTopComponent
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
     private RelationshipModel mRelationshipModel;
+    private RelationshipWebManager mRelationshipWebManager;
 
     /**
      * an empty constructor is required by Netbeans
@@ -194,7 +194,8 @@ public class ObjectTopComponent
             mRelationshipModel = mMultiDomainApplication.getRelationshipModel(false);
             //from RelationshipModel get all object model from participating domains
             //-ToDo
-
+            mRelationshipWebManager = mMultiDomainApplication.getRelationshipWebMAnager(true);
+            
             // init main panel, which init the data model and all the views
             boolean ret = true;
             if (ret) {

@@ -30,7 +30,6 @@ import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.util.NbBundle;
 import org.openide.ErrorManager;
-import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 
 import java.io.File;
@@ -41,10 +40,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
 
 import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
+import org.openide.filesystems.FileObject;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import org.xml.sax.InputSource;
 
 /**
  * Main application class for Multi-Domain MDM Configuration Editor
@@ -68,6 +72,7 @@ public class EditorMainApp {
     private Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
     private EditorMainPanel mEditorMainPanel;
+    private TabRelationshipWebManager mTabRelshipWebManager = null;
     
     /**
      * Creates a new instance of EditorMainApp the constructor is decleared private
@@ -282,20 +287,43 @@ public class EditorMainApp {
         String data = null;
         return data;
     }
-    
-    public RelationshipModel getRelationshipModel() {
-        RelationshipModel relationshipModel = mMultiDomainApplication.getRelationshipModel(true);
-        return relationshipModel;
+
+    /**
+     * Will get RelationshipWebManager object into xml format
+     * @return xmlStr - xml format for RelationshipWebManager
+     * @throws java.lang.Exception
+     */
+    public String getRelationshipWebManagerXmlString() throws Exception {
+        String xmlStr = null;
+        xmlStr = mMultiDomainApplication.getRelationshipWebMAnager(false).writeToString();
+        return xmlStr;
     }
     
-    /**
-     * Enable save button
-     * @param flag
-     */
     public void enableSaveAction(boolean flag) {
         this.mMultiDomainApplication.setModified(flag);
         this.mEditorMainPanel.enableSaveButton(flag);
     }
+    
+
+    public RelationshipModel getRelationshipModel() {
+        RelationshipModel relationshipModel = mMultiDomainApplication.getRelationshipModel(true);
+
+        return relationshipModel;
+    }
+    
+
+    public RelationshipWebManager getRelationshipWebManager(String objectXml) {
+        RelationshipWebManager relationshipWebManager = null;
+        try {
+            InputStream objectdef = new ByteArrayInputStream(objectXml.getBytes());
+            InputSource source = new InputSource(objectdef);
+            relationshipWebManager = com.sun.mdm.multidomain.parser.Utils.parseRelationshipWebManager(source);
+        } catch (Exception ex) {
+            displayError(ex);
+        }
+        return relationshipWebManager;
+    }
+    
 
     /* Save all edited files
      * RelationshipModel.xml and RelationshipWebManager.xml
@@ -313,6 +341,17 @@ public class EditorMainApp {
                 String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
                 NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
                 DialogDisplayer.getDefault().notify(desc);
+            }
+            
+            String relationshipWebManagerXml = getRelationshipWebManagerXmlString();
+            if (relationshipWebManagerXml != null) {
+                mMultiDomainApplication.saveRelationshipWebManagerXml(relationshipWebManagerXml, "", true);
+            } else {
+                String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
+
+                NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+                DialogDisplayer.getDefault().notify(desc);
+                
             }
             mMultiDomainApplication.resetModified(false);
             enableSaveAction(false);

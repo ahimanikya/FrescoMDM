@@ -81,6 +81,12 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/Save.png"));
+    
+    static final String TAB_OBJECT_MODEL = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_MD_OBJECT_MODEL");
+    static final String TAB_WEB_MANAGER = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_WEB_MANAGER");
+
 
     private JSplitPane mSplitPane = null;
     private JScrollPane multiViewPane;
@@ -96,6 +102,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private RelationshipCanvas canvas = new RelationshipCanvas(); //The component the user draws on
     //private JPanel canvas = new JPanel();
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
+    private TabRelationshipWebManager webManagerPanel = null;
     JTabbedPane propertiesTabbedPane = new JTabbedPane();
     
     /**
@@ -105,7 +112,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     public EditorMainPanel(EditorMainApp editorMainApp, MultiDomainApplication application) {
         mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
+
+        if (webManagerPanel == null) {
+            webManagerPanel = new TabRelationshipWebManager(editorMainApp, mMultiDomainApplication.getRelationshipWebMAnager(true));
+        }
+
         mEditorMainPanel = this;
+
 
         initComponents();
     }
@@ -145,8 +158,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
 
         multiViewPane.setViewportView(canvas);
-        propertiesTabbedPane.add(propertiesModelPanel);
+        propertiesTabbedPane.add(TAB_OBJECT_MODEL, propertiesModelPanel);
         //Wee add web properties tab here
+        propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
+        
         propertiesPane.setViewportView(propertiesTabbedPane);
         
         mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
