@@ -22,7 +22,6 @@
  */
 package com.sun.mdm.multidomain.project.actions;
 
-import com.sun.mdm.multidomain.project.nodes.*;
 import org.openide.ErrorManager;
 import org.openide.util.actions.CookieAction;
 import org.openide.util.HelpCtx;
@@ -33,7 +32,6 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.modules.InstalledFileLocator;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -41,12 +39,10 @@ import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
-//import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
-import com.sun.mdm.multidomain.project.editor.EditorMainPanel;
-//import com.sun.mdm.index.project.EviewApplication;
+
 
 /**
  * To get Relationship jar with dataTypeDescription.xml
@@ -88,7 +84,7 @@ public class ImportDomainAction extends CookieAction {
         
     }
     
-    public void perform(final EditorMainPanel editorMainPanel, final EditorMainApp editorMainApp) {
+    public void perform(final EditorMainApp editorMainApp) {
         try {
             RequestProcessor.getDefault().post(new Runnable() {
                 public void run() {
@@ -108,10 +104,7 @@ public class ImportDomainAction extends CookieAction {
                             //Get MDM object.xml
                             File selectedDomain = fc.getSelectedFile();
                             String domainName = selectedDomain.getName();
-                            boolean added = editorMainApp.addDomain(selectedDomain);
-                            if (added && editorMainPanel != null) {
-                                editorMainPanel.addDomainNode(domainName, selectedDomain);
-                            }
+                            editorMainApp.addDomain(selectedDomain);
                             mLoadProgress.finish();
                         }                          
                     } catch (Exception e) {
