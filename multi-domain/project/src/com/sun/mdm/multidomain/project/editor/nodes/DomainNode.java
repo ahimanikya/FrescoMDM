@@ -105,7 +105,7 @@ public class DomainNode extends AbstractNode {
         super(arg0);
     }
     
-    /**
+    /** EditorMainApp is the keeper of DomainNode's
      * 
      * @param domainName
      * @param selectedDomain
@@ -121,7 +121,7 @@ public class DomainNode extends AbstractNode {
     private MiObject getMiObject(File selectedDomain) {
         MiObject mMiObject = null;
         try {
-            FileObject objectXml = EditorMainApp.getDomainObjectXml(selectedDomain);
+            FileObject objectXml = EditorMainApp.getSavedDomainObjectXml(selectedDomain);
             if (objectXml != null) {
                 InputStream objectdef = objectXml.getInputStream();
                 InputSource source = new InputSource(objectdef);
@@ -153,15 +153,17 @@ public class DomainNode extends AbstractNode {
     
     private void addChildren(MiNodeDef node) {
         ArrayList children = node.getChildren();
-        Iterator it = children.iterator();
-        while (it.hasNext()) {
-            MiNodeDef child = (MiNodeDef) it.next();
-            addChildren(child); // Support multi-tier object
-        }
-        ArrayList fields = node.getFields();
-        for (int i = 0; i < fields.size(); i++) {
-            MiFieldDef field = (MiFieldDef) fields.get(i);
-            addMiField(field);
+        if (children != null) {
+            Iterator it = children.iterator();
+            while (it.hasNext()) {
+                MiNodeDef child = (MiNodeDef) it.next();
+                addChildren(child); // Support multi-tier object
+            }
+            ArrayList fields = node.getFields();
+            for (int i = 0; i < fields.size(); i++) {
+                MiFieldDef field = (MiFieldDef) fields.get(i);
+                addMiField(field);
+            }
         }
     }
     
