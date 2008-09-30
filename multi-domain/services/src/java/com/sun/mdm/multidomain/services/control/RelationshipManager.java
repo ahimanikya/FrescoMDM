@@ -29,17 +29,18 @@ import java.util.HashMap;
 
 import net.java.hulp.i18n.Logger;
 
+import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
+
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.multidomain.relationship.Attribute;
 import com.sun.mdm.multidomain.relationship.AttributeType;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.relationship.RelationshipObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.core.MultiDomainService;
-import com.sun.mdm.multidomain.services.core.ServiceLocator;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
 import com.sun.mdm.multidomain.services.query.SearchOptions;
-import com.sun.mdm.multidomain.services.query.RelationshipObject;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
 import com.sun.mdm.multidomain.services.util.ObjectBuilder;
@@ -49,10 +50,11 @@ import com.sun.mdm.multidomain.services.util.ObjectBuilder;
  * @author cye
  */
 public class RelationshipManager implements ServiceManager {
-	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.RelationshipManager");
-	private static Localizer localizer = Localizer.getInstance();
+    private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.RelationshipManager");
+    private static Localizer localizer = Localizer.getInstance();
 		
-	private MultiDomainService multiDomainService;
+    private MultiDomainService multiDomainService;
+    private MultiDomainMetaService multiDomainMetaService;
 	
     /**
      * Create a instance of RelationshipManager.
@@ -61,19 +63,21 @@ public class RelationshipManager implements ServiceManager {
     }
 
     /**
-     * Create a instance of RelationshipManager with the given MultiDomainService. 
-     * @param multiDomainService
-     * @throws ServiceException
+     * Create a instance of RelationshipManager with the given MultiDomainMetaService and MultiDomainService.
+     * @param multiDomainMetaService MultiDomainMetaService.
+     * @param multiDomainService MultiDomainService.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public RelationshipManager (MultiDomainService multiDomainService) 
+    public RelationshipManager (MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) 
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
+        this.multiDomainMetaService = multiDomainMetaService;        
     }
     
     /**
-     * Add a relationshipType.
-     * @param relationshType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Add a new relationshipType.
+     * @param relationshType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void addType(RelationshipType relationshipType) 
         throws ServiceException {
@@ -81,9 +85,9 @@ public class RelationshipManager implements ServiceManager {
     }
     
     /**
-     * Update a relationshipType.
-     * @param relationshType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Update an existing relationshipType.
+     * @param relationshType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void updateType(RelationshipType relationshType) 
         throws ServiceException {
@@ -91,9 +95,9 @@ public class RelationshipManager implements ServiceManager {
     }
     
     /**
-     * Delete a RelationshipType.
-     * @param relationshType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Delete an existing  relationshipType.
+     * @param relationshType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void deleteType(RelationshipType relationshipType) 
         throws ServiceException {
@@ -102,21 +106,22 @@ public class RelationshipManager implements ServiceManager {
     
     /**
      * Get a total count of relationship types for the given domain.
-     * @param domain
-     * @return count of relationship type
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return int Count of relationship type.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipTypeCount(String domain) throws ServiceException {
-    	return 0;
+    public int getTypeCount(String domain) throws ServiceException {
+        // demo data
+    	return 3;
     }
     
     /**
      * Get a list of relationship types for the given domain.
-     * @param domain
-     * @return list of relationship type
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return List<RelationshipType> List of relationship type.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipType> getRelationshipTypes(String domain) throws ServiceException {
+    public List<RelationshipType> getTypes(String domain) throws ServiceException {
     	// demo data
     	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
     	rt1.setSourceDomain("Person");
@@ -143,19 +148,20 @@ public class RelationshipManager implements ServiceManager {
     
     /**
      * Get a total count of relationship instances for the given relationship type.
-     * @param relationshipType
-     * @return count of relationship instances
-     * @throws ServiceException
+     * @param relationshipType RelationshipType.
+     * @return int Count of relationship instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public int getRelationshipCount(RelationshipType relationshipType) throws ServiceException {
-    	return 0;
+        // demo data
+    	return 3;
     }
     
     /**
      * Get a list of relationship instances for the given relationship type.
-     * @param relationshipType
-     * @return list of relationship instances
-     * @throws ServiceException
+     * @param relationshipType RelationshipType.
+     * @return List<Relationship> List of relationship instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<Relationship> getRelationships(RelationshipType relationshipType) throws ServiceException {
     	List<Relationship> relationships = null;
@@ -164,10 +170,10 @@ public class RelationshipManager implements ServiceManager {
 
     /**
      * Get a list of RelationshipType for the given source domain and targetDomain.
-     * @param sourceDomain
-     * @param targetDomain 
-     * @return a list of RelationshipType.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param sourceDomain Source domain name.
+     * @param targetDomain Target domain name.
+     * @return List<RelationshipType> List of RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) 
         throws ServiceException {
@@ -205,104 +211,104 @@ public class RelationshipManager implements ServiceManager {
     }
     
     /**
-     * Add a relationship instance.
-     * @param sourceDomain
-     * @param sourceEUID
-     * @param targetDomain
-     * @param targetEUID
-     * @param relationTypeValue
-     * @return relationship id
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Add a relationship instance for the given source entity EUID and target entity EUID.
+     * @param sourceDomain Source domain name.
+     * @param sourceEUID Source entity EUID.
+     * @param targetDomain Target domain name.
+     * @param targetEUID Target entity EUID.
+     * @param relationship Relationship instance.
+     * @return String Relationship identifier which is newly added.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public String addRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
-                                  Relationship relationTypeValue) 
+                                  Relationship relationship) 
         throws ServiceException {        
     	// demo data
         throw new ServiceException("Not Implemented Yet");                        
     }
 
     /**
-     * Add a relationship instance.
-     * @param sourceDomain
-     * @param sourceSystemCode
-     * @param sourceLID
-     * @param targetDomain
-     * @param targetSystemCode
-     * @param targetLID
-     * @param relationTypeValue
-     * @return relationship id
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Add a relationship instance for the given source entity localId and target entity localId.
+     * @param sourceDomain Source domain name.
+     * @param sourceSystemCode Source domain system code.
+     * @param sourceLID Source domain entity localId.
+     * @param targetDomain Target domain name.
+     * @param targetSystemCode Target domain system code.
+     * @param targetLID Target domain entity localId.
+     * @param relationship Relationship instance.
+     * @return String Relationship identifier which is newly added.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public String addRelationship(String sourceDomain, String sourceSystemCode, String sourceLID, 
                                   String targetDomain, String targetSystemCode, String targetLID,
-                                  Relationship relationTypeValue) 
+                                  Relationship relationship) 
         throws ServiceException {        
         throw new ServiceException("Not Implemented Yet");                        
     }
 
     /**
-     * Update an existing relationship instance.
-     * @param sourceDomain
-     * @param sourceEUID
-     * @param targetDomain
-     * @param targetEUID
-     * @param relationTypeValue
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Update an existing relationship instance for the given source entity EUID and target entity EUID.
+     * @param sourceDomain Source domain name.
+     * @param sourceEUID Source entity EUID.
+     * @param targetDomain Target domain name.
+     * @param targetEUID Target entity EUID.
+     * @param relationship Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void updateRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
-                                   Relationship relationTypeValue) 
+                                   Relationship relationship) 
         throws ServiceException {        
         throw new ServiceException("Not Implemented Yet");                        
     }
 
     /**
-     * Update an existing relationship instance.
-     * @param sourceDomain
-     * @param sourceSystemCode
-     * @param sourceLID
-     * @param targetDomain
-     * @param targetSystemCode
-     * @param targetLID
-     * @param relationTypeValue
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Update an existing relationship instance for the give source entity localId and target entity localId.
+     * @param sourceDomain Source domain name.
+     * @param sourceSystemCode Source system code.
+     * @param sourceLID Source entity localId.
+     * @param targetDomain Target domain name.
+     * @param targetSystemCode Target system code.
+     * @param targetLID Target entity localId.
+     * @param relationship Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void updateRelationship(String sourceDomain, String sourceSystemCode, String sourceLID, 
                                    String targetDomain, String targetSystemCode, String targetLID,
-                                   Relationship relationTypeValue) 
+                                   Relationship relationship) 
         throws ServiceException {        
         throw new ServiceException("Not Implemented Yet");                        
     }
     
     /**
-     * Delete a relationship instance.
-     * @param sourceDomain
-     * @param sourceEUID
-     * @param targetDomain
-     * @param targetEUID
-     * @param relationTypeValue
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Delete a relationship instance for the given source entity EUID and target entity EUID.
+     * @param sourceDomain Source domain name.
+     * @param sourceEUID Source entity EUID.
+     * @param targetDomain Target domain name.
+     * @param targetEUID Target entity EUID.
+     * @param relationship Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void deleteRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
-                                   Relationship relationTypeValue) 
+                                   Relationship relationship) 
         throws ServiceException {        
     	// demo data
         throw new ServiceException("Not Implemented Yet");                        
     }
 
     /**
-     * Delete a relationship instance.
-     * @param sourceDomain
-     * @param sourceSystemCode
-     * @param sourceLID
-     * @param targetDomain
-     * @param targetSystemCode
-     * @param targetLID
-     * @param relationTypeValue
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Delete a relationship instance for the source entity localId and target entity localId.
+     * @param sourceDomain Source domain name.
+     * @param sourceSystemCode Source system code.
+     * @param sourceLID Source entity localId.
+     * @param targetDomain Target domain name.
+     * @param targetSystemCode Target system code.
+     * @param targetLID Target entity localId.
+     * @param relationship Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void deleteRelationship(String sourceDomain, String sourceSystemCode, String sourceLID, 
                                    String targetDomain, String targetSystemCode, String targetLID,
-                                   Relationship relationTypeValue) 
+                                   Relationship relationship) 
         throws ServiceException {        
         throw new ServiceException("Not Implemented Yet");                        
     }
@@ -312,7 +318,7 @@ public class RelationshipManager implements ServiceManager {
      * @param searchOptions
      * @param searchCriteria
      * @return a list of relationship object
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<RelationshipObject> searchRelationships(SearchOptions searchOptions, SearchCriteria searchCriteria)
         throws ServiceException {
@@ -375,13 +381,13 @@ public class RelationshipManager implements ServiceManager {
     }
     
     /**
-     * Search relationship instances for the given query filter and query object.
-     * @param sourceDomain
-     * @param sourceCriteria
-     * @param targetDomain
-     * @param targetCriteria
-     * @return a list of relationship object
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Search relationship instances for the given query options and query criteria.
+     * @param sourceDomain Source domain name.
+     * @param sourceCriteria Source search criteria.
+     * @param targetDomain Target domain name.
+     * @param targetCriteria target search criteria.
+     * @return List<RelationshipObject> List of relationship object.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<RelationshipObject> searchRelationships(String sourceDomain, SearchOptions sourceCriteria, 
                                                         String targetDomain, SearchOptions targetCriteria)

@@ -37,9 +37,8 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.services.control.RelationshipManager;
+import com.sun.mdm.multidomain.relationship.RelationshipObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.query.RelationshipObject;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
 import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.util.ObjectBuilder;

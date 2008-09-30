@@ -29,10 +29,9 @@ import javax.naming.NamingException;
 
 import net.java.hulp.i18n.Logger;
 
-import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.control.MetaDataManager.ServiceManagerType;
-import com.sun.mdm.multidomain.services.control.RelationshipManager;
-import com.sun.mdm.multidomain.services.control.ServiceManager;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
+
 import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
@@ -40,13 +39,17 @@ import com.sun.mdm.multidomain.services.util.Localizer;
  * @author cye
  */
 public class ServiceLocator {
-	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.ServiceLocator");
-	private static Localizer localizer = Localizer.getInstance();
+    private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.ServiceLocator");
+    private static Localizer localizer = Localizer.getInstance();
 
     private static ServiceLocator serviceLocator;
     private InitialContext initialContext;
+    private MultiDomainMetaService multiDomainMetaService;
     private MultiDomainService multiDomainService;
     
+    /**
+     * ServiceLocator singleton class.
+     */
     private ServiceLocator() { 
     }
 
@@ -62,6 +65,13 @@ public class ServiceLocator {
         return serviceLocator;
     }
   
+    /**
+     * Get initial context.
+     * @param factoryInitial Initial Factory 
+     * @param providerUrl Provider URL.
+     * @return InitialContext InitialContext.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     private InitialContext getInitialContext(String factoryInitial, String providerUrl) 
     	throws ServiceException {    	
     	//"java.naming.factory.initial", "com.sun.jndi.cosnaming.CNCtxFactory"
@@ -90,9 +100,31 @@ public class ServiceLocator {
     }
     
     /**
+     * Get a multi-domain meta service.
+     * @return MultiDomainMetaService interface.
+     * @throws ServiceException Thrown if an error occurs during processing. 
+     */
+    public MultiDomainMetaService getMultiDomainMetaService()  
+    	throws ServiceException { 
+    	if (multiDomainMetaService == null) {
+    		// get from contextManager
+    		String factoryInitial = null;
+    		String providerUrl = null;
+    		String serviceJNDIName = null;    	
+    		try {
+    			Object object = getInitialContext(factoryInitial, providerUrl).lookup(serviceJNDIName);
+    			multiDomainMetaService = (MultiDomainMetaService)object;
+    		} catch (NamingException nex) {
+    			throw new ServiceException(nex);    	
+    		}
+    	}
+    	return multiDomainMetaService;
+    }      
+    
+    /**
      * Get a multi-domain service.
-     * @param serviceType
-     * @return service by EJBObject
+     * @param MultiDomainService MultiDomainService interface.
+     * @return MultiDomainService Thrown if an error occurs during processing.
      */
     public MultiDomainService getMultiDomainService()  
     	throws ServiceException { 
@@ -101,7 +133,6 @@ public class ServiceLocator {
     		String factoryInitial = null;
     		String providerUrl = null;
     		String serviceJNDIName = null;    	
-    		MultiDomainService multiDomainService = null;    	
     		try {
     			Object object = getInitialContext(factoryInitial, providerUrl).lookup(serviceJNDIName);
     			multiDomainService = (MultiDomainService)object;

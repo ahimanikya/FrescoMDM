@@ -24,12 +24,10 @@ package com.sun.mdm.multidomain.services.control;
 
 import net.java.hulp.i18n.Logger;
 
-import com.sun.mdm.multidomain.services.control.RelationshipManager;
-import com.sun.mdm.multidomain.services.control.GroupManager;
-import com.sun.mdm.multidomain.services.control.HierarchyManager;
-import com.sun.mdm.multidomain.services.control.MetaDataManager;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
+
 import com.sun.mdm.multidomain.services.core.ServiceLocator;
-import com.sun.mdm.multidomain.services.core.MultiDomainService;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
@@ -44,6 +42,7 @@ public class ServiceManagerFactory {
 
 	private static ServiceLocator serviceLocator;
 	private static MultiDomainService multiDomainService;
+	private static MultiDomainMetaService multiDomainMetaService;
 
 	/**
 	 * Create an instance of ServiceManagerFactory
@@ -53,48 +52,48 @@ public class ServiceManagerFactory {
 	
 	/**
 	 * Initialize ServiceManagerFactory.
-	 * @throws ServiceException
+	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */
 	public void init() throws ServiceException {
-		serviceLocator = ServiceLocator.getInstance();
-		multiDomainService = serviceLocator.getMultiDomainService();
+            serviceLocator = ServiceLocator.getInstance();
+            multiDomainService = serviceLocator.getMultiDomainService();
+            multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
 	}
 	
 	/**
-	 * Create an instance of group manager
-	 * @return group manager
-	 * @throws ServiceException
+	 * Create an instance of group manager.
+	 * @return group manager Group Manager.
+	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */
 	public GroupManager createGroupManager() throws ServiceException {
-		return new GroupManager(multiDomainService); 
+		return new GroupManager(multiDomainMetaService, multiDomainService); 
 	}
 
 	/**
 	 * Create an instance of hierarchy manager
-	 * @return hierarchy manager
-	 * @throws ServiceException
+	 * @return hierarchy manager Hierarchy Manager.
+	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */	
-	public HierarchyManager createHierarchyManager() throws ServiceException {
-		
-		return new HierarchyManager(multiDomainService); 
+	public HierarchyManager createHierarchyManager() throws ServiceException {		
+            return new HierarchyManager(multiDomainMetaService, multiDomainService); 
 	}
 
 	/**
 	 * Create an instance of relationship manager
-	 * @return relationship manager
-	 * @throws ServiceException
+	 * @return relationship manager Relationship Manager.
+	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */		
 	public RelationshipManager createRelationshipManager() throws ServiceException {
-		return new RelationshipManager(multiDomainService);
+            return new RelationshipManager(multiDomainMetaService, multiDomainService);
 	}
 
 	/**
-	 * Create an instance of metadata manager
-	 * @return metadata manager
-	 * @throws ServiceException
+	 * Create an instance of metadata manager.
+	 * @return metadata manager MetaDataManager.
+	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */			
 	public MetaDataManager createMetaDataManager() throws ServiceException {
-		return new MetaDataManager(multiDomainService); 
+            return new MetaDataManager(multiDomainMetaService, multiDomainService); 
 	}
 	
 }

@@ -31,6 +31,9 @@ import java.util.Date;
 
 import net.java.hulp.i18n.Logger;
 
+import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
+
 import com.sun.mdm.index.master.SystemDefinition;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.EnterpriseObject;
@@ -40,7 +43,6 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Attribute;
 import com.sun.mdm.multidomain.relationship.AttributeType;
-import com.sun.mdm.multidomain.services.core.MultiDomainService;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
@@ -49,8 +51,8 @@ import com.sun.mdm.multidomain.services.util.Localizer;
  * @author cye
  */
 public class MetaDataManager {
-	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.MetaDataManager");
-	private static Localizer localizer = Localizer.getInstance();
+   private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.MetaDataManager");
+   private static Localizer localizer = Localizer.getInstance();
 
     public static final int METADATA_MANAGER = 0;	
     public static final int RELATIONSHIP_MANAGER = 1;
@@ -60,6 +62,7 @@ public class MetaDataManager {
     public enum ServiceManagerType {METADATA_MANAGER,RELATIONSHIP_MANAGER,HIERARCHY_MANAGER, GROUP_MANAGER};
         
     private MultiDomainService multiDomainService;
+    private MultiDomainMetaService multiDomainMetaService;
     
     /**
      * Create an instance of MetaDataManager.
@@ -68,12 +71,12 @@ public class MetaDataManager {
     }
   
     /**
-     * Create a instance of MetaDataManager with the given MultiDomainService. 
-     * @param multiDomainService
-     * @throws ServiceException
+     * Create a instance of MetaDataManager with the given MultiDomainMetaService and MultiDomainService. 
+     * @param multiDomainMetaService MultiDomainMetaService.
+     * @param multiDomainService MultiDomainMetaService.
      */
-    public MetaDataManager (MultiDomainService multiDomainService) 
-    	throws ServiceException {
+    public MetaDataManager (MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) {
+        this.multiDomainMetaService = multiDomainMetaService;
     	this.multiDomainService = multiDomainService;
     }
     

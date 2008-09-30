@@ -27,18 +27,18 @@ package com.sun.mdm.multidomain.services.core;
  * @author cye
  */
 public class ServiceException extends Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Create an instance of ServiceException.
-	 */
+    /**
+     * Create an instance of ServiceException.
+     */
     public ServiceException() {
         super();
     }
         
     /**
      * Greate an instance of ServiceException.
-     * @param message
+     * @param message Error message.
      */
     public ServiceException(String message) {
         super(message);
@@ -46,7 +46,7 @@ public class ServiceException extends Exception {
 
     /**
      * Create an instance of ServiceException
-     * @param throwable
+     * @param throwable Throwable.
      */
     public ServiceException(Throwable throwable) {
         super(throwable);

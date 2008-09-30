@@ -26,15 +26,15 @@ import java.util.List;
 
 import net.java.hulp.i18n.Logger;
 
+import com.sun.mdm.index.objects.epath.EPathArrayList;
+import com.sun.mdm.index.objects.ObjectNode;
+
+import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
+import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
+
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.services.core.MultiDomainService;
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.core.ServiceLocator;
-
-import com.sun.mdm.multidomain.services.query.SearchCriteria;
-import com.sun.mdm.multidomain.services.query.SearchOptions;
-import com.sun.mdm.multidomain.services.query.RelationshipObject;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
@@ -42,11 +42,11 @@ import com.sun.mdm.multidomain.services.util.Localizer;
  * @author cye
  */
 public class GroupManager implements ServiceManager {
-	private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.GroupManager");
-	private static Localizer localizer = Localizer.getInstance();
+    private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.GroupManager");
+    private static Localizer localizer = Localizer.getInstance();
    
-	private MultiDomainService multiDomainService;
-	private ServiceLocator serviceLocator;
+    private MultiDomainService multiDomainService;
+    private MultiDomainMetaService multiDomainMetaService;
 	
     /**
      * Create an instance of GroupManager.
@@ -55,20 +55,22 @@ public class GroupManager implements ServiceManager {
     }
     
     /**
-     * Create a instance of GroupManager with the given MultiDomainService. 
-     * @param multiDomainService
-     * @throws ServiceException
+     * Create a instance of GroupManager with the given MultiDomainMetaService and MultiDomainService.
+     * @param multiDomainMetaService MultiDomainMetaService. 
+     * @param multiDomainService MultiDomainService.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public GroupManager(MultiDomainService multiDomainService) 
+    public GroupManager(MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) 
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
+    	this.multiDomainMetaService = multiDomainMetaService;        
     }
     
     /**
      * Get a list of group types for the given domain name.
-     * @param domain
+     * @param domain Domain name.
      * @return a list of group types.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @throws ServiceException Thrown if an error occurs during processing.
      */    
     public List<RelationshipType> getGroupTypes(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");                
@@ -76,8 +78,8 @@ public class GroupManager implements ServiceManager {
     
     /**
      * Add a new group type.
-     * @param groupType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param groupType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void addType(RelationshipType groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
@@ -85,8 +87,8 @@ public class GroupManager implements ServiceManager {
     
     /**
      * Update an existing group type.
-     * @param groupType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param groupType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void updateType(RelationshipType groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
@@ -94,61 +96,61 @@ public class GroupManager implements ServiceManager {
     
     /**
      * Delete a group type.
-     * @param relationshipType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param groupType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(RelationshipType relationshipType) throws ServiceException {
+    public void deleteType(RelationshipType groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }   
     
     /**
      * Get a total count of group relationship types for the given domain.
-     * @param domain
-     * @return count of group relationship type
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return int Count of group relationship type.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipTypeCount(String domain) throws ServiceException {
-    	return 0;
+    public int getTypeCount(String domain) throws ServiceException {
+        throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
      * Get a list of group relationship types for the given domain.
-     * @param domain
-     * @return list of group relationship type
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return List<RelationshipType> List of group relationship type.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipType> getRelationshipTypes(String domain) throws ServiceException {
+    public List<RelationshipType> getTypes(String domain) throws ServiceException {
     	List<RelationshipType> groups = null;
     	return groups;
     }
     
     /**
      * Get a total count of group instances for the given group type.
-     * @param relationshipType
-     * @return count of group  instances
-     * @throws ServiceException
+     * @param groupType RelationshipType.
+     * @return int Count of group instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipCount(RelationshipType relationshipType) throws ServiceException {
-    	return 0;
+    public int getRelationshipCount(RelationshipType groupType) throws ServiceException {
+        throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
      * Get a list of group instances for the given group type.
-     * @param relationshipType
-     * @return list of group instances
-     * @throws ServiceException
+     * @param groupType RelationshipType.
+     * @return List<Relationship> List of group instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<Relationship> getRelationships(RelationshipType relationshipType) throws ServiceException {
+    public List<Relationship> getRelationships(RelationshipType groupType) throws ServiceException {
     	List<Relationship> groups = null;
     	return groups;
     }
     
     /**
-     * Add a group for the given domain.
-     * @param domain
-     * @param group
-     * @return an id of newly added group instance
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Add a new group for the given domain.
+     * @param domain Domain name.
+     * @param group Relationship.
+     * @return String Group identifier of newly added group instance.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public String addGroup(String domain, Relationship group) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
@@ -156,71 +158,113 @@ public class GroupManager implements ServiceManager {
   
     /**
      * Add a group instance for the given domain.
-     * @param domain
-     * @param entityEUIDs
-     * @param group
-     * @return an id of newly added group instance
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param domain Domain name.
+     * @param entityEUIDs List of entities EUIDs.
+     * @param group Relationship.
+     * @return String Group identifier of newly added group instance.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public String addGroup(String domain,List<String> entityEUIDs, Relationship group) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }    
     
     /**
-     * Update a group instance for the given domain.
-     * @param domain
-     * @param group
-     * @return an id of newly updated group instance
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Create group members.
+     * @param groupId Group Identifier.
+     * @param EUIDs An array of EUIDs.
+     * @param relationship Group relationship.
+     * @return String[] A list of relationshipIds that are assocated between the given groupId and EUIDs.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String updateGroup(String domain, Relationship group) throws ServiceException {
+    public String[] createGroupMembers(String groupId, String EUIDs[], Relationship relationship)
+        throws ServiceException {
+         throw new ServiceException("Not Implemented Yet");
+    }
+    
+    /**
+     * Update a group instance for the given domain.
+     * @param domain Domain name.
+     * @param group Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public void updateGroup(String domain, Relationship group) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }
     
     /**
      * Update a group instance for the given domain.
-     * @param domain
-     * @param entityEUID
-     * @param group
-     * @return an id of newly updated group instance
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param domain Domain name.
+     * @param entityEUID Entity EUID.
+     * @param group Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String updateGroup(String domain, String entityEUID, Relationship group) throws ServiceException {
+    public void updateGroup(String domain, String entityEUID, Relationship group) throws ServiceException {
+        throw new ServiceException("Not Implemented Yet");
+    } 
+   
+    /**
+     * Update a group relationship for the given EUID.
+     * @param domain Domain name.
+     * @param EUID EUID.
+     * @param relationship Relationship.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public void updateGroupMember(String domain, String EUID, Relationship relationship) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     } 
     
     /**
-     * Delete a group instance.
-     * @param domain
-     * @param groupName
-     * @return an id of newly deleted group instance
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     *  Get group members that are have relationship with the given groupId.
+     * @param domain Domain name.
+     * @param groupId Group Identifier.
+     * @param fields A list of fields to retrieve for all the members EUIDs.
+     * @return A list of object nodes that have relationship with the given groupId.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String deleteGroup(String domain, String groupName) throws ServiceException {
+    public ObjectNode[] getGroupMembers(String domain, String groupId, EPathArrayList fields) throws ServiceException {
+        throw new ServiceException("Not Implemented Yet");        
+    }
+    
+    /**
+     * Delete a group instance for the given domain and group name.
+     * @param domain Domain name.
+     * @param groupName Group name.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public void deleteGroup(String domain, String groupName) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }     
     
     /**
-     * Delete a group instance.
-     * @param domain
-     * @param entityEUID
-     * @param groupName
-     * @return an id of newly deleted group instance
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Delete a group instance for the given domain and group name.
+     * @param domain Domain name.
+     * @param entityEUID Entity EUID.
+     * @param groupName Group name.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String deleteGroup(String domain, String entityEUID, String groupName) throws ServiceException {
+    public void deleteGroup(String domain, String entityEUID, String groupName) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }  
     
     /**
-     * Search group instances for the given domain.
-     * @param domain
-     * @param queryObject
-     * @param queryFilte
-     * @return a list of group instances.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * Delete a EUID from the given group.
+     * @param domain Domain name.
+     * @param groupId Group Identifier.
+     * @param EUID EUID.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipObject> searchGroups(String domain, SearchCriteria queryObject, SearchOptions queryFilte) throws ServiceException {
+    public void deleteGroupMember(String domain, String groupId, String EUID)
+        throws ServiceException {
+        throw new ServiceException("Not Implemented Yet");        
+    }
+        
+    /**
+     * Search group instances for the given relationship.
+     * @param relationship Relationship.
+     * @return List<Relationship> List of group instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public List<Relationship> searchGroups(Relationship relationship) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }
 }

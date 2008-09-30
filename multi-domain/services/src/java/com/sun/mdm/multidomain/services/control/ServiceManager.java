@@ -29,7 +29,7 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
 /**
- * ServiceManager interface.
+ * Generic ServiceManager interface.
  * @author cye
  */
 public interface ServiceManager {
@@ -37,56 +37,55 @@ public interface ServiceManager {
 	
     /**
      * Add a new relationship type.
-     * @param relationshipType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param relationshipType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void addType(RelationshipType relationshipType) throws ServiceException;
   
     /**
      * Update an existing relationship type.
-     * @param relationshipType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param relationshipType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void updateType(RelationshipType relationshipType) throws ServiceException;
    
     /**
      * Delete a relationship type.
-     * @param relationshipType
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
+     * @param relationshipType RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void deleteType(RelationshipType relationshipType) throws ServiceException;
 
     /**
      * Get a total count of relationship types for the given domain.
-     * @param domain
-     * @return count of relationship type
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return int Count of relationship type.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipTypeCount(String domain) throws ServiceException;
+    public int getTypeCount(String domain) throws ServiceException;
     
     /**
      * Get a list of relationship types for the given domain.
-     * @param domain
-     * @return list of relationship type
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return List<RelationshipType> List of relationship type.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipType> getRelationshipTypes(String domain) throws ServiceException;
+    public List<RelationshipType> getTypes(String domain) throws ServiceException;
     
     /**
      * Get a total count of relationship instances for the given relationship type.
-     * @param relationshipType
-     * @return count of relationship instances
-     * @throws ServiceException
+     * @param relationshipType RelationshipType.
+     * @return int Count of relationship instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public int getRelationshipCount(RelationshipType relationshipType) throws ServiceException;
     
     /**
      * Get a list of relationship instances for the given relationship type.
-     * @param relationshipType
-     * @return list of relationship instances
-     * @throws ServiceException
+     * @param relationshipType RelationshipType.
+     * @return List<Relationship> List of relationship instances.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<Relationship> getRelationships(RelationshipType relationshipType) throws ServiceException;
-    
-    
+        
 }
