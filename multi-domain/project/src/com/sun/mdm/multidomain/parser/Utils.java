@@ -165,12 +165,31 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException("PAR503: Failed to parse: " + 
+            throw new ParserException("PAR503: Failed to parse RelationshipModel: " + 
                                                     xmlSource.getPublicId() + ":" + e.getMessage());
         }
     }
 
-    /**
+
+        /**
+     * @param xmlSource object definition
+     * @return ret RelationshipType
+     * @throws ParserException exception
+     */
+    public static RelationshipWebManager parseRelationshipWebManager(InputSource xmlSource) throws ParserException {
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            mDoc = docBuilder.parse(xmlSource);
+            RelationshipWebManager ret = new RelationshipWebManager();
+            ret.parseNode(mDoc);
+            return ret;
+        } catch (Exception e) {
+            throw new ParserException("PAR503: Failed to parse RelationshipWebManager: " + 
+                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+        }
+    }
+/**
      * @param xmlSource object definition
      * @return ret EIndexObject
      * @throws ParserException exception

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class DomainsForWebManager {
     
-    private ArrayList<DomainForWebManager> mDomains;
+    private ArrayList<DomainForWebManager> mDomains = new ArrayList<DomainForWebManager>();
     
     public ArrayList<DomainForWebManager> getDomains() {
         return this.mDomains;

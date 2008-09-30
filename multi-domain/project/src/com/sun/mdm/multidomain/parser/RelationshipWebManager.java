@@ -55,7 +55,7 @@ public class RelationshipWebManager {
         return this.mJndiResources;
     }
 
-    public byte[] writeToString() throws IOException, Exception {
+    public String writeToString() throws IOException, Exception {
 
 
 
@@ -73,7 +73,7 @@ public class RelationshipWebManager {
         root.appendChild(getDomainsToStr(xmldoc));
         root.appendChild(getJndiResToStr(xmldoc));
         byte[] webXml = transformToXML(xmldoc);
-        return webXml;
+        return new String(webXml);
 
     }
     
@@ -318,13 +318,13 @@ public class RelationshipWebManager {
                 for (int i1 = 0; i1 < nl1.getLength(); i1++) {
                     if (nl1.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                         String name = ((Element) nl1.item(i1)).getTagName();
-                        if (name.equals(WebManagerProperties.mTAG_RELATIONSHIP_TYPE)) {
+                        if (name.equals(WebManagerProperties.mTAG_RELATIONSHIP_TYPES)) {
                             parseRelTypes(nl1.item(i1));
                         } else if (name.equals(WebManagerProperties.mTAG_PAGE_DEFINITION)) {
                             parsePageDef(nl1.item(i1));
                         } else if (name.equals(WebManagerProperties.mTAG_DOMAINS)) {
                             parseDomains(nl1.item(i1));
-                        } else if (name.equals(WebManagerProperties.mTAG_JNDIRESOURCES)) {
+                        } else if (name.equals(WebManagerProperties.mTAG_RELATIONSHIP_JNDI)) {
                             parseRelJNDI(nl1.item(i1));
                         }
                     }
@@ -419,8 +419,8 @@ public class RelationshipWebManager {
                     displayOrder = RelationshipUtil.getIntElementValue(elm);
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_GUI_TYPE)) {
                     guiType = RelationshipUtil.getStrElementValue(elm);
-                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_KEY_TYPE)) {
-                    keyType = Boolean.getBoolean(RelationshipUtil.getStrElementValue(elm));
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_KEY_TYPE)) {                  
+                    keyType = Boolean.valueOf(RelationshipUtil.getStrElementValue(elm)).booleanValue();
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_MAX_LENGTH)) {
                     maxLen = RelationshipUtil.getIntElementValue(elm);
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_LIST)) {
@@ -555,13 +555,15 @@ public class RelationshipWebManager {
 
         String elementName = null;
         NodeList children = node.getChildNodes();
-        DomainForWebManager domain = new DomainForWebManager();
+        DomainForWebManager domain = null;
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
-                String value = RelationshipUtil.getStrElementValue(elm);
-                if (elementName.equals(WebManagerProperties.mTAG_SEARCH_PAGES)) {
+                if (elementName.equals(WebManagerProperties.mTAG_NAME)) {
+                    String value = RelationshipUtil.getStrElementValue(elm);
+                    domain = new DomainForWebManager(value);                        
+                } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_PAGES)) {
                     parseSearchPages(elm, domain);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES)) {
                     parseSearchResultPages(elm, domain);
@@ -705,6 +707,8 @@ public class RelationshipWebManager {
     private void parseRelJNDI(Node node) {
         String elementName = null;
         NodeList children = node.getChildNodes();
+ 
+        mJndiResources = new JNDIResources(new ArrayList<RelationshipProperty>(), new ArrayList<RelationshipJDNIResources>());
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);

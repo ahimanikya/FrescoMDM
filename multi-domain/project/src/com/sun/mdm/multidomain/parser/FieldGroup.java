@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class FieldGroup {
     
-    private ArrayList<FieldRef> mFieldRefs;
+    private ArrayList<FieldRef> mFieldRefs = new ArrayList<FieldRef>();
     
     public ArrayList<FieldRef> getFeildRefs() {
         return this.mFieldRefs;

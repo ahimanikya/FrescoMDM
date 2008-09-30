@@ -22,6 +22,10 @@ public class DomainForWebManager {
     
     private RecordDetail mRecordDetail;
     
+    public DomainForWebManager(String name) {
+        this.mDomainName = name;
+    }
+    
     public String getDomainName() {
         return this.mDomainName;
     }

@@ -31,7 +31,7 @@ public class WebManagerProperties {
     
     public static String mTAG_DOMAIN = "domain";
     
-    public static String mTAG_ELATIONSHIP_JNDI = "jndi-resources";
+    public static String mTAG_RELATIONSHIP_JNDI = "jndi-resources";
     
     public static String mTAG_NAME = "name";
     
