@@ -11,8 +11,7 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script>
-</head>
+</script></head>
 <body>
 <h1>Future Ideas for&nbsp;<span style="font-weight: bold;">Relationship
 Management</span></h1>
@@ -1228,14 +1227,16 @@ on-line store.
 <li> Runs as a Web based application.</li>
 <li> For the first release provides handling creation and
 viewing of Record information.</li>
-<li>Supports 508 as per<a href="http://developers.sun.com/docs/web-app-guidelines/uispec4_0/D-accessibility.html">
-http://developers.sun.com/docs/web-app-guidelines/uispec4_0/D-accessibility.html</a></li>
+<li>Supports Accessibility (508) as per<a href="http://developers.sun.com/docs/web-app-guidelines/uispec4_0/D-accessibility.html">
+http://developers.sun.com/docs/web-app-guidelines/uispec4_0/D-accessibility.html
+</a>or <a href="http://www.w3.org/TR/WCAG/">http://www.w3.org/TR/WCAG/</a> Priority 1 items</li>
 <li>NLS support including support for date formats and double
 byte Kanji</li>
 <li>Need to be able to define screens similiar to MIDM.
 </li>
 <ol style="list-style-type: lower-alpha;">
-<li>Define tabs</li><li>Define screen order</li>
+<li>Define tabs</li>
+<li>Define screen order</li>
 </ol>
 <li> Uses Access Control to determine the following:
 <br />
@@ -1345,32 +1346,60 @@ Kendall: Not planed for first release
 <ul>
 <li> <b>Manage</b>
 <ul>
-<li> <b>Relationships</b> N to N
-diagrams. These can form a network of nodes.
+<li> <b>Relationships</b> M to N
+diagrams. These can form a network of nodes. &nbsp;
 <ul>
-<li> <b>Maintain</b></li><li><b>Create&nbsp;<br /><br />&nbsp;</b>Define records and create relationships. &nbsp;<br /></li><ul><li>Define source record. &nbsp;&nbsp;</li><li>Define mutltiple target records either by entering data and / or search. &nbsp;</li><li>Define relationship type.</li><li>Define default &nbsp;relationship attributes for all records.</li><li>Show all relationships and allow changing of relationship attributes</li></ul></ul><b></b><ul>
+<li> <b>Maintain</b></li>
+<li><b>Create &nbsp;</b>Not planed for first release<br /><b>
+<br />
+&nbsp;</b>Define records and create relationships. &nbsp;<br />
+</li>
+<ul>
+<li>Define source record. &nbsp;&nbsp;</li>
+<li>Define mutltiple target records either by
+entering data and / or search. &nbsp;</li>
+<li>Define relationship type.</li>
+<li>Define default &nbsp;relationship attributes
+for all records.</li>
+<li>Show all relationships and allow changing of
+relationship attributes</li>
+</ul><li><span style="font-weight: bold;">Reassign&nbsp;<br /><br /></span><span style="font-weight: bold;"></span>Reassign all or some the records that have a specific relationship with a record to a different record.&nbsp;<br /><br />Example:
+A new "Customer" takes replaces an existing "Customer" and wants to use
+some or all of the relationships of the orginal customer.<br /><br />In
+this example George Karlin is a "Customer" and has serveral accounts.
+&nbsp;Each account in term has a relationship with a location.&nbsp;
+&nbsp; &nbsp;<br /><br />A user can reassign all existing relationships to the new record or assign a sub-set.<br /><br />A user can delete selected relationshps associated with either the existing or the new relationship.<br /><br />A user can move records back from the new "Customer" if they make a mistake.<br /><br />A user only move records to the same domain and relationship at the destination. <br /><br /></li></ul>
+
+<ul>
 <li> <b>History</b> </li>
 </ul>
 </li>
 <li> <b>Hierarchies</b> Child / Parent
 relationships.
 <ul>
-<li> <b>Maintain</b></li><li><b>Create<br /></b></li>
+<li> <b>Maintain</b></li>
+<li><b>Create<br />
+</b></li>
 <li> <b>Resolve Conflicts</b>
-09/01/2008 Andrea Kendall: Conflicts because of merges is not shown in any detail. </li>
+09/01/2008 Andrea Kendall: Conflicts because of merges is not shown in
+any detail. </li>
 <li> <b>History</b> </li>
 </ul>
 </li>
 <li> <b>Group Instances</b>
 <ul>
-<li> <b>Maintain</b></li><li><b>Create<br /></b></li>
+<li> <b>Maintain</b></li>
+<li><b>Create<br />
+</b></li>
 <li> <b>History</b> </li>
 </ul>
 </li>
 <li> <b>Categories</b> 09/05/2008 Andrea
 Kendall: Not planed for first release
 <ul>
-<li> <b>Maintain</b></li><li><b>Create<br /></b></li>
+<li> <b>Maintain</b></li>
+<li><b>Create<br />
+</b></li>
 <li> <b>History</b><br />
 </li>
 </ul>
