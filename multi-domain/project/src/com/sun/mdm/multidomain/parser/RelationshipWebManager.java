@@ -506,7 +506,7 @@ public class RelationshipWebManager {
                 elementName = elm.getTagName();
                 String relType = elm.getAttribute(WebManagerProperties.mTAG_NAME);
                 pageRelType = new PageRelationType(relType);
-                parseRelFieldGroup(elm);
+                parseRelFieldGroup(elm, pageRelType);
 
             }
 
@@ -515,7 +515,7 @@ public class RelationshipWebManager {
 
     }
 
-    private void parseRelFieldGroup(Node node) {
+    private void parseRelFieldGroup(Node node, PageRelationType pageRelation) {
         String elementName = null;
         NodeList children = node.getChildNodes();
         ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
@@ -525,8 +525,8 @@ public class RelationshipWebManager {
                 elementName = elm.getTagName();
                 //String relType = elm.getAttribute(NAME);
                 FieldGroup fieldGroup = new FieldGroup();
-                fieldGroups.add(fieldGroup);
-                parseFieldGroup(elm, fieldGroup);
+                pageRelation.addFieldGroup(fieldGroup);
+                 parseFieldGroup(elm, fieldGroup);
             }
 
         }
