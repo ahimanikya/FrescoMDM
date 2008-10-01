@@ -4,9 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://yui4jsf.sourceforge.net" prefix="yui"%>
+<%@ page import="java.util.ResourceBundle"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
+<%@ page import="javax.el.*"  %>
+<%@ page import="javax.el.ValueExpression" %>
+<%@ page import="javax.faces.context.FacesContext"  %>
+
 
 <%
 //Author Sridhar Narsingh
@@ -23,6 +29,7 @@
 	<link type="text/css" rel="stylesheet" href="css/yui/treeview/assets/skins/sam/treeview-skin.css"> 
        </head>
 <%
+ ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 //set locale value
 if(session!=null ){
  LocaleHandler localeHandler = new LocaleHandler();
@@ -34,18 +41,16 @@ if(session!=null ){
 <body>	
      <table  width="100%">
          <tr>
-             <td align="left"><font style="font-size:14px;font-style:bold;"><h:outputText value="#{msgs.merge_tree_text}"/></font></td>
-             <td align="right">
+             <th align="left" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.merge_tree_text}"/></th>
+             <th align="right">
                  <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:closeTree();"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
-                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:closeTree();"><img src="images/close.gif" width="12" height="12" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
-             </td>
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:closeTree();"><img src="images/close.gif" width="12px" height="12px" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+             </th>
          </tr>
 
          <tr>
              <td colspan="2" align="left">
-                 <h:form>
                      <yui:treeView id="treeView" value="#{ViewMergeTreeHandler.htmlNodeTreeDataModel}" expandAnim="FADE_IN" collapseAnim="fade_out"></yui:treeView>
-                 </h:form>                 
              </td>
          </tr>
      </table>

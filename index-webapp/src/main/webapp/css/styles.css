@@ -2910,3 +2910,26 @@ a.navbuttonselected:active span {
  font-weight:normal;
     color:#000000;
  }
+
+#tree th {
+   font-family: sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   cursor:move;	
+   font-size: 12px;
+   background-color:#ffffff;
+   color:#000000;
+}
+
+#tree table  {
+   font-family: sans-serif,Arial, Helvetica ;
+	   font-size: 12px;
+   background-color:#c4c8e1;
+   color:#000000;
+}
+
+#tree td {
+   font-family: sans-serif,Arial, Helvetica ;
+	   font-size: 12px;
+   background-color:#c4c8e1;
+   color:#000000;
+}

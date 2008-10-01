@@ -1184,7 +1184,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                       %>  
                                                      <tr>
                                                       <td valign="top">
-                                                         <a href="javascript:void(0);" class="viewbtn" title="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>"									 onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
+                                                          <a href="javascript:void(0);" class="viewbtn" title="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>"									 onclick="javascript:showExtraDivs('tree',event);ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
                                                           <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
                                                          </a>
                                                       </td>
@@ -1229,7 +1229,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
  </div> <!-- end mainEuidContent -->
 
 
-<div id="tree" style="LEFT:189px;TOP:350px;PADDING-LEFT: 5px; VISIBILITY: hidden; WIDTH: 180px; PADDING-TOP: 5px;  POSITION: absolute;  OVERFLOW: auto;  HEIGHT: 150px; BACKGROUND-COLOR: #c4c8e1; BORDER-RIGHT:  #000099 thin solid; BORDER-TOP: #000099 thin solid; BORDER-LEFT: #000099 thin solid; BORDER-BOTTOM:  #000099 thin solid"></div> 
+<div id="tree" style="VISIBILITY: hidden; WIDTH: 180px;POSITION: absolute;  OVERFLOW: auto;  BACKGROUND-COLOR: #c4c8e1;    border-right: 1px solid #000000;border-left: 1px solid #000000;border-top: 1px solid #000000;border-bottom: 1px solid #000000;"></div> 
 
                 <div id="unmergePopupDiv" class="alert" style="TOP: 2250px; LEFT: 500px; HEIGHT: 150px;  WIDTH: 300px;VISIBILITY: hidden;">
                                                         <table cellpadding="0" cellspacing="0">
@@ -1379,6 +1379,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
     makeDraggable("unLinkSoDiv");
     makeDraggable("linkSoDiv");
 	makeDraggable("activeDiv");
+    makeDraggable("tree");
 </script>
      </html>
     </f:view>
