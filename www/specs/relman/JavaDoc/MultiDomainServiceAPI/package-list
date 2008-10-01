@@ -1,0 +1,4 @@
+com.sun.mdm.multidomain.ejb.service
+com.sun.mdm.multidomain.query
+com.sun.mdm.multidomain.relationship
+com.sun.mdm.multidomain.util

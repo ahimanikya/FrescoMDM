@@ -1,0 +1,5 @@
+com.sun.mdm.multidomain.services.context
+com.sun.mdm.multidomain.services.control
+com.sun.mdm.multidomain.services.core
+com.sun.mdm.multidomain.services.query
+com.sun.mdm.multidomain.services.util
