@@ -15,7 +15,7 @@ public class PageRelationType {
     
     private String mRelType = null;
    
-    private ArrayList<FieldGroup> mFieldGroups;
+    private ArrayList<FieldGroup> mFieldGroups = new ArrayList<FieldGroup>();
     
     public PageRelationType(String relType) {
         this.mRelType = relType;
