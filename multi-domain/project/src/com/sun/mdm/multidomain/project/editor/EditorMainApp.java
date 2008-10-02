@@ -82,7 +82,6 @@ public class EditorMainApp {
      * Creates a new instance of EditorMainApp the constructor is decleared private
      * so it cannot be instantiated
      *
-     * @param name DOCUMENT ME!
      */
     private EditorMainApp() {
     }
@@ -144,7 +143,7 @@ public class EditorMainApp {
                         mMapDomainObjectXmls.put(domainName, objectXml);
                         DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain));
                         mMapDomainNodes.put(domainName, domainNode);
-                        //ToDo: populate relationship types for domainNode
+                        //populate relationship types for domainNode
                         ArrayList <RelationshipType> alRelationshipTypes = this.mRelationshipModel.getRelationshipTypesByDomain(domainName);
                         domainNode.loadRelationshipTypes(alRelationshipTypes);
                     }
@@ -153,6 +152,11 @@ public class EditorMainApp {
         }
     }
     
+    /**
+     * Get DomainNode by name
+     * @param name
+     * @return
+     */
     public DomainNode getDomainNode(String name) {
         DomainNode node = null;
         if (mMapDomainNodes != null) {
@@ -168,19 +172,20 @@ public class EditorMainApp {
         }
         return node;
     }
+    
     /**
-     * 
-     * @param selectedDomain
+     * Add domain to the model
+     * @param fileDomain
      * @return
      * @throws java.io.IOException
      */
-    public boolean addDomain(File selectedDomain) {
+    public boolean addDomain(File fileDomain) {
         boolean added = false;
-        String domainName = selectedDomain.getName();
+        String domainName = fileDomain.getName();
         if (!mMapDomainObjectXmls.containsKey(domainName)) {
             //Copy domain's object.xml
             try {
-                FileObject objectXml = getDomainConfigurationFile(selectedDomain, MultiDomainProjectProperties.OBJECT_XML);
+                FileObject objectXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.OBJECT_XML);
                 FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
                 FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
                 FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
@@ -200,6 +205,11 @@ public class EditorMainApp {
         return added;
     }
     
+    /**
+     * Remove domain from the model
+     * @param domainName
+     * @return
+     */
     public boolean removeDomain(String domainName) {
         boolean removed = false;
         if (mMapDomainObjectXmls.containsKey(domainName)) {
@@ -219,14 +229,14 @@ public class EditorMainApp {
     }
 
     /**
-     * 
-     * @param selectedDomain
+     * Get saved object.xml for the domain
+     * @param fileDomain
      * @return
      */
-    public static FileObject getSavedDomainObjectXml(File selectedDomain) {
+    public static FileObject getSavedDomainObjectXml(File fileDomain) {
         FileObject objectXml = null;
         try {
-            FileObject fobjSavedSomain = FileUtil.toFileObject(selectedDomain);
+            FileObject fobjSavedSomain = FileUtil.toFileObject(fileDomain);
             objectXml = fobjSavedSomain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
@@ -249,13 +259,13 @@ public class EditorMainApp {
 
     /**
      * 
-     * @param selectedDomain
+     * @param fileDomain
      * @return
      */
-    public static FileObject getDomainObjectXml(File selectedDomain) {
+    public static FileObject getDomainObjectXml(File fileDomain) {
         FileObject objectXml = null;
         try {
-            objectXml = getDomainConfigurationFile(selectedDomain, MultiDomainProjectProperties.OBJECT_XML);
+            objectXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.OBJECT_XML);
         } catch (IOException ex) {
             mLog.severe(ex.getMessage());
         }
@@ -269,8 +279,8 @@ public class EditorMainApp {
      * @return
      * @throws java.io.IOException
      */
-    public static FileObject getDomainConfigurationFile(File selectedDomain, String fileName) throws IOException {
-        String folder = selectedDomain.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
+    public static FileObject getDomainConfigurationFile(File fileDomain, String fileName) throws IOException {
+        String folder = fileDomain.getAbsolutePath() + File.separator + MultiDomainProjectProperties.SRC_FOLDER + File.separator + MultiDomainProjectProperties.CONFIGURATION_FOLDER;
         FileObject fileObj = null;
         if (folder != null) {
             FileObject dir = FileUtil.toFileObject(new File(folder));
@@ -301,7 +311,7 @@ public class EditorMainApp {
         try {
             mMultiDomainApplication.loadAll();
 
-            getRelationshipModel();
+            getRelationshipModel(true);
             // Load mMapDomainObjectXmls
             loadDomains();
             // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
@@ -340,23 +350,16 @@ public class EditorMainApp {
         xmlStr = mMultiDomainApplication.getRelationshipWebMAnager(false).writeToString();
         return xmlStr;
     }
-    
-    public void enableSaveAction(boolean flag) {
-        this.mMultiDomainApplication.setModified(flag);
-        this.mEditorMainPanel.enableSaveButton(flag);
-    }
-    
 
-    public RelationshipModel getRelationshipModel() {
-        mRelationshipModel = mMultiDomainApplication.getRelationshipModel(true);
+    public RelationshipModel getRelationshipModel(boolean refresh) {
+        mRelationshipModel = mMultiDomainApplication.getRelationshipModel(refresh);
         return mRelationshipModel;
     }
-    
 
-    public RelationshipWebManager getRelationshipWebManager(String objectXml) {
+    public RelationshipWebManager getRelationshipWebManager(String xml) {
         RelationshipWebManager relationshipWebManager = null;
         try {
-            InputStream objectdef = new ByteArrayInputStream(objectXml.getBytes());
+            InputStream objectdef = new ByteArrayInputStream(xml.getBytes());
             InputSource source = new InputSource(objectdef);
             relationshipWebManager = com.sun.mdm.multidomain.parser.Utils.parseRelationshipWebManager(source);
         } catch (Exception ex) {
@@ -365,6 +368,10 @@ public class EditorMainApp {
         return relationshipWebManager;
     }
     
+    public void enableSaveAction(boolean flag) {
+        this.mMultiDomainApplication.setModified(flag);
+        this.mEditorMainPanel.enableSaveButton(flag);
+    }   
 
     /* Save all edited files
      * RelationshipModel.xml and RelationshipWebManager.xml

@@ -62,7 +62,6 @@ import java.io.IOException;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
-import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
@@ -87,12 +86,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     static final String TAB_WEB_MANAGER = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_WEB_MANAGER");
 
-
-    private JSplitPane mSplitPane = null;
-    private JScrollPane multiViewPane;
-    private JScrollPane propertiesPane = new JScrollPane();
     private JPopupMenu mMenu;
-    private JLabel jLabelNoProperties;
     private JButton mButtonAddDomain;
     private JButton mButtonDelete;
     private JButton mButtonSave;
@@ -103,7 +97,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     //private JPanel canvas = new JPanel();
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
-    JTabbedPane propertiesTabbedPane = new JTabbedPane();
+
     
     /**
      * Create the panel and set up some basic properties.
@@ -125,10 +119,6 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
     private void initComponents() {
         setLayout(new java.awt.BorderLayout());
-        jLabelNoProperties = new javax.swing.JLabel();
-        jLabelNoProperties.setText(NbBundle.getMessage(
-                EditorMainPanel.class, "MSG_Property_NoProperties"));
-        jLabelNoProperties.setEnabled(false);
         setName(NbBundle.getMessage(EditorMainPanel.class,
                 "TITLE_DefineRelationships"));
 
@@ -137,25 +127,21 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         // Read RelationshipModel
         // Populate Model structures
         // Populate canvas with DomainNodes (EditorMainApp has a map for DomainNodes)
-        createSplitPane(); // Put tree and table in a split pane mSplitPane
+        JSplitPane splitPane = createSplitPane(); // Put tree and table in a split pane splitPane
 
-        this.add(mSplitPane, BorderLayout.CENTER);
+        this.add(splitPane, BorderLayout.CENTER);
     }
 
     
     private void addListeners() {
     }
     
-    private void createSplitPane() {
-        // Put tree and table in a split pane mSplitPane
-        multiViewPane = new JScrollPane();
+    private JSplitPane createSplitPane() {
+        // Put tree and table in a split pane splitPane
+        JScrollPane multiViewPane = new JScrollPane();
         multiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_Relationship_Model")));
-        //propertiesPane.setViewportView(jLabelNoProperties);
-        propertiesPane.setBorder(new javax.swing.border.TitledBorder(
-                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                    NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
 
         multiViewPane.setViewportView(canvas);
         //ToDo
@@ -166,20 +152,26 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         if (node != null) {
             tab = node.getTabListRelationshipTypes();
         }
+        JTabbedPane propertiesTabbedPane = new JTabbedPane();
         propertiesTabbedPane.add(TAB_OBJECT_MODEL, tab);
-        //Wee add web properties tab here
         propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
+        JScrollPane propertiesPane = new JScrollPane();
+        propertiesPane.setBorder(new javax.swing.border.TitledBorder(
+                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                                    NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
         propertiesPane.setViewportView(propertiesTabbedPane);
         
-        mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 multiViewPane, propertiesPane);
-        mSplitPane.setOneTouchExpandable(true);
-        mSplitPane.setDividerLocation(250);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setDividerLocation(250);
 
         //Provide minimum sizes for the two components in the split pane
         Dimension minimumSize = new Dimension(250, 100);
         multiViewPane.setMinimumSize(minimumSize);
+        
+        return splitPane;
     }
 
     private JToolBar createToolBar() {
