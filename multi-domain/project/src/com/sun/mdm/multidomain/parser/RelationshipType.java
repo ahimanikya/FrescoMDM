@@ -46,7 +46,10 @@ public class RelationshipType {
     private String mSource = null;
     
     private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
-    
+
+    public RelationshipType() {
+    }
+
     public RelationshipType(String relType, String destionation, String source,
                             ArrayList<RelationFieldReference> fieldRefs) {
         

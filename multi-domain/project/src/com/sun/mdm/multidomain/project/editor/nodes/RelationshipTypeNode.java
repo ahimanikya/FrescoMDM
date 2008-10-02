@@ -36,6 +36,7 @@ import org.openide.nodes.Children;
 import org.openide.util.Lookup;
 
 import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
 
 /**
  *
@@ -44,6 +45,7 @@ import com.sun.mdm.multidomain.parser.RelationshipType;
 public class RelationshipTypeNode extends AbstractNode {
 
     RelationshipType mRelationshipType;
+    TabRelationshipWebManager mTabRelationshipWebManager = new TabRelationshipWebManager(null, null);
     
     public RelationshipTypeNode() {
         super(Children.LEAF);
@@ -59,5 +61,9 @@ public class RelationshipTypeNode extends AbstractNode {
     
     public RelationshipTypeNode(RelationshipType relationshipType) {
         super(Children.LEAF);
+    }
+    
+    public TabRelationshipWebManager getTabRelationshipWebManager() {
+        return mTabRelationshipWebManager;
     }
 }

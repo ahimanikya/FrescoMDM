@@ -41,6 +41,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
 
 import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
@@ -75,6 +76,7 @@ public class EditorMainApp {
     private ArrayList mAlRelationshipTypeNodes = new ArrayList();
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
+    private RelationshipModel mRelationshipModel;
     
     /**
      * Creates a new instance of EditorMainApp the constructor is decleared private
@@ -126,7 +128,7 @@ public class EditorMainApp {
      * Look for src\Domains dir for participating domains
      * Need to verify the list against RelationshipModel.xml?
      */
-    private void loadDomainMaps() {
+    private void loadDomains() {
         // Load mMapDomainObjectXmls and mMapDomainNodes
         FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
         FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
@@ -140,13 +142,30 @@ public class EditorMainApp {
                     if (objectXml != null) {
                         String domainName = domain.getName();
                         mMapDomainObjectXmls.put(domainName, objectXml);
-                        mMapDomainNodes.put(domainName, new DomainNode(domainName, FileUtil.toFile(domain)));
+                        DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain));
+                        mMapDomainNodes.put(domainName, domainNode);
+                        //ToDo: populate relationship types for domainNode
+                        ArrayList <RelationshipType> alRelationshipTypes = this.mRelationshipModel.getRelationshipTypesByDomain(domainName);
+                        domainNode.loadRelationshipTypes(alRelationshipTypes);
                     }
                 }
             }
         }
     }
     
+    public DomainNode getDomainNode(String name) {
+        DomainNode node = null;
+        if (mMapDomainNodes != null) {
+            if (name == null) {
+                Object[] objs = mMapDomainNodes.values().toArray();
+                node = (DomainNode) objs[0];
+
+            } else {
+                node = (DomainNode) mMapDomainNodes.get(name);
+            }
+        }
+        return node;
+    }
     /**
      * 
      * @param selectedDomain
@@ -276,27 +295,28 @@ public class EditorMainApp {
      */
     public void startEditorApp(MultiDomainApplication application) {
         mMultiDomainApplication = application;
+        String projName = mMultiDomainApplication.getProjectDirectory().getName();
         try {
             mMultiDomainApplication.loadAll();
-            mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
 
+            getRelationshipModel();
             // Load mMapDomainObjectXmls
-            loadDomainMaps();
+            loadDomains();
             // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
             //loadRelationshipTypeNodes();
 
-            String projName = mMultiDomainApplication.getProjectDirectory().getName();
 
+            mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
             mObjectTopComponent = new ObjectTopComponent();
             mObjectTopComponent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             mMultiDomainApplication.setObjectTopComponent(mObjectTopComponent);
             if (mObjectTopComponent.startTopComponent(getInstance(projName), projName, application, mEditorMainPanel)) {
                 mObjectTopComponent.open();
             }
-        } catch (Exception ex) {
-            mLog.severe(ex.getMessage());
-        } finally {
             mObjectTopComponent.setCursor(Cursor.getDefaultCursor());
+        } catch (Exception ex) {
+            mMapInstances.remove(projName);
+            mLog.severe(ex.getMessage());
         }
     }
     
@@ -326,9 +346,8 @@ public class EditorMainApp {
     
 
     public RelationshipModel getRelationshipModel() {
-        RelationshipModel relationshipModel = mMultiDomainApplication.getRelationshipModel(true);
-
-        return relationshipModel;
+        mRelationshipModel = mMultiDomainApplication.getRelationshipModel(true);
+        return mRelationshipModel;
     }
     
 

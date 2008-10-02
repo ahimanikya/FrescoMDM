@@ -58,12 +58,14 @@ import org.xml.sax.InputSource;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.MiNodeDef;
 import com.sun.mdm.multidomain.parser.MiFieldDef;
 import com.sun.mdm.multidomain.parser.MiObject;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
+import com.sun.mdm.multidomain.project.editor.TabListRelationshipTypes;
 
 /**
  *
@@ -76,7 +78,8 @@ public class DomainNode extends AbstractNode {
         
         );
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
-    private ArrayList alRelationshipTypes = new ArrayList();  // <RelationshipTypeName, DomainName>
+    private ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
+    TabListRelationshipTypes mTabListRelationshipTypes = null;
     String miObjectName;
     File selectedDomain = null;
     String domainName = null;
@@ -207,14 +210,33 @@ public class DomainNode extends AbstractNode {
         return node.getFields();
     }
     
-    public void addRelationshipType(String relationshipTypeName, String domainName) {
-
+    public void addRelationshipType(String relationshipTypeName, String sourceDomainName, String targetDomainName) {
+        //updateRelationshipTypes
     }
     
-    public void removeRelationshipType(String relationshipTypeName, String domainName) {
+    public void removeRelationshipType(String relationshipTypeName, String sourceDomainName, String targetDomainName) {
+        //updateRelationshipTypes
     }
     
     public ArrayList getRelationshipTypes() {
-        return null;
+        return alRelationshipTypes;
+    }
+    
+    /** Update alRelationshipTypes and mTabListRelationshipTypes
+     * 
+     */
+    public void loadRelationshipTypes(ArrayList <RelationshipType> alRelationshipTypes) {
+        this.alRelationshipTypes = alRelationshipTypes;
+        if (alRelationshipTypes != null) {
+            addTabListRelationshipTypes();
+        }
+    }
+    
+    public void addTabListRelationshipTypes() {
+        mTabListRelationshipTypes = new TabListRelationshipTypes(this.alRelationshipTypes);
+    }
+    
+    public TabListRelationshipTypes getTabListRelationshipTypes() {
+        return mTabListRelationshipTypes;
     }
 }

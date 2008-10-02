@@ -25,6 +25,12 @@ import java.util.ArrayList;
         ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
         ArrayList <String> alRelationshipTypeNames = new ArrayList();
         
+        RelationshipType addRelationshipType() {
+            RelationshipType relationshipType = new RelationshipType();
+            alRelationshipTypes.add(relationshipType);
+            return relationshipType;
+        }
+        
         void addRelationshipType(RelationshipType relationshipType) {
             alRelationshipTypes.add(relationshipType);
         }
@@ -53,32 +59,42 @@ import java.util.ArrayList;
             return alRelationshipTypes;
         }
         
-        ArrayList <RelationshipType> getRelationshipsByType(String type) { // type="relationship/hierarchy/group/category
+        ArrayList <RelationshipType> getRelationshipTypesByType(String type) { // type="relationship/hierarchy/group/category
             ArrayList al = new ArrayList();
             for (int i=0; i<alRelationshipTypes.size(); i++) {
                 RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(i);
                 if (relationshipType.type.equals(type)) {
                     al.add(relationshipType); 
                 }
-
+            }
+            return al;
+        }
+        
+        ArrayList <RelationshipType> getRelationshipTypesByDomain(String domainName) {
+            ArrayList al = new ArrayList();
+            for (int i=0; i<alRelationshipTypes.size(); i++) {
+                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(i);
+                if (relationshipType.sourceDomain.equals(domainName) || relationshipType.targetDomain.equals(domainName)) {
+                    al.add(relationshipType); 
+                }
             }
             return al;
         }
         
         ArrayList <RelationshipType> getRelationships() {         
-            return getRelationshipsByType(TYPE_RELATIONSHIP);
+            return getRelationshipTypesByType(TYPE_RELATIONSHIP);
         }
         
         ArrayList <RelationshipType> getHierarchies() {         
-            return getRelationshipsByType(TYPE_HIERARCHY);
+            return getRelationshipTypesByType(TYPE_HIERARCHY);
         }
         
         ArrayList <RelationshipType> getGroups() {
-            return getRelationshipsByType(TYPE_GROUP);
+            return getRelationshipTypesByType(TYPE_GROUP);
         }
         
         ArrayList <RelationshipType> getCategories() {
-            return getRelationshipsByType(TYPE_CATEGORY);
+            return getRelationshipTypesByType(TYPE_CATEGORY);
         }
     }
     

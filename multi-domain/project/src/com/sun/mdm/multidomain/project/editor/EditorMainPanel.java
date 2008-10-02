@@ -158,7 +158,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
 
         multiViewPane.setViewportView(canvas);
-        propertiesTabbedPane.add(TAB_OBJECT_MODEL, propertiesModelPanel);
+        //ToDo
+        //setCurrentDomainNode
+        //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
+        propertiesTabbedPane.add(TAB_OBJECT_MODEL, this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes());
         //Wee add web properties tab here
         propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         

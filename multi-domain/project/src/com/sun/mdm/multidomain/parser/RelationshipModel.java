@@ -30,8 +30,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
 
-//import com.sun.mdm.index.parser.EIndexObject;
-
 /**
  * @author Kevin Kao
  * @version
@@ -46,6 +44,8 @@ public class RelationshipModel {
     private final String mTagDomain = "domain";
     private final String mTagRelationshipType = "relationship-type";
     private final String mTagType = "type";
+    private final String mTagSourceDomain = "source-domain";
+    private final String mTagTargetDomain = "target-domain";
     private final String mTagRelationships  = "relationships";
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
@@ -104,6 +104,13 @@ public class RelationshipModel {
      */
     public RelationshipType getRelationshipType(String name, String sourceDomain, String targetDomain) {
         return mRelationships.getRelationshipType(name, sourceDomain, targetDomain);
+    }
+
+    /**
+     * @return ArrayList of RelationshipType
+     */
+    public ArrayList <RelationshipType> getRelationshipTypesByDomain(String domainName) {
+        return mRelationships.getRelationshipTypesByDomain(domainName);
     }
 
     /**
@@ -169,13 +176,14 @@ public class RelationshipModel {
      * @param node node
      */
     public void parseRelationshipType(Node node) {
-        String name = null;
+        RelationshipType relationshipType = mRelationships.addRelationshipType();
+        String val = null;
         NamedNodeMap nnm = node.getAttributes();
         if (nnm != null) {
             Node attrName = nnm.getNamedItem(mTagName);
             if (attrName != null) {
                 try {
-                    name = attrName.getNodeValue();
+                    val = attrName.getNodeValue();
                 } catch (DOMException ex) {
                 }
             }
@@ -186,9 +194,13 @@ public class RelationshipModel {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
-                        name = Utils.getStrElementValue(nl.item(i));
+                        relationshipType.name = Utils.getStrElementValue(nl.item(i));
                     } else if (mTagType.equals(((Element) nl.item(i)).getTagName())) {
-                        String type = Utils.getStrElementValue(nl.item(i));
+                        relationshipType.type = Utils.getStrElementValue(nl.item(i));
+                    } else if (mTagSourceDomain.equals(((Element) nl.item(i)).getTagName())) {
+                        relationshipType.sourceDomain = Utils.getStrElementValue(nl.item(i));
+                    } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
+                        relationshipType.targetDomain = Utils.getStrElementValue(nl.item(i));
                     }
                 }
             }
@@ -204,7 +216,7 @@ public class RelationshipModel {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagRelationshipType.equals(((Element) nl.item(i)).getTagName())) {
-                        //parsemRelationshipType(nl.item(i));
+                        parseRelationshipType(nl.item(i));
                     }
                 }
             }

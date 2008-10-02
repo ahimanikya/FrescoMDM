@@ -576,16 +576,16 @@ public class MultiDomainProjectGenerator {
     private void generateDDLFiles(File srcRoot) 
             throws /*TemplateWriterException,*/ ParserException, IOException {
 
-            File objectFile = new File(srcRoot,
-                    MultiDomainProjectProperties.CONFIGURATION_FOLDER
-                    + File.separator + MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML);
-            InputSource source = new InputSource(new FileInputStream(
-                        objectFile));
-            RelationshipModel rm = Utils.parseRelationshipModel(source);
+            //File objectFile = new File(srcRoot,
+            //        MultiDomainProjectProperties.CONFIGURATION_FOLDER
+            //        + File.separator + MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML);
+            //InputSource source = new InputSource(new FileInputStream(
+            //            objectFile));
+            //RelationshipModel rm = Utils.parseRelationshipModel(source);
 
             //String tmpl = getCreateDDLWriterTemplate(rm.getDataBase());
-            File outPath = new File(srcRoot,
-                MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + MultiDomainProjectProperties.CREATE_RELATIONSHIPS_SQL);
+            //File outPath = new File(srcRoot,
+            //    MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + MultiDomainProjectProperties.CREATE_RELATIONSHIPS_SQL);
             //DDLWriter tdw = new DDLWriter(outPath.getAbsolutePath(), rm, tmpl);
             //tdw.write(true);
 
