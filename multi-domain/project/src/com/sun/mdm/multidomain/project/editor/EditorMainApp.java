@@ -158,7 +158,9 @@ public class EditorMainApp {
         if (mMapDomainNodes != null) {
             if (name == null) {
                 Object[] objs = mMapDomainNodes.values().toArray();
-                node = (DomainNode) objs[0];
+                if (objs.length > 0) {
+                    node = (DomainNode) objs[0];
+                }
 
             } else {
                 node = (DomainNode) mMapDomainNodes.get(name);

@@ -161,7 +161,12 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //ToDo
         //setCurrentDomainNode
         //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
-        propertiesTabbedPane.add(TAB_OBJECT_MODEL, this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes());
+        DomainNode node = this.mEditorMainApp.getDomainNode(null);
+        TabListRelationshipTypes tab = new TabListRelationshipTypes(null);
+        if (node != null) {
+            tab = node.getTabListRelationshipTypes();
+        }
+        propertiesTabbedPane.add(TAB_OBJECT_MODEL, tab);
         //Wee add web properties tab here
         propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
