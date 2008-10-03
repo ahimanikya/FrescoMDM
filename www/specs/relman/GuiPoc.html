@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>Future Ideas - MAIN FEATURE</title>
+
+<link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1277259-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script></head>
+<body class="view">
+<h1>Web 2.0 GUI Proof of Concepts and test</h1>
+<h2>Quick GWT Tree with Icon</h2>
+I was able to get a sampel GWT tree running in less than one day.
+&nbsp;Part of the reason for this is that GWT uses a lot of concepts
+similiar to Swing. &nbsp;This is straight Java Code for the most part
+and the results look really nice. &nbsp;(See the Relationship by Record
+screen Mock Ups)<br><br><h3>Performance Test</h3><br>I created a quick
+performance test where I showed 10,022 nodes on a tree. &nbsp;Most
+nodes on the tree have about 3 - 4 children. One area has 10,003
+children. <br><br>All nodes where defined at start up so this does not
+include any additional time it would take if the tree was implemented
+using a Lazy Load.<br><br><span style="font-weight: bold;">Machine:</span><br><br>VMFusion running Windows XP with Service Pack 3<br>Intel (R) Xeon(R) CPU<br>E5462 @ 2.80 GHz<br>2.78&nbsp;GHz, 2.00 GB of RAM <br><br><span style="font-weight: bold;">Results:<br></span><span style="font-weight: bold;"></span><p>Timed using system clock so these are rough.</p><p>Expand a node without a lot of children - 3 seconds</p><p>Expand the node with 10,003 children - 10 seconds</p><span style="font-weight: bold;">Conclusion:<br><br></span><span style="font-weight: bold;"></span><p>Showing trees with large amounts of data is not in the three seconds you would like.&nbsp;</p><p><span style="font-weight: bold;">Recommendation:</span></p><p><br>We should run a similiar test using either the DoJo or Yahoo UI tree to compare results. </p><span style="font-weight: bold;"><br></span><span style="font-weight: bold;"></span><br><p></p><p><br></p>
+<div class="pageactions"> <i>This page last
+changed on 03-Oct-2008 10:57:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+</div>
+</body></html>
