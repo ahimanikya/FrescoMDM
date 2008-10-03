@@ -62,39 +62,30 @@ showing.&nbsp;</li>
 </ul>
 <h3>Maintain by Record Main screen</h3>
 <br>
-<span class="note-highlight" style="font-weight: bold; font-style: italic;">Note: Screen
+<span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the Domain "UKPatient" and the record "George Karlin" is
 selected. </span><br>
 <br>
 <img style="width: 928px; height: 686px;" alt="" src="../attach/RelByRecordS2.png"><br>
 <br>
+<br><h4><br>
+<span class="note-highlight" style="font-weight: bold; font-style: italic;">Overlay shown by selecting the 'show relationship type' button</span></h4>
 <br>
-i
-<span class="note-highlight" style="font-weight: bold; font-style: italic;">Note: Screen
+<img style="width: 921px; height: 286px;" alt="" src="../attach/RelShowRelType.png"><br><br><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
 record "Centerpoint" was selected<br>
 </span><br>
 <img style="width: 928px; height: 686px;" alt="" src="../attach/RelByRecord.png">
-<h4><br>
-</h4>
-<h4>Overlay shown when a&nbsp; 'show relationhip types'
-button is
-selected</h4>
+<h4><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
+after the
+record&nbsp;Centerpoint was expanded and the record "Bangalore" was selected.&nbsp;</span></h4><br><img style="width: 926px; height: 706px;" alt="" src="../attach/RelByRecordS3.png"><br>
 <br>
-<img style="width: 921px; height: 286px;" alt="" src="../attach/RelShowRelType.png"><br>
-<br>
-<h4 style="color: rgb(153, 0, 0);">Updates Needed</h4>
-<ul>
-<li><span style="font-weight: bold; color: rgb(153, 0, 0);">Replace
-the above look and feel with a tree. &nbsp;Each level of the tree
-would be retrieved when a location is selected via a lazy load. </span><br>
-<br>
-<span style="font-weight: bold; color: rgb(153, 0, 0);">A
-badge on a domain representing a folder would be needed. &nbsp;</span><br>
-<br>
-Example using domains: Customers, Accounts, Locations<br>
-<br>
-</li>
+<br><h4><span style="color: rgb(0, 102, 0);">Notes on Tree Usage</span></h4><br><ul><li>Change Relationship Model when user selects anything under (but not including) the expanded record. &nbsp;</li><li>Prototype the highlight on nodes in selected relationship&nbsp;</li><li>Support
+selection of several nodes in the same relationship. &nbsp;This changes
+the right hand side back to the summary for the main record that the
+selected records have a relationship to.&nbsp;</li></ul><br><h4><span style="color: rgb(0, 102, 0);">
+Example Tree using domains: Customers, Accounts, Locations</span>
+</h4><ul>
 <li>George Karlin (Customer)</li>
 <ul>
 <li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Accounts</li>
@@ -141,8 +132,6 @@ Example using domains: Customers, Accounts, Locations<br>
 </ul>
 </ul>
 </ul>
-<br>Example using domains: UKPatient, Company, Hospital, UKDoctor and Locations<br><br><ul><li>Dr. George Carlin&nbsp; (in domain UKPatient)</li><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">&nbsp;Company</li><ul><li>-&gt; Employed By</li><ul><li>&nbsp;Centerpoint &nbsp;</li></ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li><ul><li>-&gt; Works At&nbsp;</li><ul><li>East Coast&nbsp; Main Office</li></ul></ul></ul></ul></ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Hospital</li><ul><li>&nbsp;-&gt; Admitted To</li><ul><li>&nbsp;Best Hospital&nbsp;</li><li>&nbsp;King Drew</li></ul><li>-&gt; Owner Of&nbsp;</li><ul><li>&nbsp;Best Hospital&nbsp;</li></ul></ul><li>&nbsp;<img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">UK Doctor</li><ul><li>&nbsp;&lt;- Primary Provider</li><ul><li>&nbsp;Dr. Eric Karl</li></ul></ul></ul></ul>
-
 </ul>
 <h4><span style="color: blue;">Notes</span></h4>
 <ul>
@@ -152,23 +141,23 @@ Example using domains: Customers, Accounts, Locations<br>
 following<br>
 <br>
 <span style="font-style: italic;">Number</span>
-records where found. &nbsp;<br>
-<br style="text-decoration: underline;">
-<span style="text-decoration: underline;">Show all
-records</span> &nbsp; &nbsp;// &nbsp;Only show N
-records at a time and paginate<br>
+records where found. &nbsp;<span style="text-decoration: underline;"></span><br>
 <span style="text-decoration: underline;"><br>
 </span><span style="text-decoration: underline;">Limit
 records... </span>&nbsp; &nbsp;// Shows dialog - search
 records (for associated domain) and relationship attribtues &nbsp;</li>
 </ul>
-<h3>Add Records to Relationship<br></h3>
+<h3>Add Records to Relationship<br>
+</h3>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Note: This is
-a wireframe model of the screen</span><br><br>
-<br>
-<img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br><span style="font-weight: bold;"></span>. <br>
+a wireframe model of the screen</span><br>
 <br>
 <br>
-<div class="pageactions"><i>This page lastchanged on 01-Oct-2008 13:40:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+<img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br>
+<span style="font-weight: bold;"></span>. <br>
+<br>
+<br>
+<div class="pageactions"><i>This page lastchanged on
+01-Oct-2008 13:40:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
 </body></html>
