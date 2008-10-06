@@ -1200,8 +1200,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
         document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%>  '+ '<%=request.getParameter("MOT")%>';
      }
      if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit') != null) {
-      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'hidden';
-      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'none'; 
+      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'visible';
+      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'block'; 
      }    
    </script>  
    
@@ -1410,7 +1410,6 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <% } %>
 
  </body>
- 
  <script>
 	 dd=new YAHOO.util.DD("successDiv");
  </script>
