@@ -32,36 +32,12 @@ attributes) associated with a hierarchy.</li>
 <p>The screen allows a user to both view and maintain the
 record hierarchy. It also allows a user to view details about the
 records </p>
-<h2>1. Initial screen </h2>
-<br />
-Initial screen indicates that either a domain and
-hierarchy must be selected or a user must search for a record.
-<ul>
-</ul>
-<p></p>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><img src="../attach/RecordHierarchyViewS1.png" /></td>
-</tr>
-</tbody>
-</table>
-<br />
-<br />
-<h3><span style="color: blue;">Updates
-Needed</span></h3>
-<br />
-<ul>
-<li>Move the Find Record to by the tree instead of on the main
-toolbar.</li>
-</ul>
-<br />
-<h2>2. Search for Record</h2>
-<ul>
-</ul>
-<p>In this example, the Person domain has a field called 'Group'.
-&nbsp;Thus the Group below is <span style="font-weight: bold;">not
-</span>a group type but a field of the domain. &nbsp;</p>
+<h2>Search Overlay&nbsp;</h2><span class="note-highlight"><span style="font-weight: bold;"><br />Note</span>: In this example, the Person domain has a field called 'Group'.
+&nbsp;Thus the Group below is </span><span class="note-highlight" style="font-weight: bold;">not
+</span><span class="note-highlight">a group type but a field of the domain. <br /><br /></span><img style="width: 600px; height: 437px;" alt="" src="../attach/RecordHierSelDialog.png" /><br /><h2>1. Initial screen </h2>
+First time the screen is shown in a session. <br /><br /><br /><span class="note-highlight"><span style="font-weight: bold;">Note</span>: In this example, the Person domain has a field called 'Group'.
+&nbsp;Thus the Group below is </span><span class="note-highlight" style="font-weight: bold;">not
+</span><span class="note-highlight">a group type but a field of the domain. </span><br /><br />
 <p>The use case shown here is to locate the manager for the
 group called 'Mural' and finding out information about the people that
 work for him. &nbsp; </p>
@@ -70,48 +46,30 @@ belongs to the group Mural. </p>
 <p>The screen here only shows three record fields. However
 it might have been defined to also show additional fields such as a
 primary role of a person. </p>
-<p>Either way after the results of the initial search are
-shown the user selects the record they want to view more details for. </p>
-<span style="color: green;"> <b><br />
+<p>The user selects the desired record or cancels the search overlay dialog.</p><p><img style="width: 1016px; height: 773px;" alt="" src="../attach/RecordHierarchyViewS1.png" /></p><br />
+<br /><br /><br />
+<h2>2. Screen if Cancel is selected and no Hierarchy was ever chosen</h2>
+<ul>
+</ul>
+<p><span class="note-highlight"><span style="font-weight: bold;"><br /></span></span><span class="note-highlight"><span style="font-weight: bold;">Note</span>:
+The box areas are a nice to have feature. &nbsp;At a mininimum the
+areas that show the details and the hierarchy attributes should be
+hidden and the title on the left hand side should be shown.</span></p><p><span class="note-highlight"></span><span class="note-highlight"></span> </p>
+<span style="color: green;"> <b><img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS3.png" /><br />
 </b></span>
-<p></p>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><img src="../attach/RecordHierarchyViewS2.png" /></td>
-</tr>
-</tbody>
-</table>
-<h3><span style="color: green;">Notes</span></h3>
-<ul>
-<li><span style="color: green;"></span><span style="color: black;">&nbsp;</span>In the final
-version it is unclear if we will show a summary of field value or a
-record identifer. &nbsp;For the search I prefer the summary so that
-a user can have some degree of confidence that they located the correct
-record.</li>
-</ul>
-<span style="color: green;"></span>
-<h3><span style="color: blue;">Updates
-Needed</span></h3>
-<br />
-<ul>
-<li>Add a Cancel button<br />
-</li>
-</ul>
-<h2> 3. View initial record</h2>
+<p></p><br /><h2> 3. View Initial record</h2>
 <p>Displays information about a record selected from the
-search screen. &nbsp;</p>
-<p>If Domain and hierarchy are selected then the root node is
-shown. </p>
+search screen. &nbsp;</p><p>In this case "Suhanto Wihardja" was selected. &nbsp; I</p><p></p><p><span class="note-highlight" style="font-weight: bold;">Note: </span><span class="note-highlight">If the root node option was selected the the first node in the hierarchy (if any) is shown. </span></p>
+<p> <img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS3.png" /></p>
 <p></p>
 <table class="imageplugin" align="center" border="0">
 <tbody>
 <tr>
-<td><img src="../attach/RecordHierarchyViewS3.png" /></td>
+<td><br /></td>
 </tr>
 </tbody>
 </table>
-<p></p>
+
 <p>The specific hierarchy that is displayed is determined
 by the currently selected access control for the user. <span style="color: green;"> <b>Note:</b></span>
 In other words a hierarchy is associated with an access control and not
@@ -144,52 +102,14 @@ that we need to show a lock by a relationship and show it in view only
 mode if two different users try to switch to a access control role that
 would normally allow updating of the model.<br />
 </li>
-</ul>
-<h3><span style="color: blue;">Updates
-Needed</span></h3>
-<br />
-<ul>
-<li>Add two top level nodes that can never be moved.</li>
-<ul>
-<li>&nbsp;Hierchy for <span style="font-style: italic;">hierarchy type</span></li>
-<li><span style="font-style: italic;"><span style="font-style: italic;"></span></span>Unassigned
-records<span style="font-style: italic;"><br />
-</span></li>
-</ul>
-<li> Add button to allow drill down from record summary
-to MIDM details.</li>
-<li>Move the Find Record section&nbsp; under the tree area</li>
-</ul>
-<p></p>
+</ul><br />
 <h2>4. Show selected child record</h2>
-<p>Here we show the result of drilling down to select <b>Andrea
-Kendall</b>. Notice that the screen both shows information about
+<p>Here we show the result of selecting <b>Andrea
+Kendall</b> from the above screen. Notice that the screen both shows information about
 the selected record and just enough information to help determine other
 records of interest. </p>
-<p>Also notice that there will only every be one parent. </p>
-<p></p>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><img src="../attach/RecordHierarchyViewS4.png" /></td>
-</tr>
-</tbody>
-</table>
-<h3><span style="color: blue;">Updates
-Needed</span></h3>
-<br />
-<ul>
-<li>Add two top level nodes that can never be moved.</li>
-<ul>
-<li>&nbsp;Hierchy for <span style="font-style: italic;">hierarchy type</span></li>
-<li><span style="font-style: italic;"><span style="font-style: italic;"></span></span>Unassigned
-records<span style="font-style: italic;"><br />
-</span></li>
-</ul>
-<li> Add button to allow drill down from record summary
-to MIDM details.</li>
-<li>Move the Find Record section&nbsp;under the tree area.</li>
-</ul><hr style="width: 100%; height: 2px;" />
+<p>Also notice that there will only every be one parent in the record detail area. </p>
+<p></p><img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS4.png" /><br /><br /><h2>Misc. Dialogs</h2><h3>Find Dialog</h3><br />Find the next / previous record on the tree. &nbsp;<br /><br /><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png" /><br /><br /><h3>Add Dialog</h3><br />Brings up search the Add Records to Hierarchy dialog<br /><br />Note: The example does not show the expected search screen nor attributes for this example. <br /><br /><img style="width: 999px; height: 544px;" alt="" src="../attach/HierAddRecord.PNG" /><hr style="width: 100%; height: 2px;" />
 <ul>
 </ul>
 <table class="main" border="0" cellpadding="0" cellspacing="0">
@@ -197,7 +117,7 @@ to MIDM details.</li>
 <tr>
 <td class="page">
 <div class="pageContent"> <i>This page last
-changed on 07-Aug-2008 12:28:29 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+changed on 07-Oct-2008 15:46:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
 </td>
 </tr>
