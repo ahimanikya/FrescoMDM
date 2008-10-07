@@ -176,9 +176,14 @@ var thisIdx=0;
                                 <form id="unmergeForm">
                                   <input type="hidden" id="unmergeTransactionId" name="unmergeTransactionId" title="unmergeTransactionId"  />
                                   <input type="hidden" id="mainEuid" name="mainEuid" title="mainEuid"  />
-									<tr>
-									    <th><%=bundle.getString("pop_up_confirmation_heading")%></th>
-									</tr>
+								    <tr>
+								       <th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
+		                               <th>
+				                         <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unmergePopupDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                                         <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unmergePopupDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+		                               </th>
+		                            </tr>
+									<tr><td colspan="2">&nbsp;</td></tr>
                                     <tr>
 									  <td colspan="2">
 									     <table>
@@ -191,8 +196,8 @@ var thisIdx=0;
 									  </td>
 									</tr>
 									<tr><td colspan="2">&nbsp;</td></tr>
-                                    <tr><td colspan="2" align="center">
-									   <table border="0" cellpadding="0" cellspacing="0">
+                                    <tr id="actions"><td colspan="2">
+									   <table border="0" cellpadding="0" cellspacing="0" align="center">
 									      <tr>
 										    <td align="right">
                                             <a href="javascript:void(0)" 
@@ -209,17 +214,16 @@ var thisIdx=0;
 										  </tr>
 										</table>
                                     </td></tr>
+									<tr><td colspan="2">&nbsp;</td></tr>
                                 </form>
                             </table>
                         </div> 
                        
-         <div id="unmergepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.unmergepopup_help}"/></div>      
-
-         <script type="text/javascript">
-          makeDraggable("unmergePopupDiv");
-        </script>
-
+         <div id="unmergepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.unmergepopup_help}"/></div> 
 		</body>
     </html>
+	<script type="text/javascript">
+		 unmerge_dd = new YAHOO.util.DD("unmergePopupDiv");
+     </script>
     </f:view>
     

@@ -242,10 +242,10 @@ if(session!=null){
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
 													 <h:panelGrid style="border:1;cellpadding:0;cellspacing:0;" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
 													 <h:panelGroup rendered="#{fieldConfigPer.sensitive && (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}" ><a href ="javascript:void(0)" title="<h:outputText value="#{msgs.unlock_text}"/>"
-                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>
+                                                     onclick="document.getElementById('unlockSBRFieldValue').innerHTML = '<h:outputText value="#{fieldConfigPer.displayName}"/>';document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';showExtraDivs('unlockSBRDiv',event);"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>
 													 
 													 <h:panelGroup rendered="#{!fieldConfigPer.sensitive}" ><a href ="javascript:void(0)" title="<h:outputText value="#{msgs.unlock_text}"/>"
-                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>													 
+                                                     onclick="document.getElementById('unlockSBRFieldValue').innerHTML = '<h:outputText value="#{fieldConfigPer.displayName}"/>';document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';showExtraDivs('unlockSBRDiv',event)"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>													 
 													 </h:panelGrid>
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
@@ -1585,6 +1585,46 @@ if(session!=null){
                 </table> 
                 </form>
             </div> 
+			<div id="unlockSBRDiv" class="confirmPreview" style="TOP:620px;LEFT:450px;height:100px;VISIBILITY:hidden;display:none;">
+               <form id="unLockFieldsForm">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unlockSBRDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unlockSBRDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<nobr><b><h:outputText value="#{msgs.unlock_text}"/> '<span id="unlockSBRFieldValue" style="color:white;"></span>' <h:outputText value="#{msgs.field_question_text}"/></b></nobr> 
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)"  title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','');document.getElementById('unlockSBRDiv').style.visibility='hidden';document.getElementById('unlockSBRDiv').style.display='none';">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+								<td>
+								<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />" onclick="javascript:showExtraDivs('unlockSBRDiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+								</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+
 
 
             <div id="linkSoDiv"  class="confirmPreview" style="TOP:620px;LEFT:450px;height:120px;VISIBILITY:hidden;display:none;">
@@ -1714,11 +1754,13 @@ if(session!=null){
   
         </body>
     </html>
+
  <!-- Added By Narahari.M on 23-09-2008 to make confirmation popups dragable -->
 	<script>
 	dd_link=new YAHOO.util.DD("linkSoDiv");
 	dd_unlink=new YAHOO.util.DD("unLinkSoDiv");
 	dd_lock=new YAHOO.util.DD("lockSBRDiv");
+	dd_unlock=new YAHOO.util.DD("unlockSBRDiv");
 	</script>
     </f:view>
     <%} %>  <!-- Session check -->
