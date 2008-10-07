@@ -206,12 +206,12 @@ public class TemplateObjects {
                                        "", "", 
                                        SEARCHABLEFALSE, RESULTFALSE, KEYTYPEFALSE,
                                        UPDATEABLETRUE, REQUIREDFALSE,
-                                       MATCHTYPE_NONE, "100", CODEMODULE, "", BLOCKINGFALSE, "", "", "false"));
+                                       MATCHTYPE_NONE, "40", CODEMODULE, "", BLOCKINGFALSE, "", "", "false"));
         subNode.add(new EntityNode(entityTree, "MotherName", "Mother Name", NODE_FIELD, "string", displayOrder++,
                                        "", "", 
                                        SEARCHABLEFALSE, RESULTFALSE, KEYTYPEFALSE,
                                        UPDATEABLETRUE, REQUIREDFALSE,
-                                       MATCHTYPE_NONE, "100", CODEMODULE, "", BLOCKINGFALSE, "", "", "false"));
+                                       MATCHTYPE_NONE, "40", CODEMODULE, "", BLOCKINGFALSE, "", "", "false"));
         subNode.add(new EntityNode(entityTree, "MotherMN", "Mother Maiden Name", NODE_FIELD, "string", displayOrder++,
                                        "", "", 
                                        SEARCHABLEFALSE, RESULTFALSE, KEYTYPEFALSE,
@@ -221,7 +221,7 @@ public class TemplateObjects {
                                        "", "", 
                                        SEARCHABLEFALSE, RESULTFALSE, KEYTYPEFALSE,
                                        UPDATEABLETRUE, REQUIREDFALSE,
-                                       MATCHTYPE_NONE, "100", CODEMODULE, "", BLOCKINGFALSE, "", "", "false"));
+                                       MATCHTYPE_NONE, "40", CODEMODULE, "", BLOCKINGFALSE, "", "", "false"));
         subNode.add(new EntityNode(entityTree, "Maiden", "Maiden", NODE_FIELD, "string", displayOrder++,
                                        "", "", 
                                        SEARCHABLEFALSE, RESULTFALSE, KEYTYPEFALSE,
