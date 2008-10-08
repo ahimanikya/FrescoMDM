@@ -344,8 +344,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       <tr>
       <td>
       <script>
- 	   alert(" '<%=enterpriseObject.getEUID()%>' <%=bundle.getString("concurrent_mod_text")%> <%=bundle.getString("login_try_again_text")%> ");
-       window.location = '/<%=URI%>/sourcerecords.jsf';
+  		window.location = "#top";
+		document.getElementById("successMessageDiv").innerHTML = "'<%=enterpriseObject.getEUID()%>' <%=bundle.getString("concurrent_mod_text")%> <%=bundle.getString("login_try_again_text")%>";
+		document.getElementById("successDiv").style.visibility="visible";
+		document.getElementById("successDiv").style.display="block";
+        
+		//reload the content of the source record here  
+		getFormValues('basicViewformData');
+		ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?&rand='+<%=rand%>+'&editSO=true','sourceRecordSearchResult',event);
       </script>
      </td>
 	 </tr>
@@ -372,12 +378,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
             for(int j = 0 ;j <keysSetMinorObjects.length;j++) {
 			   String key = (String) keysSetMinorObjects[j]; 
 		   %>
+          <%if(!key.equalsIgnoreCase(rootNodeName)) {%>
 		  <script>
 			   document.getElementById('<%=key%>InnerForm').reset();
-		  </script>
-          <%if(!key.equalsIgnoreCase(rootNodeName)) {%>
-		    <script>
-   	           document.getElementById('<%=key%>buttonspan').innerHTML = 'Save '+ '<%=key%>';
+    	       document.getElementById('<%=key%>buttonspan').innerHTML = 'Save '+ '<%=key%>';
                document.getElementById('<%=key%>cancelEdit').style.visibility = 'hidden';
                document.getElementById('<%=key%>cancelEdit').style.display = 'none';
 
@@ -394,20 +398,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
           %>
  	  	  <!-- Navigate the user to the top of the page to see the messages-->
           <script>
-	   	    window.location = "#top";
-	      </script>
-		  <div class="ajaxsuccess">
- 		  <table>
-	     	 <tr>
-				<td>
-				      <ul>
-					    <li> <%=bundle.getString("source_record_update_success_text")%></li>
-					  </ul>
-			    </td>
-		     </tr>
-	      </table>
-         </div>
-     <%} else {%>
+				window.location = "#top";
+  				document.getElementById("successMessageDiv").innerHTML = "<%=bundle.getString("source_record_update_success_text")%>";
+ 				document.getElementById("successDiv").style.visibility="visible";
+				document.getElementById("successDiv").style.display="block";
+  	      </script>
+      <%} else {%>
 	  <!-- Navigate the user to the top of the page to see the messages-->
       <script>
 	   	 window.location = "#top";
@@ -467,15 +463,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 									
 								  %>						  
-
+ 									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 showUnSavedAlert(event,editMinorObjectType);
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
+								<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
 							   <td width="14px" valign="center">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
@@ -609,15 +613,22 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									 
 
 								  %>						  
-
+ 								<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript: 
+											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 showUnSavedAlert(event,editMinorObjectType);
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");tabName="viewEditTab";
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
@@ -885,15 +896,22 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");									 
 
 								  %>						  
-
+									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 showUnSavedAlert(event,editMinorObjectType);
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");tabName="viewEditTab";
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){ 
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
@@ -1082,16 +1100,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									
 								  %>						  
 
+									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)"  title="<%=editTitle%>"
-											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 showUnSavedAlert(event,editMinorObjectType);
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");tabName="viewEditTab";
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
-									  </a> 
+									  </a>
 								</td>
 							   <td width="14px" valign="center">
-									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
-												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
-									  </a>
+										  <a href="javascript:void(0)" title="<%=deleteTitle%>"
+												 onclick='if(editMinorObjectType.length<1){
+												 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")
+												 }else{showUnSavedAlert(event,editMinorObjectType);}'> 
+													 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+										  </a>
 							   </td>
 
 							  <% for(int k=0;k<fcArray.length;k++) {%>

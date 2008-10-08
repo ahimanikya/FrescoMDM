@@ -1685,5 +1685,288 @@ public class SourceHandler {
         }    
         return -1;
     }
+    /**
+     * Added by Bhat on 24-09-08 to incorporate with ajax call
+     * @return
+     */
+    public HashMap sourceRecordSearch(String systemCode, String lid) {
+
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+        HashMap newFieldValuesMap = new HashMap();
+
+        //set LID and system codes here.
+        //setLID((String) newFieldValuesMap.get(MasterControllerService.LID));
+        //setSystemCode((String) newFieldValuesMap.get("SystemCode"));
+
+        setLID(lid);
+        setSystemCode(systemCode); //added by Bhat
+        String validationMessage = new String();
+        String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+        if (this.getLID() == null) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if (this.getSystemCode() == null) {
+            validationMessage = "Please Enter SystemCode Value";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() > 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() == 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        }
+        
+        //get array of lids 
+        String lids[] = this.getStringEUIDs(this.getLID());
+        //instantiate master controller service
+        SystemObject singleSystemObject = null;
+        SystemObject[] systemObjectArrays = null;
+        ArrayList systemObjectsMapList = new ArrayList();
+        EPathArrayList ePathArrayList = new EPathArrayList();
+        HashMap systemObjectMap = new HashMap();
+
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+        String createDate = null;
+        try {
+            singleSystemObject = masterControllerService.getSystemObject(this.SystemCode, lids[0]);
+             if (singleSystemObject == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("system_object_not_found_error_message"), bundle.getString("system_object_not_found_error_message")));
+                return null;
+            }
+
+            EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObjectForSO(singleSystemObject);
+
+            //keep the EO revision number in session
+            session.setAttribute("SBR_REVISION_NUMBER" + enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
+
+            systemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
+
+            session.setAttribute("singleSystemObjectLID", singleSystemObject);
+            session.setAttribute("systemObjectMap", systemObjectMap);
+            //set the single SO hash map for single so
+            this.setSingleSOHashMap(systemObjectMap);
+
+
+            //session.setAttribute("singleSystemObject", singleSystemObject);
+            session.setAttribute("keyFunction", "viewSO");
+
+            // add systemObjectsMapList in the session for retrieving first name...etc in the output
+            session.setAttribute("systemObjectsMapList", systemObjectsMapList);
+            session.setAttribute("viewEditResultsConfigArray", this.getViewEditResultsConfigArray());
+            session.removeAttribute("keyFunction");
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC018: Validation Exception occurred :{0}", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()), ex);
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRC200: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return null;
+                } else {
+                    mLogger.error(mLocalizer.x("SRC201: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                    return null;
+                }
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
+
+        return systemObjectMap;
+    }
+
+    
+    /**
+     * added By Bhat on 25-09-08
+     * @param event
+     */
+    
+    public String activateSO(String systemCode,String lid){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        String activateMsg = null;
+        String validationMessage = new String();
+        String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+        setLID(lid);
+        setSystemCode(systemCode); //added by Bhat
+        
+        if (this.getLID() == null) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if (this.getSystemCode() == null) {
+            validationMessage = "Please Enter SystemCode Value";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() > 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() == 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        }
+        try {
+            SystemObject systemObject = masterControllerService.getSystemObject(this.SystemCode, this.LID);
+            masterControllerService.activateSystemObject(systemObject);
+            SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
+            //get the System Object as hashmap
+            HashMap updatedSoMap = compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
+
+            SourceAddHandler sourceAddHandler = (SourceAddHandler) session.getAttribute("SourceAddHandler");
+
+            //update the handler variable for editing
+            sourceAddHandler.setNewSOHashMap(updatedSoMap);
+
+            activateMsg = "The LID: "+this.LID+" has been activated";
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC025: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC026: Encountered the UserException:{0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC027: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
+        return activateMsg;
+    //session.setAttribute("keyFunction","editSO");
+    }
+    
+    /**
+     * added By Bhat on 25-09-08
+     * @param event
+     */
+    
+    public String deactivateSO(String systemCode,String lid){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        String deactivateMsg = null;
+        String validationMessage = new String();
+        String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+        setLID(lid);
+        setSystemCode(systemCode); //added by Bhat
+        
+        if (this.getLID() == null) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if (this.getSystemCode() == null) {
+            validationMessage = "Please Enter SystemCode Value";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() > 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() == 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        }
+        try {
+            SystemObject systemObject = masterControllerService.getSystemObject(this.SystemCode, this.LID); 
+            //SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
+            masterControllerService.deactivateSystemObject(systemObject);
+            SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
+
+            setDeactivatedSOHashMap(compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
+
+            //Keep the updated SO in the session again
+            session.setAttribute("singleSystemObjectLID", updatedSystemObject);
+            session.setAttribute("keyFunction", "editSO");
+            deactivateMsg = "The LID: "+this.LID+" has been deactivated";
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC025: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC026: Encountered the UserException:{0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC027: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        }
+        return deactivateMsg;
+    }
+    
+     /**
+     * Added by Bhat on 25-09-08 
+     * @param event
+     */
+    public String viewEUID(String systemCode,String lid) { 
+        String euid = null;
+        String validationMessage = new String();
+        String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+        setLID(lid);
+        setSystemCode(systemCode); //added by Bhat
+        
+        try { 
+            session.setAttribute("tabName", "View/Edit");
+            if (this.getLID() == null) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if (this.getSystemCode() == null) {
+            validationMessage = "Please Enter SystemCode Value";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() > 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        } else if ((this.getLID() != null && this.getLID().trim().length() == 0) && (this.getSystemCode() != null && this.getSystemCode().trim().length() == 0)) {
+            validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+            return null;
+        }
+            SystemObject systemObject = masterControllerService.getSystemObject(this.SystemCode, this.LID);
+            EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            if (eo != null) {
+                euid = eo.getEUID();
+            }
+        } catch (Exception ex) {
+           if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRC018: Validation Exception occurred :{0}", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()), ex);
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRC200: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return null;
+                } else {
+                    mLogger.error(mLocalizer.x("SRC201: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                    return null;
+                }
+            }
+        }
+        return euid;
+    }
     
 }

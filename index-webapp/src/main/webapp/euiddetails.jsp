@@ -81,6 +81,8 @@ if(session!=null){
 
 		   <script type="text/javascript" >
            var rand = "";
+		   var editMinorObjectType="";
+		   var editObjectType = "";
            function setRand(thisrand)  {
  	        rand = thisrand;
            }
@@ -95,11 +97,34 @@ if(session!=null){
               function cancelEdit(formName, thisDiv,minorObject,buttonID)   {
                 ClearContents(formName); 
 				enableallfields(formName);
+				editMinorObjectType = '';
                 setEOEditIndex("-1");
 				document.getElementById(thisDiv).style.visibility = 'hidden';
 				document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(buttonID).innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/>  '+ minorObject;
 		      }
+			// added by Bhat on 22-09-08  
+			function setMinorObjectAddressType(MinorObjectType,editIndex,objectType){
+				editMinorObjectType = MinorObjectType;
+				editIndexid = editIndex;
+				editObjectType = objectType;
+	 		}
+			
+			// added by Bhat on 22-09-08  			
+			function showUnSavedAlert(thisEvent,minorObjectType,editObjectType){
+				if(editObjectType.length == 0) {
+					document.getElementById("unsavedMessageDiv").innerHTML = '<h:outputText value="#{msgs.unsaved_message_part_I}"/> \''+editMinorObjectType+'\'<h:outputText value="#{msgs.unsaved_message_part_III}"/>';
+					//document.getElementById("unsavedDiv").style.visibility="visible";
+					//document.getElementById("unsavedDiv").style.display="block";
+			         showExtraDivs("unsavedDiv",thisEvent);
+  
+				} else {
+					document.getElementById("unsavedMessageDiv").innerHTML = '<h:outputText value="#{msgs.unsaved_message_part_I}"/> \' '+editMinorObjectType+' \' <h:outputText value="#{msgs.unsaved_message_part_II}"/> ('+editObjectType+') <h:outputText value="#{msgs.unsaved_message_part_III}"/>';
+					//document.getElementById("unsavedDiv").style.visibility="visible";
+					//document.getElementById("unsavedDiv").style.display="block";
+			        showExtraDivs("unsavedDiv",thisEvent);
+				}
+			   }
 			 var userDefinedInputMask="";
              var URI_VAL = '<%=URI%>';
 			 var RAND_VAL = '<%=rand%>';
@@ -1301,6 +1326,41 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
              </form>
          </div>
 
+         <!-- Added By Narayan Bhat on 07-10-2008 for all information popups -->
+  		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+               <form id="successDiv">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="unsavedMessageDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:showExtraDivs('unsavedDiv',event);">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
 
         </body>
         <%

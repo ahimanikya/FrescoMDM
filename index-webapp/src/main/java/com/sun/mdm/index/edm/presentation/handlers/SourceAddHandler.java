@@ -711,6 +711,35 @@ public class SourceAddHandler {
         }
         
         return UPDATE_SUCCESS;
-   }    
+   } 
+    
+  /**
+     * 
+     * @param SystemObject
+     */
+    // modified by Bhat on 24-09-08
+    
+     public void editLID(String systemCode, String lid) {
+        try{
+        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        SystemObject systemObject = masterControllerService.getSystemObject(systemCode, lid);
+        HashMap editSystemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+        SourceHandler sourceHandlerFaces = (SourceHandler)session.getAttribute("SourceHandler");
+
+        if("active".equalsIgnoreCase((String) editSystemObjectMap.get("Status")) ) {
+           //set the single SO hash map for single so EDITING
+           this.setNewSOHashMap(editSystemObjectMap);
+        } else {
+            sourceHandlerFaces.setDeactivatedSOHashMap(editSystemObjectMap);
+        }
+
+        //set address array list of hasmap for editing
+        session.setAttribute("keyFunction", "editSO");
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("SRC074: Exception has occurred:{0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            
+        }
+   }
  
 }

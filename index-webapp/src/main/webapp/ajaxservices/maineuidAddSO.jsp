@@ -160,7 +160,7 @@ boolean isSessionActive = true;
                              onkeyup="javascript:qws_field_on_key_up(this)"/>
          </td>
    	    <td align="left">
-	       <a class="button" title="<h:outputText value="#{msgs.validate_button_text}"/>" href="javascript:void(0)" onclick="javascript:getFormValues('RootNodeInnerForm');javascript:ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&validateLID=true','validateMessages','');">
+	       <a class="button" title="<h:outputText value="#{msgs.validate_button_text}"/>" href="javascript:void(0)" onclick="javascript:if(editMinorObjectType.length<1){getFormValues('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&validateLID=true','validateMessages','');}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
            <span><h:outputText value="#{msgs.validate_button_text}"/></span></a>
          </td>
 	</tr>
@@ -250,7 +250,7 @@ boolean isSessionActive = true;
 <!-- Root node form End -->
 
 <tr>
-<td valign="top">    
+<td valign="top" >
     <h:dataTable  headerClass="tablehead" 
                   id="allChildNodesNamesAdd" 
                   width="100%"
@@ -272,7 +272,7 @@ boolean isSessionActive = true;
                 
                 <tr>
                     <td colspan="2">
-                        <a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')" class="button">
+                        <a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" href="javascript:void(0)" onclick="javascript:if(editMinorObjectType.length<1){showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv');}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}" class="button">
                         <span>
                             <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"/>&nbsp;<h:outputText value="#{msgs.source_submenu_add}"/> &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"/>
                         </span>
@@ -396,7 +396,7 @@ boolean isSessionActive = true;
 								<table cellpadding="0" cellspacing="0" border="0">
 								<tr>
 								  <td>
-								   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+								   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
 								   <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/> </span>
                                    </a>
 								  </td>
@@ -407,7 +407,7 @@ boolean isSessionActive = true;
 								  </td>
 								  <td>
 								   <div style="visibility:hidden;display:none;" id="AddSo<h:outputText value="#{childNodesName}"/>">
-											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
+											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
 											  <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
 											 </a>
 								  </td>
@@ -447,13 +447,13 @@ boolean isSessionActive = true;
 <tr>
    <td>
    <nobr>
-    <a href="javascript:void(0);" title="<h:outputText value="#{msgs.source_submenu_add}"/>" class="button" onclick="javascript:getFormValues('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','AddNewSODivMessages',event)">
+    <a href="javascript:void(0);" title="<h:outputText value="#{msgs.source_submenu_add}"/>" class="button" onclick="javascript:if(editMinorObjectType.length<1){getFormValues('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','AddNewSODivMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
 	  <span id="buttonspan"><h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;</span>
     </a>     
      <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm')">
         <span><h:outputText value="#{msgs.clear_button_label}"/></span>
      </h:outputLink>    
-	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
+	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:editMinorObjectType = '';ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
      </a>    
 	 </nobr>

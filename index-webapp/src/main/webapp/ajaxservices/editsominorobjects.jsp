@@ -422,7 +422,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
                                     <%if("active".equalsIgnoreCase(soStatus)) {%>
 					                   <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
+											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){showUnSavedAlert(event,editMinorObjectType,editObjectType);}else{setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 									 <!-- modified by Bhat on 29-09-08 to fix bug #95 and #115 -->
@@ -436,9 +437,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								   <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
+ 							   <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
                                     <%if("active".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType,editObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 								  <%} else {%>
@@ -582,9 +586,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  %>						  
 
                                   <%if("active".equalsIgnoreCase(soStatus)) {%>
-					                
-									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
+ 									  <a href="javascript:void(0)" title="<%=editTitle%>"
+											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){showUnSavedAlert(event,editMinorObjectType,editObjectType);}else{setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								  <%} else {%>
@@ -594,7 +598,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 					             	  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
+											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 								 <%} else {%>
@@ -884,8 +888,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 
-									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
+ 									  <a href="javascript:void(0)" title="<%=editTitle%>"
+											 onclick='javascript:
+											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								 <%} else {%>
@@ -895,7 +904,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
+											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 								 <%} else {%>
@@ -1102,8 +1111,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 
-									  <a href="javascript:void(0)" title="<%=editTitle%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
+ 									  <a href="javascript:void(0)" title="<%=editTitle%>"
+											 onclick='javascript:
+											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								 <%} else {%>
@@ -1113,7 +1127,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
+											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 								 <%} else {%>
@@ -1197,7 +1211,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <% }  else if (isEdit)  { %>
    <script>
      if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan') != null) {
-        document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%>  '+ '<%=request.getParameter("MOT")%>';
+        document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%>  '+ '<%=request.getParameter("MOT")%>';
      }
      if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit') != null) {
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'visible';

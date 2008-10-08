@@ -87,7 +87,7 @@ if(session!=null){
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
             <title><h:outputText value="#{msgs.application_heading}"/></title>
             <!-- YAHOO Global Object source file --> 
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo/yahoo-min.js" ></script>
+            <script type="text/javascript" src="/scripts/yui/yahoo/yahoo-min.js" ></script>
             <!-- Additional source files go here -->
             <link type="text/css" href="/css/styles.css"  rel="stylesheet" media="screen">
             <link type="text/css" href="/css/calpopup.css" rel="stylesheet" media="screen">
@@ -166,7 +166,10 @@ if(session!=null){
 								 %>
 
                               <td align="left" colspan="2">
- 			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
+ 			               		<a href="javascript:void(0)"
+								onclick="javascript:if(editMinorObjectType.length<1){window.location='<%=URL%>'}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}" 
+								class="button" 
+								title="<h:outputText  value="#{msgs.back_button_text}"/>" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					            </a>
                                </td>
@@ -231,7 +234,7 @@ if(session!=null){
                                                      <div id='linkSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'  style="valign:top;">
 
                                                     <h:graphicImage url="./images/spacer.gif" style="border:1px;"height="14px" width="18px" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] || EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"  />  
-													 <h:outputLink  rendered="#{!(EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && fieldConfigPer.sensitive && !Operations.field_VIP) && !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" value="javascript:void(0)" title="#{msgs.link_text}" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><h:graphicImage  alt="#{msgs.link_text}"  url="./images/link.PNG" style="border:0px;" /><img alt="<h:outputText value="#{msgs.link_text}"/>" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
+													 <h:outputLink  rendered="#{!(EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] eq 'true' && fieldConfigPer.sensitive && !Operations.field_VIP) && !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" value="javascript:void(0)" title="#{msgs.link_text}" onclick="javascript:if(editMinorObjectType.length<1){showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"><h:graphicImage  alt="#{msgs.link_text}"  url="./images/link.PNG" style="border:0px;" /><img alt="<h:outputText value="#{msgs.link_text}"/>" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
                                                      </div> 
                                                      <div id='linkSourceDivData:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'             style='visibility:hidden;display:none;'>
                                                            <h:outputLink  value="javascript:void(0)" title="#{msgs.link_text}" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><img alt="<h:outputText value="#{msgs.link_text}"/>" height="14px" width="14px" border="0" src="images/link.PNG"/></h:outputLink>
@@ -242,10 +245,10 @@ if(session!=null){
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
 													 <h:panelGrid style="border:1;cellpadding:0;cellspacing:0;" rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
 													 <h:panelGroup rendered="#{fieldConfigPer.sensitive && (EditMainEuidHandler.editSingleEOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP)}" ><a href ="javascript:void(0)" title="<h:outputText value="#{msgs.unlock_text}"/>"
-                                                     onclick="document.getElementById('unlockSBRFieldValue').innerHTML = '<h:outputText value="#{fieldConfigPer.displayName}"/>';document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';showExtraDivs('unlockSBRDiv',event);"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>
+                                                     onclick="javascript:if(editMinorObjectType.length<1){document.getElementById('unlockSBRFieldValue').innerHTML = '<h:outputText value="#{fieldConfigPer.displayName}"/>';document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';showExtraDivs('unlockSBRDiv',event);}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>
 													 
 													 <h:panelGroup rendered="#{!fieldConfigPer.sensitive}" ><a href ="javascript:void(0)" title="<h:outputText value="#{msgs.unlock_text}"/>"
-                                                     onclick="document.getElementById('unlockSBRFieldValue').innerHTML = '<h:outputText value="#{fieldConfigPer.displayName}"/>';document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';showExtraDivs('unlockSBRDiv',event)"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>													 
+                                                     onclick="javascript:if(editMinorObjectType.length<1){document.getElementById('unlockSBRFieldValue').innerHTML = '<h:outputText value="#{fieldConfigPer.displayName}"/>';document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';document.getElementById('hiddenUnLockFieldDisplayName').value = '<h:outputText value="#{fieldConfigPer.displayName}"/>';showExtraDivs('unlockSBRDiv',event);}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"><h:graphicImage  alt="#{msgs.unlock_text}"  url="./images/unlock.PNG" height="14px" width="14px" style="border:0px;" /></a></h:panelGroup>													 
 													 </h:panelGrid>
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
@@ -255,7 +258,7 @@ if(session!=null){
                                                            rendered="#{ !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
 														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
 														   value="javascript:void(0)" title="#{msgs.lock_text}"
-                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;"  />
+                                                           onclick="javascript:if(editMinorObjectType.length<1){document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}" ><h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;"  />
 															
 													</h:outputLink>
 													</h:panelGroup>
@@ -265,7 +268,7 @@ if(session!=null){
                                                            rendered="#{ !EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] 
 														   && !EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
 														   value="javascript:void(0)" title="#{msgs.lock_text}"
-                                                           onclick="javascript:document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event)" ><h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;"  />
+                                                           onclick="javascript:if(editMinorObjectType.length<1){document.getElementById('lockSBRFieldValue').innerHTML = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockDisplayValue').value = '#{fieldConfigPer.displayName}';document.getElementById('hiddenLockFields').value = '#{fieldConfigPer.fullFieldName}';document.getElementById('hiddenLockFieldValue').value = '#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}';showExtraDivs('lockSBRDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}" ><h:graphicImage  alt="#{msgs.lock_text}"  url="./images/lock.PNG" height="14px" width="14px" style="border:0px;"  />
 															
 													</h:outputLink>
 													</h:panelGroup>
@@ -479,7 +482,7 @@ if(session!=null){
 											</tr>
                     <tr>
 					  <td><nobr>
-                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('EORootNodeForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&saveSbr=save','EUIDRootDiv','Updating SBR...please wait')"> 
+                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){getFormValues('EORootNodeForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&saveSbr=save','EUIDRootDiv','Updating SBR...please wait');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"> 
                                <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>    
                            <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('EORootNodeForm');setEOEditIndex('-1')">
@@ -518,13 +521,16 @@ if(session!=null){
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2">
-																	<a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)" class="button">
+																	<a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:if(editMinorObjectType.length<1){
+																	showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)
+																	}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"
+																	class="button">
 																	<span>
 							                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_rec_view}"/> <h:outputText value="#{childNodesName}"/>"/>
 
 																		<h:outputText value="#{msgs.source_rec_view}"/> &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_rec_view}"/> <h:outputText value="#{childNodesName}"/>"/>
 																	</span>
-
+																	</a>
                                                                     </td>
                                                                 </tr>
 			<!--Minor objects loop starts-->
@@ -645,7 +651,7 @@ if(session!=null){
 					    <table cellpadding="0" cellspacing="0" border="0">
 						  <tr>
 						     <td>
-                                <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>EOInnerForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)">
+                                <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';getFormValues('<h:outputText value="#{childNodesName}"/>EOInnerForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)">
                              <span id="EO<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
                              </a>
 							 </td>
@@ -656,7 +662,7 @@ if(session!=null){
 							</td>
 							<td>
                                  <div style="visibility:hidden;display:none;" id="EO<h:outputText value='#{childNodesName}'/>cancelEdit">
-                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', 'EO<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>','EO<h:outputText value='#{childNodesName}'/>buttonspan')">
+                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', 'EO<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>','EO<h:outputText value='#{childNodesName}'/>buttonspan')">
                                           <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                                  </div>
@@ -696,7 +702,7 @@ if(session!=null){
                                             <table style="background-color:#efefef" width="100%">
                                                 <tr>
                                                     <td>
-                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event)">
+                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event);}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
 
                                                             <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
                                                         </a> 
@@ -802,12 +808,12 @@ if(session!=null){
                                                                         <h:column>
                                                                             <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/>:<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
                                                                                  style="visibility:hidden;display:none;">
-                                                                                <h:outputLink  value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
+                                                                                <h:outputLink  value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:if(editMinorObjectType.length<1){showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                                                                     <h:graphicImage  alt="#{msgs.unlink_text}" styleClass="imgClass" url="./images/unlink.PNG"/>               
                                                                                 </h:outputLink>
                                                                             </div> 
                                                                             <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
-                                                                                           value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')"><h:graphicImage  alt="#{msgs.unlink_text}" styleClass="imgClass"
+                                                                                           value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:if(editMinorObjectType.length<1){showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"><h:graphicImage  alt="#{msgs.unlink_text}" styleClass="imgClass"
                                                                                                  url="./images/unlink.PNG" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}"/></h:outputLink>
                                                                         </h:column>                                                        
                                                                         
@@ -1197,10 +1203,8 @@ if(session!=null){
                     <tr>
 					  <td><nobr>
                        <%if("active".equalsIgnoreCase(soStatus)) {%>
-                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&save=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>RootEditMessages',event)">
-
-                          
-                               <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
+                           <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){getFormValues('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&save=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>RootEditMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+                                <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>
                            <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
@@ -1237,7 +1241,10 @@ if(session!=null){
                                                                 <tr>
                                                                     <td colspan="2">
                                                       
-																	<a href="javascript:void(0)" title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
+                                                      <!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+																	<a href="javascript:void(0)" title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  onclick="javascript:if(editMinorObjectType.length<1){
+																	showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)
+																	}else{showUnSavedAlert(event,editMinorObjectType,editObjectType)}" class="button">
 																	<span>
 																	<img src="./images/down-chevron-button.png" border="0" alt="title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" />
 																	<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;
@@ -1423,7 +1430,7 @@ if(session!=null){
 						 <table cellpadding="0" cellspacing="0" border="0">
 						   <tr>
 						     <td>
-								  <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event);">
+								  <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType='';getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event);">
 									   <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>  <h:outputText value='#{childNodesName}'/> </span>
 									</a>
 							 </td>
@@ -1477,11 +1484,11 @@ if(session!=null){
 		  	  <tr>
 				 <td colspan="2">
 				        <%if("active".equalsIgnoreCase(soStatus)) {%>
-					      <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
+					      <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                <span><h:outputText value="#{msgs.source_rec_deactivate_but}"/></span>
                             </a>
 						<%} else if("inactive".equalsIgnoreCase(soStatus)){%>
-							<a title="<h:outputText value="#{msgs.source_rec_activate_but}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&activateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
+							<a title="<h:outputText value="#{msgs.source_rec_activate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&activateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                <span><h:outputText value="#{msgs.source_rec_activate_but}"/></span>
                             </a>
 
@@ -1517,15 +1524,15 @@ if(session!=null){
 							<tr style="background-color:#efefef">
                                 <td>
 								 <nobr>
-                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}" />" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event)">
+                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}" />" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ editMinorObjectType = '';ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                        <span><h:outputText value="#{msgs.source_rec_save_but}" /></span>
                                     </a>
-                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
+                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="javascript:editMinorObjectType = '';ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
                                        <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                    </a>  
 								   <!-- Start Added by Anil, fix for  CR 6709864 -->
 								   <% if(operations.isSO_Add()){%>
-									 <a title="<h:outputText value="#{msgs.edit_euid_add_so}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/maineuidAddSO.jsf?&rand=<%=rand%>&addSO=addSO','AddSO','')">	
+									 <a title="<h:outputText value="#{msgs.edit_euid_add_so}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/maineuidAddSO.jsf?&rand=<%=rand%>&addSO=addSO','AddSO','');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">	
 											<span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.edit_euid_add_so}"/></span>
 									 </a>     
 									  <%}%>
@@ -1761,6 +1768,7 @@ if(session!=null){
 	dd_unlink=new YAHOO.util.DD("unLinkSoDiv");
 	dd_lock=new YAHOO.util.DD("lockSBRDiv");
 	dd_unlock=new YAHOO.util.DD("unlockSBRDiv");
+	dd_unsavedDiv=new YAHOO.util.DD("unsavedDiv");	
 	</script>
     </f:view>
     <%} %>  <!-- Session check -->

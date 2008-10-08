@@ -98,20 +98,48 @@ if(session!=null){
            var lidArray = [];
            var alllidsArray = [];
            var alllidsactionText = [];
+		   var editMinorObjectType ="";
+  		   var tabName = "";
 
            function setEditIndex(editIndex)   {
 		      editIndexid = editIndex;
 	       }
-            
+		   function hideDivs(thisDiv){
+ 			    document.getElementById(thisDiv).style.visibility = 'hidden';
+		        document.getElementById(thisDiv).style.display  = 'none';
+		   }
+		   function showDivs(thisDiv){
+			    document.getElementById(thisDiv).style.visibility = 'visible';
+		        document.getElementById(thisDiv).style.display  = 'block';
+		   }   
+ 
            function cancelEdit(formName, thisDiv,minorObject)   {
                 ClearContents(formName); 
                 enableallfields(formName);
                 setEditIndex("-1");
+				editMinorObjectType = '';
 		        document.getElementById(thisDiv).style.visibility = 'hidden';
 		        document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/> '+ minorObject;
 	     }
-	
+		// added by Bhat on 22-09-08  
+		function setMinorObjectAddressType(MinorObjectType,editIndex,objectType){
+			editMinorObjectType = MinorObjectType;
+			editIndexid = editIndex;
+		}
+		
+		// added by Bhat on 22-09-08		 
+		function showUnSavedAlert(thisEvent,minorObjectType){
+ 			document.getElementById("unsavedMessageDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_message_part_I}"/> '"+editMinorObjectType+"' <h:outputText value="#{msgs.unsaved_message_part_III}"/>";
+ 			showExtraDivs("unsavedDiv",thisEvent);
+  		}
+		// added by Bhat on 22-09-08		 
+		function showMessage(messageText){
+ 			document.getElementById("unsavedMessageDiv").innerHTML = messageText;
+			document.getElementById("unsavedDiv").style.visibility="visible";
+			document.getElementById("unsavedDiv").style.display="block";
+		}
+
              var URI_VAL = '<%=URI%>';
 	     var RAND_VAL = '<%=rand%>';
    </script>
@@ -139,50 +167,61 @@ if(session!=null){
                                 <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
-                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab" onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li>
-                                    <a title ="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title ="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"
+									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li class="selected"><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+                                <li class="selected"><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>"  href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>"  href="#mergeTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li>
-                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"
+									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li class="selected"><a  title ="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+                                <li class="selected"><a  title ="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
-                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"
+									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%}%>  
                             </ul>  
@@ -232,812 +271,13 @@ if(session!=null){
 									%>
                             <div class="yui-content">
                               <% if(operations.isSO_SearchView()){%> 
-                                <div id=viewEditTab">
-                            
-                                    <%if (singleSystemObjectLID != null) {
-										eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(singleSystemObjectLID);
-                                         
-										systyemObjectAsHashMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObjectLID,objScreenObject);
-										%>
-                                    <%if ("viewSO".equalsIgnoreCase(keyFunction)) {%>
-                                    <h:form>
-                                        <div  id="sourceViewBasicSearch">                                            
-                                            <table border="0" width="100%">
-
-                                                    <tr>
-                                                        <td> 
-                                                            <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}"  styleClass="button" rendered="#{Operations.SO_SearchView}"
-                                                                            action="#{NavigationHandler.toSourceRecords}" 
-                                                                            actionListener="#{SourceHandler.removeSingleLID}" >  
-                                                                <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
-                                                            </h:commandLink>                                                                     
-														</td>
-                                                        <th><b><h:outputText value="#{msgs.source_rec_status_but}"/></b>&nbsp;:&nbsp;<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;">
-														   <%=compareDuplicateManager.getStatus(singleSystemObjectLID.getStatus())%> </font>
-														</th>
-                                                        <th><b><h:outputText value="#{msgs.transaction_source}"/></b>:	<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%></font></th>
-                                                        <th> <b><%=localIdDesignation%></b>:<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=singleSystemObjectLID.getLID()%></font></th>
-                                                    </tr>
-                                             </table>
-                                            
-                                            <!--Start Displaying the root node fields -->                                        
-                                            <div class="minorobjects">                                                    
-											   <table border="0" cellpadding="1" cellspacing="1" width="100%">
-                                                 <tr><td class="tablehead" width="100%"><b><%=objScreenObject.getRootObj().getName()%></b> &nbsp; </td></tr>
- 												 <tr>
-												   <td>
-												    <table border="0" cellpadding="1" cellspacing="1" >
-                                                   <%  HashMap rootFieldValuesMap  = (HashMap) systyemObjectAsHashMap.get("SYSTEM_OBJECT");
-                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
-                                                                        %>  
-                                                      <tr>
-                                                        <th align="left">
-                                                          <%=fieldConfigMap.getDisplayName()%>
-                                                        </th>
-                                                        <td>
-															<%if(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) != null && systyemObjectAsHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>   
-                                                               <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                            <%}else{%>
-                                                               <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
-                                                             <%}%>
-														</td>
-                                                     </tr>
-                                                   <%}%>
-												   </table>
-												</td>
-												</tr>
-                                                <!-- STARTDisplaying the minor object fields -->    
-                                                <% String epathValue = new String();
-                                                  for (int io = 0; io < arrObjectNodeConfig.length; io++) {
-                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
-                                                     ArrayList  minorObjectMapList =  (ArrayList) systyemObjectAsHashMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList");
-								                %>
-                                                <tr><td>&nbsp;</td></tr>
-                                                <tr><td class="tablehead" width="100%"><b><%=childObjectNodeConfig.getName()%></b> &nbsp; </td></tr>
-  											    <tr>
-												  <td> 
-												     <div style="BORDER-RIGHT: #91bedb 1px solid; BORDER-TOP: #91bedb 1px solid; PADDING-LEFT: 1px;BORDER-LEFT: #91bedb 1px solid; PADDING-TOP: 0px; width:100%;BORDER-BOTTOM: #91bedb 1px solid; BACKGROUND-REPEAT: no-repeat; POSITION: relative;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left; overflow:auto">
-													 <table border="0" width="100%" cellpadding="0">
-                                                     <%
-                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                       HashMap minorObjectMap = new HashMap();
-													   %>
-                                                        <%if(minorObjectMapList.size() == 0) {%>
-                                                        <tr class="odd">
-														  <td><%=bundle.getString("source_rec_nodetails_text")%></td>
-														</tr>
-                                                       <%}%>
-													   <%
-			 					                       for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
-                                                         minorObjectMap = (HashMap) minorObjectMapList.get(ar);
-														 String styleClass = ((ar%2==0)?"even":"odd");
-                                                     %>
-
-													   <%if(ar == 0) {%>
-                                                        <tr>			   
-                                                           <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
- 			                                                  <td class="tablehead">
-				                                                 <%=fieldConfigArrayMinor[k].getDisplayName()%>
-                                                               </td>
-		                                                  <%}%>
-														</tr> 
-                                                      <%}%>
-
-													 <tr class="<%=styleClass%>">
-                                                        <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
-                                                          <td>
-														  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-   															<%if( systyemObjectAsHashMap.get("hasSensitiveData") != null &&  fieldConfigArrayMinor[k].isSensitive() && !operations.isField_VIP()){%>   
-                                                               <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                            <%}else{%>
-                                               					<%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
-																  <%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-																	 <%=ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
-																  <%}else{%>
-																	<%=ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
-																 <%}%>
-															   <%} else {%> <!--minorObjectMap- In other cases-->
-															   <%
-																String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
-																if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
-																  if (value != null) {
-																	 //Mask the value as per the masking 
-																	 value = fieldConfigArrayMinor[k].mask(value.toString());
-																   }
-																} 
-																%> 
-																 <%=value%>
-															   <%}%>
-                                                             <%}%>
-														  <%} else {%> <!-- else print &nbsp-->
-															&nbsp;
-														  <%}%>
- 								                          </td>
-							                          <% } %>
-													</tr>
-														  
-													 <%}%>
-
- 													 </table>
-													 </div>
-												  </td>
-												</tr>
-												<%}%>
-                                            <!--End Displaying the minor object fields -->    
- 										</table>
-
-                                       </div>
-
-                                     <!--End Displaying the root node fields -->    
-
-                                    
-                                            <table>
-                                                <tr><td>&nbsp;</td></tr>
-                                                <tr>
-                                                    <%
-                                                    ValueExpression soValueExpression = ExpressionFactory.newInstance().createValueExpression(singleSystemObjectLID, singleSystemObjectLID.getClass());
-
-                                                    %>
-                                                    
-                                                    <td>
- 													    <!--Display edit link only when the system object-->
-                                                        <h:commandLink  title= "#{msgs.source_rec_edit_but}" styleClass="button" 
-                                                                        action="#{NavigationHandler.toSourceRecords}" 
-                                                                        rendered="#{Operations.SO_Edit}"
-                                                                        actionListener="#{SourceAddHandler.editLID}" >
-                                                            <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>                
-                                                            <span><h:outputText value="#{msgs.source_rec_edit_but}"/></span>
-                                                        </h:commandLink>   
-                                                    </td>
-													
-                                                    <td>
-                                                        <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" 
-                                                                        rendered="#{Operations.SO_SearchView}"
-                                                                        action="#{NavigationHandler.toEuidDetails}" 
-                                                                        actionListener="#{SourceHandler.viewEUID}" >  
-                                                            <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
-                                                            <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
-                                                        </h:commandLink>   
-                                                    </td>
-                                                </tr> 
-                                                <tr><td>&nbsp;</td></tr>
-                                                
-                                            </table>
-                                        </div>
-                                    </h:form>
-                                    <%} else if ("editSO".equalsIgnoreCase(keyFunction)) {%>
-                                    <%
-                                     ValueExpression soValueExpression = ExpressionFactory.newInstance().createValueExpression(singleSystemObjectLID, singleSystemObjectLID.getClass());
-                                    %>
-                                    
-                                    <div id="sourceViewBasicSearch">
-                                        <!-- Start Status div-->
-                                        <div id='edistatusdisplay'>
-                                            <table border=0 width="100%">
-                                                <tr>
-                                                    <td>
-                                                        <h:form>
-                                                            <table border="0" cellpadding="1" cellspacing="1" width="100%">
-
-                                                    <tr>
-                                                        <td> 
-                                                            <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}"  styleClass="button" rendered="#{Operations.SO_SearchView}"
-                                                                            action="#{NavigationHandler.toSourceRecords}" 
-                                                                            actionListener="#{SourceHandler.removeSingleLID}" >  
-                                                                <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
-                                                            </h:commandLink>                                                                     
-														</td>
-                                                        <th><b><h:outputText value="#{msgs.source_rec_status_but}"/></b>&nbsp;:&nbsp;<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;">
-														   <%=compareDuplicateManager.getStatus(singleSystemObjectLID.getStatus())%> </font>
-														</th>
-                                                        <th><b><h:outputText value="#{msgs.transaction_source}"/></b>:	<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%></font></th>
-                                                        <th> <b><%=localIdDesignation%></b>:<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=singleSystemObjectLID.getLID()%></font></th>
-                                                    </tr>
-																
-                                                            </table>    
-                                                        </h:form>
-                                                    </td>
-                                                    <td><div id="editFormValidate"></div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <!-- Status div-->
-                                                                                                 
-											   <table border="0" " width="100%" >
-                                                <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                <tr>
-                                                    <td class="tablehead" colspan="2">
-                                                        <%=objScreenObject.getRootObj().getName()%>                    
-                                                    </td>
-                                                </tr>
-                                                <%}%>
-                                                                 
-                                                <tr>
-                                                    <td align="left">
-                                                        <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
-                                                        <h:messages  styleClass="errorMessages"  layout="list" />
-                                                        <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                       <table>
-														<tr>
-														<td style="font-size:10px;">
-															 <nobr>
-																 <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
-															</nobr>
-														</td>
-													  </tr> 
-													  </table> 
-
-														<h:form id="BasicSearchFieldsForm">
-                                                          <!-- Start EDIT Fields-->
-                                                          <!--Start Displaying the person fields -->                                        
-                                                        <form id="<%=objScreenObject.getRootObj().getName()%>EditSOInnerForm" name="<%=objScreenObject.getRootObj().getName()%>EditSOInnerForm" method="post" enctype="application/x-www-form-urlencoded">
-
-                                                            <h:dataTable  id="hashIdEdit" 
-                                                                          var="fieldConfigPerAdd" 
-                                                                          value="#{SourceHandler.rootNodeFieldConfigs}">
-                                                                <h:column>
-																	 <h:outputText rendered="#{fieldConfigPerAdd.required}">
-																		<span style="font-size:12px;color:red;verticle-align:top">*</span>
-																	</h:outputText>													  
-																	<h:outputText rendered="#{!fieldConfigPerAdd.required}">
-																		<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-																	</h:outputText>													  
-																	<h:outputText value="#{fieldConfigPerAdd.displayName}" />
-																	<h:outputText value=":"/>
-                                                                  </h:column>
-                                                                <!--Rendering HTML Select Menu List-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
-                                                                    <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
-                                                                                     value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
-                                                                        <f:selectItem itemLabel="" itemValue="" />
-                                                                        <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
-                                                                    </h:selectOneMenu>
-                                                                </h:column>
-																
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive}" >
-																	<h:selectOneMenu 
-																	        readonly="true" 
-																			disabled="true" 
-																			rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP }">
-                                                                        <f:selectItem itemLabel="" itemValue="" />
-                                                                    </h:selectOneMenu>
-                                                                    <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
-																	                 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
-                                                                                     value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
-                                                                        <f:selectItem itemLabel="" itemValue="" />
-                                                                        <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
-                                                                    </h:selectOneMenu>      
-                                                                </h:column>
-																
-                                                                <!--Rendering Updateable HTML Text boxes-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive}" >
-																   
-                                                                    <h:inputText label="#{fieldConfigPerAdd.displayName}"  
-                                                                                  value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-                                                                                 title="#{fieldConfigPerAdd.fullFieldName}"
-                                                                                 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-                                                                                 maxlength="#{fieldConfigPerAdd.maxLength}"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"
-																				rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' ||  Operations.field_VIP}"/>
-																
-																	<h:inputText label="#{fieldConfigPerAdd.displayName}"  
-                                                                                 value="#{msgs.SENSITIVE_FIELD_MASKING}"
-																				 readonly="true"
-																				 disabled="true"
- 																				rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] ne null}"/>	
-
-																	<h:inputText label="#{fieldConfigPerAdd.displayName}"  
-                                                                                 readonly="true"
-																				 disabled="true"
- 																				rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' &&  !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] eq null}"/>	
-
-                                                                </h:column>                     
-
-																<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
-                                                                    <h:inputText label="#{fieldConfigPerAdd.displayName}"  
-                                                                                 id="fieldConfigIdTextbox"  
-                                                                                 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-                                                                                 title="#{fieldConfigPerAdd.fullFieldName}"
-                                                                                 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-                                                                                 maxlength="#{fieldConfigPerAdd.maxLength}"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
-                                                                </h:column>                     
-                                                                <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && !fieldConfigPerAdd.sensitive}">
-                                                                    
-                                                                    <nobr><!--Sridhar -->
-                                                                        <input type="text" 
-                                                                               title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
-                                                                               value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
-                                                                               id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
-                                                                               required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
-                                                                               maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-                                                                               onblur="javascript:validate_date(this,'<%=dateFormat%>');"
-                                                                               onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
-                                                                               onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                                       <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"
-                                                     onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{fieldConfigPerAdd.name}"/>',
-														  '<%=dateFormat%>',
-														  '<%=global_daysOfWeek%>',
-														  '<%=global_months%>',
-														  '<%=cal_prev_text%>',
-														  '<%=cal_next_text%>',
-														  '<%=cal_today_text%>',
-														  '<%=cal_month_text%>',
-														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
-												  <font class="dateFormat">(<%=dateFormat%>)</font>
-                                                                    </nobr>
-                                                                        
-                                                                        
-                                                                </h:column>
-
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && (SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP) }">
-                                                                    <nobr><!--Sridhar -->
-                                                                        <input type="text" 
-                                                                               title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
-                                                                               value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
-                                                                               id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
-                                                                               required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
-                                                                               maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-                                                                               onblur="javascript:validate_date(this,'<%=dateFormat%>');"
-                                                                               onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
-                                                                               onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                                       <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"
-                                                     onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{fieldConfigPerAdd.name}"/>',
-														  '<%=dateFormat%>',
-														  '<%=global_daysOfWeek%>',
-														  '<%=global_months%>',
-														  '<%=cal_prev_text%>',
-														  '<%=cal_next_text%>',
-														  '<%=cal_today_text%>',
-														  '<%=cal_month_text%>',
-														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
-												  <font class="dateFormat">(<%=dateFormat%>)</font>
-                                                                    </nobr>
-                                                                </h:column>
-
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true'  && fieldConfigPerAdd.sensitive && !Operations.field_VIP }">
-                                                                    <nobr><!--Sridhar -->
-                                                                        <input type="text" 
-                                                                                value="<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}"/>"
-                                                                               id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
-                                                                               readonly="true" 
-                                                                               disabled="true" 
-                                                                               maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-                                                                               ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/><font class="dateFormat">(<%=dateFormat%>)</font>
-                                                                    </nobr>
-                                                                </h:column>
-
-																<!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive }" >
-                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
-                                                                                     title="#{fieldConfigPerAdd.fullFieldName}"
-                                                                                     value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
- 																					 id="fieldConfigIdTextArea"   
-                                                                                     required="#{fieldConfigPerAdd.required}"
-                                                                                      />
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive }" >
-                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
-																	                 readonly="true"
-																					 disabled="true"
-                                                                                     value="#{msgs.SENSITIVE_FIELD_MASKING}" 
-                                                                                     required="#{fieldConfigPerAdd.required}"
-																					 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}"
-                                                                                     />
-                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
-                                                                                     title="#{fieldConfigPerAdd.fullFieldName}"
-                                                                                     value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}" 
-                                                                                     required="#{fieldConfigPerAdd.required}"
-																					 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
-                                                                                     />
-                                                                </h:column>
-                                                                    
-                                                            </h:dataTable>
-                                                        </form>
-                                                            
-                                                        <!--End Displaying the person fields -->    
-                                                        <!--Minor Object fields here -->     
-                                                        <h:dataTable  id="allChildNodesNamesAdd" 
-                                                                      width="100%"
-                                                                      var="childNodesName" 
-                                                                      value="#{SourceHandler.allChildNodesNames}">
-                                                             <h:column>
-                                                                <table width="100%">
-                                                                    <tr>
-                                                                        <td class="tablehead" colspan="2">
-                                                                            <h:outputText value="#{childNodesName}"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td colspan="2">
-                                                                            <input type="hidden" value="0" id="<h:outputText value="#{childNodesName}"/>CountValue" />
-                                                                        </td>
-                                                                    </tr>
-                                                                        
-                                                                    <tr>
-                                                                        <td colspan="2">
-                                                                            <a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/> " href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddDiv');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?&MOT=<h:outputText value="#{childNodesName}"/>&load=load&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv','')" class="button">
-                                                                            <span>
-                                                                                <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>&nbsp;View <h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_submenu_add}"/>  <h:outputText value="#{childNodesName}"/>"/>
-                                                                            </span>
-                                                                                
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr><td>
-                                                                            <div id="extra<h:outputText value='#{childNodesName}'/>AddDiv"  style="visibility:hidden;display:none;">
-                                                                                <table>
-                                                                                    <tr>
-                                                                                        <td colspan="2" align="left">
-                                                                                            <form id="<h:outputText value="#{childNodesName}"/>InnerForm" name="<h:outputText value="#{childNodesName}"/>InnerForm" method="post" enctype="application/x-www-form-urlencoded">
-                                                                                                <h:dataTable  headerClass="tablehead" 
-                                                                                                              id="allNodeFieldConfigsMapAdd" 
-                                                                                                              var="allNodeFieldConfigsMapAdd" 
-                                                                                                              width="100%"
-                                                                                                              value="#{SourceHandler.allNodeFieldConfigs}">
-                                                                                                    <h:column>
-                                                                                                        <h:dataTable  headerClass="tablehead" 
-                                                                                                                      id="childFieldConfigsAdd" 
-                                                                                                                      var="childFieldConfigAdd" 
-                                                                                                                      width="100%"
-                                                                                                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
-                                                                                                                          
-                                                                                                            <h:column>
- 
-																							 <h:outputText rendered="#{childFieldConfigAdd.required}">
-																								<span style="font-size:12px;color:red;verticle-align:top">*</span>
-																							</h:outputText>													  
-																							<h:outputText rendered="#{!childFieldConfigAdd.required}">
-																								<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-																							</h:outputText>													  
-																							<h:outputText value="#{childFieldConfigAdd.displayName}" />
-																							<h:outputText value=":"/>
-
-                                                                                                            </h:column>
-                                                                                                            <!--Rendering HTML Select Menu List-->
-                                            <!--Rendering HTML Select Menu List-->
-										  <!--user code related changes starts here-->
-                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                <!-- User code fields here -->
-												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" onchange="getFormValues('#{childNodesName}InnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand=+RAND_VAL+&userCodeMasking=true','#{childNodesName}AddNewSODiv',event)"
-												rendered="#{childFieldConfigAdd.userCode ne null}">
-												    <f:selectItem itemLabel="" itemValue="" />
-                                                   <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
-                                                </h:selectOneMenu>    
-												
-												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
-												                 rendered="#{childFieldConfigAdd.userCode eq null}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
-                                                </h:selectOneMenu>
-                                            </h:column>
-
-                                            <!--Rendering Updateable HTML Text boxes-->
-                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
-                                           
-                                                            <h:inputText label="#{childFieldConfigAdd.displayName}"  
-                                                                         title="#{childFieldConfigAdd.fullFieldName}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
-																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                         required="#{childFieldConfigAdd.required}"
-																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
-																		 />     
-																		 
-																		 <h:inputText label="#{childFieldConfigAdd.displayName}"  
-                                                                         title="#{childFieldConfigAdd.fullFieldName}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
-																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                         required="#{childFieldConfigAdd.required}"
-																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
-																		 />
-
-                                          </h:column>                     
-										  <!--user code related changes ends here-->
-                                          
-										  <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
-                                                                                                                <nobr>
-                                                                                                                    <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
-                                                                                                                           id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                                                                                           required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
-                                                                                                                           maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
-                                                                                                                           onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
-                                                                                                                           onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                                                           onblur="javascript:validate_date(this,'<%=dateFormat%>');">
-                                                                                                                    <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>"
-                                                     onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{childFieldConfigAdd.name}"/>',
-														  '<%=dateFormat%>',
-														  '<%=global_daysOfWeek%>',
-														  '<%=global_months%>',
-														  '<%=cal_prev_text%>',
-														  '<%=cal_next_text%>',
-														  '<%=cal_today_text%>',
-														  '<%=cal_month_text%>',
-														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{childFieldConfigAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
-												  <font class="dateFormat">(<%=dateFormat%>)</font>
-                                                                                                                </nobr>
-                                                                                                            </h:column>                     
-                                                                                                                
-                                                                                                                
-                                                                                                            <!--Rendering Updateable HTML Text Area-->
-                                                                                                                
-                                                                                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                                                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
-                                                                                                                                 required="#{childFieldConfigAdd.required}" />
-                                                                                                            </h:column>
-                                                                                                        </h:dataTable>                                                                                
-                                                                                                    </h:column>
-                                                                                                </h:dataTable>                                                                                
-                                                                                                    
-                                                                                            </form>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <!--EDIT SO buttons START-->
-                                                                                    <tr>                                                                                                                
-																					  <td colspan="2">
-																					     <table cellpadding="0" cellspacing="0" border="0">
-																						   <tr>
-																						   <td>
-                                                                                                <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=singleSystemObjectLID.getLID()%>&SYS=<%=singleSystemObjectLID.getSystemCode()%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event)">
-                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/> </span>
-                                                                                                 </a> 
-																							 </td>
-																							 <td>
-                                                                                                  <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
-                                                                                                       <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                                                                                   </h:outputLink> 
-																						     </td>
-																							 <td>
-                                                                                                   <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelEdit">
-                                                                                                      <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>  <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                                                                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
-                                                                                                       </a>     
-                                                                                                    </div>
-																							   </td>
-																							  </tr>
-																							</table>
-																					  </td>
-																					</tr>
-                                                                                    <!--EDIT SO buttons ENDS-->
-                                                                                </table>   
-                                                                            </div>  
-                                                                    </td></tr>
-                                                                        
-                                                                    <tr>
-                                                                        <td colspan="2">
-                                                                            <div id="stealth" style="visibility:hidden;display:none;"></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td colspan="2">
-                                                                            <div id="<h:outputText value="#{childNodesName}"/>NewDiv" >
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td colspan="2">
-                                                                            <div id="<h:outputText value="#{childNodesName}"/>AddDiv"></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                        
-                                                                </table>   
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                        <!-- End Display minor objects fields --> 
-                                                        <!-- End Edit Acive SO -->
-                                                         </h:form>
-                                             
-                                                          <!-- End EDIT Fields-->														   
-                                                         <%} else if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus()) || "merged".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
-                                                                   <!-- Start READ ONY Fields-->
-                                                                   <!--Start Displaying the root node fields -->                                        
-                                            <!--Start Displaying the root node fields -->                                        
-                                            <div class="minorobjects">                                                    
-											   <table border="0" cellpadding="1" cellspacing="1" width="100%">
-                                                 <tr><td class="tablehead" width="100%"><b><%=objScreenObject.getRootObj().getName()%></b> &nbsp; </td></tr>
- 												 <tr>
-												   <td>
-												    <table border="0" cellpadding="1" cellspacing="1" >
-                                                   <%  HashMap rootFieldValuesMap  = (HashMap) systyemObjectAsHashMap.get("SYSTEM_OBJECT");
-                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
-                                                                        %>  
-                                                      <tr>
-                                                        <th align="left">
-                                                          <%=fieldConfigMap.getDisplayName()%>
-                                                        </th>
-                                                        <td>
-														<%if(fieldConfigMap.getGuiType().equalsIgnoreCase("TextBox")) {%>
-                                                          <input type="text" title="<%=fieldConfigMap.getDisplayName()%>" style="background:#efefef;border: 1px inset;" value="<%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%>"  readonly="true" disabled="true"/>
-														<%}else if(fieldConfigMap.getGuiType().equalsIgnoreCase("TextArea")) {%>
- 														   <textarea title="<%=fieldConfigMap.getDisplayName()%>" disabled="true" readonly="true" style="background:#efefef;border: 1px inset;" >
-														      <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%>
-                                                           </textarea>
-														<%}else if(fieldConfigMap.getGuiType().equalsIgnoreCase("MenuList")) {%>
-														  <select readonly="true" disabled="true" style="background:#efefef;border: 1px inset;"  title="<%=fieldConfigMap.getDisplayName()%>"> 
-														    <option value="<%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>"><%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%></option>
-														   </select>                                              
-														 <%} else {%>
-                                                          <input type="text" title="<%=fieldConfigMap.getDisplayName()%>" value="<%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%>"  readonly="true" disabled="true" style="background:#efefef;border: 1px inset;" />
-														<%}%>
-														</td>
-                                                     </tr>
-                                                   <%}%>
-												   </table>
-												</td>
-												</tr>
-                                                <!-- STARTDisplaying the minor object fields -->    
-                                                <% String epathValue = new String();
-                                                  for (int io = 0; io < arrObjectNodeConfig.length; io++) {
-                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
-                                                     ArrayList  minorObjectMapList =  (ArrayList) systyemObjectAsHashMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList");
-								                %>
-                                                <tr><td>&nbsp;</td></tr>
-                                                <tr><td class="tablehead" width="100%"><b><%=childObjectNodeConfig.getName()%></b> &nbsp; </td></tr>
-  											    <tr>
-												  <td> 
-												     <div style="BORDER-RIGHT: #91bedb 1px solid; BORDER-TOP: #91bedb 1px solid; PADDING-LEFT: 1px;BORDER-LEFT: #91bedb 1px solid; PADDING-TOP: 0px; width:100%;BORDER-BOTTOM: #91bedb 1px solid; BACKGROUND-REPEAT: no-repeat; POSITION: relative;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left; overflow:auto">
-													 <table border="0" width="100%" cellpadding="0">
-                                                     <%
-                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                       HashMap minorObjectMap = new HashMap();
-													   %>
-                                                        <%if(minorObjectMapList.size() == 0) {%>
-                                                        <tr class="odd">
-														  <td><%=bundle.getString("source_rec_nodetails_text")%></td>
-														</tr>
-                                                       <%}%>
-													   <%
-			 					                       for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
-                                                         minorObjectMap = (HashMap) minorObjectMapList.get(ar);
-														 String styleClass = ((ar%2==0)?"even":"odd");
-                                                     %>
-
-													   <%if(ar == 0) {%>
-                                                        <tr>			   
-                                                           <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
- 			                                                  <td class="tablehead">
-				                                                 <%=fieldConfigArrayMinor[k].getDisplayName()%>
-                                                               </td>
-		                                                  <%}%>
-														</tr> 
-                                                      <%}%>
-
-													 <tr style="background:#efefef;" >
-                                                        <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
-                                                          <td>
-														  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-															   <%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
-																  <%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-																	 <%=ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
-																  <%}else{%>
-																	<%=ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
-																 <%}%>
-															   <%} else {%> <!--minorObjectMap- In other cases-->
-															   <%
-																String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
-																if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
-																  if (value != null) {
-																	 //Mask the value as per the masking 
-																	 value = fieldConfigArrayMinor[k].mask(value.toString());
-																   }
-																} 
-																%> 
-																 <%=value%>
-															   <%}%>
-														  <%} else {%> <!-- else print &nbsp-->
-															&nbsp;
-														  <%}%>
- 								                          </td>
-							                          <% } %>
-													</tr>
-														  
-													 <%}%>
-
- 													 </table>
-													 </div>
-												  </td>
-												</tr>
-												<%}%>
-                                            <!--End Displaying the minor object fields -->    
- 										</table>
-
-                                       </div>
-
-                                     <!--End Displaying the root node fields -->    
-                                                           <!-- End Display minor objects fields --> 
-                                                           <!-- End READ ONLY Fields-->
-                                                          <%}%>
-                                                          <h:form>
-                                                        <table>  
-                                                            <tr>       
-                                                                <% if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
-                                                                    
-                                                                <td>
-                                                                    <!-- Edit Submit button-->
-                                                                    <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>"  class="button" 
-                                                                       href="javascript:void(0);"
-                                                                       onclick="javascript:getFormValues('BasicSearchFieldsForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&save=true&rand=<%=rand%>','editFormValidate','');" >  
-                                                                        <span><h:outputText value="#{msgs.source_rec_save_but}"/></span>
-                                                                    </a>                                     
-                                                                        
-                                                                        
-                                                                </td>                                                                
-                                                                <td>
-                                                                    <!-- Edit CANCEL button-->
-                                                                    <h:commandLink title="#{msgs.cancel_but_text}"  styleClass="button" 
-                                                                                    action="#{SourceHandler.cancelEditLID}" >  
-                                                                        <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                                                    </h:commandLink>                                                                      
-                                                                </td>
-                                                                <%}%>                                                                         
-                                                                <td>                                                                   
-                                                                    <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}" 
-                                                                                    action="#{NavigationHandler.toEuidDetails}" 
-                                                                                    actionListener="#{SourceHandler.viewEUID}" >  
-                                                                        <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
-                                                                        <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
-                                                                    </h:commandLink>                                     
-                                                                </td>
-                                                                <td> 
-                                                                    <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                                    <h:commandLink title="#{msgs.source_rec_deactivate_but}"  styleClass="button" rendered="#{Operations.SO_Deactivate}"
-                                                                                    action="#{NavigationHandler.toSourceRecords}" 
-                                                                                    actionListener="#{SourceHandler.deactivateSO}">
-                                                                        <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
-                                                                        <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
-                                                                    </h:commandLink>                         
-                                                                    <%}%>            
-                                                                    <%if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                                    <h:commandLink title="#{msgs.source_rec_activate_but}"  styleClass="button" rendered="#{Operations.SO_Activate}"
-                                                                                    action="#{NavigationHandler.toSourceRecords}" 
-                                                                                    actionListener="#{SourceHandler.activateSO}">
-                                                                        <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
-                                                                        <span><h:outputText value="#{msgs.source_rec_activate_but}" /></span>
-                                                                    </h:commandLink>                         
-                                                                    <%}%>            
-                                                                </td>
-                                                               
-                                                            </tr>
-                                                        </table>
-                                                        </h:form>    <!-- close Action button on Edit tab -->
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                                
-                                    </div>
-                                    <%}%>
-                                    <%} else {%>
-                                    <!--START SEARCH CRITERIA-->
+                                <div id="viewEditTab">
+                                  
+                                     <!--START SEARCH CRITERIA-->
 
                                     <div id="sourceViewBasicSearch">
-                                        <h:form id="basicViewformData">
-                                            <h:inputHidden id="enteredFieldValues" value="#{SourceHandler.enteredFieldValues}"/>
-                                                
-                                            <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />
+                                        <form id="basicViewformData" name="basicViewformData">
+                                             <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />
                                             <table border="0" cellpadding="0" cellspacing="0">
                                                 <tr><td>&nbsp;</td></tr>
                                                 <tr>
@@ -1052,13 +292,12 @@ if(session!=null){
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                                                 <h:selectOneMenu title="SystemCode" rendered="#{feildConfig.name eq 'SystemCode'}"
-onblur="javascript:accumilateFormSelectFieldsOnBlur('basicViewformData',this,'#{feildConfig.name}')"
-onchange="javascript:setLidMaskValue(this,'basicViewformData')">
+ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <f:selectItem itemLabel="" itemValue="" />
                                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                 </h:selectOneMenu>
                                                                     
-                                                                <h:selectOneMenu onblur="javascript:accumilateFormSelectFieldsOnBlur('basicViewformData',this,'#{feildConfig.name}')"
+                                                                <h:selectOneMenu  
                                                      rendered="#{feildConfig.name ne 'SystemCode'}">
                                                                     <f:selectItem itemLabel="" itemValue="" />
                                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -1074,8 +313,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
 																				   onfocus="javascript:clear_masking_on_focus()"
-                                                                                   onblur="javascript:accumilateFormFieldsOnBlur(this,'#{feildConfig.name}','#{feildConfig.inputMask}','#{feildConfig.valueType}','basicViewformData')"
-                                                                                   maxlength="#{feildConfig.maxLength}" 
+                                                                                    maxlength="#{feildConfig.maxLength}" 
                                                                                    rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                                                        
                                                                     <h:inputText   required="#{feildConfig.required}" 
@@ -1086,16 +324,14 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
 																				   onfocus="javascript:clear_masking_on_focus()"
-                                                                                   onblur="javascript:accumilateFormFieldsOnBlur(this,'#{feildConfig.name}',document.basicViewformData.lidmask.value,'#{feildConfig.valueType}','basicViewformData')"
-                                                                                   rendered="#{feildConfig.name eq 'LID'}"/>
+                                                                                    rendered="#{feildConfig.name eq 'LID'}"/>
                                                                                        
                                                                     <h:inputText   required="#{feildConfig.required}" 
                                                                                    label="#{feildConfig.displayName}" 
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
 																				   onfocus="javascript:clear_masking_on_focus()"
-                                                                                   onblur="accumilateFormFieldsOnBlur(this,'#{feildConfig.name}','#{feildConfig.inputMask}','#{feildConfig.valueType}','basicViewformData')"
-                                                                                   maxlength="#{SourceHandler.euidLength}" 
+                                                                                    maxlength="#{SourceHandler.euidLength}" 
                                                                                    rendered="#{feildConfig.name eq 'EUID'}"/>
                                                                                        
                                                                                        
@@ -1105,9 +341,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                                                 <nobr>
                                                                     <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   
-                                                                                     onblur="accumilateFormFieldsOnBlur(this,'#{feildConfig.name}','#{feildConfig.inputMask}','#{feildConfig.valueType}','basicViewformData')"
-                                                                                         
-                                                                                     required="#{feildConfig.required}"/>
+																	required="#{feildConfig.required}"/>
                                                                 </nobr>
                                                             </h:column>
                                                                 
@@ -1120,7 +354,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                            maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                           onblur="javascript:validate_date(this,'<%=dateFormat%>');javascript:accumilateFormFieldsOnBlur('basicViewformData',this,'<h:outputText value="#{feildConfig.name}"/>')">
+                                                                           onblur="javascript:validate_date(this,'<%=dateFormat%>');">
                                                                     <a href="javascript:void(0);" 
 												     title="<h:outputText value="#{feildConfig.displayName}"/>"
                                                      onclick="g_Calendar.show(event,
@@ -1140,11 +374,19 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                 
                                                             <f:facet name="footer">
                                                                 <h:column>
-                                                                   
-                                                                    <h:commandLink title="#{msgs.patdetails_search_button2}" styleClass="button" action="#{SourceHandler.performSubmit}" >  
-                                                                        <span><h:outputText value="#{msgs.patdetails_search_button2}"/></span>
-                                                                    </h:commandLink>                                     
-																	<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:ClearContents('basicViewformData')">
+																<!--  modified by Bhat on 24-09-08 to incorparate with ajax call-->
+														<a title="<h:outputText value="#{msgs.patdetails_search_button2}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" 
+														onclick="javascript:if(editMinorObjectType.length<1){
+														getFormValues('<h:outputText value="#{childNodesName}"/>basicViewformData');
+														ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?'+queryStr+'&rand='+<%=rand%>+'&viewSO=true',
+														'sourceRecordSearchResult',
+														event);
+														}else{showUnSavedAlert(event,editMinorObjectType);}">
+														<span id="<h:outputText value='#{childNodesName}'/>buttonspan">
+														<h:outputText value="#{msgs.patdetails_search_button2}" /></span>
+														</a> 
+                                                                                                       
+																	<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:ClearContents('basicViewformData');">
                                                                         <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                     </a>
                                                                 </h:column>
@@ -1160,18 +402,17 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                     </td>	
                                                 </tr>
                                             </table>  
-                                        </h:form>
+                                        </form>
                                     </div>                                                                 
                                     <!--END SEARCH CRITERIA-->
-                                    <%}%>
-                                    
+                                    <div id="sourceRecordSearchResult"></div>
+									<div id="viewEuidDiv"></div>
+                                     
                                 </div>  
                               <%}%> 
                               <% if(operations.isSO_Add()){%> 
                                 <div id="addTab">
-                                    
-
-                                        <table width="100%">
+                                         <table width="100%">
                                        <%if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                             <tr>
                                                 <td>
@@ -1362,10 +603,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																
                                                                 <tr>
                                                                     <td colspan="2">
-																	<a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp; <h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')" class="button">
+																	<!-- modified by Bhat on 22-09-08 to verify editMinorObjectType.length-->
+																	<a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp; <h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:
+																	if(editMinorObjectType.length<1){showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')}
+																	else{showUnSavedAlert(event,editMinorObjectType);}" class="button" >
+																	
 																	<span>
 							                                            <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>&nbsp;Add <h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>
 																	</span>
+																	</a>
 
                                                                     </td>
                                                                 </tr>
@@ -1488,12 +734,12 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                        <table cellpadding="0" cellspacing="0" border="0">
 						<tr>
 						<td>
-						   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+ 						   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType='';getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
                            <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/> </span>
                            </a>
 						</td>
 						<td>
-						   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');setEditIndex('-1');">
+ 						   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');setEditIndex('-1');">
 						   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 						   </a>
 						</td>
@@ -1545,12 +791,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             <td>
                                                                 </nobr>
                                                                 <nobr>
+  																<!-- modified by Bhat on 22-09-08 added for editMinorObjectType.length validation -->
                                                                     <a title ="<h:outputText value="#{msgs.validate_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"													
-																	   onclick="javascript:getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');" >  
+																	   onclick="javascript:if(editMinorObjectType.length<1){getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');
+																	   }else{showUnSavedAlert(event,editMinorObjectType)}" >  
 <!--- Validate Button -->
                                                                          <span><h:outputText value="#{msgs.validate_button_text}"/></span>
                                                                     </a>                                     
+
                                                                 </nobr>
                                                             </td>
                                                             <td>
@@ -1564,22 +813,28 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 													<div id="saveButtons" style="visibility:hidden;display:none">
                                                     <table>
                                                         <tr>
-                                                            <td>
+                                                             <td><!-- modified by Bhat on 22-09-08 to verify editMinorObjectType.length-->
                                                                 <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" 
 																   href="javascript:void(0);"
-																   onclick="javascript:ClearContents('<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm');setEditIndex('-1')">
+																   onclick="javascript:if(editMinorObjectType.length<1){
+																   ClearContents('<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm');
+																   setEditIndex('-1');
+																   }else{showUnSavedAlert(event,editMinorObjectType);}">
                                                                     <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                 </a>
                                                             </td>
-                                                            <td>
+                                                            <td><!-- modified by Bhat on 22-09-08 to verify editMinorObjectType.length-->
                                                                 <nobr>
                                                                     <a title = "<h:outputText value="#{msgs.submit_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"
-																	   onclick="javascript:getFormValues('<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&save=true&rand=<%=rand%>','addFormValidate','');" >  
+																	   onclick="javascript:if(editMinorObjectType.length<1){
+																	   getFormValues('<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&save=true&rand=<%=rand%>','addFormValidate','');
+																	   }else{showUnSavedAlert(event,editMinorObjectType);}" >  
                                                                         <span><h:outputText value="#{msgs.submit_button_text}"/></span>
                                                                     </a>                                     
                                                                 </nobr>
                                                             </td>
+
 															<td>
                                                                 <h:form>
 																 <!-- Edit CANCEL button-->
@@ -1684,15 +939,16 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             </tr>
                                                             <tr>
                                                                <td colspan="2">
-                                                                  <nobr>
+                                                                   <nobr><!-- modified by Bhat on 22-09-08 added for editMinorObjectType.length validation -->
                                                                        <a title="<h:outputText value="#{msgs.source_merge_button}"/>"
                                                                           href="javascript:void(0)"
-                                                                          onclick="javascript:getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');"  
+                                                                          onclick="javascript:if(editMinorObjectType.length<1){
+																		  getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');}else{showUnSavedAlert(event,editMinorObjectType)}"  
                                                                           class="button" >
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </a>                                     
                                                                 </nobr> 
-                                                               <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
+                                                             <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
                                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                               </h:outputLink>
                                                                </td>
@@ -1824,6 +1080,42 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 		<input type="hidden" id="EditIndexFormID" value="-1" />
 </form>
 
+
+         <!-- Added By Narayan Bhat on 07-10-2008 for all information popups -->
+  		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+               <form id="unsavedDivForm">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="unsavedMessageDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:showExtraDivs('unsavedDiv',event);">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
 
 </body>
 
@@ -1965,7 +1257,9 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
   </script>
 </html>
 
-  <script type="text/javascript">
+ <script type="text/javascript">
   makeDraggable("mergeDiv");
-  </script>
+  makeDraggable("unsavedDiv");
+  makeDraggable("successDiv");
+ </script>
 </f:view>

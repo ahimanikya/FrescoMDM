@@ -479,14 +479,21 @@ if(isSave) {
 
 								  %>						  
 
+                                  <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="%<%=editTitle%>"
-											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length<1){
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=thisIndex%>");
+											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)"  title="%<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
@@ -744,15 +751,21 @@ if(isSave) {
 									  String deleteTitle = bundle.getString("source_rec_delete_but");
 
 								  %>						  
-
+                                  <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
-											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length<1){
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=thisIndex%>");
+											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
@@ -925,14 +938,21 @@ if(isSave) {
 
 								  %>						  
 
+                                  <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
+											 onclick='javascript:
+											  if(editMinorObjectType.length<1){
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=thisIndex%>");
+											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
-											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
+											 onclick='if(editMinorObjectType.length<1){
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")
+											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
