@@ -86,8 +86,9 @@ public class ConfigManagerTest extends TestCase {
         }
     }
 
+    // Verify the configuration of the main screens.
     
-   public void testMainScreenConfigurations() throws Exception {
+    public void testMainScreenConfigurations() throws Exception {
         
         // Retrieve the ConfigManager
         ConfigManager configManager = ConfigManager.getInstance();
@@ -335,6 +336,8 @@ public class ConfigManagerTest extends TestCase {
         assertTrue(ePathCount == 9);
     }
 
+    // Check the configuration of the Reports subscreens
+    
     public void testReportsSubscreen() throws Exception {
         
         ConfigManager configManager = ConfigManager.getInstance();
@@ -423,7 +426,30 @@ public class ConfigManagerTest extends TestCase {
         }
         assertTrue(ret);      
     }
+
+
+    // Check the parsing of the field information
+    
+    public void testFieldSizeAndLength() throws Exception {
         
+        ConfigManager configManager = ConfigManager.getInstance();
+        ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) configManager.getObjectNodeConfig("Person");
+        
+        // get required and updateable attributes from object definition
+        FieldConfig[] fieldconfig = objNodeConfig.getFieldConfigs();        
+        boolean fieldFound = false;
+        for (int i = 0; i < fieldconfig.length; i++) {
+            String displayName = fieldconfig[i].getDisplayName();
+            if (displayName.equalsIgnoreCase("First Name") == true) {
+                fieldFound = true;
+                int maxSize = fieldconfig[i].getMaxSize();
+                int maxLength = fieldconfig[i].getMaxLength();
+                assert(maxSize == 40);
+                assert(maxLength == 40);
+            }
+            assert(fieldFound);
+        }        
+    }        
     /** Main entry point
      * @param args args
      */

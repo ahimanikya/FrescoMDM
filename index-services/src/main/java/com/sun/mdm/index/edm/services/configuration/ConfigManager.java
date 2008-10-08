@@ -849,6 +849,8 @@ public class ConfigManager implements java.io.Serializable {
                 MetaDataService.isFieldRequired(PATH_HEAD + objName + "." + fieldconfig[i].getName()));
             fieldconfig[i].setUpdateable(
                 MetaDataService.isFieldUpdateable(PATH_HEAD + objName + "." + fieldconfig[i].getName()));
+            fieldconfig[i].setMaxSize(
+                MetaDataService.getFieldSize(PATH_HEAD + objName + "." + fieldconfig[i].getName()));
             
             String userCode = MetaDataService.getUserCode(PATH_HEAD + objName + "." + fieldconfig[i].getName());
             if (userCode != null && userCode.length() > 0) {
@@ -873,6 +875,8 @@ public class ConfigManager implements java.io.Serializable {
             for (int i = 0; i < fieldconfig.length; i++) {
                 fieldconfig[i].setRootObject(objName);
                 fieldconfig[i].setRequired(MetaDataService.isFieldRequired(
+                    PATH_HEAD + objName + "." + childName + "." + fieldconfig[i].getName()));
+                fieldconfig[i].setMaxSize(MetaDataService.getFieldSize(
                     PATH_HEAD + objName + "." + childName + "." + fieldconfig[i].getName()));
                 // for child objects, don't allow updating key fields
                 if (fieldconfig[i].isKeyType()) {

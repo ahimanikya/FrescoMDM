@@ -69,7 +69,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     // by default,a field is not a keyType
     private boolean keyType;
     private boolean sensitive;
-    private int maxLength;
+    private int maxLength;  // max length of display 
+    private int maxSize;    // max size of the database column
     private String name;
     
     // This is the root object.  This field either belongs to the root object
@@ -125,7 +126,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     // --------------------------------------------------------- Public Methods
 
     /**
-     * Construct a FieldConfig object with all required properties
+     * Construct a FieldConfig object with all required properties. If maxSize
+     * is not known, then it is set to maxLength.
      *
      * @param rootObj root object to which this field belongs
      * @param objRef object to which this field belongs
@@ -137,12 +139,29 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      */
     public FieldConfig(String rootObj, String objRef, String name, 
                        String displayName, String guiType, int maxLength) {
+        this(rootObj, objRef, name, displayName, maxLength, guiType, maxLength);                        
+    }
+    /**
+     * Construct a FieldConfig object with all required properties
+     *
+     * @param rootObj root object to which this field belongs
+     * @param objRef object to which this field belongs
+     * @param name name of the field
+     * @param displayName display name of the field
+     * @param objRef obj ref of the field
+     * @param maxSize max size of the database column
+     * @param guiType gui type of the field
+     * @param maxLength max length of the field
+     */
+    public FieldConfig(String rootObj, String objRef, String name, 
+                       String displayName, int maxSize, String guiType, int maxLength) {
         super();
         this.rootObj = rootObj;
         this.objRef = objRef;
         this.name = name;
         this.displayName = displayName;
         this.maxLength = maxLength;
+        this.maxSize = maxSize;
         this.guiType = guiType;
         this.keyType = false;
         this.sensitive = false;
@@ -154,7 +173,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     }
 
     /**
-     * Construct a FieldConfig object with all required properties
+     * Construct a FieldConfig object with all required properties. If maxSize
+     * is not known, then it is set to maxLength.
      *
      * @param objRef object to which this field belongs
      * @param name name of the field
@@ -165,7 +185,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      */
     public FieldConfig(String objRef, String name, 
                        String displayName, String guiType, int maxLength) {
-        this(null, objRef, name, displayName, guiType, maxLength);
+        this(null, objRef, name, displayName, maxLength, guiType, maxLength);
     }
 
     /**
@@ -182,12 +202,30 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     public FieldConfig(String rootObj, String objRef, String name, 
                        String displayName, String guiType, 
                        int maxLength, int valueType) {
+        this(rootObj, objRef, name, displayName, maxLength, guiType, maxLength, valueType);                        
+    }
+    /**
+     * Construct a FieldConfig object with all required properties
+     *
+     * @param rootObj root object to which this field belongs
+     * @param objRef obj ref of the field
+     * @param name name of the field
+     * @param displayName display name of the field
+     * @param maxSize max size of the database column
+     * @param guiType gui type of the field
+     * @param maxLength max length of the field
+     * @param valueType value type of the field
+     */
+    public FieldConfig(String rootObj, String objRef, String name, 
+                       String displayName, int maxSize, String guiType, 
+                       int maxLength, int valueType) {
         super();
         this.rootObj = rootObj;
         this.objRef = objRef;
         this.name = name;
         this.displayName = displayName;
         this.maxLength = maxLength;
+        this.maxSize = maxSize;
         this.guiType = guiType;
         this.keyType = false;
         this.sensitive = false;
@@ -200,7 +238,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     }
 
     /**
-     * Construct a FieldConfig object with all required properties
+     * Construct a FieldConfig object with all required properties. If maxSize
+     * is not known, then it is set to maxLength.
      *
      * @param rootObj root object to which this field belongs
      * @param objRef obj ref of the field
@@ -213,11 +252,12 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     public FieldConfig(String objRef, String name, 
                        String displayName, String guiType, 
                        int maxLength, int valueType) {
-       this(null, objRef, name, displayName, guiType, maxLength, valueType);
+       this(null, objRef, name, displayName, maxLength, guiType, maxLength, valueType);
     }
     
     /**
-     * Construct a FieldConfig object with all required properties
+     * Construct a FieldConfig object with all required properties. If maxSize
+     * is not known, then it is set to maxLength.
      *
      * @param rootObj root object to which this field belongs
      * @param objRef obj ref of the field
@@ -230,11 +270,30 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     public FieldConfig(String rootObj, String objRef, String name, 
                        String displayName, String guiType, 
                        int maxLength, String gvalueList) {
+        this(rootObj, objRef, name, displayName, maxLength, guiType, maxLength, gvalueList);
+    }
+    
+    /**
+     * Construct a FieldConfig object with all required properties
+     *
+     * @param rootObj root object to which this field belongs
+     * @param objRef obj ref of the field
+     * @param name name of the field
+     * @param displayName dislay name of the field
+     * @param maxSize max size of the database column
+     * @param guiType gui type of the field
+     * @param maxLength max length of the field 
+     * @param gvalueList value list of the field
+     */
+    public FieldConfig(String rootObj, String objRef, String name, 
+                       String displayName, int maxSize, String guiType, 
+                       int maxLength, String gvalueList) {
         this.objRef = objRef;
         this.rootObj = rootObj;
         this.name = name;
         this.displayName = displayName;
         this.maxLength = maxLength;
+        this.maxSize = maxSize;
         this.guiType = guiType;
         this.keyType = false;
         this.sensitive = false;
@@ -247,7 +306,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     }
 
     /**
-     * Construct a FieldConfig object with all required properties
+     * Construct a FieldConfig object with all required properties. If maxSize
+     * is not known, then it is set to maxLength.
      *
      * @param rootObj root object to which this field belongs
      * @param objRef obj ref of the field
@@ -260,8 +320,9 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     public FieldConfig(String objRef, String name, 
                        String displayName, String guiType, 
                        int maxLength, String gvalueList) {
-        this(null, objRef, name, displayName, guiType, maxLength, gvalueList);
+        this(null, objRef, name, displayName, maxLength, guiType, maxLength, gvalueList);
     }
+
 
     /**
      * @todo Document: Getter for DisplayName attribute of the FieldConfig
@@ -411,6 +472,24 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      */
     public void setMaxLength(int length) {
         this.maxLength = length;
+    }
+
+    /**
+     * Gets the maxSize attribute of the FieldConfig object
+     *
+     * @return The maxSize value
+     */
+    public int getMaxSize() {
+        return this.maxSize;
+    }
+
+    /**
+     * Sets the maxSize attribute of the FieldConfig object
+     *
+     * @param size new max size
+     */
+    public void setMaxSize(int size) {
+        this.maxSize = size;
     }
 
     /**
