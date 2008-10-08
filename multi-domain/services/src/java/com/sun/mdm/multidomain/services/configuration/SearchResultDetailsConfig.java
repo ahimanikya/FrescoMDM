@@ -45,11 +45,7 @@ import java.util.ArrayList;
 public class SearchResultDetailsConfig implements java.io.Serializable {
     
     private ObjectNodeConfig mRootObj;      // object configuration
-    private int mSearchResultID; // search result screen configuration ID
-    private int mMaxRecords;    // maximum number of records to be returned
-                                // in a search
-    private int mPageSize;      // maximum number of records to be displayed
-                                // at one time
+    private int mSearchResultDetailID; // search result details screen configuration ID
     private boolean mShowEUID;  // indicates if the EUID should be displayed
     private boolean mShowLID;   // indicates if the LID should be displayed
 //    private boolean mEnabled;   // indicates if the results have been enabled
@@ -57,14 +53,11 @@ public class SearchResultDetailsConfig implements java.io.Serializable {
     private ArrayList mFieldConfigs;    // ArrayList of FieldConfigGroup objects
 
 
-    public SearchResultDetailsConfig(ObjectNodeConfig rootObj, int searchResultID, 
-                                int pageSize, int maxRecords, boolean showEUID, 
-                                boolean showLID, ArrayList fields) {
+    public SearchResultDetailsConfig(ObjectNodeConfig rootObj, int searchResultDetailID, 
+                                boolean showEUID, boolean showLID, ArrayList fields) {
                     
         mRootObj = rootObj;
-        mSearchResultID = searchResultID;
-        mPageSize = pageSize;
-        mMaxRecords = maxRecords;
+        mSearchResultDetailID = searchResultDetailID;
         mShowEUID = showEUID;
         mShowLID = showLID;
         mFieldConfigs = fields;
@@ -97,31 +90,14 @@ public class SearchResultDetailsConfig implements java.io.Serializable {
     /**
      * Getter for the mSearchResultID attribute
      *
-     * @return The unique identifier for this instance of a SearchResultsConfig
-     * object.  This is used to determine which SearchResultsConfig object
+     * @return The unique identifier for this instance of a SearchResultDetailsConfig
+     * object.  This is used to determine which SearchResultDetailsConfig object
      * to use for displaying the results of a search.
      */
-    public int getSearchResultID() {
-        return mSearchResultID;
+    public int getSearchResultDetailID() {
+        return mSearchResultDetailID;
     }
     
-    /**
-     * Getter for the mPageSize attribute
-     *
-     * @return The maximum number of records to be displayed at one time
-     */
-    public int getPageSize() {
-        return mPageSize;
-    }
-    
-    /**
-     * Getter for the mDisplayTitle attribute
-     *
-     * @return The maximum number of records to be returned from a search.
-     */
-    public int getMaxRecords() {
-        return mMaxRecords;
-    }
 
     /**
      * Getter for the mRootObj attribute
@@ -150,27 +126,6 @@ public class SearchResultDetailsConfig implements java.io.Serializable {
         return mShowLID;
     }
 
-    /**
-     * Getter for the mEnabled attribute
-     *
-     * @return Boolean value indicating the results have been enabled.
-     * This is used only for reports.
-     */
-//    public boolean getEnabled() {
-//        return mEnabled;
-//    }
-
-    /**
-     * Getter for the mDescription attribute
-     *
-     * @return String description of the field group
-     * This is used only for reports.
-     */
-/*    
-    public String getDescription() {
-        return mDescription;
-    }
-*/
     /**
      * Getter for the mFieldConfigs attribute
      *

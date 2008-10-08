@@ -44,16 +44,15 @@ import java.util.ArrayList;
 public class SearchResultsConfig implements java.io.Serializable {
     
     private ObjectNodeConfig mRootObj;      // object configuration
-    private int mSearchResultID; // search result screen configuration ID
-    private int mMaxRecords;    // maximum number of records to be returned
-                                // in a search
-    private int mPageSize;      // maximum number of records to be displayed
-                                // at one time
-    private boolean mShowEUID;  // indicates if the EUID should be displayed
-    private boolean mShowLID;   // indicates if the LID should be displayed
-//    private boolean mEnabled;   // indicates if the results have been enabled
-                                // (used only for reports)
-    private ArrayList mFieldConfigs;    // ArrayList of FieldConfigGroup objects
+    private int mSearchResultID;            // search result screen configuration ID
+    private int mSearchResultDetailID;      // search result details screen configuration ID
+    private int mMaxRecords;                // maximum number of records to be returned
+                                            // in a search
+    private int mPageSize;                  // maximum number of records to be displayed
+                                            // at one time
+    private boolean mShowEUID;              // indicates if the EUID should be displayed
+    private boolean mShowLID;               // indicates if the LID should be displayed
+    private ArrayList mFieldConfigs;        // ArrayList of FieldConfigGroup objects
 
 
     public SearchResultsConfig(ObjectNodeConfig rootObj, int searchResultID, 
@@ -105,6 +104,18 @@ public class SearchResultsConfig implements java.io.Serializable {
     }
     
     /**
+     * Getter for the mSearchResultID attribute
+     *
+     * @return The unique identifier for this instance of a SearchResultDetailsConfig
+     * object.  This is used to determine which SearchResultDetailsConfig object
+     * to use for displaying the results of a search.
+     */
+    public int getSearchResultDetailID() {
+        return mSearchResultDetailID;
+    }
+    
+
+    /**
      * Getter for the mPageSize attribute
      *
      * @return The maximum number of records to be displayed at one time
@@ -114,7 +125,7 @@ public class SearchResultsConfig implements java.io.Serializable {
     }
     
     /**
-     * Getter for the mDisplayTitle attribute
+     * Getter for the mMaxRecords ßattribute
      *
      * @return The maximum number of records to be returned from a search.
      */
@@ -149,27 +160,7 @@ public class SearchResultsConfig implements java.io.Serializable {
         return mShowLID;
     }
 
-    /**
-     * Getter for the mEnabled attribute
-     *
-     * @return Boolean value indicating the results have been enabled.
-     * This is used only for reports.
-     */
-//    public boolean getEnabled() {
-//        return mEnabled;
-//    }
 
-    /**
-     * Getter for the mDescription attribute
-     *
-     * @return String description of the field group
-     * This is used only for reports.
-     */
-/*    
-    public String getDescription() {
-        return mDescription;
-    }
-*/
     /**
      * Getter for the mFieldConfigs attribute
      *
