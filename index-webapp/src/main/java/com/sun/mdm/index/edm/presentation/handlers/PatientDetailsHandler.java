@@ -1971,6 +1971,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         ArrayList euidsMapList = new ArrayList();
         try {
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
+            //if EO is found
             if(eo != null) {
 			HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
 			euidsMapList.add(eoMap);
@@ -1982,12 +1983,34 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "View/Edit detail of enterprise object");
 			} else {
+                                String mergeEuid = compareDuplicateManager.getMergedEuid(euid);
+                                if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { //if EO is not found
+                                     String errorMessage = euid + " : ";
+                                    errorMessage += bundle.getString("enterprise_object_not_found_error_message");
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                                return null;
+                             } else if (mergeEuid != null) { //if its merged
 				String errorMessage = euid +" : ";
 				errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
-                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+                                 FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+                                 //Set the merged euid for the user to search in the duplicates screen
+
+                                //Insert audit log here for merged EUID search here
+                                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                    mergeEuid,
+                                    euid,
+                                    "EO View/Edit",
+                                    new Integer(screenObject.getID()).intValue(),
+                                    "View/Edit detail of enterprise object");
+                                    //If merged EUID found
+                                   HashMap mergedMap = new HashMap();
+                                   mergedMap.put("Merged_EUID_Message", mergeEuid  + " "+ bundle.getString("active_euid_text") + " " + euid);
+                                   mergedMap.put("Merged_EUID", mergeEuid );
+                                   euidsMapList.add(mergedMap);
+                                   return euidsMapList;
 			}
-    } 
-     // modified exceptional handling logic
+            } 
+        } // modified exceptional handling logic
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("PDH058: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
@@ -2074,7 +2097,143 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     public void setDestnMinorobjectsList(ArrayList destnMinorobjectsList) {
         this.destnMinorobjectsList = destnMinorobjectsList;
     }
+   /** 
+     * Added  By Rajani Kanth  on 8/10/2008
+     * 
+     * This method is used to get the Activate the EO
+     * 
+     * 
+     * @param euid  
+      * @return ArrayList 
+     * 
+     */
 
+ 
+    public ArrayList activateEO(String euid) {
+        ArrayList euidsMapList = new ArrayList();
+        try {
+            masterControllerService.activateEnterpriseObject(euid);
+
+            EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
+
+            if (eo != null) {
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                euidsMapList.add(eoMap);
+                //String userName, String euid1, String euid2, String function, int screeneID, String detail
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                        eo.getEUID(),
+                        "",
+                        "EO View/Edit",
+                        new Integer(screenObject.getID()).intValue(),
+                        "View/Edit detail of enterprise object");
+            } else {
+                String errorMessage = euid + " : ";
+                errorMessage += bundle.getString("enterprise_object_not_found_error_message");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            }
+        } // modified exceptional handling logic
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("PDH058: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("PDH059: Encountered the UserException:{0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("PDH060: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
+        }
+        return euidsMapList;
+    }
+    /** 
+     * Added  By Rajani Kanth  on 8/10/2008
+     * 
+     * This method is used to get the Deactivate the EO
+     * 
+     * 
+     * @param euid  
+      * @return ArrayList 
+     * 
+     */
+
+        public ArrayList deactivateEO(String euid) {
+        ArrayList euidsMapList = new ArrayList();
+        try {
+            masterControllerService.deactivateEnterpriseObject(euid);
+
+            EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
+
+            if (eo != null) {
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                euidsMapList.add(eoMap);
+                //String userName, String euid1, String euid2, String function, int screeneID, String detail
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                        eo.getEUID(),
+                        "",
+                        "EO View/Edit",
+                        new Integer(screenObject.getID()).intValue(),
+                        "View/Edit detail of enterprise object");
+            } else {
+                String errorMessage = euid + " : ";
+                errorMessage += bundle.getString("enterprise_object_not_found_error_message");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            }
+        } // modified exceptional handling logic
+        catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("PDH058: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("PDH059: Encountered the UserException:{0} ", ex.getMessage()), ex);
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("PDH060: Error  occurred"), ex);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
+        }
+        return euidsMapList;
+    }
+    
+    /** 
+     * Added  By Rajani Kanth  on 8/10/2008
+     * 
+     * This method is used to get the Merged Records for the EO
+     * 
+     * 
+     * @param euid  
+     * @param transactionNumber 
+     * @return ArrayList 
+     * 
+     */
+     
+    public ArrayList viewMergedRecords(String euid,String transactionNumber) throws ObjectException {
+
+           try {
+            EnterpriseObjectHistory viewMergehist = masterControllerService.viewMergeRecords(transactionNumber);
+            ArrayList mergeEOList = new ArrayList();
+
+            if (viewMergehist.getBeforeEO1() != null) {
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO1(), screenObject);
+                mergeEOList.add(eoMap);
+             }
+            if (viewMergehist.getBeforeEO2() != null) {
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO2(), screenObject);
+                mergeEOList.add(eoMap);
+             }
+ 
+            if (viewMergehist.getAfterEO2() != null) {
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
+                mergeEOList.add(eoMap);
+             }
+ 
+            return mergeEOList;
+ 
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH092: Failed to get merge records ", ex.getMessage()),ex);
+             return null;
+        }
+    }
+        
 }
 
 
