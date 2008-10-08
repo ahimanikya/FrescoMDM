@@ -107,9 +107,6 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
 
-        if (webManagerPanel == null) {
-            webManagerPanel = new TabRelationshipWebManager(editorMainApp, mMultiDomainApplication.getRelationshipWebMAnager(true));
-        }
 
         mEditorMainPanel = this;
 
@@ -143,6 +140,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_Relationship_Model")));
 
+        if (webManagerPanel == null) {
+            webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getRelationshipWebMAnager(true));
+        }
+        
         multiViewPane.setViewportView(canvas);
         //ToDo
         //setCurrentDomainNode

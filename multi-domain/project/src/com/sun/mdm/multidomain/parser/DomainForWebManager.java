@@ -5,6 +5,7 @@
 
 package com.sun.mdm.multidomain.parser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -16,11 +17,11 @@ public class DomainForWebManager {
     
     private String mDomainName = null;
     
-    private HashMap mSearchType = new HashMap();
+    private ArrayList<SimpleSearchType> mSearchType = new ArrayList<SimpleSearchType>();
     
-    private HashMap mSearchDetail = new HashMap();
+    private ArrayList<SearchDetail> mSearchDetail = new ArrayList<SearchDetail>();
     
-    private RecordDetail mRecordDetail;
+    private ArrayList<RecordDetail> mRecordDetailList = new ArrayList<RecordDetail>();
     
     public DomainForWebManager(String name) {
         this.mDomainName = name;
@@ -30,43 +31,61 @@ public class DomainForWebManager {
         return this.mDomainName;
     }
     
-    public HashMap getSearchType() {
+    public ArrayList<SimpleSearchType> getSearchType() {
         return this.mSearchType;
     }
     
-    public HashMap getSearchDetail() {
+    public ArrayList<SearchDetail> getSearchDetail() {
         return this.mSearchDetail;
     }
-    
-    public RecordDetail getRecordDetail() {
-        return this.mRecordDetail;
+        
+    public ArrayList<RecordDetail> getRecordDetailList() {
+        return this.mRecordDetailList;
     }
     
-    public void setRecordDetail(RecordDetail recordDetail) {
-        this.mRecordDetail = recordDetail;
+    public void setRecordDetailList(ArrayList<RecordDetail> recordDetailList) {
+         mRecordDetailList = recordDetailList;
+        //this.mRecordDetail = recordDetail;
+    }
+    
+    public void addRecordDetail(RecordDetail recordDetail) {
+        mRecordDetailList.add(recordDetail);
+    }
+    
+    public void deleteRecordDetail(RecordDetail recordDetail) {
+        for (RecordDetail recDet : mRecordDetailList) {
+            if (recDet.getRecordDetailId() == recordDetail.getRecordDetailId()) {
+                mRecordDetailList.remove(recDet);
+                break;
+            }
+        }
     }
     
     public void addSearchType(String screenTitle, SimpleSearchType searchType) {
-        mSearchType.put(screenTitle, searchType);
+        mSearchType.add(searchType);
+        //mSearchType.put(screenTitle, searchType);
     }
     
     public void deleteSearchType(String screenTitle) throws Exception {
-        if (mSearchType.containsKey(screenTitle)) {
-            mSearchType.remove(screenTitle);
-        } else {
-            throw new Exception ("Could not find SearchType [" + screenTitle + "] to delete.");
+        for (SimpleSearchType searchType : mSearchType) {
+            if (searchType.getScreenTitle().equals(screenTitle)) {
+                mSearchType.remove(searchType);
+                break;
+            }
         }
     }
     
     public void addSearchDetail(String domainName, int searchResultID, SearchDetail searchDetailObj) {
-        mSearchDetail.put(domainName + "=" + searchResultID, searchDetailObj);
+        mSearchDetail.add(searchDetailObj);
+        //mSearchDetail.put(domainName + "=" + searchResultID, searchDetailObj);
     }
     
-    public void deleteSearchDetail(String domainName, String searchResultID) throws Exception {
-        if (mSearchDetail.containsKey(domainName + "=" + searchResultID)) {
-            mSearchDetail.remove(domainName + "=" + searchResultID);
-        } else {
-            throw new Exception ("Could not find Search Detail for Domain[" + domainName + "] to delete.");
+    public void deleteSearchDetail(String domainName, int searchResultID) throws Exception {
+        for (SearchDetail  searchDetail : mSearchDetail) {
+            if (searchDetail.getSearchResultID() == searchResultID) {
+                mSearchDetail.remove(searchDetail);
+                break;
+            }
         }
     }
     

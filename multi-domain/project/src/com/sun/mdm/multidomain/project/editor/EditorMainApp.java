@@ -393,7 +393,7 @@ public class EditorMainApp {
             
             String relationshipWebManagerXml = getRelationshipWebManagerXmlString();
             if (relationshipWebManagerXml != null) {
-                mMultiDomainApplication.saveRelationshipWebManagerXml(relationshipWebManagerXml, "", true);
+                mMultiDomainApplication.saveRelationshipWebManagerXml(relationshipWebManagerXml);
             } else {
                 String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
 

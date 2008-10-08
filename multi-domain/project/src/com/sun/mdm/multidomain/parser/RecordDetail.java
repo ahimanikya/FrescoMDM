@@ -13,10 +13,33 @@ import java.util.ArrayList;
  */
 public class RecordDetail {
     
-    private ArrayList<FieldGroup> mFieldGroups;
+    private int mRecordDetailId;
     
-    public RecordDetail (ArrayList<FieldGroup> fieldGroups) {
+    private String mDisplayName = null;
+    
+    private ArrayList<FieldGroup> mFieldGroups = new ArrayList<FieldGroup>();
+    
+    public RecordDetail(int recordDetailId, String displayName) {       
+        this.mRecordDetailId = recordDetailId;
+        this.mDisplayName = displayName;
+    }
+    
+    public RecordDetail(int recordDetailId) {       
+        this.mRecordDetailId = recordDetailId;
+    }
+
+    public RecordDetail (int detailID, String displayName, ArrayList<FieldGroup> fieldGroups) {
         this.mFieldGroups = fieldGroups;
+        this.mDisplayName = displayName;
+        this.mFieldGroups = fieldGroups;
+    }
+    
+    public String getDisplayName() {
+        return this.mDisplayName;
+    }
+    
+    public void setDisplayName(String displayName) {
+        this.mDisplayName = displayName;
     }
     
     public ArrayList<FieldGroup> getFieldGroups() {
@@ -25,6 +48,18 @@ public class RecordDetail {
     
     public void addFieldGroup(FieldGroup fieldGroup) {
         mFieldGroups.add(fieldGroup);
+    }
+    
+    public int getRecordDetailId() {
+        return this.mRecordDetailId;
+    }
+    
+    public void setRecordDetailId(int recordDetailId) {
+        this.mRecordDetailId = recordDetailId;
+    }
+
+    public void deleteFieldGroup(FieldGroup fieldGroup) {
+        mFieldGroups.remove(fieldGroup);
     }
 
 }

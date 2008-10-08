@@ -307,9 +307,11 @@ public class MultiDomainApplication extends MultiDomainProject {
      */
     public void setModified(boolean flag) {
         mModified = flag;
+        /**
         if (flag == false) {
             return;
         }
+         */ 
         mAssociatedNode.setModified(flag);
         mObjectTopComponent.setModified(flag);
     }

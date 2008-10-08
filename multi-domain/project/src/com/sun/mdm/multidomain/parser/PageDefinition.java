@@ -16,6 +16,10 @@ public class PageDefinition {
     private String mPageIdentifier = null;
     
     private ArrayList<RelationshipPageTabDefination> mPageTabs = new ArrayList<RelationshipPageTabDefination>();
+    
+    public PageDefinition(String identifier) {
+        this.mPageIdentifier = identifier;
+    }
 
     public String getPageIdentifier() {
         return mPageIdentifier;

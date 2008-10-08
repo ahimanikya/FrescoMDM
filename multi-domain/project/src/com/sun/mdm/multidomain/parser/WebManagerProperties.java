@@ -45,6 +45,8 @@ public class WebManagerProperties {
     
     public static String mTAG_REL_FIELD_VALUE_LIST = "value-list";
     
+    public static String mTAG_REL_FIELD_REF= "rs-field-ref";
+    
     public static String mTAG_REL_FIELD_VALUE_TYPE = "value-type";
     
     public static String mTAG_REL_FIELD_KEY_TYPE = "key-type";
@@ -61,7 +63,13 @@ public class WebManagerProperties {
     
     public static String mTAG_SEARCH_DETAILL = "search-detail";
     
+    public static String mTAG_RECORD_DETIAL_PAGES = "record-detail-pages";
+    
     public static String mTAG_RECORD_DETIAL = "record-detail";
+    
+    public static String mTAG_RECORD_DETIAL_ID = "record-detail-id";
+    
+    public static String mTAG_RECORD_DETIAL_NAME = "record-detail-name";
     
     public static String mTAG_FIELD_GROUP = "field-group";
     
@@ -70,6 +78,8 @@ public class WebManagerProperties {
     public static String mTAG_SCREEN_TITLE = "screen-title";
     
     public static String mTAG_SEARCH_RESULT_ID = "search-result-id";
+    
+    public static String mTAG_SEARCH_RESULT_NAME = "search-result-name";
     
     public static String mTAG_INSTRUCTION = "instruction";
     

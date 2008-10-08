@@ -30,7 +30,19 @@ public class SimpleSearchType {
         this.mFieldGroups = fieldGroups;
     }
     
-                            
+      
+    public void setScreenTitle(String screenTitle) {
+        this.mScreenTitle = screenTitle;
+    }
+    
+    public void setScreenResultID(int resultID) {
+        this.mSearchResultID = resultID;
+    }
+    
+    public void setInstruction(String instruction) {
+        this.mInstruction = instruction;
+    }
+    
     public String getScreenTitle() {
         return this.mScreenTitle;
     }

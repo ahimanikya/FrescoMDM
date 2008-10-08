@@ -67,7 +67,7 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
 
     protected TabWebManagerDomains getDoaminsTab() {
         if (mTabDomains == null) {
-            mTabDomains = new TabWebManagerDomains();
+            mTabDomains = new TabWebManagerDomains(mEditorMainApp, mRelationshipWebManager.getDomains());
         }
         
         return mTabDomains;

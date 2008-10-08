@@ -194,7 +194,7 @@ public class ObjectTopComponent
             mRelationshipModel = mMultiDomainApplication.getRelationshipModel(false);
             //from RelationshipModel get all object model from participating domains
             //-ToDo
-            mRelationshipWebManager = mMultiDomainApplication.getRelationshipWebMAnager(true);
+            mRelationshipWebManager = mMultiDomainApplication.getRelationshipWebMAnager(false);
             
             // init main panel, which init the data model and all the views
             boolean ret = true;

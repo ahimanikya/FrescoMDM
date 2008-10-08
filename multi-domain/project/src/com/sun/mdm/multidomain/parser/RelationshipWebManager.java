@@ -106,17 +106,19 @@ public class RelationshipWebManager {
             String destination = relType.getDestionation();
             String source = relType.getSource();
             //Element elm = xmlDoc.createElement("relationship-types");
-            Element relTypeElm = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
+            Element relTypeElm = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPE);
             //org.jdom.Attribute relAttrName = new org.jdom.Attribute(WebManagerProperties.mTAG_NAME, relTypeName);
-            relTypeElm.setAttribute(WebManagerProperties.mTAG_NAME, relTypeName);
             relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_SOURCE, source);
             relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_DESTINATION, destination);
+            relTypeElm.setAttribute(WebManagerProperties.mTAG_NAME, relTypeName);
             ArrayList<RelationFieldReference> fieldRefs = relType.getRelFieldRefs();
             for (RelationFieldReference fieldRef : fieldRefs) {
+                Element relTypeFieldElm = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_REF);
+                relTypeElm.appendChild(relTypeFieldElm);
                 Element eFieldName = xmlDoc.createElement(WebManagerProperties.mTAG_NAME);
                 eFieldName.appendChild(xmlDoc.createTextNode( fieldRef.getFieldName()));
                 Element eDisplayName = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_DISPLAY_NAME);
-                eDisplayName.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getDisplayOrder())));
+                eDisplayName.appendChild(xmlDoc.createTextNode(fieldRef.getFieldDisplayName()));
                 Element eMaxLen = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_MAX_LENGTH);
                 eMaxLen.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getMaxLength())));
                 Element eGuiType = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_GUI_TYPE);
@@ -127,14 +129,18 @@ public class RelationshipWebManager {
                 eValueType.appendChild(xmlDoc.createTextNode(fieldRef.getValueType()));
                 Element eKeyType = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_KEY_TYPE);
                 eKeyType.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.getKeyType())));
-                relTypeElm.appendChild(eFieldName);
-                relTypeElm.appendChild(eDisplayName);
-                relTypeElm.appendChild(eMaxLen);
-                relTypeElm.appendChild(eGuiType);
-                relTypeElm.appendChild(eValueList);
-                relTypeElm.appendChild(eValueType);
-                relTypeElm.appendChild(eKeyType);               
+                Element eDisplayOrder = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_DISPLAY_ORDER);
+                eDisplayOrder.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getDisplayOrder())));
+                relTypeFieldElm.appendChild(eFieldName);
+                relTypeFieldElm.appendChild(eDisplayName);
+                relTypeFieldElm.appendChild(eDisplayOrder);
+                relTypeFieldElm.appendChild(eMaxLen);
+                relTypeFieldElm.appendChild(eGuiType);
+                relTypeFieldElm.appendChild(eValueList);
+                relTypeFieldElm.appendChild(eValueType);
+                relTypeFieldElm.appendChild(eKeyType); 
             }
+            
             relTypes.appendChild(relTypeElm);
             
         }
@@ -150,6 +156,9 @@ public class RelationshipWebManager {
             
             Element elmIdentifier = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_IDENTIFIER);
             elmIdentifier.appendChild(xmlDoc.createTextNode(page.getPageIdentifier()));
+            elmPage.appendChild(elmIdentifier);
+            
+            
             ArrayList<RelationshipPageTabDefination> pageTabs = page.getPageTabs();
             
             for (RelationshipPageTabDefination tab : pageTabs ) {
@@ -187,27 +196,31 @@ public class RelationshipWebManager {
             String domainName = domain.getDomainName();
             Element elmDomainName = xmlDoc.createElement(WebManagerProperties.mTAG_NAME);
             elmDomainName.appendChild(xmlDoc.createTextNode(domain.getDomainName()));
+            elmDomain.appendChild(elmDomainName);
             
             //search-pages
-            HashMap searchPages = domain.getSearchType();
-            Iterator searchPagesItr = searchPages.entrySet().iterator();
+            ArrayList<SimpleSearchType> searchPages = domain.getSearchType();
+            //Iterator searchPagesItr = searchPages.values().iterator();
             
             Element elmSearchPages = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_PAGES);
 
-            while (searchPagesItr.hasNext()) {
-                SimpleSearchType simpleSearch = (SimpleSearchType) searchPagesItr.next();
+            
+            for ( SimpleSearchType simpleSearch : searchPages) { 
                 Element elmSimpleSearch = xmlDoc.createElement(WebManagerProperties.mTAG_SIMPLE_SEARCH_PAGE);
                 
                 Element elmScreenTitle = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_TITLE);
                 elmScreenTitle.appendChild(xmlDoc.createTextNode(simpleSearch.getScreenTitle()));
                 elmSimpleSearch.appendChild(elmScreenTitle);
 
+
                 Element elmSearchId = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_ID);
                 elmSearchId.appendChild(xmlDoc.createTextNode(Integer.toString(simpleSearch.getScreenResultID())));
                 elmSimpleSearch.appendChild(elmSearchId);
 
                 Element elmInstruction = xmlDoc.createElement(WebManagerProperties.mTAG_INSTRUCTION);
-                elmInstruction.appendChild(xmlDoc.createTextNode(simpleSearch.getInstruction()));
+                if (simpleSearch.getInstruction() != null) {
+                    elmInstruction.appendChild(xmlDoc.createTextNode(simpleSearch.getInstruction()));
+                }
                 elmSimpleSearch.appendChild(elmInstruction);
 
 
@@ -216,43 +229,67 @@ public class RelationshipWebManager {
                 elmSearchPages.appendChild(elmSimpleSearch);
            
             }
+             
             
-            elmDomainName.appendChild(elmSearchPages);
+            elmDomain.appendChild(elmSearchPages);
+            //elmDomainName.appendChild(elmSearchPages);
             
-            Iterator searchDetails = domain.getSearchDetail().entrySet().iterator();
+            ArrayList<SearchDetail> searchDetails = domain.getSearchDetail();
             Element elmSearchDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES);
-            
-            while (searchDetails.hasNext()) {
-                SearchDetail searchDetail = (SearchDetail) searchDetails.next();
+
+            for ( SearchDetail searchDetail : searchDetails) {
                 Element elmSDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_DETAILL);
                 elmSearchDetail.appendChild(elmSDetail);
+
+                Element elmResultName = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_NAME);
+                elmResultName.appendChild(xmlDoc.createTextNode(searchDetail.getDisplayName()));
+                elmSDetail.appendChild(elmResultName);
                 
                 Element elmResultId = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_ID);
                 elmResultId.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getSearchResultID())));
-                elmSearchDetail.appendChild(elmResultId);
+                elmSDetail.appendChild(elmResultId);
                 
+                Element elmDetailId = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_ID);
+                elmDetailId.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getRecordDetailID())));
+                elmSDetail.appendChild(elmDetailId);
+
                 Element elmItem = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_ITEM_PER_PAGE);
                 elmItem.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getItemPerPage())));
-                elmSearchDetail.appendChild(elmItem);
+                elmSDetail.appendChild(elmItem);
 
                 Element elmMax = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_MAX_RESULT_SIZE);
                 elmMax.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getMaxResultSize())));
-                elmSearchDetail.appendChild(elmMax);
+                elmSDetail.appendChild(elmMax);
 
                 ArrayList<FieldGroup> fieldGroups = searchDetail.getFieldGroups();
                 getFieldGroup(fieldGroups, xmlDoc, elmSDetail, WebManagerProperties.mTAG_FIELD_GROUP);
                 
             }
+
             
-            elmDomainName.appendChild(elmSearchDetail);
+            elmDomain.appendChild(elmSearchDetail);
             
             
-            RecordDetail recordDetail = domain.getRecordDetail();
-            Element elmRecDetail =  xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL);
-            elmDomain.appendChild(elmRecDetail);
-            ArrayList<FieldGroup> fieldGroups = recordDetail.getFieldGroups();
-            getFieldGroup(fieldGroups, xmlDoc, elmRecDetail, WebManagerProperties.mTAG_FIELD_GROUP);
-            elmDomainName.appendChild(elmRecDetail);
+            ArrayList<RecordDetail> recordDetailList = domain.getRecordDetailList();
+            Element elmRecordDetailPages = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_PAGES);
+
+
+            for (RecordDetail recDetail : recordDetailList) {
+                Element elmRecDetail = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL);
+                elmRecordDetailPages.appendChild(elmRecDetail);
+                Element elmRecDetailId = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_ID);
+                elmRecDetailId.appendChild(xmlDoc.createTextNode(Integer.toString(recDetail.getRecordDetailId())));
+                elmRecDetail.appendChild(elmRecDetailId);
+                Element elmRecDetailName = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_NAME);
+                elmRecDetailName.appendChild(xmlDoc.createTextNode(recDetail.getDisplayName()));
+                elmRecDetail.appendChild(elmRecDetailName);
+                ArrayList<FieldGroup> fieldGroups = recDetail.getFieldGroups();
+                getFieldGroup(fieldGroups, xmlDoc, elmRecDetail, WebManagerProperties.mTAG_FIELD_GROUP);
+                elmRecordDetailPages.appendChild(elmRecDetail);
+            }
+
+            
+            elmDomain.appendChild(elmRecordDetailPages);
             
         }
         
@@ -275,7 +312,7 @@ public class RelationshipWebManager {
     }
 
     private Element getJndiResToStr(Document xmlDoc) {
-        Element elmJNDI = xmlDoc.createElement(WebManagerProperties.mTAG_JNDIRESOURCES);
+        Element elmJNDI = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_JNDI);
         Element elmProperties = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTIES);
         elmJNDI.appendChild(elmProperties);
         ArrayList<RelationshipProperty> properties = mJndiResources.getProperties();
@@ -470,12 +507,14 @@ public class RelationshipWebManager {
         String pageIdentifier = null;
         String tabName = null;
         RelationshipPageTabDefination pageTab = null;
+        PageDefinition pageDef = null;
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
                 if (elementName.equals(WebManagerProperties.mTAG_PAGE_IDENTIFIER)) {
                     pageIdentifier = RelationshipUtil.getStrElementValue(elm);
+                    pageDef = new PageDefinition(pageIdentifier);
                 } else if (elementName.equals(WebManagerProperties.mTAG_PAGE_TAB)) {
 
                     if (elm.hasAttribute(WebManagerProperties.mTAG_NAME)) {
@@ -483,16 +522,16 @@ public class RelationshipWebManager {
                     }
                     pageTab = new RelationshipPageTabDefination(tabName);
                     pageTab.addPageRelationType(parsePageRelationship(elm.getChildNodes()));
-
-                }
-
-                if (tabName != null && pageIdentifier != null) {
-                    PageDefinition pageDef = new PageDefinition();
                     pageDef.addPageTab(pageTab);
-                    mPageDefinitions.add(pageDef);
+
                 }
+
             }
 
+        }
+        
+        if (pageDef != null) {
+            mPageDefinitions.add(pageDef);
         }
     }
 
@@ -567,8 +606,8 @@ public class RelationshipWebManager {
                     parseSearchPages(elm, domain);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES)) {
                     parseSearchResultPages(elm, domain);
-                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL)) {
-                    parseRecordDetail(elm, domain);
+                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_PAGES)) {
+                    parseRecordDetailPages(elm, domain);
                 }
 
             }
@@ -578,18 +617,45 @@ public class RelationshipWebManager {
         return domain;
 
     }
-
-    private void parseRecordDetail(Node node, DomainForWebManager domain) {
+    
+    private void parseRecordDetailPages(Node node, DomainForWebManager domain) {
         String elementName = null;
         NodeList children = node.getChildNodes();
         ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
-                FieldGroup fieldGroup = new FieldGroup();
-                fieldGroups.add(fieldGroup);
-                parseFieldGroup(elm, fieldGroup);
+                //RecordDetail recordDetail = new RecordDetail(); 
+                parseRecordDetail(elm, domain);
             }
+        }
+
+
+    }
+    
+    private void parseRecordDetail(Node node, DomainForWebManager domain) {
+        String elementName = null;
+        NodeList children = node.getChildNodes();
+        ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
+        RecordDetail recordDetail = null;
+        for (int i1 = 0; i1 < children.getLength(); i1++) {
+            if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
+                Element elm = (Element) children.item(i1);
+                elementName = elm.getTagName();
+                if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_ID)) {
+                    recordDetail = new RecordDetail(RelationshipUtil.getIntElementValue(elm));
+                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_NAME)) {
+                    recordDetail.setDisplayName(RelationshipUtil.getStrElementValue(elm));
+                } else if (elementName.equals(WebManagerProperties.mTAG_FIELD_GROUP)) {
+                    FieldGroup fieldGroup = new FieldGroup();
+                    parseFieldGroup(elm, fieldGroup);
+                    recordDetail.addFieldGroup(fieldGroup);                    
+                }
+            }
+        }
+        
+        if (recordDetail != null) {
+            domain.addRecordDetail(recordDetail);
         }
 
 
@@ -603,6 +669,8 @@ public class RelationshipWebManager {
             int resultID = -1;
             int itemPerPage = -1;
             int maxResult = -1;
+            int detailID = -1;
+            String resultName = null;
             ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
@@ -622,10 +690,14 @@ public class RelationshipWebManager {
                             parseFieldGroup(subElm, fieldGroup);
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_ID)) {
                             resultID = RelationshipUtil.getIntElementValue(subElm);
+                        } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_ID)) {
+                            detailID = RelationshipUtil.getIntElementValue(subElm);   
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_ITEM_PER_PAGE)) {
                             itemPerPage = RelationshipUtil.getIntElementValue(subElm);
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_MAX_RESULT_SIZE)) {
                             maxResult = RelationshipUtil.getIntElementValue(subElm);
+                        } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_NAME)) {
+                            resultName = RelationshipUtil.getStrElementValue(subElm);
                         }
 
                     }
@@ -633,7 +705,7 @@ public class RelationshipWebManager {
                 }
 
                 if (resultID != -1 && itemPerPage != -1 && maxResult != -1) {
-                    SearchDetail searchResult = new SearchDetail(resultID, itemPerPage, maxResult, fieldGroups);
+                    SearchDetail searchResult = new SearchDetail(resultID, itemPerPage, maxResult, detailID, resultName, fieldGroups);
                     domain.addSearchDetail(domain.getDomainName(), resultID, searchResult);
                 }
             }

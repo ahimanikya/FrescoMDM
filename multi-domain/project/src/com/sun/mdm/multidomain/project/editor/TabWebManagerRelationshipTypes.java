@@ -10,6 +10,9 @@ import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import org.openide.util.NbBundle;
 
@@ -31,21 +34,51 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         mRelationshipTypes = relationshipTypes;
         initComponents();
         createRelationshipTypes();
+        jTxtDisplayOrder.setEditable(false);
+        
+        /**
+        mTableFields.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                retreiveFieldProperties();
+            }
+         
+        });
+        */
+        
+        ListSelectionModel rowSM = mTableFields.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                retreiveFieldProperties();
+            }
+        });
         mTableFields.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
                     int iSelectedRow = mTableFields.getSelectedRow();
+                    int lastRow = mTableFields.getRowCount() - 1;
                     String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
                     if (fieldName != null) {
                         RelationFieldReference mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
                         //mTableFields.clearSelection();
                         if (mSelectedRow != null) {
                             jTxtDisplayName.setText(mSelectedRow.getFieldDisplayName());
+                            if (mSelectedRow.getDisplayOrder() != iSelectedRow + 1) {
+                                mSelectedRow.setDisplayOrder(iSelectedRow + 1);
+                                jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1));
+                            }
                             jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
                             jTxtGuiType.setText(mSelectedRow.getGuiType());
                             jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
                             jRBKeyValue.setSelected(mSelectedRow.getKeyType());
                         }
+                    }
+                    jBtnUp.setEnabled(true);
+                    jBtnDown.setEnabled(true);
+                    
+                    if ( iSelectedRow == 0) {
+                        jBtnUp.setEnabled(false);
+                    } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
+                        jBtnDown.setEnabled(false);
                     }
                 }
             });
@@ -71,7 +104,38 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     }
     
     
-    
+    private void retreiveFieldProperties() {
+        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        int iSelectedRow = mTableFields.getSelectedRow();
+        if (iSelectedRow >= 0 && iSelectedRow < mTableFields.getRowCount()) {
+            int lastRow = mTableFields.getRowCount() - 1;
+            String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
+            if (fieldName != null) {
+                RelationFieldReference mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
+                //mTableFields.clearSelection();
+                if (mSelectedRow != null) {
+                    jTxtDisplayName.setText(mSelectedRow.getFieldDisplayName());
+                    if (mSelectedRow.getDisplayOrder() != iSelectedRow + 1) {
+                        mSelectedRow.setDisplayOrder(iSelectedRow + 1);
+                        jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1));
+                    }
+                    jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
+                    jTxtGuiType.setText(mSelectedRow.getGuiType());
+                    jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
+                    jRBKeyValue.setSelected(mSelectedRow.getKeyType());
+                }
+            }
+            jBtnUp.setEnabled(true);
+            jBtnDown.setEnabled(true);
+
+            if (iSelectedRow == 0) {
+                jBtnUp.setEnabled(false);
+            } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
+                jBtnDown.setEnabled(false);
+            }
+        }
+
+    }
     private void createRelationshipTypes() {
         
         for (RelationshipType relType : mRelationshipTypes) {
@@ -112,6 +176,16 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                     jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
                     jRBKeyValue.setSelected(mSelectedRow.getKeyType());
                 }
+                
+                jBtnUp.setEnabled(true);
+                jBtnDown.setEnabled(true);
+
+                if (iSelectedRow == 0) {
+                    jBtnUp.setEnabled(false);
+                } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
+                    jBtnDown.setEnabled(false);
+                }
+
             }
 
         
@@ -141,6 +215,8 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         jRBKeyValue = new javax.swing.JRadioButton();
         onOK = new javax.swing.JButton();
         onCancel = new javax.swing.JButton();
+        jBtnUp = new javax.swing.JButton();
+        jBtnDown = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -210,29 +286,48 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
         onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_Cancel")); // NOI18N
 
+        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/arrowup.gif"))); // NOI18N
+        jBtnUp.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jBtnUp.text")); // NOI18N
+        jBtnUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onUpBtn(evt);
+            }
+        });
+
+        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/arrowdown.gif"))); // NOI18N
+        jBtnDown.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jBtnDown.text")); // NOI18N
+        jBtnDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onDownBtn(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .add(22, 22, 22)
-                        .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(jCBRelationshipType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 172, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 181, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)))
-                .addContainerGap(18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jBtnUp, 0, 0, Short.MAX_VALUE)
+                    .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE))
+                .add(28, 28, 28)
+                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .add(56, 56, 56))
+            .add(layout.createSequentialGroup()
+                .add(22, 22, 22)
+                .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(jCBRelationshipType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 172, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(316, Short.MAX_VALUE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(369, Short.MAX_VALUE)
                 .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(onCancel)
-                .add(37, 37, 37))
+                .add(94, 94, 94))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -241,14 +336,22 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jCBRelationshipType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabelRelTypes))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jLayeredPane1)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 13, Short.MAX_VALUE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(onCancel)
-                    .add(onOK))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(18, 18, 18)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                                    .add(onCancel)
+                                    .add(onOK)))
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 297, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(layout.createSequentialGroup()
+                        .add(92, 92, 92)
+                        .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 37, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jBtnDown)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -270,6 +373,40 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     this.mModified = true;
     mEditorMainApp.enableSaveAction(true);
 }//GEN-LAST:event_onOKActionPerformed
+
+private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
+// TODO add your handling code here:
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    int iSelectedRow = mTableFields.getSelectedRow();
+    RelationFieldReference movedUpRow = model.getRow(iSelectedRow);
+    RelationFieldReference movedDownow = model.getRow(iSelectedRow - 1);
+    movedUpRow.setDisplayOrder(iSelectedRow);
+    model.removeRow(iSelectedRow);
+    //if (iSelectedRow ==
+    iSelectedRow--;
+    model.addRow(iSelectedRow, movedUpRow);
+    mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    movedDownow.setDisplayOrder(iSelectedRow + 1);
+
+    
+}//GEN-LAST:event_onUpBtn
+
+private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDownBtn
+// TODO add your handling code here:
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    int iSelectedRow = mTableFields.getSelectedRow();
+    RelationFieldReference movedRow = model.getRow(iSelectedRow);
+    model.removeRow(iSelectedRow);
+    RelationFieldReference previousRow = model.getRow(iSelectedRow);
+    previousRow.setDisplayOrder(iSelectedRow + 1);
+    //jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1))
+    //if (iSelectedRow ==
+    iSelectedRow++;
+    movedRow.setDisplayOrder(iSelectedRow + 1);
+    model.addRow(iSelectedRow, movedRow);
+    mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    
+}//GEN-LAST:event_onDownBtn
 
 class TableModelRelationshipField extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_RELATIONSHIP_TYPES_FILED"),                                           
@@ -311,6 +448,14 @@ class TableModelRelationshipField extends AbstractTableModel {
             return null;
         }
 
+        public RelationFieldReference getRow(int row) {
+            if (fieldRows != null) {
+                RelationFieldReference singleRow = (RelationFieldReference) fieldRows.get(row);
+                return singleRow;
+            }
+            return null;
+        }
+        
         public Class getColumnClass(int c) {
             Object colNameObj = getValueAt(0, c);
             return colNameObj.getClass();
@@ -349,7 +494,8 @@ class TableModelRelationshipField extends AbstractTableModel {
         }
         
         public void addRow(int index, RelationFieldReference row) {
-            fieldRows.add(row);
+            //fieldRows.add(row);
+            fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
         }
 
@@ -377,10 +523,14 @@ class TableModelRelationshipField extends AbstractTableModel {
             }
             return null;
         }        
+        
+
     }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBtnDown;
+    private javax.swing.JButton jBtnUp;
     private javax.swing.JComboBox jCBRelationshipType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
