@@ -340,6 +340,9 @@ if(isSave) {
 			   // Close the Root node fields
 			   // Hide the Save button -->
 		  <script>
+			   var formNameValue = document.forms['basicValidateAddformData'];
+               var lidField =  getDateFieldName(formNameValue.name,'LID');
+               var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
 			   document.getElementById('saveButtons').style.visibility = 'hidden';
 			   document.getElementById('saveButtons').style.display = 'none';
 
@@ -351,15 +354,12 @@ if(isSave) {
 			   //CLEAR ALL FORM FIELDS
 			   ClearContents('basicValidateAddformData');
 
-               var formNameValue = document.forms['basicValidateAddformData'];
-               var lidField =  getDateFieldName(formNameValue.name,'LID');
-               var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
-
 			   document.getElementById(lidField).readOnly = false;
                document.getElementById(lidField).disabled = false;
                document.getElementById(lidField).style.backgroundColor = '';
+			   document.getElementById(lidField).focus();   /* added by narahari on 08/10/2008 to incorporate focus functionality for text box */
 
-				document.getElementById(systemField).readOnly = false;
+				document.getElementById(systemField).value='<%=rootNodesHashMap.get("SYSTEM_CODE")%>';
                 document.getElementById(systemField).disabled = false;
                 document.getElementById(systemField).style.backgroundColor  = '';
 		  </script>

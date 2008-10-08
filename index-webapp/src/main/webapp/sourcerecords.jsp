@@ -1156,6 +1156,7 @@ if(session!=null){
             var formNameValue = document.forms[formName];
             
 			var lidField1 =  getDateFieldName(formNameValue.name,'LID1');
+			document.getElementById(lidField1).focus();   /* added by narahari on 08/10/2008 to incorporate focus functionality for text box */
 			var lidField2 =  getDateFieldName(formNameValue.name,'LID2');
 			var lidField3 =  getDateFieldName(formNameValue.name,'LID3');
 			var lidField4 =  getDateFieldName(formNameValue.name,'LID4');
@@ -1198,6 +1199,7 @@ if(session!=null){
              document.getElementById(lidField).value = "";
              document.getElementById(lidField).readOnly = false;
              document.getElementById(lidField).disabled = false;
+			 document.getElementById(lidField).focus();     /* added by narahari on 08/10/2008 to incorporate focus functionality for text box */
 			}
 			if(field.selectedIndex == 0 ) {
              document.getElementById(lidField).value = "";
@@ -1230,15 +1232,15 @@ if(session!=null){
 
     </script>
     <script>
-          var formName ="basicAddformData";
+          var formName ="basicValidateAddformData";
     </script>
     <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
     <script>
-          formName = "BasicSearchFieldsForm";
+          formName = "basicViewformData";
     </script>
     <%} else if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
     <script>
-          formName = "basicAddformData";
+          formName = "basicValidateAddformData";
     </script>
     
     <%} else if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
@@ -1248,13 +1250,30 @@ if(session!=null){
       
     <%} else {%>
     <script>
-          formName = "BasicSearchFieldsForm";
+          formName = "basicViewformData";
     </script>
     <%}%>  
   <!-- Clear the merge form fields upoon load of the page -->  
   <script>
    ClearContents("basicMergeformData");
   </script>
+<!-- Below script added by narahari on 08/10/2008 to incorporate focus functionality for text box, when reload the page-->
+  <script>
+         var formNameValue = document.forms['basicValidateAddformData'];
+		 var lidField =  getDateFieldName(formNameValue.name,'LID');
+		 var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
+         if(document.getElementById(systemField).selectedIndex !=0){
+				document.getElementById(lidField).readOnly=false;
+			    document.getElementById(lidField).disable=false;
+		        document.getElementById(lidField).focus();
+		 }
+		 else{
+			    document.getElementById(lidField).readOnly=true;
+		        document.getElementById(lidField).disable=true;
+		        document.getElementById(systemField).focus();
+		 }
+  </script>
+
 </html>
 
  <script type="text/javascript">
