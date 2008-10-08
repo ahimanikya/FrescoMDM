@@ -885,7 +885,7 @@ boolean isSessionActive = true;
 															  <td width="167px">
 															     <div id="undoPreviewButton<%=i%>" >
 															   <% if (operations.isAssumedMatch_Undo())   {%>
-                                                                  <a href="javascript:void(0)" class='button' onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMpreview.jsf?random=rand'+'&'+'amSourcesID=<%=amSourcesID%>'+'&'+'divId=<%=i%>'+'&'+'AMID=<%=request.getParameter("AMID")%>','previewdiv','');document.getElementById('previewdiv').style.width='350px';"
+                                                                  <a href="javascript:void(0)" class='button' onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMpreview.jsf?&random=rand&amSourcesID=<%=amSourcesID%>&mainEUID=<%=mainEUID%>&divId=<%=i%>&AMID=<%=request.getParameter("AMID")%>','previewdiv','');document.getElementById('previewdiv').style.width='400px';"
 																  title="<h:outputText value="#{msgs.undo_match_button_text}" />">
                                                                    <span><h:outputText value="#{msgs.undo_match_button_text}" /></span>
                                                                   </a>

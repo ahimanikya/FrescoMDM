@@ -74,6 +74,7 @@ boolean isSessionActive = true;
         String undoAssumedMatchId = (String)request.getParameter("undoAssumedMatchId");
         AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
 		String newEuid = assumeMatchHandler.undoMatch(undoAssumedMatchId);
+		String mainEUIDAssume= request.getParameter("mainEUID");
 %>
 											       <table border="0" cellpadding="0" cellspacing="0" >
 											         <tr><th title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
@@ -85,9 +86,13 @@ boolean isSessionActive = true;
 													<tr><td colspan="2">&nbsp;</td></tr>
 													 </tr>
 											         <tr>
-													       <td colspan="2"><nobr>&nbsp;<%=bundle.getString("merge_result")%></nobr>
+													       <td colspan="2"><nobr>&nbsp;<%=bundle.getString("merge_result")%>&nbsp;<%=mainEUIDAssume%>&nbsp;<%=bundle.getString("merge_result1")%></nobr>
 														   </td>
 													 </tr>
+													 <tr>
+													    <td colspan="2"><nobr><%=bundle.getString("merge_result2")%>&nbsp;<%=newEuid%>&nbsp;<%=bundle.getString("merge_result3")%><nobr>
+														</td>
+												     </tr>
 													 <tr><td colspan="2"><nobr><%=bundle.getString("view_new_EO")%></nobr></td></tr>
 													 <tr><td colspan="2">&nbsp;</td></tr>
 											         <tr id="actions">

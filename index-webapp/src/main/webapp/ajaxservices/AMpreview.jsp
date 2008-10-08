@@ -88,6 +88,7 @@ CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
  int maxMinorObjectsMAX = 0;
 
  String amSourcesID = request.getParameter("amSourcesID");
+ String mainEUID= request.getParameter("mainEUID");
  divId= request.getParameter("divId");
 AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
 
@@ -275,7 +276,7 @@ SourceHandler sourceHandler = new SourceHandler();
 															 <td>&nbsp;</td>
 															 <td>
                                                           <a href="javascript:void(0)" class="button"
-														      onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMMerge.jsf?random=rand'+'&'+'undoAssumedMatchId=<%=amSourcesID%>','confirmPreview','')"
+														      onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMMerge.jsf?random=rand'+'&'+'undoAssumedMatchId=<%=amSourcesID%>'+'&'+'&mainEUID=<%=mainEUID%>','confirmPreview','')"
 														       title="<h:outputText value="#{msgs.ok_text_button}" />">
 														       <span>
                                                                  <h:outputText value="#{msgs.ok_text_button}" /> 

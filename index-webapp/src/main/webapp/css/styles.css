@@ -2840,11 +2840,11 @@ a.navbuttonselected:active span {
    /* filter:alpha(opacity=70);-moz-opacity:.70;opacity:.70; */
    color:#ffffff;
    z-index:5;
-   background-color:#000000;
-   border-right: 3px solid #000000;
-   border-left: 3px solid #000000;
-   border-top: 3px solid #000000;
-   border-bottom: 3px solid #000000;
+   background-color:#585858;
+   border-right: 3px solid #585858;
+   border-left: 3px solid #585858;
+   border-top: 3px solid #585858;
+   border-bottom: 3px solid #585858;
 }
 
 .confirmPreview td {
@@ -2853,7 +2853,7 @@ a.navbuttonselected:active span {
    font-size:12px;
    vertical-align:middle;	      
    font-weight:normal;
-   background-color:#000000;
+   background-color:#585858;
    color:#ffffff;
    padding-left:3px; 
    padding-right:3px;
@@ -2885,7 +2885,7 @@ a.navbuttonselected:active span {
    font-family: sans-serif,Arial, Helvetica ;
    font-size: 12px;
    text-align:center;
-   background-color:#000000;
+   background-color:#585858;
    color:#ffffff;
 }
 
