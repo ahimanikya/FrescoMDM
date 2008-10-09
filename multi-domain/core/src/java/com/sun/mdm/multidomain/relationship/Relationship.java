@@ -29,6 +29,7 @@ import java.util.HashMap;
 /**
  * Relationship class.
  * @author cye
+ * @author SwaranjitDua
  */
 public class Relationship {
     private RelationshipType relationshipType;
