@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 /**
  * RelationshipType class.
+ * @author SwaranjitDua
  * @author cye
  */
 public class RelationshipType {
