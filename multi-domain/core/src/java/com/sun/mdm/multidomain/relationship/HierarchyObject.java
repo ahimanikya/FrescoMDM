@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.ObjectNode;
 /**
  * HierarchyObject class.
  * @author cye
+ * @author SwaranjitDua
  */
 public class HierarchyObject {
     /**
