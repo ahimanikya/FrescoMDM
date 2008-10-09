@@ -25,9 +25,11 @@ package com.sun.mdm.multidomain.relationship;
 /**
  * Relationship Attribute class.
  * @author cye
+ * @author SwaranjitDua
  */
 public class Attribute {
              
+	private String attributeID;
     private String name;
     private String columnName;
     private String displayName;
@@ -49,7 +51,8 @@ public class Attribute {
      * @param type Attribute type.
      * @param value Attribute value.
      */
-    public Attribute(String name, String displayName, AttributeType type, String value) {
+    public Attribute(String attributeID, String name, String displayName, AttributeType type, String value) {
+    	this.attributeID = attributeID;
     	this.name = name;
     	this.displayName = displayName;
     	this.columnName = name;
@@ -58,7 +61,23 @@ public class Attribute {
     	this.type = type;
     	this.defaultValue = value;
     } 
+
+    /**
+     * Get attributeID attribute.
+     * @return String attributeID attribute.
+     */
+    public String getAttributeID() {
+        return attributeID;
+    }
     
+    /**
+     * Set name attribute.
+     * @param name Name attribute.
+     */
+    public void setAttributeID(String attributeID) {
+        this.attributeID = attributeID;;
+    }
+
     /**
      * Get name attribute.
      * @return String Name attribute.
