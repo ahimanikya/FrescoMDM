@@ -99,6 +99,11 @@ public class RelationshipModel {
         return strDatabase;
     }
 
+    public ArrayList <Relationship> getAllRelationships() {
+        return mRelationships.getAllRelationships();
+    }
+    
+    
     /**
      * @param String name of Relationship Type
      * @param String sourceDomain

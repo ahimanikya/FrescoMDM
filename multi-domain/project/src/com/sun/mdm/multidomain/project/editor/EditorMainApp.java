@@ -41,12 +41,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
 
 import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
+import com.sun.mdm.multidomain.project.editor.nodes.RelationshipNode;
+import com.sun.mdm.multidomain.project.editor.nodes.RelationshipTypeNode;
 import org.openide.filesystems.FileObject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -72,8 +75,10 @@ public class EditorMainApp {
     private ObjectTopComponent mObjectTopComponent = null;
     private static Map mMapInstances = new HashMap();  // projName, instance
     private Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
+    private Map mMapDomainQueryXmls = new HashMap();  // domainName, FileObject of query.xml
+    private Map mMapDomainMidmXmls = new HashMap();  // domainName, FileObject of midm.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
-    private ArrayList mAlRelationshipTypeNodes = new ArrayList();
+    private ArrayList mAlRelationshipNodes = new ArrayList();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
     private RelationshipModel mRelationshipModel;
@@ -123,6 +128,22 @@ public class EditorMainApp {
         return instance;
     }
     
+    private void loadRelationships() {
+        //mAlRelationshipNodes
+        ArrayList <Relationship> alRelationships = mRelationshipModel.getAllRelationships();
+        for (int i=0; alRelationships!=null && i<alRelationships.size(); i++) {
+            Relationship relationship = (Relationship) alRelationships.get(i);
+            RelationshipNode node = new RelationshipNode(relationship.getDomain1(), relationship.getDomain2());
+            //create RelationshipTypeNode list
+            ArrayList <RelationshipType> alRelationshipTypes = relationship.getAllRelationshipTypes();
+            for (int j=0; alRelationshipTypes!=null && j<alRelationshipTypes.size(); j++) {
+                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(j);
+                RelationshipTypeNode relationshipNode = new RelationshipTypeNode(node, relationshipType);
+            }
+            this.mAlRelationshipNodes.add(node);
+        }
+    }
+    
     /**
      * Look for src\Domains dir for participating domains
      * Need to verify the list against RelationshipModel.xml?
@@ -138,9 +159,13 @@ public class EditorMainApp {
                 FileObject domain = children[j];
                 if (domain.isFolder()) {
                     FileObject objectXml = domain.getFileObject(MultiDomainProjectProperties.OBJECT_XML);
+                    FileObject queryXml = domain.getFileObject(MultiDomainProjectProperties.QUERY_XML);
+                    FileObject midmXml = domain.getFileObject(MultiDomainProjectProperties.MIDM_XML);
                     if (objectXml != null) {
                         String domainName = domain.getName();
                         mMapDomainObjectXmls.put(domainName, objectXml);
+                        mMapDomainQueryXmls.put(domainName, queryXml);
+                        mMapDomainMidmXmls.put(domainName, midmXml);
                         DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain));
                         mMapDomainNodes.put(domainName, domainNode);
                         //populate relationship types for domainNode
@@ -186,6 +211,8 @@ public class EditorMainApp {
             //Copy domain's object.xml
             try {
                 FileObject objectXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.OBJECT_XML);
+                FileObject queryXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.QUERY_XML);
+                FileObject midmXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.MIDM_XML);
                 FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
                 FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
                 FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
@@ -194,7 +221,11 @@ public class EditorMainApp {
                 }
                 FileObject newDomainFolder = domainsFolder.createFolder(domainName);
                 FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
+                FileUtil.copyFile(queryXml, newDomainFolder, queryXml.getName());
+                FileUtil.copyFile(midmXml, newDomainFolder, midmXml.getName());
                 mMapDomainObjectXmls.put(domainName, objectXml);
+                mMapDomainQueryXmls.put(domainName, queryXml);
+                mMapDomainMidmXmls.put(domainName, midmXml);
                 DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(newDomainFolder));
                 mMapDomainNodes.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNode(domainNode);
@@ -215,6 +246,8 @@ public class EditorMainApp {
         if (mMapDomainObjectXmls.containsKey(domainName)) {
             try {
                 mMapDomainObjectXmls.remove(domainName);
+                mMapDomainQueryXmls.remove(domainName);
+                mMapDomainMidmXmls.remove(domainName);
                 mMapDomainNodes.remove(domainName);
                 FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
                 FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
@@ -226,6 +259,10 @@ public class EditorMainApp {
             }
         }
         return removed;
+    }
+    
+    public void addRelationshp(String domain1, String domain2) {
+        
     }
 
     /**
@@ -274,6 +311,32 @@ public class EditorMainApp {
 
     /**
      * 
+     * @param domainName
+     * @return
+     */
+    public FileObject getDomainQueryXml(String domainName) {
+        FileObject xml = null;
+        if (!mMapDomainQueryXmls.containsKey(domainName)) {
+            xml = (FileObject) mMapDomainQueryXmls.get(domainName);
+        }
+        return xml;
+    }
+
+    /**
+     * 
+     * @param domainName
+     * @return
+     */
+    public FileObject getDomainMidmXml(String domainName) {
+        FileObject xml = null;
+        if (!mMapDomainMidmXmls.containsKey(domainName)) {
+            xml = (FileObject) mMapDomainMidmXmls.get(domainName);
+        }
+        return xml;
+    }
+
+    /**
+     * 
      * @param folder
      * @param name
      * @return
@@ -311,7 +374,8 @@ public class EditorMainApp {
         try {
             mMultiDomainApplication.loadAll();
 
-            getRelationshipModel(true);
+            mRelationshipModel = getRelationshipModel(true);
+            loadRelationships();
             // Load mMapDomainObjectXmls
             loadDomains();
             // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
@@ -352,8 +416,7 @@ public class EditorMainApp {
     }
 
     public RelationshipModel getRelationshipModel(boolean refresh) {
-        mRelationshipModel = mMultiDomainApplication.getRelationshipModel(refresh);
-        return mRelationshipModel;
+        return mMultiDomainApplication.getRelationshipModel(refresh);
     }
 
     public RelationshipWebManager getRelationshipWebManager(String xml) {

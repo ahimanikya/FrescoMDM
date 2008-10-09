@@ -36,7 +36,7 @@ import org.openide.util.Lookup;
 
 import java.util.ArrayList;
 
-//import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.RelationshipType;
 //import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
 
 /**
@@ -44,7 +44,8 @@ import java.util.ArrayList;
  * @author kkao
  */
 public class RelationshipNode extends AbstractNode {
-
+    String domain1;
+    String domain2;
     ArrayList <RelationshipTypeNode> alRelationshipTypeNodes = new ArrayList();
     
     public RelationshipNode() {
@@ -63,8 +64,14 @@ public class RelationshipNode extends AbstractNode {
         super(Children.LEAF);
     }
     
+    public void addRelationshipTypeNode(RelationshipType relationshipType) {
+        RelationshipTypeNode relationshipTypeNode = new RelationshipTypeNode(this, relationshipType);
+        alRelationshipTypeNodes.add(relationshipTypeNode);
+    }
+    
     public void addRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
-        
+        relationshipTypeNode.setParentRelationshipNode(this);
+        alRelationshipTypeNodes.add(relationshipTypeNode);
     }
     
     public void deleteRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {

@@ -61,6 +61,8 @@ import java.io.IOException;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
+import com.sun.mdm.multidomain.project.actions.CreateRelationshipAction;
+import com.sun.mdm.multidomain.project.actions.CreateRelationshipTypeAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -88,6 +90,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
+    private JButton mButtonAddRelationship;
+    private JButton mButtonAddRelationshipType;
     private JButton mButtonDelete;
     private JButton mButtonSave;
     private EditorMainApp mEditorMainApp;
@@ -186,8 +190,22 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_AddDomain")));
         mButtonAddDomain.setBorder(null);
-        mButtonAddDomain.setMnemonic('P');
+        mButtonAddDomain.setMnemonic('A');
         toolBar.add(mButtonAddDomain);
+        mButtonAddRelationship = new JButton(new AddRelationshipAction(
+                    this.DOMAINIMAGEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_AddRelationship")));
+        mButtonAddRelationship.setBorder(null);
+        mButtonAddRelationship.setMnemonic('R');
+        toolBar.add(mButtonAddRelationship);
+        mButtonAddRelationshipType = new JButton(new AddRelationshipTypeAction(
+                    this.DOMAINIMAGEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_AddRelationshipType")));
+        mButtonAddRelationshipType.setBorder(null);
+        mButtonAddRelationshipType.setMnemonic('T');
+        toolBar.add(mButtonAddRelationshipType);
         toolBar.addSeparator();
         mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
@@ -312,6 +330,52 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         public void actionPerformed(java.awt.event.ActionEvent e) {           
             Action action = SystemAction.get(ImportDomainAction.class);
             ((ImportDomainAction) action).perform(mEditorMainApp);
+            action = null;
+        }
+    }
+     
+    /** Add a Relationship
+     *
+     */
+    public class AddRelationshipAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public AddRelationshipAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            Action action = SystemAction.get(CreateRelationshipAction.class);
+            ((CreateRelationshipAction) action).perform(mEditorMainApp);
+            action = null;
+        }
+    }
+     
+    /** Add a Relationship
+     *
+     */
+    public class AddRelationshipTypeAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public AddRelationshipTypeAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            Action action = SystemAction.get(CreateRelationshipTypeAction.class);
+            ((CreateRelationshipTypeAction) action).perform(mEditorMainApp);
             action = null;
         }
     }

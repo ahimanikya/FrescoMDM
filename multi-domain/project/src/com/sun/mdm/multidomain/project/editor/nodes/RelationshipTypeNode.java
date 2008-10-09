@@ -43,10 +43,10 @@ import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
  * @author kkao
  */
 public class RelationshipTypeNode extends AbstractNode {
-
+    RelationshipNode mParentRelationshipNode;
     RelationshipType mRelationshipType;
     String mRelationshipTypeName;
-    TabRelationshipWebManager mTabRelationshipWebManager = new TabRelationshipWebManager(null, null);
+    TabRelationshipWebManager mTabRelationshipWebManager = null;
     
     public RelationshipTypeNode() {
         super(Children.LEAF);
@@ -60,13 +60,27 @@ public class RelationshipTypeNode extends AbstractNode {
         super(arg0);
     }
     
+    public RelationshipTypeNode(RelationshipNode parentRelationshipNode, RelationshipType relationshipType) {
+        super(Children.LEAF);
+        mParentRelationshipNode = parentRelationshipNode;
+        mRelationshipType = relationshipType;
+    }
+    
     public RelationshipTypeNode(RelationshipType relationshipType) {
         super(Children.LEAF);
         mRelationshipType = relationshipType;
     }
-    
+
+    public void setParentRelationshipNode(RelationshipNode mParentRelationshipNode) {
+        this.mParentRelationshipNode = mParentRelationshipNode;
+    }
+
     public TabRelationshipWebManager getTabRelationshipWebManager() {
         return mTabRelationshipWebManager;
+    }
+
+    public RelationshipNode getRelationshipNode() {
+        return mParentRelationshipNode;
     }
 
     public RelationshipType getRelationshipType() {

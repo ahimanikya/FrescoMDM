@@ -52,6 +52,7 @@ public class MultiDomainProjectProperties {
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
     
     public static final String OBJECT_XML = "object.xml";
+    public static final String QUERY_XML = "query.xml";
     public static final String MIDM_XML = "midm.xml";
     public static final String RELATIONSHIP_MODEL_XML = "RelationshipModel.xml";
     public static final String RELATIONSHIP_MODEL_XSD = "RelationshipModel.xsd";
