@@ -72,6 +72,10 @@ public class MultiDomainApplication extends MultiDomainProject {
         mHelper = helper;
     }
     
+    public AntProjectHelper getHelper() {
+        return mHelper;
+    }
+    
     private EditableProperties getEditableProperties() {
         EditableProperties ep = mHelper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         return ep;

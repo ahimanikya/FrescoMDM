@@ -93,7 +93,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private EditorMainApp mEditorMainApp;
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
-    private RelationshipCanvas canvas = new RelationshipCanvas(); //The component the user draws on
+    private RelationshipCanvas canvas = null; //The component the user draws on
     //private JPanel canvas = new JPanel();
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
@@ -107,7 +107,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
 
-
+        canvas = new RelationshipCanvas(mMultiDomainApplication, mEditorMainApp);
         mEditorMainPanel = this;
 
 

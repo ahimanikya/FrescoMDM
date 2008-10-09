@@ -37,32 +37,146 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JComponent;
+import java.io.File;
+import org.openide.filesystems.FileUtil;
+import org.openide.filesystems.FileObject;
+import org.openide.nodes.Node;
+import org.openide.nodes.Children;
+import org.openide.util.Utilities;
+
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.dnd.DnDConstants;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.SwingUtilities;
 
+//import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import com.sun.mdm.multidomain.project.MultiDomainApplication;
+//import com.sun.mdm.index.project.ui.EviewConfigurationFolderNode;
+//import com.sun.mdm.index.project.ui.EviewCookie;
+//import com.sun.mdm.index.project.EviewApplication;
 /**
  * @author Timothy Boudreau
  */
 public class RelationshipCanvas extends JComponent implements MouseListener, MouseMotionListener, PropertyChangeListener {
-    
     private int diam = 10;
     private Paint paint = Color.BLUE;
     private BufferedImage backingImage;
     private Point last;
+    private RelationshipCanvas mRelationshipCanvas;
+    private MultiDomainApplication mMultiDomainApplication;
+    private EditorMainApp mEditorMainApp;
+    static final Image DOMAINIMAGEICON = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
+
     
-    public RelationshipCanvas() {
+    public RelationshipCanvas(MultiDomainApplication multiDomainApplication, EditorMainApp editorMainApp) {
+        mRelationshipCanvas = this;
+        mEditorMainApp = editorMainApp;
         addMouseListener(this);
         addMouseMotionListener(this);
         setBackground(Color.WHITE);
+        this.setDropTarget(new DropTarget(this, new DropTargetListener() { 
+            String dragTargetName = "";
+            public void dragEnter(DropTargetDragEvent dtde) {
+            }
+
+            public void dragExit(DropTargetEvent dte) {
+
+            }
+
+            public void dragOver(DropTargetDragEvent dtde) {
+                if (isMasterIndexProject(dtde)) {
+                    dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                } else {
+                    dtde.rejectDrag();
+                }
+            }
+
+            public void drop(DropTargetDropEvent dtde) {
+                // Add DomainNode to the canvas
+                Transferable trans = dtde.getTransferable();
+
+                DataFlavor[] dfs = trans.getTransferDataFlavors();
+                if (dfs.length > 0) {
+                    try {
+                        Object obj = trans.getTransferData(dfs[0]);
+                        if (obj instanceof Node) {
+                            Node node = (Node) obj;
+                            
+                            dragTargetName = node.getName();
+                            Children al = node.getChildren();
+                            Node cnf = al.findChild("Configuration");
+                            /*
+                            EviewCookie cookie = cnf.getCookie(EviewCookie.class);
+                            final EviewConfigurationFolderNode eviewCnfNode = cookie.getEviewFolderNode();
+                            EviewApplication eviewApplication = (EviewApplication) eviewCnfNode.getProject();
+                            FileObject domainFolder = eviewApplication.getProjectDirectory();
+                            String path = domainFolder.getName();
+
+                            mEditorMainApp.addDomain(FileUtil.toFile(domainFolder));
+                            */
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                //mEditorMainApp.addDomain((FileObject) fileDomain);
+            }
+
+            public void dropActionChanged(DropTargetDragEvent dtde) {
+
+            }
+            
+            public boolean isMasterIndexProject(DropTargetDragEvent dtde) {
+                dragTargetName = "";
+                boolean bRet = false;
+                Transferable trans = dtde.getTransferable();
+
+                DataFlavor[] dfs = trans.getTransferDataFlavors();
+                if (dfs.length > 0) {
+                    try {
+                        Object obj = trans.getTransferData(dfs[0]);
+                        if (obj instanceof Node) {
+                            Node node = (Node) obj;
+                            dragTargetName = node.getName();
+                            Children al = node.getChildren();
+                            Node cnf = al.findChild("Configuration");
+                            if (cnf != null && cnf.getClass().getName().equals("com.sun.mdm.index.project.ui.EviewConfigurationFolderNode")) {
+                                bRet = true;
+                                Graphics2D g2D = (Graphics2D) mRelationshipCanvas.getGraphics();
+                                Rectangle visRect = mRelationshipCanvas.getVisibleRect();
+                                mRelationshipCanvas.paintImmediately(visRect.x, visRect.y, visRect.width, visRect.height);
+                                g2D.drawImage(DOMAINIMAGEICON, AffineTransform.getTranslateInstance(dtde.getLocation().getX(), dtde.getLocation().getY()), null);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                return bRet;
+            }
+
+        }));
     }
     
     public void propertyChange(final PropertyChangeEvent evt) {

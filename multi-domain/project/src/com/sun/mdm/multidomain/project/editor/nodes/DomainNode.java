@@ -136,6 +136,10 @@ public class DomainNode extends AbstractNode {
         return mMiObject;
     }
 
+    /**
+     * Build graphical representation of domain object
+     * @param selectedDomain
+     */
     private void loadMiObjectNodes(File selectedDomain) {       
         MiObject miObject = getMiObject(selectedDomain);
         ArrayList alMiNodes = miObject.getNodes();
@@ -162,25 +166,13 @@ public class DomainNode extends AbstractNode {
                 MiNodeDef child = (MiNodeDef) it.next();
                 addChildren(child); // Support multi-tier object
             }
-            ArrayList fields = node.getFields();
-            for (int i = 0; i < fields.size(); i++) {
-                MiFieldDef field = (MiFieldDef) fields.get(i);
-                addMiField(field);
-            }
         }
-    }
-    
-    private void addMiFieldNodes(MiNodeDef node) {
         ArrayList fields = node.getFields();
         for (int i = 0; i < fields.size(); i++) {
-            MiFieldDef field = (MiFieldDef) fields.get(i);
-            addMiField(field);
-        }
-    }
-
-    private void addMiField(MiFieldDef fieldDef) {
-        if (fieldDef != null) {
-            String nodeName = fieldDef.getFieldName();
+            MiFieldDef fieldDef = (MiFieldDef) fields.get(i);
+            if (fieldDef != null) {
+                String nodeName = fieldDef.getFieldName();
+            }
         }
     }
 
@@ -228,12 +220,8 @@ public class DomainNode extends AbstractNode {
     public void loadRelationshipTypes(ArrayList <RelationshipType> alRelationshipTypes) {
         this.alRelationshipTypes = alRelationshipTypes;
         if (alRelationshipTypes != null) {
-            addTabListRelationshipTypes();
+            mTabListRelationshipTypes = new TabListRelationshipTypes(this.alRelationshipTypes);
         }
-    }
-    
-    public void addTabListRelationshipTypes() {
-        mTabListRelationshipTypes = new TabListRelationshipTypes(this.alRelationshipTypes);
     }
     
     public TabListRelationshipTypes getTabListRelationshipTypes() {

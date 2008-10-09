@@ -32,49 +32,51 @@ package com.sun.mdm.multidomain.project.editor.nodes;
 
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
-//import org.openide.nodes.CookieSet;
 import org.openide.util.Lookup;
 
-import com.sun.mdm.multidomain.parser.RelationshipType;
-import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
+import java.util.ArrayList;
+
+//import com.sun.mdm.multidomain.parser.RelationshipType;
+//import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
 
 /**
  *
  * @author kkao
  */
-public class RelationshipTypeNode extends AbstractNode {
+public class RelationshipNode extends AbstractNode {
 
-    RelationshipType mRelationshipType;
-    String mRelationshipTypeName;
-    TabRelationshipWebManager mTabRelationshipWebManager = new TabRelationshipWebManager(null, null);
+    ArrayList <RelationshipTypeNode> alRelationshipTypeNodes = new ArrayList();
     
-    public RelationshipTypeNode() {
+    public RelationshipNode() {
         super(Children.LEAF);
     }
 
-    public RelationshipTypeNode(Children arg0, Lookup arg1) {
+    public RelationshipNode(Children arg0, Lookup arg1) {
         super(arg0, arg1);
     }
 
-    public RelationshipTypeNode(Children arg0) {
+    public RelationshipNode(Children arg0) {
         super(arg0);
     }
     
-    public RelationshipTypeNode(RelationshipType relationshipType) {
+    public RelationshipNode(String sourceDomain, String targetDomain) {
         super(Children.LEAF);
-        mRelationshipType = relationshipType;
     }
     
-    public TabRelationshipWebManager getTabRelationshipWebManager() {
-        return mTabRelationshipWebManager;
+    public void addRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
+        
     }
-
-    public RelationshipType getRelationshipType() {
-        return mRelationshipType;
+    
+    public void deleteRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
+        
     }
-
-    public String getRelationshipTypeName() {
-        return mRelationshipTypeName;
+    
+    public void deleteRelationshipTypeNode(String relationshipTypeName ) {
+        
+    }
+    
+    public ArrayList<RelationshipTypeNode> getAlRelationshipTypeNodes() {
+        return alRelationshipTypeNodes;
     }
 
 }
