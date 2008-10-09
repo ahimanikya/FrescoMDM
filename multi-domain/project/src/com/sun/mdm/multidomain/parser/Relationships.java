@@ -14,87 +14,53 @@ import java.util.ArrayList;
     /*
      * RelationshipModel.xml
      * <relationships>
-     *   <relationshp-type>
+     *   <relationshp>
      */
     public class Relationships {
-        public static final String TYPE_RELATIONSHIP = "relationship";
-        public static final String TYPE_HIERARCHY = "hierarchy";
-        public static final String TYPE_GROUP = "group";
-        public static final String TYPE_CATEGORY = "category";
-
-        ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
-        ArrayList <String> alRelationshipTypeNames = new ArrayList();
+        ArrayList <Relationship> alRelationships = new ArrayList();
         
-        RelationshipType addRelationshipType() {
-            RelationshipType relationshipType = new RelationshipType();
-            alRelationshipTypes.add(relationshipType);
-            return relationshipType;
+        Relationship addRelationship() {
+            Relationship relationship = new Relationship();
+            alRelationships.add(relationship);
+            return relationship;
         }
         
-        void addRelationshipType(RelationshipType relationshipType) {
-            alRelationshipTypes.add(relationshipType);
+        void addRelationship(Relationship relationship) {
+            alRelationships.add(relationship);
         }
         
-        RelationshipType getRelationshipType(String name, String sourceDomain, String targetDomain) {
-            RelationshipType relationshipType = null;
-            for (int i=0; alRelationshipTypes.size() > i; i++) {
-                relationshipType = (RelationshipType) alRelationshipTypes.get(i);
-                if (relationshipType.getRelTypeName().equals(name) &&
-                    relationshipType.getSource().equals(sourceDomain) &&
-                    relationshipType.getDestionation().equals(targetDomain)) {
+        Relationship getRelationship(String sourceDomain, String targetDomain) {
+            Relationship relationship = null;
+            for (int i=0; alRelationships.size() > i; i++) {
+                relationship = (Relationship) alRelationships.get(i);
+                if (relationship.getDomain1().equals(sourceDomain) &&
+                    relationship.getDomain2().equals(targetDomain)) {
                     break; 
                 }
             }
-            return relationshipType;
+            return relationship;
         }
         
-        void deleteRelationshipType(String name, String sourceDomain, String targetDomain) {
-            RelationshipType relationshipType = getRelationshipType(name, sourceDomain, targetDomain);
-            if (relationshipType != null) {
-                alRelationshipTypes.remove(relationshipType);
+        void deleteRelationship(String sourceDomain, String targetDomain) {
+            Relationship relationship = getRelationship(sourceDomain, targetDomain);
+            if (relationship != null) {
+                alRelationships.remove(relationship);
             }
         }
         
-        ArrayList <RelationshipType> getAllRelationshipTypes() {
-            return alRelationshipTypes;
+        ArrayList <Relationship> getAllRelationships() {
+            return alRelationships;
         }
         
-        ArrayList <RelationshipType> getRelationshipTypesByType(String type) { // type="relationship/hierarchy/group/category
+        ArrayList <Relationship> getRelationshipsByDomain(String domainName) {
             ArrayList al = new ArrayList();
-            for (int i=0; i<alRelationshipTypes.size(); i++) {
-                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(i);
-                if (relationshipType.type.equals(type)) {
-                    al.add(relationshipType); 
+            for (int i=0; i<alRelationships.size(); i++) {
+                Relationship relationship = (Relationship) alRelationships.get(i);
+                if (relationship.getDomain1().equals(domainName) || relationship.getDomain2().equals(domainName)) {
+                    al.add(relationship); 
                 }
             }
             return al;
-        }
-        
-        ArrayList <RelationshipType> getRelationshipTypesByDomain(String domainName) {
-            ArrayList al = new ArrayList();
-            for (int i=0; i<alRelationshipTypes.size(); i++) {
-                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(i);
-                if (relationshipType.sourceDomain.equals(domainName) || relationshipType.targetDomain.equals(domainName)) {
-                    al.add(relationshipType); 
-                }
-            }
-            return al;
-        }
-        
-        ArrayList <RelationshipType> getRelationships() {         
-            return getRelationshipTypesByType(TYPE_RELATIONSHIP);
-        }
-        
-        ArrayList <RelationshipType> getHierarchies() {         
-            return getRelationshipTypesByType(TYPE_HIERARCHY);
-        }
-        
-        ArrayList <RelationshipType> getGroups() {
-            return getRelationshipTypesByType(TYPE_GROUP);
-        }
-        
-        ArrayList <RelationshipType> getCategories() {
-            return getRelationshipTypesByType(TYPE_CATEGORY);
         }
     }
     

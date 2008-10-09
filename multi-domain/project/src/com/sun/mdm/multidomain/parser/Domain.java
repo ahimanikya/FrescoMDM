@@ -29,6 +29,4 @@ package com.sun.mdm.multidomain.parser;
  */
 public class Domain {
     String name;
-    String objectXml;
-    String midmXml;
 }

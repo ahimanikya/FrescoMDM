@@ -42,11 +42,14 @@ public class RelationshipModel {
     private final String mTagDateFormat = "dateformat";
     private final String mTagDomains = "domains";
     private final String mTagDomain = "domain";
+    private final String mTagDomain1 = "domain1";
+    private final String mTagDomain2 = "domain2";
     private final String mTagRelationshipType = "relationship-type";
     private final String mTagType = "type";
     private final String mTagSourceDomain = "source-domain";
     private final String mTagTargetDomain = "target-domain";
     private final String mTagRelationships  = "relationships";
+    private final String mTagRelationship  = "relationship";
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
     private Relationships mRelationships = new Relationships();
@@ -103,21 +106,30 @@ public class RelationshipModel {
      * @return RelationshipType
      */
     public RelationshipType getRelationshipType(String name, String sourceDomain, String targetDomain) {
-        return mRelationships.getRelationshipType(name, sourceDomain, targetDomain);
+        Relationship relationshp = mRelationships.getRelationship(sourceDomain, targetDomain);
+        RelationshipType relationshipType = null;
+        if (relationshp != null) {
+            relationshipType = relationshp.getRelationshipType(name, sourceDomain, targetDomain);
+        }
+        return relationshipType;
     }
 
     /**
      * @return ArrayList of RelationshipType
      */
     public ArrayList <RelationshipType> getRelationshipTypesByDomain(String domainName) {
-        return mRelationships.getRelationshipTypesByDomain(domainName);
-    }
-
-    /**
-     * @return ArrayList of RelationshipType
-     */
-    public ArrayList <RelationshipType> getRelationshipTypes() {
-        return mRelationships.getAllRelationshipTypes();
+        ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
+        ArrayList alRelationships = mRelationships.getRelationshipsByDomain(domainName);
+        for (int i=0; alRelationships != null && i < alRelationships.size(); i++) {
+            Relationship relationship = (Relationship) alRelationships.get(i);
+            if (relationship != null) {
+                ArrayList al = relationship.getRelationshipTypesByDomain(domainName);
+                if (al != null) {
+                    alRelationshipTypes.addAll(al);
+                }
+            }
+        }
+        return alRelationshipTypes;
     }
 
     /**
@@ -171,12 +183,27 @@ public class RelationshipModel {
             }
         }
     }
+
+    public String getAttributeName(Node node) {
+        String val = null;
+        NamedNodeMap nnm = node.getAttributes();
+        if (nnm != null) {
+            Node attrName = nnm.getNamedItem(mTagName);
+            if (attrName != null) {
+                try {
+                    val = attrName.getNodeValue();
+                } catch (DOMException ex) {
+                }
+            }
+        }
+        return val;
+    }
     
     /**
      * @param node node
      */
-    public void parseRelationshipType(Node node) {
-        RelationshipType relationshipType = mRelationships.addRelationshipType();
+    public void parseRelationshipType(Node node, Relationship relationship) {
+        RelationshipType relationshipType = relationship.addRelationshipType();
         String val = null;
         NamedNodeMap nnm = node.getAttributes();
         if (nnm != null) {
@@ -210,13 +237,47 @@ public class RelationshipModel {
     /**
      * @param node node
      */
+    public void parseRelationship(Node node) {
+        Relationship relationship = new Relationship();
+        String val = null;
+        NamedNodeMap nnm = node.getAttributes();
+        if (nnm != null) {
+            Node attrName = nnm.getNamedItem(mTagName);
+            if (attrName != null) {
+                try {
+                    val = attrName.getNodeValue();
+                } catch (DOMException ex) {
+                }
+            }
+        }
+
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    if (mTagDomain1.equals(((Element) nl.item(i)).getTagName())) {
+                        relationship.setDomain1(getAttributeName(nl.item(i)));
+                    } else if (mTagDomain2.equals(((Element) nl.item(i)).getTagName())) {
+                        relationship.setDomain2(getAttributeName(nl.item(i)));
+                    } else if (mTagRelationshipType.equals(((Element) nl.item(i)).getTagName())) {
+                        parseRelationshipType(nl.item(i), relationship);
+                    }
+                }
+            }
+        }
+        mRelationships.addRelationship(relationship);
+    }
+
+    /**
+     * @param node node
+     */
     public void parseRelationships(Node node) {
         if (node.hasChildNodes()) {
             NodeList nl = node.getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    if (mTagRelationshipType.equals(((Element) nl.item(i)).getTagName())) {
-                        parseRelationshipType(nl.item(i));
+                    if (mTagRelationship.equals(((Element) nl.item(i)).getTagName())) {
+                        parseRelationship(nl.item(i));
                     }
                 }
             }
