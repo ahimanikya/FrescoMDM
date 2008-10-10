@@ -47,6 +47,7 @@ public class TabListRelationshipTypes extends javax.swing.JPanel {
         jTableRelationshipTypes = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Relationship_Types"))); // NOI18N
+        setLayout(new java.awt.GridBagLayout());
 
         jTableRelationshipTypes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -58,21 +59,7 @@ public class TabListRelationshipTypes extends javax.swing.JPanel {
         ));
         jScrollPaneRelationshipTypes.setViewportView(jTableRelationshipTypes);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPaneRelationshipTypes, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPaneRelationshipTypes, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(223, Short.MAX_VALUE))
-        );
+        add(jScrollPaneRelationshipTypes, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
 
