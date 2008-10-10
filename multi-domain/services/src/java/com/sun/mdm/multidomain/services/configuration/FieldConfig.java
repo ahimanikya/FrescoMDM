@@ -33,6 +33,7 @@ import com.sun.mdm.index.util.Localizer;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.sun.mdm.index.edm.common.PullDownListItem;
 
 //Adding the import for select options if the FieldConfig type is "Menu List"
 import java.util.logging.Level;
