@@ -31,7 +31,7 @@ import net.java.hulp.i18n.LocalizationSupport;
  */
 public class Localizer extends LocalizationSupport {
     private static final String DEFAULT_PATTERN = "([A-Z][A-Z][A-Z]\\d\\d\\d)(:)(.*)";
-    private static final String DEFAULT_PREFIX = "MDM-MULTIDOMAIN-";
+    private static final String DEFAULT_PREFIX = "MDM-MD-";
     private static final String DEFAULT_BUNDLENAME = "messages";
     private static Localizer instance; 
     
