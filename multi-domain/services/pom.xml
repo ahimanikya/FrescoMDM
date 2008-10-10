@@ -71,7 +71,14 @@
     	<groupId>mural</groupId>
       <artifactId>index-core</artifactId>
       <version>${mural.currentVersion}</version>
-   	</dependency>    
+      <scope>compile</scope>
+   	</dependency> 
+    <dependency>
+    	<groupId>mural</groupId>
+      <artifactId>index-services-jar</artifactId>
+      <version>${mural.currentVersion}</version>
+      <scope>compile</scope>
+   	</dependency>   	 
     <dependency>
     	<groupId>mural</groupId>
       <artifactId>multidomain-core</artifactId>
