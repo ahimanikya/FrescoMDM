@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 
 import com.sun.mdm.multidomain.relationship.Attribute;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.Domain;
 import com.sun.mdm.multidomain.services.control.MetaDataManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
@@ -45,12 +46,12 @@ public class MetaDataManagerTest extends TestCase {
     
     public void test001() {
     	try {
-    		List<String> domains = metaDataManager.getDomains();
+    		List<Domain> domains = metaDataManager.getDomains();
     		
-    		assertTrue(domains.size() == 3);
-    		assertTrue("Person".equals(domains.get(0)));
-    		assertTrue("Company".equals(domains.get(1)));
-    		assertTrue("Product".equals(domains.get(2)));    				
+    		assertTrue(domains.size() == 10);
+    		assertTrue("Person".equals(domains.get(0).getName()));
+    		assertTrue("Company".equals(domains.get(1).getName()));
+    		assertTrue("Product".equals(domains.get(2).getName()));    				
     	} catch(ServiceException sx) {
     		fail(sx.getMessage());
     	}
@@ -59,23 +60,20 @@ public class MetaDataManagerTest extends TestCase {
     
     public void test002() {
     	try {
-    	    List<RelationshipType> types = metaDataManager.getRelationshipTypes("Person", "Product");
-        	//rt1: Person -> Company
-    	    //rt2: Company -> Product
-    	    //rt3: Person -> Product
-    		
-    		assertTrue(types.size() == 1);
-    		assertTrue("designon".equals(types.get(0).getName()));
-    		assertTrue("a relationship of a Person designs a Product".equals(types.get(0).getDisplayName()));
-    		assertTrue("3".equals(types.get(0).getId()));
+    	    List<RelationshipType> types = metaDataManager.getRelationshipTypes("Person");
+       	
+            assertTrue(types.size() == 2);
+            assertTrue("designon".equals(types.get(1).getName()));
+            assertTrue("a relationship of a Person designs a Product".equals(types.get(1).getDisplayName()));
+            assertTrue("3".equals(types.get(1).getId()));
     				
-    		List<Attribute> attributes = types.get(0).getAttributes();
-    		assertTrue(attributes.size() == 1);
-    		assertTrue("location".equals(attributes.get(0).getName()));
-    		assertTrue("Monrovia".equals(attributes.get(0).getDefaultValue()));
+            List<Attribute> attributes = types.get(1).getAttributes();
+            assertTrue(attributes.size() == 1);
+            assertTrue("location".equals(attributes.get(0).getName()));
+            assertTrue("Monrovia".equals(attributes.get(0).getDefaultValue()));
     				    		
     	} catch(ServiceException sx) {
-    		fail(sx.getMessage());
+            fail(sx.getMessage());
     	}
     }
 

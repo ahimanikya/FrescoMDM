@@ -60,7 +60,7 @@ public class RelationshipManagerTest extends TestCase {
 	    //rt3: Person -> Product    
     	try {
     		List<RelationshipType> types = relationshipManager.getRelationshipTypes("Person", "Product");
-    		assertTrue(types.size() == 1);
+    		assertTrue(types.size() == 2);
     		assertTrue("Person".equals(types.get(0).getSourceDomain()));
     		assertTrue("Product".equals(types.get(0).getTargetDomain()));
 
