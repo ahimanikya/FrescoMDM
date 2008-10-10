@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Broadcasting Master Index Updates to External Systems</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Broadcasting Master Index Updates to External Systems provides information and instructions for making Master Index Studio updates available to the external systems that share data with the master index application.">
+   <meta name="date" content="2008-09-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css"></head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Broadcasting Master Index Updates to External Systems</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: September 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_mi-om-client_p.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_mi-om-test_t.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Broadcasting Master Index Updates to External Systems</a></p>
+<p class="toc level2"><a href="conf_relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="cnfg_mi-om-overview_c.html">About Master Index Studio Broadcasts</a></p>
+<p class="toc level2"><a href="cnfg_mi-om-topic_t.html">Creating a JMS Connection Factory</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-topic_t.html#ghfqb">To Create a JMS Connection Factory</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_mi-om-client_p.html">Defining the Client Connection to the JMS Topic Using BPEL</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-bpelproject_t">Creating the BPEL Project for the Master Index Topic</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#bpel">To Create the BPEL Project</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#wsdl1">To Create the JMS Web Service Definition</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#wsdl2">To Create the File Web Service Definition</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-process_t">Creating a BPEL Process to Access the Master Index Topic</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgbv">To Create the BPEL Process</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgcc">To Create Partner Links</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgbw">To Create a Receive Activity</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgco">To Create an Invoke Activity</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgbi">To Create an Assign Activity</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Creating a Composite Application for Master Index Broadcasts</a></p>
+<p class="toc level3"><a href="#createca">To Create the Composite Application</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="cnfg_mi-om-test_t.html">Testing the Master Index Broadcast Configuration</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-test_t.html#gentextid-426">To Test the Master Index Broadcast Configuration</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-test_t.html#cnfg_mi-om-sample_r">Sample Master Index Broadcast Message</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="cnfg_mi-om-casa_t"></a>
+
+<h2>Creating a Composite Application for Master Index Broadcasts</h2>
+<p>The Composite Application project creates a service assembly, which can then be deployed
+to the application server. This project assembles the BPEL process and web service
+definitions you created earlier into an application.</p>
+
+<a name="createca"></a><h4>To Create the Composite Application</h4><ol>
+<li><b>Complete the procedures described in <a href="cnfg_mi-om-client_p.html#cnfg_mi-om-process_t">Creating a BPEL Process to Access the Master Index Topic</a></b></li>
+<li><b>Right-click in the NetBeans Projects window, point to New, and then select Project.</b><p>The New Project Wizard appears.</p></li>
+<li><b>Under Categories, select ESB.</b></li>
+<li><b>Under Project, select Composite Application.</b></li>
+<li><b>Enter a name and location for the project.</b></li>
+<li><b>Click Finish. </b></li>
+<li><b>Drag the BPEL project from the Projects window and drop it in the
+JBI Modules section of the CASA Editor canvas.</b></li>
+<li><b>In the CASA Editor toolbar, click Build Project.</b></li>
+<li><b>After the project builds successfully, click Deploy in the CASA Editor toolbar.</b></li>
+<li><b>Continue to <a href="cnfg_mi-om-test_t.html">Testing the Master Index Broadcast Configuration</a>.</b></li></ol>
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_mi-om-client_p.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_mi-om-test_t.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

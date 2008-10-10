@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Broadcasting Master Index Updates to External Systems</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Broadcasting Master Index Updates to External Systems provides information and instructions for making Master Index Studio updates available to the external systems that share data with the master index application.">
+   <meta name="date" content="2008-09-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+   </head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Broadcasting Master Index Updates to External Systems</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: September 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_mi-om-casa_t.html">Previous</a></span>
+         <span class="tocpageright"></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Broadcasting Master Index Updates to External Systems</a></p>
+<p class="toc level2"><a href="conf_relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="cnfg_mi-om-overview_c.html">About Master Index Studio Broadcasts</a></p>
+<p class="toc level2"><a href="cnfg_mi-om-topic_t.html">Creating a JMS Connection Factory</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-topic_t.html#ghfqb">To Create a JMS Connection Factory</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_mi-om-client_p.html">Defining the Client Connection to the JMS Topic Using BPEL</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-bpelproject_t">Creating the BPEL Project for the Master Index Topic</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#bpel">To Create the BPEL Project</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#wsdl1">To Create the JMS Web Service Definition</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#wsdl2">To Create the File Web Service Definition</a></p>
+<p class="toc level3 tocsp"><a href="cnfg_mi-om-client_p.html#cnfg_mi-om-process_t">Creating a BPEL Process to Access the Master Index Topic</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgbv">To Create the BPEL Process</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgcc">To Create Partner Links</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgbw">To Create a Receive Activity</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgco">To Create an Invoke Activity</a></p>
+<p class="toc level4"><a href="cnfg_mi-om-client_p.html#ghgbi">To Create an Assign Activity</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_mi-om-casa_t.html">Creating a Composite Application for Master Index Broadcasts</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-casa_t.html#createca">To Create the Composite Application</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Testing the Master Index Broadcast Configuration</a></p>
+<p class="toc level3"><a href="#gentextid-426">To Test the Master Index Broadcast Configuration</a></p>
+<p class="toc level3"><a href="#cnfg_mi-om-sample_r">Sample Master Index Broadcast Message</a></p>
+</div>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="cnfg_mi-om-test_t"></a>
+
+<h2>Testing the Master Index Broadcast Configuration</h2>
+<p>Once you have completed all the steps for configuring the master index application
+to broadcast updates, you can test the system to be sure it
+is working. You can view a sample broadcast message in <a href="#cnfg_mi-om-sample_r">Sample Master Index Broadcast Message</a></p>
+
+<a name="gentextid-426"></a><h4>To Test the Master Index Broadcast Configuration</h4><h6>Before You Begin</h6><p>Make sure the master index project is deployed and the database is
+running.</p><ol>
+<li><b>Complete the procedure described in <a href="cnfg_mi-om-casa_t.html">Creating a Composite Application for Master Index Broadcasts</a>.</b></li>
+<li><b>Launch the MIDM.</b>
+<hr><p><b>Tip - </b>The URL for the MIDM is <tt>http://localhost:<i>port</i>/<i>ApplicationName</i>MIDM</tt>, where <i>port</i> is the HTTP port
+number of the application server (8080 by default) and <i>ApplicationName</i> is the
+name of the master index application. The application name and &ldquo;MIDM&rdquo; are case
+sensitive.</p>
+<hr>
+</li>
+<li><b>From the Source Records Add page, create a new record in the
+master index database.</b></li>
+<li><b>On your computer, navigate to the location you specified for the File Binding
+Component web service definition in <a href="cnfg_mi-om-client_p.html#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a>.</b></li>
+<li><b>Open the XML file and view the contents. </b></li></ol>
+
+<div class="indent"><a name="cnfg_mi-om-sample_r"></a><h3>Sample Master Index Broadcast Message</h3>
+<p>The outbound messages generated by updates to the master index application include several
+transactional fields, system and local ID information, and the record's SBR. The SBR
+provides external systems with the single best data for a particular entity along
+with the EUID. Transactional fields include information such as the update function, system,
+user, and date; create function and user; and status. The local ID and
+system information provides a list of system and local ID pairs that are
+associated with the record, allowing you to easily identify which records in the
+external systems are affected by the update.</p><p>A unique schema definition file (XSD file) is generated for each master index
+application based on the object structure defined for that application. You can view
+the XSD file at <tt></tt><i>NetBeansProjects</i><tt>/</tt><i>ProjectName</i><tt>/files-generated/outbound.xsd</tt>.</p><p>Below is a sample broadcast message for EUID 0000006501, which is associated with
+three different system records. The master index application is based on the Person
+template.</p><pre>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;OutMsg Event="UPD" ID="00000000000000004010">
+  &lt;SBR EUID="0000006501"  Status="active" CreateFunction="Add" ChildType="Customer"
+   CreateSystem="System" UpdateFunction="Update" RevisionNumber="3" CreateUser="mdm"
+   UpdateSystem="System" UpdateDate="" CreateDate="" UpdateUser="mdm">
+    &lt;SystemObject SystemCode="ORACLE" LID="2372385720" Status="active">&lt;/SystemObject>
+    &lt;SystemObject SystemCode="ORACLE" LID="2837482562" Status="active">&lt;/SystemObject>
+    &lt;SystemObject SystemCode="SAP" LID="8327423434" Status="active">&lt;/SystemObject>
+    &lt;Customer PersonCatCode="MEMBER" FirstName="ELIZABETH" FirstName_Std="ELIZABETH"
+     FirstName_Phon="E421" MiddleName="ANN" LastName="WARNER" LastName_Std="WARNER"
+     LastName_Phon="WARNAR" Suffix="" Title="DR" SSN="555999222"
+     DOB="04/14/1964 00:00:00"Death="" Gender="F" MStatus="M" Race="C" Ethnic="31"
+     Religion="AG" Language="EN" SpouseName="CRAIG" MotherName="JEN" MotherMN="SMITH"
+     FatherName="MARK" Maiden="MILLER" PobCity="MILFORD" PobState="ONTARIO"
+     PobCountry="CAN" VIPFlag="NONE" VetStatus="NONE" Status=""
+     DriverLicense="CT12941284" DriverLicenseSt="CT" Dod="" DeathCertificate=""
+     Nationality="CAN" Citizenship="CAN">
+      &lt;Alias FirstName="LIZ" MiddleName="" LastName="MILLER">&lt;/Alias>
+      &lt;Address AddressType="H" AddressLine1="1330 BLOSSOM ST."
+       AddressLine1_HouseNo="1330"AddressLine1_StDir="" AddressLine1_StName="BLOSSOM"
+       AddressLine1_StPhon="BLASAN" AddressLine1_StType="St" AddressLine2=""
+       City="SHEFFIELD" StateCode="CT" PostalCode="09876" PostalCodeExt=""
+       County="CAPE BURR" CountryCode="USA">&lt;/Address>
+      &lt;Phone PhoneType="CC" Phone="9894774477" PhoneExt="">&lt;/Phone>
+    &lt;/Customer>
+  &lt;/SBR>
+&lt;/OutMsg></pre></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_mi-om-casa_t.html">Previous</a>
+            </td>
+            <td class="pageright">
+
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>

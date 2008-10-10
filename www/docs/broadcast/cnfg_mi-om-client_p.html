@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Broadcasting Master Index Updates to External Systems</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Broadcasting Master Index Updates to External Systems provides information and instructions for making Master Index Studio updates available to the external systems that share data with the master index application.">
+   <meta name="date" content="2008-09-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css"></head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Broadcasting Master Index Updates to External Systems</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: September 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="cnfg_mi-om-topic_t.html">Previous</a></span>
+         <span class="tocpageright"><a href="cnfg_mi-om-casa_t.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Broadcasting Master Index Updates to External Systems</a></p>
+<p class="toc level2"><a href="conf_relatedtopics.html">Related Topics</a></p>
+<p class="toc level2"><a href="cnfg_mi-om-overview_c.html">About Master Index Studio Broadcasts</a></p>
+<p class="toc level2"><a href="cnfg_mi-om-topic_t.html">Creating a JMS Connection Factory</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-topic_t.html#ghfqb">To Create a JMS Connection Factory</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Defining the Client Connection to the JMS Topic Using BPEL</a></p>
+<p class="toc level3"><a href="#cnfg_mi-om-bpelproject_t">Creating the BPEL Project for the Master Index Topic</a></p>
+<p class="toc level4"><a href="#bpel">To Create the BPEL Project</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a></p>
+<p class="toc level4"><a href="#wsdl1">To Create the JMS Web Service Definition</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a></p>
+<p class="toc level4"><a href="#wsdl2">To Create the File Web Service Definition</a></p>
+<p class="toc level3 tocsp"><a href="#cnfg_mi-om-process_t">Creating a BPEL Process to Access the Master Index Topic</a></p>
+<p class="toc level4"><a href="#ghgbv">To Create the BPEL Process</a></p>
+<p class="toc level4"><a href="#ghgcc">To Create Partner Links</a></p>
+<p class="toc level4"><a href="#ghgbw">To Create a Receive Activity</a></p>
+<p class="toc level4"><a href="#ghgco">To Create an Invoke Activity</a></p>
+<p class="toc level4"><a href="#ghgbi">To Create an Assign Activity</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="cnfg_mi-om-casa_t.html">Creating a Composite Application for Master Index Broadcasts</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-casa_t.html#createca">To Create the Composite Application</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_mi-om-test_t.html">Testing the Master Index Broadcast Configuration</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-test_t.html#gentextid-426">To Test the Master Index Broadcast Configuration</a></p>
+<p class="toc level3"><a href="cnfg_mi-om-test_t.html#cnfg_mi-om-sample_r">Sample Master Index Broadcast Message</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="cnfg_mi-om-client_p"></a>
+
+<h2>Defining the Client Connection to the JMS Topic Using BPEL</h2>
+<p>You can use a BPEL process or other JMS client (such as
+a Java client, JMS Binding Component, or message driven bean) to subscribe to
+the messages that the master index application sends to the JMS Topic. The
+BPEL process or JMS client can then forward the messages to the appropriate
+external systems. The instructions provided here describe how to send the messages to
+a flat file in XML format using a BPEL process. In a production
+environment, the File binding type would likely be replaced by HTTP or SOAP.</p>
+<ul><li><p><a href="#cnfg_mi-om-bpelproject_t">Creating the BPEL Project for the Master Index Topic</a></p></li>
+<li><p><a href="#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a></p></li>
+<li><p><a href="#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a></p></li>
+<li><p><a href="#cnfg_mi-om-process_t">Creating a BPEL Process to Access the Master Index Topic</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_mi-om-bpelproject_t"></a><h3>Creating the BPEL Project for the Master Index Topic</h3>
+<p>The BPEL project contains the BPEL process and web service definitions that define
+how to process the messages published by the master index Topic.</p>
+
+<a name="bpel"></a><h5>To Create the BPEL Project</h5>
+<ol>
+<li><b>Complete the procedure described in <a href="cnfg_mi-om-topic_t.html">Creating a JMS Connection Factory</a>.</b></li>
+<li><b>In the NetBeans toolbar, click New Project.</b><p>The New Project Wizard appears.</p></li>
+<li><b>In the Categories box, select SOA. </b></li>
+<li><b>In the Projects box, select BPEL Module, and then click Next.</b></li>
+<li><b>Enter the name and location of the new project, and then click Finish.</b></li>
+<li><b>Continue to <a href="#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-om-jmswsdl_t"></a><h3>Creating a Web Service Definition for the JMS Binding Component</h3>
+<p>A JMS BC provides the connection between the JMS Topic and the
+BPEL process. The web service definition configures this connection.</p>
+
+<a name="wsdl1"></a><h5>To Create the JMS Web Service Definition</h5>
+<ol>
+<li><b>Complete the procedure described in <a href="#cnfg_mi-om-bpelproject_t">Creating the BPEL Project for the Master Index Topic</a>.</b></li>
+<li><b>Right-click the new BPEL project, point to New, and then select WSDL Document.</b><p>The New WSDL Document Wizard appears.</p></li>
+<li><b>Enter a file name and folder name for the WSDL file, and
+then click Next.</b></li>
+<li><b>Enter names in the Port Type Name field and the Operation Name field
+(or accept the default names).</b></li>
+<li><b>In the Operation Type field, select One-Way Operation.</b></li>
+<li><b>Click Next.</b></li>
+<li><b>Enter names in the Binding Name, Service Name, and Port Name fields (or
+accept the default names).</b></li>
+<li><b> In the Binding Type field, select JMS.</b></li>
+<li><b>Click Finish.</b><p>The contents of the WSDL file appears in the editor.</p></li>
+<li><b>To configure the operation, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the WSDL editor, expand Bindings until you see jms:operation under the binding
+type you created.</b></li>
+<li><b>Click jms:operation.</b></li>
+<li><b>In the Properties panel on the right side, modify the following properties:</b><dl><dt>destination</dt>
+<dd><p>Enter a name for the topic in the form <i>ApplicationName</i>Topic, where <i>ApplicationName</i> is the name of the master index application.</p></dd>
+<dt>destinationType</dt>
+<dd><p>Select Topic.</p></dd>
+</dl>
+</li></ol></li>
+<li><b>To configure the input message to the topic, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>Expand input1 under the Binding you created.</b></li>
+<li><b>Click jms:message.</b></li>
+<li><b>In the Properties panel on the right side, change the textPart field to
+<tt><b>part1</b></tt>.</b></li></ol></li>
+<li><b>Save and close the web service definition.</b></li>
+<li><b>Continue to <a href="#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-om-filewsdl_t"></a><h3>Creating a Web Service Definition for the File Binding Component</h3>
+<p>For testing purposes, you can publish the master index broadcasts to a file
+using the File BC as described below. In a production environment, it is
+more likely that a SOAP or HTTP binding type would be used.
+</p>
+
+<a name="wsdl2"></a><h5>To Create the File Web Service Definition</h5>
+<ol>
+<li><b>Complete the procedure described in <a href="#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a>.</b></li>
+<li><b>Right-click the new BPEL project, point to New, and then select WSDL Document.</b><p>The New WSDL Document Wizard appears.</p></li>
+<li><b>Enter a file name and folder for the WSDL file, and then
+click Next.</b></li>
+<li><b>Enter names in the Port Type Name field and the Operation Name field
+(or accept the default names).</b></li>
+<li><b>In the Operation Type field, select One-Way Operation.</b></li>
+<li><b>Click Next.</b></li>
+<li><b>Enter names in the Binding Name, Service Name, and Port Name fields (or
+accept the default names).</b></li>
+<li><b> In the Binding Type field, select FILE.</b></li>
+<li><b>Click Finish.</b><p>The contents of the WSDL file appears in the editor.</p></li>
+<li><b>To configure the output file, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the WSDL editor, expand Bindings until you see file:message under the binding
+type you created.</b></li>
+<li><b>Click file:message.</b></li>
+<li><b>In the Properties panel on the right side, change the value of the
+fileName property.</b></li></ol></li>
+<li><b>To configure the output file location, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>Expand Services until you see file:address.</b></li>
+<li><b>Click file:address.</b></li>
+<li><b>In the Properties panel on the right side, change the value of the
+fileDirectory property.</b></li></ol></li>
+<li><b>Save and close the web service definition.</b></li>
+<li><b>Continue to <a href="#cnfg_mi-om-process_t">Creating a BPEL Process to Access the Master Index Topic</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_mi-om-process_t"></a><h3>Creating a BPEL Process to Access the Master Index Topic</h3>
+<p>The BPEL process defines the flow of data from the JMS Topic
+to the external systems that share data with the master index application using
+the web service definitions you created earlier. The BPEL process created below uses a
+File binding type. Your process might differ from this based on the binding
+type you use.</p><p>Perform the following steps to create and configure the BPEL process:</p>
+<ul><li><p><a href="#ghgbv">To Create the BPEL Process</a></p></li>
+<li><p><a href="#ghgcc">To Create Partner Links</a></p></li>
+<li><p><a href="#ghgbw">To Create a Receive Activity</a></p></li>
+<li><p><a href="#ghgco">To Create an Invoke Activity</a></p></li>
+<li><p><a href="#ghgbi">To Create an Assign Activity</a></p></li></ul>
+
+
+<a name="ghgbv"></a><h5>To Create the BPEL Process</h5>
+<ol>
+<li><b>Complete the procedure described in <a href="#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a>.</b></li>
+<li><b>In the Projects window, right-click the BPEL project, point to New, and then
+select BPEL Process.</b><p>The New BPEL Process Wizard appears.</p></li>
+<li><b>Enter a file name and location for the BPEL Process, and then click
+Finish. </b></li>
+<li><b>Continue to <a href="#ghgcc">To Create Partner Links</a>.</b></li></ol>
+
+<a name="ghgcc"></a><h5>To Create Partner Links</h5>
+<ol>
+<li><b>Create a new Partner Link for the JMS web service definition by doing
+the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the BPEL Designer Palette, click Partner Link and drag it to the
+drop point on the left.</b><p>The Create New Partner Link window appears.</p></li>
+<li><b>Fill in the information for the Partner Link. </b><ul>
+<li><b>For the WSDL file, select the JMS Binding Component WSDL file you created
+in <a href="#cnfg_mi-om-jmswsdl_t">Creating a Web Service Definition for the JMS Binding Component</a>.</b></li>
+<li><b>Select the option button next to Use Existing Partner Link Type.</b></li>
+<li><b>Accept the default values for the Partner Link Type, My Role, and Partner
+Role fields.</b></li></ul></li>
+<li><b>Click OK.</b></li></ol></li>
+<li><b>Create a new Partner Link for the File web service definition by doing
+the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the BPEL Designer Palette, click Partner Link and drag it to the
+drop point on the right.</b><p>The Create New Partner Link window appears.</p></li>
+<li><b>Fill in the information for the Partner Link. </b><ul>
+<li><b>For the WSDL file, select the File Binding Component WSDL file you created
+in <a href="#cnfg_mi-om-filewsdl_t">Creating a Web Service Definition for the File Binding Component</a>.</b></li>
+<li><b>Select the option button next to Use Existing Partner Link Type.</b></li>
+<li><b>Accept the default value for the Partner Link Type.</b></li>
+<li><b>Click Swap Roles. The My Roles field should contain five dashes and the
+Partner Role field should be populated.</b></li></ul></li>
+<li><b>Click OK.</b></li></ol></li>
+<li><b>Continue to <a href="#ghgbw">To Create a Receive Activity</a>.</b></li></ol>
+
+<a name="ghgbw"></a><h5>To Create a Receive Activity</h5>
+<ol>
+<li><b>From the BPEL Designer Palette, drag a Receive activity to the drop point.</b></li>
+<li><b>Click the Edit icon above the new Receive activity.</b></li>
+<li><b>Enter a name for the activity.</b></li>
+<li><b>In the Partner Link field, select the JMS Partner Link you created earlier.</b></li>
+<li><b>In the Operation field, select the JMS subscriber operation.</b></li>
+<li><b>Next to the Input Variable field, select Create.</b><p>The New Input Variable dialog box appears.</p></li>
+<li><b>Enter a name for the variable and select the current BPEL Process as
+the Scope.</b></li>
+<li><b>Click OK on both dialog boxes.</b></li>
+<li><b>Continue to <a href="#ghgco">To Create an Invoke Activity</a>.</b></li></ol>
+
+<a name="ghgco"></a><h5>To Create an Invoke Activity</h5>
+<ol>
+<li><b>From the BPEL Designer Palette, drag an Invoke activity to the drop point
+beneath the Receive activity just created.</b></li>
+<li><b>Click the Edit icon above the new Invoke activity.</b></li>
+<li><b>Enter a name for the activity.</b></li>
+<li><b>In the Partner Link field, select the File Partner Link you created earlier.</b></li>
+<li><b>In the Operation field, select the File operation.</b></li>
+<li><b>Next to the Input Variable field, select Create.</b><p>The New Input Variable dialog box appears.</p></li>
+<li><b>Enter a name for the variable and select the current BPEL Process as
+the Scope.</b></li>
+<li><b>Click OK on both dialog boxes.</b></li>
+<li><b>Continue to <a href="#ghgbi">To Create an Assign Activity</a>.</b></li></ol>
+
+<a name="ghgbi"></a><h5>To Create an Assign Activity</h5>
+<ol>
+<li><b>From the BPEL Designer Palette, drag an Assign activity to the drop point
+between the Receive and Invoke activities.</b>
+<hr><p><b>Tip - </b>The Assign activity is listed under Basic Activities in the Palette.</p>
+<hr>
+</li>
+<li><b>Double-click the Assign activity.</b><p>The BPEL Mapper appears.</p></li>
+<li><b>Map the input value from the Receive activity's variable to the Invoke activity's
+variable.</b></li>
+<li><b>Save and close the BPEL Process.</b></li>
+<li><b>Continue to <a href="cnfg_mi-om-casa_t.html">Creating a Composite Application for Master Index Broadcasts</a>.</b></li></ol></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="cnfg_mi-om-topic_t.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="cnfg_mi-om-casa_t.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>
