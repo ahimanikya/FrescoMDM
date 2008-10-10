@@ -22,7 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.multidomain.services.configuration.Domain;
+import com.sun.mdm.multidomain.objects.Domain;
 
 import java.util.ArrayList;
 

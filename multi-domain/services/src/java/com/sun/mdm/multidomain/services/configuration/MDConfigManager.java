@@ -22,6 +22,7 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.objects.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
