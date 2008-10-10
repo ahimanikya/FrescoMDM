@@ -65,6 +65,10 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(value=TransactionAttributeType.REQUIRED)
 @DeclareRoles({"MultiDomain.Admin","MultiDomain.User"})
+/*
+@EJB will be decided.
+@Resources will be decided.
+*/
 public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDomainServiceLocal {
 
     private SessionContext sessionContext;

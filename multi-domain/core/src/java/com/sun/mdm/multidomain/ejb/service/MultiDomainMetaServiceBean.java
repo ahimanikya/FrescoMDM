@@ -53,6 +53,10 @@ import com.sun.mdm.multidomain.relationship.RelationshipType;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(value=TransactionAttributeType.REQUIRED)
 @DeclareRoles({"MultiDomain.Admin","MultiDomain.User"})
+/*
+@EJB will be decided.
+@Resources will be decided.
+*/
 public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote, MultiDomainMetaServiceLocal {
     
     private SessionContext sessionContext;

@@ -41,7 +41,7 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 @WebService()
 @Stateless()
 public class MultiDomainWebService {
-    @EJB
+    /* @EJB */
     private MultiDomainServiceLocal multiDomainServiceLocal;
 
     /**
