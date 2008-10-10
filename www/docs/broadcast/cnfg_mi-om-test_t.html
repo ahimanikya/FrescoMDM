@@ -92,9 +92,13 @@ with the EUID. Transactional fields include information such as the update funct
 user, and date; create function and user; and status. The local ID and
 system information provides a list of system and local ID pairs that are
 associated with the record, allowing you to easily identify which records in the
-external systems are affected by the update.</p><p>A unique schema definition file (XSD file) is generated for each master index
+external systems are affected by the update.</p>
+<
+p>A unique schema definition file (XSD file) is generated for each master index
 application based on the object structure defined for that application. You can view
-the XSD file at <tt></tt><i>NetBeansProjects</i><tt>/</tt><i>ProjectName</i><tt>/files-generated/outbound.xsd</tt>.</p><p>Below is a sample broadcast message for EUID 0000006501, which is associated with
+the XSD file at <tt><i>NetBeansProjects</i>/<i>ProjectName</i>/files-generated/outbound.xsd</tt>.</p>
+
+<p>Below is a sample broadcast message for EUID 0000006501, which is associated with
 three different system records. The master index application is based on the Person
 template.</p><pre>&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;OutMsg Event="UPD" ID="00000000000000004010">
