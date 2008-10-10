@@ -363,5 +363,30 @@ public class RelationshipType {
      */
     public void setAttribute(Attribute attribute) {
         attributes.add(attribute);
-    }        
+    }    
+    
+    /**
+     * Copy RelationshipType.
+     * @param type RelationshipType.
+     */
+    public void copy(RelationshipType type) {
+        this.name = type.getName();
+        this.displayName = type.getDisplayName();
+        this.sourceDomain = type.getSourceDomain();
+        this.targetDomain = type.getTargetDomain();
+        this.sourceRoleName = type.getSourceRoleName();
+        this.targetRoleName = type.getTargetRoleName();    
+        this.mode = type.getMode();
+        this.direction = type.getDirection();    
+        this.effectiveFromRequired = type.getEffectiveFromRequired();
+        this.effectiveToRequired = type.effectiveToRequired;
+        this.purgeDateRequired = type.getPurgeDateRequired();
+        this.effectiveFrom = type.getEffectiveFrom();
+        this.effectiveTo = type.getEffectiveTo();
+        this.purgeDate = type.getPurgeDate();             
+        this.attributes.clear();        
+        for(Attribute attribute : type.getAttributes()) {            
+            attributes.add(attribute.clone());
+        }
+    }    
 }

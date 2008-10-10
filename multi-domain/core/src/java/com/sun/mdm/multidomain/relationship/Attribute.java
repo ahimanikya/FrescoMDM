@@ -29,7 +29,7 @@ package com.sun.mdm.multidomain.relationship;
  */
 public class Attribute {
              
-	private String attributeID;
+    private String id;
     private String name;
     private String columnName;
     private String displayName;
@@ -46,13 +46,32 @@ public class Attribute {
     
     /**
      * Create an instance of relationship Attribute class.
+     * @param id Attribute Id.
+     * @param name Attribute name.
+     * @param type Attribute type.
+     * @param value Attribute value.
+     */
+    public Attribute(String id, String name, AttributeType type, String value) {
+    	this.id = id;
+    	this.name = name;
+    	this.displayName = name;
+    	this.columnName = name;
+    	this.searchable = true;
+    	this.isRequired = true;
+    	this.type = type;
+    	this.defaultValue = value;
+    } 
+    
+    /**
+     * Create an instance of relationship Attribute class.
+     * @param id Attribute Id.
      * @param name Attribute name.
      * @param displayName Attribute displayname.
      * @param type Attribute type.
      * @param value Attribute value.
      */
-    public Attribute(String attributeID, String name, String displayName, AttributeType type, String value) {
-    	this.attributeID = attributeID;
+    public Attribute(String id, String name, String displayName, AttributeType type, String value) {
+    	this.id = id;
     	this.name = name;
     	this.displayName = displayName;
     	this.columnName = name;
@@ -63,19 +82,19 @@ public class Attribute {
     } 
 
     /**
-     * Get attributeID attribute.
-     * @return String attributeID attribute.
+     * Get Id attribute.
+     * @return String Id attribute.
      */
-    public String getAttributeID() {
-        return attributeID;
+    public String getId() {
+        return id;
     }
     
     /**
-     * Set name attribute.
-     * @param name Name attribute.
+     * Set Id attribute.
+     * @param id Id attribute.
      */
-    public void setAttributeID(String attributeID) {
-        this.attributeID = attributeID;;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -189,4 +208,20 @@ public class Attribute {
     public String getDefaultValue() {
         return defaultValue;
     }    
+    
+    /**
+     * Create and return a copy of this object.
+     * @return Attribute Copy of this object.
+     */
+    @Override
+    public Attribute clone() {
+        Attribute copy = new Attribute();
+        copy.setName(this.name);
+        copy.setColumnName(this.columnName);
+        copy.setDisplayName(this.displayName);
+        copy.setSearchable(this.searchable);
+        copy.setIsRequired(this.isRequired);
+        copy.setType(this.type);        
+        return copy;
+    }
 }
