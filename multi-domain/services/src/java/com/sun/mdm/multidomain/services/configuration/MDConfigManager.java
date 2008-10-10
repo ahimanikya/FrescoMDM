@@ -23,18 +23,33 @@ package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 public class MDConfigManager {
+
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.MDConfigManager");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
+    public static final String FIELD_DELIM = ".";
+    
 	private HashMap<Integer, ScreenObject> mScreens;		// each entry contains a ScreenObject
 	private HashMap<String, Relationship> mRelationships;	// each entry contains a Relationship
 	private HashMap<String, Domain> mDomains;		// each entry contains a Domain
 	private MDConfigManager mInstance;	// instance
 	private Integer mInitialScreenID;	// ID of the initial screen
 	private ObjectSensitivePlugIn mSecurityPlugIn;
+	
 	
 	public MDConfigManager() {
 	}
@@ -70,8 +85,14 @@ public class MDConfigManager {
 	    return mDomains;
 	}
 
-	public ScreenObject getScreen(int screenID) {  //  returns a screen with the matching ID
-	    return null;
+	public ScreenObject getScreen(Integer screenID) throws Exception {  //  returns a screen with the matching ID
+        ScreenObject scrObj = (ScreenObject) mScreens.get(screenID);
+        if (scrObj == null) {
+            if (mScreens.containsKey(screenID) == false) {
+                throw new Exception(mLocalizer.t("SRC503: Screen ID not found: {0}", screenID));
+            }
+        } 
+        return scrObj;
 	}
 
 	public String getMasterControllerJndi() {  //  return the jndi name for the master controller

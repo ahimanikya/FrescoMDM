@@ -28,9 +28,6 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-//import com.sun.mdm.index.edm.services.configuration.FieldConfig;
-import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
-import com.sun.mdm.index.edm.services.configuration.SearchScreenOptions;
 import java.util.Iterator;
 import java.util.ArrayList;
 

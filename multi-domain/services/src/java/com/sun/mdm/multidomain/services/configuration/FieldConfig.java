@@ -28,9 +28,7 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.objects.ObjectField;
-import com.sun.mdm.index.edm.common.PullDownListItem;
 import com.sun.mdm.index.util.Localizer;
 import java.util.List;
 import java.util.ArrayList;
@@ -382,7 +380,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
         } else {
             fieldName = fullName.substring(index + 3, index2);
         }
-        return xobjRef + com.sun.mdm.index.edm.services.configuration.ConfigManager.FIELD_DELIM + fieldName;
+        return xobjRef + MDConfigManager.FIELD_DELIM + fieldName;
     }
 
     /**
@@ -433,11 +431,16 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      * @return the possible value count
      */
     public int getPossibleValueCount() {
+        // RESUME HERE
+        // This won't work because there will be different instances of ValidationService for different domains.
+        return 0;
+/*        
         if (getUserCode() != null) {
             return ValidationService.getInstance().getUserCodeValueCount(getUserCode());
         } else {
             return ValidationService.getInstance().getValueCount(this.valueList);
         }
+*/        
     }
 
     /**
@@ -452,13 +455,19 @@ public class FieldConfig implements java.io.Serializable, Comparable {
         String lookup = getUserCode();
         boolean isUserCode = false;
         if (lookup != null) {
-            ret =  ValidationService.getInstance().getUserCodeValueItems(lookup);
+            // RESUME HERE
+            // This won't work because there will be different instances of ValidationService for different domains.
+            ret = null;
+//            ret =  ValidationService.getInstance().getUserCodeValueItems(lookup);
             isUserCode = true;
            
         } else {
             // AJK - saved for error handling
             lookup = this.valueList;
-            ret =  ValidationService.getInstance().getValueItems(lookup);
+            // RESUME HERE
+            // This won't work because there will be different instances of ValidationService for different domains.
+            return null;          
+//            ret =  ValidationService.getInstance().getValueItems(lookup);
         } 
         /* AJK: If the above did not find the values try the usercode table
            In this case the user may have forgotten to define this as a 
@@ -466,7 +475,10 @@ public class FieldConfig implements java.io.Serializable, Comparable {
            see if it is there. */
         if (ret == null){
             lookup = this.valueList;
-            ret = ValidationService.getInstance().getUserCodeValueItems(lookup);
+            // RESUME HERE
+            // This won't work because there will be different instances of ValidationService for different domains.
+            return null;
+//            ret = ValidationService.getInstance().getUserCodeValueItems(lookup);
         }
         if (ret != null) {
             Arrays.sort((Object[]) ret);

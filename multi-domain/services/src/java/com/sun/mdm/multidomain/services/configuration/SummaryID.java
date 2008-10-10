@@ -22,7 +22,6 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-//import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -64,11 +63,30 @@ public class SummaryID {
 	}
 
 	void setDelimiters(ArrayList<String> delimiters) {	// sets the delimiter 
+	    if (delimiters.size() != mFieldConfigs.size()) {
+	        // testing--raymond tam
+	        // RESUME HERE
+	        // throw exception--they must be the same size
+	    }
 	    mDelimiters = delimiters;
 	}
 
+    // ID label has the following format:
+    // mPrefix + mFieldConfigs[i] + mDelimiters[i] + mSuffix
 	String getIDLabel() {			// retrieves the ID label
-	    return null;
+	    if (mDelimiters.size() != mFieldConfigs.size()) {
+	        // testing--raymond tam
+	        // RESUME HERE
+	        // throw exception--they must be the same size
+	    }
+	    StringBuffer str = new StringBuffer();
+	    str.append(mPrefix);
+	    for (int i = 0; i < mDelimiters.size(); i++ ) {
+	        str.append(mFieldConfigs.get(i));
+	        str.append(mDelimiters.get(i));
+	    }
+	    str.append(mSuffix);
+	    return str.toString();
 	}
 
 }

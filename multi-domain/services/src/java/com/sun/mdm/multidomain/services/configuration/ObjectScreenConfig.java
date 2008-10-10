@@ -22,8 +22,6 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
-
 import java.util.ArrayList;
 
 public abstract class ObjectScreenConfig {

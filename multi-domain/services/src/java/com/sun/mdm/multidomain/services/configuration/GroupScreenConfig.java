@@ -23,7 +23,6 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-//import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import java.util.ArrayList;
 
 public class GroupScreenConfig extends ObjectScreenConfig {
