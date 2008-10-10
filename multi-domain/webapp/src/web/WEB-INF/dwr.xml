@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC
+ "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+ "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+	
+<dwr>
+  <allow>
+    <create creator="spring" javascript="DomainHandler" scope="session">
+      <param name="beanName" value="DomainHandler"/>
+      <include method="getDomains" />
+    </create>
+
+    <create creator="spring" javascript="RelationshipTypeHandler" scope="session">
+      <param name="beanName" value="RelationshipTypeHandler"/>
+      <include method="getRelationshipTypes" />            
+      <include method="addRelationshipType" />            
+      <include method="deleteRelationshipType" />            			
+    </create>
+
+    <create creator="spring" javascript="RelationshipTypeHandler" scope="session">
+      <param name="beanName" value="RelationshipTypeHandler"/>
+      <include method="getRelationshipTypes" />            
+      <include method="addRelationshipType" />            
+      <include method="deleteRelationshipType" />            			
+    </create>
+
+    <create creator="spring" javascript="RelationshipHandler" scope="session">
+      <param name="beanName" value="RelationshipHandler"/>
+    </create>
+
+    <create creator="spring" javascript="HierarchyTypeHandler" scope="session">
+      <param name="beanName" value="HierarchyTypeHandler"/>
+    </create>
+
+    <create creator="spring" javascript="HierarchyHandler" scope="session">
+      <param name="beanName" value="HierarchyHandler"/>
+    </create>
+    
+    <convert converter="bean" match="com.sun.mdm.multidomain.relationship.Domain">
+        <param name="include" value="name" />
+    </convert>		
+
+    <convert converter="bean" match="com.sun.mdm.multidomain.relationship.RelationshipType">
+        <param name="include" value="name, displayName, sourceDomain, targetDomain" />
+    </convert>	
+		
+  </allow>
+</dwr>
