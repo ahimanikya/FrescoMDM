@@ -55,11 +55,15 @@ public class RelationshipManager implements ServiceManager {
 		
     private MultiDomainService multiDomainService;
     private MultiDomainMetaService multiDomainMetaService;
-	
+
+    // demo data
+    private ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
+
     /**
      * Create a instance of RelationshipManager.
      */
     public RelationshipManager () {   
+        init();
     }
 
     /**
@@ -71,27 +75,57 @@ public class RelationshipManager implements ServiceManager {
     public RelationshipManager (MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) 
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
-        this.multiDomainMetaService = multiDomainMetaService;        
+        this.multiDomainMetaService = multiDomainMetaService; 
+        init();
     }
     
     /**
      * Add a new relationshipType.
      * @param relationshType RelationshipType.
+     * @return String RelationshipType identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void addType(RelationshipType relationshipType) 
+    public String addType(RelationshipType relationshipType) 
         throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");    	
+        // demo data
+        for (RelationshipType rt:rts) {
+            if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
+                rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
+                rt.getName().equals(relationshipType.getName())) {  
+                throw new ServiceException("Invalid RelationshipType:"  + 
+                                           " source:" + relationshipType.getSourceDomain() +
+                                           " target:" + relationshipType.getTargetDomain() +
+                                           " name:" + relationshipType.getName());
+            }
+    	}       
+        relationshipType.setId(Long.toString(System.currentTimeMillis()));
+        rts.add(relationshipType);     
+        return relationshipType.getId();
     }
     
     /**
      * Update an existing relationshipType.
-     * @param relationshType RelationshipType.
+     * @param relationshipType RelationshipType.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(RelationshipType relationshType) 
+    public void updateType(RelationshipType relationshipType) 
         throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");                
+        // demo data
+        boolean updated = false;
+        for (RelationshipType rt:rts) {
+            if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
+                rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
+                rt.getName().equals(relationshipType.getName())) {                      
+                rt.copy(relationshipType);
+                updated = true;
+             }
+    	}
+        if (!updated) {
+        throw new ServiceException("Invalid RelationshipType:"  + 
+                                   " source:" + relationshipType.getSourceDomain() +
+                                   " target:" + relationshipType.getTargetDomain() +
+                                   " name:" + relationshipType.getName());
+        }
     }
     
     /**
@@ -101,7 +135,22 @@ public class RelationshipManager implements ServiceManager {
      */
     public void deleteType(RelationshipType relationshipType) 
         throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");                            	
+        // demo data
+        boolean deleted = false;
+        for (RelationshipType rt:rts) {
+            if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
+                rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
+                rt.getName().equals(relationshipType.getName())) {                      
+                rts.remove(rt);
+                deleted = true;
+             }
+    	}
+        if (!deleted) {
+        throw new ServiceException("Invalid RelationshipType:"  + 
+                                   " source:" + relationshipType.getSourceDomain() +
+                                   " target:" + relationshipType.getTargetDomain() +
+                                   " name:" + relationshipType.getName());
+        }        
     }
     
     /**
@@ -123,19 +172,6 @@ public class RelationshipManager implements ServiceManager {
      */
     public List<RelationshipType> getTypes(String domain) throws ServiceException {
     	// demo data
-    	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
-    	rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Company");    	
-    	RelationshipType rt2 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
-    	rt1.setSourceDomain("Company");
-    	rt1.setTargetDomain("Product");    	    	
-    	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
-    	rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Product");    	
-    	ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
-    	rts.add(rt1);
-    	rts.add(rt2);
-    	rts.add(rt3);    	
     	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
     	for (RelationshipType rt:rts) {
     		if (rt.getSourceDomain().equals(domain) || 
@@ -146,6 +182,25 @@ public class RelationshipManager implements ServiceManager {
     	return relationshipTypes;
     }
     
+    /**
+     * Get a list of RelationshipTypes by the given source domain and target domain.
+     * @param sourceDomain Source domain name.
+     * @param targetDomain Target domain name.
+     * @return List<RelationshipType> List of RelationshipType.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) throws ServiceException {
+    	// demo data
+    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
+    	for (RelationshipType rt:rts) {
+    		if (rt.getSourceDomain().equals(sourceDomain) && 
+                    rt.getTargetDomain().equals(targetDomain)) {
+    		    relationshipTypes.add(rt);	
+    		}
+    	}
+    	return relationshipTypes;
+    }
+        
     /**
      * Get a total count of relationship instances for the given relationship type.
      * @param relationshipType RelationshipType.
@@ -166,48 +221,6 @@ public class RelationshipManager implements ServiceManager {
     public List<Relationship> getRelationships(RelationshipType relationshipType) throws ServiceException {
     	List<Relationship> relationships = null;
     	return relationships;
-    }
-
-    /**
-     * Get a list of RelationshipType for the given source domain and targetDomain.
-     * @param sourceDomain Source domain name.
-     * @param targetDomain Target domain name.
-     * @return List<RelationshipType> List of RelationshipType.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) 
-        throws ServiceException {
-    	// demo data
-    	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
-    	rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Company");    	
-    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
-    	rt1.setAttribute(a1);
-    	
-    	RelationshipType rt2 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
-    	rt2.setSourceDomain("Company");
-    	rt2.setTargetDomain("Product");
-    	Attribute a2 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
-    	rt2.setAttribute(a2);
-    	
-    	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
-    	rt3.setSourceDomain("Person");
-    	rt3.setTargetDomain("Product");
-    	Attribute a3 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
-    	rt3.setAttribute(a3);
-    	
-    	ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
-    	rts.add(rt1);
-    	rts.add(rt2);
-    	rts.add(rt3);    	
-    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
-    	for (RelationshipType rt:rts) {
-    		if (rt.getSourceDomain().equals(sourceDomain) && 
-    			rt.getTargetDomain().equals(targetDomain)) {
-    			relationshipTypes.add(rt);	
-    		}
-    	}
-    	return relationshipTypes;
     }
     
     /**
@@ -394,4 +407,49 @@ public class RelationshipManager implements ServiceManager {
         throws ServiceException {        
         throw new ServiceException("Not Implemented Yet");                        
     }   
+    
+    private void init() {
+    	// demo data
+    	RelationshipType rt1 = new RelationshipType("worksfor", "a relationship of a Person works for a Company", "1");
+    	rt1.setSourceDomain("Person");
+    	rt1.setTargetDomain("Company");    	
+    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	rt1.setAttribute(a1);
+    	
+    	RelationshipType rt2 = new RelationshipType("employedby", "a relationship of a Person is employed by a Company", "1");
+    	rt2.setSourceDomain("Person");
+    	rt2.setTargetDomain("Company");    	
+    	Attribute a2 = new Attribute("hiredDate", "hired date", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	rt2.setAttribute(a2);
+
+    	RelationshipType rt3 = new RelationshipType("contractwith", "a relationship of a Person has a contact with a Company", "1");
+    	rt3.setSourceDomain("Person");
+    	rt3.setTargetDomain("Company");    	
+    	Attribute a3 = new Attribute("startDate", "date started", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	rt3.setAttribute(a3);
+        
+    	RelationshipType rt4 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
+    	rt4.setSourceDomain("Company");
+    	rt4.setTargetDomain("Product");
+    	Attribute a4 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	rt4.setAttribute(a4);
+    	
+    	RelationshipType rt5 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
+    	rt5.setSourceDomain("Person");
+    	rt5.setTargetDomain("Product");
+    	Attribute a5 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	rt5.setAttribute(a5);
+    	
+        RelationshipType rt6 = new RelationshipType("workon", "a relationship of a Person designs a Product", "3");
+    	rt6.setSourceDomain("Person");
+    	rt6.setTargetDomain("Product");
+    	Attribute a6 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	rt6.setAttribute(a6);    	       
+    	rts.add(rt1);
+    	rts.add(rt2);
+    	rts.add(rt3);    
+        rts.add(rt4);   
+        rts.add(rt5);   
+        rts.add(rt6);                           
+    }
 }

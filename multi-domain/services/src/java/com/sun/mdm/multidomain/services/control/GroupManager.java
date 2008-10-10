@@ -79,9 +79,10 @@ public class GroupManager implements ServiceManager {
     /**
      * Add a new group type.
      * @param groupType RelationshipType.
+     * @return String RelationshipType identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void addType(RelationshipType groupType) throws ServiceException {
+    public String addType(RelationshipType groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     

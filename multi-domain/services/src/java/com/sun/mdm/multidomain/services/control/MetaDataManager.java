@@ -43,6 +43,7 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Attribute;
 import com.sun.mdm.multidomain.relationship.AttributeType;
+import com.sun.mdm.multidomain.relationship.Domain;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
@@ -85,10 +86,20 @@ public class MetaDataManager {
      * @return ArrayList
      * @exception ServiceException
      */
-    public List<String> getDomains() throws ServiceException {
+    public List<Domain> getDomains() throws ServiceException {
     	// demo data
-    	String[] domains = new String[]{"Person", "Company", "Product"}; 
-        return Arrays.asList(domains);
+    	ArrayList<Domain> domains = new ArrayList<Domain>();
+        domains.add(new Domain("Person"));
+        domains.add(new Domain("Company"));
+        domains.add(new Domain("Product")); 
+        domains.add(new Domain("Employee")); 
+        domains.add(new Domain("Customer"));         
+        domains.add(new Domain("Doctor"));                 
+        domains.add(new Domain("Patient"));                         
+        domains.add(new Domain("Hospital"));  
+        domains.add(new Domain("Account"));          
+        domains.add(new Domain("Order"));                  
+        return domains;
     }
     
     /**
@@ -140,7 +151,10 @@ public class MetaDataManager {
     	rt2.setTargetDomain("Product");    	    	
     	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
     	rt3.setSourceDomain("Person");
-    	rt3.setTargetDomain("Product");    	
+    	rt3.setTargetDomain("Product");    
+        
+        Attribute attr = new Attribute("01", "location", new AttributeType(AttributeType.STRING), "Monrovia");
+        rt3.setAttribute(attr);
     	ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
     	rts.add(rt1);
     	rts.add(rt2);
@@ -154,47 +168,7 @@ public class MetaDataManager {
     	}
     	return relationshipTypes;
     }
-  
-    /**
-     * Get a list of RelationshipTypes by the given source domain and target domain.
-     * @param domain
-     * @return a list of RelationshipType.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
-     */
-    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) throws ServiceException {
-    	// demo data
-    	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
-    	rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Company");    	
-    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
-    	rt1.setAttribute(a1);
-    	
-    	RelationshipType rt2 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
-    	rt2.setSourceDomain("Company");
-    	rt2.setTargetDomain("Product");
-    	Attribute a2 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
-    	rt2.setAttribute(a2);
-    	
-    	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
-    	rt3.setSourceDomain("Person");
-    	rt3.setTargetDomain("Product");
-    	Attribute a3 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
-    	rt3.setAttribute(a3);
-    	
-    	ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
-    	rts.add(rt1);
-    	rts.add(rt2);
-    	rts.add(rt3);    	
-    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
-    	for (RelationshipType rt:rts) {
-    		if (rt.getSourceDomain().equals(sourceDomain) && 
-    			rt.getTargetDomain().equals(targetDomain)) {
-    			relationshipTypes.add(rt);	
-    		}
-    	}
-    	return relationshipTypes;
-    }
-    
+      
     /**
      * Get a list of source system definitions for the given domain.
      * @param domain

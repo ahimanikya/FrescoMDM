@@ -38,9 +38,10 @@ public interface ServiceManager {
     /**
      * Add a new relationship type.
      * @param relationshipType RelationshipType.
+     * @return String RelationshipType identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void addType(RelationshipType relationshipType) throws ServiceException;
+    public String addType(RelationshipType relationshipType) throws ServiceException;
   
     /**
      * Update an existing relationship type.

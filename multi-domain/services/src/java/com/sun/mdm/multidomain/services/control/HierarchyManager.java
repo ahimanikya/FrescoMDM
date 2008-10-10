@@ -80,9 +80,10 @@ public class HierarchyManager implements ServiceManager {
     /**
      * Add a new HierarchyType.
      * @param hierarchyType RelationshipType.
+     * @return String RelationshipType identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void addType(RelationshipType hierarchyType) throws ServiceException {
+    public String addType(RelationshipType hierarchyType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
