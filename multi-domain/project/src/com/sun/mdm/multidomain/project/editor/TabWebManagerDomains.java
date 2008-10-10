@@ -36,6 +36,9 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
     private ArrayList<RecordDetail> mRecordDetail;
     private  ArrayList<SearchDetail> mSearchResult;
     private ArrayList<SimpleSearchType> mSearchTypes;
+    private JComboBox mJComboSearchResult = new JComboBox();
+    private JComboBox mJComboRecordDetail = new JComboBox();
+           
 
     /** Creates new form TabWebManagerDomains */
     public TabWebManagerDomains(EditorMainApp editorMainApp, DomainsForWebManager domains) {
@@ -44,30 +47,6 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         initComponents();
         createDomain(0);
         
-        /**
-        mTableSearchType.getColumnModel().addColumnModelListener(new TableColumnModelListener() {
-            public void columnSelectionChanged(ListSelectionEvent e) {
-                enableSave();
-            }
-            public void columnAdded(TableColumnModelEvent e) {
-                System.out.println("Added");
-            }
-
-            public void columnMarginChanged(ChangeEvent e) {
-                System.out.println("Margin");
-            }
-
-            public void columnMoved(TableColumnModelEvent e) {
-                System.out.println("Moved");
-            }
-
-            public void columnRemoved(TableColumnModelEvent e) {
-                System.out.println("Removed");
-            }
-
-            
-        });
-         */ 
     }
 
     private void createDomain(int domainIdx) {
@@ -86,11 +65,10 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             mSearchResult = domain.getSearchDetail();
             TableModelSearchResult mTableSearchResultModel = new TableModelSearchResult(mSearchResult);
             mTableSearchResult = new JTable(mTableSearchResultModel);
-            JComboBox comboBoxRecDetail = new JComboBox();
             for (RecordDetail recDetail : mRecordDetail) {
-                comboBoxRecDetail.addItem(recDetail.getDisplayName());
+                mJComboRecordDetail.addItem(recDetail.getDisplayName());
             }
-            comboBoxRecDetail.addItemListener(new java.awt.event.ItemListener() {
+            mJComboRecordDetail.addItemListener(new java.awt.event.ItemListener() {
 
                 public void itemStateChanged(java.awt.event.ItemEvent evt) {
                     enableSave();
@@ -98,7 +76,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                 }
             });
             TableColumn column = mTableSearchResult.getColumnModel().getColumn(1);
-            column.setCellEditor(new DefaultCellEditor(comboBoxRecDetail));
+            column.setCellEditor(new DefaultCellEditor(mJComboRecordDetail));
 
 
             //comboBoxRecDetail.setMaximumRowCount(25);
@@ -109,10 +87,9 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             mSearchTypes = domain.getSearchType();
             TableModelSearchPage mTableSearchTypeModel = new TableModelSearchPage(mSearchTypes);
             mTableSearchType = new JTable(mTableSearchTypeModel);
-            final JComboBox comboBoxSearchRes = new JComboBox();
             int idx = 0;
             for (SearchDetail searchRes : mSearchResult) {
-                comboBoxSearchRes.addItem(searchRes.getDisplayName());
+                mJComboSearchResult.addItem(searchRes.getDisplayName());
                 if (searchRes.getSearchResultID() != mSearchTypes.get(0).getScreenResultID()) {
                     idx++;
                 }
@@ -120,15 +97,15 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             }
             
 //            comboBoxSearchRes.getS
-            comboBoxSearchRes.setSelectedItem(idx);
-            comboBoxSearchRes.addItemListener(new java.awt.event.ItemListener() {
+            mJComboSearchResult.setSelectedItem(idx);
+            mJComboSearchResult.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent evt) {
                     //mTableSearchType.setValueAt(ui, WIDTH, WIDTH)
                     int selectSearchTypeRow = mTableSearchType.getSelectedRow();
                     TableModelSearchPage searchTableModel = (TableModelSearchPage) mTableSearchType.getModel();
                     SimpleSearchType selectedSearchType = searchTableModel.getRow(selectSearchTypeRow);
-                    comboBoxSearchRes.getSelectedIndex();
-                    String displayName = (String) comboBoxSearchRes.getSelectedItem();
+                    mJComboSearchResult.getSelectedIndex();
+                    String displayName = (String) mJComboSearchResult.getSelectedItem();
                     for ( SearchDetail det : mSearchResult) {
                         if (det.getDisplayName().equals(displayName)) {
                             selectedSearchType.setScreenResultID(det.getSearchResultID());
@@ -140,7 +117,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             });
             
             TableColumn columnSearchRes = mTableSearchType.getColumnModel().getColumn(1);
-            columnSearchRes.setCellEditor(new DefaultCellEditor(comboBoxSearchRes));
+            columnSearchRes.setCellEditor(new DefaultCellEditor(mJComboSearchResult));
             jScrollPaneSearchPage.setViewportView(mTableSearchType);
 
         }
@@ -176,6 +153,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         jScrollPaneSearchPage = new javax.swing.JScrollPane();
         jBtnAddSearchPage = new javax.swing.JButton();
         jBtnRemoveSearchPage = new javax.swing.JButton();
+        jBtnEditSearchType = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -280,6 +258,13 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             }
         });
 
+        jBtnEditSearchType.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Edit")); // NOI18N
+        jBtnEditSearchType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onEditSearchType(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -291,6 +276,8 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jBtnAddSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnEditSearchType)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jBtnRemoveSearchPage)))
                 .addContainerGap())
         );
@@ -301,6 +288,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnRemoveSearchPage)
+                    .add(jBtnEditSearchType)
                     .add(jBtnAddSearchPage)))
         );
 
@@ -360,6 +348,24 @@ private void onAddSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 private void onRemoveSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSearchPage
 // TODO add your handling code here:
 }//GEN-LAST:event_onRemoveSearchPage
+
+private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditSearchType
+// TODO add your handling code here:
+    int selectedRow = mTableSearchType.getSelectedRow();
+    TableModelSearchPage searchPageModel = (TableModelSearchPage) mTableSearchType.getModel();
+    SimpleSearchType searchType = searchPageModel.getRow(selectedRow);
+    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult);
+    dlg.setVisible(true);
+    if (dlg.isModified()) {
+        if (dlg.isRefreshSearchResult()) {
+             mJComboSearchResult.setSelectedItem(dlg.getSelectedSearchResult());
+             jScrollPaneSearchPage.setViewportView(mTableSearchType);
+
+            //mJComboSearchResult.s
+        }
+        this.enableSave();
+    }
+}//GEN-LAST:event_onEditSearchType
 
     class TableModelRecordDetail extends AbstractTableModel {
 
@@ -759,6 +765,7 @@ private void onRemoveSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     private javax.swing.JButton jBtnAddRecDetail;
     private javax.swing.JButton jBtnAddSearchPage;
     private javax.swing.JButton jBtnAddSearchResult;
+    private javax.swing.JButton jBtnEditSearchType;
     private javax.swing.JButton jBtnRemoveRecDetail;
     private javax.swing.JButton jBtnRemoveSearchPage;
     private javax.swing.JButton jBtnRemoveSearchResult;
