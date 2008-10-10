@@ -33,7 +33,7 @@ public abstract class ScreenObject {
 	ArrayList<RelationshipScreenConfig> mRelationshipScreenConfigs;	// ArrayList of RelationshipScreenConfig objects
 	ArrayList<ScreenObject> mSubscreens;		// ArrayList of ScreenObjects
 
-	Integer getID() {  //  returns the screen object’s ID
+	Integer getID() {  //  returns the screen objects ID
 	    return mId;
 	}
 	
