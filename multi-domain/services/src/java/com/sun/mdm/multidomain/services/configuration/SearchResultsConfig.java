@@ -125,7 +125,7 @@ public class SearchResultsConfig implements java.io.Serializable {
     }
     
     /**
-     * Getter for the mMaxRecords ßattribute
+     * Getter for the mMaxRecords attribute
      *
      * @return The maximum number of records to be returned from a search.
      */
