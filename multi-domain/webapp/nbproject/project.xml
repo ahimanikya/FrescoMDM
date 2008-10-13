@@ -40,6 +40,7 @@
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
+            <explicit-platform explicit-source-supported="true"/>
             <source-roots>
                 <root id="src.dir" name="MultiDomain Web App Source Package"/>
             </source-roots>
