@@ -80,6 +80,10 @@ codelist: begin
     end while;
     close cur1;
     drop temporary table tCodelist;
+    update sbyn_seq_table set seq_count = v_header_seq
+    where seq_name = 'SBYN_COMMON_HEADER';
+    update sbyn_seq_table set seq_count = v_detail_seq
+    where seq_name = 'SBYN_COMMON_DETAIL';
     commit;
 end; 
 $
