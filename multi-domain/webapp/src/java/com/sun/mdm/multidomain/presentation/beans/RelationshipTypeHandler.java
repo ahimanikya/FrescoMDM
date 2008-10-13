@@ -37,10 +37,14 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
  */
 public class RelationshipTypeHandler {
 
+    private RelationshipManager relationshipManager;
+    
     /**
      * Create an instance of RelationshipTypeHandler.
      */
-    public RelationshipTypeHandler() {        
+    public RelationshipTypeHandler() 
+        throws ServiceException { 
+        relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
     }
     
     /**
@@ -48,14 +52,15 @@ public class RelationshipTypeHandler {
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
      * @return List<RelationshipType> List of RelationshipType.
+     * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) {                
+    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) 
+        throws ServiceException {                
         List<RelationshipType> types = null;
         try {
-            RelationshipManager relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
             types = relationshipManager.getRelationshipTypes(sourceDomain, targetDomain);
         } catch(ServiceException sex) {
-            types = new ArrayList<RelationshipType>();
+            throw sex;
         }
         return types;
     }
@@ -64,13 +69,15 @@ public class RelationshipTypeHandler {
      * Create a new relationship type.
      * @param relationshipType RelationshipType.
      * @return String Relationship Identifier which is newly added.
+     * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public String addRelationshipType(RelationshipType relationshipType) {        
+    public String addRelationshipType(RelationshipType relationshipType) 
+        throws ServiceException {        
         String relationshipTypeId = null;
         try {
-            RelationshipManager relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
             relationshipTypeId = relationshipManager.addType(relationshipType);
         } catch(ServiceException sex) {
+            throw sex;
         }
         return relationshipTypeId;        
     }
@@ -78,13 +85,31 @@ public class RelationshipTypeHandler {
     /**
      * Delete an existing RelationshipType.
      * @param relationshipType RelationshipType.
+     * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public void deleteRelationshipType(RelationshipType relationshipType) {        
+    public void deleteRelationshipType(RelationshipType relationshipType) 
+        throws ServiceException {        
         try {
-            RelationshipManager relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
             relationshipManager.deleteType(relationshipType);
         } catch(ServiceException sex) {
+            throw sex;
         }        
     }
-        
+    
+    /**
+     *  Get total number of RelationshipType for the given domain.
+     * @param domain Domain name.
+     * @return int Number of total relationshiptypes.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public int getRelationshipTypeCount(String domain)
+        throws ServiceException { 
+        int count = 0;
+        try {
+            count = relationshipManager.getTypeCount(domain);
+        } catch(ServiceException sex) {
+            throw sex;
+        }   
+        return count;
+    }
 }

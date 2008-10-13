@@ -20,19 +20,45 @@
           p:password="${jdbc.password}" /-->
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->  
+    
+    <!--
+      - Locale resolver inspects the accept-language header in the request that was sent by the browser of the client.
+      -->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">
     </bean>
+    <!--
+      - Message source for this context, loaded from localized "messages_xx" files.
+      -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages"/>
     </bean>
+    <!--
+      - This bean resolves specific types of exception to corresponding error views.
+      - The default behaviour of DispatcherServlet is to propagate all exceptions to the
+      - servlet container: This will happen here with all other types of exception.
+       -->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+        <props>
+            <prop key="com.sun.mdm.multidomain.services.core.ServiceException">serviceaccessfailure</prop>
+	</props>
+	</property>
+	</bean>       
+    <!-- 
+      - DWR beans handlers.
+      -->
     <bean id="DomainHandler" class="com.sun.mdm.multidomain.presentation.beans.DomainHandler">
     </bean>
+    
     <bean id="RelationshipTypeHandler" class="com.sun.mdm.multidomain.presentation.beans.RelationshipTypeHandler">
     </bean>
+    
     <bean id="RelationshipHandler" class="com.sun.mdm.multidomain.presentation.beans.RelationshipHandler">
     </bean>
+    
     <bean id="HierarchyTypeHandler" class="com.sun.mdm.multidomain.presentation.beans.HierarchyTypeHandler">
     </bean>
+    
     <bean id="HierarchyHandler" class="com.sun.mdm.multidomain.presentation.beans.HierarchyHandler">
     </bean>
     

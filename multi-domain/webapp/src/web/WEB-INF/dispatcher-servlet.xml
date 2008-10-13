@@ -11,10 +11,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
     
     <!--
-    Most controllers will use the ControllerClassNameHandlerMapping above, but
-    for the index controller we are using ParameterizableViewController, so we must
-    define an explicit mapping for it.
-    -->
+      - Most controllers will use the ControllerClassNameHandlerMapping above, but
+      - for the index controller we are using ParameterizableViewController, so we must
+      - define an explicit mapping for it.
+      -->
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
@@ -26,15 +26,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             </props>
         </property>
     </bean>
-    
+    <!--
+      - View resolver provides a mapping between view names and actual view.
+      --> 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
-          p:suffix=".jsp" />
-    
+          p:suffix=".jsp" />    
     <!--
-    The index controller.
-    -->
+      - The index controller.
+      -->
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />

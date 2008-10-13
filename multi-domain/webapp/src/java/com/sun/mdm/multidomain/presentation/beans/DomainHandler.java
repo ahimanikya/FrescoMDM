@@ -37,10 +37,14 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
  */
 public class DomainHandler {
     
+    private MetaDataManager metaDataManager;
+    
     /**
      * Create an instance of DomainHandler.
      */
-    public DomainHandler(){        
+    public DomainHandler()
+        throws ServiceException { 
+        metaDataManager = ServiceManagerFactory.Instance().createMetaDataManager();  
     }
         
     /**
@@ -48,11 +52,12 @@ public class DomainHandler {
      * @param domain Domain excluded.
      * @return List<Domain> List of domain excluded for the given domain. 
      *                      Or list of all domains if the input domain is null. 
+     * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<Domain> getDomains(String domain) {        
+    public List<Domain> getDomains(String domain) 
+        throws ServiceException {        
         List<Domain> domains = null;
         try {
-            MetaDataManager metaDataManager = ServiceManagerFactory.Instance().createMetaDataManager();
             List<Domain> ds = metaDataManager.getDomains();
             if (domain == null || domain.isEmpty()) {
                 domains = ds;
@@ -64,8 +69,8 @@ public class DomainHandler {
                     }
                 }                                
             }
-        } catch(ServiceException ex) {
-            domains = new ArrayList<Domain>();
+        } catch(ServiceException sex) {
+           throw sex;
         }
         return domains;
     }    

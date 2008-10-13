@@ -30,7 +30,9 @@ import javax.servlet.ServletException;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
-        
+   
+import com.sun.mdm.multidomain.services.core.ServiceException;
+
 /**
  * ManageRelationshipController class.
  * @author cye
@@ -38,7 +40,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class ManageRelationshipController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {    
+        throws ServletException, IOException, ServiceException {  
+        if (request != null) {
+            throw new ServiceException(" This is a test of ExceptionResolver only!");
+        }
         String tab = "Relationship Management";
         return new ModelAndView("managerelationship", "tab", tab);
     }    

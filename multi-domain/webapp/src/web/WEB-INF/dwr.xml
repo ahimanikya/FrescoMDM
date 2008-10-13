@@ -14,14 +14,8 @@
       <param name="beanName" value="RelationshipTypeHandler"/>
       <include method="getRelationshipTypes" />            
       <include method="addRelationshipType" />            
-      <include method="deleteRelationshipType" />            			
-    </create>
-
-    <create creator="spring" javascript="RelationshipTypeHandler" scope="session">
-      <param name="beanName" value="RelationshipTypeHandler"/>
-      <include method="getRelationshipTypes" />            
-      <include method="addRelationshipType" />            
-      <include method="deleteRelationshipType" />            			
+      <include method="deleteRelationshipType" /> 
+      <include method="getRelationshipTypeCount" />
     </create>
 
     <create creator="spring" javascript="RelationshipHandler" scope="session">
@@ -43,6 +37,10 @@
     <convert converter="bean" match="com.sun.mdm.multidomain.relationship.RelationshipType">
         <param name="include" value="name, displayName, sourceDomain, targetDomain" />
     </convert>	
-		
+	
+    <convert match="com.sun.mdm.multidomain.services.core.ServiceException" converter="exception">
+      <param name="include" value="message,lineNumber"/>
+    </convert>
+
   </allow>
 </dwr>

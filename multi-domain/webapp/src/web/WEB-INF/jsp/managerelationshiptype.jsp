@@ -17,6 +17,11 @@
         <script type='text/javascript' src='dwr/util.js'></script>    
         <script type='text/javascript' src='dwr/local.js'></script>        
         <script type='text/javascript'>
+            var relationshiptype;
+            dwr.engine.setErrorHandler(exceptionHandler);
+            function exceptionHandler(msg) {
+                alert(msg);
+            }
             function loadSourceDomains() {
                 var domain=document.getElementById("selectSourceDomain").value;
                 DomainHandler.getDomains(domain, updateSourceDomains);
@@ -42,21 +47,39 @@
                 RelationshipTypeHandler.getRelationshipTypes(sourceDomain, targetDomain, updateRelationshipTypes);
             }                         
             function updateRelationshipTypes(data) {
-                dwr.util.removeAllRows("typess");
+                dwr.util.removeAllRows("types");
                 dwr.util.addRows("types", data, cellfuncs, {escapeHtml:false});
             }
             function clickAdd() {
-                alert("add new now!");
+                relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
+                alert("add new relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
+                RelationshipTypeHandler.addRelationshipType(relationshiptype, clickAddCB);
+            }
+            function clickAddCB(data) {
+                 alert("added relationshiptype id=" + data);
+                 loadRelationshipTypes();
             }
             function clickDelete() {
-                alert("delete this now!");
-            }            
+               relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
+               alert("delete a relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
+               RelationshipTypeHandler.deleteRelationshipType(relationshiptype, clickDeleteCB);
+            }           
+            function clickDeleteCB() {
+                loadRelationshipTypes();
+            }
             function clickEdit(id) {
                 alert("edit this " + id + " now!");
             }
             function clickClone(id) {
                 alert("clone this " + id + " now!");
             }            
+            function clickThrow(){
+                alert("throw an exception now!");
+                var domain = "foo";
+                RelationshipTypeHandler.getRelationshipTypeCount(domain, clickThrowCB);
+            }
+            function clickThrowCB(data){
+            }
             var cellfuncs = [
               function(data) { return data.name; },
               function(data) { return data.displayName; },
@@ -101,6 +124,9 @@
             <td>
             <input type="button" value="Delete selected relationship type(s)" onclick="clickDelete()"/>           
             </td>
+            <td>
+            <input type="button" value="Show to throw an exception" onclick="clickThrow()"/>           
+            </td>           
         </tr>    
         </table>
     
