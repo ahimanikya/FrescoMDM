@@ -47,7 +47,7 @@ correct place to handle the creation of the extended attributes as
 these would certainly be used by the Relationship rules editor.<br />
 <br />
 <b>Answer:</b> Extended
-attributes shall be definable in both the Netbeans GUI and on the Web.
+attributes shall be definable on the Web.
 It is important to note that extended attributes once used can not be
 removed. Additionally extended attributes are defined for each
 relationship type. Future enhancements might include keeping track of a
@@ -64,7 +64,22 @@ move before
 AnInt.</li><li>Clone features are 'nice to have'.
 &nbsp;These would bring up the entire list for the associated
 'browse'
-function so a user could select and clone a definition.</li>
+function so a user could select and clone a definition.</li><li>Searchable options: &nbsp;By Range, By Value and No. (Default No)."<br /><br /><span style="font-weight: bold;">By Value.</span>
+&nbsp; In any search / select screen that a user can enter a custom
+attribute for a relationship the user can only search for the single
+attribute value. &nbsp;Thus the search screen should only show a single
+entry area for the attribute.<br /><br /><span style="font-weight: bold;">By Range. </span>&nbsp;In
+any search / select screen that a user can enter a custom attribute for
+a relationship the user can search for a relationship that has that
+value by specifying a range or a single value. &nbsp;If a custom
+attribute is specified as "By Range" than the search screen should a
+Drop-Down list by the customer attribute with a: 'By Value', 'By
+Range' selection. (Default: By Range). &nbsp;If the user selects the By
+Value option than an entry field for the form is shown. &nbsp;If the
+user selects the By Range option than a From: [entry-field] &nbsp; To:
+[entry-field] is also shown.<br /><br /><span style="font-weight: bold;">No</span>.
+The custom attribute will not appear in any search screen. &nbsp;It
+will only appear in a Relationship Attribute section of a screen.<br /><br />Once a selection is made the Web GUI should remember the preference by Relationship Type and Custom Attribute for the Session. </li>
 </ul>
 <br />
 <h2>
@@ -78,11 +93,8 @@ Needed</span></h2>
 </ul>
 <ul>
 <ul>
-<li>Change Relationship to Relationship Type</li>
-<li>Remove filters&nbsp;</li>
-</ul><ul>
-<li> Nice to have. Allow user to suppress showing the
-display name</li>
+
+<li>First cut does not require option to sort</li>
 </ul>
 <li>Dialog</li><ul><li>Attribute Area&nbsp;</li><ul>
 <li>Custom Attributes</li>

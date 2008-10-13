@@ -73,85 +73,53 @@ selected. </span><br>
 <br><h4><br>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Overlay shown by selecting the 'show relationship type' button</span></h4>
 <br>
-<img style="width: 921px; height: 286px;" alt="" src="../attach/RelShowRelType.png"><br><br><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
+<img style="width: 921px; height: 286px;" alt="" src="../attach/RelShowRelType.png"><br><br><br><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
 record "Centerpoint" was selected<br>
 </span><br>
 <img style="width: 928px; height: 717px;" alt="" src="../attach/RelByRecord.png">
 <h4><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
-record&nbsp;Centerpoint was expanded and the record "Bangalore" was selected.&nbsp;</span></h4><br><img style="width: 926px; height: 706px;" alt="" src="../attach/RelByRecordS3.png"><br>
+record&nbsp;Centerpoint, Owns Offices was expanded and the record "Bangalore" was selected.&nbsp;</span></h4><br><img style="width: 926px; height: 706px;" alt="" src="../attach/RelByRecordS3.png"><br>
 <br>
-<h4><span style="color: rgb(0, 102, 0);">Notes on Relationship Model overview</span></h4><br><ul><li>The windows should be minized by default</li></ul><br><h4><span style="color: rgb(0, 102, 0);">Notes on Tree Usage</span></h4><br><ul><li>Change the Relationship Model when user selects a record deeper in the tree than the currently selected record&nbsp;</li><li>Selecting a relationship type allows deletion of all the records in the relationship.</li><li>Selecting a domain disables Delete and Add.</li><li>Allow for multi-selected. &nbsp;If more than one record is selected then the right hand side should be blank. &nbsp;</li><li>Do not allow expantion of any record that is already expanded in the current &nbsp;tree path. <br><br>Example: &nbsp;Below "Dr. George Karlin" is not expandable because the record is already expanded on the tree. <br><br></li><li>Prototype support
-selection of several nodes in the same relationship for use in Re-assign</li><li>Build
-in configurable limits to the number of records to show under a node.
-&nbsp;If too many records would be shown then the GUI needs to bring up
-a dialog to limit allow 'fitltering' based on (one or both of)</li><ul><li>Names of destination records (optional)</li><li>Relationship searchable custom attributes (optional)</li></ul></ul><br><h4><span style="color: rgb(0, 102, 0);">Alternate to Tree Look and Feel</span></h4><br>Go
+<h4><span style="color: rgb(0, 102, 0);">Notes on Relationship Model overview</span></h4><br><ul><li>The windows should be minized by default</li></ul><br><h4><span style="color: rgb(0, 102, 0);">Notes on Tree Usage</span></h4><br><ul><li>Selecting a relationship type allows deletion of all the records in the relationship.</li><li>Selecting a domain disables Delete and Add.</li><li>Allow
+for multi-selected. &nbsp;If more than one record is selected then the
+right hand side should be blank and the number shown by Delete should
+be updated.&nbsp;</li><li>Move could be implemented by finding a record
+and moving all selected records under the record (similiar to how the
+hierarchy tree works) or better yet by showing a second tree on the
+right that just displays a Find Record button and allowing for drag /
+drop between them. </li><li>Do not &nbsp;allow any record that is already in its parent path to be expanded (stop cyclic references) <br>Example: &nbsp;Below "Dr. George Karlin" is not expandable because the record is already expanded. <br><br>If
+Centerpoint-&gt;Bangalore had children relationships that refered back
+to Centerpoint than that node would not be expandable. <br></li><li>Build
+in a configurable limits to the number of records to show under a node.
+&nbsp;If too many records would be shown then the tree would show a
+paginated table of the nodes and a select record button to show more
+nodes... &nbsp;For the session if a record is selected from that table
+it appears in the tree list and under <br><br>Nice to have would be the abliity to filter the table as follows:&nbsp;</li><ul><li>Names of destination records (optional)</li><li>Relationship searchable custom attributes (optional)</li></ul></ul><br><h4><span style="color: rgb(0, 102, 0);">Organization on tree</span></h4><br>The first two nodes on the tree are always<br><br><ul><li style="font-style: italic;">Domain of selected record</li><ul><li style="font-style: italic;">selected record</li></ul></ul><br>After that the data sbould be organized as follows<br><br><ul><li>Relationships (alphabetical)&nbsp;</li><ul><li>Domains&nbsp;</li></ul><ul><ul><li>Records&nbsp;</li></ul></ul></ul><br>Here is a more complete example than shown above. &nbsp; <br><br>Notice that Dr. George Karlin is not expandable under Centerpoint &lt;- Employed By. <br><br><img style="width: 301px; height: 710px;" alt="" src="../attach/RelByRecordTreeByRel.png"><br><br><h4><span style="color: rgb(0, 102, 0);">Alternate to Tree Look and Feel</span></h4><br>Go
 back to the box look as shown on the Story Board and add a "Make
 Current Record" option that would switch the current node to the
 selected node. <span style="font-weight: bold;"></span><br><br>The user could navigate back to the original record as it would be shown in one of the relationships in the boxes. <br><br>To see the&nbsp;<a href="ManRelByRecTable.html">Table Look and Feel</a> click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>. <br><h4><span style="color: rgb(0, 102, 0);">
 Example Tree using domains: Customers, Accounts, Locations</span>
 </h4><ul>
-<li>George Karlin (Customer)</li>
+<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png"> Customer</li><ul><li>George Karlin</li><ul><li>-&gt; Primary Holder</li><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Accounts</li><ul><li>Act #1</li><ul><li>-&gt; Located In</li></ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li></ul><ul><ul><li>Loc #1</li><li>Loc #2</li></ul></ul></ul></ul></ul></ul></ul>
 <ul>
-<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Accounts</li>
+
 <ul>
-<li>-&gt; Primary Holder</li>
+
 <ul>
-<li>Act #1</li>
+<ul><li>Act #2</li><ul><li>-&gt; Located In</li></ul></ul><ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li></ul></ul><ul><ul><ul><li>Loc #1</li><li>Loc #2</li></ul></ul></ul></ul><ul><li>Act #3</li><ul><li>-&gt; Located In</li></ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li></ul><ul><ul><li>Loc #1</li><li>Loc #2</li></ul></ul></ul></ul>
 <ul>
-<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li>
-<ul>
-<li>-&gt; Located In</li>
-<ul>
-<li>Loc #1</li>
-<li>Loc #2</li>
+
+<ul></ul>
 </ul>
-</ul>
-</ul>
-</ul>
-<ul>
-<li>Act #2</li>
-<ul>
-<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li>
-<ul>
-<li>-&gt; Located In</li>
-<ul>
-<li>Loc #1</li>
-<li>Loc #2</li>
-<li>Loc #3</li>
-</ul>
-</ul>
-</ul>
-</ul>
-<ul>
-<li>Act #3</li>
-<ul>
-<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li>
-<ul>
-<li>-&gt; Located In</li>
-<ul>
-<li>Loc #1</li>
-</ul>
-</ul>
-</ul>
-</ul>
-</ul>
+</ul></ul>
 </ul>
 </ul>
 <h4><span style="color: blue;">Notes</span></h4>
 <ul>
 <li>More than one Relation Type bubble can be shown at at time</li>
-<li>If any specific area has more than some number of
-&nbsp;records (20) then in stead of showing the records show the
-following<br>
-<br>
-<span style="font-style: italic;">Number</span>
-records where found. &nbsp;<span style="text-decoration: underline;"></span><br>
-<span style="text-decoration: underline;"><br>
-</span><span style="text-decoration: underline;">Limit
-records... </span>&nbsp; &nbsp;// Shows dialog - search
-records (for associated domain) and relationship attribtues &nbsp;</li>
+
 </ul>
 <h3>Add Records to Relationship<br>
 </h3>
