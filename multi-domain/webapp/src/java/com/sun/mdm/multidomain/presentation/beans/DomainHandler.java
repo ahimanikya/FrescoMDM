@@ -59,7 +59,7 @@ public class DomainHandler {
         List<Domain> domains = null;
         try {
             List<Domain> ds = metaDataManager.getDomains();
-            if (domain == null || domain.isEmpty()) {
+            if (domain == null || domain.length() == 0) {
                 domains = ds;
             } else {
                 domains = new ArrayList<Domain>();

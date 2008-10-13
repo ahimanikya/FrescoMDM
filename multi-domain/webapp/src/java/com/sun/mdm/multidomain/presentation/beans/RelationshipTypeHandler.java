@@ -23,7 +23,6 @@
 package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 
@@ -97,7 +96,7 @@ public class RelationshipTypeHandler {
     }
     
     /**
-     *  Get total number of RelationshipType for the given domain.
+     * Get total number of RelationshipType for the given domain.
      * @param domain Domain name.
      * @return int Number of total relationshiptypes.
      * @throws ServiceException Thrown if an error occurs during processing.
