@@ -137,12 +137,14 @@ public class RelationshipManager implements ServiceManager {
         throws ServiceException {
         // demo data
         boolean deleted = false;
+        ArrayList<RelationshipType> temp = new ArrayList<RelationshipType>();
         for (RelationshipType rt:rts) {
             if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
                 rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
                 rt.getName().equals(relationshipType.getName())) {                      
-                rts.remove(rt);
                 deleted = true;
+             } else {
+                temp.add(rt);
              }
     	}
         if (!deleted) {
@@ -150,7 +152,8 @@ public class RelationshipManager implements ServiceManager {
                                    " source:" + relationshipType.getSourceDomain() +
                                    " target:" + relationshipType.getTargetDomain() +
                                    " name:" + relationshipType.getName());
-        }        
+        }   
+        rts = temp;
     }
     
     /**
@@ -160,8 +163,7 @@ public class RelationshipManager implements ServiceManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public int getTypeCount(String domain) throws ServiceException {
-        // demo data
-    	return 3;
+        throw new ServiceException("Not Implemented Yet");
     }
     
     /**
