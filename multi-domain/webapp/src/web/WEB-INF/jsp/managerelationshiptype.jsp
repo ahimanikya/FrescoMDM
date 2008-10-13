@@ -19,8 +19,8 @@
         <script type='text/javascript'>
             var relationshiptype;
             dwr.engine.setErrorHandler(exceptionHandler);
-            function exceptionHandler(msg) {
-                alert(msg);
+            function exceptionHandler(message) {
+                alert(message);
             }
             function loadSourceDomains() {
                 var domain=document.getElementById("selectSourceDomain").value;
