@@ -40,9 +40,9 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
 public class ManageRelationshipController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException, ServiceException {  
-        if (request != null) {
-            throw new ServiceException(" This is a test of ExceptionResolver only!");
+        throws ServletException, IOException, ServiceException {
+        if(request != null) {
+            throw new ServiceException("This is a demo of Spring exception handling!");
         }
         String tab = "Relationship Management";
         return new ModelAndView("managerelationship", "tab", tab);
