@@ -434,6 +434,7 @@ public class ConfigManagerTest extends TestCase {
         
         ConfigManager configManager = ConfigManager.getInstance();
         ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) configManager.getObjectNodeConfig("Person");
+        boolean ret = true;
         
         // get required and updateable attributes from object definition
         FieldConfig[] fieldconfig = objNodeConfig.getFieldConfigs();        
@@ -444,12 +445,41 @@ public class ConfigManagerTest extends TestCase {
                 fieldFound = true;
                 int maxSize = fieldconfig[i].getMaxSize();
                 int maxLength = fieldconfig[i].getMaxLength();
-                assert(maxSize == 40);
-                assert(maxLength == 40);
+                if (maxSize != 40) {
+                    ret = false;
+                }
+                if (maxLength != 40) {
+                    ret = false;
+                }
             }
-            assert(fieldFound);
         }        
+        if (fieldFound == false) {
+            ret = false;
+        }
+        assertTrue(ret);
     }        
+    
+    // Check the parsing of the field information
+    
+    public void testChildNodeConfig() throws Exception {
+        
+        ConfigManager configManager = ConfigManager.getInstance();
+        ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) configManager.getObjectNodeConfig("Phone");
+        boolean ret = true;
+
+        boolean mergeMustDelete = objNodeConfig.getMustDelete();
+        if (mergeMustDelete != true) {
+            System.out.println("Error: merge-must-delete expected to be true but was actually " + mergeMustDelete);
+            ret = false;
+        }
+        int displayOrder = objNodeConfig.getDisplayOrder();
+        if (displayOrder != 3) {
+            System.out.println("Error: displayOrder expected to be 3 but was actually " + displayOrder);
+            ret = false;
+        }
+        assertTrue(ret);
+    }        
+    
     /** Main entry point
      * @param args args
      */

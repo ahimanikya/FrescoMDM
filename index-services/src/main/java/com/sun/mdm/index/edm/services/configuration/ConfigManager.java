@@ -722,10 +722,11 @@ public class ConfigManager implements java.io.Serializable {
 
         String objName = NodeUtil.getChildNodeText(element, NODE_NAME);
         
-        String attr = element.getAttribute(NODE_DISPLAY_ORDER);
-        String attr1 = element.getAttribute(MERGE_MUST_DELETE);
+        String attr = NodeUtil.getChildNodeText(element, NODE_DISPLAY_ORDER);
+        String attr1 = NodeUtil.getChildNodeText(element, MERGE_MUST_DELETE);
+        
         int order = 0;
-        boolean mustDelete=false;
+        boolean mustDelete = false;
         if (attr != null && !attr.equals("")) {
             order = Integer.parseInt(attr);
         }
@@ -741,40 +742,40 @@ public class ConfigManager implements java.io.Serializable {
         
         ChildElementIterator itr = new ChildElementIterator(element);
         while ( itr.hasNext() ) {
-            Element e;
-            Element field = (Element)itr.next();
-            String fieldName = null;
-            String nodeTag = field.getTagName();
+            Element e = (Element)itr.next();
+
             // process the fields
-            if (nodeTag.equalsIgnoreCase(FIELD_NODE)) {
+
+            if (e.getTagName().equalsIgnoreCase(FIELD_NODE)) {
+                String fieldName = null;
                 try {
 
-                    fieldName = NodeUtil.getChildNodeText(field, NODE_NAME); 
-                    String displayName = NodeUtil.getChildNodeText(field, DISPLAY_NAME);
-                    String inputMask = NodeUtil.getChildNodeText(field, INPUT_MASK);
-                    String valueMask = NodeUtil.getChildNodeText(field, VALUE_MASK);
+                    fieldName = NodeUtil.getChildNodeText(e, NODE_NAME); 
+                    String displayName = NodeUtil.getChildNodeText(e, DISPLAY_NAME);
+                    String inputMask = NodeUtil.getChildNodeText(e, INPUT_MASK);
+                    String valueMask = NodeUtil.getChildNodeText(e, VALUE_MASK);
                     boolean keyType = false;
-                    String keyTypeString = NodeUtil.getChildNodeText(field, KEY_TYPE);
+                    String keyTypeString = NodeUtil.getChildNodeText(e, KEY_TYPE);
                     if ((keyTypeString != null) && keyTypeString.equals("true")) {
                         keyType = true;
                     }
 
                     boolean isSensitive = false;
-                    String isSensitiveString = NodeUtil.getChildNodeText(field, IS_SENSITIVE);
+                    String isSensitiveString = NodeUtil.getChildNodeText(e, IS_SENSITIVE);
                     if ((isSensitiveString != null) && isSensitiveString.equals("true")) {
                         isSensitive = true;
                     }
 
                     // optional field
                     String displayOrder = "0";
-                    String displayOrderString = NodeUtil.getChildNodeText(field, NODE_DISPLAY_ORDER);
+                    String displayOrderString = NodeUtil.getChildNodeText(e, NODE_DISPLAY_ORDER);
                     if (displayOrderString != null) {
                         displayOrder = displayOrderString;
                     }
                     int idisplayOrder = Integer.parseInt(displayOrder);
 
                     String maxLength = "32";
-                    String maxLengthString = NodeUtil.getChildNodeText(field, MAX_LENGTH);
+                    String maxLengthString = NodeUtil.getChildNodeText(e, MAX_LENGTH);
                     // optional field
                     if (maxLengthString != null) {
                         maxLength = maxLengthString;
@@ -786,10 +787,10 @@ public class ConfigManager implements java.io.Serializable {
                         imaxLength = inputMask.length();
                     }
 
-                    String guiType = NodeUtil.getChildNodeText(field, GUI_TYPE);
+                    String guiType = NodeUtil.getChildNodeText(e, GUI_TYPE);
 
                     String valueList = null;            
-                    String valueListString = NodeUtil.getChildNodeText(field, VALUE_LIST);
+                    String valueListString = NodeUtil.getChildNodeText(e, VALUE_LIST);
 
                     if (valueListString != null) {
                         valueList = valueListString;
@@ -797,7 +798,7 @@ public class ConfigManager implements java.io.Serializable {
 
                     // optional field
                     String valueTypeStr = "String";
-                    String valueTypeString = NodeUtil.getChildNodeText(field, VALUE_TYPE);
+                    String valueTypeString = NodeUtil.getChildNodeText(e, VALUE_TYPE);
                     if (valueTypeString != null) {
                         valueTypeStr = valueTypeString;
 
