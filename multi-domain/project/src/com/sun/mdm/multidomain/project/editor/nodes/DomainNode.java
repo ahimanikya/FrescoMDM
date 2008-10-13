@@ -74,13 +74,13 @@ import com.sun.mdm.multidomain.project.editor.TabListRelationshipTypes;
 public class DomainNode extends AbstractNode {
     /** The logger. */
     private static final Logger mLog = Logger.getLogger(
-            EditorMainApp.class.getName()
+            DomainNode.class.getName()
         
         );
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
     private ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
     TabListRelationshipTypes mTabListRelationshipTypes = null;
-    File selectedDomain = null;
+    File mSelectedDomain = null;
     
     /**
      * 
@@ -110,36 +110,22 @@ public class DomainNode extends AbstractNode {
      * 
      * @param domainName
      * @param selectedDomain
+     * @param ArrayList <RelationshipType> alRelationshipTypes
      */
-    public DomainNode(String domainName, File selectedDomain) {
+    public DomainNode(String domainName, File selectedDomain, ArrayList <RelationshipType> alRelationshipTypes) {
         super(Children.LEAF);
         setName(domainName);
-        this.selectedDomain = selectedDomain;
+        mSelectedDomain = selectedDomain;
         
-        loadMiObjectNodes(selectedDomain);
-    }
-    
-    private MiObject getMiObject(File selectedDomain) {
-        MiObject mMiObject = null;
-        try {
-            FileObject objectXml = EditorMainApp.getSavedDomainObjectXml(selectedDomain);
-            if (objectXml != null) {
-                InputStream objectdef = objectXml.getInputStream();
-                InputSource source = new InputSource(objectdef);
-                mMiObject = Utils.parseMiObject(source);
-            }
-        } catch (Exception ex) {
-                mLog.severe(ex.getMessage());
-        }
-        return mMiObject;
+        loadMiObjectNodes();
+        loadRelationshipTypes(alRelationshipTypes);
     }
 
     /**
      * Build graphical representation of domain object
-     * @param selectedDomain
      */
-    private void loadMiObjectNodes(File selectedDomain) {       
-        MiObject miObject = getMiObject(selectedDomain);
+    private void loadMiObjectNodes() {       
+        MiObject miObject = getMiObject();
         ArrayList alMiNodes = miObject.getNodes();
         if ((alMiNodes != null) && (alMiNodes.size() > 0)) {
             String miObjectName = miObject.getObjectName();
@@ -156,6 +142,21 @@ public class DomainNode extends AbstractNode {
         }
     }
     
+    private MiObject getMiObject() {
+        MiObject miObject = null;
+        try {
+            FileObject objectXml = EditorMainApp.getSavedDomainObjectXml(mSelectedDomain);
+            if (objectXml != null) {
+                InputStream objectdef = objectXml.getInputStream();
+                InputSource source = new InputSource(objectdef);
+                miObject = Utils.parseMiObject(source);
+            }
+        } catch (Exception ex) {
+                mLog.severe(ex.getMessage());
+        }
+        return miObject;
+    }
+
     private void addChildren(MiNodeDef node) {
         ArrayList children = node.getChildren();
         if (children != null) {
@@ -217,9 +218,7 @@ public class DomainNode extends AbstractNode {
      */
     public void loadRelationshipTypes(ArrayList <RelationshipType> alRelationshipTypes) {
         this.alRelationshipTypes = alRelationshipTypes;
-        if (alRelationshipTypes != null) {
-            mTabListRelationshipTypes = new TabListRelationshipTypes(this.alRelationshipTypes);
-        }
+        mTabListRelationshipTypes = new TabListRelationshipTypes(this.alRelationshipTypes);
     }
     
     public TabListRelationshipTypes getTabListRelationshipTypes() {
