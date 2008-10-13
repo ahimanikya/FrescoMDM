@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.KeyEvent;
 
 import java.util.Enumeration;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -97,8 +98,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private EditorMainApp mEditorMainApp;
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
+    private JScrollPane mMultiViewPane;
     private RelationshipCanvas canvas = null; //The component the user draws on
-    //private JPanel canvas = new JPanel();
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
 
@@ -111,9 +112,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
 
-        canvas = new RelationshipCanvas(mMultiDomainApplication, mEditorMainApp);
+        canvas = new RelationshipCanvas(mEditorMainApp);
         mEditorMainPanel = this;
-
 
         initComponents();
     }
@@ -139,8 +139,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     
     private JSplitPane createSplitPane() {
         // Put tree and table in a split pane splitPane
-        JScrollPane multiViewPane = new JScrollPane();
-        multiViewPane.setBorder(new javax.swing.border.TitledBorder(
+        mMultiViewPane = new JScrollPane();
+        mMultiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_Relationship_Model")));
 
@@ -148,7 +148,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getRelationshipWebMAnager(true));
         }
         
-        multiViewPane.setViewportView(canvas);
+        mMultiViewPane.setViewportView(canvas);
         //ToDo
         //setCurrentDomainNode
         //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
@@ -168,13 +168,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         propertiesPane.setViewportView(propertiesTabbedPane);
         
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                multiViewPane, propertiesPane);
+                mMultiViewPane, propertiesPane);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(250);
 
         //Provide minimum sizes for the two components in the split pane
         Dimension minimumSize = new Dimension(250, 100);
-        multiViewPane.setMinimumSize(minimumSize);
+        mMultiViewPane.setMinimumSize(minimumSize);
         
         return splitPane;
     }
@@ -296,17 +296,26 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonSave.setEnabled(flag);
     }
     
+    public void loadDomainNodesToCanvas() {
+        ArrayList <DomainNode> al = mEditorMainApp.getDomainNodes();
+        for (int i=0; i<al.size(); i++) {
+            addDomainNodeToCanvas(al.get(i), i);
+        }
+    }
+    
     /** Add a Domain Node to the canvas
      *
      */
-    public boolean addDomainNode(DomainNode node) {
+    public boolean addDomainNodeToCanvas(DomainNode node, int index) {
         boolean added = false;
-        
-        int cnt = this.getComponentCount() + 1;
+        int cnt = index;
+        if (cnt < 0) {
+            cnt = this.getComponentCount() + 1;
+        }
         JLabel label = new JLabel(node.getName());
-        canvas.add(new JLabel(node.getName()), new java.awt.GridBagConstraints());
-        label.setBounds(90, cnt * 30, 80, 20);
-
+        canvas.add(label);
+        label.setBounds(10, cnt * 30, 80, 20);
+        //mMultiViewPane.setViewportView(canvas);
         //populate properties
         return added;
     }

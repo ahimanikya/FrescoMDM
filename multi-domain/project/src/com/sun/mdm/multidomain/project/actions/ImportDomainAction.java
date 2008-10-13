@@ -39,6 +39,9 @@ import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectManager;
+
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
@@ -158,19 +161,19 @@ public class ImportDomainAction extends CookieAction {
     protected int mode() {
         return CookieAction.MODE_EXACTLY_ONE;
     }
-
+    
+    /**
+     * Check if file is instanceof EviewApplication
+     */
     private boolean isMasterIndexProject(File file) {
-        //if (file instanceof EviewApplication) {
-        //    return true;
-        //}
         boolean bRet = false;
         FileObject fobj = FileUtil.toFileObject(file);
         if (fobj != null) {
             try {
-                FileObject fobjSrc = fobj.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
-                if (fobjSrc != null) {
-                    FileObject fobjConfiguration = fobjSrc.getFileObject(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
-                    if (fobjConfiguration != null) {
+                Project p = ProjectManager.getDefault().findProject(fobj);
+                if (p != null) {
+                    String clsName = p.getClass().getName();
+                    if (clsName.equals("com.sun.mdm.index.project.EviewApplication")) {
                         bRet = true;
                     }
                 }
@@ -189,11 +192,6 @@ public class ImportDomainAction extends CookieAction {
         
         public boolean accept(java.io.File file) {
             boolean accepted = isMasterIndexProject(file);
-            if (accepted) {
-                //fc.setSelectedFile(file);
-            } else {
-                //fc.setSelectedFile(null);
-            }
             return (file.isDirectory() || accepted);
         }
         

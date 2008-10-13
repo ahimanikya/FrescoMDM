@@ -46,6 +46,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import java.io.File;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
@@ -69,26 +70,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.SwingUtilities;
 
-//import org.netbeans.spi.project.support.ant.AntProjectHelper;
-import com.sun.mdm.multidomain.project.MultiDomainApplication;
-//import com.sun.mdm.index.project.ui.EviewConfigurationFolderNode;
-//import com.sun.mdm.index.project.ui.EviewCookie;
-//import com.sun.mdm.index.project.EviewApplication;
+import org.netbeans.api.project.Project;
+
 /**
- * @author Timothy Boudreau
+ * @author Kevin Kao
  */
-public class RelationshipCanvas extends JComponent implements MouseListener, MouseMotionListener, PropertyChangeListener {
+public class RelationshipCanvas extends JPanel implements MouseListener, MouseMotionListener, PropertyChangeListener {
     private int diam = 10;
     private Paint paint = Color.BLUE;
     private BufferedImage backingImage;
     private Point last;
     private RelationshipCanvas mRelationshipCanvas;
-    private MultiDomainApplication mMultiDomainApplication;
     private EditorMainApp mEditorMainApp;
     static final Image DOMAINIMAGEICON = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
 
     
-    public RelationshipCanvas(MultiDomainApplication multiDomainApplication, EditorMainApp editorMainApp) {
+    public RelationshipCanvas(EditorMainApp editorMainApp) {
         mRelationshipCanvas = this;
         mEditorMainApp = editorMainApp;
         addMouseListener(this);
@@ -114,33 +111,24 @@ public class RelationshipCanvas extends JComponent implements MouseListener, Mou
             public void drop(DropTargetDropEvent dtde) {
                 // Add DomainNode to the canvas
                 Transferable trans = dtde.getTransferable();
-
                 DataFlavor[] dfs = trans.getTransferDataFlavors();
                 if (dfs.length > 0) {
                     try {
                         Object obj = trans.getTransferData(dfs[0]);
                         if (obj instanceof Node) {
                             Node node = (Node) obj;
-                            
-                            dragTargetName = node.getName();
-                            Children al = node.getChildren();
-                            Node cnf = al.findChild("Configuration");
-                            /*
-                            EviewCookie cookie = cnf.getCookie(EviewCookie.class);
-                            final EviewConfigurationFolderNode eviewCnfNode = cookie.getEviewFolderNode();
-                            EviewApplication eviewApplication = (EviewApplication) eviewCnfNode.getProject();
-                            FileObject domainFolder = eviewApplication.getProjectDirectory();
-                            String path = domainFolder.getName();
-
-                            mEditorMainApp.addDomain(FileUtil.toFile(domainFolder));
-                            */
+                            Project p = node.getLookup().lookup(Project.class);
+                            if (p != null) {
+                                FileObject pfobj = p.getProjectDirectory();
+                                File selectedDomain = FileUtil.toFile(pfobj);
+                                String domainName = selectedDomain.getName();
+                                mEditorMainApp.addDomain(selectedDomain);
+                            }
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
-
-                //mEditorMainApp.addDomain((FileObject) fileDomain);
             }
 
             public void dropActionChanged(DropTargetDragEvent dtde) {
@@ -159,14 +147,17 @@ public class RelationshipCanvas extends JComponent implements MouseListener, Mou
                         if (obj instanceof Node) {
                             Node node = (Node) obj;
                             dragTargetName = node.getName();
-                            Children al = node.getChildren();
-                            Node cnf = al.findChild("Configuration");
-                            if (cnf != null && cnf.getClass().getName().equals("com.sun.mdm.index.project.ui.EviewConfigurationFolderNode")) {
-                                bRet = true;
-                                Graphics2D g2D = (Graphics2D) mRelationshipCanvas.getGraphics();
-                                Rectangle visRect = mRelationshipCanvas.getVisibleRect();
-                                mRelationshipCanvas.paintImmediately(visRect.x, visRect.y, visRect.width, visRect.height);
-                                g2D.drawImage(DOMAINIMAGEICON, AffineTransform.getTranslateInstance(dtde.getLocation().getX(), dtde.getLocation().getY()), null);
+
+                            Project p = node.getLookup().lookup(Project.class);
+                            if (p != null) {
+                                String clsName = p.getClass().getName();
+                                if (clsName.equals("com.sun.mdm.index.project.EviewApplication")) {
+                                    bRet = true;
+                                    Graphics2D g2D = (Graphics2D) mRelationshipCanvas.getGraphics();
+                                    Rectangle visRect = mRelationshipCanvas.getVisibleRect();
+                                    mRelationshipCanvas.paintImmediately(visRect.x, visRect.y, visRect.width, visRect.height);
+                                    g2D.drawImage(DOMAINIMAGEICON, AffineTransform.getTranslateInstance(dtde.getLocation().getX(), dtde.getLocation().getY()), null);
+                                }
                             }
                         }
                     } catch (Exception ex) {

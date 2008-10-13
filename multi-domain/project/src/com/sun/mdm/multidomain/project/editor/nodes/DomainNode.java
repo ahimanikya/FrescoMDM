@@ -80,9 +80,7 @@ public class DomainNode extends AbstractNode {
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
     private ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
     TabListRelationshipTypes mTabListRelationshipTypes = null;
-    String miObjectName;
     File selectedDomain = null;
-    String domainName = null;
     
     /**
      * 
@@ -115,7 +113,7 @@ public class DomainNode extends AbstractNode {
      */
     public DomainNode(String domainName, File selectedDomain) {
         super(Children.LEAF);
-        this.domainName = domainName;
+        setName(domainName);
         this.selectedDomain = selectedDomain;
         
         loadMiObjectNodes(selectedDomain);
@@ -144,7 +142,7 @@ public class DomainNode extends AbstractNode {
         MiObject miObject = getMiObject(selectedDomain);
         ArrayList alMiNodes = miObject.getNodes();
         if ((alMiNodes != null) && (alMiNodes.size() > 0)) {
-            miObjectName = miObject.getObjectName();
+            String miObjectName = miObject.getObjectName();
 
             Iterator it = alMiNodes.iterator();
             while (it.hasNext()) {
