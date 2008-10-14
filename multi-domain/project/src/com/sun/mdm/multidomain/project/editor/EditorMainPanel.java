@@ -83,7 +83,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/Save.png"));
-    
+    static final String TAB_OVERVIEW = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_OVERVIEW");
     static final String TAB_OBJECT_MODEL = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_MD_OBJECT_MODEL");
     static final String TAB_WEB_MANAGER = NbBundle.getMessage(EditorMainPanel.class,
@@ -152,13 +153,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //ToDo
         //setCurrentDomainNode
         //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
-        DomainNode node = this.mEditorMainApp.getDomainNode(null);
-        TabListRelationshipTypes tab = new TabListRelationshipTypes(node.getName(), null);
-        if (node != null) {
-            tab = node.getTabListRelationshipTypes();
-        }
+        //DomainNode node = this.mEditorMainApp.getDomainNode(null);
+        //TabListRelationshipTypes tab = new TabListRelationshipTypes(node.getName(), null);
+        //if (node != null) {
+        //    tab = node.getTabListRelationshipTypes();
+        //}
+        
+        TabOverview overView = new TabOverview(mEditorMainApp.getDomainNodes());
         JTabbedPane propertiesTabbedPane = new JTabbedPane();
-        propertiesTabbedPane.add(TAB_OBJECT_MODEL, tab);
+        propertiesTabbedPane.add(TAB_OVERVIEW, overView);
         propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
         JScrollPane propertiesPane = new JScrollPane();
