@@ -88,15 +88,17 @@ right hand side should be blank and the number shown by Delete should
 be updated.&nbsp;</li><li>Move could be implemented by finding a record
 and moving all selected records under the record (similiar to how the
 hierarchy tree works) or better yet by showing a second tree on the
-right that just displays a Find Record button and allowing for drag /
-drop between them. </li><li>Do not &nbsp;allow any record that is already in its parent path to be expanded (stop cyclic references) <br>Example: &nbsp;Below "Dr. George Karlin" is not expandable because the record is already expanded. <br><br>If
+right that just displays a Find Record button (and hide) and allowing for drag /
+drop between the two trees (current on right, new on left) </li><li>Do not &nbsp;allow any record that is already in its parent path to be expanded (stop cyclic references) <br>Example: &nbsp;Below "Dr. George Karlin" is not expandable because the record is already expanded. <br><br>If
 Centerpoint-&gt;Bangalore had children relationships that refered back
 to Centerpoint than that node would not be expandable. <br></li><li>Build
 in a configurable limits to the number of records to show under a node.
 &nbsp;If too many records would be shown then the tree would show a
-paginated table of the nodes and a select record button to show more
-nodes... &nbsp;For the session if a record is selected from that table
-it appears in the tree list and under <br><br>Nice to have would be the abliity to filter the table as follows:&nbsp;</li><ul><li>Names of destination records (optional)</li><li>Relationship searchable custom attributes (optional)</li></ul></ul><br><h4><span style="color: rgb(0, 102, 0);">Organization on tree</span></h4><br>The first two nodes on the tree are always<br><br><ul><li style="font-style: italic;">Domain of selected record</li><ul><li style="font-style: italic;">selected record</li></ul></ul><br>After that the data sbould be organized as follows<br><br><ul><li>Relationships (alphabetical)&nbsp;</li><ul><li>Domains&nbsp;</li></ul><ul><ul><li>Records&nbsp;</li></ul></ul></ul><br>Here is a more complete example than shown above. &nbsp; <br><br>Notice that Dr. George Karlin is not expandable under Centerpoint &lt;- Employed By. <br><br><img style="width: 301px; height: 710px;" alt="" src="../attach/RelByRecordTreeByRel.png"><br><br><h4><span style="color: rgb(0, 102, 0);">Alternate to Tree Look and Feel</span></h4><br>Go
+paginated table of the nodes and a More... &nbsp;button (for when the
+table is dismissed). For the session if a record is selected from that
+table
+it appears in the tree list and under the parent node prior to the
+More... button. <br><br>Nice to have would be the abliity to filter the table as follows: <br><br><ul><li>Names of destination records (optional)</li><li>Relationship attributes (optional)</li></ul>&nbsp;<br>Here is an example of what a simple implementation of &nbsp;too many nodes to show might look like:<br><br><img style="width: 499px; height: 317px;" alt="" src="../attach/TreeTooManyRecords.png"></li></ul><br><h4><span style="color: rgb(0, 102, 0);">Organization on tree</span></h4><br>The first two nodes on the tree are always<br><br><ul><li style="font-style: italic;">Domain of selected record</li><ul><li style="font-style: italic;">selected record</li></ul></ul><br>After that the data sbould be organized as follows<br><br><ul><li>Relationships (alphabetical)&nbsp;</li><ul><li>Domains&nbsp;</li></ul><ul><ul><li>Records&nbsp;</li></ul></ul></ul><br>Here is a more complete example than shown above. &nbsp; <br><br>Notice that Dr. George Karlin is not expandable under Centerpoint &lt;- Employed By. <br><br><img style="width: 301px; height: 710px;" alt="" src="../attach/RelByRecordTreeByRel.png"><br><br><h4><span style="color: rgb(0, 102, 0);">Alternate to Tree Look and Feel</span></h4><br>Go
 back to the box look as shown on the Story Board and add a "Make
 Current Record" option that would switch the current node to the
 selected node. <span style="font-weight: bold;"></span><br><br>The user could navigate back to the original record as it would be shown in one of the relationships in the boxes. <br><br>To see the&nbsp;<a href="ManRelByRecTable.html">Table Look and Feel</a> click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>. <br><h4><span style="color: rgb(0, 102, 0);">
