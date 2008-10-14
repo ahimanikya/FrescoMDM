@@ -11,7 +11,8 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script></head>
+</script>
+</head>
 <body class="view">
 <h1 class="pagename">Manage-&gt;Hierarchies-&gt;Maintain</h1>
 <p>Used to view and maintain an existing Record
@@ -26,18 +27,37 @@ domain
 hierarchy </li>
 <li> View details about a record within a hierarchy
 </li>
-<li> View the properties (fixed and extended
+<li> View the properties (fixed and custom
 attributes) associated with a hierarchy.</li>
+<li><a href="ManHeirMove.html">Move (re-arrange)
+records</a> <br />
+</li>
 </ul>
 <p>The screen allows a user to both view and maintain the
 record hierarchy. It also allows a user to view details about the
 records </p>
-<h2>Search Overlay&nbsp;</h2><span class="note-highlight"><span style="font-weight: bold;"><br />Note</span>: In this example, the Person domain has a field called 'Group'.
+<h2>Search Overlay&nbsp;</h2>
+<span class="note-highlight"><span style="font-weight: bold;"><br />
+Note</span>: In this example, the Person domain has a field
+called 'Group'.
 &nbsp;Thus the Group below is </span><span class="note-highlight" style="font-weight: bold;">not
-</span><span class="note-highlight">a group type but a field of the domain. <br /><br /></span><img style="width: 600px; height: 437px;" alt="" src="../attach/RecordHierSelDialog.png" /><br /><h2>1. Initial screen </h2>
-First time the screen is shown in a session. <br /><br /><br /><span class="note-highlight"><span style="font-weight: bold;">Note</span>: In this example, the Person domain has a field called 'Group'.
+</span><span class="note-highlight">a group type but
+a field of the domain. <br />
+<br />
+</span><img style="width: 600px; height: 437px;" alt="" src="../attach/RecordHierSelDialog.png" /><br />
+<br />
+<br />
+<br />
+<h2>1. Initial screen </h2>
+First time the screen is shown in a session. <br />
+<br />
+<br />
+<span class="note-highlight"><span style="font-weight: bold;">Note</span>: In this
+example, the Person domain has a field called 'Group'.
 &nbsp;Thus the Group below is </span><span class="note-highlight" style="font-weight: bold;">not
-</span><span class="note-highlight">a group type but a field of the domain. </span><br /><br />
+</span><span class="note-highlight">a group type but
+a field of the domain. </span><br />
+<br />
 <p>The use case shown here is to locate the manager for the
 group called 'Mural' and finding out information about the people that
 work for him. &nbsp; </p>
@@ -46,30 +66,37 @@ belongs to the group Mural. </p>
 <p>The screen here only shows three record fields. However
 it might have been defined to also show additional fields such as a
 primary role of a person. </p>
-<p>The user selects the desired record or cancels the search overlay dialog.</p><p><img style="width: 1016px; height: 773px;" alt="" src="../attach/RecordHierarchyViewS1.png" /></p><br />
-<br /><br /><br />
-<h2>2. Screen if Cancel is selected and no Hierarchy was ever chosen</h2>
+<p>The user selects the desired record or cancels the search
+overlay dialog.</p>
+<p><img style="width: 1016px; height: 773px;" alt="" src="../attach/RecordHierarchyViewS1.png" /></p>
+<br />
+<br />
+<br />
+<br />
+<h2>2. Screen if Cancel is selected and no Hierarchy was ever
+chosen</h2>
 <ul>
 </ul>
-<p><span class="note-highlight"><span style="font-weight: bold;"><br /></span></span><span class="note-highlight"><span style="font-weight: bold;">Note</span>:
+<p><span class="note-highlight"><span style="font-weight: bold;"><br />
+</span></span><span class="note-highlight"><span style="font-weight: bold;">Note</span>:
 The box areas are a nice to have feature. &nbsp;At a mininimum the
 areas that show the details and the hierarchy attributes should be
-hidden and the title on the left hand side should be shown.</span></p><p><span class="note-highlight"></span><span class="note-highlight"></span> </p>
+hidden and the title on the left hand side should be shown.</span></p>
+<p><span class="note-highlight"></span><span class="note-highlight"></span> </p>
 <span style="color: green;"> <b><img style="width: 1010px; height: 770px;" alt="" src="../attach/RecordHierarchyViewS2.png" /><br />
 </b></span>
-<p></p><br /><h2> 3. View Initial record</h2>
+<p></p>
+<br />
+<h2> 3. View Initial record</h2>
 <p>Displays information about a record selected from the
-search screen. &nbsp;</p><p>In this case "Suhanto Wihardja" was selected. &nbsp; I</p><p></p><p><span class="note-highlight" style="font-weight: bold;">Note: </span><span class="note-highlight">If the root node option was selected the the first node in the hierarchy (if any) is shown. </span></p>
+search screen. &nbsp;</p>
+<p>In this case "Suhanto Wihardja" was selected. &nbsp; I</p>
+<p></p>
+<p><span class="note-highlight" style="font-weight: bold;">Note: </span><span class="note-highlight">If the root node option was selected
+the the first node in the hierarchy (if any) is shown. </span></p>
 <p> <img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS3.png" /></p>
 <p></p>
-<table class="imageplugin" align="center" border="0">
-<tbody>
-<tr>
-<td><br /></td>
-</tr>
-</tbody>
-</table>
-
+<br />
 <p>The specific hierarchy that is displayed is determined
 by the currently selected access control for the user. <span style="color: green;"> <b>Note:</b></span>
 In other words a hierarchy is associated with an access control and not
@@ -101,18 +128,54 @@ that we need to show a lock by a relationship and show it in view only
 mode if two different users try to switch to a access control role that
 would normally allow updating of the model.<br />
 </li>
-</ul><br />
+</ul>
+<br />
 <h2>4. Show selected child record</h2>
 <p>Here we show the result of selecting <b>Andrea
-Kendall</b> from the above screen. Notice that the screen both shows information about
+Kendall</b> from the above screen. Notice that the screen both
+shows information about
 the selected record and just enough information to help determine other
 records of interest. </p>
-<p>Also notice that there will only every be one parent in the record detail area. </p>
-<p></p><img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS4.png" /><br /><br /><h2>Misc. Dialogs</h2><h3>Find Dialog</h3><br />Find the next / previous record on the tree. &nbsp;<br /><br /><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png" /><br /><br /><h3>Add Dialog</h3><br />Brings up search the Add Records to Hierarchy dialog<br /><br />Note: The example does not show the expected search screen nor attributes for this example. <br /><br /><img style="width: 999px; height: 544px;" alt="" src="../attach/HierAddRecord.PNG" /><br /><br /><h3>Move Dialog</h3><br />Bring up a dialog that searches for the record to move the selected nodes under.<br /><br />A
+<p>Also notice that there will only every be one parent in the
+record detail area. </p>
+<p></p>
+<img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS4.png" /><br />
+<br />
+<h2>Misc. Dialogs</h2>
+<h3>Find Dialog</h3>
+<br />
+Find the next / previous record on the tree. &nbsp;<br />
+<br />
+<img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png" /><br />
+<br />
+<h3>Add Dialog</h3>
+<br />
+Brings up search the Add Records to Hierarchy dialog<br />
+<br />
+Note: The example does not show the expected search screen nor
+attributes for this example. <br />
+<br />
+<img style="width: 999px; height: 544px;" alt="" src="../attach/HierAddRecord.PNG" /><br />
+<br />
+<h3>Move Dialog</h3>
+<br />
+Bring up a dialog that searches for the record to move the selected
+nodes under.<br />
+<br />
+A
 better implemenation if we have time would be to change this to a
 "Move" toggle button. &nbsp;If selected the right hand details area
 would be replaced with duplicate of the current hierarchy tree with the
-"Find Record..." button above the tree.<br /><br />A user would be able to drag nodes from the hierarchy to the new tree on the left.&nbsp; &nbsp;<br /><hr style="width: 100%; height: 2px;" />
+"Find Record..." button above the tree.<br />
+<br />
+A user would be able to drag nodes from the hierarchy to the new tree
+on the left.&nbsp; &nbsp;<br />
+<br />
+<h2>Alternate Look of tree with "Show Move&gt;&gt;" option</h2>
+<br />
+The following shows the look of the tree with a&nbsp;<a href="ManHeirMove.html"><button name="ShowMove" type="button">Show Move &gt;&gt;</button></a> option. <br />
+<br />
+<hr style="width: 100%; height: 2px;" />
 <ul>
 </ul>
 <table class="main" border="0" cellpadding="0" cellspacing="0">

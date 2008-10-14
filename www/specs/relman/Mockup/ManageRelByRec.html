@@ -131,7 +131,37 @@ a wireframe model of the screen</span><br>
 <br>
 <img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br>
 <span style="font-weight: bold;"></span>. <br>
-<h3>Find Dialog</h3><br>A typical find dialog such as the following.<br><br><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png"><br><br><br>
+<h3>Find Dialog</h3><br>A typical find dialog such as the following.<br><br><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png"><br><br><h3>Move Dialog</h3>
+&nbsp;<br>If records are selected brings up a dialog that allows the
+selection of a relationship associated with the domain of the selected
+record. &nbsp; &nbsp;Selection of nodes for the move are limted to
+records in the same domain. &nbsp;I.E. the Move option is grayed out if
+records in different domains are selected<br><br>If a domain is
+selected brings up a dialog that allows the selection of another record
+in the same domain as the parent record of the relationship. &nbsp;<br>Example:&nbsp;Dr.
+George Karlin &gt; Associate Of &gt; UK Doctor is selected.&nbsp; The
+Move Dialog brings up a Move "Associate Of" dialog with the option to
+select a new UK Patient record. &nbsp;All the records in this node are
+now re-assigned to the new record. &nbsp; &nbsp;An example use case is
+that the job perfomred by Dr. George Karlin&nbsp; that made him
+&nbsp;an Associated of the UK Doctors is now performed by a different
+patient. &nbsp;<br><br><h2>Alternate Look of tree with "Show Move&gt;&gt;" option</h2>
+<br>
+The following shows the look of the Manage Hierarchy tree with a&nbsp;<a href="ManHeirMove.html"><button name="ShowMove" type="button">Show Move &gt;&gt;</button></a> option. &nbsp;The look of the Relationship Tree would be very similiar. &nbsp; <br><br>The
+difference is that when the "Show Move" option is on the user is only
+allowed to multi-select nodes children nodes. &nbsp;Similiarly the user
+can only move the records to another relationship associated with the
+same domain. &nbsp; (For example, the user can not move UKPatient
+records to the Company domain) <br><br>Also a user may move all the
+records under a relationship by selecting a domain under a relationship
+on one side of the tree and a record belonging to the domain of the
+relationship. &nbsp; Example: Dr. George Karlin &gt; Associate Of &gt;
+UK Doctor is selected on the left hand tree and dragged to Centerpoint
+&gt; Employed By &gt; Fred Smith. &nbsp; &nbsp;After the drag all the
+records under Dr. George Karlin &gt; Associate Of &gt; UK Doctor are
+now shown as "Fred Smith &gt; Associate Of &gt; UK Doctor". <br><br>Note:
+the details of the move for the Relationships may have to be worked on,
+so Show Move is a nice to have feature for the Relationship. <br><br>
 <div class="pageactions"><i>This page lastchanged on
 01-Oct-2008 13:40:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
