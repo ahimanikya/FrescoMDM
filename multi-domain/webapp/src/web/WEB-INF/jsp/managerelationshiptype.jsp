@@ -51,7 +51,7 @@
                 dwr.util.addRows("types", data, cellfuncs, {escapeHtml:false});
             }
             function clickAdd() {
-                relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
+                relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product", attributes:[{name:"foo"}]};
                 alert("add new relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
                 RelationshipTypeHandler.addRelationshipType(relationshiptype, clickAddCB);
             }
@@ -85,6 +85,7 @@
               function(data) { return data.displayName; },
               function(data) { return data.sourceDomain; },
               function(data) { return data.targetDomain; },
+              function(data) { return data.attributes[0].name; },              
               function(data) { return "<input id='edit' type='button' value='Edit' onclick='clickEdit(this.id)' />"; },
               function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
             ];
@@ -138,6 +139,7 @@
                 <th>DisplayName</th>
                 <th>SourceDomain</th>
                 <th>TargetDomain</th>
+                <th>Attribute</th>                
                 <th>Action</th>
                 <th>Action</th>                
             </tr>
