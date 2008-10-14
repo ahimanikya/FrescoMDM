@@ -26,6 +26,10 @@
      	<param-name>debug</param-name>
      	<param-value>true</param-value>
   	</init-param>
+  	<init-param>
+     	<param-name>maxCallCount</param-name>
+     	<param-value>20</param-value>
+  	</init-param>        
     </servlet>
 
     <servlet-mapping>
