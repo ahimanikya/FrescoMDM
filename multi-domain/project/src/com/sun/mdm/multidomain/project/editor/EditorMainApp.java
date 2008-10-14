@@ -129,12 +129,26 @@ public class EditorMainApp {
         return instance;
     }
     
+    
+    public void addRelationshpNode(String domain1, String domain2) {
+        RelationshipNode relationshipNode = new RelationshipNode(this, domain1, domain2);
+        this.mAlRelationshipNodes.add(relationshipNode);
+    }
+
+    public void adddRelationshipNode(RelationshipNode relationshipNode) {
+        this.mAlRelationshipNodes.add(relationshipNode);
+    }
+    
+    public void deleteRelationshipNode(RelationshipNode relationshipNode) {
+        this.mAlRelationshipNodes.remove(relationshipNode);
+    }
+    
     private void loadRelationships() {
         //mAlRelationshipNodes
         ArrayList <Relationship> alRelationships = mRelationshipModel.getAllRelationships();
         for (int i=0; alRelationships!=null && i<alRelationships.size(); i++) {
             Relationship relationship = (Relationship) alRelationships.get(i);
-            RelationshipNode node = new RelationshipNode(relationship.getDomain1(), relationship.getDomain2());
+            RelationshipNode node = new RelationshipNode(this, relationship.getDomain1(), relationship.getDomain2());
             //create RelationshipTypeNode list
             ArrayList <RelationshipType> alRelationshipTypes = relationship.getAllRelationshipTypes();
             for (int j=0; alRelationshipTypes!=null && j<alRelationshipTypes.size(); j++) {
@@ -244,7 +258,7 @@ public class EditorMainApp {
      * @param domainName
      * @return
      */
-    public boolean removeDomain(String domainName) {
+    public boolean deleteDomain(String domainName) {
         boolean removed = false;
         if (mMapDomainObjectXmls.containsKey(domainName)) {
             try {
@@ -264,10 +278,6 @@ public class EditorMainApp {
             }
         }
         return removed;
-    }
-    
-    public void addRelationshp(String domain1, String domain2) {
-        
     }
 
     /**

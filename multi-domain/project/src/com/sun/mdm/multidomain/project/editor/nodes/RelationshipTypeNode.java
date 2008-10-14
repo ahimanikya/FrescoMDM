@@ -32,6 +32,8 @@ package com.sun.mdm.multidomain.project.editor.nodes;
 
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.NodeAdapter;
+import org.openide.nodes.NodeEvent;
 //import org.openide.nodes.CookieSet;
 import org.openide.util.Lookup;
 
@@ -45,6 +47,7 @@ import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
 public class RelationshipTypeNode extends AbstractNode {
     RelationshipNode mParentRelationshipNode;
     RelationshipType mRelationshipType;
+    RelationshipTypeNode mRelationshipTypeNode;
     String mRelationshipTypeName;
     TabRelationshipWebManager mTabRelationshipWebManager = null;
     
@@ -69,6 +72,14 @@ public class RelationshipTypeNode extends AbstractNode {
         super(Children.LEAF);
         mParentRelationshipNode = parentRelationshipNode;
         mRelationshipType = relationshipType;
+        mRelationshipTypeNode = this;
+        addNodeListener(new NodeAdapter() {
+            @Override
+            public void nodeDestroyed(NodeEvent ev) {
+                //ToDo - notify EditorMainApp
+                mParentRelationshipNode.deleteRelationshipTypeNode(mRelationshipTypeNode);
+            }
+        });
     }
 
     /**

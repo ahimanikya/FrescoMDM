@@ -46,6 +46,8 @@ import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.CookieSet;
 import org.openide.nodes.Sheet;
+import org.openide.nodes.NodeAdapter;
+import org.openide.nodes.NodeEvent;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 import org.openide.util.lookup.AbstractLookup;
@@ -118,7 +120,13 @@ public class DomainNode extends AbstractNode {
         mSelectedDomain = selectedDomain;
         
         loadMiObjectNodes();
-        loadRelationshipTypes(alRelationshipTypes);
+        loadRelationshipTypes(domainName, alRelationshipTypes);
+        addNodeListener(new NodeAdapter() {
+            @Override
+            public void nodeDestroyed(NodeEvent ev) {
+                //ToDo - notify EditorMainApp
+            }
+        });
     }
 
     /**
@@ -216,9 +224,9 @@ public class DomainNode extends AbstractNode {
     /** Update alRelationshipTypes and mTabListRelationshipTypes
      * 
      */
-    public void loadRelationshipTypes(ArrayList <RelationshipType> alRelationshipTypes) {
+    public void loadRelationshipTypes(String domainName, ArrayList <RelationshipType> alRelationshipTypes) {
         this.alRelationshipTypes = alRelationshipTypes;
-        mTabListRelationshipTypes = new TabListRelationshipTypes(this.alRelationshipTypes);
+        mTabListRelationshipTypes = new TabListRelationshipTypes(domainName, this.alRelationshipTypes);
     }
     
     public TabListRelationshipTypes getTabListRelationshipTypes() {

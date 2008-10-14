@@ -34,20 +34,37 @@ import com.sun.mdm.multidomain.parser.RelationshipType;
  * @author  kkao
  */
 public class TabListRelationshipTypes extends javax.swing.JPanel {
-
+    String mDomainName;
+    ArrayList <RelationshipType> mAlRelationshipTypes;
     /** Creates new form TabRelationshipTypes */
-    public TabListRelationshipTypes(ArrayList <RelationshipType> alRelationshipTypes) {
+    public TabListRelationshipTypes(String domainName, ArrayList <RelationshipType> alRelationshipTypes) {
         initComponents();
-        
+        mDomainName = domainName;
+        mAlRelationshipTypes = alRelationshipTypes;
+        this.jTextFieldDomainName.setText(mDomainName);
+        jComboBoxAssociatedDomains.removeAllItems();
+        jComboBoxAssociatedDomains.addItem(org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "All_Domains"));
         //Load relationship type list
         ArrayList rows = new ArrayList();
-        for (int i=0; alRelationshipTypes != null && i < alRelationshipTypes.size(); i++) {
-            RelationshipType type = alRelationshipTypes.get(i);
+        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
+            RelationshipType type = mAlRelationshipTypes.get(i);
+            String sourceDomain = type.getSourceDomain();
+            String targetDomain = type.getTargetDomain();
+            String domainWithRelationship = (mDomainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
+            jComboBoxAssociatedDomains.addItem(domainWithRelationship);
             RelationshipTypeRow r = new RelationshipTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
             rows.add(r);
         }
+        jComboBoxAssociatedDomains.setSelectedIndex(0);
         TableModelRelationshipType model = new TableModelRelationshipType(rows);
         this.jTableRelationshipTypes.setModel(model);
+        
+        jComboBoxAssociatedDomains.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                onDomainsItemStateChanged(evt);
+            }
+        });
+
 
     }
 
@@ -60,11 +77,32 @@ public class TabListRelationshipTypes extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextFieldDomainName = new javax.swing.JTextField();
+        jLabelDomainName = new javax.swing.JLabel();
+        jLabelAssociated = new javax.swing.JLabel();
+        jComboBoxAssociatedDomains = new javax.swing.JComboBox();
         jScrollPaneRelationshipTypes = new javax.swing.JScrollPane();
         jTableRelationshipTypes = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Relationship_Types"))); // NOI18N
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(null);
+
+        jTextFieldDomainName.setText(org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "TabListRelationshipTypes.jTextFieldDomainName.text")); // NOI18N
+        jTextFieldDomainName.setEnabled(false);
+        add(jTextFieldDomainName);
+        jTextFieldDomainName.setBounds(120, 20, 110, 20);
+
+        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Domain")); // NOI18N
+        add(jLabelDomainName);
+        jLabelDomainName.setBounds(10, 20, 39, 14);
+        jLabelDomainName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "TabListRelationshipTypes.jLabelDomainName.AccessibleContext.accessibleName")); // NOI18N
+
+        jLabelAssociated.setText(org.openide.util.NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Associated_Domains")); // NOI18N
+        add(jLabelAssociated);
+        jLabelAssociated.setBounds(10, 50, 99, 14);
+
+        add(jComboBoxAssociatedDomains);
+        jComboBoxAssociatedDomains.setBounds(120, 50, 110, 20);
 
         jTableRelationshipTypes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,13 +114,34 @@ public class TabListRelationshipTypes extends javax.swing.JPanel {
         ));
         jScrollPaneRelationshipTypes.setViewportView(jTableRelationshipTypes);
 
-        add(jScrollPaneRelationshipTypes, new java.awt.GridBagConstraints());
+        add(jScrollPaneRelationshipTypes);
+        jScrollPaneRelationshipTypes.setBounds(10, 90, 380, 230);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void onDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
+        String domainSelected = (String) jComboBoxAssociatedDomains.getSelectedItem();
+        TableModelRelationshipType model = (TableModelRelationshipType) jTableRelationshipTypes.getModel();
+        model.rows.clear();
+        int index = 0;
+        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
+            RelationshipType type = mAlRelationshipTypes.get(i);
+            String sourceDomain = type.getSourceDomain();
+            String targetDomain = type.getTargetDomain();
+            boolean associated = (domainSelected.equals(sourceDomain)) | (domainSelected.equals(targetDomain));
+            if (jComboBoxAssociatedDomains.getSelectedIndex() == 0 || associated) {
+                RelationshipTypeRow r = new RelationshipTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
+                model.addRow(index++, r);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox jComboBoxAssociatedDomains;
+    private javax.swing.JLabel jLabelAssociated;
+    private javax.swing.JLabel jLabelDomainName;
     private javax.swing.JScrollPane jScrollPaneRelationshipTypes;
     private javax.swing.JTable jTableRelationshipTypes;
+    private javax.swing.JTextField jTextFieldDomainName;
     // End of variables declaration//GEN-END:variables
     
     class RelationshipTypeRow {

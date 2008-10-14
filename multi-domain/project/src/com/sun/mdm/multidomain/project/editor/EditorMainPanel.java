@@ -153,7 +153,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //setCurrentDomainNode
         //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
         DomainNode node = this.mEditorMainApp.getDomainNode(null);
-        TabListRelationshipTypes tab = new TabListRelationshipTypes(null);
+        TabListRelationshipTypes tab = new TabListRelationshipTypes(node.getName(), null);
         if (node != null) {
             tab = node.getTabListRelationshipTypes();
         }

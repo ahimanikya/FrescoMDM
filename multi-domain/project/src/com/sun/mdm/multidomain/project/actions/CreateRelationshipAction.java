@@ -84,7 +84,8 @@ public class CreateRelationshipAction extends CookieAction {
     }
     
     public void perform(final EditorMainApp editorMainApp) {
-        //editorMainApp.addRelationship(domain1, domain2);
+        //ToDo - domain1 and domain2
+        editorMainApp.addRelationshpNode(DEFAULT, DEFAULT);
     }
     /**
      * Performs the cookie action for the selected node.

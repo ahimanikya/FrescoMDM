@@ -32,17 +32,21 @@ package com.sun.mdm.multidomain.project.editor.nodes;
 
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.NodeAdapter;
+import org.openide.nodes.NodeEvent;
 import org.openide.util.Lookup;
 
 import java.util.ArrayList;
 
 import com.sun.mdm.multidomain.parser.RelationshipType;
-
+import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 /**
  *
  * @author kkao
  */
 public class RelationshipNode extends AbstractNode {
+    EditorMainApp mEditorMainApp;
+    RelationshipNode mRelationshipNode;
     String domain1;
     String domain2;
     ArrayList <RelationshipTypeNode> alRelationshipTypeNodes = new ArrayList();
@@ -59,10 +63,18 @@ public class RelationshipNode extends AbstractNode {
         super(arg0);
     }
     
-    public RelationshipNode(String domain1, String domain2) {
+    public RelationshipNode(EditorMainApp editorMainApp, String domain1, String domain2) {
         super(Children.LEAF);
+        mEditorMainApp = editorMainApp;
+        mRelationshipNode = this;
         this.domain1 = domain1;
         this.domain2 = domain2;
+        addNodeListener(new NodeAdapter() {
+            @Override
+            public void nodeDestroyed(NodeEvent ev) {
+                mEditorMainApp.deleteRelationshipNode(mRelationshipNode);
+            }
+        });
     }
     
     /**
