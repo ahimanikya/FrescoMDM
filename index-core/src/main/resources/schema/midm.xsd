@@ -39,6 +39,7 @@
     <xs:element name="initial-screen-id" type="idOrderType"/>
     <xs:element name="screen-id" type="idOrderType"/>
     <xs:element name="display-order" type="idOrderType"/>
+    <xs:element name="merge-must-delete" type="xs:boolean"/>
     <xs:element name="max-length" type="xs:positiveInteger"/>
     <xs:element name="gui-type" type="xs:string"/>
     <xs:element name="value-list" type="xs:string"/>
@@ -73,6 +74,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="name"/>
+                <xs:element ref="display-order" minOccurs="0"/>
+                <xs:element ref="merge-must-delete" minOccurs="0"/>
                 <xs:element ref="field" minOccurs="1" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
