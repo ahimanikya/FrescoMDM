@@ -176,16 +176,16 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
 
                 while (rSet.next()) {
                     ret.setTransactionNumber(getValue(rSet,
-                            "TransactionNumber", "String"));
+                            "TRANSACTIONNUMBER", "String"));
                     ret.setLID1(getValue(rSet, "LID1", "String"));
                     ret.setLID2(getValue(rSet, "LID2", "String"));
                     ret.setEUID1(getValue(rSet, "EUID1", "String"));
                     ret.setEUID2(getValue(rSet, "EUID2", "String"));
-                    ret.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    ret.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     ret.setFunction(getValue(rSet, mOperationColumnName, "String"));
-                    ret.setTimeStamp(getValue(rSet, "TimeStamp", "Timestamp"));
-                    ret.setDelta(getValue(rSet, "Delta", "Blob"));
-                    ret.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    ret.setTimeStamp(getValue(rSet, "TIMESTAMP", "Timestamp"));
+                    ret.setDelta(getValue(rSet, "DELTA", "Blob"));
+                    ret.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     ret.setLID(getValue(rSet, "LID", "String"));
                     ret.setEUID(getValue(rSet, "EUID", "String"));
                 }
@@ -250,15 +250,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     tObj = new TransactionObject();
 
                     tObj.setTransactionNumber(getValue(rSet,
-                            "TransactionNumber", "String"));
+                            "TRANSACTIONNUMBER", "String"));
                     tObj.setLID1(getValue(rSet, "LID1", "String"));
                     tObj.setLID2(getValue(rSet, "LID2", "String"));
                     tObj.setEUID1(getValue(rSet, "EUID1", "String"));
                     tObj.setEUID2(getValue(rSet, "EUID2", "String"));
-                    tObj.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    tObj.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     tObj.setFunction(getValue(rSet, mOperationColumnName, "String"));
-                    tObj.setTimeStamp(getValue(rSet, "TimeStamp", "Timestamp"));
-                    tObj.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    tObj.setTimeStamp(getValue(rSet, "TIMESTAMP", "Timestamp"));
+                    tObj.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     tObj.setLID(getValue(rSet, "LID", "String"));
                     tObj.setEUID(getValue(rSet, "EUID", "String"));
                 }
@@ -363,15 +363,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 while (rSet.next()) {
                     TransactionObject tObj = new TransactionObject();
                     tObj.setTransactionNumber(getValue(rSet,
-                            "TransactionNumber", "String"));
+                            "TRANSACTIONNUMBER", "String"));
                     tObj.setLID1(getValue(rSet, "LID1", "String"));
                     tObj.setLID2(getValue(rSet, "LID2", "String"));
                     tObj.setEUID1(getValue(rSet, "EUID1", "String"));
                     tObj.setEUID2(getValue(rSet, "EUID2", "String"));
-                    tObj.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    tObj.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     tObj.setFunction(getValue(rSet, mOperationColumnName, "String"));
-                    tObj.setTimeStamp(getValue(rSet, "TimeStamp", "Timestamp"));
-                    tObj.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    tObj.setTimeStamp(getValue(rSet, "TIMESTAMP", "Timestamp"));
+                    tObj.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     tObj.setLID(getValue(rSet, "LID", "String"));
                     tObj.setEUID(getValue(rSet, "EUID", "String"));
                     tObj.reset();
@@ -507,15 +507,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 while (rSet.next()) {
                     TransactionObject tObj = new TransactionObject();
                     tObj.setTransactionNumber(getValue(rSet,
-                            "TransactionNumber", "String"));
+                            "TRANSACTIONNUMBER", "String"));
                     tObj.setLID1(getValue(rSet, "LID1", "String"));
                     tObj.setLID2(getValue(rSet, "LID2", "String"));
                     tObj.setEUID1(getValue(rSet, "EUID1", "String"));
                     tObj.setEUID2(getValue(rSet, "EUID2", "String"));
-                    tObj.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    tObj.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     tObj.setFunction(getValue(rSet, mOperationColumnName, "String"));
-                    tObj.setTimeStamp(getValue(rSet, "TimeStamp", "Timestamp"));
-                    tObj.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    tObj.setTimeStamp(getValue(rSet, "TIMESTAMP", "Timestamp"));
+                    tObj.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     tObj.setLID(getValue(rSet, "LID", "String"));
                     tObj.setEUID(getValue(rSet, "EUID", "String"));
                     if (euid.equals(tObj.getEUID())) {
@@ -617,15 +617,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 while (rSet.next()) {
                     TransactionObject tObj = new TransactionObject();
                     tObj.setTransactionNumber(getValue(rSet,
-                            "TransactionNumber", "String"));
+                            "TRANSACTIONNUMBEr", "String"));
                     tObj.setLID1(getValue(rSet, "LID1", "String"));
                     tObj.setLID2(getValue(rSet, "LID2", "String"));
                     tObj.setEUID1(getValue(rSet, "EUID1", "String"));
                     tObj.setEUID2(getValue(rSet, "EUID2", "String"));
-                    tObj.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    tObj.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     tObj.setFunction(getValue(rSet, mOperationColumnName, "String"));
-                    tObj.setTimeStamp(getValue(rSet, "TimeStamp", "Timestamp"));
-                    tObj.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    tObj.setTimeStamp(getValue(rSet, "TIMESTAMP", "Timestamp"));
+                    tObj.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     tObj.setLID(getValue(rSet, "LID", "String"));
                     tObj.setEUID(getValue(rSet, "EUID", "String"));
                     if (euid.equals(tObj.getEUID())) {
@@ -787,15 +787,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
 
                 while (rSet.next()) {
                     TransactionObject t = new TransactionObject();
-                    t.setTransactionNumber(getValue(rSet, "TransactionNumber", "String"));
+                    t.setTransactionNumber(getValue(rSet, "TRANSACTIONNUMBER", "String"));
                     t.setLID1(getValue(rSet, "LID1", "String"));
                     t.setLID2(getValue(rSet, "LID2", "String"));
                     t.setEUID1(getValue(rSet, "EUID1", "String"));
                     t.setEUID2(getValue(rSet, "EUID2", "String"));
-                    t.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    t.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     t.setFunction(getValue(rSet, mOperationColumnName, "String"));
-                    t.setTimeStamp(getValue(rSet, "TimeStamp", "Timestamp"));
-                    t.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    t.setTimeStamp(getValue(rSet, "TIMESTAMP", "Timestamp"));
+                    t.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     t.setLID(getValue(rSet, "LID", "String"));
                     t.setEUID(getValue(rSet, "EUID", "String"));
                     t.reset();
@@ -882,15 +882,15 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 while (rSet.next()) {
                     TransactionObject tObj = new TransactionObject();
                     tObj.setTransactionNumber(getValue(rSet,
-                            "TransactionNumber", "String"));
+                            "TRANSACTIONNUMBER", "String"));
                     tObj.setLID1(getValue(rSet, "LID1", "String"));
                     tObj.setLID2(getValue(rSet, "LID2", "String"));
                     tObj.setEUID1(getValue(rSet, "EUID1", "String"));
                     tObj.setEUID2(getValue(rSet, "EUID2", "String"));
-                    tObj.setSystemUser(getValue(rSet, "SystemUser", "String"));
+                    tObj.setSystemUser(getValue(rSet, "SYSTEMUSER", "String"));
                     tObj.setFunction(getValue(rSet, mOperationColumnName, "String"));
                     tObj.setTimeStamp(rSet.getTimestamp("TIMESTAMP"));
-                    tObj.setSystemCode(getValue(rSet, "SystemCode", "String"));
+                    tObj.setSystemCode(getValue(rSet, "SYSTEMCODE", "String"));
                     tObj.setLID(getValue(rSet, "LID", "String"));
                     tObj.setEUID(getValue(rSet, "EUID", "String"));
                     if (euid.equals(tObj.getEUID())) {

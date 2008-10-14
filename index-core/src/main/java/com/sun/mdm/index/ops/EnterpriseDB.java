@@ -54,23 +54,23 @@ public final class EnterpriseDB extends ObjectPersistenceService {
     
     static {
         mSelectString =
-              "       select \n" 
-            + "               euid, \n" 
-            + "               systemcode, \n" 
-            + "               lid \n" 
-            + "       from \n" 
-            + "               sbyn_enterprise \n" 
-            + "       where \n" 
-            + "               euid = ? \n";
+              "       SELECT \n" 
+            + "               EUID, \n" 
+            + "               SYSTEMCODE, \n" 
+            + "               LID \n" 
+            + "       FROM \n" 
+            + "               SBYN_ENTERPRISE \n" 
+            + "       WHERE \n" 
+            + "               EUID = ? \n";
 
         mInsertString =
-              "       insert into sbyn_enterprise \n" 
+              "       INSERT INTO SBYN_ENTERPRISE \n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               systemcode, \n" 
-            + "               lid \n" 
+            + "               EUID, \n" 
+            + "               SYSTEMCODE, \n" 
+            + "               LID \n" 
             + "       ) \n" 
-            + "       values \n" 
+            + "       VALUES \n" 
             + "       ( \n" 
             + "               ?, \n" 
             + "               ?, \n" 
@@ -78,20 +78,20 @@ public final class EnterpriseDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mUpdateString =
-              "       update sbyn_enterprise \n" 
-            + "       set \n" 
-            + "               euid = ?, \n" 
-            + "               systemcode = ?, \n" 
-            + "               lid = ?, \n" 
-            + "       where \n" 
-            + "               euid = ? \n";
+              "       UPDATE SBYN_ENTERPRISE \n" 
+            + "       SET \n" 
+            + "               EUID = ?, \n" 
+            + "               SYSTEMCODE = ?, \n" 
+            + "               LID = ?, \n" 
+            + "       WHERE \n" 
+            + "               EUID = ? \n";
 
         mDeleteString =
-              "       delete from sbyn_enterprise \n" 
-            + "       where \n" 
-            + "               euid = ? and \n" 
-            + "               systemcode = ? and \n" 
-            + "               lid = ? \n";
+              "       DELETE FROM SBYN_ENTERPRISE \n" 
+            + "       WHERE \n" 
+            + "               EUID = ? AND \n" 
+            + "               SYSTEMCODE = ? AND \n" 
+            + "               LID = ? \n";
     }
 
     /** default constructor

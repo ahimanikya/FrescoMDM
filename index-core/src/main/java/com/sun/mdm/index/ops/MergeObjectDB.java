@@ -48,15 +48,15 @@ public final class MergeObjectDB extends ObjectPersistenceService {
     
     static {
         mInsertString =
-              "       insert into sbyn_merge         \n" 
+              "       INSERT INTO SBYN_MERGE         \n" 
             + "       ( \n" 
-            + "               merge_id, \n" 
-            + "               kept_euid, \n" 
-            + "               merged_euid, \n" 
-            + "               merge_transactionnum, \n" 
-            + "               unmerge_transactionnum \n" 
+            + "               MERGE_ID, \n" 
+            + "               KEPT_EUID, \n" 
+            + "               MERGED_EUID, \n" 
+            + "               MERGE_TRANSACTIONNUM, \n" 
+            + "               UNMERGE_TRANSACTIONNUM \n" 
             + "       ) \n" 
-            + "       values \n" 
+            + "       VALUES \n" 
             + "       ( \n" 
             + "               ?, \n" 
             + "               ?, \n" 
@@ -66,37 +66,37 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mUpdateString =
-              "       update sbyn_merge         \n" 
-            + "       set \n" 
-            + "               unmerge_transactionnum = ? \n" 
-            + "       where \n" 
-            + "               unmerge_transactionnum IS NULL and \n"
-            + "               kept_euid = ? and \n"
-            + "               merged_euid = ? \n";
+              "       UPDATE SBYN_MERGE         \n" 
+            + "       SET \n" 
+            + "               UNMERGE_TRANSACTIONNUM = ? \n" 
+            + "       WHERE \n" 
+            + "               UNMERGE_TRANSACTIONNUM IS NULL AND \n"
+            + "               KEPT_EUID = ? AND \n"
+            + "               MERGED_EUID = ? \n";
         mUpdateString2 =
-              "       update sbyn_merge         \n" 
-            + "       set \n" 
-            + "               unmerge_transactionnum = ? \n" 
-            + "       where \n" 
-            + "               unmerge_transactionnum IS NULL and \n"
-            + "               merge_transactionnum = ? \n";  
+              "       UPDATE SBYN_MERGE         \n" 
+            + "       SET \n" 
+            + "               UNMERGE_TRANSACTIONNUM = ? \n" 
+            + "       WHERE \n" 
+            + "               UNMERGE_TRANSACTIONNUM IS NULL AND \n"
+            + "               MERGE_TRANSACTIONNUM = ? \n";  
         mUpdateString3 =
-              "       update sbyn_merge         \n" 
-            + "       set \n" 
-            + "               unmerge_transactionnum = ? \n" 
-            + "       where \n" 
-            + "               unmerge_transactionnum IS NULL and \n"
-            + "               merge_transactionnum = ? and \n"
-            + "               kept_euid = ? \n";
+              "       UPDATE SBYN_MERGE         \n" 
+            + "       SET \n" 
+            + "               UNMERGE_TRANSACTIONNUM = ? \n" 
+            + "       WHERE \n" 
+            + "               UNMERGE_TRANSACTIONNUM IS NULL AND \n"
+            + "               MERGE_TRANSACTIONNUM = ? AND \n"
+            + "               KEPT_EUID = ? \n";
         mUpdateString4 =
-              "       update sbyn_merge         \n" 
-            + "       set \n" 
-            + "               unmerge_transactionnum = ? \n" 
-            + "       where \n" 
-            + "               unmerge_transactionnum IS NULL and \n"
-            + "               merge_transactionnum = ? and \n"
-            + "               kept_euid = ? and \n"
-            + "               merged_euid = ? \n";
+              "       UPDATE SBYN_MERGE         \n" 
+            + "       SET \n" 
+            + "               UNMERGE_TRANSACTIONNUM = ? \n" 
+            + "       WHERE \n" 
+            + "               UNMERGE_TRANSACTIONNUM IS NULL AND \n"
+            + "               MERGE_TRANSACTIONNUM = ? AND \n"
+            + "               KEPT_EUID = ? AND \n"
+            + "               MERGED_EUID = ? \n";
 
     }
 

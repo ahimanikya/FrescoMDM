@@ -67,25 +67,25 @@ public class MySQLAdapter extends DBAdapter {
      * @return  Select statement for TransactionObjectDB.
      */
     String getTransObjSelectStmt() {
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" + 
-                "    euid2, \n" +
-                "    function, \n" + 
-                "    systemuser, \n" + 
-                "    timestamp, \n" + 
-                "    delta, \n" + 
-                "    systemcode, \n" +
-                "    lid, \n" + 
-                "    euid \n" +
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" +
-                "    transactionnumber = ? \n" + 
-                "order by \n" + 
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" + 
+                "    EUID2, \n" +
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" + 
+                "    TIMESTAMP, \n" + 
+                "    DELTA, \n" + 
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" + 
+                "    EUID \n" +
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" +
+                "    TRANSACTIONNUMBER = ? \n" + 
+                "ORDER BY \n" + 
+                "    TRANSACTIONNUMBER DESC \n");
 
     }
 
@@ -96,21 +96,21 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjCreateSelectStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" + 
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" + 
-                "    timestamp, \n" + 
-                "    systemcode, \n" + 
-                "    lid, \n" + 
-                "    euid \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" + 
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" + 
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" + 
+                "    EUID \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n");
 
     }
 
@@ -120,22 +120,22 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjInsertStmt() {
 
-        return ("insert into sbyn_transaction \n" + 
+        return ("INSERT INTO SBYN_TRANSACTION \n" + 
                 "( \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" +
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" +
-                "    timestamp, \n" +
-                "    delta, \n" + 
-                "    systemcode, \n" + 
-                "    lid, \n" + 
-                "    euid \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" +
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" +
+                "    DELTA, \n" + 
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" + 
+                "    EUID \n" + 
                 ") \n" +
-                "values \n" + 
+                "VALUES \n" + 
                 "( \n" +
                 "    ?, \n" + 
                 "    ?, \n" + 
@@ -159,24 +159,24 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjBySysCodeLIDStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" +
-                "    euid1, \n" + 
-                "    euid2, \n" +
-                "    function, \n" + 
-                "    systemuser, \n" + 
-                "    timestamp, \n" + 
-                "    systemcode, \n" +
-                "    lid, \n" + 
-                "    euid \n" + "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    systemcode = ? and \n" + 
-                "    lid = ? \n" + 
-                "order by \n" + 
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" +
+                "    EUID1, \n" + 
+                "    EUID2, \n" +
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" + 
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" + 
+                "    EUID \n" + "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    SYSTEMCODE = ? AND \n" + 
+                "    LID = ? \n" + 
+                "ORDER BY \n" + 
+                "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by system code SQL statement for TransactionObjectDB and after
@@ -186,26 +186,26 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjBySysCodeLIDAfterTimeStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" + 
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" + 
-                "    timestamp, \n" + 
-                "    systemcode, \n" + 
-                "    lid, \n" + 
-                "    euid \n" + 
-                "from \n" +
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    systemcode = ? and \n" +
-                "    lid = ? and \n" + 
-                "    timestamp >= ? \n" + 
-                "order by \n" + 
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" + 
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" + 
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" + 
+                "    EUID \n" + 
+                "FROM \n" +
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    SYSTEMCODE = ? AND \n" +
+                "    LID = ? AND \n" + 
+                "    TIMESTAMP >= ? \n" + 
+                "ORDER BY \n" + 
+                "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by system code SQL statement for TransactionObjectDB and before
@@ -215,26 +215,26 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjBySysCodeLIDBeforeTimeStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" +
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" +
-                "    timestamp, \n" + 
-                "    systemcode, \n" + 
-                "    lid, \n" +
-                "    euid \n" +
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    systemcode = ? and \n" +
-                "    lid = ? and \n" +
-                "    timestamp <= ? \n" + 
-                "order by \n" + 
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" +
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" +
+                "    EUID \n" +
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    SYSTEMCODE = ? and \n" +
+                "    LID = ? and \n" +
+                "    TIMESTAMP <= ? \n" + 
+                "ORDER BY \n" + 
+                "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by system code SQL statement for TransactionObjectDB and between
@@ -244,26 +244,26 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjBySysCodeLIDBetweenTimesStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" +
-                "    euid1, \n" + 
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" +
-                "    timestamp, \n" + 
-                "    systemcode, \n" + 
-                "    lid, \n" + 
-                "    euid \n" + "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" +
-                "    systemcode = ? and \n" + 
-                "    lid = ? and \n" + 
-                "    timestamp >= ? and \n" + 
-                "    timestamp <= ? \n" + 
-                "order by \n" + 
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" +
+                "    EUID1, \n" + 
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" + 
+                "    EUID \n" + "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" +
+                "    SYSTEMCODE = ? AND \n" + 
+                "    LID = ? AND \n" + 
+                "    TIMESTAMP >= ? AND \n" + 
+                "    TIMESTAMP <= ? \n" + 
+                "ORDER BY \n" + 
+                "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by EUID.
@@ -272,24 +272,24 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjByEUIDStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" +
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" +
-                "    timestamp, \n" + 
-                "    systemcode, \n" +
-                "    lid, \n" + 
-                "    euid \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ?\n" +
-                "order by \n" + 
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" +
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" + 
+                "    EUID \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ?\n" +
+                "ORDER BY \n" + 
+                "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by EUID and after a specified time.
@@ -298,24 +298,24 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjByEUIDAfterTimeStmt() {
 
-        return ("select \n" +
-                "    transactionnumber, \n" +
-                "    lid1, \n" + 
-                "    lid2, \n" +
-                "    euid1, \n" +
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" +
-                "    timestamp, \n" +
-                "    systemcode, \n" + 
-                "    lid, \n" +
-                "    euid \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" +
-                "where \n" +
-                "    timestamp >= ? and \n" +
-                "    (sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ?) \n" +
-                "order by \n" + "    transactionnumber desc \n");
+        return ("SELECT \n" +
+                "    TRANSACTIONNUMBER, \n" +
+                "    LID1, \n" + 
+                "    LID2, \n" +
+                "    EUID1, \n" +
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" +
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" +
+                "    EUID \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" +
+                "WHERE \n" +
+                "    TIMESTAMP >= ? AND \n" +
+                "    (SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ?) \n" +
+                "ORDER BY \n" + "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by EUID and before a specified time.
@@ -324,24 +324,24 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjByEUIDBeforeTimeStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" + 
-                "    lid2, \n" + 
-                "    euid1, \n" +
-                "    euid2, \n" + 
-                "    function, \n" +
-                "    systemuser, \n" +
-                "    timestamp, \n" + 
-                "    systemcode, \n" +
-                "    lid, \n" +
-                "    euid \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" +
-                "where \n" + 
-                "    timestamp <= ? and \n" +
-                "    (sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ?)\n" + 
-                "order by \n" + "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" + 
+                "    LID2, \n" + 
+                "    EUID1, \n" +
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" +
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" +
+                "    EUID \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" +
+                "WHERE \n" + 
+                "    TIMESTAMP <= ? AND \n" +
+                "    (SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ?)\n" + 
+                "ORDER BY \n" + "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by EUID and between two specified times.
@@ -350,25 +350,25 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjByEUIDBetweenTimesStmt() {
 
-        return ("select \n" +
-                "    transactionnumber, \n" +
-                "    lid1, \n" +
-                "    lid2, \n" + 
-                "    euid1, \n" + 
-                "    euid2, \n" + 
-                "    function, \n" +
-                "    systemuser, \n" + 
-                "    timestamp, \n" + 
-                "    systemcode, \n" +
-                "    lid, \n" + 
-                "    euid \n" + 
-                "from \n" +
-                "    sbyn_transaction \n" + 
-                "where \n" +
-                "    timestamp >= ? and \n" +
-                "    timestamp <= ? and \n" + 
-                "    (sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ?) \n" +
-                "order by \n" + "    transactionnumber desc \n");
+        return ("SELECT \n" +
+                "    TRANSACTIONNUMBER, \n" +
+                "    LID1, \n" +
+                "    LID2, \n" + 
+                "    EUID1, \n" + 
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" +
+                "    SYSTEMUSER, \n" + 
+                "    TIMESTAMP, \n" + 
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" + 
+                "    EUID \n" + 
+                "FROM \n" +
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" +
+                "    TIMESTAMP >= ? AND \n" +
+                "    TIMESTAMP <= ? AND \n" + 
+                "    (SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ?) \n" +
+                "ORDER BY \n" + "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by EUID and after a specified time (non-merged records only).
@@ -377,25 +377,25 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getTransObjByEUIDAfterTimeNonMergedStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" + 
-                "    lid1, \n" +
-                "    lid2, \n" + 
-                "    euid1, \n" +
-                "    euid2, \n" + 
-                "    function, \n" + 
-                "    systemuser, \n" +
-                "    timestamp, \n" +
-                "    systemcode, \n" +
-                "    lid, \n" +
-                "    euid \n" +
-                "from \n" +
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    timestamp >= ? and \n" +
-                "    sbyn_transaction.euid = ? \n" + 
-                "order by \n" +
-                "    transactionnumber desc \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" + 
+                "    LID1, \n" +
+                "    LID2, \n" + 
+                "    EUID1, \n" +
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" + 
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" +
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" +
+                "    EUID \n" +
+                "FROM \n" +
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    TIMESTAMP >= ? AND \n" +
+                "    SBYN_TRANSACTION.EUID = ? \n" + 
+                "ORDER BY \n" +
+                "    TRANSACTIONNUMBER DESC \n");
     }
 
     /** Find by EUID and after a specified timestamp for recovery.
@@ -404,25 +404,25 @@ public class MySQLAdapter extends DBAdapter {
      */
     String getTransObjForRecoveryStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" +
-                "    lid1, \n" +
-                "    lid2, \n" + 
-                "    euid1, \n" + 
-                "    euid2, \n" + 
-                "    function, \n" +
-                "    systemuser, \n" + 
-                "    timestamp, \n" +
-                "    systemcode, \n" +
-                "    lid, \n" + 
-                "    euid \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    timestamp >= ? and \n" +
-                "    (sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ?) \n" + 
-                "order by \n" + 
-                "    timestamp, transactionnumber \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" +
+                "    LID1, \n" +
+                "    LID2, \n" + 
+                "    EUID1, \n" + 
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" +
+                "    SYSTEMUSER, \n" + 
+                "    TIMESTAMP, \n" +
+                "    SYSTEMCODE, \n" +
+                "    LID, \n" + 
+                "    EUID \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    TIMESTAMP >= ? AND \n" +
+                "    (SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ?) \n" + 
+                "ORDER BY \n" + 
+                "    TIMESTAMP, TRANSACTIONNUMBER \n");
     }
 
     /** Find the next Transaction Object for an EUID.
@@ -431,22 +431,22 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getTransObjNextTOByEUIDStmt() {
 
-        return ("select \n" + 
-                "    transactionnumber, \n" +
-                "    lid1, \n" +
-                "    lid2, \n" +
-                "    euid1, \n" + 
-                "    euid2, \n" + 
-                "    function, \n" +
-                "    systemuser, \n" +
-                "    timestamp, \n" +
-                "    systemcode, \n" + 
-                "    lid, \n" +
-                "    euid \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" +
-                "where \n" +
-                "    transactionnumber = (select min(transactionnumber) \n" + "                             from sbyn_transaction \n" + " 		                      where \n" + "                                 transactionnumber  > ? and \n" + "                                 ( sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ? ) ) \n");
+        return ("SELECT \n" + 
+                "    TRANSACTIONNUMBER, \n" +
+                "    LID1, \n" +
+                "    LID2, \n" +
+                "    EUID1, \n" + 
+                "    EUID2, \n" + 
+                "    FUNCTION, \n" +
+                "    SYSTEMUSER, \n" +
+                "    TIMESTAMP, \n" +
+                "    SYSTEMCODE, \n" + 
+                "    LID, \n" +
+                "    EUID \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" +
+                "WHERE \n" +
+                "    TRANSACTIONNUMBER = (SELECT MIN(TRANSACTIONNUMBER) \n" + "                             FROM SBYN_TRANSACTION \n" + " 		                      WHERE \n" + "                                 TRANSACTIONNUMBER  > ? AND \n" + "                                 ( SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ? ) ) \n");
     }
 
     /** Find the delta by EUID.
@@ -455,12 +455,12 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getDeltaByTransIDStmt() {
 
-        return ("select \n" + 
-                "    delta \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    transactionnumber = ? \n");
+        return ("SELECT \n" + 
+                "    DELTA \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    TRANSACTIONNUMBER = ? \n");
     }
 
     //  AuditManager
@@ -470,16 +470,16 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getAuditMgrSelectStmt() {
 
-        return ("select \n" +
-                "    a.audit_id, \n" +
-                "    a.primary_object_type, \n" + 
-                "    a.euid, \n" +
-                "    a.euid_aux, \n" +
-                "    a.function, \n" +
-                "    a.detail, \n" +
-                "    a.create_date, \n" + 
-                "    a.create_by \n" +
-                "from sbyn_audit a \n");
+        return ("SELECT \n" +
+                "    A.AUDIT_ID, \n" +
+                "    A.PRIMARY_OBJECT_TYPE, \n" + 
+                "    A.EUID, \n" +
+                "    A.EUID_AUX, \n" +
+                "    A.FUNCTION, \n" +
+                "    A.DETAIL, \n" +
+                "    A.CREATE_DATE, \n" + 
+                "    A.CREATE_BY \n" +
+                "FROM SBYN_AUDIT A \n");
     }
 
     /** Insert statement for AuditManager.
@@ -488,18 +488,18 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getAuditMgrInsertStmt() {
 
-        return ("insert into sbyn_audit \n" +
+        return ("INSERT INTO SBYN_AUDIt \n" +
                 "( \n" + 
-                "    audit_id, \n" +
-                "    primary_object_type, \n" + 
-                "    euid, \n" +
-                "    euid_aux, \n" +
-                "    function, \n" + 
-                "    detail, \n" +
-                "    create_date, \n" +
-                "    create_by\n" +
+                "    AUDIT_ID, \n" +
+                "    PRIMARY_OBJECT_TYPE, \n" + 
+                "    EUID, \n" +
+                "    EUID_AUX, \n" +
+                "    FUNCTION, \n" + 
+                "    DETAIL, \n" +
+                "    CREATE_DATE, \n" +
+                "    CREATE_BY\n" +
                 ") \n" +
-                "values \n" +
+                "VALUES \n" +
                 "(\n" +
                 "    ?,\n" + 
                 "    ?,\n" + 
@@ -517,7 +517,7 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getAuditMgrOperationColumnName() {
 
-        return ("    a.function = ?");
+        return ("    A.FUNCTION = ?");
     }
 
     // QueryHelper
@@ -527,16 +527,16 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getQHelperMergeMaxTimestampStmt() {
 
-        return ("select \n" + 
-                "    lid2, \n" +
-                "    max(timestamp) mtnm \n" + 
-                "from \n" + 
-                "    sbyn_transaction \n" + 
-                "where \n" + 
-                "    lid1 = ? and \n" + 
-                "    function = 'lidMerge' \n" +
-                "group \n" + 
-                "by lid2");
+        return ("SELECT \n" + 
+                "    LID2, \n" +
+                "    MAX(TIMESTAMP) MTNM \n" + 
+                "FROM \n" + 
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" + 
+                "    LID1 = ? AND \n" + 
+                "    FUNCTION = 'LIDmERGE' \n" +
+                "GROUP \n" + 
+                "BY LID2");
     }
 
     /** Select maximum timestamp for unmerging two LIDs for QueryHelper.
@@ -545,14 +545,14 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getQHelperUnmergeMaxTimestampStmt() {
 
-        return ("select \n" +
-                "max(timestamp) mtnu \n" +
-                "from \n" +
-                "    sbyn_transaction \n" + 
-                "where \n" +
-                "    lid1 = ? and \n" + 
-                "    function = 'lidUnMerge' and \n" + 
-                "    lid2 = ?\n");
+        return ("SELECT \n" +
+                "MAX(TIMESTAMP) MTNU \n" +
+                "FROM \n" +
+                "    SBYN_TRANSACTION \n" + 
+                "WHERE \n" +
+                "    LID1 = ? AND \n" + 
+                "    FUNCTION = 'LIDuNmERGE' AND \n" + 
+                "    LID2 = ?\n");
     }
 
     // KeyStatisticsDB
@@ -562,14 +562,14 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getKeyStatDBCountBetweenTimesStmt() {
 
-        return ("select \n" + 
-                "    count(*) \n" + 
-                "from \n" +
-                "    sbyn_transaction \n" +
-                "where \n" + 
-                "    function = ? and \n" + 
-                "    timestamp >= ? and \n" +
-                "    timestamp < ? + 1 \n");
+        return ("SELECT \n" + 
+                "    COUNT(*) \n" + 
+                "FROM \n" +
+                "    SBYN_TRANSACTION \n" +
+                "WHERE \n" + 
+                "    FUNCTION = ? AND \n" + 
+                "    TIMESTAMP >= ? AND \n" +
+                "    TIMESTAMP < ? + 1 \n");
     }
 
     // Format conversion
@@ -579,7 +579,7 @@ public class MySQLAdapter extends DBAdapter {
      * @return  Conversion function.
      */
     public String getVarcharToNumberConversion(String val) {
-        return ("cast(" + val + " as decimal(5,2))");
+        return ("CAST(" + val + " AS DECIMAL(5,2))");
     }
 
     /**
