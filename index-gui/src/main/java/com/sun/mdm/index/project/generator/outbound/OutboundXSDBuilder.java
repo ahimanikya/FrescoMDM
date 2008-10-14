@@ -68,6 +68,7 @@ public class OutboundXSDBuilder {
     private final String MINOCCURS = "minOccurs=";
     private final String MAXOCCURS = "maxOccurs=";
     private final String UNBOUNDED = "\"unbounded\"";
+    private final String TNS = "tns:";
     private final String TYPE = "type=";
     private final String USE = "use=";
     private final String XSDSTRING = "\"xsd:string\"";
@@ -83,12 +84,13 @@ public class OutboundXSDBuilder {
         + TAB + "Generated XSD for $APPLICATION$" + LINEFEED
         + "-->" + LINEFEED
         + "<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"" + LINEFEED
-        //+ "targetNamespace=\"www.eview.Application\"" + LINEFEED
+        + "xmlns:tns=\"uri:$APPLICATION$OutMsg\"" + LINEFEED
+        + "targetNamespace=\"uri:$APPLICATION$OutMsg\"" + LINEFEED
         + "elementFormDefault=\"qualified\">"  + LINEFEED
         + "<xsd:element name=\"OutMsg\">" + LINEFEED
         + "<xsd:complexType>" + LINEFEED
         + "<xsd:sequence>" + LINEFEED
-        + "<xsd:element ref=\"SBR\" minOccurs=\"1\" maxOccurs=\"1\"/>" + LINEFEED
+        + "<xsd:element ref=\"tns:SBR\" minOccurs=\"1\" maxOccurs=\"1\"/>" + LINEFEED
         +  "</xsd:sequence>" + LINEFEED
         + "<xsd:attribute name=\"Event\" use=\"required\">" + LINEFEED
         + "<xsd:simpleType>" + LINEFEED
@@ -108,8 +110,8 @@ public class OutboundXSDBuilder {
         + "<xsd:element name=\"SBR\">" + LINEFEED
         + "<xsd:complexType>" + LINEFEED
         + "<xsd:sequence>" + LINEFEED
-        + "<xsd:element ref=\"SystemObject\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>" + LINEFEED
-        + "<xsd:element ref=\"$PRIMARY$\" minOccurs=\"0\" maxOccurs=\"1\"/>" + LINEFEED
+        + "<xsd:element ref=\"tns:SystemObject\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>" + LINEFEED
+	+ "<xsd:element ref=\"tns:$PRIMARY$\" minOccurs=\"0\" maxOccurs=\"1\"/>" + LINEFEED
         +  "</xsd:sequence>" + LINEFEED
         + "<xsd:attribute name=\"EUID\" type=\"xsd:string\" use=\"required\"/>" + LINEFEED
         + "<xsd:attribute name=\"Status\" type=\"xsd:string\" use=\"optional\"/>" + LINEFEED
@@ -158,8 +160,10 @@ public class OutboundXSDBuilder {
         }
 
         StringBuffer sb = new StringBuffer(TAG_HEADER);
-        int from = sb.indexOf(TAG_APPLICATION);
-        sb.replace(from, from + TAG_APPLICATION.length(), applName);
+	int from;
+	for (from = sb.indexOf(TAG_APPLICATION); from >= 0; from = sb.indexOf(TAG_APPLICATION)) {
+            sb.replace(from, from + TAG_APPLICATION.length(), applName);
+	}
         from = sb.indexOf(TAG_PRIMARY);
         sb.replace(from, from + TAG_PRIMARY.length(), topNode.getTag());
         buildDependentTable(eo);
@@ -208,7 +212,7 @@ public class OutboundXSDBuilder {
         
           for (int i = 0; i < children.size(); i++) {
             String child = (String) children.get(i);
-            sbElement.append(TAG_ELEMENT_REF).append(quote(child));
+            sbElement.append(TAG_ELEMENT_REF).append(quote(TNS + child));
             sbElement.append(MINOCCURS).append(quote("0")).append(MAXOCCURS).append(UNBOUNDED).append(TAG_SLASH_END);
             sbElement.append(LINEFEED);
           }
