@@ -60,33 +60,49 @@ public class RelationshipTypeNode extends AbstractNode {
         super(arg0);
     }
     
+    /**
+     * 
+     * @param parentRelationshipNode
+     * @param relationshipType
+     */
     public RelationshipTypeNode(RelationshipNode parentRelationshipNode, RelationshipType relationshipType) {
         super(Children.LEAF);
         mParentRelationshipNode = parentRelationshipNode;
         mRelationshipType = relationshipType;
     }
-    
-    public RelationshipTypeNode(RelationshipType relationshipType) {
-        super(Children.LEAF);
-        mRelationshipType = relationshipType;
+
+    /**
+     * 
+     * @param parentRelationshipNode
+     */
+    public void setParentRelationshipNode(RelationshipNode parentRelationshipNode) {
+        this.mParentRelationshipNode = parentRelationshipNode;
     }
 
-    public void setParentRelationshipNode(RelationshipNode mParentRelationshipNode) {
-        this.mParentRelationshipNode = mParentRelationshipNode;
+    /**
+     * 
+     * @return RelationshipNode
+     */
+    public RelationshipNode getParentRelationshipNode() {
+        return this.mParentRelationshipNode;
     }
 
     public TabRelationshipWebManager getTabRelationshipWebManager() {
         return mTabRelationshipWebManager;
     }
 
-    public RelationshipNode getRelationshipNode() {
-        return mParentRelationshipNode;
-    }
-
+    /**
+     * 
+     * @return mRelationshipType
+     */
     public RelationshipType getRelationshipType() {
         return mRelationshipType;
     }
 
+    /**
+     * 
+     * @return mRelationshipTypeName
+     */
     public String getRelationshipTypeName() {
         return mRelationshipTypeName;
     }

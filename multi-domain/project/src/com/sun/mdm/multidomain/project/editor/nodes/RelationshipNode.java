@@ -37,7 +37,6 @@ import org.openide.util.Lookup;
 import java.util.ArrayList;
 
 import com.sun.mdm.multidomain.parser.RelationshipType;
-//import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
 
 /**
  *
@@ -60,29 +59,82 @@ public class RelationshipNode extends AbstractNode {
         super(arg0);
     }
     
-    public RelationshipNode(String sourceDomain, String targetDomain) {
+    public RelationshipNode(String domain1, String domain2) {
         super(Children.LEAF);
+        this.domain1 = domain1;
+        this.domain2 = domain2;
     }
     
+    /**
+     * 
+     * @param relationshipType
+     */
     public void addRelationshipTypeNode(RelationshipType relationshipType) {
         RelationshipTypeNode relationshipTypeNode = new RelationshipTypeNode(this, relationshipType);
         alRelationshipTypeNodes.add(relationshipTypeNode);
     }
     
+    /**
+     * 
+     * @param relationshipTypeNode
+     */
     public void addRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
         relationshipTypeNode.setParentRelationshipNode(this);
         alRelationshipTypeNodes.add(relationshipTypeNode);
     }
     
+    /**
+     * Find and remove RelationshipTypeNode that matches relationshipTypeNode
+     * @param relationshipTypeNode
+     */
     public void deleteRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
-        
+        if (relationshipTypeNode != null &&
+            relationshipTypeNode.getParentRelationshipNode() != null &&
+            relationshipTypeNode.getParentRelationshipNode() == this) {
+            alRelationshipTypeNodes.remove(relationshipTypeNode);
+        }
     }
     
-    public void deleteRelationshipTypeNode(String relationshipTypeName ) {
-        
+    /**
+     * Find and remove RelationshipTypeNode that matches these params
+     * @param relationshipTypeName
+     * @param sourceDomain
+     * @param targetDomain
+     */
+    public void deleteRelationshipTypeNode(String relationshipTypeName, String sourceDomain, String targetDomain ) {
+        // 
+        for (int i=0; alRelationshipTypeNodes != null && i<alRelationshipTypeNodes.size(); i++) {
+            RelationshipTypeNode relationshipTypeNode = (RelationshipTypeNode) alRelationshipTypeNodes.get(i);
+            if (relationshipTypeNode.getRelationshipTypeName().equals(relationshipTypeName) &&
+                relationshipTypeNode.getRelationshipType().getSourceDomain().equals(sourceDomain) &&
+                relationshipTypeNode.getRelationshipType().getTargetDomain().equals(targetDomain)) {
+                alRelationshipTypeNodes.remove(i);
+                break;
+            }
+        }
     }
-    
-    public ArrayList<RelationshipTypeNode> getAlRelationshipTypeNodes() {
+
+    /**
+     * 
+     * @return domain1
+     */
+    public String getDomain1() {
+        return domain1;
+    }
+
+    /**
+     * 
+     * @return domain2
+     */
+    public String getDomain2() {
+        return domain2;
+    }
+
+    /**
+     * 
+     * @return ArrayList <RelationshipTypeNode>
+     */
+    public ArrayList <RelationshipTypeNode> getAllRelationshipTypeNodes() {
         return alRelationshipTypeNodes;
     }
 
