@@ -1,17 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-   <title>Developing Master Indexes With Master Index Studio</title>
+<html><head>
+   
 
-   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <title>Developing Master Indexes With Master Index Studio</title><meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
    <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
-</head>
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css"></head>
 
 <body>
 
@@ -151,11 +149,15 @@
 XML files define how other components of the master index application are generated,
 such as the database scripts, the Master Index Data  Manager, and the
 dynamic Java API. This section provides an overview of how the values you
-enter correspond to the runtime environment.</p><p><b>From XML to the Database</b></p><p><a name="indexterm-3"></a>The master index database is created using a standard Oracle or SQL Server
-database and a database script generated directly from object.xml. Additional scripts are created
+enter correspond to the runtime environment.</p><p><b>From XML to the Database</b></p><p><a name="indexterm-3"></a>The
+master index database is created using a standard Oracle or SQL Server
+database (or MySQL for nightly and stable builds) and a database script
+generated directly from object.xml. Additional scripts are created
 based on any user codes or menu lists you defined for the fields
-in the object structure. Running the database scripts against the database creates the
-tables necessary for your master index application and also creates startup data, such
+in the object structure. Running the database scripts against the
+database creates the
+tables necessary for your master index application and also creates
+startup data, such
 as external system information, processing codes, and so on. </p><p><b>From XML to the Master Index Data Manager</b></p><p><a name="indexterm-4"></a><a name="indexterm-5"></a><a name="indexterm-6"></a>Based on information you specify in the wizard or Configuration Editor, midm.xml is
 generated to define the appearance of the Master Index Data  Manager
 (MIDM) . This file defines the fields and appearance of the MIDM and
@@ -186,7 +188,7 @@ weighting and matching results.</p>
 
    <div class="BottomPageControlPane">
       <table class="pagecontrol">
-         <tr>
+         <tbody><tr>
             <td class="pageleft">
                <a href="dsgn_eview-overview_c.html">Previous</a>
             </td>
@@ -194,9 +196,8 @@ weighting and matching results.</p>
                <a href="dsgn_eview-prep_c.html">Next</a>
             </td>
          </tr>
-      </table>
+      </tbody></table>
 
    </div>
 
-</body>
-</html>
+</body></html>

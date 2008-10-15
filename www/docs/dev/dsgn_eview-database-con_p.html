@@ -1,17 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-   <title>Developing Master Indexes With Master Index Studio</title>
+<html><head>
+   
 
-   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <title>Developing Master Indexes With Master Index Studio</title><meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="content-language" content="en-US">
    <meta name="keywords" content="">
    <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
    <meta name="date" content="2008-06-01">
    <meta name="author" content="Carol Thom">
 
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
-</head>
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css"></head>
 
 <body>
 
@@ -194,14 +192,14 @@ the master index application.</p>
 <li><b>In the additional properties section, enter the values for the master index database.
 Be sure to enter the following information at a minimum (you might need
 to create some of these properties):</b>
-<ul><li><p>URL &ndash; The URL that points to the database. The syntax of the URL is:</p>
+<ul><li><p>URL &#8211; The URL that points to the database. The syntax of the URL is:</p>
 <ul><li><p>For Oracle, <tt>jdbc:oracle:thin:@<i>host</i>:<i>port</i>:<i>database_name</i></tt>.</p></li>
 <li><p>For SQL Server, <tt>jdbc:sqlserver://<i>server</i>:<i>port</i>;databaseName=<i>database</i></tt></p></li></ul>
 </li>
-<li><p>user &ndash; The login ID for the user you created in <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a>.</p></li>
-<li><p>password &ndash; The password for the above user.</p></li>
-<li><p>ImplicitCachingEnabled &ndash; An indicator of whether implicit statement caching is enabled. Set this property to <tt><b>true</b></tt>.</p></li>
-<li><p>MaxStatements &ndash; The maximum number of statements in the cache. Set this property to <tt><b>1000</b></tt>.</p></li></ul>
+<li><p>user &#8211; The login ID for the user you created in <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a>.</p></li>
+<li><p>password &#8211; The password for the above user.</p></li>
+<li><p>ImplicitCachingEnabled &#8211; An indicator of whether implicit statement caching is enabled. Set this property to <tt><b>true</b></tt>.</p></li>
+<li><p>MaxStatements &#8211; The maximum number of statements in the cache. Set this property to <tt><b>1000</b></tt>.</p></li></ul>
 </li>
 <li><b>Continue to <a href="#dsgn_eview-database-res_t">Step 3: Create a JDBC Resource</a>.</b></li></ol></div>
 
@@ -216,7 +214,7 @@ index application the ability to connect to the database.</p>
 then select JDBC Resources.</b></li>
 <li><b>On the Create JDBC Resource page, click New.</b></li>
 <li><b>In the JNDI Name field, enter a unique name for the JDBC
-resource.</b><p>The name must be in the form <tt><b>jdbc/</tt><i>application_name</i><tt>DataSource</b></tt>, where <i>application_name</i> is the
+resource.</b><p>The name must be in the form <tt><b>jdbc/</b></tt><b><i>application_name</i><tt>DataSource</tt></b>, where <i>application_name</i> is the
 name of the master index application. For example, <tt><b>jdbc/PersonDataSource</b></tt>.</p></li>
 <li><b>In the Pool Name field, enter the name of the JDBC connection pool
 you created in <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a>. </b></li>
@@ -228,7 +226,7 @@ you created in <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Conne
 
    <div class="BottomPageControlPane">
       <table class="pagecontrol">
-         <tr>
+         <tbody><tr>
             <td class="pageleft">
                <a href="dsgn_eview-dbs-delete_t.html">Previous</a>
             </td>
@@ -236,9 +234,8 @@ you created in <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Conne
 
             </td>
          </tr>
-      </table>
+      </tbody></table>
 
    </div>
 
-</body>
-</html>
+</body></html>
