@@ -157,8 +157,9 @@ the online help provided with the GlassFish Admin Console.</p><p>Perform the fol
 <div class="indent"><a name="dsgn_eview-database-driv_t"></a><h3>Step 1: Add the Oracle Driver to the Application Server</h3>
 <p>If you are using an Oracle database, you need to manually install
 or copy the database driver to the application server environment. If you are using
-a SQL Server database, you can skip this step.</p><p>You can either install the Oracle driver on the application server or copy
-the  <tt>ojdbc14.jar</tt> file from your Oracle client installation (<tt></tt><i>Oracle_client</i><tt>\jdbc\lib</tt>) to <tt></tt><i>app_server_home</i><tt>\lib</tt>. To
+a SQL Server database, you can skip this step.</p>
+<p>You can either install the Oracle driver on the application server or copy
+the  <tt>ojdbc14.jar</tt> file from your Oracle client installation (<tt><i>Oracle_client</i>\jdbc\lib</tt>) to <tt><i>app_server_home</i>\lib</tt>. To
 install the driver, see the documentation for the GlassFish Application Server.</p><p>Once the driver is installed or copied, continue to <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a>.</p></div>
 
 
@@ -198,8 +199,8 @@ to create some of these properties):</b>
 </li>
 <li><p>user &#8211; The login ID for the user you created in <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a>.</p></li>
 <li><p>password &#8211; The password for the above user.</p></li>
-<li><p>ImplicitCachingEnabled &#8211; An indicator of whether implicit statement caching is enabled. Set this property to <tt><b>true</b></tt>.</p></li>
-<li><p>MaxStatements &#8211; The maximum number of statements in the cache. Set this property to <tt><b>1000</b></tt>.</p></li></ul>
+<li><p>ImplicitCachingEnabled &#8211; An indicator of whether implicit statement caching is enabled. Set this property to <tt>true</tt>.</p></li>
+<li><p>MaxStatements &#8211; The maximum number of statements in the cache. Set this property to <tt>1000</tt>.</p></li></ul>
 </li>
 <li><b>Continue to <a href="#dsgn_eview-database-res_t">Step 3: Create a JDBC Resource</a>.</b></li></ol></div>
 
@@ -209,13 +210,14 @@ to create some of these properties):</b>
 index application the ability to connect to the database.</p>
 
 <a name="gentextid-2112"></a><h5>To Create a JDBC Resource</h5>
-<h6>Before You Begin</h6><p>Create the JDBC connection pool, as described in <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a>.</p><ol>
+<h6>Before You Begin</h6><p>Create the JDBC connection pool, as described in <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a>.</p>
+<ol>
 <li><b>In the left portion of the Admin Console, expand Resources, expand JDBC, and
 then select JDBC Resources.</b></li>
 <li><b>On the Create JDBC Resource page, click New.</b></li>
 <li><b>In the JNDI Name field, enter a unique name for the JDBC
-resource.</b><p>The name must be in the form <tt><b>jdbc/</b></tt><b><i>application_name</i><tt>DataSource</tt></b>, where <i>application_name</i> is the
-name of the master index application. For example, <tt><b>jdbc/PersonDataSource</b></tt>.</p></li>
+resource.</b><p>The name must be in the form <tt>jdbc/<i>application_name</i>DataSource</tt>, where <i>application_name</i> is the
+name of the master index application. For example, <tt>jdbc/PersonDataSource</tt>.</p></li>
 <li><b>In the Pool Name field, enter the name of the JDBC connection pool
 you created in <a href="#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a>. </b></li>
 <li><b>(Optional) In the Description field, enter a brief description of the resource.</b></li>
