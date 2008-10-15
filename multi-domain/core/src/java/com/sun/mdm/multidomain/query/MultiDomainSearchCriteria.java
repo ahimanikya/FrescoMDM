@@ -31,6 +31,7 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 
 /**
  * MultiDomainSearchCriteria class.
+ * @author SwaranjitDua
  * @author cye
  */
 public class MultiDomainSearchCriteria {

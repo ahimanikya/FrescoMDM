@@ -24,6 +24,7 @@ package com.sun.mdm.multidomain.query;
 
 /**
  * MultiPairValue class.
+ * @author SwaranjitDua
  * @author cye
  */
 public class MultiFieldValuePair {

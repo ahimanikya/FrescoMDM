@@ -29,6 +29,7 @@ import com.sun.mdm.index.objects.epath.EPathArrayList;
 
 /**
  * MultiDomainSearchOptions class.
+ * @author SwaranjitDua
  * @author cye
  */
 public class MultiDomainSearchOptions {

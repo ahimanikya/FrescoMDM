@@ -7,6 +7,7 @@ package com.sun.mdm.multidomain.query;
 
 /**
  * FieldValuePair class.
+ * @author SwaranjitDua
  * @author cye
  */
 public class FieldValuePair {
