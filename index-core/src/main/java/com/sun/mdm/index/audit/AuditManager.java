@@ -137,7 +137,7 @@ public class AuditManager {
                     sb.append(" and ");
                 }
 
-                sb.append("  ( a.EUID = ? or a.EUID_aux = ? ) ");
+                sb.append("  ( a.EUID = ? or a.EUID_AUX = ? ) ");
                 parameters.add(obj.getEUID());
                 parameters.add(obj.getEUID());
             }
@@ -150,7 +150,7 @@ public class AuditManager {
                     sb.append(" and ");
                 }
 
-                sb.append(" a.primary_object_type=?");
+                sb.append(" a.PRIMARY_OBJECT_TYPE=?");
                 parameters.add(obj.getPrimaryObjectType());
             }
 
@@ -181,7 +181,7 @@ public class AuditManager {
                     sb.append(" and ");
                 }
 
-                sb.append("  a.create_by=?");
+                sb.append("  a.CREATE_BY=?");
                 parameters.add(obj.getCreateUser());
             }
 
@@ -193,7 +193,7 @@ public class AuditManager {
                     sb.append(" and ");
                 }
 
-                sb.append("  a.create_date>=?");
+                sb.append("  a.CREATE_DATE>=?");
                 parameters.add(obj.getCreateStartDate());
             }
 
@@ -205,7 +205,7 @@ public class AuditManager {
                     sb.append(" and ");
                 }
 
-                sb.append("  a.create_date<=?");
+                sb.append("  a.CREATE_DATE<=?");
                 parameters.add(obj.getCreateEndDate());
             }
 
@@ -217,7 +217,7 @@ public class AuditManager {
                     sb.append(" and ");
                 }
 
-                sb.append("  detail like ?");
+                sb.append("  DETAIL like ?");
                 parameters.add(obj.getDetail());
             }
 

@@ -55,11 +55,11 @@ public class CodeRegistry {
     private static CodeRegistry SINGLETON;
 
     private static final String SELECT_CODES
-             = "select h.code, d.code, d.descr"
-                + " from sbyn_common_header h, sbyn_common_detail d, sbyn_appl a"
-                + " where a.appl_id = h.appl_id"
-                + " and h.common_header_id = d.common_header_id"
-                + " order by h.code, d.descr";
+             = "select h.CODE, d.CODE, d.DESCR"
+                + " from SBYN_COMMON_HEADER h, SBYN_COMMON_DETAIL d, SBYN_APPL a"
+                + " where a.APPL_ID = h.APPL_ID"
+                + " and h.COMMON_HEADER_ID = d.COMMON_HEADER_ID"
+                + " order by h.CODE, d.DESCR";
 
     private final static String DB_PROP_KEY = "resJNDI";
     private final static String DB_PROP_FILE = "eviewdb.properties";

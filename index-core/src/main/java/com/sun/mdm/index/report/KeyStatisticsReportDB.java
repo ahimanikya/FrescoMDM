@@ -58,32 +58,32 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
               "       select \n" 
             + "               count(*) \n" 
             + "       from \n" 
-            + "               sbyn_transaction \n" 
+            + "               SBYN_TRANSACTION \n" 
             + "       where \n" 
-            + "               timestamp >= ? and \n" 
-            + "               timestamp < ? + 1 \n";
+            + "               TIMESTAMP >= ? and \n" 
+            + "               TIMESTAMP < ? + 1 \n";
             
        mGetUnresolvedPotDupCountByDates = 
               "       select \n" 
             + "               count(*) \n" 
             + "       from \n" 
-            + "               sbyn_potentialduplicates a, sbyn_transaction b \n" 
+            + "               SBYN_POTENTIALDUPLICATES a, SBYN_TRANSACTION b \n" 
             + "       where \n" 
-            + "               a.transactionnumber = b.transactionnumber and \n"
-            + "               a.status = 'U' and \n"           
-            + "               b.timestamp >= ? and \n" 
-            + "               b.timestamp < ? + 1 \n";
+            + "               a.TRANSACTIONNUMBER = b.TRANSACTIONNUMBER and \n"
+            + "               a.STATUS = 'U' and \n"           
+            + "               b.TIMESTAMP >= ? and \n" 
+            + "               b.TIMESTAMP < ? + 1 \n";
             
        mGetResolvedPotDupCountByDates = 
               "       select \n" 
             + "               count(*) \n" 
             + "       from \n" 
-            + "               sbyn_potentialduplicates a, sbyn_transaction b \n" 
+            + "               SBYN_POTENTIALDUPLICATES a, SBYN_TRANSACTION b \n" 
             + "       where \n" 
-            + "               a.transactionnumber = b.transactionnumber and \n"
-            + "               a.status != 'U' and \n"           
-            + "               b.timestamp >= ? and \n" 
-            + "               b.timestamp < ? + 1 \n";                        
+            + "               a.TRANSACTIONNUMBER = b.TRANSACTIONNUMBER and \n"
+            + "               a.STATUS != 'U' and \n"           
+            + "               b.TIMESTAMP >= ? and \n" 
+            + "               b.TIMESTAMP < ? + 1 \n";                        
     }
 
     /**

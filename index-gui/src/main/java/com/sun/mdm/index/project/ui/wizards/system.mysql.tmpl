@@ -3,7 +3,7 @@ set @v_ts = (select now());
 set @v_user = (select user());
 </header>
 <repeat>
-insert into sbyn_systems (systemcode, description, status, id_length, format, input_mask, value_mask, create_date, create_userid) 
+insert into SBYN_SYSTEMS (SYSTEMCODE, DESCRIPTION, STATUS, ID_LENGTH, FORMAT, INPUT_MASK, VALUE_MASK, CREATE_DATE, CREATE_USERID) 
     values ('$<system>', '$<system-description>', 'A', 10, '[0-9]{10}', 'DDD-DDD-DDDD', 'DDD^DDD^DDDD', @v_ts, @v_user);
 </repeat>
 <trailer>

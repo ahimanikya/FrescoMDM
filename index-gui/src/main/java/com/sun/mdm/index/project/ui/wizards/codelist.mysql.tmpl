@@ -41,38 +41,38 @@ codelist: begin
     select now() into v_date;
     select user() into v_user;
 
-    select appl_id into v_appl_id  from sbyn_appl where code = 'EV';
+    select APPL_ID into v_appl_id  from SBYN_APPL where CODE = 'EV';
     if v_no_row_found > 0 then
 	    select 'ERROR: appl_id not found for EV.' as Error;
 	    rollback;
 	leave codelist;
     end if;
 
-    delete from sbyn_common_detail where common_header_id in 
-        (select common_header_id from sbyn_common_header
+    delete from SBYN_COMMON_DETAIL where COMMON_HEADER_ID in 
+        (select COMMON_HEADER_ID from SBYN_COMMON_HEADER
         where appl_id = v_appl_id);
 		
-    update sbyn_seq_table set seq_count = seq_count + 1 
-	where seq_name = 'SBYN_COMMON_HEADER';
+    update SBYN_SEQ_TABLE set SEQ_COUNT = SEQ_COUNT + 1 
+	where SEQ_NAME = 'SBYN_COMMON_HEADER';
 
-    select seq_count - 1 into v_header_seq from sbyn_seq_table 
-	where seq_name = 'SBYN_COMMON_HEADER';
+    select SEQ_COUNT - 1 into v_header_seq from SBYN_SEQ_TABLE 
+	where SEQ_NAME = 'SBYN_COMMON_HEADER';
 	
-	update sbyn_seq_table set seq_count = seq_count + 1 
-    where seq_name = 'SBYN_COMMON_DETAIL';
+	update SBYN_SEQ_TABLE set SEQ_COUNT = SEQ_COUNT + 1 
+    where SEQ_NAME = 'SBYN_COMMON_DETAIL';
 
-    select seq_count - 1 into v_detail_seq from sbyn_seq_table 
-    where seq_name = 'SBYN_COMMON_DETAIL';
+    select SEQ_COUNT - 1 into v_detail_seq from SBYN_SEQ_TABLE 
+    where SEQ_NAME = 'SBYN_COMMON_DETAIL';
 
     open cur1;
     fetch cur1 into v_objtype, v_code, v_descr;
     while v_no_row_found = 0 do
         if v_objtype = 'L' then
-            insert into sbyn_common_header (common_header_id, appl_id, code, descr, read_only, max_input_len, typ_table_code, create_date, create_userid)
+            insert into SBYN_COMMON_HEADER (COMMON_HEADER_ID, APPL_ID, CODE, DESCR, READ_ONLY, MAX_INPUT_LEN, TYP_TABLE_CODE, CREATE_DATE, CREATE_USERID)
             values (v_header_seq, v_appl_id, v_code, v_descr , 'Y', 8, 'XX', v_date, v_user );
             set v_header_seq = v_header_seq + 1;
 	    else
-            insert into sbyn_common_detail (common_detail_id, common_header_id, code, descr, read_only, create_date, create_userid)
+            insert into SBYN_COMMON_DETAIL (COMMON_DETAIL_ID, COMMON_HEADER_ID, CODE, DESCR, READ_ONLY, CREATE_DATE, CREATE_USERID)
             values (v_detail_seq, v_header_seq-1, v_code , v_descr, 'N', v_date, v_user );
             set v_detail_seq = v_detail_seq + 1;
         end if;
@@ -80,10 +80,10 @@ codelist: begin
     end while;
     close cur1;
     drop temporary table tCodelist;
-    update sbyn_seq_table set seq_count = v_header_seq
-    where seq_name = 'SBYN_COMMON_HEADER';
-    update sbyn_seq_table set seq_count = v_detail_seq
-    where seq_name = 'SBYN_COMMON_DETAIL';
+    update SBYN_SEQ_TABLE set SEQ_COUNT = v_header_seq
+    where SEQ_NAME = 'SBYN_COMMON_HEADER';
+    update SBYN_SEQ_TABLE set SEQ_COUNT = v_detail_seq
+    where SEQ_NAME = 'SBYN_COMMON_DETAIL';
     commit;
 end; 
 $

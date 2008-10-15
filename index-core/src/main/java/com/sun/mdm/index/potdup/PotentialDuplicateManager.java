@@ -69,11 +69,11 @@ public class PotentialDuplicateManager {
         
     /**  retrieval for potential duplicates without LIDs */
     private static final String NO_LID_BASE_SELECT_CLAUSE = 
-       "SELECT a.potentialduplicateid, a.weight, a.description, a.status, " 
-       + "a.resolveduser, a.resolveddate, a.resolvedcomment, a.euid2, a.euid1, "
-       + "b.systemuser, b.timestamp, b.systemcode "
-       + "FROM sbyn_potentialduplicates a, sbyn_transaction b "
-       + "WHERE a.transactionnumber = b.transactionnumber ";
+       "SELECT a.POTENTIALDUPLICATEID, a.WEIGHT, a.DESCRIPTION, a.STATUS, " 
+       + "a.RESOLVEDUSER, a.RESOLVEDDATE, a.RESOLVEDCOMMENT, a.EUID2, a.EUID1, "
+       + "b.SYSTEMUSER, b.TIMESTAMP, b.SYSTEMCODE "
+       + "FROM SBYN_POTENTIALDUPLICATES a, SBYN_TRANSACTION b "
+       + "WHERE a.TRANSACTIONNUMBER = b.TRANSACTIONNUMBER ";
     
     /** SQL string to retrieve potential duplicate
      */    
@@ -126,7 +126,7 @@ public class PotentialDuplicateManager {
             EUID_SELECT_CLAUSE = BASE_SELECT_CLAUSE 
             + "and (a.EUID1=? or a.EUID1=? or a.EUID2=? or a.EUID2=?) ";
             ALL_POT_DUP_SELECT_CLAUSE = BASE_SELECT_CLAUSE 
-            + "and (e.euid = a.euid1 or e.euid = a.euid2) " ;
+            + "and (e.EUID = a.EUID1 or e.EUID = a.EUID2) " ;
         }
         
     }
@@ -192,7 +192,7 @@ public class PotentialDuplicateManager {
         throws PotentialDuplicateException {
         try {
             String sql = "DELETE FROM SBYN_POTENTIALDUPLICATES " 
-                    + "WHERE (euid1 = ? OR euid2 = ?) AND status!='A'";
+                    + "WHERE (EUID1 = ? OR EUID2 = ?) AND STATUS!='A'";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, euid);
             ps.setString(2, euid);
@@ -258,7 +258,7 @@ public class PotentialDuplicateManager {
                 parameters.add(obj.getSystemCode());
             }
             if (obj.getLID() != null) {
-                sb.append(" and e.lid=?");
+                sb.append(" and e.LID=?");
                 parameters.add(obj.getLID());
             }
             if (obj.getStatus() != null) {
@@ -413,7 +413,7 @@ public class PotentialDuplicateManager {
         throws PotentialDuplicateException, UserException {
         try {
             char statusChar = autoResolve ? 'A' : 'R';
-            String sql = "UPDATE SBYN_POTENTIALDUPLICATES set status='" 
+            String sql = "UPDATE SBYN_POTENTIALDUPLICATES set STATUS='" 
             + statusChar + "' where POTENTIALDUPLICATEID = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, potDupId);
@@ -438,7 +438,7 @@ public class PotentialDuplicateManager {
         throws PotentialDuplicateException, UserException {
         try {
             String sql = "UPDATE SBYN_POTENTIALDUPLICATES " 
-                    + "set status='U' where POTENTIALDUPLICATEID = ?";
+                    + "set STATUS='U' where POTENTIALDUPLICATEID = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, potDupId);
             ps.executeUpdate();
@@ -488,8 +488,8 @@ public class PotentialDuplicateManager {
     private HashMap findAllDuplicates(Connection con, String euid)
         throws PotentialDuplicateException {
         try {
-            String sql = "SELECT euid1, euid2 FROM SBYN_POTENTIALDUPLICATES " 
-                    + "WHERE euid1 = ? OR euid2 = ?";
+            String sql = "SELECT EUID1, EUID2 FROM SBYN_POTENTIALDUPLICATES " 
+                    + "WHERE EUID1 = ? OR EUID2 = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, euid);
             ps.setString(2, euid);

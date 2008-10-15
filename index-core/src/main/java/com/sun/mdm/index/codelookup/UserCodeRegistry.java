@@ -52,9 +52,9 @@ public class UserCodeRegistry {
     private static UserCodeRegistry SINGLETON;
 
     private static final String SELECT_CODES
-             = "select code_list, code, descr, format, input_mask, value_mask"
-                + " from sbyn_user_code"
-                + " order by code_list, code";
+             = "select CODE_LIST, CODE, DESCR, FORMAT, INPUT_MASK, VALUE_MASK"
+                + " from SBYN_USER_CODE"
+                + " order by CODE_LIST, CODE";
 
     private final static String DB_PROP_KEY = "resJNDI";
     private final static String DB_PROP_FILE = "eviewdb.properties";

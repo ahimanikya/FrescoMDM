@@ -44,9 +44,9 @@ import com.sun.mdm.index.util.Localizer;
 public class AuxIdValidator implements ObjectValidator {
 
     private static String selectAuxIdDef 
-            = "select auxiddef, idtype, idlength, format, variablelength "
-                + "from psn_auxiddef "
-                + "order by idtype";
+            = "select AUXIDDEF, IDTYPE, IDLENGTH, FORMAT, VARIABLELENGTH "
+                + "from PSN_AUXIDDEF "
+                + "order by IDTYPE";
 
     private Hashtable mIdDefs = null;
 

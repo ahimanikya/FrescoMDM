@@ -282,8 +282,8 @@ BEGIN
    DECLARE Count_out INT;
    SET Count_out = 0;
 
-   UPDATE SBYN_SEQ_TABLE SET seq_count = seq_count+Chunk_Size_In WHERE seq_name = Seq_Name_In;
-   SELECT seq_count-Chunk_Size_In  INTO Count_out FROM SBYN_SEQ_TABLE WHERE seq_name = Seq_Name_In;
+   UPDATE SBYN_SEQ_TABLE SET SEQ_COUNT = SEQ_COUNT+Chunk_Size_In WHERE SEQ_NAME = Seq_Name_In;
+   SELECT SEQ_COUNT-Chunk_Size_In  INTO Count_out FROM SBYN_SEQ_TABLE WHERE SEQ_NAME = Seq_Name_In;
 
    RETURN Count_out;
 END;

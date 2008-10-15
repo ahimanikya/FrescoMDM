@@ -44,8 +44,8 @@ public class LocalIdValidator implements ObjectValidator {
      * sbyn_systems does not support id_length, formatm etc yes.
      */
     private static String selectLocalIdSQL
-             = "select systemcode, id_length, format "
-             + "from sbyn_systems where status = 'A'";
+             = "select SYSTEMCODE, ID_LENGTH, FORMAT "
+             + "from SBYN_SYSTEMS where STATUS = 'A'";
 
     private static final int MAXIMUM_LENGTH = 40;
     
