@@ -57,35 +57,35 @@ public final class SystemObjectDB extends ObjectPersistenceService {
     static {
         mSelectString =
               "       select \n" 
-            + "               systemcode, \n" 
-            + "               lid, \n" 
-            + "               childtype, \n" 
-            + "               createuser, \n" 
-            + "               createfunction, \n" 
-            + "               createdate, \n" 
-            + "               updateuser, \n" 
-            + "               updatefunction, \n" 
-            + "               updatedate, \n" 
-            + "               status \n" 
+            + "               SYSTEMCODE, \n" 
+            + "               LID, \n" 
+            + "               CHILDTYPE, \n" 
+            + "               CREATEUSER, \n" 
+            + "               CREATEFUNCTION, \n" 
+            + "               CREATEDATE, \n" 
+            + "               UPDATEUSER, \n" 
+            + "               UPDATEFUNCTION, \n" 
+            + "               UPDATEDATE, \n" 
+            + "               STATUS \n" 
             + "       from \n" 
-            + "               sbyn_systemobject \n" 
+            + "               SBYN_SYSTEMOBJECT \n" 
             + "       where \n" 
-            + "               systemcode = ? and \n" 
-            + "               lid = ? \n";
+            + "               SYSTEMCODE = ? and \n" 
+            + "               LID = ? \n";
 
         mInsertString =
-              "       insert into sbyn_systemobject         \n" 
+              "       insert into SBYN_SYSTEMOBJECT         \n" 
             + "       ( \n" 
-            + "               systemcode, \n" 
-            + "               lid, \n" 
-            + "               childtype, \n" 
-            + "               createuser, \n" 
-            + "               createfunction, \n" 
-            + "               createdate, \n" 
-            + "               updateuser, \n" 
-            + "               updatefunction, \n" 
-            + "               updatedate, \n" 
-            + "               status \n" 
+            + "               SYSTEMCODE, \n" 
+            + "               LID, \n" 
+            + "               CHILDTYPE, \n" 
+            + "               CREATEUSER, \n" 
+            + "               CREATEFUNCTION, \n" 
+            + "               CREATEDATE, \n" 
+            + "               UPDATEUSER, \n" 
+            + "               UPDATEFUNCTION, \n" 
+            + "               UPDATEDATE, \n" 
+            + "               STATUS \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -102,27 +102,27 @@ public final class SystemObjectDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mUpdateString =
-              "       update sbyn_systemobject         \n" 
+              "       update SBYN_SYSTEMOBJECT         \n" 
             + "       set \n" 
-            + "               systemcode = ?, \n" 
-            + "               lid = ?, \n" 
-            + "               childtype = ?, \n" 
-            + "               createuser = ?, \n" 
-            + "               createfunction = ?, \n" 
-            + "               createdate = ?, \n" 
-            + "               updateuser = ?, \n" 
-            + "               updatefunction = ?, \n" 
-            + "               updatedate = ?, \n" 
-            + "               status = ? \n" 
+            + "               SYSTEMCODE = ?, \n" 
+            + "               LID = ?, \n" 
+            + "               CHILDTYPE = ?, \n" 
+            + "               CREATEUSER = ?, \n" 
+            + "               CREATEFUNCTION = ?, \n" 
+            + "               CREATEDATE = ?, \n" 
+            + "               UPDATEUSER = ?, \n" 
+            + "               UPDATEFUNCTION = ?, \n" 
+            + "               UPDATEDATE = ?, \n" 
+            + "               STATUS = ? \n" 
             + "       where \n" 
-            + "               systemcode = ? and \n" 
-            + "               lid = ? \n";
+            + "               SYSTEMCODE = ? and \n" 
+            + "               LID = ? \n";
 
         mDeleteString =
-              "       delete from sbyn_systemobject         \n" 
+              "       delete from SBYN_SYSTEMOBJECT         \n" 
             + "       where \n" 
-            + "               systemcode = ? and \n" 
-            + "               lid = ? \n";
+            + "               SYSTEMCODE = ? and \n" 
+            + "               LID = ? \n";
     }
 
     /**

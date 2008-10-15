@@ -119,7 +119,7 @@ public final class SystemSBRDB extends ObjectPersistenceService {
             + "               UPDATEFUNCTION = ?, \n" 
             + "               UPDATEDATE = ?, \n" 
             + "               REVISIONNUMBER = ?, \n" 
-            + "               status = ? \n" 
+            + "               STATUS = ? \n" 
             + "       WHERE \n" 
             + "               EUID = ? \n";
 

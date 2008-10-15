@@ -446,7 +446,11 @@ public class MySQLAdapter extends DBAdapter {
                 "FROM \n" + 
                 "    SBYN_TRANSACTION \n" +
                 "WHERE \n" +
-                "    TRANSACTIONNUMBER = (SELECT MIN(TRANSACTIONNUMBER) \n" + "                             FROM SBYN_TRANSACTION \n" + " 		                      WHERE \n" + "                                 TRANSACTIONNUMBER  > ? AND \n" + "                                 ( SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ? ) ) \n");
+                "    TRANSACTIONNUMBER = (SELECT MIN(TRANSACTIONNUMBER) \n" +
+                "                             FROM SBYN_TRANSACTION \n" +
+                " 		                      WHERE \n" +
+                "                                 TRANSACTIONNUMBER  > ? AND \n" +
+                "                                 ( SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ? ) ) \n");
     }
 
     /** Find the delta by EUID.
@@ -488,7 +492,7 @@ public class MySQLAdapter extends DBAdapter {
      */
     public String getAuditMgrInsertStmt() {
 
-        return ("INSERT INTO SBYN_AUDIt \n" +
+        return ("INSERT INTO SBYN_AUDIT \n" +
                 "( \n" + 
                 "    AUDIT_ID, \n" +
                 "    PRIMARY_OBJECT_TYPE, \n" + 
@@ -534,7 +538,7 @@ public class MySQLAdapter extends DBAdapter {
                 "    SBYN_TRANSACTION \n" + 
                 "WHERE \n" + 
                 "    LID1 = ? AND \n" + 
-                "    FUNCTION = 'LIDmERGE' \n" +
+                "    FUNCTION = 'lidMerge' \n" +
                 "GROUP \n" + 
                 "BY LID2");
     }
@@ -551,7 +555,7 @@ public class MySQLAdapter extends DBAdapter {
                 "    SBYN_TRANSACTION \n" + 
                 "WHERE \n" +
                 "    LID1 = ? AND \n" + 
-                "    FUNCTION = 'LIDuNmERGE' AND \n" + 
+                "    FUNCTION = 'lidUnMerge' AND \n" + 
                 "    LID2 = ?\n");
     }
 

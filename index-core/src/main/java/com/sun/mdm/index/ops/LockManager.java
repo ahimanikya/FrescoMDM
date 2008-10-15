@@ -414,7 +414,7 @@ class LockManager {
 
         if (null == mSingleLockStmt) {
             initClauses();
-            mSingleLockStmt = "SELECT s.euid FROM SBYN_SystemSBR s " + mWithClause + " WHERE s.EUID = ? AND s.RevisionNumber = ? " + mForUpdateClause;
+            mSingleLockStmt = "SELECT s.EUID FROM SBYN_SYSTEMSBR s " + mWithClause + " WHERE s.EUID = ? AND s.REVISIONNUMBER = ? " + mForUpdateClause;
         }
 
         return mSingleLockStmt;
@@ -430,7 +430,7 @@ class LockManager {
 
         if (null == mDoubleLockStmt) {
             initClauses();
-            mDoubleLockStmt = "SELECT s.euid FROM SBYN_SystemSBR s " + mWithClause + " WHERE ( s.EUID = ? AND s.RevisionNumber = ?) OR ( s.EUID = ? AND s.RevisionNumber = ?)" + mForUpdateClause;
+            mDoubleLockStmt = "SELECT s.EUID FROM SBYN_SYSTEMSBR s " + mWithClause + " WHERE ( s.EUID = ? AND s.REVISIONNUMBER = ?) OR ( s.EUID = ? AND s.REVISIONNUMBER = ?)" + mForUpdateClause;
         }
 
         return mDoubleLockStmt;

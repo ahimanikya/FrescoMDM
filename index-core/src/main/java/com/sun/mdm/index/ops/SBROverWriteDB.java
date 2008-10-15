@@ -75,29 +75,29 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
     static {
         mSelectString =
               "       select \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_INT_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_BOOL_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_STRING_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_BYTE_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_LONG_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_DATE_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_FLOAT_STRING + "data, \n"
-            + "               " + ObjectField.OBJECTMETA_TIMESTAMP_STRING + "data \n"
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_INT_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_BOOL_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_STRING_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_BYTE_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_LONG_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_DATE_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_FLOAT_STRING.toUpperCase() + "DATA, \n"
+            + "               " + ObjectField.OBJECTMETA_TIMESTAMP_STRING.toUpperCase() + "DATA \n"
             + "       from \n" 
-            + "               sbyn_overwrite \n" 
+            + "               SBYN_OVERWRITE \n" 
             + "       where \n" 
-            + "               euid = ? \n";
-            
+            + "               EUID = ? \n";
+
         mInsertStringForInt =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_INT_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_INT_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -108,12 +108,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mInsertStringForBool =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_BOOL_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_BOOL_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -124,12 +124,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mInsertStringForString =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_STRING_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_STRING_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -140,12 +140,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mInsertStringForByte =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_BYTE_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_BYTE_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -158,12 +158,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
         // We insert character type to byte type since we cannot change
         // create database script
         mInsertStringForCharacter =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_BYTE_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_BYTE_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -172,14 +172,14 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "               '" + ObjectField.OBJECTMETA_CHAR_STRING + "', \n" 
             + "               ?  \n" 
             + "       ) \n";
-        
+
         mInsertStringForLong =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_LONG_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_LONG_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -190,12 +190,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mInsertStringForDate =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_DATE_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_DATE_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -206,12 +206,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mInsertStringForFloat =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_FLOAT_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_FLOAT_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -222,12 +222,12 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mInsertStringForTimeStamp =
-              "       insert into sbyn_overwrite\n" 
+              "       insert into SBYN_OVERWRITE\n" 
             + "       ( \n" 
-            + "               euid, \n" 
-            + "               path, \n" 
-            + "               type, \n" 
-            + "               " + ObjectField.OBJECTMETA_TIMESTAMP_STRING + "data \n" 
+            + "               EUID, \n" 
+            + "               PATH, \n" 
+            + "               TYPE, \n" 
+            + "               " + ObjectField.OBJECTMETA_TIMESTAMP_STRING.toUpperCase() + "DATA \n" 
             + "       ) \n" 
             + "       values \n" 
             + "       ( \n" 
@@ -238,84 +238,84 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "       ) \n";
 
         mUpdateStringForInt =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_INT_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_INT_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mUpdateStringForBool =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_BOOL_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_BOOL_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mUpdateStringForString =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_STRING_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_STRING_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mUpdateStringForByte =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_BYTE_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_BYTE_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         // We update character type to byte type since we cannot change
         // create database script
         mUpdateStringForCharacter =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_BYTE_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_BYTE_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
         
         mUpdateStringForLong =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_LONG_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_LONG_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mUpdateStringForDate =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_DATE_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_DATE_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mUpdateStringForFloat =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_FLOAT_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_FLOAT_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mUpdateStringForTimeStamp =
-              "       update sbyn_overwrite         \n" 
+              "       update SBYN_OVERWRITE         \n" 
             + "       set \n" 
-            + "               " + ObjectField.OBJECTMETA_TIMESTAMP_STRING + "data = ? \n" 
+            + "               " + ObjectField.OBJECTMETA_TIMESTAMP_STRING.toUpperCase() + "DATA = ? \n" 
             + "       where \n" 
-            + "               euid = ? and \n"
-            + "               path = ? \n";
+            + "               EUID = ? and \n"
+            + "               PATH = ? \n";
 
         mDeleteString =
-              "       delete from sbyn_overwrite         \n" 
+              "       delete from SBYN_OVERWRITE         \n" 
             + "       where \n" 
-            + "               euid = ? and  \n"
-            + "               path = ?\n";
+            + "               EUID = ? and  \n"
+            + "               PATH = ?\n";
     }
 
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
