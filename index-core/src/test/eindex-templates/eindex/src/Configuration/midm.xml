@@ -416,6 +416,7 @@
 
     <node>
         <name>Phone</name>
+        <merge-must-delete>true</merge-must-delete>
         <display-order>3</display-order>
         <field>
             <name>PhoneType</name>
