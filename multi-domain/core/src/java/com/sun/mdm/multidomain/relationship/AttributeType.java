@@ -20,10 +20,10 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.relationship;
+package com.sun.mdm.multidomain.association;
 
 /**
- * Relationship AttributeType class.
+ *  AttributeType class.
  * @author cye
  */
 public class AttributeType {
