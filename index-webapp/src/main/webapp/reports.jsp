@@ -243,7 +243,8 @@ if(session!=null ){
 																					   label="#{feildConfig.displayName}" 
 																					   onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
 																					   onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                                       maxlength="#{feildConfig.maxLength}" 
+                                                                                       maxlength="#{feildConfig.maxSize}" 
+																					   size="#{feildConfig.maxLength}"
 																					   rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                       <h:inputHidden id="SystemCodeHidden" value="#{ReportHandler.reportParameters['SystemCodeHidden']}"/>	
 										<h:inputHidden id="LIDHidden" value="#{ReportHandler.reportParameters['LIDHidden']}"/>			
@@ -254,6 +255,8 @@ if(session!=null ){
 																									   label="#{feildConfig.displayName}" 
 																									   onkeydown="javascript:qws_field_on_key_down(this, document.lidform.lidmask.value)"
 																									   onkeyup="javascript:qws_field_on_key_up(this)"
+																									   maxlength="#{feildConfig.maxSize}" 
+																									   size="#{feildConfig.maxLength}"
 																									   rendered="#{feildConfig.name eq 'LID'}"/>
 																									   
 																						<h:inputText   required="#{feildConfig.required}" 
@@ -284,7 +287,8 @@ id = "form<%=i%><h:outputText value="#{feildConfig.name}"/>"
 title = "<h:outputText value="#{feildConfig.name}"/>"
 value="<h:outputText value="#{ReportHandler.reportParameters[feildConfig.name]}"/>"
 required="<h:outputText value="#{feildConfig.required}"/>"
-maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
+size="<h:outputText value="#{feildConfig.maxLength}"/>"
 onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
 onkeyup="javascript:qws_field_on_key_up(this)"
 onblur="javascript:validate_date(this,'<%=dateFormat%>')">

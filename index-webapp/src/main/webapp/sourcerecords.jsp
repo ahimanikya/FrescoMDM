@@ -313,7 +313,8 @@ if(session!=null){
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
 																				   onfocus="javascript:clear_masking_on_focus()"
-                                                                                    maxlength="#{feildConfig.maxLength}" 
+                                                                                   maxlength="#{feildConfig.maxSize}" 
+																				   size="#{feildConfig.maxLength}"
                                                                                    rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                                                        
                                                                     <h:inputText   required="#{feildConfig.required}" 
@@ -323,6 +324,8 @@ if(session!=null){
                                                                                    readonly="true"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
+																				   maxlength="#{feildConfig.maxSize}" 
+																				   size="#{feildConfig.maxLength}"
 																				   onfocus="javascript:clear_masking_on_focus()"
                                                                                     rendered="#{feildConfig.name eq 'LID'}"/>
                                                                                        
@@ -351,7 +354,8 @@ if(session!=null){
                                                                            id = "<h:outputText value="#{feildConfig.name}"/>"  
                                                                            value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                                            required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                                           maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+                                                                           maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
+																		   size="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                            onblur="javascript:validate_date(this,'<%=dateFormat%>');">
@@ -468,7 +472,9 @@ if(session!=null){
                                                                                            required="true" 
 																						   readonly="true"
 																						   label="#{feildConfig.displayName}" 
-																						   maxlength="#{feildConfig.maxLength}"    onkeydown="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value)"
+																						   maxlength="#{feildConfig.maxSize}" 
+																						   size="#{feildConfig.maxLength}"
+																						   onkeydown="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value)"
                                                                                            onblur="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value);"
                                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
 																						   onfocus="javascript:clear_masking_on_focus()"
@@ -533,7 +539,8 @@ if(session!=null){
                                                                          id="fieldConfigIdTextbox"  
 																		 title="#{fieldConfigPerAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-																		  maxlength="#{fieldConfigPerAdd.maxLength}"
+																		 maxlength="#{fieldConfigPerAdd.maxSize}" 
+																	     size="#{fieldConfigPerAdd.maxLength}"
 																		 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
 																		 onfocus="javascript:clear_masking_on_focus()"
@@ -546,8 +553,9 @@ if(session!=null){
                                             <input type="text" 
 											       title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
                                                    id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
-                                                   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
-                                                   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+                                                   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>"
+												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxSize}"/>"
+                                                   size="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
 												   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                                                   onkeyup="javascript:qws_field_on_key_up(this)" >
@@ -666,7 +674,8 @@ if(session!=null){
                                                             <h:inputText label="#{childFieldConfigAdd.displayName}"  
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
-																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 maxlength="#{childFieldConfigAdd.maxSize}" 
+																	     size="#{childFieldConfigAdd.maxLength}" 
 																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
 																		 onfocus="javascript:clear_masking_on_focus()"
@@ -674,12 +683,13 @@ if(session!=null){
 																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
 																		 />     
 																		 
-																		 <h:inputText label="#{childFieldConfigAdd.displayName}"  
+															<h:inputText label="#{childFieldConfigAdd.displayName}"  
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
-																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		  onfocus="javascript:clear_masking_on_focus()"
-																		  onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+																		 maxlength="#{childFieldConfigAdd.maxSize}" 
+																	     size="#{childFieldConfigAdd.maxLength}" 
+																		 onfocus="javascript:clear_masking_on_focus()"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
 																		 onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
@@ -692,8 +702,9 @@ if(session!=null){
                                           <nobr>
                                             <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
                                                    id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                   required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
-                                                   maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
+                                                   required="<h:outputText value="#{childFieldConfigAdd.required}"/>"
+												   maxlength="<h:outputText value="#{childFieldConfigAdd.maxSize}"/>"
+                                                   size="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');">
@@ -1270,8 +1281,7 @@ if(session!=null){
 		 else{
 			    document.getElementById(lidField).readOnly=true;
 		        document.getElementById(lidField).disable=true;
-		        document.getElementById(systemField).focus();
-		 }
+ 		 }
   </script>
 
 </html>

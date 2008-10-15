@@ -231,8 +231,8 @@ if (results != null)   {
 		 var messages = document.getElementById("messages");
 	     messages.innerHTML= "";
 		 messages.style.visibility="hidden";
-		 var resultsdiv = document.getElementById("resultsdiv");
-		 resultsdiv.style.visibility="visible";
+		 //var resultsdiv = document.getElementById("resultsdiv");
+		 //resultsdiv.style.visibility="visible";
 	 </script>
 
 <% } else { %> <!-- End results!= null -->

@@ -1007,6 +1007,7 @@ width:100%;
           text-align:left;
           font-weight:bold;
           position : relative; /* A must for resizable columns */
+		  white-space:nowrap;
 	  padding-left:0px; 
 	  padding-right:0px;
 	  padding-top:0px; 

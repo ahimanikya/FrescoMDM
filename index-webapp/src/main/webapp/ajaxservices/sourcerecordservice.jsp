@@ -500,14 +500,15 @@ boolean isSessionActive = true;
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive}" >
 									   
 										<h:inputText label="#{fieldConfigPerAdd.displayName}"  
-													  value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
+													 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
 													 title="#{fieldConfigPerAdd.fullFieldName}"
 													 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
 													 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-													 maxlength="#{fieldConfigPerAdd.maxLength}"
+													 maxlength="#{fieldConfigPerAdd.maxSize}" 
+													 size="#{fieldConfigPerAdd.maxLength}" 
 													 onkeyup="javascript:qws_field_on_key_up(this)" 
-													onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"
-													rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' ||  Operations.field_VIP}"/>
+													 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"
+													 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' ||  Operations.field_VIP}"/>
 									
 										<h:inputText label="#{fieldConfigPerAdd.displayName}"  
 													 value="#{msgs.SENSITIVE_FIELD_MASKING}"
@@ -529,9 +530,10 @@ boolean isSessionActive = true;
 													 title="#{fieldConfigPerAdd.fullFieldName}"
 													 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
 													 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-													 maxlength="#{fieldConfigPerAdd.maxLength}"
+													 maxlength="#{fieldConfigPerAdd.maxSize}" 
+													 size="#{fieldConfigPerAdd.maxLength}" 
 													 onkeyup="javascript:qws_field_on_key_up(this)" 
-													onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
+													 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
 									</h:column>                     
 									<!--Rendering Updateable HTML Text boxes date fields-->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && !fieldConfigPerAdd.sensitive}">
@@ -542,7 +544,8 @@ boolean isSessionActive = true;
 												   value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
 												   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
 												   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
-												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxSize}"/>"
+                                                   size="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
 												   onblur="javascript:validate_date(this,'<%=dateFormat%>')"
 												   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
 												   onkeyup="javascript:qws_field_on_key_up(this)" >
@@ -571,8 +574,9 @@ boolean isSessionActive = true;
 												   title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
 												   value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
 												   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
-												   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
-												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+												   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>"
+												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxSize}"/>"
+                                                   size="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
 												   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
 												   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
 												   onkeyup="javascript:qws_field_on_key_up(this)" >
@@ -600,8 +604,10 @@ boolean isSessionActive = true;
 												   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
 												   readonly="true" 
 												   disabled="true" 
-												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-												   ><img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/><font class="dateFormat">(<%=dateFormat%>)</font>
+												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxSize}"/>"
+												   size="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>" 
+												   >
+												   <img  border="0"  title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/><font class="dateFormat">(<%=dateFormat%>)</font>
 										</nobr>
 									</h:column>
 
@@ -718,8 +724,9 @@ boolean isSessionActive = true;
 								<h:inputText label="#{childFieldConfigAdd.displayName}"  
 											 title="#{childFieldConfigAdd.fullFieldName}"
 											 onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
-											  maxlength="#{childFieldConfigAdd.maxLength}"
-											onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+											 maxlength="#{childFieldConfigAdd.maxSize}" 
+											 size="#{childFieldConfigAdd.maxLength}" 
+											 onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
 											 onkeyup="javascript:qws_field_on_key_up(this)" 
 											 required="#{childFieldConfigAdd.required}"
 											 rendered="#{childFieldConfigAdd.constraintBy ne null}"
@@ -728,8 +735,9 @@ boolean isSessionActive = true;
 											 <h:inputText label="#{childFieldConfigAdd.displayName}"  
 											 title="#{childFieldConfigAdd.fullFieldName}"
 											 onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
-											  maxlength="#{childFieldConfigAdd.maxLength}"
-											onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+											 maxlength="#{childFieldConfigAdd.maxSize}" 
+											 size="#{childFieldConfigAdd.maxLength}" 
+											 onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
 											 onkeyup="javascript:qws_field_on_key_up(this)" 
 											 required="#{childFieldConfigAdd.required}"
 											 rendered="#{childFieldConfigAdd.constraintBy eq null}"
@@ -742,8 +750,9 @@ boolean isSessionActive = true;
 																					<nobr>
 																						<input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
 																							   id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-																							   required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
-																							   maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
+																							   required="<h:outputText value="#{childFieldConfigAdd.required}"/>"
+																							   maxlength="<h:outputText value="#{childFieldConfigAdd.maxSize}"/>"
+																							   size="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
 																							   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
 																							   onkeyup="javascript:qws_field_on_key_up(this)" 
 																							   onblur="javascript:validate_date(this,'<%=dateFormat%>');">

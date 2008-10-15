@@ -147,7 +147,8 @@ function setRand(thisrand)  {
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                               maxlength="#{feildConfig.maxLength}" 
+                                                               maxlength="#{feildConfig.maxSize}" 
+															   size="#{feildConfig.maxLength}"
 															   value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                 
@@ -158,6 +159,8 @@ function setRand(thisrand)  {
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
+															   maxlength="#{feildConfig.maxSize}" 
+															   size="#{feildConfig.maxLength}"
                                                                onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
 															   value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'LID'}"/>
@@ -191,7 +194,8 @@ function setRand(thisrand)  {
 												   title="<h:outputText value="#{feildConfig.name}"/>"  
                                                    value="<h:outputText value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                   maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+                                                   maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
+                                                   size="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'<%=dateFormat%>');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
