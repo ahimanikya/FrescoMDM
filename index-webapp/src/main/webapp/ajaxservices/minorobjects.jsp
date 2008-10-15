@@ -1050,7 +1050,7 @@ if(isSave) {
                            if(elemType != 'HIDDEN') {
 						  
 							for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  "<%=value%>")   {
 									thisFrm.elements[<%=k%>].options.selectedIndex = i
 								}
 						     }
@@ -1058,7 +1058,7 @@ if(isSave) {
 
 						<%} else {%>
 							if(elemType != 'HIDDEN') {
-                              thisFrm.elements[<%=k%>].value = '<%=value%>'
+                              thisFrm.elements[<%=k%>].value = "<%=value%>";
 						    }
 						<%}%>
 					<%}%>

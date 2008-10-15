@@ -398,6 +398,8 @@ boolean isSessionActive = true;
                                 </tr>
 								<tr>
 					             <td>
+								 <!-- modified by Bhat on 15-10-08 as fix 15 -->
+								<div style="visibility:visible;display:block;" id="EO<h:outputText value='#{childNodesName}'/>addSOButtons">
 								<table cellpadding="0" cellspacing="0" border="0">
 								<tr>
 								  <td>
@@ -412,12 +414,13 @@ boolean isSessionActive = true;
 								  </td>
 								  <td>
 								   <div style="visibility:hidden;display:none;" id="AddSo<h:outputText value="#{childNodesName}"/>">
-											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
+											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
 											  <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
 											 </a>
 								  </td>
 								 </tr>
 								</table>
+							</div>
 								 </td>
 								</tr>
                             </table>   
@@ -458,7 +461,7 @@ boolean isSessionActive = true;
      <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm')">
         <span><h:outputText value="#{msgs.clear_button_label}"/></span>
      </h:outputLink>    
-	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:editMinorObjectType = '';ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
+	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
      </a>    
 	 </nobr>

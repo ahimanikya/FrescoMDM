@@ -524,9 +524,11 @@ if(session!=null){
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="2">
+                                                                    <td colspan="2"><!-- modified by by Bhat on 15-10-08 as fix of 15 -->
 																	<a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:if(editMinorObjectType.length<1){
-																	showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)
+																	showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event);
+																	document.getElementById('EO<%=request.getParameter("MOT")%>buttons').style.visibility = 'visible';
+																	document.getElementById('EO<%=request.getParameter("MOT")%>buttons').style.display = 'block';
 																	}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"
 																	class="button">
 																	<span>
@@ -655,6 +657,8 @@ if(session!=null){
 					</tr>
                     <tr>
 					  <td>
+					  <!-- modified by Bhat on 15-10-08 as fix of 15 -->
+					    <div style="visibility:visible;display:block;" id="EO<h:outputText value='#{childNodesName}'/>buttons">
 					    <table cellpadding="0" cellspacing="0" border="0">
 						  <tr>
 						     <td>
@@ -669,13 +673,14 @@ if(session!=null){
 							</td>
 							<td>
                                  <div style="visibility:hidden;display:none;" id="EO<h:outputText value='#{childNodesName}'/>cancelEdit">
-                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', 'EO<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>','EO<h:outputText value='#{childNodesName}'/>buttonspan')">
+                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', 'EO<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>','EO<h:outputText value='#{childNodesName}'/>buttonspan')">
                                           <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                                  </div>
 						      </td>
                             </tr>
 						  </table>
+						  </div>
 					  </td>
 					</tr>
 					</table>
@@ -709,9 +714,8 @@ if(session!=null){
                                             <table style="background-color:#efefef" width="100%">
                                                 <tr>
                                                     <td>
-                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event);}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
-
-                                                            <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
+                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event);}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+                                                             <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
                                                         </a> 
                                                     </td>
                                                 </tr>
@@ -1442,7 +1446,8 @@ if(session!=null){
                     <tr>
 					  <td>
 					  <nobr>
-					  <%if("active".equalsIgnoreCase(soStatus)) {%> 					    
+					  <%if("active".equalsIgnoreCase(soStatus)) {%> <!-- modified by Bhat on 15-10-08 as fix of 15 -->				    
+					    <div style="visibility:visible;display:block;" id="<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>editSOButtons">
 						 <table cellpadding="0" cellspacing="0" border="0">
 						   <tr>
 						     <td>
@@ -1464,7 +1469,7 @@ if(session!=null){
 							 </td>
 							</tr>
 						  </table>
-
+						  </div>
                         <%}   else   {%>
                             <input title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  type="button" value="<h:outputText value="#{msgs.source_rec_save_but}"/>  <h:outputText value="#{childNodesName}"/>" readonly="true" disabled="true"/>
                             <input type="button" value="<h:outputText value="#{msgs.clear_button_label}"/>" readonly="true" disabled="true"/>
@@ -1543,7 +1548,7 @@ if(session!=null){
                                  <a title="<h:outputText value="#{msgs.source_rec_save_but}" />" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ editMinorObjectType = '';ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                        <span><h:outputText value="#{msgs.source_rec_save_but}" /></span>
                                     </a>
-                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="javascript:editMinorObjectType = '';ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
+                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
                                        <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                    </a>  
 								   <!-- Start Added by Anil, fix for  CR 6709864 -->

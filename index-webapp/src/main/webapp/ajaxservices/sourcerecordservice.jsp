@@ -315,10 +315,13 @@ boolean isSessionActive = true;
 									<a href="javascript:void(0)" 
 									   class="button"  
 									   title="<%=bundle.getString("source_rec_edit_but")%>"
-									   onclick="javascript:getFormValues('basicViewformData');
+									   onclick="javascript:if(editMinorObjectType.length<1){
+									   getFormValues('basicViewformData');
 									   ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?&rand='+<%=rand%>+'&editSO=true',
 									   'sourceRecordSearchResult',
-									   event);" >   
+									   event);
+									   }else{
+									   showUnSavedAlert(event,editMinorObjectType);}" >   
 									   <span><%=bundle.getString("source_rec_edit_but")%></span>							
 									</a>  
  								<%}%> 

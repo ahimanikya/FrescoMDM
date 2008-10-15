@@ -117,6 +117,7 @@ boolean isminorObjSave = (null == minorObjSave?false:true);
 //Variables required for Edit
 String editIndex = request.getParameter("editIndex");
 boolean isEdit = (null == editIndex?false:true);
+boolean isMinorObjectView = (null == request.getParameter("isView")?false:true); // added by Bhat on 15-10-08 as a fix of 15
 
 //Variables for Validate LID
 String validate = request.getParameter("validate");
@@ -738,6 +739,7 @@ if (isCancel){
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
                                 <td class="tablehead"> &nbsp;</td>
+								<td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
@@ -750,12 +752,18 @@ if (isCancel){
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
-
+								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<td valign="center" width="14px">
+									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
+											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'> 
+												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
+									  </a>
+								</td>
+								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
@@ -1012,7 +1020,8 @@ if (isCancel){
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
-                                <td class="tablehead"> &nbsp;</td>
+                                <td class="tablehead"> &nbsp;</td>                                
+								<td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
@@ -1025,12 +1034,18 @@ if (isCancel){
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
-								  %>						  
-
+								  %>						
+								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<td valign="center" width="14px">
+									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
+											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'> 
+												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
+									  </a>
+								</td>								  
+			                    <td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
@@ -1210,7 +1225,8 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
-                          <tr>			   
+                          <tr>	
+                                <td class="tablehead"> &nbsp;</td>						  
                                 <td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                              <% for(int k=0;k<fcArray.length;k++) {
@@ -1224,12 +1240,18 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 			              </tr>
                     <% } %>
 	              <tr class="<%=styleClass%>">
-			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
-								  %>						  
-
+								  %>
+								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<td valign="center" width="14px">
+									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
+											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'>
+												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
+									  </a>
+								</td>								  
+			                    <td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
@@ -1237,6 +1259,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
+
 							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
@@ -1289,19 +1312,27 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
    </script>
 <%}%>
 
-
-<% } else if (isEdit) { %>  <!-- Edit Minor Object -->
-    <script>
+<%}else if(isMinorObjectView){%> <!-- added by Bhat on 15-10-08 as fix of 15 -->
+    
+	<script>
     document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
 	document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.visibility = 'visible';
     document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.display = 'block';
-    </script>
+
+	document.getElementById('EO<%=request.getParameter("MOT")%>addSOButtons').style.visibility = 'hidden';
+    document.getElementById('EO<%=request.getParameter("MOT")%>addSOButtons').style.display = 'none';
+
+     </script>
 		     <%
 		      // HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
 		       FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 			   String formName = request.getParameter("MOT")+"AddNewSOInnerForm";
 			   int intEditIndex = new Integer(editIndex).intValue();
 			 %>
+			 <script>
+				  editMinorObjectType = '';
+				 setEOEditIndex('-1');
+			 </script>
 			 <%HashMap minorObjectMap  = (HashMap) editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().get(intEditIndex);%>
                <!-- Generate the script to populate the user code maskings -->
 			       <% for(int k=0;k<fcArray.length;k++) {	
@@ -1343,7 +1374,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
                            if(elemType != 'HIDDEN') {
 						  
 							for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
-								if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  '<%=value%>')   {
+								if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
 									thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
 								}
 						     }
@@ -1353,7 +1384,94 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 						<%} else {%>
 						<script>
 							if(elemType != 'HIDDEN') {
-                              thisFrm.elements['<%=k%>'].value = '<%=value%>';
+                              thisFrm.elements['<%=k%>'].value = "<%=value%>";
+						    }
+						</script>
+						<%}%>
+    					<script>
+                            thisFrm.elements['<%=k%>'].readOnly = true
+                            thisFrm.elements['<%=k%>'].disabled = true;
+ 						</script>
+					<%}%>
+						
+		           <%}%>
+
+<% } else if (isEdit) { %>  <!-- Edit Minor Object -->
+    <script>
+    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
+	document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.visibility = 'visible';
+    document.getElementById('AddSo<%=request.getParameter("MOT")%>').style.display = 'block';
+
+	document.getElementById('EO<%=request.getParameter("MOT")%>addSOButtons').style.visibility = 'visible';
+    document.getElementById('EO<%=request.getParameter("MOT")%>addSOButtons').style.display = 'block';
+
+    </script>
+		     <%
+		      // HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
+		       FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
+			   String formName = request.getParameter("MOT")+"AddNewSOInnerForm";
+			   int intEditIndex = new Integer(editIndex).intValue();
+			 %>
+			 <%HashMap minorObjectMap  = (HashMap) editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().get(intEditIndex);%>
+               <!-- Generate the script to populate the user code maskings -->
+			       <% for(int k=0;k<fcArray.length;k++) {	
+				        String constarintBy = fcArray[k].getConstraintBy();
+						if(constarintBy != null && constarintBy.length() > 0) {
+				        int refIndex = sourceHandler.getReferenceFields(fcArray,constarintBy);
+                      
+                        String userInputMask = ValidationService.getInstance().getUserCodeInputMask(fcArray[refIndex].getUserCode(), (String)   minorObjectMap.get(fcArray[refIndex].getFullFieldName()));
+                      
+			        
+				     %>
+						<script>
+                         userDefinedInputMask = '<%=userInputMask%>';
+				         
+						</script>
+				      <%}%> 
+				   <%}%> 
+			   <!-- Generate the script to populate the form -->
+					<script>
+  					    var thisFrm = document.getElementById('<%=formName%>');
+				   </script>
+					<% for(int k=0;k<fcArray.length;k++) {%>
+    					<script>
+                            thisFrm.elements['<%=k%>'].readOnly = false;
+                            thisFrm.elements['<%=k%>'].disabled = false;
+ 						</script>
+ 					<%}%>
+
+			       <% for(int k=0;k<fcArray.length;k++) {					     
+				   %>
+					<%
+						String value = (minorObjectMap.get(fcArray[k].getFullFieldName())) != null ?minorObjectMap.get(fcArray[k].getFullFieldName()).toString():null;   
+                        if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+                          if (value != null) {
+                              //Mask the value as per the masking 
+                              value = fcArray[k].mask(value.toString());
+                          }
+                        } 
+					%> 
+					<script>
+                         var elemType = thisFrm.elements['<%=k%>'].type.toUpperCase();
+					</script>
+					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {
+							if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+				       %>
+					   <script>
+                           if(elemType != 'HIDDEN') {
+						  
+							for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
+								if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
+									thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
+								}
+						     }
+					       }
+						   
+					  </script>
+						<%} else {%>
+						<script>
+							if(elemType != 'HIDDEN') {
+                              thisFrm.elements['<%=k%>'].value = "<%=value%>";
 						    }
 						</script>
 						<%}%>

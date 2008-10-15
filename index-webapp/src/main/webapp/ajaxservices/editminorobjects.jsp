@@ -1255,7 +1255,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							if(elemType != 'HIDDEN') {
                                thisFrm.elements[<%=k%>].readOnly = true;
                                thisFrm.elements[<%=k%>].disabled = true;
- 							   thisFrm.elements[<%=k%>].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
+ 							   thisFrm.elements[<%=k%>].value = "<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>";
 						    }
 						<%}%>
 
@@ -1272,7 +1272,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							if(elemType != 'HIDDEN') {
                                thisFrm.elements[<%=k%>].readOnly = true;
                                thisFrm.elements[<%=k%>].disabled = true;
- 							   thisFrm.elements[<%=k%>].value = '<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>';
+ 							   thisFrm.elements[<%=k%>].value = "<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>";
                                thisFrm.elements[<%=k%>].title = '';
 						    }
 						<%}%>
@@ -1290,7 +1290,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								thisFrm.elements[<%=k%>].disabled = true;
 
 								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  "<%=value%>")   {
 										thisFrm.elements[<%=k%>].options.selectedIndex = i
 									}
 								 }
@@ -1299,7 +1299,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								if(elemType != 'HIDDEN') {
 								   thisFrm.elements[<%=k%>].readOnly = true;
 								   thisFrm.elements[<%=k%>].disabled = true;
-								   thisFrm.elements[<%=k%>].value = '<%=value%>'
+								   thisFrm.elements[<%=k%>].value = "<%=value%>"
 								}
 							<%}%>
 							<%}%>
@@ -1310,7 +1310,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							   if(elemType != 'HIDDEN') {
 							  
 								for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
+									if ( (thisFrm.elements[<%=k%>].options[i].value) ==  "<%=value%>")   {
 										thisFrm.elements[<%=k%>].options.selectedIndex = i
 									}
 								 }
@@ -1318,7 +1318,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							<%} else {%>
 								if(elemType != 'HIDDEN') {
-								  thisFrm.elements[<%=k%>].value = '<%=value%>'
+								  thisFrm.elements[<%=k%>].value = "<%=value%>"
 								}
 							<%}%>
 						<%}%>
