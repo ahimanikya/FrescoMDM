@@ -9,7 +9,6 @@
 <meta name="author" content="Carol Thom">
 <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
 </head>
-
 <body>
 <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. --><!-- Use is subject to license terms. -->
 <a name="top"></a>
@@ -24,8 +23,8 @@ build. There are a few differences in creating the database tables and
 defining the database connection when using MySQL. This page provides
 basic information for using MySQL and&nbsp;how to configure a
 master index to use MySQL. For more information about creating and
-configuring a Master Index database, see <a href="dsgn_eview-database_c.html">Master Index Database
-Scripts and Design</a> and <a href="dsgn_eview-database_t.html">Creating
+configuring a Master Index database, see <a href="http://open-dm-mi.dev.java.net/docs/dev/dsgn_eview-database_c.html">Master Index Database
+Scripts and Design</a> and <a href="http://open-dm-mi.dev.java.net/docs/dev/dsgn_eview-database_t.html">Creating
 the Master Index Database</a>.</p>
 <p>To download MySQL, go to <a href="http://dev.mysql.com/downloads/">
 the MySQL Downloads page</a>. You need to download both the
@@ -43,9 +42,9 @@ will be generated in the wrong format for MySQL.</p>
 <h2>Creating the Database</h2>
 <b>Before You Begin:</b> Customize the <tt>systems.sql</tt>
 and <tt>codelist.sql</tt>
-scripts as described in <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-systems_t">Step
-4: Define Master Index External Systems</a> and <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-codelist_t">Step
-5: Define Master Index Code Lists</a>.
+scripts as described in <a href="http://open-dm-mi.dev.java.net/docs/dev/dsgn_eview-database_t.html#dsgn_eview-dbs-systems_t">Step
+4: Define Master Index External Systems</a> and <a href="http://open-dm-mi.dev.java.net/docs/dev/dsgn_eview-database_t.html#dsgn_eview-dbs-codelist_t">Step
+5: Define Master Index Code Lists</a>. Note that in all of the commands below, italicized text represents variables.
 <ol>
 <li><b>If you are using MySQL in a Unix or Mac
 environment, do the following: </b>
@@ -95,7 +94,7 @@ database, run the following command after you connect:</b>
 </li>
 <li><b>Run the master index database scripts in the
 order
-listed below. The command is </b><tt>source <i>filename</i></tt>.<br>
+listed below. The command is </b><tt>"source <i>filename</i></tt>".<br>
 <ul>
 <li>create.sql</li>
 <li>systems.sql</li>
@@ -138,7 +137,7 @@ Resource</a></p>
 <div class="indent"><a name="mysql-driv_t"></a>
 <h3>Add the MySQL Driver to the Application Server</h3>
 <ol>
-<li><b>If you have not already done so, sownload and
+<li><b>If you have not already done so, download and
 extract the latest driver named </b><tt>MySQL
 Connector/J - for
 connecting to MySQL from Java</tt><b>. You can
