@@ -32,13 +32,13 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 import com.sun.mdm.multidomain.association.AssociationValue;
-import com.sun.mdm.multidomain.association.Association;
+//import com.sun.mdm.multidomain.association.Association;
 import com.sun.mdm.multidomain.hierarchy.HierarchyAssociation;
 import com.sun.mdm.multidomain.group.Group;
 import com.sun.mdm.multidomain.group.GroupMember;
 
 import com.sun.mdm.multidomain.query.PageIterator;
-import com.sun.mdm.multidomain.query.MultiObject;
+import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.MultiFieldValuePair;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
