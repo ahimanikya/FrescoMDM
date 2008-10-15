@@ -26,9 +26,14 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.hierarchy.HierarchyType;
+import com.sun.mdm.multidomain.group.GroupType;
+import com.sun.mdm.multidomain.group.GroupMemberType;
+
         
 /**
  * MultiDomainMetaService interface.
+ * @author SwaranjitDua
  * @author cye
  */
 public interface MultiDomainMetaService {
@@ -42,7 +47,7 @@ public interface MultiDomainMetaService {
         throws ProcessingException;
     
     /**
-     * Get all relationship types for all domains.
+     * Get all relational types types for all domains.
      * @return RelationshipType[] An array of relationship type.
      * @throws ProcessingException Thrown if an error occurs during processing.
      */
@@ -105,40 +110,40 @@ public interface MultiDomainMetaService {
     /**
      * Get all Hierarchy types for the given domain.
      * @param domain Domain name.
-     * @return RelationshipType[] An array of relationship type.
+     * @return HierarchyType[] An array of relationship type.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid domain name is passed as a parameter.
      */
-    public RelationshipType[] getHierarchyTypes(String domain) 
+    public HierarchyType[] getHierarchyTypes(String domain) 
         throws ProcessingException, UserException;
    
     /**
      * Create a new hierarchy type and persist the hierarchy type in the database.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @return String Hierarchy type identifier which is newly created. 
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
      */
-    public String createHierarchyType(RelationshipType hierarchyType)  
+    public String createHierarchyType(HierarchyType hierarchyType)  
         throws ProcessingException, UserException;
     
     
     /**
      * Update an existing hierarchy type and persist the hierarchy type in the database.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
      */
-    public void updateHierarchyType(RelationshipType hierarchyType)  
+    public void updateHierarchyType(HierarchyType hierarchyType)  
         throws ProcessingException, UserException;
 
     /**
      * Delete an existing hierarchy type from the database for the given hierarchy type.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
      */
-    public void deleteHierarchyType(RelationshipType hierarchyType) 
+    public void deleteHierarchyType(HierarchyType hierarchyType) 
         throws ProcessingException, UserException;
     
     /**
@@ -154,41 +159,41 @@ public interface MultiDomainMetaService {
         throws ProcessingException, UserException;
          
     /**
-     * Get aal group types for the given domain name.
+     * Get all group types for the given domain name.
      * @param domain Domain name.
-     * @return RelationshipType[] An array of group type.
+     * @return GroupType[] An array of group type.
      * @throws ProcessingException Thrown if an error occurs during processing.
      */
-    public RelationshipType[] getGroupTypes(String domain) 
+    public GroupType[] getGroupTypes(String domain) 
         throws ProcessingException;
         
     /**
      * Create a new group type and persist in the database.
-     * @param groupType RelationshipType.
+     * @param groupType Group Type.
      * @return String Group type identifier which is newly created.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid group type is passed as a parameter.
      */
-    public String createGroupType(RelationshipType groupType) 
+    public String createGroupType(GroupType groupType) 
         throws ProcessingException, UserException;
     
     /**
      * Update an existing group type and persist in the database.
-     * @param groupType RelationshipType.
+     * @param groupType Group Type.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid group type is passed as a parameter.
      */
-    public void updateGroupType(RelationshipType groupType) 
+    public void updateGroupType(GroupType groupType) 
         throws ProcessingException, UserException;
     
 
     /**
      * Delete an existing group type for the given group type.
-     * @param groupType RelationshipType
+     * @param groupType Group Type
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid group type is passed as a parameter.
      */
-    public void deleteGroupType(RelationshipType groupType) 
+    public void deleteGroupType(GroupType groupType) 
         throws ProcessingException, UserException;
     
     /**
@@ -202,4 +207,52 @@ public interface MultiDomainMetaService {
     public void deleteGroupType(String domain, String name) 
         throws ProcessingException, UserException;
             
+    /**
+     * Get all group member types for the given domain name.
+     * @param domain Domain name.
+     * @return GroupMemberType[] An array of group type.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     */
+    public GroupMemberType[] getGroupMemberTypes(String domain) 
+        throws ProcessingException;
+        
+    /**
+     * Create a new group type and persist in the database.
+     * @param groupMemberType Group Member Type.
+     * @return String Group member type identifier which is newly created.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     */
+    public String createGroupMemberType(GroupMemberType groupMemberType) 
+        throws ProcessingException, UserException;
+    
+    /**
+     * Update an existing group member type and persist in the database.
+     * @param groupMemberType Group Member Type.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     */
+    public void updateGroupMemberType(GroupMemberType groupMemberType) 
+        throws ProcessingException, UserException;
+    
+
+    /**
+     * Delete an existing group member type for the given group member type.
+     * @param groupMemberType GroupMemberType
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     */
+    public void deleteGroupMemberType(GroupMemberType groupMemberType) 
+        throws ProcessingException, UserException;
+    
+    /**
+     * Delete an existing group Member type for the given domain name.
+     * @param domain Domain name.
+     * @param name Group Member type name.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid domain name or group type name is 
+     * passed as a parameter.
+     */
+    public void deleteGroupMemberType(String domain, String name) 
+        throws ProcessingException, UserException;
 }
