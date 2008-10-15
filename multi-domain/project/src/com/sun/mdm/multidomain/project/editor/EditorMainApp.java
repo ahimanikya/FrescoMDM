@@ -295,6 +295,22 @@ public class EditorMainApp {
         }
         return objectXml;
     }
+    
+     /**
+     * Get saved object.xml for the domain
+     * @param fileDomain
+     * @return
+     */
+    public static FileObject getSavedDomainQueryXml(File fileDomain) {
+        FileObject objectXml = null;
+        try {
+            FileObject fobjSavedSomain = FileUtil.toFileObject(fileDomain);
+            objectXml = fobjSavedSomain.getFileObject(MultiDomainProjectProperties.QUERY_XML);
+        } catch (Exception ex) {
+            mLog.severe(ex.getMessage());
+        }
+        return objectXml;
+    }   
 
     /**
      * 

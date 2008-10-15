@@ -4,6 +4,7 @@
  */
 package com.sun.mdm.multidomain.parser;
 
+import com.sun.mdm.multidomain.parser.SearchOptions.Parameter;
 import java.util.ArrayList;
 
 import org.w3c.dom.NodeList;
@@ -16,11 +17,12 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -81,9 +83,8 @@ public class RelationshipWebManager {
             DOMConfiguration domConfig = xmldoc.getDomConfig();
             //domConfig.setParameter("format-pretty-print", "true");
             DOMSource domSource = new DOMSource(xmldoc);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            StreamResult streamResult = new StreamResult(out);
             TransformerFactory tf = TransformerFactory.newInstance();
+            tf.setAttribute("indent-number", 4); 
             Transformer serializer = tf.newTransformer();
             serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
@@ -91,7 +92,11 @@ public class RelationshipWebManager {
             serializer.setOutputProperty(OutputKeys.INDENT, "yes");
             serializer.setOutputProperty(OutputKeys.VERSION, "1.0");
             //serializer.setOutputProperty(OutputKeys., "yes");
-            serializer.transform(domSource, streamResult);
+            //OutputStream os = new OutputStream()
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            //StreamResult streamResult = new StreamResult(out);
+            Result result = new StreamResult(new OutputStreamWriter(out,"UTF-8"));
+            serializer.transform(domSource, result);
             //serializer.
             
             return out.toByteArray();
@@ -226,6 +231,34 @@ public class RelationshipWebManager {
 
                 ArrayList<FieldGroup> fieldGroups = simpleSearch.getFieldGroups();
                 getFieldGroup(fieldGroups, xmlDoc, elmSimpleSearch, WebManagerProperties.mTAG_FIELD_GROUP);
+                
+                //create SearchOption Element Node
+                Element elmSearchOption = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_OPTION);
+                SearchOptions searchOpt =simpleSearch.getSearchOption();
+                Element elmQueryBuilder = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_QUERY_BUILDER);
+                elmQueryBuilder.appendChild(xmlDoc.createTextNode(searchOpt.getQueryBulder()));
+                elmSearchOption.appendChild(elmQueryBuilder);
+ 
+                Element elmWeighted = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_WEIGHTED);
+                elmWeighted.appendChild(xmlDoc.createTextNode(Boolean.toString(searchOpt.getWeighted())));
+                elmSearchOption.appendChild(elmWeighted);
+                
+                ArrayList<Parameter> optParameters = searchOpt.getParameterList();
+                for (Parameter param : optParameters) {
+                    Element elmParam = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_OPTION_PARAMETER);
+                    Element elmParamName = xmlDoc.createElement(WebManagerProperties.mTAG_OPTION_PARAMETER_NAME);
+                    elmParamName.appendChild(xmlDoc.createTextNode(param.getName()));
+                    Element elmParamValue = xmlDoc.createElement(WebManagerProperties.mTAG_OPTION_PARAMETER_VALUE);
+                    elmParamValue.appendChild(xmlDoc.createTextNode(param.getValue()));
+                    elmParam.appendChild(elmParamName);
+                    elmParam.appendChild(elmParamValue);
+                    elmSearchOption.appendChild(elmParam);
+                    
+                }
+                
+                elmSimpleSearch.appendChild(elmSearchOption);
+                
+                
                 elmSearchPages.appendChild(elmSimpleSearch);
            
             }
@@ -722,6 +755,7 @@ public class RelationshipWebManager {
             String screenTitle = null;
             int searchResultID = -1;
             String instruction = null;
+            SearchOptions searchOpt = null;
 
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
@@ -745,16 +779,20 @@ public class RelationshipWebManager {
                             FieldGroup fieldGroup = new FieldGroup();
                             fieldGroups.add(fieldGroup);
                             parseFieldGroup(subElm, fieldGroup);
+                        } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_OPTION)) {
+                            searchOpt = parseSearchOption(subElm);
                         }
+                        
                     }
 
                 }
 
                 if (screenTitle != null && searchResultID != -1) {
-
                     SimpleSearchType simpleSearchType = new SimpleSearchType(screenTitle,
                             searchResultID, instruction, fieldGroups);
+                    simpleSearchType.setSearchOption(searchOpt);
                     domain.addSearchType(screenTitle, simpleSearchType);
+
                 }
 
             }
@@ -763,6 +801,47 @@ public class RelationshipWebManager {
 
     }
 
+    private SearchOptions parseSearchOption(Node node) {
+        String elementName = null;
+        NodeList children = node.getChildNodes();
+        
+        SearchOptions  searchOpt = new SearchOptions();
+        for (int i1 = 0; i1 < children.getLength(); i1++) {
+            if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
+                Element elm = (Element) children.item(i1);
+                elementName = elm.getTagName();
+                if (elementName.equals(WebManagerProperties.mTAG_SEARCH_QUERY_BUILDER)) {
+                    searchOpt.setQueryBuilder(RelationshipUtil.getStrElementValue(elm));
+                } else  if (elementName.equals(WebManagerProperties.mTAG_SEARCH_WEIGHTED)) {
+                    searchOpt.setWeighted(Boolean.parseBoolean(RelationshipUtil.getStrElementValue(elm)));
+                } else  if (elementName.equals(WebManagerProperties.mTAG_SEARCH_OPTION_PARAMETER)) {
+                    NodeList subChildren = elm.getChildNodes();
+                    String name = null;
+                    String value = null;
+                    for (int i2 = 0; i2 < subChildren.getLength(); i2++) {
+                        if (subChildren.item(i2).getNodeType() == Node.ELEMENT_NODE) {
+                            Element subElm = (Element) subChildren.item(i2);
+                            String subElementName = subElm.getTagName();
+                            if (subElementName.equals(WebManagerProperties.mTAG_OPTION_PARAMETER_NAME)) {
+                                name = RelationshipUtil.getStrElementValue(subElm);
+                            } else if (subElementName.equals(WebManagerProperties.mTAG_OPTION_PARAMETER_VALUE)) {
+                                value = RelationshipUtil.getStrElementValue(subElm);
+                            }
+
+                            if (name != null && value != null) {
+                                searchOpt.addParameter(name, value);
+                            }
+                        }
+
+                    }
+
+                }
+                
+                
+            }
+        }
+        return searchOpt;
+    }
     private void parseFieldGroup(Node node, FieldGroup fieldGroup) {
         String elementName = null;
         NodeList children = node.getChildNodes();

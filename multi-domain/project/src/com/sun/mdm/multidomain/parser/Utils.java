@@ -207,6 +207,25 @@ public class Utils {
                                                     xmlSource.getPublicId() + ":" + e.getMessage());
         }
     }
+    
+/**
+     * @param xmlSource object definition
+     * @return ret EIndexObject
+     * @throws ParserException exception
+     */
+    public static MIQueryBuilder parseMiQueryBuilder(InputSource xmlSource) throws ParserException {
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            mDoc = docBuilder.parse(xmlSource);
+            MIQueryBuilder ret = new MIQueryBuilder();
+            ret.parse(mDoc);
+            return ret;
+        } catch (Exception e) {
+            throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
+                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+        }
+    }    
 
     /**
      * @param path file path

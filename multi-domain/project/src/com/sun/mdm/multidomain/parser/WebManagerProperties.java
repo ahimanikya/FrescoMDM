@@ -73,6 +73,18 @@ public class WebManagerProperties {
     
     public static String mTAG_FIELD_GROUP = "field-group";
     
+    public static String mTAG_SEARCH_OPTION = "search-option";
+    
+    public static String mTAG_SEARCH_QUERY_BUILDER = "query-builder";
+    
+    public static String mTAG_SEARCH_WEIGHTED = "weighted";
+    
+    public static String mTAG_SEARCH_OPTION_PARAMETER = "parameter";
+    
+    public static String mTAG_OPTION_PARAMETER_NAME = "name";
+    
+    public static String mTAG_OPTION_PARAMETER_VALUE = "value";
+    
     public static String mTAG_FIELD_REF = "field-ref";
     
     public static String mTAG_SCREEN_TITLE = "screen-title";

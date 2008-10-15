@@ -29,36 +29,19 @@
  */
 package com.sun.mdm.multidomain.project.editor.nodes;
 
-import java.awt.Image;
-import java.awt.Point;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
+import com.sun.mdm.multidomain.parser.MIQueryBuilder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.swing.Action;
-import org.netbeans.api.visual.widget.Widget;
-import org.openide.ErrorManager;
-import org.openide.cookies.SaveCookie;
-import org.openide.loaders.DataObject;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
-import org.openide.nodes.CookieSet;
-import org.openide.nodes.Sheet;
 import org.openide.nodes.NodeAdapter;
 import org.openide.nodes.NodeEvent;
 import org.openide.util.Lookup;
-import org.openide.util.NbBundle;
-import org.openide.util.lookup.AbstractLookup;
-import org.openide.util.lookup.InstanceContent;
 import org.openide.filesystems.FileObject;
 
 import java.io.File;
 import java.io.InputStream;
 import org.xml.sax.InputSource;
 import java.util.Iterator;
-import java.util.Set;
 
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.MiNodeDef;
@@ -83,6 +66,7 @@ public class DomainNode extends AbstractNode {
     private ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
     TabListRelationshipTypes mTabListRelationshipTypes = null;
     File mSelectedDomain = null;
+    MIQueryBuilder mMIQueryBuilder = null;
     
     /**
      * 
@@ -120,6 +104,7 @@ public class DomainNode extends AbstractNode {
         mSelectedDomain = selectedDomain;
         
         loadMiObjectNodes();
+        loadMiQueryBuilder();
         loadRelationshipTypes(domainName, alRelationshipTypes);
         addNodeListener(new NodeAdapter() {
             @Override
@@ -148,6 +133,30 @@ public class DomainNode extends AbstractNode {
                 addChildren(node);
             }
         }
+    }
+    
+    /**
+     * Build querybuilder class from Query.xml file
+     */
+    private void loadMiQueryBuilder() {
+        
+        //MiObject miObject = null;
+         try {
+            FileObject objectXml = EditorMainApp.getSavedDomainQueryXml(mSelectedDomain);
+            if (objectXml != null) {
+                InputStream objectdef = objectXml.getInputStream();
+                InputSource source = new InputSource(objectdef);
+                mMIQueryBuilder = Utils.parseMiQueryBuilder(source);
+            }
+        } catch (Exception ex) {
+                mLog.severe(ex.getMessage());
+        }
+        //return miObject;
+       
+    }
+    
+    public MIQueryBuilder getMiQueryBuilder() {
+        return this.mMIQueryBuilder;
     }
     
     private MiObject getMiObject() {

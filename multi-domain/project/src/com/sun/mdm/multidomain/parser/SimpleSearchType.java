@@ -21,6 +21,8 @@ public class SimpleSearchType {
     
     private ArrayList<FieldGroup> mFieldGroups; 
     
+    private SearchOptions mSearchOption = null;
+    
     public SimpleSearchType(String screenTitle, int screenResultID, 
                             String instructionID, ArrayList<FieldGroup> fieldGroups) {
         
@@ -62,4 +64,13 @@ public class SimpleSearchType {
     public void addFieldGroup(FieldGroup fieldGroup) {
         mFieldGroups.add(fieldGroup);
     }
+    
+    public SearchOptions getSearchOption() {
+        return this.mSearchOption;
+    }
+    
+    public void setSearchOption(SearchOptions searchOpt) {
+        this.mSearchOption = searchOpt;
+    }
+    
 }

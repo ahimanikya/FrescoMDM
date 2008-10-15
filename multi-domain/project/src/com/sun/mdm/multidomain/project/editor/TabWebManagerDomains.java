@@ -7,6 +7,7 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.DomainForWebManager;
 import com.sun.mdm.multidomain.parser.DomainsForWebManager;
+import com.sun.mdm.multidomain.parser.MIQueryBuilder;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.SearchDetail;
@@ -19,7 +20,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import org.openide.util.NbBundle;
 
 /**
@@ -38,6 +38,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
     private ArrayList<SimpleSearchType> mSearchTypes;
     private JComboBox mJComboSearchResult = new JComboBox();
     private JComboBox mJComboRecordDetail = new JComboBox();
+    
            
 
     /** Creates new form TabWebManagerDomains */
@@ -354,14 +355,13 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
     int selectedRow = mTableSearchType.getSelectedRow();
     TableModelSearchPage searchPageModel = (TableModelSearchPage) mTableSearchType.getModel();
     SimpleSearchType searchType = searchPageModel.getRow(selectedRow);
-    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult);
+    MIQueryBuilder queryBuilder = mEditorMainApp.getDomainNode(this.jTxtDomainName.getText()).getMiQueryBuilder();
+    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         if (dlg.isRefreshSearchResult()) {
              mJComboSearchResult.setSelectedItem(dlg.getSelectedSearchResult());
              jScrollPaneSearchPage.setViewportView(mTableSearchType);
-
-            //mJComboSearchResult.s
         }
         this.enableSave();
     }
