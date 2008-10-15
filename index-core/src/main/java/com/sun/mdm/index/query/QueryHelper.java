@@ -68,7 +68,7 @@ public class QueryHelper {
     
     private static final String LOOKUP_SYSTEM_PK = "SELECT e.SYSTEMCODE, e.LID "
                     + "FROM SBYN_ENTERPRISE e, SBYN_SYSTEMOBJECT s WHERE e.EUID=? "
-                    + "AND s.status=? AND s.SYSTEMCODE=e.SYSTEMCODE "
+                    + "AND s.STATUS=? AND s.SYSTEMCODE=e.SYSTEMCODE "
                     + "AND s.LID=e.LID";
 
     private static final String LOOKUP_CROSS_SYSTEM_PK = "SELECT e.SYSTEMCODE, e.LID "
@@ -87,8 +87,8 @@ public class QueryHelper {
             + "WHERE SYSTEMCODE=?";
     
     // retrieve a SBRrevision number for an EUID
-    private static final String GET_REVISION_NUMBER = "select revisionnumber "
-            + "from sbyn_systemsbr where euid = ?";
+    private static final String GET_REVISION_NUMBER = "select REVISIONNUMBER "
+            + "from SBYN_SYSTEMSBR where EUID = ?";
     
     /**
      * Given a system object key, return its status. If status is not found, 
