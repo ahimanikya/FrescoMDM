@@ -41,6 +41,9 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
         
 import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.hierarchy.HierarchyType;
+import com.sun.mdm.multidomain.group.GroupType;
+import com.sun.mdm.multidomain.group.GroupMemberType;
 
 /**
  * The enterprise beans implementation of MultiDomainMetaService that is explpsed to the clients.
@@ -146,7 +149,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyTypes() 
      */        
-    public RelationshipType[] getHierarchyTypes(String domain) 
+    public HierarchyType[] getHierarchyTypes(String domain) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -154,7 +157,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createHierarchyType() 
      */        
-    public String createHierarchyType(RelationshipType hierarchyType)  
+    public String createHierarchyType(HierarchyType hierarchyType)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -162,7 +165,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateHierarchyType() 
      */        
-    public void updateHierarchyType(RelationshipType hierarchyType)  
+    public void updateHierarchyType(HierarchyType hierarchyType)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -170,7 +173,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteHierarchyType() 
      */        
-    public void deleteHierarchyType(RelationshipType hierarchyType) 
+    public void deleteHierarchyType(HierarchyType hierarchyType) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -186,7 +189,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getGroupTypes() 
      */        
-    public RelationshipType[] getGroupTypes(String domain) 
+    public GroupType[] getGroupTypes(String domain) 
         throws ProcessingException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -194,7 +197,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createGroupType() 
      */        
-    public String createGroupType(RelationshipType groupType) 
+    public String createGroupType(GroupType groupType) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -202,7 +205,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateGroupType() 
      */        
-    public void updateGroupType(RelationshipType groupType) 
+    public void updateGroupType(GroupType groupType) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
@@ -210,7 +213,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupType() 
      */        
-    public void deleteGroupType(RelationshipType groupType) 
+    public void deleteGroupType(GroupType groupType) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }    
@@ -221,5 +224,45 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     public void deleteGroupType(String domain, String name) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
-    }        
+    }      
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getGroupMemberTypes() 
+     */   
+    public GroupMemberType[] getGroupMemberTypes(String domain) 
+    throws ProcessingException {
+    	   throw new ProcessingException("Not Implemented Yet."); 
+    }
+    
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createGroupMemberType() 
+     */        
+    public String createGroupMemberType(GroupMemberType groupMemberType) 
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }
+    
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateGroupMemberType() 
+     */        
+    public void updateGroupMemberType(GroupMemberType groupMemberType) 
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }
+    
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupMemberType() 
+     */        
+    public void deleteGroupMemberType(GroupMemberType groupMemberType) 
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }    
+    
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupMemberType() 
+     */        
+    public void deleteGroupMemberType(String domain, String name) 
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }      
+    
 }
