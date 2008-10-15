@@ -20,10 +20,10 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.relationship;
+package com.sun.mdm.multidomain.association;
 
 /**
- * Relationship Attribute class.
+ * Flexible Attribute class.
  * @author cye
  * @author SwaranjitDua
  */
@@ -39,13 +39,13 @@ public class Attribute {
     private String defaultValue;
   
     /**
-     * Create an instance of relationship Attribute class.
+     * Create an instance of  Attribute class.
      */
     public Attribute() {    	
     }
     
     /**
-     * Create an instance of relationship Attribute class.
+     * Create an instance of  Attribute class.
      * @param id Attribute Id.
      * @param name Attribute name.
      * @param type Attribute type.
@@ -54,7 +54,7 @@ public class Attribute {
     public Attribute(String id, String name, AttributeType type, String value) {
     	this.id = id;
     	this.name = name;
-    	this.displayName = name;
+    	//this.displayName = name;
     	this.columnName = name;
     	this.searchable = true;
     	this.isRequired = true;
@@ -63,7 +63,7 @@ public class Attribute {
     } 
     
     /**
-     * Create an instance of relationship Attribute class.
+     * Create an instance of  Attribute class.
      * @param id Attribute Id.
      * @param name Attribute name.
      * @param displayName Attribute displayname.
