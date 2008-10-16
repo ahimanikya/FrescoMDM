@@ -22,9 +22,6 @@
  */
 package com.sun.mdm.multidomain.relationship;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 import com.sun.mdm.multidomain.association.Association;
 
 /**
