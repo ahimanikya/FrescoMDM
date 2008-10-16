@@ -41,9 +41,9 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.relationship.Attribute;
-import com.sun.mdm.multidomain.relationship.AttributeType;
-import com.sun.mdm.multidomain.relationship.Domain;
+import com.sun.mdm.multidomain.association.Attribute;
+import com.sun.mdm.multidomain.association.AttributeType;
+import com.sun.mdm.multidomain.association.Domain;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
@@ -119,13 +119,19 @@ public class MetaDataManager {
      */
     public List<RelationshipType> getRelationshipTypes() throws ServiceException {
     	// demo data
-    	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
+    	RelationshipType rt1 = new RelationshipType();
+        rt1.setName("workfor");
+        rt1.setId("1");
     	rt1.setSourceDomain("Person");
     	rt1.setTargetDomain("Company");    	
-    	RelationshipType rt2 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
+    	RelationshipType rt2 = new RelationshipType();
+        rt2.setName("investon");
+        rt2.setId("2");
     	rt2.setSourceDomain("Company");
     	rt2.setTargetDomain("Product");    	    	
-    	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
+    	RelationshipType rt3 = new RelationshipType();
+        rt3.setName("designon");
+        rt3.setId("3");
     	rt3.setSourceDomain("Person");
     	rt3.setTargetDomain("Product");    	    	
     	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
@@ -143,13 +149,19 @@ public class MetaDataManager {
      */
     public List<RelationshipType> getRelationshipTypes(String domain) throws ServiceException {
     	// demo data
-    	RelationshipType rt1 = new RelationshipType("workfor", "a relationship of a Person works for a Company", "1");
+    	RelationshipType rt1 = new RelationshipType();
+        rt1.setName("workfor");
+        rt1.setId("1");
     	rt1.setSourceDomain("Person");
     	rt1.setTargetDomain("Company");    	
-    	RelationshipType rt2 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
+    	RelationshipType rt2 = new RelationshipType();
+        rt2.setName("investon");
+        rt2.setId("2");
     	rt2.setSourceDomain("Company");
     	rt2.setTargetDomain("Product");    	    	
-    	RelationshipType rt3 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
+    	RelationshipType rt3 = new RelationshipType();
+        rt3.setName("designon");
+        rt3.setId("3");
     	rt3.setSourceDomain("Person");
     	rt3.setTargetDomain("Product");    
         

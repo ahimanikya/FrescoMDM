@@ -33,11 +33,11 @@ import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
 import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.multidomain.relationship.Attribute;
-import com.sun.mdm.multidomain.relationship.AttributeType;
+import com.sun.mdm.multidomain.association.Attribute;
+import com.sun.mdm.multidomain.association.AttributeType;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.RelationshipObject;
+import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
 import com.sun.mdm.multidomain.services.query.SearchOptions;
@@ -354,7 +354,7 @@ public class RelationshipManager implements ServiceManager {
     	// Fix me Company
     	ObjectNode object2 = ObjectBuilder.createObjectNode("Person",targetValues);
     	ro1.setRelationship(relationship1);
-    	ro1.setSourceObject(object1);
+    	//fixme ro1.setSourceObject(object1);
     	ro1.setTargetObject(object2);    	    	
       	ros.add(ro1);
 
@@ -371,7 +371,7 @@ public class RelationshipManager implements ServiceManager {
     	// Fix me Company    	
     	object2 = ObjectBuilder.createObjectNode("Person",targetValues);
     	ro2.setRelationship(relationship2);
-    	ro2.setSourceObject(object1);
+    	//fixme ro2.setSourceObject(object1);
     	ro2.setTargetObject(object2);    	    	
       	ros.add(ro2);
       	
@@ -388,7 +388,7 @@ public class RelationshipManager implements ServiceManager {
     	// Fix me Company
     	object2 = ObjectBuilder.createObjectNode("Person",targetValues);
     	ro3.setRelationship(relationship3);
-    	ro3.setSourceObject(object1);
+    	//fixme ro3.setSourceObject(object1);
     	ro3.setTargetObject(object2);    	    	
       	ros.add(ro3);
       	
@@ -412,37 +412,49 @@ public class RelationshipManager implements ServiceManager {
     
     private void init() {
     	// demo data
-    	RelationshipType rt1 = new RelationshipType("worksfor", "a relationship of a Person works for a Company", "1");
-    	rt1.setSourceDomain("Person");
+    	RelationshipType rt1 = new RelationshipType();
+    	rt1.setName("worksfor");
+        rt1.setId("1");
+        rt1.setSourceDomain("Person");
     	rt1.setTargetDomain("Company");    	
     	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
     	rt1.setAttribute(a1);
     	
-    	RelationshipType rt2 = new RelationshipType("employedby", "a relationship of a Person is employed by a Company", "1");
-    	rt2.setSourceDomain("Person");
+    	RelationshipType rt2 = new RelationshipType();
+    	rt2.setName("employedby");
+        rt2.setId("1");
+        rt2.setSourceDomain("Person");
     	rt2.setTargetDomain("Company");    	
     	Attribute a2 = new Attribute("hiredDate", "hired date", new AttributeType(AttributeType.DATE), "09/10/2008");
     	rt2.setAttribute(a2);
 
-    	RelationshipType rt3 = new RelationshipType("contractwith", "a relationship of a Person has a contact with a Company", "1");
+    	RelationshipType rt3 = new RelationshipType();
+        rt3.setName("contractwith");
+        rt3.setId("1");
     	rt3.setSourceDomain("Person");
     	rt3.setTargetDomain("Company");    	
     	Attribute a3 = new Attribute("startDate", "date started", new AttributeType(AttributeType.DATE), "09/10/2008");
     	rt3.setAttribute(a3);
         
-    	RelationshipType rt4 = new RelationshipType("investon", "a relationship of a Company invests on a Product", "2");
-    	rt4.setSourceDomain("Company");
+    	RelationshipType rt4 = new RelationshipType();
+    	rt4.setName("investon");
+        rt4.setId("2");
+        rt4.setSourceDomain("Company");
     	rt4.setTargetDomain("Product");
     	Attribute a4 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
     	rt4.setAttribute(a4);
     	
-    	RelationshipType rt5 = new RelationshipType("designon", "a relationship of a Person designs a Product", "3");
-    	rt5.setSourceDomain("Person");
+    	RelationshipType rt5 = new RelationshipType();
+    	rt5.setName("designon");
+        rt5.setId("3");
+        rt5.setSourceDomain("Person");
     	rt5.setTargetDomain("Product");
     	Attribute a5 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
     	rt5.setAttribute(a5);
     	
-        RelationshipType rt6 = new RelationshipType("workon", "a relationship of a Person designs a Product", "3");
+        RelationshipType rt6 = new RelationshipType();
+        rt6.setName("workon");
+        rt6.setId("3");
     	rt6.setSourceDomain("Person");
     	rt6.setTargetDomain("Product");
     	Attribute a6 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");

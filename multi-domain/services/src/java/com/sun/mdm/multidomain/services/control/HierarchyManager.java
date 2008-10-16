@@ -31,7 +31,7 @@ import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.HierarchyObject;
+import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
 
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.query.SearchCriteria;
