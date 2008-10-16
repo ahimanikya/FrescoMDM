@@ -27,7 +27,7 @@ import com.sun.mdm.index.objects.ObjectNode;
 /**
  * HierarchyObjectTree class.
  * This represents an hierarchy of a particular object. 
- * Contains an object, all its ancestors and all its immediate children.
+ * Encapsulates an object, all its ancestors and all its immediate children.
  * @author SwaranjitDua
  */
 public class HierarchyObjectTree {
@@ -38,14 +38,14 @@ public class HierarchyObjectTree {
     /**
      * All ancestors of the current object up to root. The ancestors are in order of 
      * position in the array. The 1st element is the 1st parent  and the last element is root.
-     * An HiearchyAssociation ith element in the array - contains parent ObjectNode that is child ObjectNode 
+     * An Hierarchy ith element in the array - contains parent ObjectNode that is child ObjectNode 
      * for i+1 element in this array and contains child ObjectNode that is parent Object of i-1 element.
      */
-    private HierarchyAssociationObject[] ancestors;
+    private HierarchyObject[] ancestors;
     /**
      * All the children of the current object.
      */
-    private HierarchyAssociationObject[] children;
+    private HierarchyObject[] children;
     
     /**
      * Create an instance of HierarchyObject.
@@ -73,7 +73,7 @@ public class HierarchyObjectTree {
      * Set ancestors of the object. 
      * @param ancestors Ancestors of the object.
      */
-    public void setAncestors(HierarchyAssociationObject[] ancestors){
+    public void setAncestors(HierarchyObject[] ancestors){
          this.ancestors =  ancestors;
     }
     
@@ -81,7 +81,7 @@ public class HierarchyObjectTree {
      * Get ancestors of the object.  
      * @return ObjectNode[] Ancestors of the object. 
      */
-    public HierarchyAssociationObject[] getAncestors(){
+    public HierarchyObject[] getAncestors(){
          return ancestors;
     }
     
@@ -89,7 +89,7 @@ public class HierarchyObjectTree {
      * Set children of the object.
      * @param children Children of the object.
      */
-    public void setChildren(HierarchyAssociationObject[] children){
+    public void setChildren(HierarchyObject[] children){
          this.children =  children;
     }
     
@@ -97,7 +97,7 @@ public class HierarchyObjectTree {
      * Get children of the object.
      * @return ObjectNode[] Children of the object.
      */
-    public HierarchyAssociationObject[] getchildren(){
+    public HierarchyObject[] getchildren(){
          return children;
     }
 }
