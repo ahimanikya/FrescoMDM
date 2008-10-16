@@ -64,6 +64,23 @@ public class RelationshipTypeHandler {
         return types;
     }
 
+        /**
+     * Get all relationshiptypes for the given domain name.
+     * @param domain Domain name.
+     * @return List<RelationshipType> List of RelationshipType.
+     * @exception ServiceException Thrown if an error occurs during processing. 
+     */
+    public List<RelationshipType> getTypes(String domain) 
+        throws ServiceException {                
+        List<RelationshipType> types = null;
+        try {
+            types = relationshipManager.getTypes(domain);
+        } catch(ServiceException sex) {
+            throw sex;
+        }
+        return types;
+    }
+    
     /**
      * Create a new relationship type.
      * @param relationshipType RelationshipType.

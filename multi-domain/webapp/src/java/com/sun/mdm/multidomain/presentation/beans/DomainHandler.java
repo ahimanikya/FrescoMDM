@@ -25,7 +25,7 @@ package com.sun.mdm.multidomain.presentation.beans;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.sun.mdm.multidomain.relationship.Domain;
+import com.sun.mdm.multidomain.association.Domain;
 
 import com.sun.mdm.multidomain.services.control.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.MetaDataManager;
@@ -48,27 +48,15 @@ public class DomainHandler {
     }
         
     /**
-     * Get a list of domains excluded the given domain.
-     * @param domain Domain excluded.
-     * @return List<Domain> List of domain excluded for the given domain. 
-     *                      Or list of all domains if the input domain is null. 
+     * Get a list of domains.
+     * @return List<Domain> List of domain. 
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<Domain> getDomains(String domain) 
+    public List<Domain> getDomains() 
         throws ServiceException {        
         List<Domain> domains = null;
         try {
-            List<Domain> ds = metaDataManager.getDomains();
-            if (domain == null || domain.length() == 0) {
-                domains = ds;
-            } else {
-                domains = new ArrayList<Domain>();
-                for(Domain d : ds) {
-                    if (!d.equals(domain)) {
-                        domains.add(d);
-                    }
-                }                                
-            }
+            domains = metaDataManager.getDomains();
         } catch(ServiceException sex) {
            throw sex;
         }
