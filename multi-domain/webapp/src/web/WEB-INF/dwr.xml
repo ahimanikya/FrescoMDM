@@ -12,7 +12,8 @@
 
     <create creator="spring" javascript="RelationshipTypeHandler" scope="session">
       <param name="beanName" value="RelationshipTypeHandler"/>
-      <include method="getRelationshipTypes" />            
+      <include method="getTypes" /> 
+      <include method="getRelationshipTypes" />
       <include method="addRelationshipType" />            
       <include method="deleteRelationshipType" /> 
       <include method="getRelationshipTypeCount" />
@@ -30,15 +31,15 @@
       <param name="beanName" value="HierarchyHandler"/>
     </create>
     
-    <convert converter="bean" match="com.sun.mdm.multidomain.relationship.Domain">
+    <convert converter="bean" match="com.sun.mdm.multidomain.association.Domain">
         <param name="include" value="name" />
     </convert>		
 
     <convert converter="bean" match="com.sun.mdm.multidomain.relationship.RelationshipType">
-        <param name="include" value="name, displayName, sourceDomain, targetDomain, attributes" />
+        <param name="include" value="name, sourceDomain, targetDomain, attributes" />
     </convert>	
 
-    <convert converter="bean" match="com.sun.mdm.multidomain.relationship.Attribute">
+    <convert converter="bean" match="com.sun.mdm.multidomain.association.Attribute">
         <param name="include" value="name" />
     </convert>	
         
