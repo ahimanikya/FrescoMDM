@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://www.netbeans.org/ns/project/1">
-    <type>org.netbeans.modules.java.j2seproject</type>
+    <type>org.netbeans.modules.j2ee.ejbjarproject</type>
     <configuration>
-        <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
+        <buildExtensions xmlns="http://www.netbeans.org/ns/ant-build-extender/1">
+            <extension file="jaxws-build.xml" id="jaxws"/>
+        </buildExtensions>
+        <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>MultiDomain-Core-Services</name>
-            <minimum-ant-version>1.6.5</minimum-ant-version>
-            <explicit-platform explicit-source-supported="true"/>
+            <minimum-ant-version>1.6</minimum-ant-version>
+            <included-library files="1">file.reference.index-core.jar</included-library>
+            <included-library files="1">file.reference.net.java.hulp.i18n.jar</included-library>
             <source-roots>
-                <root id="src.java.dir" name="MultiDomain Services Core Source Package"/>
+                <root id="src.dir" name="MultiDomain Services Core Source Package"/>
+                <root id="src.resources.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
