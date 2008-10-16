@@ -45,7 +45,7 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
 import com.sun.mdm.multidomain.association.AssociationValue;
-import com.sun.mdm.multidomain.hierarchy.HierarchyAssociation;
+import com.sun.mdm.multidomain.hierarchy.Hierarchy;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 import com.sun.mdm.multidomain.group.Group;
@@ -185,7 +185,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createHierarchy()
      */ 
-    public String createHierarchy(HierarchyAssociation hierarchy)
+    public String createHierarchy(Hierarchy hierarchy)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -211,7 +211,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#updateHierarchy()
      */ 
-    public void updateHierarchy(HierarchyAssociation hierarchy)
+    public void updateHierarchy(Hierarchy hierarchy)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
