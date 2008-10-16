@@ -37,7 +37,7 @@ public abstract class AssociationType {
     //public enum DirectionMode {UNIDIRECTIONAL,BIDIRECTIONAL};
     
     private String name;
-    private String assocationTypeId;    
+    private String id;    
     private boolean effectiveFromRequired;
     private boolean effectiveToRequired;
     private boolean purgeDateRequired; 
@@ -46,7 +46,8 @@ public abstract class AssociationType {
     /**
      * Create an instance of AssociationType. 
      */
-    public AssociationType() {    	
+    public AssociationType() {
+        this.attributes = new ArrayList<Attribute>();
     }
     /**
      * Create an instance of RelationshipType.
@@ -56,7 +57,7 @@ public abstract class AssociationType {
      */
     public AssociationType(String name,  String id) {
     	this.name = name;
-    	this.assocationTypeId = id;
+    	this.id = id;
     	this.effectiveFromRequired = true;
     	this.effectiveToRequired = true;
     	this.purgeDateRequired = true;
@@ -83,16 +84,16 @@ public abstract class AssociationType {
      * Get relationship type Id.
      * @return String Relationship type Id.
      */
-    public String getAssocationTypeId() {
-        return assocationTypeId;
+    public String getId() {
+        return id;
     }
     
     /**
      * Set relationship type Id.
      * @param id Relationship type Id.
      */
-    public void setAssocationTypeId(String assocationTypeId) {
-        this.assocationTypeId = assocationTypeId;
+    public void setId(String id) {
+        this.id = id;
     }    
     
              
