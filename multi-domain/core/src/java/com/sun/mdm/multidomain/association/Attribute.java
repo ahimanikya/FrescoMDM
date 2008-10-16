@@ -32,10 +32,9 @@ public class Attribute {
     private String id;
     private String name;
     private String columnName;
-    private String displayName;
     private boolean searchable;
     private boolean isRequired;
-    private AttributeType type;
+    private AttributeType type; 
     private String defaultValue;
   
     /**
@@ -51,10 +50,9 @@ public class Attribute {
      * @param type Attribute type.
      * @param value Attribute value.
      */
-    public Attribute(String id, String name, AttributeType type, String value) {
+    public Attribute(String id, String name,  AttributeType type, String value) {
     	this.id = id;
     	this.name = name;
-    	//this.displayName = name;
     	this.columnName = name;
     	this.searchable = true;
     	this.isRequired = true;
@@ -70,16 +68,6 @@ public class Attribute {
      * @param type Attribute type.
      * @param value Attribute value.
      */
-    public Attribute(String id, String name, String displayName, AttributeType type, String value) {
-    	this.id = id;
-    	this.name = name;
-    	this.displayName = displayName;
-    	this.columnName = name;
-    	this.searchable = true;
-    	this.isRequired = true;
-    	this.type = type;
-    	this.defaultValue = value;
-    } 
 
     /**
      * Get Id attribute.
@@ -113,21 +101,6 @@ public class Attribute {
         this.name = name;;
     }
     
-    /**
-     * Get display name attribute.
-     * @return String Display name.
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-    
-    /**
-     * Set display name attribute.
-     * @param String displayName
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;;
-    }
     
     /**
      * Get colummn name attribute.
@@ -218,7 +191,6 @@ public class Attribute {
         Attribute copy = new Attribute();
         copy.setName(this.name);
         copy.setColumnName(this.columnName);
-        copy.setDisplayName(this.displayName);
         copy.setSearchable(this.searchable);
         copy.setIsRequired(this.isRequired);
         copy.setType(this.type);        
