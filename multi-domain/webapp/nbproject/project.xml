@@ -31,7 +31,7 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
-                    <file>${reference.MultiDomain-Core-Services.jar}</file>
+                    <file>${reference.MultiDomain-Core-Services.dist}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
@@ -53,9 +53,9 @@
                 <foreign-project>MultiDomain-Core-Services</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
-                <target>jar</target>
+                <target>dist</target>
                 <clean-target>clean</clean-target>
-                <id>jar</id>
+                <id>dist</id>
             </reference>
             <reference>
                 <foreign-project>MultiDomain-Web-Tier-Services</foreign-project>

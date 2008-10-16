@@ -405,11 +405,13 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
                 COMPILATION SECTION
             -->
     <target depends="init" if="no.dist.ear.dir" name="deps-module-jar" unless="no.deps">
-        <ant antfile="${project.MultiDomain-Core-Services}/build.xml" inheritall="false" target="jar"/>
+        <ant antfile="${project.MultiDomain-Core-Services}/build.xml" inheritall="false" target="dist"/>
         <ant antfile="${project.MultiDomain-Web-Tier-Services}/build.xml" inheritall="false" target="jar"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="deps-ear-jar" unless="no.deps">
-        <ant antfile="${project.MultiDomain-Core-Services}/build.xml" inheritall="false" target="jar"/>
+        <ant antfile="${project.MultiDomain-Core-Services}/build.xml" inheritall="false" target="dist-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
+        </ant>
         <ant antfile="${project.MultiDomain-Web-Tier-Services}/build.xml" inheritall="false" target="jar"/>
     </target>
     <target depends="init, deps-module-jar, deps-ear-jar" name="deps-jar" unless="no.deps"/>
@@ -566,13 +568,13 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy-ear-war file="${libs.spring-webmvc.classpath}" propname="included.lib.libs.spring-webmvc.classpath.X"/>
         <basename file="${file.reference.index-core.jar}" property="included.lib.file.reference.index-core.jar"/>
         <copy-ear-war file="${file.reference.index-core.jar}" propname="included.lib.file.reference.index-core.jar.X"/>
-        <basename file="${reference.MultiDomain-Core-Services.jar}" property="included.lib.reference.MultiDomain-Core-Services.jar"/>
-        <copy-ear-war file="${reference.MultiDomain-Core-Services.jar}" propname="included.lib.reference.MultiDomain-Core-Services.jar.X"/>
+        <basename file="${reference.MultiDomain-Core-Services.dist}" property="included.lib.reference.MultiDomain-Core-Services.dist"/>
+        <copy-ear-war file="${reference.MultiDomain-Core-Services.dist}" propname="included.lib.reference.MultiDomain-Core-Services.dist.X"/>
         <basename file="${reference.MultiDomain-Web-Tier-Services.jar}" property="included.lib.reference.MultiDomain-Web-Tier-Services.jar"/>
         <copy-ear-war file="${reference.MultiDomain-Web-Tier-Services.jar}" propname="included.lib.reference.MultiDomain-Web-Tier-Services.jar.X"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.file.reference.net.java.hulp.i18n.jar} ${included.lib.file.reference.dwr.jar} ${included.lib.libs.jstl11.classpath.1.X} ${included.lib.libs.jstl11.classpath.2.X} ${included.lib.libs.spring-framework.classpath.1.X} ${included.lib.libs.spring-framework.classpath.2.X} ${included.lib.libs.spring-webmvc.classpath} ${included.lib.file.reference.index-core.jar} ${included.lib.reference.MultiDomain-Core-Services.jar} ${included.lib.reference.MultiDomain-Web-Tier-Services.jar} "/>
+            <attribute name="Class-Path" value="${included.lib.file.reference.net.java.hulp.i18n.jar} ${included.lib.file.reference.dwr.jar} ${included.lib.libs.jstl11.classpath.1.X} ${included.lib.libs.jstl11.classpath.2.X} ${included.lib.libs.spring-framework.classpath.1.X} ${included.lib.libs.spring-framework.classpath.2.X} ${included.lib.libs.spring-webmvc.classpath} ${included.lib.file.reference.index-core.jar} ${included.lib.reference.MultiDomain-Core-Services.dist} ${included.lib.reference.MultiDomain-Web-Tier-Services.jar} "/>
         </manifest>
         <delete dir="${dist.ear.dir}/temp"/>
     </target>
@@ -585,7 +587,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.spring-framework.classpath.libfile.1}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${libs.spring-webmvc.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${file.reference.index-core.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copy file="${reference.MultiDomain-Core-Services.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${reference.MultiDomain-Core-Services.dist}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${reference.MultiDomain-Web-Tier-Services.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" name="do-ear-dist">
