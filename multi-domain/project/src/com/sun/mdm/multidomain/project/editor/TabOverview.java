@@ -29,9 +29,12 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import javax.swing.table.TableColumn;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+//import javax.swing.table.TableRowSorter;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.Attribute;
 /**
  *
  * @author  kkao
@@ -62,22 +65,34 @@ public class TabOverview extends javax.swing.JPanel {
         if (mAlDomainNodes != null) {
             domainNode = mAlDomainNodes.get(0);
             domainName = domainNode.getName();
-            mAlRelationshipTypes = domainNode.getRelationshipTypes();
+            ArrayList <RelationshipType> alRelationshipTypes = domainNode.getRelationshipTypes();
 
-            for (int j=0; mAlRelationshipTypes != null && j < mAlRelationshipTypes.size(); j++) {
-                RelationshipType type = mAlRelationshipTypes.get(j);
+            for (int i=0; alRelationshipTypes != null && i < alRelationshipTypes.size(); i++) {
+                RelationshipType type = alRelationshipTypes.get(i);
                 String sourceDomain = type.getSourceDomain();
                 String targetDomain = type.getTargetDomain();
                 String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
-                jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+                boolean bAdd = true;
+                for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
+                    String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
+                    if (associatedDomainName.equals(domainWithRelationship)) {
+                        bAdd = false;
+                        break;
+                    }
+
+                }
+                if (bAdd) {
+                    jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+                }
                 RelationshipTypeRow r = new RelationshipTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
                 rows.add(r);
             }
         }
         jComboBoxAssociatedDomains.setSelectedIndex(0);
         TableModelRelationshipType model = new TableModelRelationshipType(rows);
-        this.jTableRelationshipTypes.setModel(model);
-        
+        jTableRelationshipTypes.setModel(model);
+        //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        //jTableRelationshipTypes.setRowSorter(sorter);
         
         jComboBoxAllDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -89,7 +104,59 @@ public class TabOverview extends javax.swing.JPanel {
                 onDomainsItemStateChanged(evt);
             }
         });
+        
+        ArrayList <FixedAttributeRow> rowsFixedAttribute = new ArrayList();
+        TableModelFixedAttribute modelFixedAttribute = new TableModelFixedAttribute(rowsFixedAttribute);
+        this.jTableFixedAttibutes.setModel(modelFixedAttribute);
+        
+        ArrayList <ExtendedAttributeRow> rowsExtendedAttribute = new ArrayList();
+        TableModelExtendedAttribute modelExtendedAttribute = new TableModelExtendedAttribute(rowsExtendedAttribute);
+        this.jTableExtendedAttributes.setModel(modelExtendedAttribute);
 
+        jTableRelationshipTypes.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    {
+                        int iSelectedRow = jTableRelationshipTypes.getSelectedRow();
+                        TableModelRelationshipType model = (TableModelRelationshipType) jTableRelationshipTypes.getModel();
+                        String relationshipTypeName = (String) model.getValueAt(iSelectedRow,  model.iColRelationshipTypeName);
+                        String relationshipSourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
+                        String relationshipTargetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
+                        // load attributes 
+                        // find it from mAlRelationshipTypes
+                        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
+                            RelationshipType type = mAlRelationshipTypes.get(i);
+                            String typeName = type.getName();
+                            String sourceDomain = type.getSourceDomain();
+                            String targetDomain = type.getTargetDomain();
+                            if (relationshipTypeName.equals(typeName) &&
+                                relationshipSourceDomain.equals(sourceDomain) &&
+                                relationshipTargetDomain.equals(targetDomain)) {
+                                // Fixed attributes
+                                TableModelFixedAttribute modelFixedAttribute = (TableModelFixedAttribute) jTableFixedAttibutes.getModel();
+                                modelFixedAttribute.rows.clear();
+                                ArrayList <Attribute> al = type.getFixedAttributes();
+                                for (int j=0; al != null && j < al.size(); j++) {
+                                    Attribute attr = (Attribute) al.get(j);
+                                    FixedAttributeRow row = new FixedAttributeRow(attr.getName(), attr.getValue());
+                                    modelFixedAttribute.addRow(j, row);
+                                }
+                                // Extended attributes
+                                TableModelExtendedAttribute modelExtendedAttribute = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
+                                modelExtendedAttribute.rows.clear();
+                                al = type.getExtendedAttributes();
+                                for (int j=0; al != null && j < al.size(); j++) {
+                                    Attribute attr = (Attribute) al.get(j);
+                                    ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getDataType(), attr.getValue());
+                                    modelExtendedAttribute.addRow(j, row);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+            
 
     }
 
@@ -108,21 +175,27 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneRelationshipTypes = new javax.swing.JScrollPane();
         jTableRelationshipTypes = new javax.swing.JTable();
         jComboBoxAllDomains = new javax.swing.JComboBox();
+        jScrollPaneAttributes = new javax.swing.JScrollPane();
+        jTableFixedAttibutes = new javax.swing.JTable();
+        jScrollPaneExtendedAttibutes = new javax.swing.JScrollPane();
+        jTableExtendedAttributes = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Participating_Domains"))); // NOI18N
         setLayout(null);
 
         jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
         add(jLabelDomainName);
-        jLabelDomainName.setBounds(10, 20, 39, 14);
+        jLabelDomainName.setBounds(10, 30, 110, 14);
         jLabelDomainName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabListRelationshipTypes.jLabelDomainName.AccessibleContext.accessibleName")); // NOI18N
 
         jLabelAssociated.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Associated_Domains")); // NOI18N
         add(jLabelAssociated);
-        jLabelAssociated.setBounds(10, 50, 99, 14);
+        jLabelAssociated.setBounds(10, 60, 110, 14);
 
         add(jComboBoxAssociatedDomains);
-        jComboBoxAssociatedDomains.setBounds(120, 50, 110, 20);
+        jComboBoxAssociatedDomains.setBounds(120, 60, 110, 20);
+
+        jScrollPaneRelationshipTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Relationship_Types_Defined"))); // NOI18N
 
         jTableRelationshipTypes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,10 +208,48 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneRelationshipTypes.setViewportView(jTableRelationshipTypes);
 
         add(jScrollPaneRelationshipTypes);
-        jScrollPaneRelationshipTypes.setBounds(10, 90, 470, 230);
+        jScrollPaneRelationshipTypes.setBounds(10, 90, 470, 120);
 
         add(jComboBoxAllDomains);
-        jComboBoxAllDomains.setBounds(120, 20, 110, 20);
+        jComboBoxAllDomains.setBounds(120, 30, 110, 20);
+
+        jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Fixed_Attributes"))); // NOI18N
+
+        jTableFixedAttibutes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null}
+            },
+            new String [] {
+                "Name", "Value"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPaneAttributes.setViewportView(jTableFixedAttibutes);
+
+        add(jScrollPaneAttributes);
+        jScrollPaneAttributes.setBounds(10, 220, 470, 130);
+
+        jScrollPaneExtendedAttibutes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Extended_Attributes"))); // NOI18N
+
+        jTableExtendedAttributes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null}
+            },
+            new String [] {
+                "Name", "Data Type", "Value"
+            }
+        ));
+        jScrollPaneExtendedAttibutes.setViewportView(jTableExtendedAttributes);
+
+        add(jScrollPaneExtendedAttibutes);
+        jScrollPaneExtendedAttibutes.setBounds(10, 360, 470, 160);
     }// </editor-fold>//GEN-END:initComponents
 
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
@@ -149,12 +260,22 @@ public class TabOverview extends javax.swing.JPanel {
             jComboBoxAssociatedDomains.removeAllItems();
         }
         jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
-        for (int j=0; mAlRelationshipTypes != null && j < mAlRelationshipTypes.size(); j++) {
-            RelationshipType type = mAlRelationshipTypes.get(j);
+        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
+            RelationshipType type = mAlRelationshipTypes.get(i);
             String sourceDomain = type.getSourceDomain();
             String targetDomain = type.getTargetDomain();
             String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
-            jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+            boolean bAdd = true;
+            for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
+                String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
+                if (associatedDomainName.equals(domainWithRelationship)) {
+                    bAdd = false;
+                    break;
+                }
+            }
+            if (bAdd) {
+                jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+            }
         }
         jComboBoxAssociatedDomains.setSelectedIndex(0);
     }
@@ -178,6 +299,15 @@ public class TabOverview extends javax.swing.JPanel {
                 model.addRow(index++, r);
             }
         }
+        model.fireTableDataChanged();
+        
+        // clean up attribute tables
+        TableModelFixedAttribute modelFixedAttribute = (TableModelFixedAttribute) jTableFixedAttibutes.getModel();
+        modelFixedAttribute.rows.clear();
+        modelFixedAttribute.fireTableDataChanged();
+        TableModelExtendedAttribute modelExtendedAttribute = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
+        modelExtendedAttribute.rows.clear();
+        modelExtendedAttribute.fireTableDataChanged();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -185,7 +315,11 @@ public class TabOverview extends javax.swing.JPanel {
     private javax.swing.JComboBox jComboBoxAssociatedDomains;
     private javax.swing.JLabel jLabelAssociated;
     private javax.swing.JLabel jLabelDomainName;
+    private javax.swing.JScrollPane jScrollPaneAttributes;
+    private javax.swing.JScrollPane jScrollPaneExtendedAttibutes;
     private javax.swing.JScrollPane jScrollPaneRelationshipTypes;
+    private javax.swing.JTable jTableExtendedAttributes;
+    private javax.swing.JTable jTableFixedAttibutes;
     private javax.swing.JTable jTableRelationshipTypes;
     // End of variables declaration//GEN-END:variables
     
@@ -243,7 +377,7 @@ public class TabOverview extends javax.swing.JPanel {
                                          NbBundle.getMessage(TabOverview.class, "LBL_Source_Domain"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Target_Domain"), 
                                         };
-        ArrayList rows;
+        ArrayList <RelationshipTypeRow> rows;
         final static int iColRelationshipTypeName = 0;
         final static int iColRelationshipTypeType = 1;
         final static int iColSourceDomain = 2;
@@ -270,7 +404,7 @@ public class TabOverview extends javax.swing.JPanel {
 
         public Object getValueAt(int row, int col) {
             if (rows != null) {
-                RelationshipTypeRow singleRow = (RelationshipTypeRow) rows.get(row);
+                RelationshipTypeRow singleRow = rows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColRelationshipTypeName:
@@ -343,4 +477,262 @@ public class TabOverview extends javax.swing.JPanel {
             return row;
         }
     }
+    
+    class FixedAttributeRow {
+        private String name;
+        private String value;
+
+        public FixedAttributeRow(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    // Table model for Relationship Type
+    class TableModelFixedAttribute extends AbstractTableModel {
+        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Name"),
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Value"), 
+                                        };
+        ArrayList <FixedAttributeRow> rows;
+        final static int iColName = 0;
+        final static int iColValue = 1;
+        
+        TableModelFixedAttribute(ArrayList rows) {
+            this.rows = rows;
+        }
+        
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        public int getRowCount() {
+            if (rows != null) {
+                return rows.size();
+            }
+            return 0;
+        }
+
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        public Object getValueAt(int row, int col) {
+            if (rows != null) {
+                FixedAttributeRow singleRow = rows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iColName:
+                            return singleRow.getName();
+                        case iColValue:
+                            return singleRow.getValue();
+                        default:
+                            return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * editable.
+         */
+        public boolean isCellEditable(int row, int col) {
+            //Note that the data/cell address is constant,
+            //no matter where the cell appears onscreen.
+            return false;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * data can change.
+         */
+        public void setValueAt(Object value, int row, int col) {
+            if (rows != null && row >=0 && row < rows.size()) {
+                FixedAttributeRow singleRow = (FixedAttributeRow) rows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iColName:
+                            singleRow.setName((String) value);                            
+                            break;
+                        case iColValue:
+                            singleRow.setValue((String) value);                            
+                            break;
+                        default:
+                            return;
+                    }
+                }
+                fireTableCellUpdated(row, col);
+            }
+        }
+        
+        public void removeRow(int index) {
+            rows.remove(index);
+            this.fireTableRowsDeleted(index, index);
+        }
+        
+        public void addRow(int index, FixedAttributeRow row) {
+            rows.add(row);
+            this.fireTableRowsInserted(index, index);
+        }
+
+        public FixedAttributeRow getRow(int index) {
+            FixedAttributeRow row = (FixedAttributeRow) rows.get(index);
+            return row;
+        }
+    }
+    
+    class ExtendedAttributeRow {
+        private String name;
+        private String dataType;
+        private String value;
+
+        public ExtendedAttributeRow(String name, String dataType, String value) {
+            this.name = name;
+            this.dataType = dataType;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public void setDataType(String dataType) {
+            this.dataType = dataType;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    // Table model for Relationship Type
+    class TableModelExtendedAttribute extends AbstractTableModel {
+        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Name"),
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_DataType"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Value"), 
+                                        };
+        ArrayList <ExtendedAttributeRow> rows;
+        final static int iColName = 0;
+        final static int iColDataType = 1;
+        final static int iColValue = 2;
+        
+        TableModelExtendedAttribute(ArrayList rows) {
+            this.rows = rows;
+        }
+        
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        public int getRowCount() {
+            if (rows != null) {
+                return rows.size();
+            }
+            return 0;
+        }
+
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        public Object getValueAt(int row, int col) {
+            if (rows != null) {
+                ExtendedAttributeRow singleRow = rows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iColName:
+                            return singleRow.getName();
+                        case iColDataType:
+                            return singleRow.getDataType();
+                        case iColValue:
+                            return singleRow.getValue();
+                        default:
+                            return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * editable.
+         */
+        public boolean isCellEditable(int row, int col) {
+            //Note that the data/cell address is constant,
+            //no matter where the cell appears onscreen.
+            return false;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * data can change.
+         */
+        public void setValueAt(Object value, int row, int col) {
+            if (rows != null && row >=0 && row < rows.size()) {
+                ExtendedAttributeRow singleRow = (ExtendedAttributeRow) rows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iColName:
+                            singleRow.setName((String) value);                            
+                            break;
+                        case iColDataType:
+                            singleRow.setDataType((String) value);                            
+                            break;
+                        case iColValue:
+                            singleRow.setValue((String) value);                            
+                            break;
+                        default:
+                            return;
+                    }
+                }
+                fireTableCellUpdated(row, col);
+            }
+        }
+        
+        public void removeRow(int index) {
+            rows.remove(index);
+            this.fireTableRowsDeleted(index, index);
+        }
+        
+        public void addRow(int index, ExtendedAttributeRow row) {
+            rows.add(row);
+            this.fireTableRowsInserted(index, index);
+        }
+
+        public ExtendedAttributeRow getRow(int index) {
+            ExtendedAttributeRow row = (ExtendedAttributeRow) rows.get(index);
+            return row;
+        }
+    }
+
 }

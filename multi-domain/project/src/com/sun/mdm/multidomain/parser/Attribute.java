@@ -22,6 +22,7 @@ public class Attribute {
         String displayName;
         boolean searchable;
         boolean isRequired;
+        String value;
         String defaultValue;
         String dataType; 
 
@@ -31,6 +32,10 @@ public class Attribute {
 
         public void setDataType(String dataType) {
             this.dataType = dataType;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
         }
 
         public void setDefaultValue(String defaultValue) {
@@ -63,6 +68,10 @@ public class Attribute {
 
         public String getDataType() {
             return dataType;
+        }
+
+        public String getValue() {
+            return value;
         }
 
         public String getDefaultValue() {

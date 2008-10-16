@@ -103,7 +103,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private RelationshipCanvas canvas = null; //The component the user draws on
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
-
+    private TabOverview mTabOverview = null;
     
     /**
      * Create the panel and set up some basic properties.
@@ -159,9 +159,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //    tab = node.getTabListRelationshipTypes();
         //}
         
-        TabOverview overView = new TabOverview(mEditorMainApp.getDomainNodes());
+        mTabOverview = new TabOverview(mEditorMainApp.getDomainNodes());
         JTabbedPane propertiesTabbedPane = new JTabbedPane();
-        propertiesTabbedPane.add(TAB_OVERVIEW, overView);
+        propertiesTabbedPane.add(TAB_OVERVIEW, mTabOverview);
         propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
         JScrollPane propertiesPane = new JScrollPane();

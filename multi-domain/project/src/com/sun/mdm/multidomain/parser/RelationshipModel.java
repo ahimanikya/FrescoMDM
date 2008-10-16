@@ -50,6 +50,11 @@ public class RelationshipModel {
     private final String mTagTargetDomain = "target-domain";
     private final String mTagRelationships  = "relationships";
     private final String mTagRelationship  = "relationship";
+    private final String mTagFixedAttributes = "fixed-attributes";
+    private final String mTagExtendedAttributes = "extended-attributes";
+    private final String mTagAttribute = "attribute";
+    private final String mTagDataType = "data-type";
+    private final String mTagValue = "value";
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
     private Relationships mRelationships = new Relationships();
@@ -204,6 +209,41 @@ public class RelationshipModel {
         return val;
     }
     
+    private Attribute parseAttribute(Node node) {
+        Attribute attr = new Attribute();
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setName(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagValue.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setValue(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagDataType.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setDataType(Utils.getStrElementValue(nl.item(i)));
+                    }
+                }
+            }
+        }
+        return attr;
+
+    }
+    
+    private ArrayList parseAttributes(Node node) {
+        ArrayList al = new ArrayList();
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    if (mTagAttribute.equals(((Element) nl.item(i)).getTagName())) {
+                        al.add(parseAttribute(nl.item(i)));
+                    }
+                }
+            }
+        }
+        return al;
+    }
+    
     /**
      * @param node node
      */
@@ -233,6 +273,10 @@ public class RelationshipModel {
                         relationshipType.sourceDomain = Utils.getStrElementValue(nl.item(i));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
                         relationshipType.targetDomain = Utils.getStrElementValue(nl.item(i));
+                    } else if (mTagFixedAttributes.equals(((Element) nl.item(i)).getTagName())) {
+                        relationshipType.setFixedAttributes(parseAttributes(nl.item(i)));
+                    } else if (mTagExtendedAttributes.equals(((Element) nl.item(i)).getTagName())) {
+                        relationshipType.setExtendedAttributes(parseAttributes(nl.item(i)));
                     }
                 }
             }
