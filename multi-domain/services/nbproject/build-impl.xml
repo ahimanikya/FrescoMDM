@@ -353,7 +353,7 @@ is divided into following sections:
                 ===================
             -->
     <target depends="init" name="deps-jar" unless="no.deps">
-        <ant antfile="${project.MultiDomain-Core-Services}/build.xml" inheritall="false" target="jar"/>
+        <ant antfile="${project.MultiDomain-Core-Services}/build.xml" inheritall="false" target="dist"/>
     </target>
     <target depends="init,deps-jar" name="-pre-pre-compile">
         <mkdir dir="${build.classes.dir}"/>

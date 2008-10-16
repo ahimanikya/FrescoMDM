@@ -18,9 +18,9 @@
                 <foreign-project>MultiDomain-Core-Services</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
-                <target>jar</target>
+                <target>dist</target>
                 <clean-target>clean</clean-target>
-                <id>jar</id>
+                <id>dist</id>
             </reference>
         </references>
     </configuration>
