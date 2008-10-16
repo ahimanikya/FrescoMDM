@@ -26,12 +26,16 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.sun.mdm.multidomain.relationship.Attribute;
+import com.sun.mdm.multidomain.association.Attribute;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.relationship.Domain;
+import com.sun.mdm.multidomain.association.Domain;
 import com.sun.mdm.multidomain.services.control.MetaDataManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
+/**
+ * MetaDataManagerTest class. 
+ * @author cye
+ */
 public class MetaDataManagerTest extends TestCase {
 
 	private MetaDataManager metaDataManager;
@@ -64,7 +68,6 @@ public class MetaDataManagerTest extends TestCase {
        	
             assertTrue(types.size() == 2);
             assertTrue("designon".equals(types.get(1).getName()));
-            assertTrue("a relationship of a Person designs a Product".equals(types.get(1).getDisplayName()));
             assertTrue("3".equals(types.get(1).getId()));
     				
             List<Attribute> attributes = types.get(1).getAttributes();
