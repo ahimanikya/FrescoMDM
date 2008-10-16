@@ -68,21 +68,26 @@ showing.&nbsp;</li>
 after the Domain "UKPatient" and the record "George Karlin" is
 selected. </span><br>
 <br>
-<img style="width: 928px; height: 714px;" alt="" src="../attach/RelByRecordS2.png"><br>
+<img style="width: 928px; height: 760px;" alt="" src="../attach/RelByRecordS2.png"><br>
 <br>
 <br><h4><br>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Overlay shown by selecting the 'show relationship type' button</span></h4>
 <br>
-<img style="width: 921px; height: 286px;" alt="" src="../attach/RelShowRelType.png"><br><br><br><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
+<img style="width: 921px; height: 306px;" alt="" src="../attach/RelShowRelType.png"><br><br><h4><span style="color: blue;">Notes</span></h4>
+<ul><li>More than one Relation Type bubble can be shown at at time</li></ul><br><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
 record "Centerpoint" was selected<br>
 </span><br>
-<img style="width: 928px; height: 717px;" alt="" src="../attach/RelByRecord.png">
+<img style="width: 928px; height: 752px;" alt="" src="../attach/RelByRecord.png">
 <h4><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
-record&nbsp;Centerpoint, Owns Offices was expanded and the record "Bangalore" was selected.&nbsp;</span></h4><br><img style="width: 926px; height: 706px;" alt="" src="../attach/RelByRecordS3.png"><br>
+record&nbsp;Centerpoint, Owns Offices was expanded and the record "Bangalore" was selected.&nbsp;</span></h4><br><img style="width: 926px; height: 736px;" alt="" src="../attach/RelByRecordS3.png"><br>
 <br>
-<h4><span style="color: rgb(0, 102, 0);">Notes on Relationship Model overview</span></h4><br><ul><li>The windows should be minized by default</li></ul><br><h4><span style="color: rgb(0, 102, 0);">Notes on Tree Usage</span></h4><br><ul><li>Selecting a relationship type allows deletion of all the records in the relationship.</li><li>Selecting a domain disables Delete and Add.</li><li>Allow
+<h4 style="color: rgb(51, 51, 255);">Updates Needed<br></h4><ul><li>A
+Reassign action that is only available for the originally selected
+node. &nbsp;The "Reassign..." action would bring up a search overlay
+allow a user to select a different record from the same domain.
+&nbsp;This would&nbsp;</li></ul><h4><br></h4><h4><span style="color: rgb(0, 102, 0);">Notes on Relationship Model overview</span></h4><br><ul><li>The windows should be minized by default</li></ul><br><h4><span style="color: rgb(0, 102, 0);">Notes on Tree Usage</span></h4><br><ul><li>Selecting a relationship type allows deletion of all the records in the relationship.</li><li>Selecting a domain disables Delete and Add.</li><li>Allow
 for multi-selected. &nbsp;If more than one record is selected then the
 right hand side should be blank and the number shown by Delete should
 be updated.&nbsp;</li><li>Move could be implemented by finding a record
@@ -117,21 +122,15 @@ Example Tree using domains: Customers, Accounts, Locations</span>
 </ul>
 </ul></ul>
 </ul>
-</ul>
-<h4><span style="color: blue;">Notes</span></h4>
-<ul>
-<li>More than one Relation Type bubble can be shown at at time</li>
-
-</ul>
-<h3>Add Records to Relationship<br>
+</ul><br><h3>Add Records to Relationship<br>
 </h3>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Note: This is
 a wireframe model of the screen</span><br>
 <br>
 <br>
 <img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br>
-<span style="font-weight: bold;"></span>. <br>
-<h3>Find Dialog</h3><br>A typical find dialog such as the following.<br><br><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png"><br><br><h3>Move Dialog</h3>
+<span style="font-weight: bold;"></span>.<br>
+<h3>Find Dialog</h3><br>A typical find dialog such as the following. &nbsp;<br><br>Nice to have would be to specify a one of the types of Searches to restrict what the user is searching for.&nbsp; <br><br><ul><li>Entire Tree</li><li>Relationships</li><li>Domains</li><li>Records&nbsp;</li></ul><br><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png"><br><br><h3>Move Dialog</h3>
 &nbsp;<br>If records are selected brings up a dialog that allows the
 selection of a relationship associated with the domain of the selected
 record. &nbsp; &nbsp;Selection of nodes for the move are limted to
@@ -147,22 +146,7 @@ that the job perfomred by Dr. George Karlin&nbsp; that made him
 &nbsp;an Associated of the UK Doctors is now performed by a different
 patient. &nbsp;<br><br><h2>Alternate Look of tree with "Destination&gt;&gt;" option</h2>
 <br>
-The following shows the look of the Manage Hierarchy tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">&nbsp;Destination&gt;&gt;</span></a> option. &nbsp;The look of the Relationship Tree would be very similiar. &nbsp; <br><br>The
-difference is that when the "Show Move" option is on the user is only
-allowed to multi-select nodes children nodes. &nbsp;Similiarly the user
-can only move the records to another relationship associated with the
-same domain. &nbsp; (For example, the user can not move UKPatient
-records to the Company domain) <br><br>Also a user may move all the
-records under a relationship by selecting a domain under a relationship
-on one side of the tree and a record belonging to the domain of the
-relationship. &nbsp; Example: Dr. George Karlin &gt; Associate Of &gt;
-UK Doctor is selected on the left hand tree and dragged to Centerpoint
-&gt; Employed By &gt; Fred Smith. &nbsp; &nbsp;After the drag all the
-records under Dr. George Karlin &gt; Associate Of &gt; UK Doctor are
-now shown as "Fred Smith &gt; Associate Of &gt; UK Doctor". <br><br>Note:
-the details of the move for the Relationships may have to be worked on,
-so Show Move is a nice to have feature for the Relationship. <br><br>
-<div class="pageactions"><i>This page lastchanged on
-01-Oct-2008 13:40:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+The following shows the look of the Manage Hierarchy tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">&nbsp;Destination&gt;&gt;</span></a> option. &nbsp;The look of the Relationship Tree would be very similiar however there are some important differences. <br><br>These differences have to do with the way drag / drop and the actions for the tree work and can be read about at <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on Relationship Tree.</span></a><br><br><a href="RecordsMoveRules.html"><span style="font-weight: bold;"></span></a>
+<div class="pageactions"><i>This page lastchanged on 15-Oct-2008 20:00:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
 </body></html>
