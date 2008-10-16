@@ -43,6 +43,7 @@ import java.io.InputStream;
 import org.xml.sax.InputSource;
 import java.util.Iterator;
 
+import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.MiNodeDef;
 import com.sun.mdm.multidomain.parser.MiFieldDef;
@@ -63,6 +64,7 @@ public class DomainNode extends AbstractNode {
         
         );
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
+    private ArrayList <Relationship> alRelationships = new ArrayList();
     private ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
     TabListRelationshipTypes mTabListRelationshipTypes = null;
     File mSelectedDomain = null;
@@ -98,10 +100,11 @@ public class DomainNode extends AbstractNode {
      * @param selectedDomain
      * @param ArrayList <RelationshipType> alRelationshipTypes
      */
-    public DomainNode(String domainName, File selectedDomain, ArrayList <RelationshipType> alRelationshipTypes) {
+    public DomainNode(String domainName, File selectedDomain, ArrayList <Relationship> alRelationships, ArrayList <RelationshipType> alRelationshipTypes) {
         super(Children.LEAF);
         setName(domainName);
         mSelectedDomain = selectedDomain;
+        this.alRelationships = alRelationships;
         
         loadMiObjectNodes();
         loadMiQueryBuilder();
@@ -224,6 +227,10 @@ public class DomainNode extends AbstractNode {
     
     public void removeRelationshipType(String relationshipTypeName, String sourceDomainName, String targetDomainName) {
         //updateRelationshipTypes
+    }
+    
+    public ArrayList getRelationships() {
+        return alRelationships;
     }
     
     public ArrayList getRelationshipTypes() {

@@ -33,6 +33,7 @@ import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
+import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.Attribute;
 /**
@@ -42,6 +43,7 @@ import com.sun.mdm.multidomain.parser.Attribute;
 public class TabOverview extends javax.swing.JPanel {
     private final String ALL_DOMAINS = org.openide.util.NbBundle.getMessage(TabOverview.class, "All_Domains");
     private ArrayList <DomainNode> mAlDomainNodes;
+    private ArrayList <Relationship> mAlRelationships;
     private ArrayList <RelationshipType> mAlRelationshipTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
     /** Creates new form TabOverview */
@@ -66,26 +68,45 @@ public class TabOverview extends javax.swing.JPanel {
             domainNode = mAlDomainNodes.get(0);
             domainName = domainNode.getName();
             ArrayList <RelationshipType> alRelationshipTypes = domainNode.getRelationshipTypes();
-
-            for (int i=0; alRelationshipTypes != null && i < alRelationshipTypes.size(); i++) {
-                RelationshipType type = alRelationshipTypes.get(i);
-                String sourceDomain = type.getSourceDomain();
-                String targetDomain = type.getTargetDomain();
-                String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
-                boolean bAdd = true;
-                for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
-                    String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
-                    if (associatedDomainName.equals(domainWithRelationship)) {
-                        bAdd = false;
-                        break;
+            ArrayList <Relationship> alRelationships = domainNode.getRelationships();
+            if (alRelationshipTypes == null ||  alRelationshipTypes.size() == 0) {
+                for (int i=0; alRelationships != null && i < alRelationships.size(); i++) {
+                    Relationship rel = alRelationships.get(i);
+                    String domain1 = rel.getDomain1();
+                    String domain2 = rel.getDomain2();
+                    String domainWithRelationship = (domainName.equals(domain1)) ? domain2 : domain1;
+                    boolean bAdd = true;
+                    for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
+                        String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
+                        if (associatedDomainName.equals(domainWithRelationship)) {
+                            bAdd = false;
+                            break;
+                        }
                     }
-
+                    if (bAdd) {
+                        jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+                    }
                 }
-                if (bAdd) {
-                    jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+            } else {
+                for (int i=0; alRelationshipTypes != null && i < alRelationshipTypes.size(); i++) {
+                    RelationshipType type = alRelationshipTypes.get(i);
+                    String sourceDomain = type.getSourceDomain();
+                    String targetDomain = type.getTargetDomain();
+                    String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
+                    boolean bAdd = true;
+                    for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
+                        String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
+                        if (associatedDomainName.equals(domainWithRelationship)) {
+                            bAdd = false;
+                            break;
+                        }
+                    }
+                    if (bAdd) {
+                        jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+                    }
+                    RelationshipTypeRow r = new RelationshipTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
+                    rows.add(r);
                 }
-                RelationshipTypeRow r = new RelationshipTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
-                rows.add(r);
             }
         }
         jComboBoxAssociatedDomains.setSelectedIndex(0);
@@ -179,6 +200,10 @@ public class TabOverview extends javax.swing.JPanel {
         jTableFixedAttibutes = new javax.swing.JTable();
         jScrollPaneExtendedAttibutes = new javax.swing.JScrollPane();
         jTableExtendedAttributes = new javax.swing.JTable();
+        jButtonAddRelationshipType = new javax.swing.JButton();
+        jButtonDeleteRelationshipType = new javax.swing.JButton();
+        jButtonAddExtendedAttribute = new javax.swing.JButton();
+        jButtonDeleteExtendedAttribute = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Participating_Domains"))); // NOI18N
         setLayout(null);
@@ -250,37 +275,78 @@ public class TabOverview extends javax.swing.JPanel {
 
         add(jScrollPaneExtendedAttibutes);
         jScrollPaneExtendedAttibutes.setBounds(10, 360, 470, 160);
+
+        jButtonAddRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
+        add(jButtonAddRelationshipType);
+        jButtonAddRelationshipType.setBounds(490, 150, 60, 23);
+
+        jButtonDeleteRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Delete")); // NOI18N
+        add(jButtonDeleteRelationshipType);
+        jButtonDeleteRelationshipType.setBounds(490, 180, 63, 23);
+
+        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddExtendedAttribute.text")); // NOI18N
+        add(jButtonAddExtendedAttribute);
+        jButtonAddExtendedAttribute.setBounds(490, 460, 60, 23);
+
+        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonDeleteExtendedAttribute.text")); // NOI18N
+        add(jButtonDeleteExtendedAttribute);
+        jButtonDeleteExtendedAttribute.setBounds(490, 490, 63, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxAllDomains.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         mAlRelationshipTypes = domainNode.getRelationshipTypes();
+        ArrayList <Relationship> alRelationships = domainNode.getRelationships();
         if (jComboBoxAssociatedDomains.getItemCount() > 0) {
             jComboBoxAssociatedDomains.removeAllItems();
         }
         jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
-        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
-            RelationshipType type = mAlRelationshipTypes.get(i);
-            String sourceDomain = type.getSourceDomain();
-            String targetDomain = type.getTargetDomain();
-            String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
-            boolean bAdd = true;
-            for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
-                String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
-                if (associatedDomainName.equals(domainWithRelationship)) {
-                    bAdd = false;
-                    break;
+        if (mAlRelationshipTypes == null ||  mAlRelationshipTypes.size() == 0) {
+            for (int i=0; alRelationships != null && i < alRelationships.size(); i++) {
+                Relationship rel = alRelationships.get(i);
+                String domain1 = rel.getDomain1();
+                String domain2 = rel.getDomain2();
+                String domainWithRelationship = (domainName.equals(domain1)) ? domain2 : domain1;
+                boolean bAdd = true;
+                for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
+                    String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
+                    if (associatedDomainName.equals(domainWithRelationship)) {
+                        bAdd = false;
+                        break;
+                    }
+                }
+                if (bAdd) {
+                    jComboBoxAssociatedDomains.addItem(domainWithRelationship);
                 }
             }
-            if (bAdd) {
-                jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+        } else {
+            for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
+                RelationshipType type = mAlRelationshipTypes.get(i);
+                String sourceDomain = type.getSourceDomain();
+                String targetDomain = type.getTargetDomain();
+                String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
+                boolean bAdd = true;
+                for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
+                    String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
+                    if (associatedDomainName.equals(domainWithRelationship)) {
+                        bAdd = false;
+                        break;
+                    }
+                }
+                if (bAdd) {
+                    jComboBoxAssociatedDomains.addItem(domainWithRelationship);
+                }
             }
         }
         jComboBoxAssociatedDomains.setSelectedIndex(0);
     }
 
     private void onDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
+        String domainName = (String) jComboBoxAllDomains.getSelectedItem();
+        DomainNode domainNode = mMapDomainNodes.get(domainName);
+        mAlRelationshipTypes = domainNode.getRelationshipTypes();
+
         String associatedDomain = (String) jComboBoxAssociatedDomains.getSelectedItem();
         TableModelRelationshipType model = (TableModelRelationshipType) jTableRelationshipTypes.getModel();
         model.rows.clear();
@@ -311,6 +377,10 @@ public class TabOverview extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddExtendedAttribute;
+    private javax.swing.JButton jButtonAddRelationshipType;
+    private javax.swing.JButton jButtonDeleteExtendedAttribute;
+    private javax.swing.JButton jButtonDeleteRelationshipType;
     private javax.swing.JComboBox jComboBoxAllDomains;
     private javax.swing.JComboBox jComboBoxAssociatedDomains;
     private javax.swing.JLabel jLabelAssociated;

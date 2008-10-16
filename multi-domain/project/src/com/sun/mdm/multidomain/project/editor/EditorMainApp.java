@@ -181,8 +181,9 @@ public class EditorMainApp {
                         mMapDomainObjectXmls.put(domainName, objectXml);
                         mMapDomainQueryXmls.put(domainName, queryXml);
                         mMapDomainMidmXmls.put(domainName, midmXml);
+                        ArrayList <Relationship> alRelationships = this.mRelationshipModel.getRelationshipsByDomain(domainName);
                         ArrayList <RelationshipType> alRelationshipTypes = this.mRelationshipModel.getRelationshipTypesByDomain(domainName);
-                        DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain), alRelationshipTypes);
+                        DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain), alRelationships, alRelationshipTypes);
                         mMapDomainNodes.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
                     }
@@ -243,7 +244,7 @@ public class EditorMainApp {
                 mMapDomainObjectXmls.put(domainName, objectXml);
                 mMapDomainQueryXmls.put(domainName, queryXml);
                 mMapDomainMidmXmls.put(domainName, midmXml);
-                DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(newDomainFolder), null);
+                DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToCanvas(domainNode, -1);
             } catch (IOException ex) {

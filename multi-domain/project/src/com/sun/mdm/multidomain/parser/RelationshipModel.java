@@ -108,6 +108,9 @@ public class RelationshipModel {
         return mRelationships.getAllRelationships();
     }
     
+    public ArrayList <Relationship> getRelationshipsByDomain(String domainName) {
+        return mRelationships.getRelationshipsByDomain(domainName);
+    }
     
     /**
      * @param String name of Relationship Type
