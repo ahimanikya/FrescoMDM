@@ -47,10 +47,10 @@ public class MultiDomainWebService {
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getGroups() 
      */            
-    @WebMethod(operationName = "getGroups")
-    public Group[] getGroups( @WebParam(name = "EUID")
-    String EUID) throws ProcessingException, UserException {        
-        return multiDomainServiceLocal.getGroups(EUID);
+    @WebMethod(operationName = "searchGroups")
+    public Group[] getGroups( @WebParam(name = "group")
+    Group group) throws ProcessingException, UserException {        
+        return multiDomainServiceLocal.searchGroup(group);
     }
     
 }
