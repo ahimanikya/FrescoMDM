@@ -31,6 +31,8 @@ import javax.servlet.ServletException;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
         
+import com.sun.mdm.multidomain.services.core.ServiceException;
+
 /**
  * ManageHierarchyController class.
  * @author cye
@@ -38,7 +40,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class ManageHierarchyController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {    
+        throws ServletException, IOException, ServiceException {  
+        if(request != null) {
+            throw new ServiceException("This is a demo of Spring exception handling!");
+        }        
         String tab = "Hierarchy Management";
         return new ModelAndView("managehierarchy", "tab", tab);
     }    
