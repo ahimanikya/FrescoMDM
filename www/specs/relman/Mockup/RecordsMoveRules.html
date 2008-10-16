@@ -42,7 +42,7 @@ Records</span> nodes for each Domain that the Primary Records's
 domain has relationships defined for.<br>
 <br>
 <h2>Supported actions by context&nbsp;&nbsp;&nbsp;</h2>
-If a an action is not supported at any given time the action should be
+<br>If &nbsp;an action is not supported at any given time the action should be
 grayed out.<br>
 <table style="text-align: left; width: 487px; height: 148px;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
@@ -52,9 +52,9 @@ grayed out.<br>
 </tr>
 <tr>
 <td>Add</td>
-<td>When a Domain under a Relationship is selected.<br>
+<td>When a single Domain under a Relationship is selected.<br>
 <br>
-Example: The domain hospital under the Admitted to relationship. <br>
+Example: The domain hospital under the Admitted to relationship is selected. <br>
 </td>
 </tr>
 <tr>
@@ -66,7 +66,7 @@ Appropriate nodes are selected. <br>
 </tr>
 <tr>
 <td>Reassign</td>
-<td>Only the Primary Record is selected.</td>
+<td>Any record, including the primary record.<br></td>
 </tr>
 <tr>
 <td>Delete</td>
@@ -74,7 +74,7 @@ Appropriate nodes are selected. <br>
 </tr>
 <tr>
 <td>Find</td>
-<td>Always available. </td>
+<td>Always available.<br><br>Nice to have, gray out if there are no other records in the tree.  </td>
 </tr>
 </tbody>
 </table>
@@ -85,7 +85,7 @@ Appropriate nodes are selected. <br>
 </span><span style="font-weight: bold;"></span>Typical
 multi-select. &nbsp;Ctrl+MouseBtn1 or Ctrl+Space and arrows to move.<span style="font-weight: bold;"></span><br><br>User can not select the root node nor any "<span style="font-style: italic; color: rgb(153, 153, 153);">Add Records</span>" nodes.<br>
 <br>
-A user can only move a set of records that are selected under the same
+A user can only move a set of records that are located under the same
 parent. &nbsp; If the user has selected nodes from different
 parents nodes than the Move and Drag/Drop are disabled. <br>
 <br>
@@ -95,39 +95,46 @@ parents nodes than the Move and Drag/Drop are disabled. <br>
 For the purposes of showing&nbsp; what records can be dragged I
 will assume that the destination tree is shown. &nbsp; Also, when
 the destination tree is shown the user can drag/drop or move from
-either tree to either tree. &nbsp; This of works the same way for
+either tree to either tree. &nbsp; This works the same way for
 both trees, however for the purposes of explaining how the drag / drop
-works I will show drags from the source tree to the destination tree. <br>
+works I will show drags from the source tree to the destination tree. <br><br>Both
+trees should also be updated once a node has been moved. &nbsp;
+However, both&nbsp;trees should preserve what nodes where openned and
+where the user has scrolled to. To the user it should only look as
+though the old records have been moved from one place to the other. <br>
 <br>
 <h3>Primary Record</h3><br>Can be dragged to a record that is under the
 same domain as the Primary Record as long as it is not the same as the
 Primary Record.&nbsp;&nbsp;<br><br>Thus either of the moves as shown by the green line are legal, but the one shown by the red dotted line is not. <br><br>.<br><br><br><br>
-<p style="margin-left: 40px;"><img style="width: 476px; height: 157px;" alt="" src="../attach/RecordDragRules/MovePrimary.png"></p><p style="margin-left: 40px;"></p><p>Also records under the same domain can be dragged to Dr. George Karlin as shown here.</p><p style="margin-left: 40px;"><img style="width: 476px; height: 157px;" alt="" src="../attach/RecordDragRules/MoveToPrimary.png"></p><p>Notes <br></p><ul><li>Be sure to prompt the user to make sure they want to do this.</li><li>This
+<p style="margin-left: 40px;"><img style="width: 476px; height: 157px;" alt="" src="../attach/RecordDragRules/MovePrimary.png"></p><p style="margin-left: 40px;"></p><p>Also records under the same domain under a different relationship can be dragged to the primary record as shown here.</p><p style="margin-left: 40px;"><img style="width: 476px; height: 157px;" alt="" src="../attach/RecordDragRules/MoveToPrimary.png"></p><p>Notes <br></p><ul><li>Be sure to prompt the user to make sure they want to reassign all relationships to the new record.&nbsp;</li><li>This
 works exactly the same as if the user had selected "Reassign..." on the
 Primary Record and then selected one of these records.&nbsp; &nbsp;</li></ul>
-<h3>Relationships</h3><br>Can be dragged either to a record from the
+<h3>Relationships</h3><br>Can be dragged either to a record located under the
 same domain as the source record of the relationship or to the same
-relationship under the same domain. <br><br><div style="margin-left: 40px;"><img style="width: 707px; height: 210px;" alt="" src="../attach/RecordDragRules/MoveRelationship.png"><br></div><br> <h4>Notes <br></h4><ul><li>Re-assigns all records under each domain with the same relationship to the new record associated with the relationship. <br><br>For
+relationship located under the same domain. <br><br><div style="margin-left: 40px;"><img style="width: 707px; height: 210px;" alt="" src="../attach/RecordDragRules/MoveRelationship.png"><br></div><br> <h4>Notes <br></h4><ul><li>Re-assigns all records under each domain with the same relationship to the new record associated with the relationship. <br><br>For
 example, in the above diagram all records in Centerpoint &gt; Owns
 Offices are now assigned to BoughtCenterpoint. &nbsp; This includes all
 the records under the the Locations and Commoities domains. <br></li><li>Should show a prompt comfirming the move of the relationships. <span style="font-style: italic;"></span></li></ul>
 <h3>Domains</h3><br>Can be dragged either to the same domain under the same relationship or to the relationship that the domain is under. <br><br><div style="margin-left: 40px;"><img style="width: 726px; height: 209px;" alt="" src="../attach/RecordDragRules/MoveDomain.png"><br></div><br><h4>Notes <br></h4><ul><li>Re-assigns
-all records under the domain with the same relationship to the new
-record associated with the relationship. &nbsp; For example, in the
+all records under the selected domain with the same relationship to the
+new record associated with the relationship. &nbsp; For example, in the
 above diagram all&nbsp;Centerpoint &gt; Owns &gt; Commities
 relationships to records under Commities would be moved from
 Centerpoint to BoughtCenterpoint. <br></li><li>Should show a prompt comfirming the move of the relationships.</li></ul><br>
-<h3>Records</h3><br>Can be dragged either to the same domain under the
-same relationship and parent domain or a record under the same domain,
-relationship and parent domain as shown here.<br><br>In the following
+<h3>Records</h3><br>Can be dragged either to the same domain located under the
+same relationship &gt; parent domain or&nbsp; a record under the same domain &gt;
+relationship &gt; parent domain as shown here.<br><br>In the following
 example both highlighted nodes would be reassigned to BoughtCenterpoint
 &gt; Owns &gt; Locations. &nbsp; Neither highlighted node could have
 been dragged to Commodites because the domains do not match.
-&nbsp;Finally, any of the nodes under Locations could have been moved. <br><br>Also any of the records at this level of the tree could have been dragged &nbsp;or moved. &nbsp;Lastly,
+&nbsp;Finally, any of the nodes located under Locations could have been moved. <br>&nbsp;&nbsp;
 <div style="margin-left: 40px;"><img style="width: 681px; height: 210px;" alt="" src="../attach/RecordDragRules/MoveRecord.png"><br></div>
-<h4>Notes </h4><ul><li>Re-assigns all the relationships to the selected nodes to the new record. <br></li><li>Should show a prompt comfirming the move of the (N) relationships.&nbsp;</li></ul><p></p><p></p>
+<h4>Notes </h4><ul><li>Re-assigns all the relationships to the selected nodes to the new record. <br></li><li>Should
+show a prompt comfirming that (N) records that will be moved. &nbsp;
+Example: This will move 2 records to BoughtCenterpoint -&gt; Owns
+Location. &nbsp;Do you wish to reassign these records? &nbsp;</li></ul><p></p><p></p>
 <div class="pageactions"> <i>This page last
-changed 15-Oct-2008
+changed 16-Oct-2008
 01:52:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
 </body></html>
