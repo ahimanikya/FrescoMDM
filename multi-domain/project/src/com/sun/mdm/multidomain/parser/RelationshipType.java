@@ -16,7 +16,7 @@ public class RelationshipType {
     public static final String EXTENDED_ATTRIBUTE_TYPE = "1";
 
     /*
-     * RelationshipModel.xml
+     * MultiDomainModel.xml
      * <relationships>
      *   <relationshp-type>
      *     <attributes>

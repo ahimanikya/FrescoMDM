@@ -37,7 +37,7 @@ import java.util.ArrayList;
  * @author kkao
  */
     /*
-     * RelationshipModel.xml
+     * MultiDomainModel.xml
      * <relationships>
      *   <relationshp-type>
      */

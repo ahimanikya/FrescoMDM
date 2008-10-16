@@ -40,7 +40,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
 
-import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
@@ -82,7 +82,7 @@ public class EditorMainApp {
     private ArrayList mAlRelationshipNodes = new ArrayList();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
-    private RelationshipModel mRelationshipModel;
+    private MultiDomainModel mMultiDomainModel;
     
     /**
      * Creates a new instance of EditorMainApp the constructor is decleared private
@@ -145,7 +145,7 @@ public class EditorMainApp {
     
     private void loadRelationships() {
         //mAlRelationshipNodes
-        ArrayList <Relationship> alRelationships = mRelationshipModel.getAllRelationships();
+        ArrayList <Relationship> alRelationships = mMultiDomainModel.getAllRelationships();
         for (int i=0; alRelationships!=null && i<alRelationships.size(); i++) {
             Relationship relationship = (Relationship) alRelationships.get(i);
             RelationshipNode node = new RelationshipNode(this, relationship.getDomain1(), relationship.getDomain2());
@@ -161,7 +161,7 @@ public class EditorMainApp {
     
     /**
      * Look for src\Domains dir for participating domains
-     * Need to verify the list against RelationshipModel.xml?
+     * Need to verify the list against MultiDomainModel.xml?
      */
     public void loadDomains() {
         // Load mMapDomainObjectXmls and mMapDomainNodes
@@ -181,8 +181,8 @@ public class EditorMainApp {
                         mMapDomainObjectXmls.put(domainName, objectXml);
                         mMapDomainQueryXmls.put(domainName, queryXml);
                         mMapDomainMidmXmls.put(domainName, midmXml);
-                        ArrayList <Relationship> alRelationships = this.mRelationshipModel.getRelationshipsByDomain(domainName);
-                        ArrayList <RelationshipType> alRelationshipTypes = this.mRelationshipModel.getRelationshipTypesByDomain(domainName);
+                        ArrayList <Relationship> alRelationships = this.mMultiDomainModel.getRelationshipsByDomain(domainName);
+                        ArrayList <RelationshipType> alRelationshipTypes = this.mMultiDomainModel.getRelationshipTypesByDomain(domainName);
                         DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain), alRelationships, alRelationshipTypes);
                         mMapDomainNodes.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
@@ -406,7 +406,7 @@ public class EditorMainApp {
         try {
             mMultiDomainApplication.loadAll();
 
-            mRelationshipModel = getRelationshipModel(true);
+            mMultiDomainModel = getMultiDomainModel(true);
             loadRelationships();
 
             // Load mMapDomainObjectXmls
@@ -431,9 +431,9 @@ public class EditorMainApp {
     }
     
     /**
-     *@return xml string for RelationshipModel.xml
+     *@return xml string for MultiDomainModel.xml
      */
-    public String getRelationshipModelXmlString() throws Exception {
+    public String getMultiDomainModelXmlString() throws Exception {
         String data = null;
         return data;
     }
@@ -449,8 +449,8 @@ public class EditorMainApp {
         return xmlStr;
     }
 
-    public RelationshipModel getRelationshipModel(boolean refresh) {
-        return mMultiDomainApplication.getRelationshipModel(refresh);
+    public MultiDomainModel getMultiDomainModel(boolean refresh) {
+        return mMultiDomainApplication.getMultiDomainModel(refresh);
     }
 
     public RelationshipWebManager getRelationshipWebManager(String xml) {
@@ -471,17 +471,17 @@ public class EditorMainApp {
     }   
 
     /* Save all edited files
-     * RelationshipModel.xml and RelationshipWebManager.xml
+     * MultiDomainModel.xml and RelationshipWebManager.xml
      *
      *@param bClosing == true when closing the editor, user will be promted fo checking in
      *                == false when save icon is pressed and will save changes to work space only
      */
     public void save(boolean bClosing) {
         try {
-            // RelationshipModel.xml
-            String relationshipModelXml = getRelationshipModelXmlString();
-            if (relationshipModelXml != null) {
-                mMultiDomainApplication.saveRelationshipModelXml(relationshipModelXml);
+            // MultiDomainModel.xml
+            String multiDomainModelXml = getMultiDomainModelXmlString();
+            if (multiDomainModelXml != null) {
+                mMultiDomainApplication.saveMultiDomainModelXml(multiDomainModelXml);
             } else {
                 String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
                 NotifyDescriptor desc = new NotifyDescriptor.Message(msg);

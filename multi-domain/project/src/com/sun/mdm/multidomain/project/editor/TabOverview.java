@@ -707,12 +707,12 @@ public class TabOverview extends javax.swing.JPanel {
     // Table model for Relationship Type
     class TableModelExtendedAttribute extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Name"),
-                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_DataType"), 
-                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Value"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_ColumnName"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Default_Value"), 
                                         };
         ArrayList <ExtendedAttributeRow> rows;
         final static int iColName = 0;
-        final static int iColDataType = 1;
+        final static int iColColumnName = 1;
         final static int iColValue = 2;
         
         TableModelExtendedAttribute(ArrayList rows) {
@@ -741,7 +741,7 @@ public class TabOverview extends javax.swing.JPanel {
                     switch (col) {
                         case iColName:
                             return singleRow.getName();
-                        case iColDataType:
+                        case iColColumnName:
                             return singleRow.getDataType();
                         case iColValue:
                             return singleRow.getValue();
@@ -775,7 +775,7 @@ public class TabOverview extends javax.swing.JPanel {
                         case iColName:
                             singleRow.setName((String) value);                            
                             break;
-                        case iColDataType:
+                        case iColColumnName:
                             singleRow.setDataType((String) value);                            
                             break;
                         case iColValue:

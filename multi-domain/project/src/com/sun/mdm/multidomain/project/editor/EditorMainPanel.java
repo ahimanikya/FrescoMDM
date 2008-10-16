@@ -126,7 +126,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
         this.add(createToolBar(), BorderLayout.PAGE_START);
         // ToDo load domains etc
-        // Read RelationshipModel
+        // Read MultiDomainModel
         // Populate Model structures
         // Populate canvas with DomainNodes (EditorMainApp has a map for DomainNodes)
         JSplitPane splitPane = createSplitPane(); // Put tree and table in a split pane splitPane
@@ -143,7 +143,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mMultiViewPane = new JScrollPane();
         mMultiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                    NbBundle.getMessage(EditorMainPanel.class, "LBL_Relationship_Model")));
+                                    NbBundle.getMessage(EditorMainPanel.class, "LBL_MultiDomain_Model")));
 
         if (webManagerPanel == null) {
             webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getRelationshipWebMAnager(true));

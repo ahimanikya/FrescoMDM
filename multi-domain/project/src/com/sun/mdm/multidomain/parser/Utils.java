@@ -137,12 +137,12 @@ public class Utils {
      * @return ret RelationshipType
      * @throws ParserException exception
      */
-    public static RelationshipModel parseRelationshipModel(String xmlPath) throws ParserException {
+    public static MultiDomainModel parseMultiDomainModel(String xmlPath) throws ParserException {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             mDoc = docBuilder.parse(new File(xmlPath));
-            RelationshipModel ret = new RelationshipModel();
+            MultiDomainModel ret = new MultiDomainModel();
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
@@ -156,16 +156,16 @@ public class Utils {
      * @return ret RelationshipType
      * @throws ParserException exception
      */
-    public static RelationshipModel parseRelationshipModel(InputSource xmlSource) throws ParserException {
+    public static MultiDomainModel parseMultiDomainModel(InputSource xmlSource) throws ParserException {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             mDoc = docBuilder.parse(xmlSource);
-            RelationshipModel ret = new RelationshipModel();
+            MultiDomainModel ret = new MultiDomainModel();
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException("PAR503: Failed to parse RelationshipModel: " + 
+            throw new ParserException("PAR503: Failed to parse MultiDomainModel: " + 
                                                     xmlSource.getPublicId() + ":" + e.getMessage());
         }
     }

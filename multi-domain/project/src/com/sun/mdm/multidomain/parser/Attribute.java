@@ -11,7 +11,7 @@ package com.sun.mdm.multidomain.parser;
  */
 public class Attribute {
     /*
-     * RelationshipModel.xml
+     * MultiDomainModel.xml
      * <relationships>
      *   <relationshp-type>
      *     <attributes>

@@ -37,7 +37,7 @@ public abstract class Properties {
 
     // xml content of configuration files
     /** Relationship Model definition file  */
-    public static final String PROP_XML_RELATIONSHIP_MODEL_FILE = "Relationship Model";
+    public static final String PROP_XML_MULTI_DOMAIN_MODEL_FILE = "Relationship Model";
     /** Relationship Manager  */
     public static final String PROP_XML_RELATIONSHIP_MANAGER_FILE = "Relationship Manager";
     /** Database Systems */

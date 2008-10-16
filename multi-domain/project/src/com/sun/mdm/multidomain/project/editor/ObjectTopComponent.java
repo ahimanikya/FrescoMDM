@@ -32,7 +32,7 @@ import org.openide.windows.TopComponent;
 import org.openide.cookies.SaveCookie;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
-import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -56,7 +56,7 @@ public class ObjectTopComponent
     private EditorMainApp mEditorMainApp;
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
-    private RelationshipModel mRelationshipModel;
+    private MultiDomainModel mMultiDomainModel;
     private RelationshipWebManager mRelationshipWebManager;
 
     /**
@@ -119,7 +119,7 @@ public class ObjectTopComponent
                     this.mEditorMainApp.removeInstance(mPath);
                     return super.canClose();
                 } else if (ret == JOptionPane.NO_OPTION) {
-                    // Reload RelationshipModel and others
+                    // Reload MultiDomainModel and others
                     this.mMultiDomainApplication.loadAll();
                     this.mEditorMainApp.removeInstance(mPath);
                     return super.canClose();
@@ -190,9 +190,9 @@ public class ObjectTopComponent
             mEditorMainApp = editorMainApp;
             mEditorMainPanel = editorMainPanel;
             //ToDo-
-            //getRelationshipModel
-            mRelationshipModel = mMultiDomainApplication.getRelationshipModel(false);
-            //from RelationshipModel get all object model from participating domains
+            //getMultiDomainModel
+            mMultiDomainModel = mMultiDomainApplication.getMultiDomainModel(false);
+            //from MultiDomainModel get all object model from participating domains
             //-ToDo
             mRelationshipWebManager = mMultiDomainApplication.getRelationshipWebMAnager(false);
             

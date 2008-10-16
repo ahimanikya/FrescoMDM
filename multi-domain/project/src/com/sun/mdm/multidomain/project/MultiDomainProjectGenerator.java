@@ -25,7 +25,7 @@ package com.sun.mdm.multidomain.project;
 //import com.sun.mdm.index.project.generator.descriptor.SunEjbJarWriter;
 //import com.sun.mdm.index.project.generator.exception.TemplateWriterException;
 //import com.sun.mdm.index.project.generator.persistence.DDLWriter;
-import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.project.wizard.WizardProperties;
@@ -228,9 +228,9 @@ public class MultiDomainProjectGenerator {
             // *** Sub folder - Configuration ***
             folder = srcRoot.createFolder(MultiDomainProjectProperties.CONFIGURATION_FOLDER); // NOI18N     
             String str;            
-            // RELATIONSHIP_MODEL_XML
+            // MULTI_DOMAIN_MODEL_XML
             str = "";
-            repository.createConfigurationFile(folder, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, str);
+            repository.createConfigurationFile(folder, MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML, str);
             // RELATIONSHIP_WEB_MANAGER_XML
             str = "";
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML, str);            
@@ -238,7 +238,7 @@ public class MultiDomainProjectGenerator {
             // *** Sub folder - Database Script ***
             folder = srcRoot.createFolder(MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER); // NOI18N
             //generateDDLFiles(srcRoot);
-            str = getDBScriptRelationshipModel();
+            str = getDBScriptMultiDomainModel();
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.CREATE_RELATIONSHIPS_SQL, str);        
             str = getDBScriptAttributeMappings();
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.CREATE_MAPPINGS_SQL, str);                
@@ -434,7 +434,7 @@ public class MultiDomainProjectGenerator {
             for (int i = 0; i < files.length; i++) {
                 FileObject file = files[i];
                 if (file.isData() &&
-                    (file.getNameExt().equals(MultiDomainProjectProperties.RELATIONSHIP_MODEL_XSD) ||
+                    (file.getNameExt().equals(MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XSD) ||
                      file.getNameExt().equals(MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XSD))) {
                     FileUtil.copyFile(file, folder, file.getName());
                 }
@@ -563,7 +563,7 @@ public class MultiDomainProjectGenerator {
         }
     }
     
-    static String getDBScriptRelationshipModel() {
+    static String getDBScriptMultiDomainModel() {
         String str = "";
         return str;
     }
@@ -578,10 +578,10 @@ public class MultiDomainProjectGenerator {
 
             //File objectFile = new File(srcRoot,
             //        MultiDomainProjectProperties.CONFIGURATION_FOLDER
-            //        + File.separator + MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML);
+            //        + File.separator + MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML);
             //InputSource source = new InputSource(new FileInputStream(
             //            objectFile));
-            //RelationshipModel rm = Utils.parseRelationshipModel(source);
+            //MultiDomainModel rm = Utils.parseMultiDomainModel(source);
 
             //String tmpl = getCreateDDLWriterTemplate(rm.getDataBase());
             //File outPath = new File(srcRoot,

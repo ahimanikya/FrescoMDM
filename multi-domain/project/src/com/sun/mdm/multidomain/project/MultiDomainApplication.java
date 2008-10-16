@@ -36,7 +36,7 @@ import java.io.InputStream;
 import org.xml.sax.InputSource;
 
 import com.sun.mdm.multidomain.parser.Utils;
-import com.sun.mdm.multidomain.parser.RelationshipModel;
+import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.editor.ObjectTopComponent;
 import com.sun.mdm.multidomain.util.Logger;
@@ -56,13 +56,13 @@ public class MultiDomainApplication extends MultiDomainProject {
     // the following variables can be modified by Configuration Editor
     // and need to be synched up with xml files or reloaded
     private boolean mModified = false;
-    private RelationshipModel mRelationshipModel = null;      // OBJECT_XML
+    private MultiDomainModel mMultiDomainModel = null;      // OBJECT_XML
 
     private RelationshipWebManager mRelationshipWebManager = null;      // RelationshipWebManager.xml
     private FileObject fileRelationshipMappings;
-    private FileObject fileRelationshipModel;
+    private FileObject fileMultiDomainModel;
     private FileObject fileobjRelationshipWebManager;
-    private FileObject fileobjRelationshipModel;
+    private FileObject fileobjMultiDomainModel;
     private FileObject fileRelationshipWebManager;
     
     
@@ -81,24 +81,24 @@ public class MultiDomainApplication extends MultiDomainProject {
         return ep;
     }
     
-    /** Parses object.xml and returns com.sun.mdm.index.parser.RelationshipModel by parsing object.xml
+    /** Parses object.xml and returns com.sun.mdm.index.parser.MultiDomainModel by parsing object.xml
      * @throws RepositoryException failed to get value
-     * @return the RelationshipModel
+     * @return the MultiDomainModel
      */    
-    public RelationshipModel getRelationshipModel(boolean bRefresh) {
+    public MultiDomainModel getMultiDomainModel(boolean bRefresh) {
         try {
-            if (mRelationshipModel == null || bRefresh == true) {
-                FileObject rmf = this.getRelationshipModelFile();
+            if (mMultiDomainModel == null || bRefresh == true) {
+                FileObject rmf = this.getMultiDomainModelFile();
                 if (rmf != null) {
                     InputStream objectdef = rmf.getInputStream();
                     InputSource source = new InputSource(objectdef);
-                    mRelationshipModel = Utils.parseRelationshipModel(source);
+                    mMultiDomainModel = Utils.parseMultiDomainModel(source);
                 }
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
-        return mRelationshipModel;
+        return mMultiDomainModel;
     }
 
     /** Parses object.xml and returns com.sun.mdm.index.parser.RelationshipWebManager by parsing object.xml
@@ -184,13 +184,13 @@ public class MultiDomainApplication extends MultiDomainProject {
      *
      *@return boolean checked out
      */
-    private FileObject getRelationshipModelXml() {
+    private FileObject getMultiDomainModelXml() {
         try {
-            fileobjRelationshipModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
+            fileobjMultiDomainModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML, false);
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
-        return fileobjRelationshipModel;
+        return fileobjMultiDomainModel;
     }
     
 
@@ -198,10 +198,10 @@ public class MultiDomainApplication extends MultiDomainProject {
      *
      *@param data
      */
-    public void saveRelationshipModelXml(String strXml) {
+    public void saveMultiDomainModelXml(String strXml) {
         try {
-            if (fileobjRelationshipModel != null) {
-                writeConfigurationFile(fileobjRelationshipModel, strXml);
+            if (fileobjMultiDomainModel != null) {
+                writeConfigurationFile(fileobjMultiDomainModel, strXml);
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
@@ -234,9 +234,9 @@ public class MultiDomainApplication extends MultiDomainProject {
     /** return the FileObject for object.xml
      * @return FileObject fo
      */ 
-    public FileObject getRelationshipModelFile() {
-        fileobjRelationshipModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_MODEL_XML, false);
-        return fileobjRelationshipModel;
+    public FileObject getMultiDomainModelFile() {
+        fileobjMultiDomainModel = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML, false);
+        return fileobjMultiDomainModel;
     }
     
     /** return the FileObject for object.xml
@@ -275,7 +275,7 @@ public class MultiDomainApplication extends MultiDomainProject {
      *
      */
     public boolean getAllConfigurableFiles() {
-        return (getRelationshipModelXml() != null) &&
+        return (getMultiDomainModelXml() != null) &&
                (getRelationshipWebManagerXml() != null);
     }
     
