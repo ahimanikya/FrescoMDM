@@ -18,8 +18,7 @@
         <script type='text/javascript' src='dwr/interface/DomainHandler.js'></script>    
         <script type='text/javascript' src='dwr/interface/HierarchyHandler.js'></script>    
         <script type='text/javascript' src='dwr/engine.js'></script>    
-        <script type='text/javascript' src='dwr/util.js'></script>    
-        <script type='text/javascript' src='dwr/local.js'></script>         
+        <script type='text/javascript' src='dwr/util.js'></script>           
     </head>
     <body>
         <div id="head">&nbsp;</div>

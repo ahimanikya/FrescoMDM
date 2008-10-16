@@ -15,7 +15,7 @@
         <script type='text/javascript' src='dwr/interface/RelationshipTypeHandler.js'></script>    
         <script type='text/javascript' src='dwr/engine.js'></script>    
         <script type='text/javascript' src='dwr/util.js'></script>    
-        <script type='text/javascript' src='dwr/local.js'></script>        
+               
         <script type='text/javascript'>
             var relationshiptype;
             dwr.engine.setErrorHandler(exceptionHandler);
@@ -24,7 +24,7 @@
             }
             function loadSourceDomains() {
                 var domain=document.getElementById("selectSourceDomain").value;
-                DomainHandler.getDomains(domain, updateSourceDomains);
+                DomainHandler.getDomains(updateSourceDomains);
             }
             function updateSourceDomains(data) {
                 dwr.util.addOptions("selectSourceDomain", data, "name");        
@@ -32,7 +32,7 @@
             }
             function loadTargetDomains() {
                 var domain=document.getElementById("selectTargetDomain").value;                
-                DomainHandler.getDomains(domain, updateTargetDomains);
+                DomainHandler.getDomains(updateTargetDomains);
             }
             function updateTargetDomains(data) {
                 dwr.util.addOptions("selectTargetDomain", data, "name");        
@@ -51,7 +51,7 @@
                 dwr.util.addRows("types", data, cellfuncs, {escapeHtml:false});
             }
             function clickAdd() {
-                relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product", attributes:[{name:"foo"}]};
+                relationshiptype = {name:"foo", sourceDomain:"Person", targetDomain:"Product", attributes:[{name:"foo"}]};
                 alert("add new relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
                 RelationshipTypeHandler.addRelationshipType(relationshiptype, clickAddCB);
             }
@@ -60,7 +60,7 @@
                  loadRelationshipTypes();
             }
             function clickDelete() {
-               relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
+               relationshiptype = {name:"foo", sourceDomain:"Person", targetDomain:"Product"};
                alert("delete a relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
                RelationshipTypeHandler.deleteRelationshipType(relationshiptype, clickDeleteCB);
             }           
@@ -82,7 +82,6 @@
             }
             var cellfuncs = [
               function(data) { return data.name; },
-              function(data) { return data.displayName; },
               function(data) { return data.sourceDomain; },
               function(data) { return data.targetDomain; },
               function(data) { return data.attributes[0].name; },              
@@ -136,7 +135,6 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>DisplayName</th>
                 <th>SourceDomain</th>
                 <th>TargetDomain</th>
                 <th>Attribute</th>                
