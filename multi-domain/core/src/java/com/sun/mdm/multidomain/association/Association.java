@@ -33,8 +33,7 @@ import java.util.HashMap;
  */
 public abstract class Association {
     private AssociationValue associationValue;
-            
-    
+                
     /**
      * Get Association Value.
      * @return AssociationValue.
@@ -58,5 +57,106 @@ public abstract class Association {
     AssociationType getAssocationType() {
     	return associationValue.getAssociationType();
     }
+    
+    /**
+     * Get association type.
+     * @return AssociationType Association type.
+     */
+    public AssociationType getAssociationType() {
+        return associationValue.getAssociationType();
+    }
+    
+    /**
+     * Set association type.
+     * @param associationType Association type.
+     */
+    public void setAssociationType(AssociationType associationType) {
+        associationValue.setAssociationType(associationType);
+    }    
+    
+    /**
+     * Get effective from date attribute.
+     * @return Date Start date attribute.
+     */
+    public Date getEffectiveFromDate() {
+        return associationValue.getEffectiveFromDate();
+    }
+    
+    /**
+     * Set effective From date attribute.
+     * @param effectiveFromDate Start date attribute.
+     */
+    public void setEffectiveFromDate(Date effectiveFromDate) {
+    	associationValue.setEffectiveFromDate(effectiveFromDate);
+    }  
+    
+    /**
+     * Get end date attribute.
+     * @return Date End date attribute.
+     */    
+    public Date getEffectiveToDate() {
+        return associationValue.getEffectiveToDate();
+    }
+  
+    /**
+     * Set End date attribute.
+     * @param effectiveToDate End date attribute.
+     */    
+    public void setEffectiveToDate(Date effectiveToDate) {
+    	associationValue.setEffectiveToDate(effectiveToDate);
+    }
+    
+    /**
+     * Get Purge date attribute.
+     * @return Date Purge date attribute.
+     */     
+    public Date getPurgeDate() {
+        return associationValue.getPurgeDate();
+    }
+   
+    /**
+     * Set Purge date attribute.
+     * @param purgeDate Purge date attribute.
+     */       
+    public void setPurgeDate(Date purgeDate) {
+    	associationValue.setPurgeDate(purgeDate);
+    } 
+    
+    /**
+     * Set attribute value.
+     * @param attribute Attribute.
+     * @param value Attribute value.
+     */
+    public void setAttributeValue(Attribute attribute, String value) {
+    	associationValue.setAttributeValue(attribute, value);
+    }
+    
+    /**
+     * Get attribute value.
+     * @param attribute Attribute.
+     * @return String Attribute value.
+     */
+    public String getAttributeValue(Attribute attribute) {
+    	return associationValue.getAttributeValue(attribute);
+    }
+    
+    /**
+     * Set attribute value.
+     * @param attribute Attribute.
+     * @param value Attribute value.
+     */
+    public void setAttributes(Map<Attribute,String> attributeValues) {
+    	this.associationValue.setAttributes(attributeValues);
+    }
+    
+    /**
+     * Get attribute value.
+     * @param attribute Attribute.
+     * @return String Attribute value.
+     */
+    public Map<Attribute,String> getAttributes() {
+    	return associationValue.getAttributes();
+    }        
+    
     
 }
