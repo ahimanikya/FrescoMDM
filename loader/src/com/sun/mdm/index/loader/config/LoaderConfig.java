@@ -435,10 +435,15 @@ public class LoaderConfig {
     /**
      * Gets system property value for the given property name.
      * @param propertyName
-     * @return
+     * @return String 
      */
     public String getSystemProperty(String propertyName) {
-        return systemProps.get(propertyName);
+    	String value = systemProps.get(propertyName);
+    	if ("record.delimiter".equals(propertyName) && value != null) {
+    		value = value.equals("\\n") ? "\n" : value;
+    		value = value.equals("\\t") ? "\t" : value;
+    	}
+    	return value;
     }
 
     /**
