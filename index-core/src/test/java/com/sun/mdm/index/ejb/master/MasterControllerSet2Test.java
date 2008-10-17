@@ -72,6 +72,8 @@ public class MasterControllerSet2Test extends TestSuite {
         suite.addTestSuite(DeferredPessimisticModeSystemMerge.class);
         
         suite.addTestSuite(MergeMultipleEnterpriseObject.class);
+        suite.addTestSuite(CountPotentialDuplicates.class);
+        suite.addTestSuite(CountAssumedMatches.class);
         
         return suite;
     }
