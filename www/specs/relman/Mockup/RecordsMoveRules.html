@@ -43,7 +43,7 @@ domain has relationships defined for.<br>
 <br>
 <h2>Supported actions by context&nbsp;&nbsp;&nbsp;</h2>
 <br>If &nbsp;an action is not supported at any given time the action should be
-grayed out.<br>
+grayed out.<br><br>
 <table style="text-align: left; width: 487px; height: 148px;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr>
@@ -66,7 +66,7 @@ Appropriate nodes are selected. <br>
 </tr>
 <tr>
 <td>Reassign</td>
-<td>Any record, including the primary record.<br></td>
+<td>Any record, including the primary record. &nbsp;<br><br>This is only available to via the Reassign action. &nbsp; <br></td>
 </tr>
 <tr>
 <td>Delete</td>
@@ -103,13 +103,7 @@ However, both&nbsp;trees should preserve what nodes where openned and
 where the user has scrolled to. To the user it should only look as
 though the old records have been moved from one place to the other. <br>
 <br>
-<h3>Primary Record</h3><br>Can be dragged to a record that is under the
-same domain as the Primary Record as long as it is not the same as the
-Primary Record.&nbsp;&nbsp;<br><br>Thus either of the moves as shown by the green line are legal, but the one shown by the red dotted line is not. <br><br>.<br><br><br><br>
-<p style="margin-left: 40px;"><img style="width: 476px; height: 157px;" alt="" src="../attach/RecordDragRules/MovePrimary.png"></p><p style="margin-left: 40px;"></p><p>Also records under the same domain under a different relationship can be dragged to the primary record as shown here.</p><p style="margin-left: 40px;"><img style="width: 476px; height: 157px;" alt="" src="../attach/RecordDragRules/MoveToPrimary.png"></p><p>Notes <br></p><ul><li>Be sure to prompt the user to make sure they want to reassign all relationships to the new record.&nbsp;</li><li>This
-works exactly the same as if the user had selected "Reassign..." on the
-Primary Record and then selected one of these records.&nbsp; &nbsp;</li></ul>
-<h3>Relationships</h3><br>Can be dragged either to a record located under the
+<h3>Primary Record</h3><br>Can not be selected for move nor drag / drop. <br><br><h3>Relationships</h3><br>Can be dragged either to a record located under the
 same domain as the source record of the relationship or to the same
 relationship located under the same domain. <br><br><div style="margin-left: 40px;"><img style="width: 707px; height: 210px;" alt="" src="../attach/RecordDragRules/MoveRelationship.png"><br></div><br> <h4>Notes <br></h4><ul><li>Re-assigns all records under each domain with the same relationship to the new record associated with the relationship. <br><br>For
 example, in the above diagram all records in Centerpoint &gt; Owns

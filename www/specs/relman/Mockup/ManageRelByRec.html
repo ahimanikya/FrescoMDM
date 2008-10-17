@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><title>Future Ideas - Manage-&gt;Relationship-&gt;Maintain-&gt;ByRecord</title>
+<html><head><title>Future Ideas -
+Manage-&gt;Relationship-&gt;Maintain-&gt;ByRecord</title>
 
 <link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -11,7 +12,8 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script></head>
+</script>
+</head>
 <body class="view">
 <h1>Manage-&gt;Relationship-&gt;Maintain-&gt;By
 Record &nbsp;<a href="relman/Mockup/ManageRelMaintain.htm#ByRelationship">
@@ -19,10 +21,23 @@ Record &nbsp;<a href="relman/Mockup/ManageRelMaintain.htm#ByRelationship">
 <h2>Use Cases</h2>
 <ul>
 <li> View and maintain relationships for a<span style="font-weight: bold;"> single
-record</span> and all relationships to all associated records. </li>
+record</span> and all relationships to all associated records.
+&nbsp;This includes</li>
+<ul>
+<li>Deleting relationships</li>
+<li>Adding relationships</li>
+<li>Moving relationships &nbsp;from one record to another
+record in the same domain. &nbsp;Example, &nbsp;a Location that
+was Owned by&nbsp;Centerpoint is now owned by Global
+Enterprise.&nbsp;</li>
+<li>Moving all relationships associated with one record to a
+different record. &nbsp;Example: &nbsp; Example, Dr. Andrea
+Smith takes over for Dr. George Karlin and all the relationships that
+use to be associated with Dr. George Karlin are now associated with Dr.
+Andrea Smith.&nbsp;</li>
+</ul>
 <li> View details of selected relationship (source record,
-destination record and relationship attributes)
-</li>
+destination record and relationship attributes)</li>
 </ul>
 <h2>Implementation Details</h2>
 <h3><a href="ManRelbyRecSB.html">Story Boards.
@@ -52,9 +67,12 @@ first be shown after the search button in the search area is selected.</li>
 Needed</span></h4>
 <p></p>
 <ul>
-<li>Should change "Search" to "Select" &nbsp;and call this "Select
-Record". &nbsp;That way the button on the main area and the button on
-this dialog match. </li><li>Nice to have: Add the option&nbsp;to
+<li>Should change "Search" to "Select" &nbsp;and call this
+"Select
+Record". &nbsp;That way the button on the main area and the button
+on
+this dialog match. </li>
+<li>Nice to have: Add the option&nbsp;to
 select a subset of domains to show relationships for. This should be
 populated with the set of domains that have relationships to
 the&nbsp; domain selected above. The user should be able to any
@@ -70,59 +88,231 @@ selected. </span><br>
 <br>
 <img style="width: 928px; height: 760px;" alt="" src="../attach/RelByRecordS2.png"><br>
 <br>
-<br><h4><br>
-<span class="note-highlight" style="font-weight: bold; font-style: italic;">Overlay shown by selecting the 'show relationship type' button</span></h4>
 <br>
-<img style="width: 921px; height: 306px;" alt="" src="../attach/RelShowRelType.png"><br><br><h4><span style="color: blue;">Notes</span></h4>
-<ul><li>More than one Relation Type bubble can be shown at at time</li></ul><br><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
+<h4><br>
+<span class="note-highlight" style="font-weight: bold; font-style: italic;">Overlay shown
+by selecting the 'show relationship type' button</span></h4>
+<br>
+<img style="width: 921px; height: 306px;" alt="" src="../attach/RelShowRelType.png"><br>
+<br>
+<h4><span style="color: blue;">Notes</span></h4>
+<ul>
+<li>More than one Relation Type bubble can be shown at at time</li>
+</ul>
+<br>
+<br>
+<span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
 record "Centerpoint" was selected<br>
 </span><br>
 <img style="width: 928px; height: 752px;" alt="" src="../attach/RelByRecord.png">
-<h4><br><span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
+<h4><br>
+<span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the
-record&nbsp;Centerpoint, Owns Offices was expanded and the record "Bangalore" was selected.&nbsp;</span></h4><br><img style="width: 926px; height: 736px;" alt="" src="../attach/RelByRecordS3.png"><br>
+record&nbsp;Centerpoint, Owns Offices was expanded and the record
+"Bangalore" was selected.&nbsp;</span></h4>
 <br>
-<h4 style="color: rgb(51, 51, 255);">Updates Needed<br></h4><ul><li>A
+<img style="width: 926px; height: 736px;" alt="" src="../attach/RelByRecordS3.png"><br>
+<br>
+<h4 style="color: rgb(51, 51, 255);">Updates Needed<br>
+</h4>
+<ul>
+<li>A
 Reassign action that is only available for the originally selected
-node. &nbsp;The "Reassign..." action would bring up a search overlay
+node. &nbsp;The "Reassign..." action would bring up a search
+overlay
 allow a user to select a different record from the same domain.
-&nbsp;This would&nbsp;</li></ul><h4><br></h4><h4><span style="color: rgb(0, 102, 0);">Notes on Relationship Model overview</span></h4><br><ul><li>The windows should be minized by default</li></ul><br><h4><span style="color: rgb(0, 102, 0);">Notes on Tree Usage</span></h4><br><ul><li>Selecting a relationship type allows deletion of all the records in the relationship.</li><li>Selecting a domain disables Delete and Add.</li><li>Allow
-for multi-selected. &nbsp;If more than one record is selected then the
+&nbsp;This would&nbsp;</li>
+</ul>
+<h4><br>
+</h4>
+<h4><span style="color: rgb(0, 102, 0);">Notes on
+Relationship Model overview</span></h4>
+<br>
+<ul>
+<li>The windows should be minized by default</li>
+</ul>
+<br>
+<h4><span style="color: rgb(0, 102, 0);">Notes on
+Tree Usage</span></h4>
+<br>
+<ul>
+<li>Selecting a relationship type allows deletion of all the
+records in the relationship.</li>
+<li>Selecting a domain disables Delete and Add.</li>
+<li>Allow
+for multi-selected. &nbsp;If more than one record is selected then
+the
 right hand side should be blank and the number shown by Delete should
-be updated.&nbsp;</li><li>Move could be implemented by finding a record
+be updated.&nbsp;</li>
+<li>Move could be implemented by finding a record
 and moving all selected records under the record (similiar to how the
 hierarchy tree works) or better yet by showing a second tree on the
-right that just displays a Find Record button (and hide) and allowing for drag /
-drop between the two trees (current on right, new on left) </li><li>Do not &nbsp;allow any record that is already in its parent path to be expanded (stop cyclic references) <br>Example: &nbsp;Below "Dr. George Karlin" is not expandable because the record is already expanded. <br><br>If
-Centerpoint-&gt;Bangalore had children relationships that refered back
-to Centerpoint than that node would not be expandable. <br></li><li>Build
+right that just displays a Find Record button (and hide) and allowing
+for drag /
+drop between the two trees (current on right, new on left) </li>
+<li>Do not &nbsp;allow any record that is already in its
+parent path to be expanded (stop cyclic references) <br>
+Example: &nbsp;Below "Dr. George Karlin" is not expandable because
+the record is already expanded. <br>
+<br>
+If
+Centerpoint-&gt;Bangalore had children relationships that refered
+back
+to Centerpoint than that node would not be expandable. <br>
+</li>
+<li>Build
 in a configurable limits to the number of records to show under a node.
 &nbsp;If too many records would be shown then the tree would show a
-paginated table of the nodes and a More... &nbsp;button (for when the
+paginated table of the nodes and a More... &nbsp;button (for when
+the
 table is dismissed). For the session if a record is selected from that
 table
 it appears in the tree list and under the parent node prior to the
-More... button. <br><br>Nice to have would be the abliity to filter the table as follows: <br><br><ul><li>Names of destination records (optional)</li><li>Relationship attributes (optional)</li></ul>&nbsp;<br>Here is an example of what a simple implementation of &nbsp;too many nodes to show might look like:<br><br><img style="width: 499px; height: 317px;" alt="" src="../attach/TreeTooManyRecords.png"></li></ul><br><h4><span style="color: rgb(0, 102, 0);">Organization on tree</span></h4><br>The first two nodes on the tree are always<br><br><ul><li style="font-style: italic;">Domain of selected record</li><ul><li style="font-style: italic;">selected record</li></ul></ul><br>After that the data sbould be organized as follows<br><br><ul><li>Relationships (alphabetical)&nbsp;</li><ul><li>Domains&nbsp;</li></ul><ul><ul><li>Records&nbsp;</li></ul></ul></ul><br>Here is a more complete example than shown above. &nbsp; <br><br>Notice that Dr. George Karlin is not expandable under Centerpoint &lt;- Employed By. <br><br><img style="width: 301px; height: 710px;" alt="" src="../attach/RelByRecordTreeByRel.png"><br><br><h4><span style="color: rgb(0, 102, 0);">Alternate to Tree Look and Feel</span></h4><br>Go
+More... button. <br>
+<br>
+Nice to have would be the abliity to filter the table as follows: <br>
+<br>
+<ul>
+<li>Names of destination records (optional)</li>
+<li>Relationship attributes (optional)</li>
+</ul>
+&nbsp;<br>
+Here is an example of what a simple implementation of &nbsp;too
+many nodes to show might look like:<br>
+<br>
+<img style="width: 499px; height: 317px;" alt="" src="../attach/TreeTooManyRecords.png"></li>
+</ul>
+<br>
+<h4><span style="color: rgb(0, 102, 0);">Organization
+on tree</span></h4>
+<br>
+The first two nodes on the tree are always<br>
+<br>
+<ul>
+<li style="font-style: italic;">Domain of selected record</li>
+<ul>
+<li style="font-style: italic;">selected record</li>
+</ul>
+</ul>
+<br>
+After that the data sbould be organized as follows<br>
+<br>
+<ul>
+<li>Relationships (alphabetical)&nbsp;</li>
+<ul>
+<li>Domains&nbsp;</li>
+</ul>
+<ul>
+<ul>
+<li>Records&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<br>
+Here is a more complete example than shown above. &nbsp; <br>
+<br>
+Notice that Dr. George Karlin is not expandable under Centerpoint
+&lt;- Employed By. <br>
+<br>
+<img style="width: 301px; height: 710px;" alt="" src="../attach/RelByRecordTreeByRel.png"><br>
+<br>
+<h4><span style="color: rgb(0, 102, 0);">Alternate
+to Tree Look and Feel</span></h4>
+<br>
+Go
 back to the box look as shown on the Story Board and add a "Make
 Current Record" option that would switch the current node to the
-selected node. <span style="font-weight: bold;"></span><br><br>The user could navigate back to the original record as it would be shown in one of the relationships in the boxes. <br><br>To see the&nbsp;<a href="ManRelByRecTable.html">Table Look and Feel</a> click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>. <br><h4><span style="color: rgb(0, 102, 0);">
-Example Tree using domains: Customers, Accounts, Locations</span>
-</h4><ul>
-<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png"> Customer</li><ul><li>George Karlin</li><ul><li>-&gt; Primary Holder</li><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Accounts</li><ul><li>Act #1</li><ul><li>-&gt; Located In</li></ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li></ul><ul><ul><li>Loc #1</li><li>Loc #2</li></ul></ul></ul></ul></ul></ul></ul>
+selected node. <span style="font-weight: bold;"></span><br>
+<br>
+The user could navigate back to the original record as it would be
+shown in one of the relationships in the boxes. <br>
+<br>
+To see the&nbsp;<a href="ManRelByRecTable.html">Table
+Look and Feel</a> click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>.
+<br>
+<h4><span style="color: rgb(0, 102, 0);">Example
+Tree using domains: Customers, Accounts, Locations</span>
+</h4>
 <ul>
-
+<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png"> Customer</li>
 <ul>
-
+<li>George Karlin</li>
 <ul>
-<ul><li>Act #2</li><ul><li>-&gt; Located In</li></ul></ul><ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li></ul></ul><ul><ul><ul><li>Loc #1</li><li>Loc #2</li></ul></ul></ul></ul><ul><li>Act #3</li><ul><li>-&gt; Located In</li></ul><ul><ul><li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li></ul><ul><ul><li>Loc #1</li><li>Loc #2</li></ul></ul></ul></ul>
+<li>-&gt; Primary Holder</li>
 <ul>
-
-<ul></ul>
+<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Accounts</li>
+<ul>
+<li>Act #1</li>
+<ul>
+<li>-&gt; Located In</li>
 </ul>
-</ul></ul>
+<ul>
+<ul>
+<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li>
 </ul>
-</ul><br><h3>Add Records to Relationship<br>
+<ul>
+<ul>
+<li>Loc #1</li>
+<li>Loc #2</li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<ul>
+<li>Act #2</li>
+<ul>
+<li>-&gt; Located In</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>Loc #1</li>
+<li>Loc #2</li>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<li>Act #3</li>
+<ul>
+<li>-&gt; Located In</li>
+</ul>
+<ul>
+<ul>
+<li><img style="width: 16px; height: 17px;" alt="" src="../attach/Folders/Domain.png">Locations</li>
+</ul>
+<ul>
+<ul>
+<li>Loc #1</li>
+<li>Loc #2</li>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<br>
+<h3>Add Records to Relationship<br>
 </h3>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Note: This is
 a wireframe model of the screen</span><br>
@@ -130,23 +320,92 @@ a wireframe model of the screen</span><br>
 <br>
 <img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br>
 <span style="font-weight: bold;"></span>.<br>
-<h3>Find Dialog</h3><br>A typical find dialog such as the following. &nbsp;<br><br>Nice to have would be to specify a one of the types of Searches to restrict what the user is searching for.&nbsp; <br><br><ul><li>Entire Tree</li><li>Relationships</li><li>Domains</li><li>Records&nbsp;</li></ul><br><img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png"><br><br><h3>Move Dialog</h3>
-&nbsp;<br>If records are selected brings up a dialog that allows the
-selection of a relationship associated with the domain of the selected
-record. &nbsp; &nbsp;Selection of nodes for the move are limted to
-records in the same domain. &nbsp;I.E. the Move option is grayed out if
-records in different domains are selected<br><br>If a domain is
-selected brings up a dialog that allows the selection of another record
-in the same domain as the parent record of the relationship. &nbsp;<br>Example:&nbsp;Dr.
-George Karlin &gt; Associate Of &gt; UK Doctor is selected.&nbsp; The
-Move Dialog brings up a Move "Associate Of" dialog with the option to
-select a new UK Patient record. &nbsp;All the records in this node are
-now re-assigned to the new record. &nbsp; &nbsp;An example use case is
-that the job perfomred by Dr. George Karlin&nbsp; that made him
-&nbsp;an Associated of the UK Doctors is now performed by a different
-patient. &nbsp;<br><br><h2>Alternate Look of tree with "Destination&gt;&gt;" option</h2>
+<h3>Find Dialog</h3>
 <br>
-The following shows the look of the Manage Hierarchy tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">&nbsp;Destination&gt;&gt;</span></a> option. &nbsp;The look of the Relationship Tree would be very similiar however there are some important differences. <br><br>These differences have to do with the way drag / drop and the actions for the tree work and can be read about at <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on Relationship Tree.</span></a><br><br><a href="RecordsMoveRules.html"><span style="font-weight: bold;"></span></a>
-<div class="pageactions"><i>This page lastchanged on 15-Oct-2008 20:00:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
+A typical find dialog such as the following. &nbsp;<br>
+<br>
+Nice to have would be to specify a one of the types of Searches to
+restrict what the user is searching for.&nbsp; <br>
+<br>
+<ul>
+<li>Entire Tree</li>
+<li>Relationships</li>
+<li>Domains</li>
+<li>Records&nbsp;</li>
+</ul>
+<br>
+<img style="width: 284px; height: 98px;" alt="" src="../attach/FindRecord.png"><br>
+<br>
+<h3>Move Dialog</h3>
+<br>
+Only available if nodes under the same parent have been selected or a
+single node has been selected. &nbsp;<br>
+<br>
+The user is given choices of where to move the node/s based on the type
+of node selected as follows.<br>
+<br>
+<dl>
+<dt>Relationships&nbsp;</dt>
+<dd>The dialog shows a message indicating what will be moved.
+&nbsp;Example, Move relationships associated with the 2 selected
+relationships to a new Company. </dd><dd><br>A&nbsp;search screen for the same domain
+as the parent record of the relationship is also shown. &nbsp;The user can then
+select the new record to re-assign all records that share the
+relationship to the original record.&nbsp; <br>
+<br>
+Example, the user selects&nbsp;
+-&gt; Owns Offices and &lt;- Employed By relationships under
+Centerpoint. &nbsp;The move dialog shows a search screen for
+Company domain. &nbsp;The user can search for the record to that
+will replace Centerpoint for these two relationships.<br><br>
+</dd>
+<dt>Domains</dt><dd>The dialog shows a message indicating what will be moved. &nbsp;Example,
+Move relationships associated with the selected domain to a
+new Company. </dd></dl><dl>
+<dd>User is presented with a search screen for the same domain
+as the parent record of the relationship. &nbsp;The user can then
+select the new
+record to re-assign all records that share the relationship to the
+original record.&nbsp;</dd>
+<dd></dd>
+<dd>Example, the user selects Locations under Company &gt;
+Centerpoint &gt; Owns . &nbsp;The move dialog shows a search
+screen for the Company domain. from which the user selects teh record to re-assign all the Locations under Company &gt;
+Centerpoint &gt; Owns to. <br> <br>
+</dd>
+<dt>Records</dt>
+<dd>The dialog shows a message indicating what will be moved. Example,&nbsp; Move selected Centerpoint -&gt; Owns Locations to another Company.</dd><dt></dt><dd>User is presented with a search screen for the same domain
+as the parent record of the relationship. &nbsp;The user can then
+select the new
+record to re-assign all records that share the relationship to the
+original record.&nbsp;</dd><dd></dd><dd>Example, the user selects records unde&nbsp;&nbsp; Company &gt;
+Centerpoint &gt; Owns &gt; Locations . &nbsp;The move dialog shows a search
+screen for the Company domain from which the user selects the record to re-assign the  Company &gt;
+Centerpoint &gt; Owns &gt; &nbsp;relationships to.<br> </dd><dd><br> &nbsp;<br></dd>
+</dl>
+In other words the dialogs work similar to the <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on
+Relationship Tree. </span></a>
+The
+difference being that instead of using drag / drop the user is guided
+by the Move dialog to choices that make sense given the context of the
+currently selected nodes
+<dl>
+<dt>&nbsp; &nbsp;</dt>
+</dl>
+<h2>Alternate Look of tree with "Destination&gt;&gt;"
+option</h2>
+<br>
+<br>
+The following shows the look of the Manage Hierarchy tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">&nbsp;Destination&gt;&gt;</span></a>
+option. &nbsp;The look of the Relationship Tree would be very
+similiar however there are some important differences. <br>
+<br>
+These differences have to do with the way drag / drop and the actions
+for the tree work and can be read about at <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on
+Relationship Tree.</span></a><br>
+<br>
+<a href="RecordsMoveRules.html"><span style="font-weight: bold;"></span></a>
+<div class="pageactions"><i>This page lastchanged on
+15-Oct-2008 20:00:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>
 </body></html>
