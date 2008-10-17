@@ -28,13 +28,13 @@
     <folder name="Templates">
         <folder name="Project">        
             <folder name="CAPS">
-                <!-- Add template for the Multi-Domain MDM enterprize project -->
+                <!-- Add template for the Multi-Domain enterprize project -->
                 <folder name="MDM">
                     <attr name="position" intvalue="3000"/>
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
                     <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/project.html"/>
 
-                    <file name="Multi-Domain MDM Project">
+                    <file name="Multi-Domain Project">
                         <attr name="template" boolvalue="true"/>
                         <attr name="templateWizardIterator" newvalue="com.sun.mdm.multidomain.project.wizard.NewProjectIterator"/>
                         <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
