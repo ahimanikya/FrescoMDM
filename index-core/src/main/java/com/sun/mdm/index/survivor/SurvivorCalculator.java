@@ -36,6 +36,7 @@ import net.java.hulp.i18n.Logger;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.ObjectKey;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
@@ -247,9 +248,15 @@ public class SurvivorCalculator implements java.io.Serializable {
                 Iterator childIter = childList.iterator();
                 while(childIter.hasNext()) {
                     ObjectNode childObj = (ObjectNode) childIter.next();
-                    String tag = childObj.pGetTag();
-                    ObjectField field = childObj.getField(childObj.pGetTag() + "Id");
-                    field.setValue(null);
+                    // If the child is unkeyed, the objectKey will be null.  
+                    // For unkeyed objects, clear the object ID in the Survivor Calculator.
+                    // Otherwise, there is a problem with merging records with unkeyed 
+                    // child objects.
+                    ObjectKey k = childObj.pGetKey();
+                    if (k != null) {
+                        ObjectField field = childObj.getField(childObj.pGetTag() + "Id");
+                        field.setValue(null);
+                    }
                 }
             }
             //Standardize SBR object

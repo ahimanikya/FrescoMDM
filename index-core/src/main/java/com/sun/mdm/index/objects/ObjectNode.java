@@ -2740,12 +2740,16 @@ public class ObjectNode implements Externalizable {
                        if (k == null) {
                            k = n.pGetSuperKey();
                            if (k == null) {
-                               // If the SuperKey is null, the unkeyed child object
-                               // has not been retrieved from the database.  Instead,
-                               // it is in the memory, such as in the case of adding
-                               // a SO to an existing EO.  In this situation, the
-                               // unkeyed child object should be added.
-                               addUnkeyedObject = true;
+                                // If the SuperKey is null, the unkeyed child object
+                                // has not been retrieved from the database.  Instead,
+                                // it is in the memory, such as in the case of adding
+                                // a SO to an existing EO.  In this situation, the
+                                // unkeyed child object should be added.
+                                addUnkeyedObject = true;
+
+                                // clear the object ID 
+                                ObjectField field = n.getField(n.pGetTag() + "Id");
+                                field.setValue(null);
                            }
                        }
                        boolean removed = n.isRemoved();
