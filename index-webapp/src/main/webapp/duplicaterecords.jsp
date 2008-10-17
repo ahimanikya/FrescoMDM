@@ -515,8 +515,8 @@ function align(thisevent,divID) {
 	     populateContents('advancedformData','create_start_time','<%=startTimeField%>');
 	     populateContents('advancedformData','create_end_date','<%=startDateField%>');
 	     populateContents('advancedformData','create_end_time','<%=endTimeField%>');
-
- 	    ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random=<%=rand%>&<%=queryStr%>','outputdiv','')
+         var selectedSearchTypeVal = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+  	    ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random=<%=rand%>&<%=queryStr%>&selectedSearchType='+selectedSearchTypeVal,'outputdiv','')
      </script>
 <% }  %>
 <!-- added  on 22/08/2008 for incorporate back button -->

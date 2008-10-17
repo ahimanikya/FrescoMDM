@@ -134,6 +134,7 @@ String total_records_text = bundle.getString("total_records_text");
 
 ArrayList fullFieldNamesList  = new ArrayList();
 
+String previousQueryStr = request.getQueryString();
 
 //Variables required compare euids
 String compareEuids = request.getParameter("compareEuids");
@@ -498,7 +499,7 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
    <%String finalEuidsString = searchDuplicatesHandler.buildDuplicateEuids(finalArrayList);%> 
     <table><tr><td>
     <script>
-     window.location = '/<%=URI%>/compareduplicates.jsf?fromPage=duplicaterecords&duplicateEuids=<%=finalEuidsString%>';
+     window.location = '/<%=URI%>/compareduplicates.jsf?fromPage=duplicaterecords&previousQueryStr=<%=previousQueryStr%>&duplicateEuids=<%=finalEuidsString%>';
    </script>
    </td>
    </tr>
