@@ -6,6 +6,7 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
+import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     
     ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
     
-    RelationshipWebManager mRelationshipWebManager = null;
+    MultiDomainWebManager mMultiDomainWebManager = null;
     
     private EditorMainApp mEditorMainApp = null;
     
@@ -36,10 +37,10 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
 
 
     /** Creates new form TabRelationshipWebManager */
-    public TabRelationshipWebManager(EditorMainApp editorMainApp, RelationshipWebManager relationshipWebManager) {  
+    public TabRelationshipWebManager(EditorMainApp editorMainApp, MultiDomainWebManager multiDomainWebManager) {  
         mEditorMainApp = editorMainApp;
-        mRelationshipWebManager = relationshipWebManager;
-        mRelationshipTypes = mRelationshipWebManager.getRelationshipTypes();
+        mMultiDomainWebManager = multiDomainWebManager;
+        mRelationshipTypes = mMultiDomainWebManager.getRelationshipTypes();
         initComponents();
         generateTabs();
         createRelationshipTypes();
@@ -67,7 +68,7 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
 
     protected TabWebManagerDomains getDoaminsTab() {
         if (mTabDomains == null) {
-            mTabDomains = new TabWebManagerDomains(mEditorMainApp, mRelationshipWebManager.getDomains());
+            mTabDomains = new TabWebManagerDomains(mEditorMainApp, mMultiDomainWebManager.getDomains());
         }
         
         return mTabDomains;

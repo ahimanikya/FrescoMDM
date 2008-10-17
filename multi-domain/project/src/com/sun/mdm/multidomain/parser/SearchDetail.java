@@ -61,6 +61,15 @@ public class SearchDetail {
     public int getMaxResultSize() {
         return this.mMaxResultSize;
     }
+ 
+    public void setItemPerPage(int itemPerPage) {
+        this.mItemPerPage = itemPerPage;
+    }
+
+    
+    public void setMaxResultSize(int maxResultSize) {
+        this.mMaxResultSize = maxResultSize;
+    }    
     
     public int getRecordDetailID() {
         return this.mRecordDetailID;
@@ -73,6 +82,10 @@ public class SearchDetail {
     public ArrayList<FieldGroup> getFieldGroups() {
         return this.mFieldGroups;
     }
+    
+    public void setFieldGroups(ArrayList<FieldGroup> fieldGroups) {
+        this.mFieldGroups = fieldGroups;
+    }    
     
     public void addFieldGroup(FieldGroup fieldGroup) {
         mFieldGroups.add(fieldGroup);

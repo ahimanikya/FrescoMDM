@@ -33,7 +33,7 @@ import org.openide.cookies.SaveCookie;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
-import com.sun.mdm.multidomain.parser.RelationshipWebManager;
+import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.util.Logger;
 
 
@@ -57,7 +57,7 @@ public class ObjectTopComponent
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
     private MultiDomainModel mMultiDomainModel;
-    private RelationshipWebManager mRelationshipWebManager;
+    private MultiDomainWebManager mMultiDomainWebManager;
 
     /**
      * an empty constructor is required by Netbeans
@@ -194,7 +194,7 @@ public class ObjectTopComponent
             mMultiDomainModel = mMultiDomainApplication.getMultiDomainModel(false);
             //from MultiDomainModel get all object model from participating domains
             //-ToDo
-            mRelationshipWebManager = mMultiDomainApplication.getRelationshipWebMAnager(false);
+            mMultiDomainWebManager = mMultiDomainApplication.getRelationshipWebMAnager(false);
             
             // init main panel, which init the data model and all the views
             boolean ret = true;

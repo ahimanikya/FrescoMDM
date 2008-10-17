@@ -162,6 +162,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="jBtnAddSearchResult" min="-2" pref="68" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jBtnEditSearchResult" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jBtnRemoveSearchResult" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -177,6 +179,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jBtnRemoveSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnAddSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jBtnEditSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -205,6 +208,16 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveSearchResult"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jBtnEditSearchResult">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Edit" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onEditSearchResult"/>
           </Events>
         </Component>
       </SubComponents>

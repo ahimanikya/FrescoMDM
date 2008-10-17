@@ -47,6 +47,10 @@ public class SearchOptions {
         return this.mParameterList;
     }
     
+    public void setParameterList(ArrayList<Parameter> params) {
+        this.mParameterList = params;
+    }
+    
     public void addParameter(String name, String value) {
         Parameter param = new Parameter(name, value);
         mParameterList.add(param);

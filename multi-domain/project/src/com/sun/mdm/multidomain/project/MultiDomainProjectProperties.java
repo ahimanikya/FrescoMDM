@@ -56,8 +56,8 @@ public class MultiDomainProjectProperties {
     public static final String MIDM_XML = "midm.xml";
     public static final String MULTI_DOMAIN_MODEL_XML = "MultiDomainModel.xml";
     public static final String MULTI_DOMAIN_MODEL_XSD = "MultiDomainModel.xsd";
-    public static final String RELATIONSHIP_WEB_MANAGER_XML = "RelationshipWebManager.xml";
-    public static final String RELATIONSHIP_WEB_MANAGER_XSD = "RelationshipWebManager.xsd";
+    public static final String RELATIONSHIP_WEB_MANAGER_XML = "MultiDomainWebManager.xml";
+    public static final String RELATIONSHIP_WEB_MANAGER_XSD = "MultiDomainWebManager.xsd";
     public static final String SECURITY_XML = SECURITY_TEMPLATE_LOCATION + File.separator + "security.xml";
     public static final String SECURITY_XSD = "security.xsd";
     

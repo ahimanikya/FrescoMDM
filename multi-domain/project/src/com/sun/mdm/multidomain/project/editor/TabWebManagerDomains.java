@@ -7,11 +7,13 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.DomainForWebManager;
 import com.sun.mdm.multidomain.parser.DomainsForWebManager;
+import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.parser.MIQueryBuilder;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.parser.SimpleSearchType;
+import com.sun.mdm.multidomain.project.editor.DomainSearchTypePanel.TableModelFieldGroup;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -20,6 +22,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.util.NbBundle;
 
 /**
@@ -150,6 +154,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         jScrollPaneSearchResult = new javax.swing.JScrollPane();
         jBtnAddSearchResult = new javax.swing.JButton();
         jBtnRemoveSearchResult = new javax.swing.JButton();
+        jBtnEditSearchResult = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPaneSearchPage = new javax.swing.JScrollPane();
         jBtnAddSearchPage = new javax.swing.JButton();
@@ -219,6 +224,13 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             }
         });
 
+        jBtnEditSearchResult.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Edit")); // NOI18N
+        jBtnEditSearchResult.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onEditSearchResult(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanelSearchResultLayout = new org.jdesktop.layout.GroupLayout(jPanelSearchResult);
         jPanelSearchResult.setLayout(jPanelSearchResultLayout);
         jPanelSearchResultLayout.setHorizontalGroup(
@@ -230,6 +242,8 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelSearchResultLayout.createSequentialGroup()
                         .add(jBtnAddSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnEditSearchResult)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jBtnRemoveSearchResult)))
                 .addContainerGap())
         );
@@ -240,7 +254,8 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanelSearchResultLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnRemoveSearchResult)
-                    .add(jBtnAddSearchResult)))
+                    .add(jBtnAddSearchResult)
+                    .add(jBtnEditSearchResult)))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jPanel1.border.title"))); // NOI18N
@@ -336,6 +351,20 @@ private void onRemoveRecDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
 
 private void onAddSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSearchResult
 // TODO add your handling code here:
+    SearchDetail searchDetail = new SearchDetail(-1, 1, 1, 1, "", new ArrayList<FieldGroup>());
+    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, mRecordDetail, true);
+    dlg.setVisible(true);
+    if (dlg.isModified()) {
+        TableModelSearchResult searchResultModel = (TableModelSearchResult) this.mTableSearchResult.getModel();
+        searchResultModel.addRow(searchResultModel.getRowCount(), searchDetail);
+        mTableSearchResult.setModel(searchResultModel);
+        this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
+        //TableColumn column = mTableSearchResult.getColumnModel().getColumn(1);
+        //column.setCellEditor(new DefaultCellEditor(mJComboSearchResult));
+        this.jScrollPaneSearchResult.setViewportView(mTableSearchResult);
+        this.enableSave();
+        
+    }
 }//GEN-LAST:event_onAddSearchResult
 
 private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSearchResult
@@ -344,10 +373,48 @@ private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void onAddSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSearchPage
 // TODO add your handling code here:
+    SimpleSearchType searchType = new SimpleSearchType("", -1, "", new ArrayList<FieldGroup>());
+    MIQueryBuilder queryBuilder = mEditorMainApp.getDomainNode(this.jTxtDomainName.getText()).getMiQueryBuilder();
+    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, true);
+    dlg.setVisible(true);
+    if (dlg.isModified()) {
+        TableModelSearchPage searchModel = (TableModelSearchPage) this.mTableSearchType.getModel();
+        searchModel.addRow(searchModel.getRowCount(), searchType);
+        mTableSearchType.setModel(searchModel);
+        mJComboSearchResult.setSelectedItem(dlg.getSelectedSearchResult());
+        //TableColumn column = mTableSearchResult.getColumnModel().getColumn(1);
+        //column.setCellEditor(new DefaultCellEditor(mJComboSearchResult));
+        jScrollPaneSearchPage.setViewportView(mTableSearchType);
+        this.enableSave();
+    }
+
 }//GEN-LAST:event_onAddSearchPage
 
 private void onRemoveSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSearchPage
 // TODO add your handling code here:
+    
+        int rs[] = this.mTableSearchType.getSelectedRows();
+    int length = rs.length;
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Prompt")
+            : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Rows_Prompt");
+        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                                 prompt, 
+                                 NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 NotifyDescriptor.YES_NO_OPTION);
+        if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+            TableModelSearchPage model = (TableModelSearchPage) mTableSearchType.getModel();
+            for (int i=length - 1; i>=0 && i < length; i--) {
+                int j = rs[i];
+                Object searchPage = (Object) model.getValueAt(j, model.iColSearchPageName);
+                model.removeRow(j);
+            }
+            if (mTableSearchType.getRowCount() > 0) {
+                this.jBtnRemoveSearchPage.setEnabled(true);
+                mTableSearchType.setRowSelectionInterval(0, 0);
+            }
+            this.enableSave();
+        }
+
 }//GEN-LAST:event_onRemoveSearchPage
 
 private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditSearchType
@@ -356,7 +423,7 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
     TableModelSearchPage searchPageModel = (TableModelSearchPage) mTableSearchType.getModel();
     SimpleSearchType searchType = searchPageModel.getRow(selectedRow);
     MIQueryBuilder queryBuilder = mEditorMainApp.getDomainNode(this.jTxtDomainName.getText()).getMiQueryBuilder();
-    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder);
+    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, false);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         if (dlg.isRefreshSearchResult()) {
@@ -366,6 +433,19 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
         this.enableSave();
     }
 }//GEN-LAST:event_onEditSearchType
+
+private void onEditSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditSearchResult
+// TODO add your handling code here:
+    int selectedRow = this.mTableSearchResult.getSelectedRow();
+    TableModelSearchResult searchResult = (TableModelSearchResult) mTableSearchResult.getModel();
+    SearchDetail searchDetail = searchResult.getRow(selectedRow);
+    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, mRecordDetail, false);
+    dlg.setVisible(true);
+    if (dlg.isModified()) {
+        this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
+        this.jScrollPaneSearchResult.setViewportView(mTableSearchResult);
+    }
+}//GEN-LAST:event_onEditSearchResult
 
     class TableModelRecordDetail extends AbstractTableModel {
 
@@ -588,7 +668,7 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, RelationFieldReference row) {
+        public void addRow(int index, SearchDetail row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
@@ -765,6 +845,7 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
     private javax.swing.JButton jBtnAddRecDetail;
     private javax.swing.JButton jBtnAddSearchPage;
     private javax.swing.JButton jBtnAddSearchResult;
+    private javax.swing.JButton jBtnEditSearchResult;
     private javax.swing.JButton jBtnEditSearchType;
     private javax.swing.JButton jBtnRemoveRecDetail;
     private javax.swing.JButton jBtnRemoveSearchPage;

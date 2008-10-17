@@ -41,9 +41,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
 
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
+import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.RelationshipType;
-import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
@@ -453,8 +453,8 @@ public class EditorMainApp {
         return mMultiDomainApplication.getMultiDomainModel(refresh);
     }
 
-    public RelationshipWebManager getRelationshipWebManager(String xml) {
-        RelationshipWebManager relationshipWebManager = null;
+    public MultiDomainWebManager getRelationshipWebManager(String xml) {
+        MultiDomainWebManager relationshipWebManager = null;
         try {
             InputStream objectdef = new ByteArrayInputStream(xml.getBytes());
             InputSource source = new InputSource(objectdef);

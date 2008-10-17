@@ -176,12 +176,12 @@ public class Utils {
      * @return ret RelationshipType
      * @throws ParserException exception
      */
-    public static RelationshipWebManager parseRelationshipWebManager(InputSource xmlSource) throws ParserException {
+    public static MultiDomainWebManager parseRelationshipWebManager(InputSource xmlSource) throws ParserException {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             mDoc = docBuilder.parse(xmlSource);
-            RelationshipWebManager ret = new RelationshipWebManager();
+            MultiDomainWebManager ret = new MultiDomainWebManager();
             ret.parseNode(mDoc);
             return ret;
         } catch (Exception e) {

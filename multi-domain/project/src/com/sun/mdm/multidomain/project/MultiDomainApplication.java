@@ -37,6 +37,7 @@ import org.xml.sax.InputSource;
 
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
+import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.editor.ObjectTopComponent;
 import com.sun.mdm.multidomain.util.Logger;
@@ -58,7 +59,7 @@ public class MultiDomainApplication extends MultiDomainProject {
     private boolean mModified = false;
     private MultiDomainModel mMultiDomainModel = null;      // OBJECT_XML
 
-    private RelationshipWebManager mRelationshipWebManager = null;      // RelationshipWebManager.xml
+    private MultiDomainWebManager mRelationshipWebManager = null;      // RelationshipWebManager.xml
     private FileObject fileRelationshipMappings;
     private FileObject fileMultiDomainModel;
     private FileObject fileobjRelationshipWebManager;
@@ -105,7 +106,7 @@ public class MultiDomainApplication extends MultiDomainProject {
      * @throws RepositoryException failed to get value
      * @return the RelationshipWebManager
      */    
-    public RelationshipWebManager getRelationshipWebMAnager(boolean bRefresh) {
+    public MultiDomainWebManager getRelationshipWebMAnager(boolean bRefresh) {
         try {
             if (mRelationshipWebManager == null || bRefresh == true) {
                 FileObject cf = this.getRelationshipWebManagerFile();

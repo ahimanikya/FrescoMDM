@@ -10,6 +10,7 @@ import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.parser.MIQueryBuilder;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.SearchDetail;
+import com.sun.mdm.multidomain.parser.SearchOptions;
 import com.sun.mdm.multidomain.parser.SearchOptions.Parameter;
 import com.sun.mdm.multidomain.parser.SimpleSearchType;
 import java.util.ArrayList;
@@ -43,13 +44,17 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
     private MIQueryBuilder mQueryBuilder = null;
     
     /** Creates new form DomainSearchTypePanel */
-    public DomainSearchTypePanel(SimpleSearchType searchType, ArrayList<SearchDetail> searchResultList, MIQueryBuilder queryBuilder) {
+    public DomainSearchTypePanel(SimpleSearchType searchType, ArrayList<SearchDetail> searchResultList, MIQueryBuilder queryBuilder, boolean isNewSearch) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mSearchType = searchType;
         mSearchResultList = searchResultList;
         mQueryBuilder = queryBuilder;
         initComponents();
-        loadSearchType();
+        if (isNewSearch) {
+            loadNewSearchType();
+        } else {
+            loadSearchType();
+        }
         jTableFieldGroup.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableFieldGroup.getSelectedRow();
@@ -104,6 +109,30 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
 
     
 
+    private void loadNewSearchType() {
+
+         for (SearchDetail detail : mSearchResultList) {
+            jCBSearchResultList.addItem(detail.getDisplayName());
+        }
+        jCBSearchResultList.setSelectedIndex(0);
+        boolean foundQuery = false;
+        for (Object builderName : mQueryBuilder.getQueryBuilders()) {
+            this.jCBQueryBuilder.addItem(builderName);
+        }
+
+        this.mSearchType.setSearchOption(new SearchOptions());
+        this.jCBQueryBuilder.setSelectedItem(0);
+        this.jCheckBoxWeighted.setSelected(true);
+        TableModelFieldGroup groupModel = new TableModelFieldGroup(mSearchType.getFieldGroups());
+        this.jTableFieldGroup.setModel(groupModel);
+        TableModelField fieldModel = new TableModelField(new FieldGroup());
+        this.jTableFields.setModel(fieldModel);
+        TableModelParameter paramModel = new TableModelParameter(new ArrayList<Parameter>());
+        this.jTableQueryParameter.setModel(paramModel);
+        bRefreshSearchResult = true;
+
+    }
+
     private void loadSearchType() {
         jTxtScreenTitle.setText(mSearchType.getScreenTitle());
         jTxtInstruction.setText(mSearchType.getInstruction());
@@ -121,13 +150,18 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
 
         }
         
+        
         jCBSearchResultList.setSelectedIndex(setIdx);
+
         TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(mSearchType.getFieldGroups());
         jTableFieldGroup.setModel(fieldGroupModel);
-        jTableFieldGroup.setRowSelectionInterval(0, 0);
         
+        jTableFieldGroup.setRowSelectionInterval(0, 0);
         TableModelField fieldModel = new TableModelField(mSearchType.getFieldGroups().get(0));
         this.jTableFields.setModel(fieldModel);
+        //jTableFields.setDropEnabled(true);
+                
+                
  
          boolean foundQuery = false;
          for (Object builderName : mQueryBuilder.getQueryBuilders()) {
@@ -455,6 +489,7 @@ private void onOKBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKBtn
     //if ()
     bModified = true;
     this.mSearchType.setInstruction(this.jTxtInstruction.getText());
+    this.mSearchType.setScreenTitle(this.jTxtScreenTitle.getText());
     if (this.bRefreshSearchResult) {
         for (SearchDetail searchResult : mSearchResultList) {
             if (searchResult.getDisplayName().equals((String) this.jCBSearchResultList.getSelectedItem())) {
@@ -464,11 +499,14 @@ private void onOKBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKBtn
         }
     }
     
-    if (bRefreshQueryBuilder) {
-      mSearchType.getSearchOption().setQueryBuilder((String) jCBQueryBuilder.getSelectedItem());      
-    }
+    mSearchType.getSearchOption().setQueryBuilder((String) jCBQueryBuilder.getSelectedItem());      
     
     mSearchType.getSearchOption().setWeighted(this.jCheckBoxWeighted.isSelected());
+    TableModelParameter paramModel = (TableModelParameter) this.jTableQueryParameter.getModel();
+    mSearchType.getSearchOption().setParameterList(paramModel.getAllRows());
+    
+    //mSearchType.getSearchOption().setParameterList(paramModel.g
+    
     
     this.dispose();
     
@@ -482,6 +520,17 @@ private void onCancelBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCa
 
 private void onAddFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddFieldGroup
 // TODO add your handling code here:
+    TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
+    int iInsertRow = fieldGroupModel.getRowCount();
+    FieldGroup newFieldGroup = new FieldGroup();
+    //Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
+    fieldGroupModel.addRow(iInsertRow, newFieldGroup);
+    jTableFieldGroup.setModel(fieldGroupModel);
+    jTableFieldGroup.clearSelection();
+    jTableFieldGroup.addRowSelectionInterval(iInsertRow, iInsertRow);
+    jTableFieldGroup.setEditingRow(iInsertRow);
+    jTableFieldGroup.setFocusTraversalKeysEnabled(true);
+
 }//GEN-LAST:event_onAddFieldGroup
 
 private void onRemoveFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveFieldGroup
@@ -547,7 +596,6 @@ private void onAddParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
 // TODO add your handling code here:
     TableModelParameter model = (TableModelParameter) jTableQueryParameter.getModel();
     int iInsertRow = model.getRowCount();
-    //mSearchType.getSearchOption().addParameter("", "");    
     Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
     model.addRow(iInsertRow, newParam);
     jTableQueryParameter.setModel(model);
@@ -685,6 +733,10 @@ private void onRemoveParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
             parameterRows.add(index, row);
             this.fireTableRowsInserted(index, index);
         }
+        
+        public ArrayList<Parameter> getAllRows() {
+            return this.parameterRows;
+        }
 
 
     }
@@ -777,7 +829,7 @@ private void onRemoveParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, RecordDetail row) {
+        public void addRow(int index, FieldGroup row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
