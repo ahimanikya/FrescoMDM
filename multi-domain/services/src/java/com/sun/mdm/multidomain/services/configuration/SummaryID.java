@@ -22,10 +22,19 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SummaryID {
+    
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SummaryID");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
 	String mPrefix;			// user-supplied prefix.
 	String mSuffix;			// user-supplied suffix
 	ArrayList<FieldConfig> mFieldConfigs;	// FieldConfig objects from which record-specific values are retrieved
@@ -62,22 +71,22 @@ public class SummaryID {
 	    return mDelimiters;
 	}
 
-	void setDelimiters(ArrayList<String> delimiters) {	// sets the delimiter 
+	void setDelimiters(ArrayList<String> delimiters) throws Exception {	// sets the delimiter 
 	    if (delimiters.size() != mFieldConfigs.size()) {
-	        // testing--raymond tam
-	        // RESUME HERE
-	        // throw exception--they must be the same size
+            throw new Exception(mLocalizer.t("CFG501: The number of delimiters ({0}) " +
+                                             "does not match the number of fields({1}).", 
+                                             delimiters.size(), mFieldConfigs.size()));
 	    }
 	    mDelimiters = delimiters;
 	}
 
     // ID label has the following format:
     // mPrefix + mFieldConfigs[i] + mDelimiters[i] + mSuffix
-	String getIDLabel() {			// retrieves the ID label
+	String getIDLabel() throws Exception {			// retrieves the ID label
 	    if (mDelimiters.size() != mFieldConfigs.size()) {
-	        // testing--raymond tam
-	        // RESUME HERE
-	        // throw exception--they must be the same size
+            throw new Exception(mLocalizer.t("CFG502: The number of delimiters ({0}) " +
+                                             "does not match the number of fields({1}).", 
+                                             mDelimiters.size(), mFieldConfigs.size()));
 	    }
 	    StringBuffer str = new StringBuffer();
 	    str.append(mPrefix);

@@ -35,7 +35,7 @@ import java.util.ArrayList;
  *
  */
 public class FieldConfigGroup implements java.io.Serializable {
-    private ArrayList mFieldGroup;     // FieldConfig objects
+    private ArrayList<FieldConfig> mFieldGroup;     
     private String mDescription;     // description for this field group
 
 
@@ -45,7 +45,7 @@ public class FieldConfigGroup implements java.io.Serializable {
      * @param description Description for this group of FieldConfig objects.
      * @param fieldConfigs  ArrayList of FieldConfig objects.
      */
-    public FieldConfigGroup(String description, ArrayList fieldConfigs) {
+    public FieldConfigGroup(String description, ArrayList<FieldConfig> fieldConfigs) {
         super();
         mDescription = description;
         mFieldGroup = fieldConfigs;
@@ -62,7 +62,7 @@ public class FieldConfigGroup implements java.io.Serializable {
         mDescription = description;
         mFieldGroup = new ArrayList();
         for (int i = 0; i < fieldConfigs.length; i++) {
-            mFieldGroup.add((FieldConfig) fieldConfigs[i]);
+            mFieldGroup.add(fieldConfigs[i]);
         }
     }
 
@@ -70,7 +70,7 @@ public class FieldConfigGroup implements java.io.Serializable {
      *
      * @return an ArrayList of FieldConfig objects.
      */
-    public ArrayList getFieldConfigs()  {
+    public ArrayList<FieldConfig> getFieldConfigs()  {
         return mFieldGroup;
     }
 

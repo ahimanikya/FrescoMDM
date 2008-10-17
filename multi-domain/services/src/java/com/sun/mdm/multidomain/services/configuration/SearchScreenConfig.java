@@ -51,7 +51,7 @@ public class SearchScreenConfig implements java.io.Serializable {
     private boolean mShowCreateTime; // indicates if the Create Time should be displayed
     private boolean mShowStatus;    // indicates if the Status should be displayed
     private SearchScreenOptions mOptions;   // search screen options
-    private ArrayList mFieldConfigs;   // array list of FieldConfigGroup 
+    private ArrayList<FieldConfigGroup> mFieldConfigGroups;   // array list of FieldConfigGroup 
                                        // objects containing display information
                                        // for the search fields.
     
@@ -73,13 +73,13 @@ public class SearchScreenConfig implements java.io.Serializable {
      * @param showEUID Indicates if the EUID should be displayed.
      * @param showLID Indicates if the LID should be displayed.
      * @param options  These are the search options
-     * @param fieldConfigs  The configurations for the fields to be displayed.
+     * @param fieldConfigGroups  The configurations for the fields to be displayed.
      */
     public SearchScreenConfig(ObjectNodeConfig rootObj, String screenTitle, 
                               String instruction, int searchResultID, 
                               int screenOrder, boolean showEUID, 
                               boolean showLID, SearchScreenOptions options, 
-                              ArrayList fieldConfigs) {
+                              ArrayList<FieldConfigGroup> fieldConfigGroups) {
                     
         mRootObj = rootObj;
         mScreenTitle = screenTitle;
@@ -92,7 +92,7 @@ public class SearchScreenConfig implements java.io.Serializable {
         mShowCreateTime = false;
         mShowStatus = false;
         mOptions = options;
-        mFieldConfigs = fieldConfigs;
+        mFieldConfigGroups = fieldConfigGroups;
     }
     
     /**
@@ -115,7 +115,7 @@ public class SearchScreenConfig implements java.io.Serializable {
      * @param showCreateTime Indicates if the Create Time should be displayed.
      * @param showStatus Indicates if the Status should be displayed.
      * @param options  These are the search options
-     * @param fieldConfigs  The configurations for the fields to be displayed.
+     * @param fieldConfigGroups  The configurations for the fields to be displayed.
      */
     public SearchScreenConfig(ObjectNodeConfig rootObj, String screenTitle, 
                               String instruction, int searchResultID, 
@@ -123,7 +123,7 @@ public class SearchScreenConfig implements java.io.Serializable {
                               boolean showLID, boolean showCreateDate, 
                               boolean showCreateTime, boolean showStatus, 
                               SearchScreenOptions options, 
-                              ArrayList fieldConfigs) {
+                              ArrayList<FieldConfigGroup> fieldConfigGroups) {
                     
         mRootObj = rootObj;
         mScreenTitle = screenTitle;
@@ -136,7 +136,7 @@ public class SearchScreenConfig implements java.io.Serializable {
         mShowCreateTime = showCreateTime;
         mShowStatus = showStatus;
         mOptions = options;
-        mFieldConfigs = fieldConfigs;
+        mFieldConfigGroups = fieldConfigGroups;
     }
     
     /**
@@ -243,12 +243,12 @@ public class SearchScreenConfig implements java.io.Serializable {
     }
     
     /**
-     * Getter for the mFieldConfigs attribute
+     * Getter for the mFieldConfigGroups attribute
      *
      * @return ArrayList of FieldConfig objects.
      */
-    public ArrayList getFieldConfigs() {
-        return mFieldConfigs;
+    public ArrayList<FieldConfigGroup> getFieldConfigGroups() {
+        return mFieldConfigGroups;
     }
     
 }

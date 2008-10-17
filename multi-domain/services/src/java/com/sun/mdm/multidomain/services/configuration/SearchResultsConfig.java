@@ -49,20 +49,22 @@ public class SearchResultsConfig implements java.io.Serializable {
                                             // at one time
     private boolean mShowEUID;              // indicates if the EUID should be displayed
     private boolean mShowLID;               // indicates if the LID should be displayed
-    private ArrayList mFieldConfigs;        // ArrayList of FieldConfigGroup objects
+    private ArrayList<FieldConfigGroup> mFieldConfigGroups;        // ArrayList of FieldConfigGroup objects
 
 
     public SearchResultsConfig(ObjectNodeConfig rootObj, int searchResultID, 
-                                int pageSize, int maxRecords, boolean showEUID, 
-                                boolean showLID, ArrayList fields) {
+                                int searchResultDetailsID, int pageSize, 
+                                int maxRecords, boolean showEUID, 
+                                boolean showLID, ArrayList<FieldConfigGroup> fieldConfigGroups) {
                     
         mRootObj = rootObj;
         mSearchResultID = searchResultID;
+        mSearchResultDetailID = searchResultDetailsID;
         mPageSize = pageSize;
         mMaxRecords = maxRecords;
         mShowEUID = showEUID;
         mShowLID = showLID;
-        mFieldConfigs = fields;
+        mFieldConfigGroups = fieldConfigGroups;
     }
     
     /**
@@ -73,12 +75,12 @@ public class SearchResultsConfig implements java.io.Serializable {
      * stored in mFieldConfigs.
      */
     public ArrayList getEPaths() {
-        ArrayList ePaths = new ArrayList();
-        Iterator aListIter = mFieldConfigs.iterator();
+        ArrayList<String> ePaths = new ArrayList<String>();
+        Iterator aListIter = mFieldConfigGroups.iterator();
         
         while (aListIter.hasNext()) {
             FieldConfigGroup fcg = (FieldConfigGroup) aListIter.next();
-            ArrayList fieldConfigs = fcg.getFieldConfigs();
+            ArrayList<FieldConfig> fieldConfigs = fcg.getFieldConfigs();
             Iterator fieldConfigsIter = fieldConfigs.iterator();
             while (fieldConfigsIter.hasNext()) {
                 FieldConfig fc = (FieldConfig) fieldConfigsIter.next();
@@ -159,11 +161,11 @@ public class SearchResultsConfig implements java.io.Serializable {
 
 
     /**
-     * Getter for the mFieldConfigs attribute
+     * Getter for the mFieldConfigGroups attribute
      *
-     * @return ArrayList of FieldConfig objects.
+     * @return ArrayList of FieldConfigGroup objects.
      */
-    public ArrayList getFieldConfigs() {
-        return mFieldConfigs;
+    public ArrayList<FieldConfigGroup> getFieldGroupConfigs() {
+        return mFieldConfigGroups;
     }
 }

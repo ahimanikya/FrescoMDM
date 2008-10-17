@@ -87,6 +87,12 @@ public class WebManagerProperties {
     
     public static String mTAG_FIELD_REF = "field-ref";
     
+    // testing--raymond tam    
+    public static String mTAG_SEARCH_SCREEN_ORDER = "search-screen-order";
+
+    // testing--raymond tam    
+    public static String mTAG_FIELD_GROUP_DESCRIPTION = "description";
+    
     public static String mTAG_SCREEN_TITLE = "screen-title";
     
     public static String mTAG_SEARCH_RESULT_ID = "search-result-id";

@@ -32,10 +32,6 @@ import net.java.hulp.i18n.Logger;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import com.sun.mdm.index.util.Localizer;
-import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
-import net.java.hulp.i18n.Logger;
 
 public class MDConfigManager {
 
@@ -65,13 +61,38 @@ public class MDConfigManager {
 	public void reinitialize() {  //  forces reinitialization of the config manager
 	}
 
-    public void addScreen(ScreenObject screenObject) {  // add an entry into the ScreenObject hashmap
+    // add an entry into the ScreenObject hashmap
+    
+    public void addScreen(ScreenObject screenObject) throws Exception {  
+        if (screenObject == null) {
+            throw new Exception(mLocalizer.t("CFG507: ScreenObject cannot be null."));
+        }
+        // RESUME HERE--retrieve the ScreenID from the ScreenObject
+        Integer screenID = new Integer(0);
+        mScreens.put(screenID, screenObject);
     }
     
-    public void addRelationship(Relationship relationship) {  // add an entry into the Relationship hashmap
+    // add an entry into the Relationship hashmap
+    // I'm not sure this will work--relationships are defined within a domain
+    
+    public void addRelationship(Relationship relationship) throws Exception {  
+        if (relationship == null) {
+            throw new Exception(mLocalizer.t("CFG508: Relationship cannot be null."));
+        }
+        // RESUME HERE--retrieve the ScreenID from the ScreenObject
+        String relationshipName = null;
+        mRelationships.put(relationshipName, relationship);
     }
     
-    public void addDomain(Domain domain) {  // add an entry into the Domain hashmap
+    // add an entry into the Domain hashmap
+    
+    public void addDomain(Domain domain) throws Exception {  
+        if (domain == null) {
+            throw new Exception(mLocalizer.t("CFG506: Domain cannot be null."));
+        }
+        String domainName = null;
+        // RESUME HERE--retrieve the domainName from the domain
+        mDomains.put(domainName, domain);
     }
     
 	public HashMap<Integer, ScreenObject> getScreens() {  //  returns hashmap of all top-level screen objects (id is the key)
@@ -85,12 +106,14 @@ public class MDConfigManager {
 	public HashMap<String, Domain> getDomains(){  //  returns hashmap of all Domain instances (domainName is the key)
 	    return mDomains;
 	}
+	
+	//  returns a screen with the matching ID
 
-	public ScreenObject getScreen(Integer screenID) throws Exception {  //  returns a screen with the matching ID
+	public ScreenObject getScreen(Integer screenID) throws Exception {  
         ScreenObject scrObj = (ScreenObject) mScreens.get(screenID);
         if (scrObj == null) {
             if (mScreens.containsKey(screenID) == false) {
-                throw new Exception(mLocalizer.t("SRC503: Screen ID not found: {0}", screenID));
+                throw new Exception(mLocalizer.t("CFG503: Screen ID not found: {0}", screenID));
             }
         } 
         return scrObj;
@@ -120,8 +143,17 @@ public class MDConfigManager {
 	    return null;
     }
 
-	public Domain getDomain(String domainName) {  //  retrieves a Domain
-	    return null;
+    //  retrieves a Domain
+    
+	public Domain getDomain(String domainName) throws Exception {  
+        if (domainName == null || domainName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG504: Domain name cannot be null nor an empty string."));
+        }
+        Domain domain = mDomains.get(domainName);
+        if (domain == null) {
+            throw new Exception(mLocalizer.t("CFG505: The domain named \"{0}\" could not be located.", domainName));
+        }
+        return domain;
 	}
     
 }

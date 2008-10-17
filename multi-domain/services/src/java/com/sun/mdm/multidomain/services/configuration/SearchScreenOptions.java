@@ -44,7 +44,7 @@ public class SearchScreenOptions implements java.io.Serializable {
     private String mQueryBuilder;   // name of the QueryBuilder to use
     private boolean mIsWeighted;    // indicates this search is to be weighted
     private int mCandidateThreshold;    // candidate threshold value
-    private ArrayList mNameValuePairs;  // array list of parameters and their
+    private ArrayList<NameValuePair> mNameValuePairs;  // array list of parameters and their
                                         // associated values
     
 
@@ -60,7 +60,7 @@ public class SearchScreenOptions implements java.io.Serializable {
      */
     public SearchScreenOptions(String displayName, String queryBuilder, 
                                boolean isWeighted, int candidateThreshold,
-                               ArrayList nameValuePairs) {
+                               ArrayList<NameValuePair> nameValuePairs) {
                     
         mDisplayName = displayName;
         mQueryBuilder = queryBuilder;
@@ -111,7 +111,7 @@ public class SearchScreenOptions implements java.io.Serializable {
      *
      * @return ArrayList of FieldConfig objects.
      */
-    public ArrayList getNameValuePairs() {
+    public ArrayList<NameValuePair> getNameValuePairs() {
         return mNameValuePairs;
     }
     

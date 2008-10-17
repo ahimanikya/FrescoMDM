@@ -485,7 +485,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
 	} else {
             String tag = isUserCode? "<user-code>" : "<code-module>";
             throw new Exception(mLocalizer.t(
-                    "SRC534: Could not find definition for tag {0} value {1}.  " +
+                    "CFG004: Could not find definition for tag {0} value {1}.  " +
                     "The definition for <code-module> must be specified in the " +
                     "sbyn_common_header table and sbyn_common_detail table. " +
                     "The definition for <user-code> must be specified in the " +
@@ -505,7 +505,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      */
     public List getPossibleValuesList() 
     throws Exception {
-        List list = new ArrayList();
+        List list = new ArrayList<PullDownListItem> ();
         try {
             PullDownListItem[] items = getPossibleValues();
 
@@ -515,8 +515,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
                 }
             }
         } catch (Exception e){
-            mLogger.log(Level.SEVERE, e.getMessage(), e);
-            throw e;
+            throw new Exception(mLocalizer.t(
+                    "CFG005: Could not retrieve the possible list values: {0}", e.getMessage()));
         }
         return list;
     }
