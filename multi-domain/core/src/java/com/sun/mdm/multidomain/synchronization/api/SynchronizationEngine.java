@@ -3,8 +3,7 @@ package com.sun.mdm.multidomain.synchronization.api;
 import java.io.File;
 import java.util.Collection;
 
-import com.sun.mdm.multidomain.association.Domain;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.association.AssociationType;
 
 public interface SynchronizationEngine {
 
@@ -35,26 +34,24 @@ public interface SynchronizationEngine {
     public void deleteRules();
 
     /**
-     * Execute a particular rule defined by the rule name.
+     * Execute a particular rule defined by name to establish a association between two EUID's.
      * 
-     * @param ruleName the rule name
-     * @param sourceDomain the source domain
-     * @param targetDomain the target domain
-     * @param relationshipType the relationship type
+     * @param ruleName the rule name to execute
+     * @param associationType the association type
+     * @param sourceEUID the source record EUID
+     * @param targetEUID the target record EUID
      */
-    public void executeRule(String ruleName, Domain sourceDomain, Domain targetDomain,
-        RelationshipType relationshipType);
-
-    /**
-     * Execute all rules defined in this engine.
-     * 
-     * @param sourceDomain the source domain
-     * @param targetDomain the target domain
-     * @param relationshipType the relationship type
-     */
-    public void executeRules(Domain sourceDomain, Domain targetDomain, 
-        RelationshipType relationshipType);
+    public void executeRule(String ruleName, AssociationType associationType, String sourceEUID);
     
+   /**
+     * Execute all rules defined in this engine to establish a association between two EUID's.
+     * 
+     * @param associationType the association type
+     * @param sourceEUID the source record EUID
+     * @param targetEUID the target record EUID
+     */
+    public void executeRules(AssociationType associationType, String sourceEUID);
+       
     /**
      * Get a particular rule defined by the rule name.
      * 
