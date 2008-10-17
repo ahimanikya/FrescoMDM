@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -31,7 +56,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -122,18 +147,18 @@ if(session!=null){
 		        document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/> '+ minorObject;
 	     }
-		// added by Bhat on 22-09-08  
+		// added  on 22-09-08  
 		function setMinorObjectAddressType(MinorObjectType,editIndex,objectType){
 			editMinorObjectType = MinorObjectType;
 			editIndexid = editIndex;
 		}
 		
-		// added by Bhat on 22-09-08		 
+		// added  on 22-09-08		 
 		function showUnSavedAlert(thisEvent,minorObjectType){
  			document.getElementById("unsavedMessageDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_message_part_I}"/> '"+editMinorObjectType+"' <h:outputText value="#{msgs.unsaved_message_part_III}"/>";
  			showExtraDivs("unsavedDiv",thisEvent);
   		}
-		// added by Bhat on 22-09-08		 
+		// added  on 22-09-08		 
 		function showMessage(messageText){
  			document.getElementById("unsavedMessageDiv").innerHTML = messageText;
 			document.getElementById("unsavedDiv").style.visibility="visible";
@@ -253,7 +278,7 @@ if(session!=null){
 									HttpSession sessionFaces = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                              		SourceAddHandler  sourceAddHandlerFaces   = (SourceAddHandler)sessionFaces.getAttribute("SourceAddHandler");
 
-									 CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+									 MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
                                         int addressSize;
                                         int phoneSize;
                                         int aliasSize;
@@ -352,7 +377,7 @@ if(session!=null){
                                                                 <nobr>
                                                                     <input type="text" 
                                                                            id = "<h:outputText value="#{feildConfig.name}"/>"  
-                                                                           value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
+                                                                           value="<h:outputText value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                                            required="<h:outputText value="#{feildConfig.required}"/>" 
                                                                            maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
 																		   size="<h:outputText value="#{feildConfig.maxLength}"/>"
@@ -378,7 +403,7 @@ if(session!=null){
                                                                 
                                                             <f:facet name="footer">
                                                                 <h:column>
-																<!--  modified by Bhat on 24-09-08 to incorparate with ajax call-->
+																<!--  modified  on 24-09-08 to incorparate with ajax call-->
 														<a title="<h:outputText value="#{msgs.patdetails_search_button2}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" 
 														onclick="javascript:if(editMinorObjectType.length<1){
 														getFormValues('<h:outputText value="#{childNodesName}"/>basicViewformData');
@@ -611,7 +636,7 @@ if(session!=null){
 																
                                                                 <tr>
                                                                     <td colspan="2">
-																	<!-- modified by Bhat on 22-09-08 to verify editMinorObjectType.length-->
+																	<!-- modified  on 22-09-08 to verify editMinorObjectType.length-->
 																	<a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp; <h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:
 																	if(editMinorObjectType.length<1){showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')}
 																	else{showUnSavedAlert(event,editMinorObjectType);}" class="button" >
@@ -802,7 +827,7 @@ if(session!=null){
                                                             <td>
                                                                 </nobr>
                                                                 <nobr>
-  																<!-- modified by Bhat on 22-09-08 added for editMinorObjectType.length validation -->
+  																<!-- modified  on 22-09-08 added for editMinorObjectType.length validation -->
                                                                     <a title ="<h:outputText value="#{msgs.validate_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"													
 																	   onclick="javascript:if(editMinorObjectType.length<1){getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');
@@ -824,7 +849,7 @@ if(session!=null){
 													<div id="saveButtons" style="visibility:hidden;display:none">
                                                     <table>
                                                         <tr>
-                                                             <td><!-- modified by Bhat on 22-09-08 to verify editMinorObjectType.length-->
+                                                             <td><!-- modified  on 22-09-08 to verify editMinorObjectType.length-->
                                                                 <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" 
 																   href="javascript:void(0);"
 																   onclick="javascript:if(editMinorObjectType.length<1){
@@ -834,7 +859,7 @@ if(session!=null){
                                                                     <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                 </a>
                                                             </td>
-                                                            <td><!-- modified by Bhat on 22-09-08 to verify editMinorObjectType.length-->
+                                                            <td><!-- modified  on 22-09-08 to verify editMinorObjectType.length-->
                                                                 <nobr>
                                                                     <a title = "<h:outputText value="#{msgs.submit_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"
@@ -950,7 +975,7 @@ if(session!=null){
                                                             </tr>
                                                             <tr>
                                                                <td colspan="2">
-                                                                   <nobr><!-- modified by Bhat on 22-09-08 added for editMinorObjectType.length validation -->
+                                                                   <nobr><!-- modified  on 22-09-08 added for editMinorObjectType.length validation -->
                                                                        <a title="<h:outputText value="#{msgs.source_merge_button}"/>"
                                                                           href="javascript:void(0)"
                                                                           onclick="javascript:if(editMinorObjectType.length<1){
@@ -987,7 +1012,7 @@ if(session!=null){
             
         </div> <!--end source records div -->
          <!-- START Extra divs for add  SO-->
-		 <!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
+		 <!-- Modified  on 27-09-2008, added banner and close link to confirmation pop up window -->
          <div id="mergeDiv" class="confirmPreview" style="top:500px;left:560px;visibility:hidden">
              <h:form id="mergeFinalForm">
                  <table cellspacing="0" cellpadding="0" border="0">
@@ -1059,7 +1084,7 @@ if(session!=null){
               <div id="editballoon<h:outputText value="#{childNodesName}"/>" class="balloonstyle">"<h:outputText  value="#{childNodesName}"/>" Help text goes here.</div>
           </h:column>                 
     </h:dataTable>
-    <!--Fix for Bug : 6692060 (By Sridhar) START-->
+    <!--Fix for Bug : 6692060  START-->
         <%if( request.getAttribute("mergeComplete") != null) {%>
 		     <script>
 		      document.getElementById('confirmationButton').style.visibility = 'hidden';
@@ -1085,14 +1110,14 @@ if(session!=null){
             document.getElementById("mergeFinalForm:previewhiddenLid1source").value  = '<%=lidsSource%>';
         </script>
         <%}%> 
-	  <!--Fix for Bug : 6692060 (By Sridhar) ENDS -->
+	  <!--Fix for Bug : 6692060  ENDS -->
 
 <form id="EditIndexForm" name="EditIndexForm">
 		<input type="hidden" id="EditIndexFormID" value="-1" />
 </form>
 
 
-         <!-- Added By Narayan Bhat on 07-10-2008 for all information popups -->
+         <!-- Added on 07-10-2008 for all information popups -->
   		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
                <form id="unsavedDivForm">
                 <table border="0" cellpadding="0" cellspacing="0">
@@ -1167,7 +1192,7 @@ if(session!=null){
             var formNameValue = document.forms[formName];
             
 			var lidField1 =  getDateFieldName(formNameValue.name,'LID1');
-			document.getElementById(lidField1).focus();   /* added by narahari on 08/10/2008 to incorporate focus functionality for text box */
+			document.getElementById(lidField1).focus();   /* added on 08/10/2008 to incorporate focus functionality for text box */
 			var lidField2 =  getDateFieldName(formNameValue.name,'LID2');
 			var lidField3 =  getDateFieldName(formNameValue.name,'LID3');
 			var lidField4 =  getDateFieldName(formNameValue.name,'LID4');
@@ -1210,7 +1235,7 @@ if(session!=null){
              document.getElementById(lidField).value = "";
              document.getElementById(lidField).readOnly = false;
              document.getElementById(lidField).disabled = false;
-			 document.getElementById(lidField).focus();     /* added by narahari on 08/10/2008 to incorporate focus functionality for text box */
+			 document.getElementById(lidField).focus();     /* added on 08/10/2008 to incorporate focus functionality for text box */
 			}
 			if(field.selectedIndex == 0 ) {
              document.getElementById(lidField).value = "";
@@ -1268,7 +1293,7 @@ if(session!=null){
   <script>
    ClearContents("basicMergeformData");
   </script>
-<!-- Below script added by narahari on 08/10/2008 to incorporate focus functionality for text box, when reload the page-->
+<!-- Below script added  on 08/10/2008 to incorporate focus functionality for text box, when reload the page-->
   <script>
          var formNameValue = document.forms['basicValidateAddformData'];
 		 var lidField =  getDateFieldName(formNameValue.name,'LID');

@@ -1,7 +1,6 @@
 <%-- 
     Document   : Assume Match services
     Created on : May 5, 2008, 7:59:17 AM
-    Author     : Sridhar Narsingh
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>

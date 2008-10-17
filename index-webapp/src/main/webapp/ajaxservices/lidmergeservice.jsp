@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -37,7 +62,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 
@@ -101,7 +126,7 @@ HashMap thisMinorObject = new HashMap();
 SourceMergeHandler sourceMergeHandler = (SourceMergeHandler) session.getAttribute("SourceMergeHandler");
 
 SourceHandler  sourceHandler   = new SourceHandler();
-CompareDuplicateManager compareDuplicateManager  = new CompareDuplicateManager();
+MidmUtilityManager midmUtilityManager  = new MidmUtilityManager();
 HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
 
 ObjectNodeConfig[] arrObjectNodeConfig = objScreenObject.getRootObj().getChildConfigs();
@@ -522,7 +547,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                                    int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                                    int maxMinorObjectsMAX  = midmUtilityManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
                                                                      int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                                     %>
                                                                     <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
@@ -838,7 +863,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 											 }
 										}
 												String minorObjectStatus = new String();
-                                                 int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                 int maxMinorObjectsMAX  = midmUtilityManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
 												 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                  FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
  			 %>
@@ -854,9 +879,9 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 		                                                        <% for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
                                                                          minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
                                                                     %>
-                                                                    <!-- modified by bhat on 17-09-08 (removed if countEnt>0 condition) -->	
+                                                                    <!-- modified  on 17-09-08 (removed if countEnt>0 condition) -->	
 																	<%
-																	minorObjectMapCompare =  compareDuplicateManager.getDifferenceMinorObjectMapWithKeyType((ArrayList)minorObjectCompareHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
+																	minorObjectMapCompare =  midmUtilityManager.getDifferenceMinorObjectMapWithKeyType((ArrayList)minorObjectCompareHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
                                                                     %>
                                                                     <%
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
@@ -873,7 +898,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																			&& minorObjectMapCompare.get(epathValue) != null  &&
 																			minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){  %>
 																			
-																			<!-- added by bhat on 17-09-08 -->
+																			<!-- added  on 17-09-08 -->
 																			<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
 																				%>
 																				  <font class="highlight">
@@ -883,7 +908,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																					  <%}else{%>
 																						  <%=minorObjectHashMap.get(epathValue)%>
 																					 <%}%>
-																			<!-- added by bhat on 17-09-08 -->
+																			<!-- added  on 17-09-08 -->
 																			<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
 																			%>
 																			   </font>
@@ -1012,7 +1037,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                             <td>
                                                                                 <%if(soMergePreviewMap != null) {%>
                                                                                      <%if (previewpersonfieldValuesMapEO.get(previewepathValue) != null) {%> 
-																					  <!-- Added by narayan bhat on 05-09-08  -->
+																					  <!-- Added on 05-09-08  -->
                                                                                         <%if(soMergePreviewMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
 																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                           <%}else{%>
@@ -1023,7 +1048,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                         <span id="<%=previewepathValue%>">&nbsp;</span>
                                                                                     <%}%>
 
-																					 <!-- Added by narayan bhat on 05-09-08  ends here-->																
+																					 <!-- Added on 05-09-08  ends here-->																
 
                                                                                 <%}else{  %>
                                                                                     &nbsp;
@@ -1040,7 +1065,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																   %>
                                                                     <%
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                                    int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                                    int maxMinorObjectsMAX  = midmUtilityManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
                                                                     int  maxMinorObjectsMinorDB =  (soMergePreviewMap  != null) ?((Integer) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
 								    int  maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 								    mergePreviewMinorObjectList = (soMergePreviewMap  != null)?(ArrayList) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"):new ArrayList();
@@ -1064,7 +1089,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                     <tr>
                                                                         <td>
                                                                                 <%if(soMergePreviewMap != null) {%>
- <!-- Added by narayan bhat on 05-09-08  -->
+ <!-- Added  on 05-09-08  -->
                                                                                          <%if(soMergePreviewMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
 																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                           <%}else{%>
@@ -1085,7 +1110,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                     <%}%>
                                                                                         <%}%>
 
- <!-- Added by narayan bhat on 05-09-08  ends here-->
+ <!-- Added  on 05-09-08  ends here-->
                                                                                     
 																																					                                                                                <%}else{  %>
                                                                                     &nbsp;

@@ -1,6 +1,31 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://yui4jsf.sourceforge.net" prefix="yui"%>
@@ -8,8 +33,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.SearchResultsConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
 <%@ page import="com.sun.mdm.index.edm.control.QwsController"  %>
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
@@ -128,9 +152,9 @@ function align(thisevent,divID) {
                 <h:form id="searchTypeForm" >
                             <tr>
                                 <td>
-                                    <h:outputText  rendered="#{PatientDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                    <h:selectOneMenu id="searchType" title="#{msgs.search_Type}" rendered="#{PatientDetailsHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{PatientDetailsHandler.searchType}" valueChangeListener="#{PatientDetailsHandler.changeSearchType}" >
-                                        <f:selectItems  value="#{PatientDetailsHandler.possilbeSearchTypes}" />
+                                    <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
+                                    <h:selectOneMenu id="searchType" title="#{msgs.search_Type}" rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{RecordDetailsHandler.searchType}" valueChangeListener="#{RecordDetailsHandler.changeSearchType}" >
+                                        <f:selectItems  value="#{RecordDetailsHandler.possilbeSearchTypes}" />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
@@ -141,11 +165,11 @@ function align(thisevent,divID) {
             </table>
    </div>            <h:form id="advancedformData" >
                 <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
-				value='<h:outputText value="#{PatientDetailsHandler.selectedSearchType}"/>' />
+				value='<h:outputText value="#{RecordDetailsHandler.selectedSearchType}"/>' />
 
              <table border="0" cellpadding="0" cellspacing="0">
 			   <tr>
-			     <td align="left"><p><nobr><h:outputText  value="#{PatientDetailsHandler.instructionLine}"/></nobr></p>
+			     <td align="left"><p><nobr><h:outputText  value="#{RecordDetailsHandler.instructionLine}"/></nobr></p>
 				 </td>
 				 
 
@@ -156,7 +180,7 @@ function align(thisevent,divID) {
                             <h:dataTable cellpadding="0" cellspacing="0"
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
-                                         value="#{PatientDetailsHandler.searchScreenFieldGroupArray}">
+                                         value="#{RecordDetailsHandler.searchScreenFieldGroupArray}">
 						    <h:column>
    				            <p>
 							     <h:outputText value="#{searchScreenFieldGroup.description}" />
@@ -185,7 +209,7 @@ function align(thisevent,divID) {
                                             <nobr>
                                                 <h:selectOneMenu title='#{feildConfig.name}'
                                                                  rendered="#{feildConfig.name ne 'SystemCode'}"
-	                                                             value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}">
+	                                                             value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                 </h:selectOneMenu>
@@ -193,7 +217,7 @@ function align(thisevent,divID) {
                                                 <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
 												                  title='#{feildConfig.name}'  
                                                                   id="SystemCode" 
-    															  value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
+    															  value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                   rendered="#{feildConfig.name eq 'SystemCode'}">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -210,7 +234,7 @@ function align(thisevent,divID) {
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                maxlength="#{feildConfig.maxSize}" 
 															   size="#{feildConfig.maxLength}"
-															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
+															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.range && feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
 
 												<h:inputText   required="#{feildConfig.required}" 
@@ -220,7 +244,7 @@ function align(thisevent,divID) {
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                maxlength="#{feildConfig.maxSize}" 
 															   size="#{feildConfig.maxLength}"
-															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
+															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{!feildConfig.range && feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
@@ -231,7 +255,7 @@ function align(thisevent,divID) {
 															   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
+															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{!feildConfig.range && feildConfig.name eq 'LID'}"/>
                                                                
                                                 <h:inputText   required="#{feildConfig.required}" 
@@ -240,7 +264,7 @@ function align(thisevent,divID) {
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                maxlength="#{SourceHandler.euidLength}" 
-															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
+															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{!feildConfig.range && feildConfig.name eq 'EUID'}"/>
                                                                    
                                                                
@@ -260,7 +284,7 @@ function align(thisevent,divID) {
                                             <input type="text" 
                                                    id = "<h:outputText value="#{feildConfig.name}"/>"  
 												   title="<h:outputText value="#{feildConfig.name}"/>"  
-                                                   value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
+                                                   value="<h:outputText value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
                                                    maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
                                                    size="<h:outputText value="#{feildConfig.maxLength}"/>"
@@ -288,7 +312,7 @@ function align(thisevent,divID) {
                                             <input type="text" 
                                                    id = "<h:outputText value="#{feildConfig.displayName}"/>"  
 												   title="<h:outputText value="#{feildConfig.displayName}"/>"  
-                                                   value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
+                                                   value="<h:outputText value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
                                                    maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
@@ -339,7 +363,7 @@ function align(thisevent,divID) {
                 </table>
             </h:form>
 			<h:panelGrid>
-               <h:panelGroup rendered="#{PatientDetailsHandler.oneOfGroupExists}">
+               <h:panelGroup rendered="#{RecordDetailsHandler.oneOfGroupExists}">
 					<tr> <!-- inline style required to override the class defined in CSS -->
 						<td style="font-size:10px;">
 						   <hr/>
@@ -350,7 +374,7 @@ function align(thisevent,divID) {
 				    </tr>
  			   </h:panelGroup>
 
-			   <h:panelGroup rendered="#{PatientDetailsHandler.requiredExists}">
+			   <h:panelGroup rendered="#{RecordDetailsHandler.requiredExists}">
 					<tr>
 						<td style="font-size:10px;">
 							<nobr>
@@ -382,8 +406,8 @@ function align(thisevent,divID) {
 		  
 		  HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
-          PatientDetailsHandler  patientDetailsHandler = new PatientDetailsHandler();
-          String[][] lidMaskingArray = patientDetailsHandler.getAllSystemCodes();
+          RecordDetailsHandler  recordDetailsHandler = new RecordDetailsHandler();
+          String[][] lidMaskingArray = recordDetailsHandler.getAllSystemCodes();
           
         %>
         <script>
@@ -448,7 +472,7 @@ function align(thisevent,divID) {
 
 
 </script>
-<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->
+<!-- Added  on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->
     <%if(request.getParameter("back")!=null){%>
     <script>
 		 <% 
@@ -468,10 +492,10 @@ function align(thisevent,divID) {
    <%}%>
    </script>
    <%
-	patientDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));   
-	patientDetailsHandler.setSearchType(request.getParameter("selectedSearchType")); 
+	recordDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));   
+	recordDetailsHandler.setSearchType(request.getParameter("selectedSearchType")); 
 	
-	facesSession.setAttribute("PatientDetailsHandler",patientDetailsHandler);
+	facesSession.setAttribute("RecordDetailsHandler",recordDetailsHandler);
 
    %>
    <%}%>
@@ -482,7 +506,7 @@ function align(thisevent,divID) {
         document.getElementById('ajaxOutputdiv').style.display='none';
      }
 </script>
-<!-- Added By Narahari.M on 27-09-2008, to change alert pop up window to information pop up window -->
+<!-- Added  on 27-09-2008, to change alert pop up window to information pop up window -->
 <div id="activeDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
              <form id="activeMerge" name="activeMerge" >
                  <table cellspacing="0" cellpadding="0" border="0">
@@ -523,6 +547,7 @@ function align(thisevent,divID) {
   </script>
 
 </f:view>
+
 
 
 

@@ -27,7 +27,6 @@
  * This Exception is a generic exception that is thrown if a run time Exception occures 
  * in the Service Layer
  * Created on November 19, 2007
- * Author : Sridhar
  *  
  */
 

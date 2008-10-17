@@ -24,7 +24,6 @@
 /*
  * LoginHandler.java 
  * Created on September 17, 2007, 10:15 AM
- * Author : Raymond, Pratibha, RajaniKanth
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
@@ -90,7 +89,6 @@ public class LoginHandler {
         this.password = password;
     }
     /** 
-     * Added By Rajani Kanth
      * 
      * Modified on 03/06/2008
      * This method is used to sign out of the application. This method will invalidate the session as well.
@@ -105,7 +103,6 @@ public class LoginHandler {
         return LOGOUT;
     }
     /** 
-     * Added By Rajani Kanth
      * 
      * Modified on 03/06/2008
      * 

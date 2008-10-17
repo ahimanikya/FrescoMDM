@@ -2,7 +2,6 @@
  * PotentialDuplicateEO.java
  *
  * Created on September 7, 2007, 1:29 PM
- * @author: Sridhar Narsingh
  */
 
 package com.sun.mdm.index.edm.presentation.valueobjects;
@@ -10,7 +9,6 @@ import java.util.Date;
 /**
  * 
  * This class stores the Potential duplicates for the Enterprise Objects
- * @author Sridhar Narsingh
  */
 public class PotentialDuplicateEO {
     

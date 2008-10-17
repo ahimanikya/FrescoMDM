@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -30,7 +55,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -38,9 +63,6 @@
 <%@ page import="javax.faces.application.FacesMessage" %>
 
 <%
-//Author Bhat
-//narayan.bhat@ligaturesoftware.com
-//http://www.ligaturesoftware.com
 //This page is an Ajax Service, never to be used directly from the Faces-confg.
 //This will render a datatable of minor object to be rendered on the calling JSP.
 %>
@@ -90,7 +112,7 @@ boolean isSessionActive = true;
 <%}%>
 <%if (isSessionActive)  {%>
 	<%
- 		CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+ 		MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 		SourceHandler sourceHandler = new SourceHandler();
         
 		String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
@@ -145,7 +167,7 @@ boolean isSessionActive = true;
 							<%}%>
  						</td>
 						<th><b><%=bundle.getString("source_rec_status_but")%></b>&nbsp;:&nbsp;<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;">
-						<%=compareDuplicateManager.getStatus((String)systemObjectAsHashMap.get("Status"))%> </font>
+						<%=midmUtilityManager.getStatus((String)systemObjectAsHashMap.get("Status"))%> </font>
 					 	</th>
 						<th><b><%=bundle.getString("transaction_source")%></b>:	<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=sourceHandler.getSystemCodeDescription(systemCodeSelected)%></font></th>
 						<th> <b><%=localIdDesignation%></b>:<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=lidSelected%></font></th>
@@ -412,7 +434,7 @@ boolean isSessionActive = true;
 							<%//}%>	
 							</td>
 							<th><b><%=bundle.getString("source_rec_status_but")%></b>&nbsp;:&nbsp;<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;">
-							   <%=compareDuplicateManager.getStatus((String)systemObjectAsHashMap.get("Status"))%> </font>
+							   <%=midmUtilityManager.getStatus((String)systemObjectAsHashMap.get("Status"))%> </font>
 							</th>
 							<th><b><%=bundle.getString("transaction_source")%></b>:	<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=sourceHandler.getSystemCodeDescription(systemCodeSelected)%> </font></th>
 							<th><b><%=localIdDesignation%></b>:<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=systemObjectAsHashMap.get("LID")%></font></th>
@@ -541,7 +563,7 @@ boolean isSessionActive = true;
 									<!--Rendering Updateable HTML Text boxes date fields-->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && !fieldConfigPerAdd.sensitive}">
 										
-										<nobr><!--Sridhar -->
+										<nobr>
 											<input type="text" 
 												   title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
 												   value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
@@ -572,7 +594,7 @@ boolean isSessionActive = true;
 									</h:column>
 
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.sensitive && (SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP) }">
-										<nobr><!--Sridhar -->
+										<nobr>
 											<input type="text" 
 												   title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
 												   value="<h:outputText value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
@@ -601,7 +623,7 @@ boolean isSessionActive = true;
 									</h:column>
 
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true'  && fieldConfigPerAdd.sensitive && !Operations.field_VIP }">
-										<nobr><!--Sridhar -->
+										<nobr>
 											<input type="text" 
 													value="<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}"/>"
 												   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
@@ -662,7 +684,7 @@ boolean isSessionActive = true;
 										</tr>
 											
 										<tr>
-										<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+										<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 											<td colspan="2">
 												<a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/> " href="javascript:void(0)" onclick="javascript:if(editMinorObjectType.length<1){
 												showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddDiv');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?&MOT=<h:outputText value="#{childNodesName}"/>&load=load&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv','')
@@ -792,7 +814,7 @@ boolean isSessionActive = true;
 														</tr>
 														<!--EDIT SO buttons START-->
 														<tr>                                                                
-														<!-- modified by Bhat on 22-09-08 to  set editMinorObjectType = '' -->                                                
+														<!-- modified  on 22-09-08 to  set editMinorObjectType = '' -->                                                
 														  <td colspan="2">
 															   <nobr> 
 															   <table>
@@ -982,7 +1004,7 @@ boolean isSessionActive = true;
 									<% if ("active".equalsIgnoreCase((String)systemObjectAsHashMap.get("Status"))) {%>          
 										
 									<td>
-									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+									<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 										<!-- Edit Submit button-->
 										
 									   <a href="javascript:void(0)" 
@@ -1121,7 +1143,7 @@ boolean isSessionActive = true;
 		<%} // end of if(request.getParameter("activateSO")!=null%>
  	</form> <!-- basicSOViewformData1 -->
  <%} //end of is sessionActive%>
-         <!-- Added By Narahari.M on 23-09-2008 for all information popups -->
+         <!-- Added  on 23-09-2008 for all information popups -->
   		 <div id="successDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
                <form id="successDiv">
                 <table border="0" cellpadding="0" cellspacing="0">

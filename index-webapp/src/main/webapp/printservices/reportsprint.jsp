@@ -1,7 +1,7 @@
 <%-- 
     Document   : reportservices
     Created on : May 5, 2008, 7:59:17 AM
-    Author     : Sridhar Narsingh
+  
 	This is an Ajax service never use this JSP directly
 --%>
 

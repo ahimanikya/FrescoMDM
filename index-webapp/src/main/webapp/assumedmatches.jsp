@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -18,11 +43,7 @@
 <%@ page import="java.util.Enumeration"%>
 
 
-<%
-//Author Sridhar Narsingh
-//sridhar@ligaturesoftware.com
-//http://www.ligaturesoftware.com
-%>
+
 <f:view>    
 <%
 //set locale value
@@ -392,7 +413,7 @@ function setRand(thisrand)  {
  	     ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=<%=rand%>&<%=queryStr%>','outputdiv','')
      </script>
 <% }  %>
-<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in ameuiddetails.jsp  -->
+<!-- Added  on 22-aug-2008 to incorparte with the functionality of back button in ameuiddetails.jsp  -->
     <%
     
     if(request.getParameter("back")!=null){%>

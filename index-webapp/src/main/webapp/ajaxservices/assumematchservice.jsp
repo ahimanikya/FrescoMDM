@@ -1,9 +1,33 @@
 <%-- 
     Document   : Assume Match services
     Created on : May 5, 2008, 7:59:17 AM
-    Author     : Sridhar Narsingh
---%>
 
+--%>
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
@@ -35,7 +59,7 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
-    <!-- Modified by Narayan Bhat on 22-aug-2008 for the incorparte with the functionality of back button in euiddetails.jsp  
+    <!-- Modified  on 22-aug-2008 for the incorparte with the functionality of back button in euiddetails.jsp  
     added String previousQueryStr = request.getQueryString();
     and appended the same with every href link
 --> 

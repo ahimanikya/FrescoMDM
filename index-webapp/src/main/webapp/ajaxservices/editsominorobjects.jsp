@@ -1,3 +1,29 @@
+
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -36,9 +62,6 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
 <% 
-//Author Sridhar Narsingh
-//sridhar@ligaturesoftware.com
-//http://www.ligaturesoftware.com
 //This page is an Ajax Service, never to be used directly from the Faces-confg.
 //This will render a datatable of minor object to be rendered on the calling JSP.
 %>
@@ -145,7 +168,7 @@ boolean isminorObjSave = (null == minorObjSave?false:true);
 //Variables required for Edit
 String editIndex = request.getParameter("editIndex");
 boolean isEdit = (null == editIndex?false:true);
-boolean isMinorObjectView = (null == request.getParameter("isView")?false:true); // added by Bhat on 15-10-08 as fix of 15
+boolean isMinorObjectView = (null == request.getParameter("isView")?false:true); // added  on 15-10-08 as fix of 15
 
 
 //Variables for Validate LID
@@ -379,9 +402,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <%if (isLoad) {%>
   <script>
 	  setEOEditIndex('-1');
-      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%>  '+ '<%=request.getParameter("MOT")%>';
-	  document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'hidden';
-      document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'none'; 
+      if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan') != null) {
+       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%>  '+ '<%=request.getParameter("MOT")%>';
+	  }
+	  if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit')) {
+	   document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'hidden';
+       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'none'; 
+	  }
    </script>
  <!-- Get the minor Objects to display -->
   <%  
@@ -403,9 +430,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
+						     <% if("merged".equalsIgnoreCase(soStatus) || "inactive".equalsIgnoreCase(soStatus)) {%>
+                                <td class="tablehead"> &nbsp;</td>
+ 							 <%} else {%>
                                 <td class="tablehead"> &nbsp;</td>
 								<td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
+ 							 <%}%>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
 				              %>
@@ -422,7 +453,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									     String minorObjType = request.getParameter("MOT");
 									  %>	
                                       <%if("active".equalsIgnoreCase(soStatus)) {%>
-										<!-- modified by Bhat on 15-10-08 for adding view button -->
+										<!-- modified  on 15-10-08 for adding view button -->
 										<td valign="center" width="14px">
  											  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 													 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'>  
@@ -436,12 +467,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 									  </td>
-									 <!-- modified by Bhat on 29-09-08 to fix bug #95 and #115 -->
+									 <!-- modified  on 29-09-08 to fix bug #95 and #115 -->
                                      <%} else if("merged".equalsIgnoreCase(soStatus) || "inactive".equalsIgnoreCase(soStatus)) {%>
 										  <td valign="center" width="14px">
  					                   <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>"
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
-												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 									  </td>
 								    <%} else {%>
@@ -450,20 +481,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									   </td>
 								   <%}%>
 								
-							   <td valign="center" width="14px">							   
- 							   <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
-                                    <%if("active".equalsIgnoreCase(soStatus)) {%>
+ 							   <!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
+                               <%if("active".equalsIgnoreCase(soStatus)) {%>
+							    <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='if(editMinorObjectType.length<1){
 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")
 											 }else{showUnSavedAlert(event,editMinorObjectType,editObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
-								  <%} else {%>
-								    &nbsp;
-								  <%}%>
-							   </td>
- 							  <% for(int k=0;k<fcArray.length;k++) {
+ 							    </td>
+ 							   <%}%>
+							  <% for(int k=0;k<fcArray.length;k++) {
 						            if(fcArray[k].isRequired()) {
                                %>
 								   <td>
@@ -597,7 +626,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<% 
 								String minorObjType = request.getParameter("MOT");
 								 %>	
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
@@ -906,7 +935,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
@@ -1137,7 +1166,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
@@ -1244,7 +1273,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	   document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>SOInnerForm').reset();		  
    </script>
 <%}%>
-<% } else if(isMinorObjectView){ %> <!-- modified by Bhat on 15-10-08 sa fix of 15 -->
+<% } else if(isMinorObjectView){ %> <!-- modified  on 15-10-08 sa fix of 15 -->
  	   <script>
       if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan') != null) {
         document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%>  '+ '<%=request.getParameter("MOT")%>';
@@ -1410,7 +1439,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						
 		           <%}%>
 			   
-<!-- modified by Bhat on 15-10-08 sa fix of 15 -->
+<!-- modified  on 15-10-08 sa fix of 15 -->
 <% }  else if (isEdit)  { %>
    <script>
      if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>buttonspan') != null) {
@@ -1420,8 +1449,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'visible';
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'block'; 
      } 
-	 document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.visibility = 'visible';
-     document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.display = 'block'; 
+	 if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons') != null) {
+	   document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.visibility = 'visible';
+       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.display = 'block'; 
+	 }
 
     </script>  
    

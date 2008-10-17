@@ -25,7 +25,6 @@
 /*
  * MergeRecordHandler.java 
  * Created on November 23, 2007, 4:50 PM
- * Author : Pratibha, Sridhar
  *  
  */
 

@@ -23,7 +23,6 @@
 /*
  * ViewMergeTreeHandler.java 
  * Created on November 29, 2007
- * Author : Sridhar Naringh
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;

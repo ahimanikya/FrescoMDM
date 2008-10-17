@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -29,9 +54,6 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
 <%
-//Author Sridhar Narsingh
-//sridhar@ligaturesoftware.com
-//http://www.ligaturesoftware.com
 //This page is an Ajax Service, never to be used directly from the Faces-confg.
 //This will render a datatable of minor object to be rendered on the calling JSP.
 %>
@@ -357,7 +379,7 @@ if(isSave) {
 			   document.getElementById(lidField).readOnly = false;
                document.getElementById(lidField).disabled = false;
                document.getElementById(lidField).style.backgroundColor = '';
-			   document.getElementById(lidField).focus();   /* added by narahari on 08/10/2008 to incorporate focus functionality for text box */
+			   document.getElementById(lidField).focus();   /* added on 08/10/2008 to incorporate focus functionality for text box */
 
 				document.getElementById(systemField).value='<%=rootNodesHashMap.get("SYSTEM_CODE")%>';
                 document.getElementById(systemField).disabled = false;
@@ -479,7 +501,7 @@ if(isSave) {
 
 								  %>						  
 
-                                  <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+                                  <!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="%<%=editTitle%>"
 											 onclick='javascript:
 											 if(editMinorObjectType.length<1){
@@ -751,7 +773,7 @@ if(isSave) {
 									  String deleteTitle = bundle.getString("source_rec_delete_but");
 
 								  %>						  
-                                  <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+                                  <!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:
 											 if(editMinorObjectType.length<1){
@@ -938,7 +960,7 @@ if(isSave) {
 
 								  %>						  
 
-                                  <!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+                                  <!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
 											  if(editMinorObjectType.length<1){

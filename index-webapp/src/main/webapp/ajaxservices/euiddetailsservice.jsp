@@ -1,9 +1,32 @@
 <%-- 
     Document   : euiddetailsservice
     Created on : Oct 7, 2008, 7:59:17 PM
-    Author     : Narahari M
 --%>
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
 
+--%>
 
 
 <%@page contentType="text/html"%>
@@ -44,9 +67,9 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
- <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+ <%@ page import="com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler"  %>
  <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
@@ -77,10 +100,7 @@ if(session!=null){
  
      </head>
 <%
- //Author Rajani Kanth
- //rkanth@ligaturesoftware.com
- //http://www.ligaturesoftware.com
- //Date Created : 08-OCT-2008
+//Date Created : 08-OCT-2008
  //This page is an Ajax Service, never to be used directly from the Faces-confg.
 %>
 
@@ -107,17 +127,17 @@ boolean isSessionActive = true;
 <%if (isSessionActive)  {%>
  		 <%
 			ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 			Iterator messagesIter = null ;
 
-            //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
+            //EPathArrayList ePathArrayList = midmUtilityManager.retrieveEPathArrayList(objScreenObject);
 
 			ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			// Added by Anil, fix for  CR 6709864
 			Operations operations=new Operations();
 
             EPath ePath = null;
-            PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
+            RecordDetailsHandler recordDetailsHandler = new RecordDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
 			DashboardHandler dashboardHandler=new DashboardHandler();
 			String euidReq = request.getParameter("euid");
@@ -139,19 +159,19 @@ boolean isSessionActive = true;
     
 			if(isActiveEO) { //If activate EO
  	         
-			    if (euidReq != null) eoArrayList  = patientDetailsHandler.activateEO(euidReq);
+			    if (euidReq != null) eoArrayList  = recordDetailsHandler.activateEO(euidReq);
 
  			} else if(isDeactiveEO) { //If activate EO
- 				if (euidReq != null) eoArrayList  = patientDetailsHandler.deactivateEO(euidReq);
+ 				if (euidReq != null) eoArrayList  = recordDetailsHandler.deactivateEO(euidReq);
 
 			}  else if(isShowMergedRecords) { //If Show merged records for EO
             
-				eoArrayList  = patientDetailsHandler.buildEuids(euidReq);
-                eoMergeRecords = patientDetailsHandler.viewMergedRecords(euidReq,request.getParameter("tranNo"));
+				eoArrayList  = recordDetailsHandler.buildEuids(euidReq);
+                eoMergeRecords = recordDetailsHandler.viewMergedRecords(euidReq,request.getParameter("tranNo"));
 
 			} else { //If simple EUID lookup
 
-				if (euidReq != null) eoArrayList = patientDetailsHandler.buildEuids(euidReq);
+				if (euidReq != null) eoArrayList = recordDetailsHandler.buildEuids(euidReq);
              }
 			//deactoive
             messagesIter = FacesContext.getCurrentInstance().getMessages(); 
@@ -206,7 +226,7 @@ boolean isSessionActive = true;
                                             String menuClass = "menutop";
                                             String dupfirstBlue = "dupfirst";
                                             String styleClass="yellow";
-                                            String subscripts[] = compareDuplicateManager.getSubscript(eoArrayListObjects.length);
+                                            String subscripts[] = midmUtilityManager.getSubscript(eoArrayListObjects.length);
                                             String mainEUID = new String();
                                             for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
 
@@ -218,7 +238,7 @@ boolean isSessionActive = true;
                                                 }
                                             
     
-                                              //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
+                                              //EnterpriseObject eoSource = midmUtilityManager.getEnterpriseObject(strDataArray);
 
                                                 if (eoArrayListObjects.length > 1) {
                                                     dupHeading = "<b>EUID " + new Integer(countEnt + 1).toString() +  "</b>";
@@ -276,7 +296,7 @@ boolean isSessionActive = true;
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
 
-                                                              maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                              maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
                                                               int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                                    %>
                                                                     <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
@@ -338,7 +358,7 @@ boolean isSessionActive = true;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%>
+																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoStatus)%>
 																</font></td></tr>
                                                                     <%
 
@@ -379,7 +399,7 @@ boolean isSessionActive = true;
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
 int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 
@@ -509,7 +529,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="source">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr><td>
- 																<font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%>
+ 																<font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(soStatus)%>
  																</font></td></tr>
 
                                                                      <%
@@ -551,7 +571,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
@@ -679,7 +699,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoHistStatus)%></font></td></tr>
+                                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoHistStatus)%></font></td></tr>
                                                                      <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
@@ -718,7 +738,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 int  maxMinorObjectsMinorDB =  ((Integer) objectHistMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
@@ -847,7 +867,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=mergedValuesMap.get("EUID")%>" class="transaction">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoMergedStatus)%></font></td></tr>
+                                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoMergedStatus)%></font></td></tr>
                                                                      <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
@@ -886,7 +906,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 int  maxMinorObjectsMinorDB =  ((Integer) mergedValuesMap.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
@@ -1168,7 +1188,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                        <tr><td colspan="2"> &nbsp;</td></tr>
                                        <tr><td>
                                           <h:commandLink styleClass="button" title="#{msgs.ok_text_button}" 
-                                          actionListener="#{PatientDetailsHandler.unmergeEnterpriseObject}">
+                                          actionListener="#{RecordDetailsHandler.unmergeEnterpriseObject}">
                                           <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                           </h:commandLink>   
                                           <h:outputLink  title="#{msgs.cancel_but_text}"  onclick="javascript:showConfirm('unmergePopupDiv',event)" 
@@ -1190,7 +1210,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 		 <form id="EditIndexForm" name="EditIndexForm">
 		   <input type="hidden" id="EditIndexFormID" value="-1" />
        </form>
-	   <!-- Added By Narahari.M on 08-10-2008, to change alert pop up window to information pop up window -->
+	   <!-- Added  on 08-10-2008, to change alert pop up window to information pop up window -->
        <div id="activeDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
              <form id="activeMerge" name="activeMerge" >
                  <table cellspacing="0" cellpadding="0" border="0">

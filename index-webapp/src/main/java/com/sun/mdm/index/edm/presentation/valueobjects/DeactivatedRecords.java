@@ -7,9 +7,7 @@
 
 package com.sun.mdm.index.edm.presentation.valueobjects;
 
-/**
- * @author Sridhar Narsingh
- */
+
 public class DeactivatedRecords {
 
     /**
@@ -206,4 +204,5 @@ public class DeactivatedRecords {
     }
     
 }
+
 

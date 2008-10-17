@@ -26,7 +26,6 @@
  * This is configured in faces-config.xml file
  * NavigationHandler.java 
  * Created on September 7, 2007, 12:15 AM
- * Author : RajaniKanth
  *  
  */
 

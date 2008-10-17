@@ -1,9 +1,32 @@
 <%-- 
     Document   : Duplicate Records Print From Print services
     Created on : July 28, 2008, 7:59:17 PM
-    Author     : Narahari M
 --%>
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
 
+--%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
@@ -13,7 +36,7 @@
 <%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator"  %>
 <%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary"  %>
 
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
@@ -154,7 +177,7 @@ ArrayList collectedEuidsList = new ArrayList();
 %>
  <%
                     ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
-                    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+                    MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
   
 					PotentialDuplicateIterator asPdIter;
@@ -226,7 +249,7 @@ ArrayList collectedEuidsList = new ArrayList();
 <% if (finalArrayList != null)   {
 %>
 
-<!------Sridhar -->
+
 
 		
 <%
@@ -290,7 +313,7 @@ String strVal = new String();
 		 </tr>
 	   </table>
 
-<!-- Sridhar -->
+
 
   
 <% } %>
@@ -336,7 +359,7 @@ String strVal = new String();
                                         ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
 									    //accumilate the duplicate euids here
                                         StringBuffer arlInnerEuids = new StringBuffer();
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
+                                        String subscripts[] = midmUtilityManager.getSubscript(arlInner.size());
                                         for (int j = 0; j < arlInner.size(); j++) {
                                                HashMap eoHashMapValues = (HashMap) arlInner.get(j);
 
@@ -363,8 +386,8 @@ String strVal = new String();
                                                 {    dupHeading = "<b> Main EUID</b>";
                                                 }
                                                //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
+                                               //EnterpriseObject eoSource = midmUtilityManager.getEnterpriseObject(strDataArray);
+                                               //HashMap fieldValuesMapSource = midmUtilityManager.getEOFieldValues(eoSource, objScreenObject) ;
                                                for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
                                                 FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
                                                 if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
@@ -431,7 +454,7 @@ String strVal = new String();
                                                         
                                                      %>
   													<% if (ifc == 0) {%>
-													     <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(potDupStatusText)%> </font></td></tr>
+													     <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(potDupStatusText)%> </font></td></tr>
 													<% } %>
 
                                                     <tr>
@@ -456,8 +479,7 @@ String strVal = new String();
                                         <%} else {%> <!--For duplicates here-->  
 
                                             <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
+                                                                                       <td>
                                                  <div>
                                                      <table>
                                                          <tr>
@@ -527,7 +549,7 @@ String strVal = new String();
                                                         epathValue = fieldConfigMap.getFullFieldName();    
 														%>
 														<% if (ifc == 0) {%>
-													     <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(potDupStatusText)%> </font></td></tr>
+													     <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(potDupStatusText)%> </font></td></tr>
 													<% } %>
 
                                                     <tr>                                                        
@@ -559,7 +581,7 @@ String strVal = new String();
                                             </div>   
                                         </td>
                                             <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
+                                            
                                                        </tr>
                                                      </table>
                                                  </div>

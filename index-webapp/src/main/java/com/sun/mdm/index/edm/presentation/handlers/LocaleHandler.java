@@ -47,7 +47,7 @@ public class LocaleHandler {
         this.langOption = langOption;
     }
      /** 
-     * Modified By Rajani Kanth on 25/06/2008
+     * Modified on 25/06/2008
      * 
      * This method will set the locale as per the user's locale preferences
      * 
@@ -92,7 +92,7 @@ public class LocaleHandler {
     }
     
      /** 
-     * Added By Rajani Kanth on 25/06/2008
+     * Added on 25/06/2008
      * 
      * This method will set the locale as per the user's locale preferences
      * 

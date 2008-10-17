@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -7,8 +32,7 @@
 
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
@@ -104,11 +128,11 @@
                                     <h:inputText   
                                         id="euidField"
                                         title="EUID"
-                                        value="#{PatientDetailsHandler.singleEUID}" 
+                                        value="#{RecordDetailsHandler.singleEUID}" 
 								        maxlength="#{SourceHandler.euidLength}" 
 										/>
                                 </td>
-								 <!-- added by Narahari.M on 22/08/2008 for incorporate back button -->
+								 <!-- added  on 22/08/2008 for incorporate back button -->
 								 
                                   <% if(request.getParameter("euids") != null) { %>
                                 <td>                                    
@@ -229,7 +253,7 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
 
               	</script>
              <%}%>
-					<!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
+					<!-- Modified  on 27-09-2008, added banner and close link to confirmation pop up window -->
                          <div id="mergeDiv" class="confirmPreview" style="TOP:250px;LEFT:300px;VISIBILITY:hidden;display:none;">
                              <table cellspacing="0" cellpadding="0" border="0">
                                 <tr>
@@ -277,15 +301,15 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
 											      </table>
 												 <%}%>
                                                   <input type="hidden" id="mergeFinalForm:srcDestnEuids" title="MERGE_SRC_DESTN_EUIDS" />
-                                                <h:inputHidden id="destinationEO" value="#{PatientDetailsHandler.destnEuid}" />
-                                                <h:inputHidden id="selectedMergeFields" value="#{PatientDetailsHandler.selectedMergeFields}" />
+                                                <h:inputHidden id="destinationEO" value="#{RecordDetailsHandler.destnEuid}" />
+                                                <h:inputHidden id="selectedMergeFields" value="#{RecordDetailsHandler.selectedMergeFields}" />
                                             </h:form>
                                         </td>
                                     </tr>
                                     
                                 </table>
                         </div>  
-						<!-- Modified By Narahari.M on 27-09-2008, added banner and close link to confirmation pop up window -->
+						<!-- Modified  on 27-09-2008, added banner and close link to confirmation pop up window -->
                                    <div id="resolvePopupDiv" class="confirmPreview" style="TOP:250px;LEFT:300px;visibility:hidden;display:none;">
                                      
                                        <h:form id="reportYUISearch">

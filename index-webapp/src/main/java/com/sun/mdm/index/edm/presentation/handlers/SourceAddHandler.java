@@ -24,7 +24,6 @@
 /*
  * SourceAddHandler.java 
  * Created on December 19, 2007, 21:45 PM
- * Author : Rajani Kanth, Samba
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
@@ -49,7 +48,7 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.util.QwsUtil;
@@ -583,9 +582,9 @@ public class SourceAddHandler {
         SystemObject singleSystemObjectEdit = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
         SourceHandler sourceHandler = new SourceHandler();
         EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
         //HashMap editSystemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObjectEdit, personEPathArrayList);
-        HashMap editSystemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObjectEdit, screenObject);
+        HashMap editSystemObjectMap = midmUtilityManager.getSystemObjectAsHashMap(singleSystemObjectEdit, screenObject);
         SourceHandler sourceHandlerFaces = (SourceHandler)session.getAttribute("SourceHandler");
 
 
@@ -607,8 +606,8 @@ public class SourceAddHandler {
      * @param SystemObject
      */
     public void editLID(SystemObject singleSystemObjectEdit){
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-        HashMap editSystemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObjectEdit, screenObject);
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
+        HashMap editSystemObjectMap = midmUtilityManager.getSystemObjectAsHashMap(singleSystemObjectEdit, screenObject);
         SourceHandler sourceHandlerFaces = (SourceHandler)session.getAttribute("SourceHandler");
 
 
@@ -626,7 +625,7 @@ public class SourceAddHandler {
         session.setAttribute("keyFunction", "editSO");
    }
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used to update the SO.
      *
@@ -717,13 +716,13 @@ public class SourceAddHandler {
      * 
      * @param SystemObject
      */
-    // modified by Bhat on 24-09-08
+    // modified by on 24-09-08
     
      public void editLID(String systemCode, String lid) {
         try{
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
         SystemObject systemObject = masterControllerService.getSystemObject(systemCode, lid);
-        HashMap editSystemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+        HashMap editSystemObjectMap = midmUtilityManager.getSystemObjectAsHashMap(systemObject, screenObject);
         SourceHandler sourceHandlerFaces = (SourceHandler)session.getAttribute("SourceHandler");
 
         if("active".equalsIgnoreCase((String) editSystemObjectMap.get("Status")) ) {

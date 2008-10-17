@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -31,11 +56,30 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
 <%
-//Author Sridhar Narsingh
-//sridhar@ligaturesoftware.com
-//http://www.ligaturesoftware.com
-//This page is an Ajax Service, never to be used directly from the Faces-confg.
-//This will render a datatable of minor object to be rendered on the calling JSP.
+
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -463,7 +507,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 									
 								  %>						  
- 									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+ 									<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
@@ -474,7 +518,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-								<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+								<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 							   <td width="14px" valign="center">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='if(editMinorObjectType.length<1){
@@ -613,7 +657,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									 
 
 								  %>						  
- 								<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+ 								<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript: 
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
@@ -896,7 +940,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");									 
 
 								  %>						  
-									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+									<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
@@ -1100,7 +1144,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									
 								  %>						  
 
-									<!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+									<!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)"  title="<%=editTitle%>"
 											 onclick='javascript:
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){

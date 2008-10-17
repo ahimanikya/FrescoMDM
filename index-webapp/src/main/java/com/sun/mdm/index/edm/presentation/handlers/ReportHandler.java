@@ -23,7 +23,6 @@
 /*
  * ReportHandler.java 
  * Created on November 23, 2007, 4:50 PM
- * Author : Sridhar
  *  
  */ 
 package com.sun.mdm.index.edm.presentation.handlers;
@@ -793,7 +792,6 @@ public class ReportHandler {
 
     /**
      *  Validate Report Size and Page Size
-     *  Create by Sridhar Narsingh
      *  Create Date: 06/13/2008
      *  Validates for a valid Report Size
      */
@@ -1405,8 +1403,6 @@ public class ReportHandler {
 	}
 
     /**
- * Added by Sridhar Narsingh
- * sridhar@ligaturesoftware.com
  * Checks if the user has entered at least on of the the required fields in the group as
  * defined in the midm configuration file 
  * Modified Date:05/27/2008
@@ -1452,8 +1448,6 @@ public class ReportHandler {
     }
 
 /**
- * Added by Sridhar Narsingh
- * sridhar@ligaturesoftware.com
  * Checks if the user has entered the values for all the required fields as
  * defined in the midm configuration file 
  * Modified Date:05/28/2008
@@ -1518,7 +1512,6 @@ public class ReportHandler {
     }
 
  /**
- * @author Sridhar Narsingh
  * modified date:05/28/2008
  * This method checks if the screen has any One of Group condition
  * @return true if the oneOfGroup exists in the screen configuration
@@ -1546,7 +1539,6 @@ public class ReportHandler {
     
     
 /**
- * @author Sridhar Narsingh
  * modified date:05/28/2008
  * This method checks if the screen has required fields
  * @return true if required field exists in the screen configuration
@@ -1570,7 +1562,6 @@ public class ReportHandler {
         return requiredExists;
     }
 /**
- * @author Sridhar Narsingh
  * modified date:05/28/2008
  * This method checks if the screen has required fields
  * @return false if the user has not entered any values 
@@ -1625,7 +1616,6 @@ public class ReportHandler {
 /**
  * This method checks for the valid ordering of the Report Sub tabs, 
  * @create date: July 7th 2008
- * @Create by Sridhar Narsingh
  * @return valid screen object array 
  * @exception Exception if unhandled exception occurs such as 
  *  1. Array manuplation fails

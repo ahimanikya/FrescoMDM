@@ -9,10 +9,6 @@
 
 package com.sun.mdm.index.edm.presentation.valueobjects;
 
-/**
- *
- * @author Rajani
- */
 public class PersonFields {
 
     private String PersonCatCode;

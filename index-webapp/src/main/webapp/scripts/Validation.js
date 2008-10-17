@@ -1,12 +1,33 @@
 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
 var radix = 10;
 var dateLastKey;
 var timeLastKey;
 var ssnLastKey;
 var phoneLastKey;
 
-//Modified by Sridhar Narsingh
-// Ligature Software Pvt. Ltd Bangalore http://www.ligaturesoftware.com
 //Modified Date:11/19/07
 //Commented the existing code to check the numbers and instead used isNaN
 function isAllDigits(str) {
@@ -309,7 +330,7 @@ function qws_field_on_key_up(field) {
     var oldvalue=global_old_value;
 	if (field.value.length == 0 )
 	{
-		oldvalue=""; //reset - commented by Sridhar
+		oldvalue=""; 
 	} 
     var pos1=getNewCharPosL(field.value, oldvalue);
     // if too many chars entered before releasing key; take the first char that's different
@@ -365,7 +386,7 @@ function apply_mask(field, oldvalue) {
             break;
           } else {
             global_alerting=true;
-            //alert(describe(cur_type)+" required"); //Commented by Sridhar 11/20/2007
+            //alert(describe(cur_type)+" required"); //Commented on 11/20/2007
             global_errored=true;
             global_alerting=false;
             field.value=oldvalue;
@@ -716,4 +737,5 @@ function clear_masking_on_focus() {
     global_field="";
     global_old_value= "";
 }
+
 

@@ -24,7 +24,7 @@
 /*
  * AssumeMatchReportHandler.java 
  * Created on November 15, 2007, 
- * Author : Pratibha, Sridhar
+
  *  
  */
 

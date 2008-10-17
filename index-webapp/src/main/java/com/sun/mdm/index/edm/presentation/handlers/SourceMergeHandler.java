@@ -9,7 +9,7 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;   
 
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.master.ProcessingException;
@@ -203,7 +203,7 @@ public class SourceMergeHandler {
         //request.setAttribute("lids", lids);
         //request.setAttribute("lidsource", this.lidsource);
 
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
         String sourceEuid = new String();
         String destnEuid = new String();
 
@@ -213,7 +213,7 @@ public class SourceMergeHandler {
             destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
 
             SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
-            //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
+            //request.setAttribute("mergedSOMap", midmUtilityManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
@@ -250,11 +250,11 @@ public class SourceMergeHandler {
          String sourceLid = lids[0];
          String destnLid = lids[1];
          //request.setAttribute("lids", lids);
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
         try{
      
             SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
-            //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
+            //request.setAttribute("mergedSOMap", midmUtilityManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
 
         } catch (Exception ex) {
           if (ex instanceof ValidationException) {
@@ -271,7 +271,7 @@ public class SourceMergeHandler {
   
   
     /** 
-     * Added By Rajani Kanth  on 25/06/2008
+     * Added on 25/06/2008
      * 
      * This method is used to get the preview for the surviving system object. This method is called from the ajax services.
      *
@@ -289,7 +289,7 @@ public class SourceMergeHandler {
         //request.setAttribute("lids", lids);
         //request.setAttribute("lidsource", this.lidsource);
 
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
         String sourceEuid = new String();
         String destnEuid = new String();
 
@@ -297,8 +297,8 @@ public class SourceMergeHandler {
             sourceEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, sourceLid)).getEUID();
             destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
             SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
-            //request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
-            setSoMergePreviewMap(compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
+            //request.setAttribute("mergedSOMap", midmUtilityManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
+            setSoMergePreviewMap(midmUtilityManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
             
             // keep the src and destn lids and the source selected in the 
             getSoMergePreviewMap().put("SRC_DESTN_LIDS", lids);
@@ -347,7 +347,7 @@ public class SourceMergeHandler {
             errorMessage += this.source ; 
             SystemObject systemObjectLID = null;
             ArrayList newArrayList  = new ArrayList();
-	    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+	    MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 
             boolean validateSystemCode = false;
             if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
@@ -367,7 +367,7 @@ public class SourceMergeHandler {
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source)  + "/" + this.getLid1() + " is " + systemObjectLID.getStatus()));
                     }
                     //get the status if the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
@@ -393,7 +393,7 @@ public class SourceMergeHandler {
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus()));
                     }
                     //get the status of the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus));
@@ -418,7 +418,7 @@ public class SourceMergeHandler {
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus()));
                     }
                      //get the status if the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
              
                      //get the status of the EO
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
@@ -445,7 +445,7 @@ public class SourceMergeHandler {
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
                     }
                      //get the status if the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     //get the status of the EO
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
@@ -465,7 +465,7 @@ public class SourceMergeHandler {
             for (int i = 0; i < newArrayList.size(); i++) {
                 SystemObject systemObject = (SystemObject) newArrayList.get(i);
                 //HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-                HashMap editSystemObjectHashMap = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+                HashMap editSystemObjectHashMap = (HashMap) midmUtilityManager.getSystemObjectAsHashMap(systemObject, screenObject);
                 newSoArrayList.add(editSystemObjectHashMap);
             }
     
@@ -499,7 +499,7 @@ public class SourceMergeHandler {
             String errorMessage = bundle.getString("system_object_not_found_error_message");					  
             errorMessage += sourceHandler.getSystemCodeDescription(this.source) ; 
             SystemObject systemObjectLID = null;
-	    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+	    MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 
             boolean validateSystemCode = false;
             if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
@@ -529,7 +529,7 @@ public class SourceMergeHandler {
                         return null;
                     }
                     //get the status if the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
@@ -567,7 +567,7 @@ public class SourceMergeHandler {
                         return null;
                     }
                     //get the status of the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus));
@@ -604,7 +604,7 @@ public class SourceMergeHandler {
                         return null;
                     }
                      //get the status if the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
              
                      //get the status of the EO
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
@@ -643,7 +643,7 @@ public class SourceMergeHandler {
                         return null;
                     }
                      //get the status if the EO
-                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    eoStatus = midmUtilityManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     //get the status of the EO
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
@@ -664,7 +664,7 @@ public class SourceMergeHandler {
             for (int i = 0; i < newArrayList.size(); i++) {
                 SystemObject systemObject = (SystemObject) newArrayList.get(i);
                 //HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-                HashMap editSystemObjectHashMap = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+                HashMap editSystemObjectHashMap = (HashMap) midmUtilityManager.getSystemObjectAsHashMap(systemObject, screenObject);
                 newSoArrayList.add(editSystemObjectHashMap);
             }
     
@@ -727,7 +727,7 @@ public class SourceMergeHandler {
     }
      
     /** 
-     * Added By Rajani Kanth  on 25/06/2008
+     * Added on 25/06/2008
      * 
      * This method is used to Merge the system object. This method is called from the ajax services for merging the system object.
      *
@@ -745,9 +745,9 @@ public class SourceMergeHandler {
         try{
            SystemObject so = masterControllerService.getSystemObject(this.lidsource,  destnLid);
              
-           CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+           MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
         
-            HashMap destnMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(so, screenObject).get("SYSTEM_OBJECT_EDIT");
+            HashMap destnMap  = (HashMap) midmUtilityManager.getSystemObjectAsHashMap(so, screenObject).get("SYSTEM_OBJECT_EDIT");
            
             String[] selectedFieldsValue = this.getSelectedMergeFields().split(">>");
 
@@ -765,7 +765,7 @@ public class SourceMergeHandler {
                                                                                           this.destnRootNodeHashMap,
                                                                                           this.destnMinorobjectsList);
  
-            finalMergredDestnEOArrayList.add(compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSO, screenObject));
+            finalMergredDestnEOArrayList.add(midmUtilityManager.getSystemObjectAsHashMap(finalMergredDestnSO, screenObject));
             
             session.removeAttribute("soHashMapArrayList");
             
@@ -870,14 +870,14 @@ public class SourceMergeHandler {
         try {
 
           
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
             HashMap systemObjectMap = (HashMap) event.getComponent().getAttributes().get("soValueExpressionMerge");
           
             SystemObject systemObject = masterControllerService.getSystemObject((String) systemObjectMap.get(MasterControllerService.SYSTEM_CODE), (String) systemObjectMap.get(MasterControllerService.LID));
          
 
             EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
-            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             ArrayList newEOArrayList = new ArrayList();
             newEOArrayList.add(eoMap);
 
@@ -933,7 +933,6 @@ public HashMap getSortedMap(HashMap hmap)
     }
     
     /**
-     * Added By : <b>Rajani Kanth M</b> 
      *
      * <b>Purpose:</b>
      * Method used to check whether the selected minor object type is avaiable in the preview. <br>

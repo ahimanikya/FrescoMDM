@@ -7,10 +7,6 @@ package com.sun.mdm.index.edm.presentation.valueobjects;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Rajani
- */
 public class NonUpdateableFields {
     private String fieldId;    // indicates if the Status should be displayed
     private String fieldName;    // indicates if the Status should be displayed

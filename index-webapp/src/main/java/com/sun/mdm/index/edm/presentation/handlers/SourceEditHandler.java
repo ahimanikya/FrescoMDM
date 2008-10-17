@@ -24,7 +24,6 @@
 /*
  * SourceAddHandler.java 
  * Created on September 19, 2007
- * Author : Rajani Kanth, Samba
  *  
  */
 

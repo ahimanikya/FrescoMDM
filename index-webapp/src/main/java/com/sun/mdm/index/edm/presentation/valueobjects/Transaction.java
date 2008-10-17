@@ -5,9 +5,7 @@ package com.sun.mdm.index.edm.presentation.valueobjects;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * @author Sridhar Narsingh
- */
+
 public class Transaction {
     /**
      * Search Transaction Id

@@ -1,4 +1,28 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+  -->
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -19,12 +43,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
-<!-- 
-  Author Sridhar Narsingh
-  sridhar@ligaturesoftware.com
-  http://www.ligaturesoftware.com
-  Update Date: 12/16/2007  
-  -->
+
 
 <script>
  var tabTitles=[];
@@ -49,7 +68,6 @@ operationsGlobal = new Operations();
 sessionFacesGlobal.setAttribute("Operations",operationsGlobal);
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 boolean allowed = false;
-//Added by Sridhar 7/29/2008
 // Permissions Map:This map defines the relationship between the MIDM xml tag names and the 
 // files associated with the functionality of the tag
 // The permissions are based on the MIDM tag name
@@ -135,7 +153,7 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                 }
 		 }
 //System.out.println("Accessable tabs --> " + allScreensArrayOrdered.length );
-//Modified by Sridhar Narsingh sridhar@ligaturesoftware.com
+
 //to handle the null pointer Exception bug#66
 //Added logic to check the URL hacking to fix the bug # 17
 //**Build the list of permitted screens

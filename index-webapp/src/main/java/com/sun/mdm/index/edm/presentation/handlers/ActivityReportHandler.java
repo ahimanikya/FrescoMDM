@@ -24,7 +24,6 @@
 /*
  * AssumeMatchReportHandler.java 
  * Created on November 27, 2007, 
- * Author : Pratibha, Sridhar
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
@@ -621,7 +620,7 @@ public class ActivityReportHandler {
         keyList.add("EUIDUnmerge");
         keyList.add("LIDMerge");
         keyList.add("LIDUnMerge");
-        //Modified by Sridhar 7/25/08
+        //Modified on 7/25/08
         // Do not Display Unresolved Duplicate & Resolved Duplicateon Weekly Report  
         // as per Pratibha's instructions subsequent to her discussion with Su mei                    
         if (!reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
@@ -633,7 +632,7 @@ public class ActivityReportHandler {
         if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
             labelList.add("Activity Day");
             labelList.add("Activity Date");
-            //Modified by Sridhar 7/25/08
+            //Modified on 7/25/08
             // Display LID Transfer on Weekly Report  
             // as per Pratibha's instructions subsequent to her discussion with Su mei            
             labelList.add("LID Transfer");
@@ -646,7 +645,7 @@ public class ActivityReportHandler {
         labelList.add("LID Merge");
         labelList.add("LID UnMerge");
         
-        //Modified by Sridhar 7/25/08
+        //Modified on  7/25/08
         // Do not Display Unresolved Duplicate & Resolved Duplicateon Weekly Report  
         // as per Pratibha's instructions subsequent to her discussion with Su mei                    
         if (!reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
@@ -661,7 +660,7 @@ public class ActivityReportHandler {
                 if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
                     values.put("ActivityDay", activityRecords[j].getDay());
                     values.put("ActivityDate", activityRecords[j].getActivityDate());                    
-            //Modified by Sridhar 7/25/08
+            //Modified on  7/25/08
             // Display LID Transfer on Weekly Report  
             // as per Pratibha's instructions subsequent to her discussion with Su mei            
                     values.put("LidTransfer", activityRecords[j].getLidTransfer());
@@ -673,7 +672,7 @@ public class ActivityReportHandler {
                 values.put("EUIDUnmerge", (activityRecords[j].getEuidUnmergedTrans()==null?"0":activityRecords[j].getEuidUnmergedTrans()));
                 values.put("LIDMerge", (activityRecords[j].getLidMergedTrans()==null?"0":activityRecords[j].getLidMergedTrans()));
                 values.put("LIDUnMerge", (activityRecords[j].getLidUnMergedTrans() ==null?"0":activityRecords[j].getLidUnMergedTrans()));
-                //Modified by Sridhar 7/25/08
+                //Modified on 7/25/08
                 // Do not display UnresolvedDuplicate and ResolvedDuplicate on Weekly Report  
                 // as per Pratibha's instructions subsequent to her discussion with Su mei
                 if (! reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) { 

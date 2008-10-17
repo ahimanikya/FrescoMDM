@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -5,8 +30,6 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
@@ -103,14 +126,14 @@ if(session!=null){
 				document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(buttonID).innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/>  '+ minorObject;
 		      }
-			// added by Bhat on 22-09-08  
+			// added  on 22-09-08  
 			function setMinorObjectAddressType(MinorObjectType,editIndex,objectType){
 				editMinorObjectType = MinorObjectType;
 				editIndexid = editIndex;
 				editObjectType = objectType;
 	 		}
 			
-			// added by Bhat on 22-09-08  			
+			// added  on 22-09-08  			
 			function showUnSavedAlert(thisEvent,minorObjectType,editObjectType){
 				if(editObjectType.length == 0) {
 					document.getElementById("unsavedMessageDiv").innerHTML = '<h:outputText value="#{msgs.unsaved_message_part_I}"/> \''+editMinorObjectType+'\'<h:outputText value="#{msgs.unsaved_message_part_III}"/>';
@@ -186,7 +209,7 @@ if(session!=null){
                              </h:form>
 							    <%if(request.getParameter("fromUrl") != null ) {%>
 							 <td>
-								<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->                                                                 
+								<!-- Added on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->                                                                 
 								<% 
 								 String pageName = request.getParameter("fromUrl");
 								 String previousQuery = request.getQueryString();
@@ -239,7 +262,7 @@ if(session!=null){
    </div> <!-- end mainEuidContent -->
 
  
- <!-- Added By Narahari.M on 27-09-2008, to change alert pop up window to information pop up window -->
+ <!-- Added  on 27-09-2008, to change alert pop up window to information pop up window -->
 <div id="activeDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
              <form id="activeMerge" name="activeMerge" >
                  <table cellspacing="0" cellpadding="0" border="0">
@@ -275,7 +298,7 @@ if(session!=null){
              </form>
          </div>
 
-         <!-- Added By Narayan Bhat on 07-10-2008 for all information popups -->
+         <!-- Added  on 07-10-2008 for all information popups -->
   		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
                <form id="successDiv">
                 <table border="0" cellpadding="0" cellspacing="0">

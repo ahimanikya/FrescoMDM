@@ -3,15 +3,39 @@
     Created on : May 5, 2008, 7:59:17 AM
     Author     : Admin
 --%>
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
 
+--%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
  <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 
@@ -38,7 +62,7 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
-<!-- Modified by Narayan Bhat on 22-aug-2008 for the incorparte with the functionality of back button in euiddetails.jsp  
+<!-- Modified on 22-aug-2008 for the incorparte with the functionality of back button in euiddetails.jsp  
     added String previousQueryStr = request.getQueryString();
     and appended the same with every href link
 -->        
@@ -88,12 +112,12 @@ ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 
 MasterControllerService masterControllerService = new MasterControllerService();
 Operations operations  = new Operations();
-PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
+RecordDetailsHandler recordDetailsHandler = new RecordDetailsHandler();
 
 String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 
 Enumeration parameterNames = request.getParameterNames();
-CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 
 //Map to hold the validation Errors
 HashMap valiadtions = new HashMap();
@@ -145,19 +169,19 @@ ArrayList collectedEuidsList = new ArrayList();
        if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
 		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) ) {
-		     patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);			
+		     recordDetailsHandler.getParametersMap().put(attributeName,attributeValue);			
       }
    } 
   //set the selected search type here....
- patientDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+ recordDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
 
 %>
 
 
 <% 
-String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID");
- String lid = (String) patientDetailsHandler.getParametersMap().get("LID");
-  String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
+String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID");
+ String lid = (String) recordDetailsHandler.getParametersMap().get("LID");
+  String systemCode = (String) recordDetailsHandler.getParametersMap().get("SystemCode");
 %>
 
 <%if(iscollectEuids) {%> <!-- if compare euids case -->
@@ -295,9 +319,9 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
 
 <%}else if( euidValue != null && euidValue.length() > 0) {
-	 //results = patientDetailsHandler.performSubmit();
+	 //results = recordDetailsHandler.performSubmit();
 	// EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidValue);
-     String megredEuid  = compareDuplicateManager.getMergedEuid(euidValue);
+     String megredEuid  = midmUtilityManager.getMergedEuid(euidValue);
 	 Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 	%> <!-- if only EUID is entered by the user is entered by the user-->
 	<%if(megredEuid == null) {%>
@@ -354,7 +378,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
      <%}else{%>
        <table>
          <tr><td>
-		 <!-- Modified By Narahari.M on 27-09-2008, to change alert pop up window to information pop up window -->
+		 <!-- Modified  on 27-09-2008, to change alert pop up window to information pop up window -->
          <script>
 		     window.location = "#top";
              document.getElementById("activemessageDiv").innerHTML='<%=megredEuid%> <%=active_euid_text%> <%=euidValue%>.';
@@ -377,16 +401,16 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
      <%}%>
 <%}%>
 
-<% } else if (patientDetailsHandler.getParametersMap().get("LID") != null && patientDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
+<% } else if (recordDetailsHandler.getParametersMap().get("LID") != null && recordDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
 
  
 <%
    boolean checkMasking = true;
-   lid = (String) patientDetailsHandler.getParametersMap().get("LID");
-   String lidmask = (String) patientDetailsHandler.getParametersMap().get("lidmask");
-   // String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
+   lid = (String) recordDetailsHandler.getParametersMap().get("LID");
+   String lidmask = (String) recordDetailsHandler.getParametersMap().get("lidmask");
+   // String systemCode = (String) recordDetailsHandler.getParametersMap().get("SystemCode");
    // valiadtions.put(basicFieldConfig.getDisplayName(),bundle.getString("lid_format_error_text") + " " +basicFieldConfig.getInputMask());
-   checkMasking = patientDetailsHandler.checkMasking(lid,lidmask);
+   checkMasking = recordDetailsHandler.checkMasking(lid,lidmask);
 
    %>
  <%if(checkMasking) {%>
@@ -424,7 +448,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
   }
 
   if(systemCode.trim().length() != 0 && lid.trim().length() != 0 && eo == null ){
-  messages = sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) patientDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
+  messages = sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) recordDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
   }
  %>     	 
 
@@ -489,9 +513,9 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 <%} else {%>
 <%
 
- results = patientDetailsHandler.performSubmit();
+ results = recordDetailsHandler.performSubmit();
 
-ArrayList resultConfigArray = patientDetailsHandler.getResultsConfigArray();
+ArrayList resultConfigArray = recordDetailsHandler.getResultsConfigArray();
 if (results != null)   {
    keys.add("EUID");
    labelsList.add("EUID");

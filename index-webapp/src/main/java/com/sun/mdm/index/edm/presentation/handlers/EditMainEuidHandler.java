@@ -21,14 +21,12 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 /*
- * SearchDuplicatesHandler.java 
  * Created on December 21, 2007, 
- * Author : Anil, RajaniKanth
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
 
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
@@ -63,12 +61,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * @author Rajani Kanth
- * www.ligaturesoftware.com
- * rkanth@ligaturesoftware.com
- * 
- */
 public class EditMainEuidHandler {
 
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler");
@@ -125,7 +117,7 @@ public class EditMainEuidHandler {
     private HashMap lockedFieldsHashMapFromDB = new HashMap();
     private HashMap unLockedFieldsHashMapByUser = new HashMap();
     private HashMap linkedSOFieldsHashMapFromDB = new HashMap();
-    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+    MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 
     //Adding the following variables for getting the select options if the FieldConfig type is "Menu List"
     private ArrayList<SelectItem> eoSystemObjectCodesWithLids = new ArrayList();
@@ -143,7 +135,7 @@ public class EditMainEuidHandler {
     }
 
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used to create the  enterprise object.
      *
@@ -280,7 +272,7 @@ public class EditMainEuidHandler {
     }
    
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used to deactive the EO from edit main euid screen.
      *
@@ -331,7 +323,7 @@ public class EditMainEuidHandler {
     }
 
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used to add the SO to enterprise object.
      *
@@ -581,7 +573,7 @@ public class EditMainEuidHandler {
     }
 
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used SAVE the links selected by the user from edit main euid ajax services
      *
@@ -626,7 +618,7 @@ public class EditMainEuidHandler {
 
     
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used SAVE the unlinks selected by the user from edit main euid ajax services.
      *
@@ -670,7 +662,7 @@ public class EditMainEuidHandler {
     }
 
     /** 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used SAVE the unlocks selected by the user from edit main euid ajax services.
      *
@@ -717,9 +709,9 @@ public class EditMainEuidHandler {
     
     
     /** 
-     * Added  By Rajani Kanth on 26/06/2008
+     * Added on 26/06/2008
      * 
-     * Modified  By Rajani Kanth  on 11/07/2008
+     * Modified  on 11/07/2008
      * 
      * This method is used SAVE the locks selected by the user from edit main euid ajax services
      *
@@ -786,12 +778,12 @@ public class EditMainEuidHandler {
             setLinkedSOFieldsHashMapFromDB(eoWithLinkedHashMap);
 
 
-            HashMap editEOMapMain = compareDuplicateManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
+            HashMap editEOMapMain = midmUtilityManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
 
             editEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
 
-            HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
-            HashMap eoHashMapOld = compareDuplicateManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
+            HashMap eoHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
+            HashMap eoHashMapOld = midmUtilityManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
 
             //set EO as hash map for display
             setEditSingleEOHashMap(eoHashMap);
@@ -869,7 +861,7 @@ public class EditMainEuidHandler {
 
                 systemObjectHashMapOld.put("SYSTEM_OBJECT", editSystemObjectHashMap);// Set the edit SystemObject here
 
-                //HashMap soEuidHashMap = compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+                //HashMap soEuidHashMap = midmUtilityManager.getSystemObjectAsHashMap(systemObject, screenObject);
 
                 ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
@@ -1155,7 +1147,7 @@ public class EditMainEuidHandler {
 
             //BUILD AND THE VALUES FOR THE MINOR OBJECTS HERE
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
-            HashMap enterprisObjectDBMap = compareDuplicateManager.getEnterpriseObjectAsHashMapFromDB(eo, screenObject);
+            HashMap enterprisObjectDBMap = midmUtilityManager.getEnterpriseObjectAsHashMapFromDB(eo, screenObject);
 
             //get the child object node configs
             for (int i = 0; i < childNodeConfigs.length; i++) {
@@ -1376,7 +1368,7 @@ public class EditMainEuidHandler {
     }
     
 /** 
-     * Addded  By Rajani Kanth  on 05/08/2008 <br>
+     * Addded  on 05/08/2008 <br>
      * 
      * This method is used to compare the minor objects hashmap with the arraylist of hashmap and will return the hash map with only modified values<br>
      * 

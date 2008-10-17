@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -5,8 +30,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AssumeMatchHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
@@ -84,13 +108,12 @@ boolean isSessionActive = true;
                                             <%
             Operations operations = new Operations();
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 
-            //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
+            //EPathArrayList ePathArrayList = midmUtilityManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
 
             EPath ePath = null;
-            PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
             Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
             Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
@@ -151,7 +174,7 @@ boolean isSessionActive = true;
                                                             String menuClass = "menutop";
                                                             String dupfirstBlue = "dupfirst";
                                                             String styleClass = "yellow";
-                                                            String subscripts[] = compareDuplicateManager.getSubscript(eoArrayListObjects.length);
+                                                            String subscripts[] = midmUtilityManager.getSubscript(eoArrayListObjects.length);
                                                             String mainEUID = new String();
                                                             //if (eoArrayListObjects.length == 1) {
                                                             //styleClass = "blue";
@@ -237,7 +260,7 @@ boolean isSessionActive = true;
         ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
         FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
 
-        maxMinorObjectsMAX = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
+        maxMinorObjectsMAX = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
         int maxMinorObjectsMinorDB = ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                                     %>
                                                                     <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
@@ -271,7 +294,7 @@ boolean isSessionActive = true;
                                                 </div>
                                             </td>
                                             <%}%>     
-                                            <!-- Modify By : M.Narahari on 29/07/2008
+                                            <!-- Modify on 29/07/2008
                                                  Description : Removed <h:form/> tag for EUID of mainEuidContent div
                                               -->
 
@@ -300,7 +323,7 @@ boolean isSessionActive = true;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%></font></td></tr>
+                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoStatus)%></font></td></tr>
                                                                     <%
                                                 String mainDOB;
                                                 ValueExpression fnameExpression;
@@ -365,7 +388,7 @@ boolean isSessionActive = true;
                                                 for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                                                     int maxMinorObjectsMinorDB = ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-                                                    maxMinorObjectsMAX = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
+                                                    maxMinorObjectsMAX = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
                                                     int maxMinorObjectsDiff = maxMinorObjectsMAX - maxMinorObjectsMinorDB;
 
 
@@ -495,7 +518,7 @@ boolean isSessionActive = true;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%></font></td></tr>
+                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(soStatus)%></font></td></tr>
 
 																	<%
     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
@@ -537,7 +560,7 @@ boolean isSessionActive = true;
 
         int maxMinorObjectsMinorDB = ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-        maxMinorObjectsMAX = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
+        maxMinorObjectsMAX = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
 
         int maxMinorObjectsDiff = maxMinorObjectsMAX - maxMinorObjectsMinorDB;
 
@@ -664,7 +687,7 @@ boolean isSessionActive = true;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoHistStatus)%></font></td></tr>
+                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoHistStatus)%></font></td></tr>
                                                                     <%
                                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                                         FieldConfig fieldConfigMap = rootFieldConfigArray[ifc];
@@ -702,7 +725,7 @@ boolean isSessionActive = true;
 
                                                         int maxMinorObjectsMinorDB = ((Integer) objectHistMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-                                                        maxMinorObjectsMAX = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
+                                                        maxMinorObjectsMAX = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList, objScreenObject, childObjectNodeConfig.getName());
 
                                                         int maxMinorObjectsDiff = maxMinorObjectsMAX - maxMinorObjectsMinorDB;
 
@@ -892,7 +915,7 @@ boolean isSessionActive = true;
 																  </div>
 																<%}%>
 															   </td>
-															  <!--td>Sridhar<%=countEnt%> </td-->
+															 
 										                 <%}%>
 										          <%}%>
 										      <%}%>

@@ -1212,8 +1212,8 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean> 
     <managed-bean>
-        <managed-bean-name>PatientDetailsHandler</managed-bean-name>
-        <managed-bean-class>com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler</managed-bean-class>
+        <managed-bean-name>RecordDetailsHandler</managed-bean-name>
+        <managed-bean-class>com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean> 
     <managed-bean>
@@ -1264,6 +1264,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 </faces-config>
+
 
 
 

@@ -25,7 +25,6 @@
 /*
  * SourceHandler.java 
  * Created on September 12, 2007
- * Author : Rajanikanth
  *  
  */
 
@@ -34,7 +33,7 @@ package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.common.PullDownListItem;
 import com.sun.mdm.index.objects.ObjectField;
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
@@ -182,7 +181,7 @@ public class SourceHandler {
     private ArrayList allEOChildNodesLists =  new ArrayList();
     private ArrayList allSOChildNodesLists =  new ArrayList();
     
-    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+    MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
     private int euidLength;
     private String enteredFieldValues = new String();
     
@@ -276,7 +275,7 @@ public class SourceHandler {
                 //keep the EO revision number in session
                 session.setAttribute("SBR_REVISION_NUMBER" + enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
 
-                HashMap systemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
+                HashMap systemObjectMap = midmUtilityManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
                         
                 session.setAttribute("singleSystemObjectLID", singleSystemObject);
                 session.setAttribute("systemObjectMap", systemObjectMap);
@@ -595,7 +594,7 @@ public class SourceHandler {
             masterControllerService.activateSystemObject(systemObject);             
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
             //get the System Object as hashmap
-            HashMap updatedSoMap = compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
+            HashMap updatedSoMap = midmUtilityManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
              
             SourceAddHandler sourceAddHandler = (SourceAddHandler) session.getAttribute("SourceAddHandler");
 
@@ -634,7 +633,7 @@ public class SourceHandler {
             masterControllerService.deactivateSystemObject(systemObject);
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
             
-            setDeactivatedSOHashMap(compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
+            setDeactivatedSOHashMap(midmUtilityManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
             
             //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
@@ -692,10 +691,10 @@ public class SourceHandler {
             
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");            
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
             SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
             EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
-            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             ArrayList newEOArrayList = new ArrayList();
             newEOArrayList.add(eoMap);
             
@@ -1686,7 +1685,7 @@ public class SourceHandler {
         return -1;
     }
     /**
-     * Added by Bhat on 24-09-08 to incorporate with ajax call
+     * Added on 24-09-08 to incorporate with ajax call
      * @return
      */
     public HashMap sourceRecordSearch(String systemCode, String lid) {
@@ -1702,7 +1701,7 @@ public class SourceHandler {
         //setSystemCode((String) newFieldValuesMap.get("SystemCode"));
 
         setLID(lid);
-        setSystemCode(systemCode); //added by Bhat
+        setSystemCode(systemCode); 
         String validationMessage = new String();
         String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
         if (this.getLID() == null) {
@@ -1746,7 +1745,7 @@ public class SourceHandler {
             //keep the EO revision number in session
             session.setAttribute("SBR_REVISION_NUMBER" + enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
 
-            systemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
+            systemObjectMap = midmUtilityManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
 
             session.setAttribute("singleSystemObjectLID", singleSystemObject);
             session.setAttribute("systemObjectMap", systemObjectMap);
@@ -1793,7 +1792,7 @@ public class SourceHandler {
 
     
     /**
-     * added By Bhat on 25-09-08
+     * added on 25-09-08
      * @param event
      */
     
@@ -1804,7 +1803,7 @@ public class SourceHandler {
         String validationMessage = new String();
         String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
         setLID(lid);
-        setSystemCode(systemCode); //added by Bhat
+        setSystemCode(systemCode); 
         
         if (this.getLID() == null) {
             validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
@@ -1828,7 +1827,7 @@ public class SourceHandler {
             masterControllerService.activateSystemObject(systemObject);
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
             //get the System Object as hashmap
-            HashMap updatedSoMap = compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
+            HashMap updatedSoMap = midmUtilityManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
 
             SourceAddHandler sourceAddHandler = (SourceAddHandler) session.getAttribute("SourceAddHandler");
 
@@ -1851,7 +1850,7 @@ public class SourceHandler {
     }
     
     /**
-     * added By Bhat on 25-09-08
+     * added  on 25-09-08
      * @param event
      */
     
@@ -1862,7 +1861,7 @@ public class SourceHandler {
         String validationMessage = new String();
         String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
         setLID(lid);
-        setSystemCode(systemCode); //added by Bhat
+        setSystemCode(systemCode); 
         
         if (this.getLID() == null) {
             validationMessage = bundle.getString("LID_SysCode") + " " + localIdDesignation;
@@ -1887,7 +1886,7 @@ public class SourceHandler {
             masterControllerService.deactivateSystemObject(systemObject);
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
 
-            setDeactivatedSOHashMap(compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
+            setDeactivatedSOHashMap(midmUtilityManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
 
             //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
@@ -1907,7 +1906,7 @@ public class SourceHandler {
     }
     
      /**
-     * Added by Bhat on 25-09-08 
+     * Added on 25-09-08 
      * @param event
      */
     public String viewEUID(String systemCode,String lid) { 
@@ -1915,7 +1914,7 @@ public class SourceHandler {
         String validationMessage = new String();
         String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
         setLID(lid);
-        setSystemCode(systemCode); //added by Bhat
+        setSystemCode(systemCode); 
         
         try { 
             session.setAttribute("tabName", "View/Edit");
@@ -1938,7 +1937,7 @@ public class SourceHandler {
         }
             SystemObject systemObject = masterControllerService.getSystemObject(this.SystemCode, this.LID);
             EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
-            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             if (eo != null) {
                 euid = eo.getEUID();
             }

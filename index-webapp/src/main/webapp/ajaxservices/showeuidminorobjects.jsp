@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -10,7 +35,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
@@ -31,9 +56,6 @@
 
 
 <%
-//Author Rajani Kanth
-//rkanth@ligaturesoftware.com
-//http://www.ligaturesoftware.com
 //This page is an Ajax Service, never to be used directly from the Faces-confg.
 //This will render a datatable of minor objects to be rendered on the calling JSP.
 %>
@@ -99,13 +121,13 @@ String euid = request.getParameter("euid");
 
 //Variables for Save
 String minorObjType = request.getParameter("MOT");
-CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 MasterControllerService masterControllerService = new MasterControllerService();
 
 //get the enterprise object here
 EnterpriseObject  enterpriseObject = masterControllerService.getEnterpriseObject(euid);
 
-HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject,screenObject);
+HashMap eoHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject,screenObject);
 
 //get the array list of minor objects here
 ArrayList thisMinorObjectList = (ArrayList) eoHashMap.get("EO" + minorObjType + "ArrayList");

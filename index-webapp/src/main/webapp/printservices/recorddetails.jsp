@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
@@ -74,7 +74,7 @@ boolean isSessionActive = true;
 SourceHandler sourceHandler = new SourceHandler();
 MasterControllerService masterControllerService = new MasterControllerService();
 
-PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
+RecordDetailsHandler recordDetailsHandler = new RecordDetailsHandler();
 
 Enumeration parameterNames = request.getParameterNames();
 
@@ -130,7 +130,7 @@ ArrayList collectedEuidsList = new ArrayList();
  </span>
 </td>
 <% //Build the request Map 
-   HashMap keyDescriptionsMap = patientDetailsHandler.getKeyDescriptionsMap();
+   HashMap keyDescriptionsMap = recordDetailsHandler.getKeyDescriptionsMap();
    HashMap newHashMap = new HashMap();
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
@@ -138,7 +138,7 @@ ArrayList collectedEuidsList = new ArrayList();
 	 attributeValue = attributeValue.replaceAll("~~","%");
        if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) ) {
-            patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);
+            recordDetailsHandler.getParametersMap().put(attributeName,attributeValue);
 			newHashMap.put(attributeName,attributeValue);
  %>
 <%   }
@@ -146,17 +146,17 @@ ArrayList collectedEuidsList = new ArrayList();
   
 %>
 <%
-  if(patientDetailsHandler.getParametersMap().get("selectedSearchType") != null) {
+  if(recordDetailsHandler.getParametersMap().get("selectedSearchType") != null) {
 	//set the selected search type here....
-	 patientDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+	 recordDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
 %>
 <td>
-	  <span><%=bundle.getString("search_Type")%>:&nbsp;<b><%=patientDetailsHandler.getParametersMap().get("selectedSearchType")%></b></span>
+	  <span><%=bundle.getString("search_Type")%>:&nbsp;<b><%=recordDetailsHandler.getParametersMap().get("selectedSearchType")%></b></span>
 </td>
 <%}%>
 
 <%
-  ArrayList screenConfigArrayLocal = patientDetailsHandler.getScreenConfigArray();
+  ArrayList screenConfigArrayLocal = recordDetailsHandler.getScreenConfigArray();
 %>
  <%
 String strVal = new String();
@@ -195,7 +195,7 @@ String strVal = new String();
 
 
 <% 
-String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID");
+String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID");
 %>
 
 <%if(iscollectEuids) {%> <!-- if compare euids case -->
@@ -220,7 +220,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 		</table>
 
 <%}else if( euidValue != null && euidValue.length() > 0) {
-	 //results = patientDetailsHandler.performSubmit();
+	 //results = recordDetailsHandler.performSubmit();
 	 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidValue);
 	%> <!-- if only EUID is entered by the user is entered by the user-->
 	<%if(eo != null) {%>
@@ -252,13 +252,13 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 	 </div>
   <%}%>
 <%
-  } else if (patientDetailsHandler.getParametersMap().get("LID") != null && patientDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
+  } else if (recordDetailsHandler.getParametersMap().get("LID") != null && recordDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
 
 <%
-  String lid = (String) patientDetailsHandler.getParametersMap().get("LID");
+  String lid = (String) recordDetailsHandler.getParametersMap().get("LID");
   lid = lid.replaceAll("-", "");
   EnterpriseObject eo = null;
-  String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
+  String systemCode = (String) recordDetailsHandler.getParametersMap().get("SystemCode");
   SystemObject so = masterControllerService.getSystemObject(systemCode, lid);
   if(so != null ) {
      eo = masterControllerService.getEnterpriseObjectForSO(so);
@@ -282,7 +282,7 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 	     <td>
      <%
 	  
-		 String messages =  sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) patientDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
+		 String messages =  sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) recordDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
      %>     	 
 
 	   </td>
@@ -296,9 +296,9 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 
 
 <%
- results = patientDetailsHandler.performSubmit();
+ results = recordDetailsHandler.performSubmit();
 
-ArrayList resultConfigArray = patientDetailsHandler.getResultsConfigArray();
+ArrayList resultConfigArray = recordDetailsHandler.getResultsConfigArray();
 if (results != null)   {
    keys.add("EUID");
    labelsList.add("EUID");
@@ -362,7 +362,7 @@ if (results != null)   {
                         <tr> 
                             <%HashMap valueMap = (HashMap) results.get(i3);
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
-								 //+ "Sridhar ==== " + (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc])));
+								
 								    String keyValue = (String) keys.toArray()[kc];
 								    String fullfieldValue = (String) fullFieldNamesList.toArray()[kc];
 									

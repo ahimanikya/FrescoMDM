@@ -24,7 +24,6 @@
 /*
  * DeactivatedReportHandler.java 
  * Created on November 23, 2007, 
- * Author : Pratibha, Sridhar
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
@@ -84,7 +83,6 @@ import com.sun.mdm.index.objects.epath.EPathException;
 
 
 /**
- * @author Sridhar Narsingh
  * @exception ValidationException when entry is not valid.
  * This is a handler called by the JSF 
  */

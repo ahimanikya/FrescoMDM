@@ -25,7 +25,6 @@
 /*
  * HashMapHandler.java 
  * Created on September 21, 2007, 11:58 AM
- * Author : RajaniKanth
  *  
  */
 

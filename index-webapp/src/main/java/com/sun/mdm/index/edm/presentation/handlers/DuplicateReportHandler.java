@@ -24,7 +24,6 @@
 /*
  * DuplicateReportHandler.java 
  * Created on November 19, 2007, 
- * Author : Pratibha, Sridhar
  *  
  */ 
  

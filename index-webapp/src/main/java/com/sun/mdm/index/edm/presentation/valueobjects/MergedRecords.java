@@ -9,9 +9,7 @@ package com.sun.mdm.index.edm.presentation.valueobjects;
 
 import java.util.ArrayList;
 
-/**
- * @author Sridhar Narsingh
- */
+
 public class MergedRecords {
 
     /**
@@ -208,4 +206,5 @@ public class MergedRecords {
     }
     
 }
+
 

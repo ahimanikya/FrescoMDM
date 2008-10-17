@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.faces.event.*;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -29,11 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
-import net.java.hulp.i18n.LocalizationSupport;
 /**
  * Generic class to build the screen object
- * @author Sridhar Narsingh, Rajani Kanth
- * www.ligaturesoftware.com
  */
 public class ScreenConfiguration {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ScreenConfiguration");
@@ -212,7 +207,7 @@ public class ScreenConfiguration {
             Iterator iteratorScreenConfig = screenConfigList.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-                //07/24/08Sridhar:Added the != null condition as a precaution to fix the bug#66
+                //07/24/08 Added the != null condition as a precaution to fix the bug#66
                 if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
@@ -230,7 +225,7 @@ public class ScreenConfiguration {
                             FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
                             screenConfigArray.add(object);
                         }
-                    }//07/24/08Sridhar:Added the != null condition as a precaution to fix the bug#66                
+                    }//07/24/08 Added the != null condition as a precaution to fix the bug#66                
                 } else if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() == 1){
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
@@ -359,7 +354,7 @@ public class ScreenConfiguration {
     }
 
     public boolean checkOneOfManyCondition() {
-        //Modified by Sridhar on 7/24/2008        
+        //Modified  on 7/24/2008        
         HashMap oneofCheckMap = new HashMap();
         oneofCheckMap.putAll(getUpdateableFeildsMap());
         oneofCheckMap.remove("lidmask"); //Do not consider lidmask for one-to-many check
@@ -384,8 +379,6 @@ public class ScreenConfiguration {
     }
     
 /**
- * Added by Sridhar Narsingh
- * sridhar@ligaturesoftware.com
  * Checks if the user has entered at least on of the the required fields in the group as
  * defined in the midm configuration file 
  * Modified Date:05/27/2008
@@ -431,8 +424,6 @@ public class ScreenConfiguration {
     }
 
 /**
- * Added by Sridhar Narsingh
- * sridhar@ligaturesoftware.com
  * Checks if the user has entered the values for all the required fields as
  * defined in the midm configuration file 
  * Modified Date:05/28/2008
@@ -655,7 +646,7 @@ public class ScreenConfiguration {
      */
     public int getPossilbeSearchTypesCount() {
         int searchCount= 0;
-        //07/24/08 Sridhar:Added the != null condition as a precaution to fix the bug#66                
+        //07/24/08 Added the != null condition as a precaution to fix the bug#66                
         if (screenObject!=null && screenObject.getSearchScreensConfig() != null ){
                  return screenObject.getSearchScreensConfig().size();
         }else
@@ -975,7 +966,7 @@ public class ScreenConfiguration {
     }
     
 /**
- * @author Sridhar Narsingh
+
  * modified date:05/28/2008
  * This method checks if the screen has any One of Group condition
  * @return true if the oneOfGroup exists in the screen configuration
@@ -1004,7 +995,6 @@ public class ScreenConfiguration {
     }
 
 /**
- * @author Sridhar Narsingh
  * modified date:05/28/2008
  * This method checks if the screen has required fields
  * @return true if the oneOfGroup exists in the screen configuration
@@ -1049,8 +1039,6 @@ public class ScreenConfiguration {
 
     
     /**
-     * Added by Raajni Kanth
-     * rkanth@ligaturesoftware.com
      * Checks if the user has entered the values with proper input mask as 
      * defined in the midm configuration file 
      * Modified Date:07/18/2008
@@ -1090,8 +1078,6 @@ public class ScreenConfiguration {
     }
     
     /**
-     * Added by Raajni Kanth
-     * rkanth@ligaturesoftware.com
      * Checks if the user has entered the values with proper input mask as 
      * defined in the midm configuration file 
      * Modified Date:07/18/2008

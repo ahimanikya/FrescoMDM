@@ -25,18 +25,14 @@
 /*
  * TransactionHandler.java 
  * Created on October 18, 2007, 6:15PM
- * Author : Pratibha, Sridhar
  *  
  */
 
 package com.sun.mdm.index.edm.presentation.handlers;
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.master.MergeResult;
-import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.page.PageException;
 import java.rmi.RemoteException;
-import javax.faces.event.*;
-import javax.faces.event.*;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
@@ -56,7 +52,6 @@ import com.sun.mdm.index.master.search.transaction.TransactionSearchObject;
 import com.sun.mdm.index.master.search.transaction.TransactionSummary;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
@@ -65,8 +60,6 @@ import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.objects.EnterpriseObjectHistory;
 import com.sun.mdm.index.objects.exception.ObjectException;
 
-import com.sun.mdm.index.util.LogUtil;
-//import com.sun.mdm.index.util.Logger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,17 +67,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
-import com.sun.mdm.index.edm.services.configuration.ScreenObject;
-import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
-import net.java.hulp.i18n.LocalizationSupport;
 
 public class TransactionHandler extends ScreenConfiguration {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.TransactionHandler");
@@ -173,7 +162,7 @@ public class TransactionHandler extends ScreenConfiguration {
                 return null;
             }
             
-            //Added by Sridhar to check the format of the user enter LID value adheres to the 
+            //Added to check the format of the user enter LID value adheres to the 
             //System defined LID format
             if((getUpdateableFeildsMap().get("LID") != null && getUpdateableFeildsMap().get("LID").toString().trim().length() > 0)) {
                 if (!super.checkMasking((String)getUpdateableFeildsMap().get("LID"), (String)getUpdateableFeildsMap().get("lidmask"))) {
@@ -673,7 +662,7 @@ public class TransactionHandler extends ScreenConfiguration {
             
             MasterControllerService objMasterControllerService = new MasterControllerService();
             EnterpriseObjectHistory viewMergehist = objMasterControllerService.viewMergeRecords(transactionNumber);
-            CompareDuplicateManager compareDuplicateManager=new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager=new MidmUtilityManager();
             TransactionSearchObject transactionSearchObject = new TransactionSearchObject();
             //set the transaction number to the transaction summary object
             transactionSearchObject.getTransactionObject().setTransactionNumber(transactionNumber);
@@ -689,22 +678,22 @@ public class TransactionHandler extends ScreenConfiguration {
                         if (viewMergehist != null) {
                             if (viewMergehist.getBeforeEO1() != null) {
                                 //eoArrayList.add(viewMergehist.getBeforeEO1());
-                                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO1(), screenObject);
+                                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO1(), screenObject);
                                 eoArrayList.add(eoMap);
                             }
                             if (viewMergehist.getBeforeEO2() != null) {
                                 //eoArrayList.add(viewMergehist.getBeforeEO2());
-                                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO2(), screenObject);
+                                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO2(), screenObject);
                                 eoArrayList.add(eoMap);
                             }
                             if (viewMergehist.getAfterEO2() != null) {
                                 //eoArrayList.add(viewMergehist.getAfterEO2());
-                                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
+                                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
                                 eoArrayList.add(eoMap);
                             }
                             if (ts.getEnterpriseObjectHistory().getAfterEO() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
+                            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
                             eoArrayList.add(eoMap);
                             }
                         }
@@ -712,23 +701,23 @@ public class TransactionHandler extends ScreenConfiguration {
                     } else {
                         if (ts.getEnterpriseObjectHistory().getBeforeEO1() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO1());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO1(), screenObject);
+                            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO1(), screenObject);
                             eoArrayList.add(eoMap);
                         }
                         if (ts.getEnterpriseObjectHistory().getBeforeEO2() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO2());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO2(), screenObject);
+                            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO2(), screenObject);
                             eoArrayList.add(eoMap);
                         }
 
                         if (ts.getEnterpriseObjectHistory().getAfterEO() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
+                            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
                             eoArrayList.add(eoMap);
                         }
                         if (ts.getEnterpriseObjectHistory().getAfterEO2() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO2(), screenObject);
+                            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO2(), screenObject);
                             eoArrayList.add(eoMap);
                         }
 
@@ -1058,7 +1047,7 @@ public class TransactionHandler extends ScreenConfiguration {
 
    
      /** 
-     * Added By Rajani Kanth  on 07/17/2008 <br>
+     * Added  on 07/17/2008 <br>
      * 
      * This method is called from the ajax services for unmerging the enterprise object.<br>
      *
@@ -1122,7 +1111,7 @@ public class TransactionHandler extends ScreenConfiguration {
         return retHashMap;
     }
      /** 
-     * Added By Rajani Kanth  on 07/17/2008 <br>
+     * Added  on 07/17/2008 <br>
      * 
      * This method is called from the ajax services for unmerging the enterprise object.<br>
      *
@@ -1156,11 +1145,11 @@ public class TransactionHandler extends ScreenConfiguration {
             }
 
             MergeResult unMergeResult = masterControllerService.previewUnmerge(transactionNumber);
-            CompareDuplicateManager compareDuplicateManager  = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager  = new MidmUtilityManager();
             
             if (unMergeResult.getDestinationEO() != null && unMergeResult.getSourceEO() != null) {
-                 //retHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject);
-                 retHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(unMergeResult.getSourceEO(), screenObject);
+                 //retHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject);
+                 retHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(unMergeResult.getSourceEO(), screenObject);
              }
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));

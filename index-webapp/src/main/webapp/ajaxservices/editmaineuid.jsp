@@ -1,8 +1,30 @@
 <%-- 
     Document   : editmaineuid
     Created on : Jan 4, 2008, 3:42:00 PM
-    Author     : Rajani Kanth M
-                 www.ligaturesoftware.com
+
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
 --%>
 
 <%@page contentType="text/html"%>
@@ -160,7 +182,7 @@ if(session!=null){
                                 </tr>
                                 <tr>
 
-  								<!-- Added by Narayan Bhat on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->                                                                 
+  								<!-- Added on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->                                                                 
 								<% 
  								 String URL= "euiddetails.jsf?euid="+euidValue;
 								 %>
@@ -524,11 +546,10 @@ if(session!=null){
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="2"><!-- modified by by Bhat on 15-10-08 as fix of 15 -->
+                                                                    <td colspan="2"><!-- modified by  on 15-10-08 as fix of 15 -->
 																	<a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:if(editMinorObjectType.length<1){
 																	showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event);
-																	document.getElementById('EO<%=request.getParameter("MOT")%>buttons').style.visibility = 'visible';
-																	document.getElementById('EO<%=request.getParameter("MOT")%>buttons').style.display = 'block';
+																	 
 																	}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"
 																	class="button">
 																	<span>
@@ -657,7 +678,7 @@ if(session!=null){
 					</tr>
                     <tr>
 					  <td>
-					  <!-- modified by Bhat on 15-10-08 as fix of 15 -->
+					  <!-- modified  on 15-10-08 as fix of 15 -->
 					    <div style="visibility:visible;display:block;" id="EO<h:outputText value='#{childNodesName}'/>buttons">
 					    <table cellpadding="0" cellspacing="0" border="0">
 						  <tr>
@@ -1257,7 +1278,7 @@ if(session!=null){
                                                                 <tr>
                                                                     <td colspan="2">
                                                       
-                                                      <!-- modified by Bhat on 22-09-08 for editMinorObjectType.length validation -->
+                                                      <!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 																	<a href="javascript:void(0)" title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  onclick="javascript:if(editMinorObjectType.length<1){
 																	showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)
 																	}else{showUnSavedAlert(event,editMinorObjectType,editObjectType)}" class="button">
@@ -1446,7 +1467,7 @@ if(session!=null){
                     <tr>
 					  <td>
 					  <nobr>
-					  <%if("active".equalsIgnoreCase(soStatus)) {%> <!-- modified by Bhat on 15-10-08 as fix of 15 -->				    
+					  <%if("active".equalsIgnoreCase(soStatus)) {%> <!-- modified  on 15-10-08 as fix of 15 -->				    
 					    <div style="visibility:visible;display:block;" id="<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>editSOButtons">
 						 <table cellpadding="0" cellspacing="0" border="0">
 						   <tr>
@@ -1569,7 +1590,7 @@ if(session!=null){
                     </div>         
                 </div>         
     <!-- END Extra divs for NEW  SO-->
-	<!-- Modified By Narahari.M on 23-09-2008 to incorporate confirmation pop up windows -->
+	<!-- Modified  on 23-09-2008 to incorporate confirmation pop up windows -->
            <div id="lockSBRDiv" class="confirmPreview" style="TOP:620px;LEFT:450px;height:100px;VISIBILITY:hidden;display:none;">
                <form id="lockFieldsForm">
 				<input type="hidden" id="hiddenLockFields" name="hiddenLockFields" title="hiddenLockFields"/>
@@ -1742,7 +1763,7 @@ if(session!=null){
                 </table> 
                 </form>
             </div> 
-         <!-- Added By Narahari.M on 23-09-2008 for all information popups -->
+         <!-- Added  on 23-09-2008 for all information popups -->
   		 <div id="successDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
                <form id="successDiv">
                 <table border="0" cellpadding="0" cellspacing="0">
@@ -1783,7 +1804,7 @@ if(session!=null){
         </body>
     </html>
 
- <!-- Added By Narahari.M on 23-09-2008 to make confirmation popups dragable -->
+ <!-- Added  on 23-09-2008 to make confirmation popups dragable -->
 	<script>
 	dd_link=new YAHOO.util.DD("linkSoDiv");
 	dd_unlink=new YAHOO.util.DD("unLinkSoDiv");

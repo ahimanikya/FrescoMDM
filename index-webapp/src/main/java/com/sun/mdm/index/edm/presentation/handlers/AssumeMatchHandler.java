@@ -23,18 +23,16 @@
 /*
  * AssumeMatchHandler.java 
  * Created on October 17, 2007, 04:45 PM
- * Authors : Pratibha, Sridhar Narsingh, Rajani Kanth
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.presentation.valueobjects.AssumeMatchesRecords;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
-import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.ProcessingException;
@@ -48,9 +46,6 @@ import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
-import com.sun.mdm.index.page.PageException;
-
-//import com.sun.mdm.index.util.LogUtil;
 //import com.sun.mdm.index.util.Logger;
 
 //import com.sun.mdm.index.util.Localizer;
@@ -62,15 +57,11 @@ import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
-import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
 
-import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -113,7 +104,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     **/
     private HashMap parametersMap  = new HashMap();
 
-    CompareDuplicateManager  compareDuplicateManager  = new CompareDuplicateManager();
+    MidmUtilityManager  midmUtilityManager  = new MidmUtilityManager();
 
     /**
      *Operations class used for implementing the security layer from midm-security.xml file
@@ -175,7 +166,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 return null;
             }
             
-            //Added by Sridhar to check the format of the user enter LID value adheres to the 
+            //Added   to check the format of the user enter LID value adheres to the 
             //System defined LID format
             if((getUpdateableFeildsMap().get("LID") != null && getUpdateableFeildsMap().get("LID").toString().trim().length() > 0)) {
                 if (!super.checkMasking((String)getUpdateableFeildsMap().get("LID"), (String)getUpdateableFeildsMap().get("lidmask"))) {
@@ -756,7 +747,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "Compare the selected EUID of the Assumed Match Search Result (Preview)");
             
-            HashMap previewAMEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
+            HashMap previewAMEO = midmUtilityManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
 
             httpRequest.setAttribute("undoAssumedMatchId", assumedMatchId);
             httpRequest.setAttribute("previewAMEO", previewAMEO);
@@ -795,7 +786,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                                "Undo Assumed Match");
 
             if (amPreviewEnterpriseObject != null) {
-                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);
+                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);
                 euidsMapList.add(eoMap);
             }
              
@@ -834,7 +825,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "Compare the selected EUID of the Assumed Match Search Result (Preview)");
             
-            previewAMEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
+            previewAMEO = midmUtilityManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
             httpRequest.setAttribute("undoAssumedMatchId", assumedMatchId);
             httpRequest.setAttribute("previewAMEO", previewAMEO);
 
@@ -871,7 +862,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                                "Undo Assumed Match");
 
             if (amPreviewEnterpriseObject != null) {
-                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);
+                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);
                 euidsMapList.add(eoMap);
             }             
             httpRequest.setAttribute("comapreEuidsArrayList", euidsMapList);
@@ -896,7 +887,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             EnterpriseObject eo  = masterControllerService.getEnterpriseObject(assumedMatchEUID);
             if(eo == null ) return null;
             //get the enterprise object for the assumed match EUID        
-            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             //put Assumed match summary System/LID in the hashmap
             eoArrayList.add(eoMap);
 

@@ -25,13 +25,12 @@
 /*
  * SearchDuplicatesHandler.java 
  * Created on September 12, 2007, 11:58 AM
- * Author : Pratibha, RajaniKanth
  *  
  */ 
 
 package com.sun.mdm.index.edm.presentation.handlers; 
 
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.presentation.security.Operations;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
@@ -155,7 +154,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 return null;
             }
 
-            //Added by Sridhar to check the format of the user enter LID value adheres to the 
+            //Added to check the format of the user enter LID value adheres to the 
             //System defined LID format
             if((getUpdateableFeildsMap().get("LID") != null && getUpdateableFeildsMap().get("LID").toString().trim().length() > 0)) {
                 if (!super.checkMasking((String)getUpdateableFeildsMap().get("LID"), (String)getUpdateableFeildsMap().get("lidmask"))) {
@@ -267,13 +266,13 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             return null;
         }
         
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
        
         //Build and arraylist of hashmaps for the duplicates before putting in the request
         ArrayList newFinalArray  = new ArrayList();        
         
         try {
-              //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
+              //EPathArrayList epathList  = midmUtilityManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
               EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
 
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
@@ -432,14 +431,14 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     //This method is used to set the array list of duplicates in the session for the compare duplicates page.
     public void buildCompareDuplicateEuids(String compareEuids){
             String[] compareEuidsSplitted = getStringEUIDs(compareEuids);
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
             float wt = 0.0f;
             ArrayList compareEOArrayList = new ArrayList();
             try {
             for (int j = 0; j < compareEuidsSplitted.length; j++) {
                 String duplicateEuid = compareEuidsSplitted[j];
                 EnterpriseObject eo = masterControllerService.getEnterpriseObject(duplicateEuid);
-                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                 //HashMap eoMap = new HashMap();
                 eoMap.put("EUID", eo.getEUID());
                 if (j > 0) {
@@ -615,7 +614,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             } else {
                 potentialDuplicateSearchObject.setStatus(null);
             }
-            //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
+            //EPathArrayList epathList  = midmUtilityManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
             EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
 
             //set fields to retrieve
@@ -869,9 +868,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             httpRequest.setAttribute("sourceEUIDs" + getRowCount(), sourceEUIDs);
 
             httpRequest.setAttribute("destnEuid"+ getRowCount(), destnEuid);
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
             EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
-            HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+            HashMap eoMultiMergePreview = midmUtilityManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
             eoMultiMergePreview.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(resulteo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
             eoMultiMergePreview.put("EUID", resulteo.getEUID());
             httpRequest.setAttribute("eoMultiMergePreview" + getRowCount(), eoMultiMergePreview);
@@ -1057,7 +1056,7 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
             }
 
             //Build and arraylist of hashmaps for the duplicates before putting in the request
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
             float wt = 0.0f;
             for (int i = 0; i < finalArrayList.size(); i++) {
                 ArrayList newInnerArray  = new ArrayList();        
@@ -1065,7 +1064,7 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                 for (int j = 0; j < innerArrayList.size(); j++) {
                     String euids = (String) innerArrayList.get(j);
                     EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
-                    //HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                    //HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                     HashMap eoMap = new HashMap();
                     //set the values for the preview
                     eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(eo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
@@ -1422,7 +1421,7 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             }
 
             EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
-            HashMap eoMultiMergePreview = new HashMap();//compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+            HashMap eoMultiMergePreview = new HashMap();//midmUtilityManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
             eoMultiMergePreview.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(resulteo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));           
             eoMultiMergePreview.put("EUID", resulteo.getEUID());
             finalPreviewMap.put("eoMultiMergePreview" + rowCount, eoMultiMergePreview);
@@ -1509,7 +1508,7 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
 }        
 
    /** 
-     * Addded  By Rajani Kanth  on 22/08/2008 <br>
+     * Addded on 22/08/2008 <br>
      * 
      * This method is used to build String of duplicate euids delimited by commas (,) <br>
      * 
@@ -1544,6 +1543,7 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
 
 
 }
+
 
 
 

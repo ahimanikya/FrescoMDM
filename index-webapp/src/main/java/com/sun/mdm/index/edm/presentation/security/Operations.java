@@ -25,7 +25,6 @@
 /*
  * Operations.java 
  * Created on November 20, 2007
- * Author : Rajanikanth
  *  
  */
 

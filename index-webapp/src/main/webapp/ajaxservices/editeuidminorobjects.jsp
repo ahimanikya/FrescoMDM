@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -27,18 +52,35 @@
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"%>
 
 
  
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
 <% 
-//Author Sridhar Narsingh
-//sridhar@ligaturesoftware.com
-//http://www.ligaturesoftware.com
-//This page is an Ajax Service, never to be used directly from the Faces-confg.
-//This will render a datatable of minor object to be rendered on the calling JSP.
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -121,7 +163,7 @@ FieldConfig[] fcRootArray = (FieldConfig[]) allNodeFieldConfigsMap.get(rootNodeN
 MasterControllerService masterControllerService = new MasterControllerService();
 SystemObject singleSystemObjectLID = (SystemObject) session.getAttribute("singleSystemObjectLID");
 
-CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 Iterator messagesIter = null ;
 String sucessMessage = new String();
 //String URI = request.getRequestURI();
@@ -406,7 +448,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 <%if (!isValidationErrorOccured && isSave) { %>  <!-- Save System Object -->
   <%
-     String megredEuid  = compareDuplicateManager.getMergedEuid(editEuid);
+     String megredEuid  = midmUtilityManager.getMergedEuid(editEuid);
 	  
   %>
 <%if(megredEuid == null) {%> <!-- EUID merge condition-->
@@ -436,7 +478,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+				<td><!-- Modified  on 23-09-2008 for all information popups -->
  				          <script>
 								window.location = "#top";
 								document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
@@ -484,7 +526,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		  <%
 			}
           %>
-		  <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+		  <!-- Modified  on 23-09-2008 for all information popups -->
  		 <script>
 			 window.location = "#top";
  			 document.getElementById("successMessageDiv").innerHTML = '<%=bundle.getString("eo_edit_update_success_text")%>';
@@ -520,7 +562,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
      <%}%>
  <%} else {%> <!-- merged euid condition-->
         <table>
-         <tr><td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+         <tr><td><!-- Modified  on 23-09-2008 for all information popups -->
          <script>
 			window.location = "#top";
 			document.getElementById("successMessageDiv").innerHTML = '<%=megredEuid%>  <%=bundle.getString("active_euid_text")%>  <%=editEuid%>.';
@@ -552,7 +594,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			    String styleClass = ((i%2==0)?"even":"odd");
 			    HashMap minorObjectMap  = (HashMap) thisMinorObjectListCodes.get(i); 
 				if (MasterControllerService.MINOR_OBJECT_UPDATE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  {
-				     checkOverWrites = compareDuplicateManager.checkOverWrites(editEuid, minorObjectMap);
+				     checkOverWrites = midmUtilityManager.checkOverWrites(editEuid, minorObjectMap);
 				} else {
 					 checkOverWrites = true;
 				}
@@ -583,7 +625,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","");
@@ -592,7 +634,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>								  
 			                    <td valign="center" width="14px">
-									<!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+									<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
@@ -721,7 +763,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 			     
 				if (MasterControllerService.MINOR_OBJECT_UPDATE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  {
-				     checkOverWrites = compareDuplicateManager.checkOverWrites(editEuid, minorObjectMap);
+				     checkOverWrites = midmUtilityManager.checkOverWrites(editEuid, minorObjectMap);
 				} else {
 					 checkOverWrites = true;
 				}
@@ -754,7 +796,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
@@ -763,7 +805,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>
 			                    <td valign="center" width="14px">
-								<!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
@@ -1021,7 +1063,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 				
 				if (MasterControllerService.MINOR_OBJECT_UPDATE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  {
-				     checkOverWrites = compareDuplicateManager.checkOverWrites(editEuid, minorObjectMap);
+				     checkOverWrites = midmUtilityManager.checkOverWrites(editEuid, minorObjectMap);
 				} else {
 					 checkOverWrites = true;
 				}
@@ -1055,7 +1097,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
@@ -1065,7 +1107,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 								  
 			                    <td valign="center"n width="14px">
-								<!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
@@ -1264,7 +1306,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 				
 				if (MasterControllerService.MINOR_OBJECT_UPDATE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  {
-				     checkOverWrites = compareDuplicateManager.checkOverWrites(editEuid, minorObjectMap);
+				     checkOverWrites = midmUtilityManager.checkOverWrites(editEuid, minorObjectMap);
 				} else {
 					 checkOverWrites = true;
 				}
@@ -1298,7 +1340,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
@@ -1307,7 +1349,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>							  
 		                      <td valign="center" width="14px">
- 								<!-- modified by Bhat on 23-09-08 for editMinorObjectType.length validation -->
+ 								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
@@ -1399,7 +1441,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	   document.getElementById('<%=request.getParameter("MOT")%>EOInnerForm').reset();		  
    </script>
 <%}%>
-<%} else if(isMinorObjectView){%> <!-- added by Bhat on 15-10-08 as fix of bug 15 -->
+<%} else if(isMinorObjectView){%> <!-- added  on 15-10-08 as fix of bug 15 -->
     <script>
 	   
        document.getElementById('EO<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ ' '+'<%=request.getParameter("MOT")%>';
@@ -1757,7 +1799,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+				<td><!-- Modified  on 23-09-2008 for all information popups -->
  				          <script>
 								window.location = "#top";
 								document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
@@ -1770,7 +1812,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</div>
 
 	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 	
-	 <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+	 <!-- Modified  on 23-09-2008 for all information popups -->
   <script>
 
 	  document.getElementById('linkSoDiv').style.visibility='hidden';
@@ -1835,7 +1877,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+				<td><!-- Modified  on 23-09-2008 for all information popups -->
  				          <script>
 								window.location = "#top";
 								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%> <%=bundle.getString("concurrent_mod_text")%>';
@@ -1864,7 +1906,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 
   </script>
-  <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+  <!-- Modified  on 23-09-2008 for all information popups -->
   <script>
 	window.location = "#top";
 	document.getElementById("successMessageDiv").innerHTML = '<%=fieldDisplayName%> <%=bundle.getString("unlink_field_success_text")%>';
@@ -1922,7 +1964,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+				<td><!-- Modified  on 23-09-2008 for all information popups -->
  				          <script>
 								window.location = "#top";
 								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
@@ -1936,7 +1978,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 	 <%}else if ("EO_EDIT_SUCCESS".equalsIgnoreCase(sucessMessage))  { 
  		 %>
-		 <!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+		 <!-- Modified  on 23-09-2008 for all information popups -->
        <script>
 		   document.getElementById('lockSBRDiv').style.visibility = 'hidden';
 			window.location = "#top";
@@ -1986,7 +2028,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+				<td><!-- Modified  on 23-09-2008 for all information popups -->
  				          <script>
 								window.location = "#top";
 								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%> ';
@@ -1999,7 +2041,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</div>
 
 	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {%> 			  
-  <table><tr><td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+  <table><tr><td><!-- Modified  on 23-09-2008 for all information popups -->
   <script>
 			window.location = "#top";
 			document.getElementById("successMessageDiv").innerHTML = '<%=request.getParameter("hiddenUnLockFieldDisplayName")%> <%=bundle.getString("unlock_field_success_text")%> ';
@@ -2041,7 +2083,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <div class="ajaxalert">
 	  <table>
 			<tr>
-				<td><!-- Modified By Narahari.M on 23-09-2008 for all information popups -->
+				<td><!-- Modified  on 23-09-2008 for all information popups -->
  				          <script>
 								window.location = "#top";
 								document.getElementById("successMessageDiv").innerHTML = 'EUID  <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%> ';
@@ -2093,7 +2135,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <% } %>
 
  </body>
- <!-- Added By Narahari.M on 23-09-2008 to make information popups dragable -->
+ <!-- Added  on 23-09-2008 to make information popups dragable -->
  <script>
 dd=new YAHOO.util.DD("successDiv");
 </script>

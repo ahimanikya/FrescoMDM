@@ -9,10 +9,7 @@ package com.sun.mdm.index.edm.presentation.valueobjects;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Sridhar Narsingh
- */
+
 public class UnmergedRecords {
     /**
      * EUID to be displayed on the JSF page
@@ -208,4 +205,5 @@ public class UnmergedRecords {
     }
     
 }
+
 

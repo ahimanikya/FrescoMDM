@@ -1,3 +1,28 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -37,11 +62,10 @@
 <%@ page import="com.sun.mdm.index.master.MergeResult"  %>
  
  <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
- <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
  <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler"  %>
  <%@ page import="com.sun.mdm.index.edm.presentation.handlers.TransactionHandler"  %>
   
- <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+ <%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -71,9 +95,6 @@ if(session!=null){
            <!--there is no custom header content for this example-->
      </head>
 <%
- //Author Rajani Kanth
- //rkanth@ligaturesoftware.com
- //http://www.ligaturesoftware.com
  //Date Created : 03-July-2008
  //This page is an Ajax Service, never to be used directly from the Faces-confg.
 %>
@@ -113,13 +134,12 @@ boolean isSessionActive = true;
 			Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 	
 			ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
             TransactionHandler transactionHandler = new TransactionHandler();
-            //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
+            //EPathArrayList ePathArrayList = midmUtilityManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
 
             EPath ePath = null;
-            PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
 
             Operations operations = new Operations();
@@ -327,7 +347,7 @@ boolean isSessionActive = true;
                                             String menuClass = "menutop";
                                             String dupfirstBlue = "dupfirst";
                                             String styleClass="yellow";
-                                            String subscripts[] = compareDuplicateManager.getSubscript(eoArrayListObjects.length);
+                                            String subscripts[] = midmUtilityManager.getSubscript(eoArrayListObjects.length);
                                              if (eoArrayListObjects.length == 1) {
                                               styleClass = "blue";
                                             }
@@ -436,7 +456,7 @@ boolean isSessionActive = true;
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
 
-                                                              maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                              maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
                                                               int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                                    %>
                                                                     <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
@@ -495,7 +515,7 @@ boolean isSessionActive = true;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%>
+																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoStatus)%>
 																</font></td></tr>
 																
                                                                     <%
@@ -579,7 +599,7 @@ boolean isSessionActive = true;
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
 int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 
@@ -607,7 +627,7 @@ if (countEnt == 0) {
 																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);%>
   
 <%if (countEnt > 0) {
-   minorObjectMapCompare =  compareDuplicateManager.getDifferenceMinorObjectMap((ArrayList)minorObjectCompareHashMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
+   minorObjectMapCompare =  midmUtilityManager.getDifferenceMinorObjectMap((ArrayList)minorObjectCompareHashMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
  }
 %>
 
@@ -746,7 +766,7 @@ if (countEnt == 0) {
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%>
+																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(soStatus)%>
 																</font></td></tr>
 
 																	<%
@@ -790,7 +810,7 @@ if (countEnt == 0) {
 
 int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = midmUtilityManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 

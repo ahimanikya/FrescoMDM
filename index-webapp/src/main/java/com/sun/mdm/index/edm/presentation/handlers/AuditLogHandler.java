@@ -23,7 +23,6 @@
 /*
  * AuditLogHandler.java 
  * Created on September 30, 2007, 
- * Author : Anil, Rajanikanth
  *  
  */
 package com.sun.mdm.index.edm.presentation.handlers;
@@ -214,7 +213,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                 return null;
             }
             
-            //Added by Sridhar to check the format of the user enter LID value adheres to the 
+            //Added  to check the format of the user enter LID value adheres to the 
             //System defined LID format
             if((getUpdateableFeildsMap().get("LID") != null && getUpdateableFeildsMap().get("LID").toString().trim().length() > 0)) {
                 if (!super.checkMasking((String)getUpdateableFeildsMap().get("LID"), (String)getUpdateableFeildsMap().get("lidmask"))) {

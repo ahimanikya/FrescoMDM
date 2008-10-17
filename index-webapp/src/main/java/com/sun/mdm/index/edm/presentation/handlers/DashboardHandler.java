@@ -31,7 +31,7 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
-import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.master.ProcessingException;
@@ -76,7 +76,7 @@ public class DashboardHandler  {
     private MasterControllerService masterControllerService = new MasterControllerService();
     
     //instantiate the compare duplicate manager
-    private CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+    private MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
     
     //get the screen object from session
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
@@ -168,7 +168,7 @@ public class DashboardHandler  {
     
      /** 
      * 
-     * Modified By Rajani Kanth on 11/06/2008
+     * Modified on 11/06/2008
      * 
      * This method is used to search the single EUID. This method will also informs the user about the merged EUIDS.
      *
@@ -196,7 +196,7 @@ public class DashboardHandler  {
                 if (enterpriseObject == null) {
                     session.removeAttribute("enterpriseArrayList");
                     
-                    String mergeEuid  = compareDuplicateManager.getMergedEuid(this.getSingleEuid());
+                    String mergeEuid  = midmUtilityManager.getMergedEuid(this.getSingleEuid());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) {
                         String errorMessage = "'" + this.getSingleEuid() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -220,7 +220,7 @@ public class DashboardHandler  {
                 } else {
                     //set the screen object of the record details screen once EUID is found 
                     session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
                     //Insert audit log here for EUID search
                     masterControllerService.insertAuditLog((String) session.getAttribute("user"),
@@ -268,7 +268,7 @@ public class DashboardHandler  {
 					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, errorMessage, errorMessage));
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
                     //Insert audit log here for EUID search
                     masterControllerService.insertAuditLog((String) session.getAttribute("user"),
@@ -312,7 +312,7 @@ public class DashboardHandler  {
 					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
                     //Insert audit log here for EUID search
                     masterControllerService.insertAuditLog((String) session.getAttribute("user"),
@@ -357,7 +357,7 @@ public class DashboardHandler  {
 					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
                     //Insert audit log here for EUID search
                     masterControllerService.insertAuditLog((String) session.getAttribute("user"),
@@ -387,7 +387,7 @@ public class DashboardHandler  {
 
      /** 
      * 
-     * Modified By Rajani Kanth on 11/06/2008
+     * Modified on 11/06/2008
      * 
      * This method is used to search the more than one euids for comparing.
      *
@@ -419,7 +419,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid1());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid1());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid1() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -428,7 +428,7 @@ public class DashboardHandler  {
                         errorsList.add(errorMessage); //add the errors to the array list
                      }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
 
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
@@ -458,7 +458,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid2());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid2());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid2() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -467,7 +467,7 @@ public class DashboardHandler  {
                          errorsList.add(errorMessage); //add the errors to the array list
                      }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
                         session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
@@ -496,7 +496,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid3());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid3());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid3() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -505,7 +505,7 @@ public class DashboardHandler  {
                         errorsList.add(errorMessage); //add the errors to the array list
                      }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
                         session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
@@ -531,7 +531,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid4());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid4());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid4() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -540,7 +540,7 @@ public class DashboardHandler  {
                         errorsList.add(errorMessage); //add the errors to the array list
                       }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
                         session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
@@ -607,7 +607,7 @@ public class DashboardHandler  {
 
      /** 
      * 
-     * Added By Rajani Kanth on 11/06/2008
+     * Added By  on 11/06/2008
      * 
      * This method is used to search the more than one euids for comparing. This method is called from the ajax services.
      *
@@ -639,7 +639,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid1());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid1());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid1() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -648,7 +648,7 @@ public class DashboardHandler  {
                         errorsList.add(errorMessage); //add the errors to the array list
                      }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
 
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
@@ -677,7 +677,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid2());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid2());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid2() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -686,7 +686,7 @@ public class DashboardHandler  {
                          errorsList.add(errorMessage); //add the errors to the array list
                      }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
                          newArrayList.add(eoMap);
@@ -714,7 +714,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid3());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid3());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid3() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -723,7 +723,7 @@ public class DashboardHandler  {
                         errorsList.add(errorMessage); //add the errors to the array list
                      }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
                         newArrayList.add(eoMap);
@@ -748,7 +748,7 @@ public class DashboardHandler  {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
-                    String mergeEuid = compareDuplicateManager.getMergedEuid(this.getEuid4());
+                    String mergeEuid = midmUtilityManager.getMergedEuid(this.getEuid4());
                     if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { // If EO NOT FOUND
                         String errorMessage = "'" + this.getEuid4() + "' : " + bundle.getString("enterprise_object_not_found_error_message");
                         errorsList.add(errorMessage); //add the errors to the array list
@@ -757,7 +757,7 @@ public class DashboardHandler  {
                         errorsList.add(errorMessage); //add the errors to the array list
                       }
                 } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
                     if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
                          newArrayList.add(eoMap);

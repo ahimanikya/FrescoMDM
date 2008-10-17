@@ -1,3 +1,29 @@
+<%--
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+--%>
+
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -32,9 +58,6 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
 <%
-//Author Sridhar Narsingh
-//sridhar@ligaturesoftware.com
-//http://www.ligaturesoftware.com
 //This page is an Ajax Service, never to be used directly from the Faces-confg.
 //This will render a datatable of minor object to be rendered on the calling JSP.
 %>
@@ -117,7 +140,7 @@ boolean isminorObjSave = (null == minorObjSave?false:true);
 //Variables required for Edit
 String editIndex = request.getParameter("editIndex");
 boolean isEdit = (null == editIndex?false:true);
-boolean isMinorObjectView = (null == request.getParameter("isView")?false:true); // added by Bhat on 15-10-08 as a fix of 15
+boolean isMinorObjectView = (null == request.getParameter("isView")?false:true); // added  on 15-10-08 as a fix of 15
 
 //Variables for Validate LID
 String validate = request.getParameter("validate");
@@ -756,7 +779,7 @@ if (isCancel){
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'> 
@@ -1038,7 +1061,7 @@ if (isCancel){
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
 								  %>						
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'> 
@@ -1244,7 +1267,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
 								  %>
-								<!-- modified by Bhat on 15-10-08 for adding view button -->
+								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
 											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'>
@@ -1312,7 +1335,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
    </script>
 <%}%>
 
-<%}else if(isMinorObjectView){%> <!-- added by Bhat on 15-10-08 as fix of 15 -->
+<%}else if(isMinorObjectView){%> <!-- added  on 15-10-08 as fix of 15 -->
     
 	<script>
     document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
