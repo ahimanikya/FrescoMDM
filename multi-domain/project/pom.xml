@@ -177,6 +177,11 @@
             <artifactId>org-netbeans-core-multiview</artifactId>
             <version>${netbeans.version}</version>			
         </dependency>
+    	<dependency>
+    		<groupId>mural</groupId>
+    		<artifactId>multidomain-services</artifactId>
+    		<version>${mural.currentVersion}</version>
+    	</dependency>
     </dependencies>
 </project>
 
