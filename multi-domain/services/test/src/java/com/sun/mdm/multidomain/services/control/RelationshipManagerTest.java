@@ -39,8 +39,6 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.query.SearchCriteria;
-import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.util.ObjectBuilder;
 
 /**
@@ -75,86 +73,5 @@ public class RelationshipManagerTest extends TestCase {
     		fail(sx.getMessage());
     	}
     }
-
-    public void xxxtest002() {
-    	try {
-    		SearchOptions searchOptions = new SearchOptions();
-    		
-    		EPathArrayList sourceFields = new EPathArrayList();    		
-    		sourceFields.add("Person.FirstName");
-    		sourceFields.add("Person.LastName");
-    		sourceFields.add("Person.SSN");
-    		sourceFields.add("Person.Address.AddressLine1");
-    		sourceFields.add("Person.Address.City");
-    		searchOptions.setOptions("Person", sourceFields);
-    		
-    		EPathArrayList targetFields = new EPathArrayList();
-    		targetFields.add("Company.CompanyName");
-    		targetFields.add("Company.StockSymbol");
-    		targetFields.add("Company.TaxPayerID");
-    		targetFields.add("Company.Address.AddressLine1");
-    		targetFields.add("Company.Address.City");    		
-    		searchOptions.setOptions("Company", targetFields);
-    		    		
-    		SearchCriteria searchCriteria = new SearchCriteria();
-    		
-    		Map<String, String> sourceSearchCriteria = new HashMap<String, String>();
-    		// Person.FirstName
-    		// Person.LastName
-    		// Person.SSN
-    		// Person.Address.AddressLine1
-    		// Person.Address.City
-    		sourceSearchCriteria.put("FirstName","Foo");
-    		SystemObject sourceSO = ObjectBuilder.createSystemObject("Person", sourceSearchCriteria);
-    		searchCriteria.setSystemObject("Person", sourceSO);
-
-    		Map<String, String> targetSearchCriteria = new HashMap<String, String>();    		
-    		// Company.CompanyName
-    		// Company.StockSymbol
-    		// Company.TaxPayerID
-    		// Company.Address.AddressLine1
-    		// Company.Address.City
-    		// Fix me CompanyName
-    		targetSearchCriteria.put("FirstName", "Foo");
-    		
-    		// Fix me Company
-    		SystemObject targetSO = ObjectBuilder.createSystemObject("Person", targetSearchCriteria);
-    		searchCriteria.setSystemObject("Company", targetSO);
-    		
-    		Relationship relationship = new Relationship();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");    		
-    		//fixme relationship.setStartDate(dateFormat.parse("09/17/2008"));
-    		//fixme relationship.setEndDate(dateFormat.parse("09/18/2008"));
-    		//fixme relationship.setPurgeDate(dateFormat.parse("09/19/2008"));    		
-    		searchCriteria.setRelationship(relationship);
-    		
-    		List<RelationshipObject> ros =relationshipManager.searchRelationships(searchOptions, searchCriteria);
-    		
-    		assertTrue(ros.size() == 3);
-    		//fixme assertTrue("sFoo1".equals(ros.get(0).getSourceObject().getValue("FirstName")));
-    		//fixme assertTrue("sFoo1".equals(ros.get(0).getSourceObject().getValue("LastName")));
-    		//fixme assertTrue("tFoo1".equals(ros.get(0).getTargetObject().getValue("FirstName")));
-    		assertTrue("tFoo1".equals(ros.get(0).getTargetObject().getValue("LastName")));
-    		
-    		//fixme assertTrue("sFoo2".equals(ros.get(1).getSourceObject().getValue("FirstName")));
-    		//fixme assertTrue("sFoo2".equals(ros.get(1).getSourceObject().getValue("LastName")));
-    		assertTrue("tFoo2".equals(ros.get(1).getTargetObject().getValue("FirstName")));
-    		assertTrue("tFoo2".equals(ros.get(1).getTargetObject().getValue("LastName")));
-    		
-    		//fixme assertTrue("sFoo3".equals(ros.get(2).getSourceObject().getValue("FirstName")));
-    		//fixme assertTrue("sFoo3".equals(ros.get(2).getSourceObject().getValue("LastName")));
-    		assertTrue("tFoo3".equals(ros.get(2).getTargetObject().getValue("FirstName")));
-    		assertTrue("tFoo3".equals(ros.get(2).getTargetObject().getValue("LastName")));
-    		
-    		
-    	} catch (ObjectException oe) {
-    		fail(oe.getMessage());    		    		    		   		    		
-    	} catch(EPathException ex) {
-    		fail(ex.getMessage());    		
-    	} catch(ServiceException sx) {
-    		fail(sx.getMessage());
-    	}
-    	
-    }
-    
+   
 }
