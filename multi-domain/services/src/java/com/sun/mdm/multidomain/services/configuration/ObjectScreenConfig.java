@@ -33,7 +33,14 @@ public abstract class ObjectScreenConfig {
 	private ArrayList<SearchResultsConfig> mSearchResultsConfigs;	// ArrayList of SearchResultsConfig objects
 	private ArrayList<SearchResultDetailsConfig> mSearchResultDetailsConfigs;	// ArrayList of SearchResultDetails 
     
-    
+
+    public ObjectScreenConfig() {
+    	mFieldConfigs = new ArrayList<FieldConfig>();		
+    	mSearchScreenConfigs = new ArrayList<SearchScreenConfig>();	
+    	mSearchResultsConfigs = new ArrayList<SearchResultsConfig>();	
+    	mSearchResultDetailsConfigs = new ArrayList<SearchResultDetailsConfig>();	
+    }    
+
     public String getID() {         // retrieves the ID
         return mId;
     }
