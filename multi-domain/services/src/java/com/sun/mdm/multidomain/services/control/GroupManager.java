@@ -41,7 +41,7 @@ import com.sun.mdm.multidomain.services.util.Localizer;
  * GroupManager class.
  * @author cye
  */
-public class GroupManager implements ServiceManager {
+public class GroupManager {
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.GroupManager");
     private static Localizer localizer = Localizer.getInstance();
    

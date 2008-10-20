@@ -34,15 +34,13 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
 
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.query.SearchCriteria;
-import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
  * HierarchyManager class.
  * @author cye
  */
-public class HierarchyManager implements ServiceManager {
+public class HierarchyManager {
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.HierarchyManager");
     private static Localizer localizer = Localizer.getInstance();
 
@@ -218,18 +216,6 @@ public class HierarchyManager implements ServiceManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */    
     public void deleteHierarchy(String domain, String parentEUID, List<String> childEUIDs, String hierarchyName) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
-    }
-    
-    /**
-     * Search hierarchy instances for the given domain.
-     * @param domain Domain name.
-     * @param queryCriertia SearchCriteria.
-     * @param queryOptions SearchOptions.
-     * @return List<HierarchyObject> List of hierarchy instances
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public List<HierarchyObject> searchHierarchys(String domain, SearchCriteria queryCriertia, SearchOptions queryOptions) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }
 }

@@ -20,7 +20,7 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.services.context;
+package com.sun.mdm.multidomain.services.core.context;
 
 import java.io.Serializable;
 

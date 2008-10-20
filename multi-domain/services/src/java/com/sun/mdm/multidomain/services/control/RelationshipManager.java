@@ -24,32 +24,44 @@ package com.sun.mdm.multidomain.services.control;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 import net.java.hulp.i18n.Logger;
 
+import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.objects.ObjectNode;
+ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
+import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
-
-import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.multidomain.association.Attribute;
 import com.sun.mdm.multidomain.association.AttributeType;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
+import com.sun.mdm.multidomain.relationship.Relationship;    
+import com.sun.mdm.multidomain.relationship.MultiObject;
+import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
+import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
+import com.sun.mdm.multidomain.query.PageIterator;
+  
+import com.sun.mdm.multidomain.services.core.ViewHelper;
+import com.sun.mdm.multidomain.services.core.QueryBuilder;
+import com.sun.mdm.multidomain.services.model.DomainSearch;
+import com.sun.mdm.multidomain.services.model.RelationshipSearch;
+import com.sun.mdm.multidomain.services.model.Field;
+import com.sun.mdm.multidomain.services.model.ObjectView;
+import com.sun.mdm.multidomain.services.model.ObjectRecord;
+import com.sun.mdm.multidomain.services.relationship.RelationshipView;
+import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
+import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.query.SearchCriteria;
-import com.sun.mdm.multidomain.services.query.SearchOptions;
 import com.sun.mdm.multidomain.services.util.Localizer;
-
-import com.sun.mdm.multidomain.services.util.ObjectBuilder;
-
+      
 /**
  * RelationshipManager class
  * @author cye
  */
-public class RelationshipManager implements ServiceManager {
+public class RelationshipManager {
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.RelationshipManager");
     private static Localizer localizer = Localizer.getInstance();
 		
@@ -203,215 +215,8 @@ public class RelationshipManager implements ServiceManager {
     	return relationshipTypes;
     }
         
-    /**
-     * Get a total count of relationship instances for the given relationship type.
-     * @param relationshipType RelationshipType.
-     * @return int Count of relationship instances.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public int getRelationshipCount(RelationshipType relationshipType) throws ServiceException {
-        // demo data
-    	return 3;
-    }
-    
-    /**
-     * Get a list of relationship instances for the given relationship type.
-     * @param relationshipType RelationshipType.
-     * @return List<Relationship> List of relationship instances.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public List<Relationship> getRelationships(RelationshipType relationshipType) throws ServiceException {
-    	List<Relationship> relationships = null;
-    	return relationships;
-    }
-    
-    /**
-     * Add a relationship instance for the given source entity EUID and target entity EUID.
-     * @param sourceDomain Source domain name.
-     * @param sourceEUID Source entity EUID.
-     * @param targetDomain Target domain name.
-     * @param targetEUID Target entity EUID.
-     * @param relationship Relationship instance.
-     * @return String Relationship identifier which is newly added.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public String addRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
-                                  Relationship relationship) 
-        throws ServiceException {        
-    	// demo data
-        throw new ServiceException("Not Implemented Yet");                        
-    }
-
-    /**
-     * Add a relationship instance for the given source entity localId and target entity localId.
-     * @param sourceDomain Source domain name.
-     * @param sourceSystemCode Source domain system code.
-     * @param sourceLID Source domain entity localId.
-     * @param targetDomain Target domain name.
-     * @param targetSystemCode Target domain system code.
-     * @param targetLID Target domain entity localId.
-     * @param relationship Relationship instance.
-     * @return String Relationship identifier which is newly added.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public String addRelationship(String sourceDomain, String sourceSystemCode, String sourceLID, 
-                                  String targetDomain, String targetSystemCode, String targetLID,
-                                  Relationship relationship) 
-        throws ServiceException {        
-        throw new ServiceException("Not Implemented Yet");                        
-    }
-
-    /**
-     * Update an existing relationship instance for the given source entity EUID and target entity EUID.
-     * @param sourceDomain Source domain name.
-     * @param sourceEUID Source entity EUID.
-     * @param targetDomain Target domain name.
-     * @param targetEUID Target entity EUID.
-     * @param relationship Relationship.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public void updateRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
-                                   Relationship relationship) 
-        throws ServiceException {        
-        throw new ServiceException("Not Implemented Yet");                        
-    }
-
-    /**
-     * Update an existing relationship instance for the give source entity localId and target entity localId.
-     * @param sourceDomain Source domain name.
-     * @param sourceSystemCode Source system code.
-     * @param sourceLID Source entity localId.
-     * @param targetDomain Target domain name.
-     * @param targetSystemCode Target system code.
-     * @param targetLID Target entity localId.
-     * @param relationship Relationship.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public void updateRelationship(String sourceDomain, String sourceSystemCode, String sourceLID, 
-                                   String targetDomain, String targetSystemCode, String targetLID,
-                                   Relationship relationship) 
-        throws ServiceException {        
-        throw new ServiceException("Not Implemented Yet");                        
-    }
-    
-    /**
-     * Delete a relationship instance for the given source entity EUID and target entity EUID.
-     * @param sourceDomain Source domain name.
-     * @param sourceEUID Source entity EUID.
-     * @param targetDomain Target domain name.
-     * @param targetEUID Target entity EUID.
-     * @param relationship Relationship.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public void deleteRelationship(String sourceDomain, String sourceEUID, String targetDomain, String targetEUID, 
-                                   Relationship relationship) 
-        throws ServiceException {        
-    	// demo data
-        throw new ServiceException("Not Implemented Yet");                        
-    }
-
-    /**
-     * Delete a relationship instance for the source entity localId and target entity localId.
-     * @param sourceDomain Source domain name.
-     * @param sourceSystemCode Source system code.
-     * @param sourceLID Source entity localId.
-     * @param targetDomain Target domain name.
-     * @param targetSystemCode Target system code.
-     * @param targetLID Target entity localId.
-     * @param relationship Relationship.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public void deleteRelationship(String sourceDomain, String sourceSystemCode, String sourceLID, 
-                                   String targetDomain, String targetSystemCode, String targetLID,
-                                   Relationship relationship) 
-        throws ServiceException {        
-        throw new ServiceException("Not Implemented Yet");                        
-    }
-    
-    /**
-     * Search relationship instances for the given query filter and query object.
-     * @param searchOptions
-     * @param searchCriteria
-     * @return a list of relationship object
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public List<RelationshipObject> searchRelationships(SearchOptions searchOptions, SearchCriteria searchCriteria)
-        throws ServiceException {
-    	// demo data
-      	List<RelationshipObject> ros = new ArrayList<RelationshipObject>();    	
-    	
-      	// build ro1
-    	RelationshipObject ro1 = new RelationshipObject();    	
-    	Relationship  relationship1 = searchCriteria.getRelationship();
-    	Map<String, String> sourceValues = new HashMap<String, String>();
-    	sourceValues.put("Person.FirstName","sFoo1");
-    	sourceValues.put("Person.LastName","sFoo1");    	
-    	ObjectNode object1 = ObjectBuilder.createObjectNode("Person",sourceValues);
-    	
-    	Map<String, String> targetValues = new HashMap<String, String>();
-    	targetValues.put("Person.FirstName","tFoo1");
-    	targetValues.put("Person.LastName","tFoo1");    	    	
-    	// Fix me Company
-    	ObjectNode object2 = ObjectBuilder.createObjectNode("Person",targetValues);
-    	ro1.setRelationship(relationship1);
-    	//fixme ro1.setSourceObject(object1);
-    	ro1.setTargetObject(object2);    	    	
-      	ros.add(ro1);
-
-      	// build ro2
-    	RelationshipObject ro2 = new RelationshipObject();    	
-    	Relationship  relationship2 = searchCriteria.getRelationship();
-    	sourceValues = new HashMap<String, String>();
-    	sourceValues.put("Person.FirstName","sFoo2");
-    	sourceValues.put("Person.LastName","sFoo2");    	
-    	object1 = ObjectBuilder.createObjectNode("Person",sourceValues);
-    	targetValues = new HashMap<String, String>();
-    	targetValues.put("Person.FirstName","tFoo2");
-    	targetValues.put("Person.LastName","tFoo2");   
-    	// Fix me Company    	
-    	object2 = ObjectBuilder.createObjectNode("Person",targetValues);
-    	ro2.setRelationship(relationship2);
-    	//fixme ro2.setSourceObject(object1);
-    	ro2.setTargetObject(object2);    	    	
-      	ros.add(ro2);
-      	
-      	// build ro3
-    	RelationshipObject ro3 = new RelationshipObject();    	
-    	Relationship  relationship3 = searchCriteria.getRelationship();
-    	sourceValues = new HashMap<String, String>();
-    	sourceValues.put("Person.FirstName","sFoo3");
-    	sourceValues.put("Person.LastName","sFoo3");    	
-    	object1 = ObjectBuilder.createObjectNode("Person",sourceValues);
-    	targetValues = new HashMap<String, String>();
-    	targetValues.put("Person.FirstName","tFoo3");
-    	targetValues.put("Person.LastName","tFoo3");   
-    	// Fix me Company
-    	object2 = ObjectBuilder.createObjectNode("Person",targetValues);
-    	ro3.setRelationship(relationship3);
-    	//fixme ro3.setSourceObject(object1);
-    	ro3.setTargetObject(object2);    	    	
-      	ros.add(ro3);
-      	
-    	return ros;
-    }
-    
-    /**
-     * Search relationship instances for the given query options and query criteria.
-     * @param sourceDomain Source domain name.
-     * @param sourceCriteria Source search criteria.
-     * @param targetDomain Target domain name.
-     * @param targetCriteria target search criteria.
-     * @return List<RelationshipObject> List of relationship object.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public List<RelationshipObject> searchRelationships(String sourceDomain, SearchOptions sourceCriteria, 
-                                                        String targetDomain, SearchOptions targetCriteria)
-        throws ServiceException {        
-        throw new ServiceException("Not Implemented Yet");                        
-    }   
-    
-    private void init() {
-    	// demo data
+    private void init(){
+    // demo data
     	RelationshipType rt1 = new RelationshipType();
     	rt1.setName("worksfor");
         rt1.setId("1");
@@ -466,4 +271,189 @@ public class RelationshipManager implements ServiceManager {
         rts.add(rt5);   
         rts.add(rt6);                           
     }
+    
+    public List<RelationshipView> searchRelationships(DomainSearch sourceDomainSearch, 
+                                                      DomainSearch targetDomainSearch, 
+                                                      RelationshipSearch relationshipSearch) 
+        throws ServiceException {
+        
+        List<RelationshipView> relationships = new ArrayList<RelationshipView>(); 
+        /* ToDo
+        try {
+             // build search options and criteria for source and target
+            MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
+            MultiDomainSearchCriteria mdSearchCriteria = QueryBuilder.buildMultiDomainSearchCriteria(sourceDomainSearch, targetDomainSearch, relationshipSearch);
+            PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);
+            relationships = ViewHelper.buildRelationshipView(pages);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch(UserException uex) {
+            throw new ServiceException(uex);
+        }
+        return relationships;
+        */  
+        //demo
+        RelationshipView rs1 = new RelationshipView();
+        rs1.setSourceDomain(sourceDomainSearch.getName());
+        rs1.setTargetDomain(targetDomainSearch.getName());
+        rs1.setName(relationshipSearch.getName());
+        rs1.setId("relationshipId");
+        rs1.setSourceEUID("sourceEUID");
+        rs1.setTargetEUID("targetEUID");
+        rs1.setSourceHighLight("sourceHighLight");
+        rs1.setTargetHighLight("targetHighLight");
+        relationships.add(rs1);
+        
+         while(sourceDomainSearch.hasNext()) {
+             Field sf = sourceDomainSearch.next();
+             System.out.println("Source => SearchField:" + sf.getName() + ":" + sf.getValue());
+         }
+                
+         while(targetDomainSearch.hasNext()) {
+             Field sf = targetDomainSearch.next();
+             System.out.println("target => SearchField:" + sf.getName() + ":" + sf.getValue());
+         }
+         
+         while(relationshipSearch.hasNext()) {
+             Field sf = relationshipSearch.next();
+             System.out.println("relationship => SearchField:" + sf.getName() + ":" + sf.getValue());
+         }
+        
+        RelationshipView rs2 = new RelationshipView();
+        rs2.setSourceDomain(sourceDomainSearch.getName());
+        rs2.setTargetDomain(targetDomainSearch.getName());
+        rs2.setName(relationshipSearch.getName());
+        rs2.setId("relationshipId");
+        rs2.setSourceEUID("sourceEUID");
+        rs2.setTargetEUID("targetEUID");
+        rs2.setSourceHighLight("sourceHighLight");
+        rs2.setTargetHighLight("targetHighLight");        
+        relationships.add(rs2);
+        
+        
+        return relationships; 
+    }
+    public RelationshipComposite getRelationship(RelationshipView relationshipView)
+        throws ServiceException {
+      
+        RelationshipComposite relationshipComposite = new RelationshipComposite();
+        /* ToDO
+        try {
+             // build search options and criteria for source and target
+            Relationship relationship = new Relationship();
+            relationship.setRelationshipID(relationshipView.getId());
+            relationship.setSourceEUID(relationshipView.getSourceEUID());
+            relationship.setTargetEUID(relationshipView.getTargetEUID());
+            // need to add a new method in multiDomainService to getRelationship
+            MultiObject relationshipObject = multiDomainService.getRelationship(relationship);
+            relationshipComposite = ViewHelper.buildRelationshipComposite(relationshipObject);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch(UserException uex) {
+            throw new ServiceException(uex);
+        }
+        return relationshipComposite;        
+        */
+        
+        //demo
+        System.out.println(relationshipView.getSourceDomain() + ":" + relationshipView.getTargetDomain());
+        
+        RelationshipComposite rsc = new RelationshipComposite();
+        
+        ObjectRecord sr = new ObjectRecord();
+        sr.setName(relationshipView.getSourceDomain());
+        sr.add(new Field("Foo1","Foo1"));
+        rsc.setSourceRecord(sr);
+        
+        ObjectRecord tr = new ObjectRecord();
+        tr.setName(relationshipView.getSourceDomain());
+        tr.add(new Field("Foo2","Foo2"));
+        rsc.setTargetRecord(tr);
+        
+        RelationshipRecord rs = new RelationshipRecord();
+        rs.setId(relationshipView.getId());
+        rs.setName(relationshipView.getName());
+        rs.add(new com.sun.mdm.multidomain.services.relationship.Attribute("Foo3","Foo3"));
+        rsc.setRelationshipRecord(rs);
+        return rsc;
+    }
+    public List<ObjectView> searchEnterprises(DomainSearch domainSearch)
+        throws ServiceException {
+           
+        List<ObjectView> objects = new ArrayList<ObjectView>();
+        /* ToDo
+        try {
+             // build search options and criteria for source and target
+            EOSearchOptions eoSearchOptions = QueryBuilder.buildEOSearchOptions(domainSearch);
+            EOSearchCriteria eoSearchCriteria = QueryBuilder.buildEOSearchCriteria(domainSearch);
+            PageIterator<ObjectNode> pages = multiDomainService.searchEnterprises(domainSearch.getName(), eoSearchOptions, eoSearchCriteria);
+            objects = ViewHelper.buildObjectView(pages);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch(UserException uex) {
+            throw new ServiceException(uex);
+        }
+        */ 
+        //demo
+        objects.add(new ObjectView("foo","000-000-0000", "I am foo"));
+        objects.add(new ObjectView("foo","000-000-0001", "I am foo too"));
+        return objects;
+    } 
+    public ObjectRecord getEnterprise(ObjectView object)
+        throws ServiceException {
+        /* ToDo
+        ObjectRecord objectRecord = null;
+        try {           
+            // need to add a new method in multiDomainService to getObject
+            ObjectNode objectNoe = multiDomainService.getObject(object.getName(), object.getEUID());
+            objectRecord = ViewHelper.buildObjectRecord(objectNoe);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch(UserException uex) {
+            throw new ServiceException(uex);
+        }
+        return objectRecord;        
+        */
+        //demo
+        ObjectRecord record = new ObjectRecord(object.getName(), object.getEUID());
+        record.add(new Field("foo","foo"));
+        return record;
+    }  
+    public String addRelationship(RelationshipRecord relationshipRecord)
+        throws ServiceException { 
+        /* ToDo
+        String id = null;
+        try {
+            Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord); 
+            id = multiDomainService.createRelationship(relationship);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }  
+        */
+        //demo
+        return relationshipRecord.toString();  
+    }
+    public void deleteRelationship(RelationshipView relationshipView)
+        throws ServiceException {
+         try {
+            multiDomainService.deleteRelationship(relationshipView.getId());
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }            
+    }
+    public void updateRelationship(RelationshipRecord relationshipRecord)
+        throws ServiceException {
+        try {
+            Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
+            multiDomainService.updateRelationship(relationship);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }        
+    }    
 }
