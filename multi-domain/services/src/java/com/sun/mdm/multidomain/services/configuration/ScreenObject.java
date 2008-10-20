@@ -209,7 +209,7 @@ public abstract class ScreenObject {
 	            
 	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
 	    if (dsc != null) {
-	        return dsc.getSearchResultsDetailsConfigs();
+	        return dsc.getSearchResultDetailsConfigs();
 	    }
 	    return null;
 	}
@@ -226,7 +226,7 @@ public abstract class ScreenObject {
 	            
 	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
 	    if (dsc != null) {
-	        return dsc.getSearchResultsDetailsConfigs();
+	        return dsc.getSearchResultDetailsConfigs();
 	    }
 	    return null;
 	}

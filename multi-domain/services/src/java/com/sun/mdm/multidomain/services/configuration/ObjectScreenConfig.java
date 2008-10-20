@@ -69,7 +69,18 @@ public abstract class ObjectScreenConfig {
     public void setSearchScreenConfigs(ArrayList<SearchScreenConfig> searchScreenConfigs) { // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
         mSearchScreenConfigs = searchScreenConfigs;
     }
-
+    
+    public void addSearchScreenConfig(SearchScreenConfig searchScreenConfig) 
+            throws Exception {
+        mSearchScreenConfigs.add(searchScreenConfig);
+    }
+    // RESUME HERE
+/*    
+    public void removeSearchScreenConfig(SearchScreenConfig searchScreenConfig) 
+            throws Exception {
+        mSearchScreenConfigs.remove(searchScreenConfig);
+    }
+*/    
     public ArrayList<SearchResultsConfig> getSearchResultsConfigs() {  // returns the configuration for all first tier search results list screens (ArrayList of SearchResultsConfig objects)
         return mSearchResultsConfigs;
     }
@@ -78,20 +89,48 @@ public abstract class ObjectScreenConfig {
         mSearchResultsConfigs = searchResultsConfigs;
     }
 
-    public ArrayList<SearchResultDetailsConfig> getSearchResultsDetailsConfigs() { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
+    // add a search result configuration
+    public void addSearchResultsConfig(SearchResultsConfig searchResultsConfig) 
+            throws Exception {
+        mSearchResultsConfigs.add(searchResultsConfig);
+    }
+    
+    // RESUME HERE
+/*    
+    public void removeSearchResultsConfig(SearchResultsConfig searchResultsConfig) 
+            throws Exception {
+        mSearchResultsConfigs.remove(searchResultsConfig);
+    }
+*/
+    public ArrayList<SearchResultDetailsConfig> getSearchResultDetailsConfigs() { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
         return mSearchResultDetailsConfigs;
     }
 
-    public void setSearchResultsDetailsConfigs(ArrayList<SearchResultDetailsConfig> searchResultDetailsConfigs) { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
+    public void setSearchResultDetailsConfigs(ArrayList<SearchResultDetailsConfig> searchResultDetailsConfigs) { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
         mSearchResultDetailsConfigs = searchResultDetailsConfigs;
     }
 
-    public SearchResultsConfig getSearchResultsConfig(Integer searchScreenConfigId) {  // returns the search results details configuration for a given SearchScreenConfig object.
+    public SearchResultsConfig getSearchResultsConfig(Integer searchScreenConfigId) 
+            throws Exception {  // returns the search results details configuration for a given SearchScreenConfig object.
         return null;
     }
 
-    public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) {  // returns the search results details configuration for a given SearchResultsConfig object.
+    public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) throws Exception {  // returns the search results details configuration for a given SearchResultsConfig object.
         return null;
     }
+    
+    // add a search result details configuration
+    public void addSearchResultDetailsConfig(SearchResultDetailsConfig searchResultDetailsConfig) 
+            throws Exception {
+        mSearchResultDetailsConfigs.add(searchResultDetailsConfig);
+    }
+    // RESUME HERE
+/*    
+    
+    public void removeSearchResultDetailsConfig(SearchResultDetailsConfig searchResultDetailsConfig) 
+            throws Exception {
+        mSearchResultDetailsConfigs.remove(searchResultDetailsConfig);
+    }
+*/    
 
 }

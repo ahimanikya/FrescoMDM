@@ -40,9 +40,9 @@ public class MDConfigManager {
     
     public static final String FIELD_DELIM = ".";
     
-	private HashMap<Integer, ScreenObject> mScreens;		// each entry contains a ScreenObject
-	private HashMap<String, Relationship> mRelationships;	// each entry contains a Relationship
-	private HashMap<String, Domain> mDomains;		// each entry contains a Domain
+	private HashMap<Integer, ScreenObject> mScreens;
+	private HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
+	private HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
 	private MDConfigManager mInstance;	// instance
 	private Integer mInitialScreenID;	// ID of the initial screen
 	private ObjectSensitivePlugIn mSecurityPlugIn;
@@ -61,50 +61,78 @@ public class MDConfigManager {
 	public void reinitialize() {  //  forces reinitialization of the config manager
 	}
 
+    // add an entry into the DomainScreenConfig hashmap
+    
+    public void addDomainScreenConfig(DomainScreenConfig dsc) throws Exception {  
+        if (dsc == null) {
+            throw new Exception(mLocalizer.t("CFG506: Domain Screen Configuration cannot be null."));
+        }
+        // RESUME HERE
+//        String domainName = dsc.getDomain().getName();
+//        mDomainScreenConfigs.put(domainName, dsc);
+    }
+    
+    // remove an entry from the DomainScreenConfig hashmap
+    
+    public void removeDomainScreenConfig(String domainName) throws Exception {  
+        if (domainName == null) {
+            throw new Exception(mLocalizer.t("CFG509: Domain name cannot be null."));
+        }
+        mDomainScreenConfigs.remove(domainName);
+    }
+    
+    //  retrieves a Domain
+    
+	public Domain getDomain(String domainName) throws Exception {  
+        if (domainName == null || domainName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG504: Domain name cannot be null nor an empty string."));
+        }
+        DomainScreenConfig dsc = mDomainScreenConfigs.get(domainName);
+        if (dsc== null) {
+            throw new Exception(mLocalizer.t("CFG505: The domain named \"{0}\" could not be located.", domainName));
+        }
+        Domain domain = dsc.getDomain();
+        return domain;
+	}
+	
     // add an entry into the ScreenObject hashmap
     
     public void addScreen(ScreenObject screenObject) throws Exception {  
         if (screenObject == null) {
             throw new Exception(mLocalizer.t("CFG507: ScreenObject cannot be null."));
         }
-        // RESUME HERE--retrieve the ScreenID from the ScreenObject
-        Integer screenID = new Integer(0);
+        Integer screenID = screenObject.getID();
         mScreens.put(screenID, screenObject);
-    }
-    
-    // add an entry into the Relationship hashmap
-    // I'm not sure this will work--relationships are defined within a domain
-    
-    public void addRelationship(Relationship relationship) throws Exception {  
-        if (relationship == null) {
-            throw new Exception(mLocalizer.t("CFG508: Relationship cannot be null."));
-        }
-        // RESUME HERE--retrieve the ScreenID from the ScreenObject
-        String relationshipName = null;
-        mRelationships.put(relationshipName, relationship);
-    }
-    
-    // add an entry into the Domain hashmap
-    
-    public void addDomain(Domain domain) throws Exception {  
-        if (domain == null) {
-            throw new Exception(mLocalizer.t("CFG506: Domain cannot be null."));
-        }
-        String domainName = null;
-        // RESUME HERE--retrieve the domainName from the domain
-        mDomains.put(domainName, domain);
     }
     
 	public HashMap<Integer, ScreenObject> getScreens() {  //  returns hashmap of all top-level screen objects (id is the key)
 	    return mScreens;
 	}
 
-	public HashMap<String, Relationship> getRelationships() {  //  returns hashmap of all Relationship instances (sourceDomain.name+targetDomain.name+relationshipName is the key)
-	    return mRelationships;
+    // removes an entry from the ScreenObject hashmap
+    
+    public void removeScreen(Integer screenID) throws Exception {  
+        mScreens.remove(screenID);
+    }
+    
+    // add an entry into the Relationship hashmap
+    // I'm not sure this will work--relationships are defined within a domain
+    
+    public void addRelationshipScreenConfig(RelationshipScreenConfig rsc) throws Exception {  
+        if (rsc == null) {
+            throw new Exception(mLocalizer.t("CFG508: Relationship Screen Configuration cannot be null."));
+        }
+        // RESUME HERE--retrieve the ScreenID from the ScreenObject
+        String relationshipName = null;
+        mRelationshipScreenConfigs.put(relationshipName, rsc);
+    }
+    
+	public HashMap<String, RelationshipScreenConfig> getRelationships() {  //  returns hashmap of all Relationship instances (sourceDomain.name+targetDomain.name+relationshipName is the key)
+	    return mRelationshipScreenConfigs;
 	}
 
-	public HashMap<String, Domain> getDomains(){  //  returns hashmap of all Domain instances (domainName is the key)
-	    return mDomains;
+	public HashMap<String, DomainScreenConfig> getDomainScreenConfigs(){  //  returns hashmap of all Domain Screen Configuration instances (domainName is the key)
+	    return mDomainScreenConfigs;
 	}
 	
 	//  returns a screen with the matching ID
@@ -143,17 +171,5 @@ public class MDConfigManager {
 	    return null;
     }
 
-    //  retrieves a Domain
-    
-	public Domain getDomain(String domainName) throws Exception {  
-        if (domainName == null || domainName.length() == 0) {
-            throw new Exception(mLocalizer.t("CFG504: Domain name cannot be null nor an empty string."));
-        }
-        Domain domain = mDomains.get(domainName);
-        if (domain == null) {
-            throw new Exception(mLocalizer.t("CFG505: The domain named \"{0}\" could not be located.", domainName));
-        }
-        return domain;
-	}
     
 }
