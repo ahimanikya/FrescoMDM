@@ -1,18 +1,11 @@
 package com.sun.mdm.multidomain.synchronization.api;
 
-import com.sun.mdm.multidomain.association.Domain;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
-
 public interface Rule {
     
-    /**
-     * Execute this rule
-     * 
-     * @param sourceDomain the source domain
-     * @param targetDomain the target domain
-     * @param relationshipType the relationship type
-     */
-    public void execute(Domain sourceDomain, Domain targetDomain, RelationshipType relationshipType);
+    public static final String RELATIONSHIP = "RELATIONSHIP";
+    public static final String HIERARCHY = "HIERARCHY";
+    public static final String GROUP = "GROUP";
+    public static final String CATEGORY = "CATEGORY";
     
     /**
      * Return name of this rule.
@@ -20,4 +13,11 @@ public interface Rule {
      * @return the rule name
      */
     public String getName();
+    
+    /**
+     * Return the type of this rule.
+     * 
+     * @return the type
+     */
+    public String getType();
 }
