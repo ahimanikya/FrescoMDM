@@ -12,8 +12,8 @@
     <br clear="all">
     <br>
     <br> 
-    <p>This is <f:message key="webpage.title" />(RMWA) or web console(RMWC) welcome page based on Spring Web MVC.</p><br> 
-    <i>This is just a template page which displays concepts of RMWC without any expected UI and look-and feel design. The expected page flow should be a login page and then follows a landing page through which a user accesses to different functional pages based on the security roles. To display a finalized page of the project, modify</i> <tt>index.jsp</tt> <i>, or create your own welcome page then change the redirection in </i><tt>redirect.jsp</tt> <i>to point to the finalized RMWC page and also update the welcome-file setting in </i><tt>web.xml</tt>. 
+    <p>This is <f:message key="webpage.title" /> welcome page based on Spring Web MVC.</p><br> 
+    <i>This is just a template page which displays concepts of  <f:message key="webpage.title" /> without any expected UI and look-and feel design. The expected page flow should be a login page and then follows a landing page through which a user accesses to different functional pages based on the security roles. To display a finalized page of the project, modify</i> <tt>index.jsp</tt> <i>, or create your own welcome page then change the redirection in </i><tt>redirect.jsp</tt> <i>to point to the finalized RMWC page and also update the welcome-file setting in </i><tt>web.xml</tt>. 
     <i>The project development is in progress.</i>
     <i>The supported browsers are Internet Explorer, Mozilla Firefox, Safari, Chrome, ...</i>                
     <p>   

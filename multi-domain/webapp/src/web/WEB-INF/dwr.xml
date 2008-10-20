@@ -21,6 +21,14 @@
 
     <create creator="spring" javascript="RelationshipHandler" scope="session">
       <param name="beanName" value="RelationshipHandler"/>
+      <include method="searchRelationships" />
+      <include method="getRelationship" />
+      <include method="searchEnterprises" />
+      <include method="getEnterprise" />
+      <include method="addRelationship" />
+      <include method="updateRelationship" />
+      <include method="deleteRelationship" />
+    
     </create>
 
     <create creator="spring" javascript="HierarchyTypeHandler" scope="session">
@@ -31,6 +39,7 @@
       <param name="beanName" value="HierarchyHandler"/>
     </create>
     
+    <!-- relationship definition handling -->
     <convert converter="bean" match="com.sun.mdm.multidomain.association.Domain">
         <param name="include" value="name" />
     </convert>		
@@ -43,17 +52,71 @@
         <param name="include" value="name" />
     </convert>	
         
+    <!-- relationship handling-->    
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.DomainSearch">
+        <param name="include" value="name, type, fields" />
+    </convert>	        
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.RelationshipSearch">
+        <param name="include" value="name, fields" />
+    </convert>	
+        
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.Field">
+        <param name="include" value="name, value" />
+    </convert>	    
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.Attribute">
+        <param name="include" value="name, value" />
+    </convert>	
+    
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipView">     
+        <param name="include" value="name,id,sourceDomain,targetDomain,sourceEUID,targetEUID,sourceHighLight,targetHighLight" />
+    </convert> 
+      <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipRecord">
+        <param name="include" value="name,id,sourceDomain,targetDomain,sourceEUID,targetEUID,startDate,endDate,purgeDate,attributes" />
+    </convert>  
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipComposite">
+        <param name="include" value="sourceRecord,targetRecord,relationshipRecord" />
+    </convert> 
+   
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.ObjectView">
+        <param name="include" value="name,EUID,highLight" />
+    </convert>
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.ObjectRecord">
+        <param name="include" value="name,EUID,fields" />
+    </convert>
+    
     <convert match="com.sun.mdm.multidomain.services.core.ServiceException" converter="exception">
       <param name="include" value="message,lineNumber"/>
     </convert>
     <signatures>
         <![CDATA[
             import java.util.List;
-            import Attribute;
-            import RelationshipType;
+            import com.sun.mdm.multidomain.association.Attribute;
+            import com.sun.mdm.multidomain.relationship.RelationshipType;
             RelationshipType.setAttributes(List<Attribute> attributes);            
-            List<Attribute> RelationshipType.getAttributes();                        
+            List<Attribute> RelationshipType.getAttributes();  
         ]]>
+        <![CDATA[
+            import java.util.List;
+            import com.sun.mdm.multidomain.services.model.Field;
+            import com.sun.mdm.multidomain.services.model.DomainSearch;
+            import com.sun.mdm.multidomain.services.model.RelationshipSearch;
+            DomainSearch.setFields(List<Field> fields);            
+            List<Field> DomainSearch.getFields();
+            RelationshipSearch.setFields(List<Field> fields);            
+            List<Field> RelationshipSearch.getFields();     
+        ]]>        
+        <![CDATA[
+            import java.util.List;
+            import com.sun.mdm.multidomain.services.model.Field;
+            import com.sun.mdm.multidomain.services.model.ObjectRecord;
+            import com.sun.mdm.multidomain.services.relationship.Attribute;
+            import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
+            ObjectRecord.setFields(List<Field> fields);            
+            List<Field> ObjectRecord.getFields();
+            RelationshipRecord.setAttributes(List<Attribute> attributes);            
+            List<Attribute> RelationshipRecord.getAttributes(); 
+        ]]>   
+        
     </signatures>
   </allow>
 </dwr>

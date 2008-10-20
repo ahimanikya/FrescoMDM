@@ -35,12 +35,12 @@
     <servlet-mapping>
  	<servlet-name>dwr-invoker</servlet-name>
  	<url-pattern>/dwr/*</url-pattern>
-    </servlet-mapping>
-    
+    </servlet-mapping> 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
+   
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
