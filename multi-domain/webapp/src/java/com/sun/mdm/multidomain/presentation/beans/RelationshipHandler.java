@@ -23,18 +23,19 @@
 package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
+import java.util.ArrayList;
 
-import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
-import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+import com.sun.mdm.multidomain.services.model.ObjectRecord;
+import com.sun.mdm.multidomain.services.model.ObjectView;
+import com.sun.mdm.multidomain.services.model.Field;
+import com.sun.mdm.multidomain.services.model.DomainSearch;
+import com.sun.mdm.multidomain.services.model.RelationshipSearch;
+import com.sun.mdm.multidomain.services.relationship.Attribute;
+import com.sun.mdm.multidomain.services.relationship.RelationshipView;
+import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
+import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 
-import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
-
-import com.sun.mdm.multidomain.services.query.SearchCriteria;
-import com.sun.mdm.multidomain.services.query.SearchOptions;
-import com.sun.mdm.multidomain.services.control.ServiceManagerFactory;
+import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;     
 
@@ -52,59 +53,38 @@ public class RelationshipHandler {
     public RelationshipHandler() 
         throws ServiceException {  
         relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();        
-    }
-    
-    /**
-     * Get a list of relationships for the given search options and criteria.
-     * @param searchOptions SearchOptions.
-     * @param searchCriteria SearchCriteria.
-     * @return List<RelationshipObject> List of RelationshipObject.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
-     */
-    public List<RelationshipObject> searchRelationships(SearchOptions searchOptions, SearchCriteria searchCriteria)
+    }  
+    public List<RelationshipView> searchRelationships(DomainSearch sourceDomainSearch, 
+                                                      DomainSearch targetDomainSearch, 
+                                                      RelationshipSearch relationshipSearch)
         throws ServiceException { 
-        List<RelationshipObject> relationships = null;
-        try {
-            relationships = relationshipManager.searchRelationships(searchOptions, searchCriteria);
-        } catch(ServiceException sex) {
-            throw sex;
-        }
-        return relationships;
+        return relationshipManager.searchRelationships(sourceDomainSearch, 
+                                                       targetDomainSearch, 
+                                                       relationshipSearch);
+        
     }
- 
-    public int getRelationshipCount(String domain, ObjectNode entity)
+    public RelationshipComposite getRelationship(RelationshipView relationship)
+        throws ServiceException {   
+        return relationshipManager.getRelationship(relationship);
+    }      
+    public List<ObjectView> searchEnterprises(DomainSearch domainSearch)
         throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");
-    }
-   
-    public int getRelationshipCount(RelationshipType relationshipType)
+         return relationshipManager.searchEnterprises(domainSearch);    
+    } 
+    public ObjectRecord getEnterprise(ObjectView object)
         throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");
+        return relationshipManager.getEnterprise(object);
+    }  
+    public String addRelationship(RelationshipRecord relationship)
+        throws ServiceException {     
+        return  relationshipManager.addRelationship(relationship);
     }
-       
-    public RelationshipObject searchRelationship(Relationship relationship)
+    public void deleteRelationship(RelationshipView relationship)
         throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");
+        relationshipManager.deleteRelationship(relationship);
     }
-  
-    public List<ObjectNode> searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria)
+    public void updateRelationship(RelationshipRecord relationship)
         throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");    
+        relationshipManager.updateRelationship(relationship);
     }
-     
-    public String addRelationship(Relationship relationship)
-        throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");
-    }
-    
-    public void deleteRelationship(Relationship relationship)
-        throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");
-    }
-   
-    public void updateRelationship(Relationship relationship)
-        throws ServiceException {
-        throw new  ServiceException ("Not Implemented Yet!");
-    }
-    
 }

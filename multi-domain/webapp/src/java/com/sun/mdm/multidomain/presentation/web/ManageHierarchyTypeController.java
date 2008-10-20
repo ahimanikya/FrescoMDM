@@ -39,7 +39,7 @@ public class ManageHierarchyTypeController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {    
-        String tab = "HierarchyType Management";
+        String tab = "Hierarchy Definition Management";
         return new ModelAndView("managehierarchytype", "tab", tab);
     }    
 }

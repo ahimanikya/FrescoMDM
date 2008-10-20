@@ -23,11 +23,10 @@
 package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import com.sun.mdm.multidomain.association.Domain;
 
-import com.sun.mdm.multidomain.services.control.ServiceManagerFactory;
+import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.MetaDataManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;     
 

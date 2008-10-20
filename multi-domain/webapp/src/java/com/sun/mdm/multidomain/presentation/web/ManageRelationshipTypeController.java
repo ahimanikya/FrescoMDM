@@ -39,7 +39,7 @@ public class ManageRelationshipTypeController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {    
-        String tab = "RelationshipType Management";
+        String tab = "Relationship Definition Management";
         return new ModelAndView("managerelationshiptype", "tab", tab);
     }    
 }

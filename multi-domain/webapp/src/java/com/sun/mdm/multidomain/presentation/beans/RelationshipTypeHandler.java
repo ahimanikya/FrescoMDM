@@ -23,10 +23,11 @@
 package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 
-import com.sun.mdm.multidomain.services.control.ServiceManagerFactory;
+import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;     
 
@@ -61,6 +62,9 @@ public class RelationshipTypeHandler {
         } catch(ServiceException sex) {
             throw sex;
         }
+        if(types == null) {
+            types = new ArrayList<RelationshipType>();
+        }
         return types;
     }
 
@@ -77,6 +81,9 @@ public class RelationshipTypeHandler {
             types = relationshipManager.getTypes(domain);
         } catch(ServiceException sex) {
             throw sex;
+        }
+        if(types == null) {
+            types = new ArrayList<RelationshipType>();
         }
         return types;
     }
