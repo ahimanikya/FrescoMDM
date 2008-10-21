@@ -23,6 +23,10 @@ public class DomainForWebManager {
     
     private ArrayList<RecordDetail> mRecordDetailList = new ArrayList<RecordDetail>();
     
+    private int searchDetailSeqValue = 0;
+    
+    private int recordDetailSeqValue = 0;
+    
     public DomainForWebManager(String name) {
         this.mDomainName = name;
     }
@@ -48,7 +52,21 @@ public class DomainForWebManager {
         //this.mRecordDetail = recordDetail;
     }
     
+    public int generateRecordDetailID() {
+        recordDetailSeqValue++;
+        return recordDetailSeqValue;
+    }
+    
+    public int generateSearchResultID() {
+        searchDetailSeqValue++;
+        return searchDetailSeqValue;
+    }
+    
     public void addRecordDetail(RecordDetail recordDetail) {
+
+        if (recordDetail.getRecordDetailId() > recordDetailSeqValue) {
+            recordDetailSeqValue = recordDetail.getRecordDetailId();
+        }
         mRecordDetailList.add(recordDetail);
     }
     
@@ -63,7 +81,6 @@ public class DomainForWebManager {
     
     public void addSearchType(String screenTitle, SimpleSearchType searchType) {
         mSearchType.add(searchType);
-        //mSearchType.put(screenTitle, searchType);
     }
     
     public void deleteSearchType(String screenTitle) throws Exception {
@@ -76,8 +93,12 @@ public class DomainForWebManager {
     }
     
     public void addSearchDetail(String domainName, int searchResultID, SearchDetail searchDetailObj) {
+
+        if (searchDetailSeqValue < searchDetailObj.getSearchResultID()) {
+                searchDetailSeqValue = searchDetailObj.getSearchResultID();
+        }
+        
         mSearchDetail.add(searchDetailObj);
-        //mSearchDetail.put(domainName + "=" + searchResultID, searchDetailObj);
     }
     
     public void deleteSearchDetail(String domainName, int searchResultID) throws Exception {
@@ -87,6 +108,25 @@ public class DomainForWebManager {
                 break;
             }
         }
+    }
+    
+    public boolean isSearchDetailUsed(SearchDetail searchDetail) {
+        for (SimpleSearchType searchType : mSearchType) {
+            if (searchType.getScreenResultID() == searchDetail.getSearchResultID())
+                return true;
+        }
+        
+        return false;
+    }
+    
+    public boolean isRecordDetailUsed(RecordDetail recordDetail) {
+        for (SearchDetail searchDet :mSearchDetail) {
+            if (searchDet.getRecordDetailID() == recordDetail.getRecordDetailId()) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
 }

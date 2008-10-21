@@ -10,7 +10,13 @@ import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.SearchDetail;
 import java.util.ArrayList;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -28,6 +34,8 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
     
     private boolean bModified = false;
     
+    private NumbericVerifier verifier = new NumbericVerifier();
+    
     /** Creates new form DomainSearchResultDialog */
     public DomainSearchResultDialog(SearchDetail searchDetail, ArrayList<RecordDetail> recordDetailList, boolean isNew) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
@@ -39,14 +47,44 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
             this.jCBRecordDetail.insertItemAt(recDet.getDisplayName(), recDet.getRecordDetailId() - 1);
         }
 
-        //this.jSpinnerItemPerPage.getM
-        this.jSpinnerItemPerPage.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
-        this.jSpinnerMaxItems.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
+        jSpinnerItemPerPage.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
+        jSpinnerMaxItems.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
+        jSpinnerItemPerPage.setInputVerifier(verifier);
+        jSpinnerMaxItems.setInputVerifier(verifier);
         if (isNew) {
             loadNewSearchDetail();
         } else {
             loadSearchDetail();
         }
+        
+        jTableFieldGroup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableFieldGroup.getSelectedRow();
+                FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
+                TableModelField fieldModel = new TableModelField(fieldGroup);
+                 jTableField.setModel(fieldModel);
+
+            }
+        });
+        
+        ListSelectionModel rowSM = jTableFieldGroup.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                //retreiveFieldProperties();
+                TableModelFieldGroup FieldGropModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
+                int iSelectedRow = jTableFieldGroup.getSelectedRow();
+                if (iSelectedRow >= 0) {
+                    int row = jTableFieldGroup.getSelectedRow();
+                    FieldGroup selectGroup = FieldGropModel.getRow(iSelectedRow);
+                    TableModelField fieldModel = new TableModelField(selectGroup);
+                    jTableField.setModel(fieldModel);
+                }
+
+            }
+        });
+
+        
     }
     
     public String getSelectRecordDetail() {
@@ -113,6 +151,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableField = new javax.swing.JTable();
         jBtnRemoveField = new javax.swing.JButton();
+        jBtnAddField = new javax.swing.JButton();
         jBtnOK = new javax.swing.JButton();
         jBtnCancel = new javax.swing.JButton();
 
@@ -208,25 +247,36 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
             }
         });
 
+        jBtnAddField.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_Add")); // NOI18N
+        jBtnAddField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddField(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
+                .add(jBtnAddField)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jBtnRemoveField)
                 .add(18, 18, 18))
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
                     .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 159, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(13, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(128, Short.MAX_VALUE)
-                .add(jBtnRemoveField)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jBtnRemoveField)
+                    .add(jBtnAddField))
                 .addContainerGap())
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel2Layout.createSequentialGroup()
@@ -389,6 +439,10 @@ private void onRemoveGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveField
 // TODO add your handling code here:
 }//GEN-LAST:event_onRemoveField
+
+private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddField
+// TODO add your handling code here:
+}//GEN-LAST:event_onAddField
 
     class TableModelFieldGroup extends AbstractTableModel {
 
@@ -632,8 +686,20 @@ private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     }
 
 
+     class NumbericVerifier extends InputVerifier {
+         public boolean verify(JComponent input) {
+               JTextField tf = (JTextField) input;
+               String numStr = tf.getText();
+               if (Integer.parseInt(numStr) > 0) {
+                   return true;
+               }
+               return false;
+         }
+     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBtnAddField;
     private javax.swing.JButton jBtnAddGroup;
     private javax.swing.JButton jBtnCancel;
     private javax.swing.JButton jBtnOK;

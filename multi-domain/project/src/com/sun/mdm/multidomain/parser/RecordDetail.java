@@ -46,6 +46,11 @@ public class RecordDetail {
         return this.mFieldGroups;
     }
     
+    public void setFieldGroups(ArrayList<FieldGroup> fieldGroups) {
+        this.mFieldGroups = null;
+        this.mFieldGroups = fieldGroups;
+    }
+    
     public void addFieldGroup(FieldGroup fieldGroup) {
         mFieldGroups.add(fieldGroup);
     }

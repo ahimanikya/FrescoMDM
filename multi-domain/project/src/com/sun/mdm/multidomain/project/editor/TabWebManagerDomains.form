@@ -30,7 +30,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTxtDomainName" min="-2" pref="141" max="-2" attributes="0"/>
+                      <Component id="jCBDomainList" min="-2" pref="174" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jPanelSearchResult" alignment="0" max="32767" attributes="1"/>
               </Group>
@@ -44,7 +44,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTxtDomainName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jCBDomainList" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanelRecordDetail" min="-2" pref="153" max="-2" attributes="0"/>
@@ -62,13 +62,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="MSG_Name" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTxtDomainName">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabWebManagerDomains.jTxtDomainName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -92,6 +85,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="jBtnAddRecDetail" min="-2" pref="68" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jBtnEditRecordDetail" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jBtnRemoveRecDetail" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPaneRecDetail" alignment="0" pref="407" max="32767" attributes="0"/>
@@ -107,6 +102,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jBtnRemoveRecDetail" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jBtnEditRecordDetail" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnAddRecDetail" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -137,6 +133,16 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveRecDetail"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jBtnEditRecordDetail">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Edit" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onEditRecordDetail"/>
           </Events>
         </Component>
       </SubComponents>
@@ -255,7 +261,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <Component id="jScrollPaneSearchPage" pref="113" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneSearchPage" pref="110" max="32767" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jBtnRemoveSearchPage" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -303,5 +309,12 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JComboBox" name="jCBDomainList">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>
