@@ -287,7 +287,7 @@ public class ObjectMetaData {
      *
      * @return String[] object keys
      */
-    String[] getOKs() {
+    public String[] getOKs() {
         return mObjectKeys;
     }
 }
