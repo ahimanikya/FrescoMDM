@@ -35,7 +35,7 @@ records</a> <br />
 <p>The screen allows a user to both view and maintain the
 record hierarchy. It also allows a user to view details about the
 records </p>
-<h2>Search Overlay&nbsp;</h2>
+<h2>Select Hieararchy Overlay&nbsp;</h2>
 <span class="note-highlight"><span style="font-weight: bold;"><br />
 Note</span>: In this example, the Person domain has a field
 called 'Group'.
@@ -43,8 +43,8 @@ called 'Group'.
 </span><span class="note-highlight">a group type but
 a field of the domain. <br />
 <br />
-</span><img style="width: 600px; height: 437px;" alt="" src="../attach/RecordHierSelDialog.png" /><br />
-<br />10/20/2008 TBD Andrea - &nbsp;Search for specific record should also allow values for custom attributes&nbsp; <br />
+</span><br />
+<br /><div style="margin-left: 40px;"><img style="width: 813px; height: 725px;" alt="" src="../attach/SelectHierRecord.png" /><br /></div>
 <br />
 <br />
 <h2>1. Initial screen </h2>
@@ -67,7 +67,7 @@ it might have been defined to also show additional fields such as a
 primary role of a person. </p>
 <p>The user selects the desired record or cancels the search
 overlay dialog.</p>
-<p><img style="width: 1016px; height: 773px;" alt="" src="../attach/RecordHierarchyViewS1.png" /></p>
+<p><img style="width: 1016px; height: 787px;" alt="" src="../attach/RecordHierarchyViewS1.png" /></p>
 <br />
 <br />
 <br />
@@ -107,28 +107,13 @@ a specific user. </p>
 records at the same level. However the only branches to be expanded
 would be the one representing the path to the selected node in the
 hierarchy.</li>
-<li>The relationship name showed for the
-corresponding parent or child relationship is determined by the
-relationship type definition. </li>
+
 <li> If the current access role allows for update
 of the hierarchy then records may be arranged on the tree. In addition
 to the buttons a group of records may be selected and moved via
 drag/drop.</li>
 </ul>
-<h3><span style="color: red;">Issues</span></h3>
-<br />
-<ul>
-<li><span style="font-weight: bold;">Issue:</span>
-&nbsp;Can more than one person update a
-relationship at the same time? IE. Do we need to build in some kind of
-locking so that if two different users try to switch to the same access
-control only the first one can update the relationship? My opinion is
-that we need to show a lock by a relationship and show it in view only
-mode if two different users try to switch to a access control role that
-would normally allow updating of the model.<br />
-</li>
-</ul>
-<br />
+<h3><span style="color: red;"></span></h3><br />
 <h2>4. Show selected child record</h2>
 <p>Here we show the result of selecting <b>Andrea
 Kendall</b> from the above screen. Notice that the screen both
@@ -159,9 +144,16 @@ attributes for this example. <br />
 <br />
 Bring up a dialog that searches for the record to move the selected
 nodes under.<br />
-<br /><br /><span class="note-highlight">Note: Move dialog will not be needed inf Re-arrange &gt;&gt; option is implemented. &nbsp;<br /><br /><br /></span>
+<br /><br /><span class="note-highlight">Note: Move dialog will not be needed inf Re-arrange &gt;&gt; option is implemented. &nbsp;<br /><br /></span><h3>Other Desired Actions&nbsp;</h3><h4>Filter records by&nbsp; attribute values.</h4><br />Brings
+up a dialog that allows users to optionally specify values for hiearchy
+node attributes (fixed and custom). &nbsp;The hieararchy tree is
+filtered to only show hieararchy nodes that have the specified
+attributes.
+&nbsp;Not specifying an attribute in the dialog meens that no filtering
+on
+the blank attribute occurs.<br /><br />
 <br />
-<h2>Alternate Look of tree with "Re-arrange &gt;&gt;" option to show a tree used for drag / drop re-assignments of records</h2>
+<h2>Look of tree with "Re-arrange &gt;&gt;" option to show a tree used for drag / drop re-assignments of records</h2>
 The following shows the look of the tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">Re-arrange &gt;&gt;</span></a> option. <br />
 <br />
 <hr style="width: 100%; height: 2px;" />
