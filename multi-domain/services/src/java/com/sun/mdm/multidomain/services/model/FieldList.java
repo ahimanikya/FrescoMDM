@@ -95,4 +95,31 @@ public abstract class FieldList implements Iterator<Field> {
     public void remove() {
         throw new UnsupportedOperationException("not supported optional operation.");    
     }
+    public void setFieldValue(String name, String value){        
+        if (fields == null) {
+            fields = new ArrayList<Field>();
+        }
+        boolean found = false;
+        for (Field field : fields){
+            if (name.equals(field.getName())) {
+                field.setValue(value);
+                found = true;
+            }
+        }
+        if(!found) {
+            fields.add(new Field(name, value));
+        }
+    }
+    public String getFieldValue(String name) {        
+        String value = null;
+        if(fields != null) {
+            for (Field field : fields){
+                if (name.equals(field.getName())) {
+                    value = field.getValue();
+                    break;
+                }
+            }
+        }
+        return value;
+    }
 }

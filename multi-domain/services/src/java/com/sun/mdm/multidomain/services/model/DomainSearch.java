@@ -53,5 +53,5 @@ public class DomainSearch extends FieldList {
     }
     public String getType() {
         return type;
-    }    
+    }            
 }

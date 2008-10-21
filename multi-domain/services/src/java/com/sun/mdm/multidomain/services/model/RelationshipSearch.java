@@ -23,6 +23,7 @@
 package com.sun.mdm.multidomain.services.model;
 
 import java.util.List;
+import java.util.Date;
 
 /**
  * RelationshipSearch class.
@@ -30,7 +31,12 @@ import java.util.List;
  */
 public class RelationshipSearch extends FieldList {
     /* domain name */
-    private String name;
+    private String name;    
+    private String sourceDomain;
+    private String targetDomain;
+    private Date startDate;
+    private Date endDate;
+    private Date purgeDate;
     
     public RelationshipSearch() {
         super();
@@ -44,4 +50,34 @@ public class RelationshipSearch extends FieldList {
     public void setName(String name) {
         this.name = name;
     }
+    public String getSourceDomain() {
+        return sourceDomain;
+    }
+    public void setSourceDomain(String sourceDomain) {
+        this.sourceDomain = sourceDomain;
+    }
+    public String getTargetDomain() {
+        return targetDomain;
+    }
+    public void setTargetDomain(String targetDomain) {
+        this.targetDomain = targetDomain;
+    }
+    public Date getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    public Date getEndDate() {
+        return endDate;
+    }
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }        
+    public Date getPurgeDate() {
+        return purgeDate;
+    }
+    public void setPurgeDate(Date purgeDate) {
+        this.purgeDate = purgeDate;
+    }            
 }

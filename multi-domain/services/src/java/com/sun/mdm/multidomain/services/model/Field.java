@@ -49,4 +49,15 @@ public class Field {
     public void setValue(String value) {
         this.value = value;
     }   
+    @Override 
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+        if(object instanceof Field) {
+            Field field = (Field)object;
+            if(this.name.equals(field.getName()) &&
+               this.value.equals(field.getValue()))
+                isEqual = true;
+        }
+        return isEqual;
+    }
 }
