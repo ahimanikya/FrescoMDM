@@ -22,12 +22,15 @@
  */
 package com.sun.mdm.multidomain.services.core;
 
-import com.sun.mdm.multidomain.services.control.*;
 import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
+import com.sun.mdm.multidomain.services.control.GroupManager;
+import com.sun.mdm.multidomain.services.control.HierarchyManager;
+import com.sun.mdm.multidomain.services.control.RelationshipManager;
+import com.sun.mdm.multidomain.services.control.MetaDataManager;
 import com.sun.mdm.multidomain.services.core.ServiceLocator;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
