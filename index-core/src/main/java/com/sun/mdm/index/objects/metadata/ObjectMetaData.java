@@ -177,7 +177,7 @@ public class ObjectMetaData {
      *
      * @return String[] child objects
      */
-    String[] getCOs() {
+    public String[] getCOs() {
         return mChildObjects;
     }
 
@@ -197,7 +197,7 @@ public class ObjectMetaData {
      *
      * @return String[] foreign keys
      */
-    String[] getFKs() {
+    public String[] getFKs() {
         return mForeignKeys;
     }
 
@@ -217,7 +217,7 @@ public class ObjectMetaData {
      *
      * @return String[] field names
      */
-    String[] getFields() {
+    public String[] getFields() {
         return mFields;
     }
 
@@ -247,7 +247,7 @@ public class ObjectMetaData {
      *
      * @reutrn String[] primary keys
      */
-    String[] getPKs() {
+    public String[] getPKs() {
         return mPrimaryKeys;
     }
 
@@ -267,7 +267,7 @@ public class ObjectMetaData {
      *
      * @return String[] parent objects
      */
-    String[] getPOs() {
+    public String[] getPOs() {
         return mParentObjects;
     }
     
