@@ -47,6 +47,7 @@ import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.services.core.ViewHelper;
 import com.sun.mdm.multidomain.services.core.QueryBuilder;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
+import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
 import com.sun.mdm.multidomain.services.model.RelationshipSearch;
 import com.sun.mdm.multidomain.services.model.Field;
 import com.sun.mdm.multidomain.services.model.ObjectView;
@@ -55,6 +56,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.core.ServiceException;
+import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.util.Localizer;
       
 /**
@@ -278,13 +280,15 @@ public class RelationshipManager {
         throws ServiceException {
         
         List<RelationshipView> relationships = new ArrayList<RelationshipView>(); 
-        /* ToDo
+        /* TBD
         try {
              // build search options and criteria for source and target
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
             MultiDomainSearchCriteria mdSearchCriteria = QueryBuilder.buildMultiDomainSearchCriteria(sourceDomainSearch, targetDomainSearch, relationshipSearch);
             PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);
             relationships = ViewHelper.buildRelationshipView(pages);
+        } catch (ConfigException cex) 
+            throw new ServiceException(cex);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch(UserException uex) {
@@ -337,7 +341,7 @@ public class RelationshipManager {
         throws ServiceException {
       
         RelationshipComposite relationshipComposite = new RelationshipComposite();
-        /* ToDO
+        /* TBD
         try {
              // build search options and criteria for source and target
             Relationship relationship = new Relationship();
@@ -381,19 +385,21 @@ public class RelationshipManager {
         throws ServiceException {
            
         List<ObjectView> objects = new ArrayList<ObjectView>();
-        /* ToDo
+        
         try {
              // build search options and criteria for source and target
             EOSearchOptions eoSearchOptions = QueryBuilder.buildEOSearchOptions(domainSearch);
             EOSearchCriteria eoSearchCriteria = QueryBuilder.buildEOSearchCriteria(domainSearch);
             PageIterator<ObjectNode> pages = multiDomainService.searchEnterprises(domainSearch.getName(), eoSearchOptions, eoSearchCriteria);
-            objects = ViewHelper.buildObjectView(pages);
+            objects = ViewHelper.buildObjectView(pages, eoSearchOptions.isWeighted());
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }
-        */ 
+        
         //demo
         objects.add(new ObjectView("foo","000-000-0000", "I am foo"));
         objects.add(new ObjectView("foo","000-000-0001", "I am foo too"));
@@ -401,7 +407,7 @@ public class RelationshipManager {
     } 
     public ObjectRecord getEnterprise(ObjectView object)
         throws ServiceException {
-        /* ToDo
+        /* TBD
         ObjectRecord objectRecord = null;
         try {           
             // need to add a new method in multiDomainService to getObject
@@ -421,7 +427,7 @@ public class RelationshipManager {
     }  
     public String addRelationship(RelationshipRecord relationshipRecord)
         throws ServiceException { 
-        /* ToDo
+        /* TBD
         String id = null;
         try {
             Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord); 
