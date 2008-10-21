@@ -1,6 +1,6 @@
 package com.sun.mdm.multidomain.synchronization.api;
 
-import com.sun.mdm.multidomain.hierarchy.HierarchyAssociation;
+import com.sun.mdm.multidomain.hierarchy.Hierarchy;
 import com.sun.mdm.multidomain.hierarchy.HierarchyType;
 
 public interface HierarchyRule extends Rule {
@@ -13,5 +13,5 @@ public interface HierarchyRule extends Rule {
      * @param sourceEUID the source record EUID
      * @return the hierarchy association
      */
-    public HierarchyAssociation createHierarchy(HierarchyType hierarchyType, String sourceEUID);
+    public Hierarchy createHierarchy(HierarchyType hierarchyType, String sourceEUID);
 }
