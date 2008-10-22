@@ -32,6 +32,11 @@ import net.java.hulp.i18n.Logger;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
+import com.sun.mdm.multidomain.services.core.context.JndiResource;
+import com.sun.mdm.multidomain.services.core.context.JndiProperties;
+
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+
 import com.sun.mdm.multidomain.services.util.Localizer;
 
 /**
@@ -67,35 +72,34 @@ public class ServiceLocator {
   
     /**
      * Get initial context.
-     * @param factoryInitial Initial Factory 
-     * @param providerUrl Provider URL.
+     * @param jndiProperties JndiProperties.
      * @return InitialContext InitialContext.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    private InitialContext getInitialContext(String factoryInitial, String providerUrl) 
+    private InitialContext getInitialContext(JndiProperties jndiProperties) 
     	throws ServiceException {    	
     	//"java.naming.factory.initial", "com.sun.jndi.cosnaming.CNCtxFactory"
     	//"java.naming.provider.url", "iiop://localhost:3100"	  			
     	//"java.naming.security.principal", "edmuser"
     	//"java.naming.security.credentials", "edmuser"
     	if (initialContext == null) {
-    		try {
-    			if (factoryInitial != null &&
-    				providerUrl != null	) {
-    				// internal resources
-    				Hashtable<String, String> env = new Hashtable<String, String>();
-    				env.put("java.naming.factory.initial", factoryInitial);
-    				env.put("java.naming.provider.url", providerUrl);	  			
-    				initialContext = new InitialContext(env);		    		
-    			} else {
-    				// external resources
-    				initialContext = new InitialContext();		    		    		
-    			}
-    			logger.info(localizer.x("WTS001: Initialcontext({0}) is successfully initialized", providerUrl));
-    		} catch(NamingException nex) {
-    			throw new ServiceException(nex);
+            try {
+                if (jndiProperties != null &&
+                    !jndiProperties.isEmpty()) {
+                    // external resources
+                    Hashtable<String, String> env = new Hashtable<String, String>();
+                    env.put("java.naming.factory.initial", jndiProperties.getInitialContextFactory());
+                    env.put("java.naming.provider.url", jndiProperties.getProviderUrl());	  			
+                    initialContext = new InitialContext(env);		    		
+                } else {
+                    // internal resources
+                    initialContext = new InitialContext();		    		    		
     		}
-    	}
+    		logger.info(localizer.x("WTS001: Initialcontext({0}) is successfully initialized"));
+            } catch(NamingException nex) {
+                throw new ServiceException(nex);
+            }
+        }
     	return initialContext;
     }
     
@@ -107,16 +111,17 @@ public class ServiceLocator {
     public MultiDomainMetaService getMultiDomainMetaService()  
     	throws ServiceException { 
     	if (multiDomainMetaService == null) {
-    		// get from contextManager
-    		String factoryInitial = null;
-    		String providerUrl = null;
-    		String serviceJNDIName = null;    	
-    		try {
-    			Object object = getInitialContext(factoryInitial, providerUrl).lookup(serviceJNDIName);
-    			multiDomainMetaService = (MultiDomainMetaService)object;
-    		} catch (NamingException nex) {
-    			throw new ServiceException(nex);    	
-    		}
+            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getMultiDomainMetaService();
+            jndiResource.setName("ejb/MultiDomainMetaService");
+            JndiProperties jndiProperties = new JndiProperties(); //TBD: MDConfigManager.getJndiProperties();                
+            String jndiName =  jndiResource.getName();    	
+            try {
+                Object object = getInitialContext(jndiProperties).lookup(jndiName);
+                multiDomainMetaService = (MultiDomainMetaService)object;
+            } catch (NamingException nex) {
+                throw new ServiceException(nex);    	
+            }
+
     	}
     	return multiDomainMetaService;
     }      
@@ -128,17 +133,17 @@ public class ServiceLocator {
      */
     public MultiDomainService getMultiDomainService()  
     	throws ServiceException { 
-    	if (multiDomainService == null) {
-    		// get from contextManager
-    		String factoryInitial = null;
-    		String providerUrl = null;
-    		String serviceJNDIName = null;    	
-    		try {
-    			Object object = getInitialContext(factoryInitial, providerUrl).lookup(serviceJNDIName);
-    			multiDomainService = (MultiDomainService)object;
-    		} catch (NamingException nex) {
-    			throw new ServiceException(nex);    	
-    		}
+    	if (multiDomainService == null) {    		
+            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getMultiDomainService();
+             jndiResource.setName("ejb/MultiDomainService");
+            JndiProperties jndiProperties = new JndiProperties(); //TBD: MDConfigManager.getJndiProperties();                
+            String jndiName =  jndiResource.getName();    	
+            try {
+                Object object = getInitialContext(jndiProperties).lookup(jndiName);
+                multiDomainService = (MultiDomainService)object;
+            } catch (NamingException nex) {
+                throw new ServiceException(nex);    	
+            }
     	}
     	return multiDomainService;
     }      
