@@ -50,9 +50,13 @@ public class MDConfigManager {
 	
 	
 	public MDConfigManager() {
+	    init();
 	}
 
 	public void init() {    //  initializes the config manager
+	    mScreens = new HashMap<Integer, ScreenObject>();
+	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
+	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
 	}  
 
 	public static MDConfigManager getInstance() {  //  obtains config manager, initializes if necessary

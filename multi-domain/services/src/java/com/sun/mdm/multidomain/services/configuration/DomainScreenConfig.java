@@ -32,10 +32,6 @@ public class DomainScreenConfig extends ObjectScreenConfig {
     private ArrayList<GroupScreenConfig> mGroupScreenConfigs;   // ArrayList of GroupScreenConfig objects
     private ArrayList<HierarchyScreenConfig> mHierarchyScreenConfigs;   // ArrayList of hierarchyScreenConfig objects
 
-	private ArrayList<SearchScreenConfig> mSearchScreenConfigs;
-    private ArrayList<SearchResultsConfig> mSearchResultsConfigs;   
-    private ArrayList<SearchResultDetailsConfig> mSearchResultDetailsConfigs;   
-
     public DomainScreenConfig() {
         mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
         mHierarchyScreenConfigs = new ArrayList<HierarchyScreenConfig>();
