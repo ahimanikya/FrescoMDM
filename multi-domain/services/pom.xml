@@ -13,7 +13,7 @@
   <version>${mural.currentVersion}</version>
   <url>http://mural.dev.java.net</url>
   <build>
-		<finalName>multidomain-services</finalName>
+    <finalName>multidomain-services</finalName>
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
     <resources>
@@ -26,47 +26,72 @@
     </resources>
     <plugins>
     	<plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
-        	<execution>
-          	<goals>
+            <execution>
+                <goals>
             	<goal>jar</goal>
-            </goals>
-          </execution>
-         </executions>
-         <configuration>
-         	<classesDirectory>${project.build.directory}/classes</classesDirectory>
-         </configuration>
+                </goals>
+            </execution>
+        </executions>
+        <configuration>
+            <classesDirectory>${project.build.directory}/classes</classesDirectory>
+        </configuration>
       	</plugin>    
     	<plugin>
       	<groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
-        	<execution>
-          	<id>extract-globalized-messages</id>
-            <phase>process-classes</phase>
-            <goals><goal>run</goal></goals>
-            <configuration>
+            <execution>
+                <id>extract-globalized-messages</id>
+                <phase>process-classes</phase>
+                <goals><goal>run</goal></goals>
+                <configuration>
             	<tasks>
               	<taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
                 	<classpath refid="maven.test.classpath"/>
                 </taskdef>
                 <i18n dir="${project.build.directory}/classes" file="${basedir}/src/resources/com/sun/mdm/multidomain/services/util/messages.properties" prefix="MDM-MD-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
-              </tasks> 
-            </configuration>
-         </execution>
-    		</executions>
+                </tasks> 
+                </configuration>
+            </execution>
+    	</executions>
     	</plugin>
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>install-resources</id>
+                <phase>process-resources</phase>
+                <goals><goal>install-file</goal></goals>
+                <configuration>
+                    <generatePom>true</generatePom>
+                    <packaging>jar</packaging>
+                    <groupId>multidomain.servcies.test</groupId>
+                    <artifactId>resources</artifactId>
+                    <version>${mural.currentVersion}</version>
+                    <file>${basedir}/test/metadata/resources.jar</file>
+                </configuration>
+            </execution>
+        </executions>            
+        </plugin>                    
     </plugins>    
   </build>
   <dependencies>
-  	<dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>multidomain.servcies.test</groupId>
+        <artifactId>resources</artifactId>
+        <version>${mural.currentVersion}</version>
+      <scope>test</scope>        
+    </dependency>          
     <dependency>
     	<groupId>mural</groupId>
       <artifactId>index-core</artifactId>
@@ -83,6 +108,6 @@
     	<groupId>mural</groupId>
       <artifactId>multidomain-core</artifactId>
       <version>${mural.currentVersion}</version>
-   	</dependency>       	
+    </dependency>       	
   </dependencies>
 </project>
