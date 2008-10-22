@@ -72,7 +72,6 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
-<%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 
 <%
@@ -139,7 +138,6 @@ boolean isSessionActive = true;
             EPath ePath = null;
             RecordDetailsHandler recordDetailsHandler = new RecordDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
-			DashboardHandler dashboardHandler=new DashboardHandler();
 			String euidReq = request.getParameter("euid");
 			//Variables for deactive 
 			String isdeactiveEOString = request.getParameter("deactiveEO");
