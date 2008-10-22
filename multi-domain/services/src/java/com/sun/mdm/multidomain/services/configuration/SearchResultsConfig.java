@@ -40,9 +40,12 @@ import java.util.ArrayList;
  */
 public class SearchResultsConfig implements java.io.Serializable {
     
+    public static int DISABLED = -1;       // indicates if a search result summary or search 
+                                            // result detail screen is disabled.
     private ObjectNodeConfig mRootObj;      // object configuration
-    private int mSearchResultID;            // search result screen configuration ID
-    private int mSearchResultDetailID;      // search result details screen configuration ID
+    private int mSearchResultsID;           // search result screen configuration ID
+    private int mSearchResultsSummaryID;     // search result summary screen configuration ID
+    private int mSearchResultsDetailID;      // search result details screen configuration ID
     private int mMaxRecords;                // maximum number of records to be returned
                                             // in a search
     private int mPageSize;                  // maximum number of records to be displayed
@@ -52,14 +55,26 @@ public class SearchResultsConfig implements java.io.Serializable {
     private ArrayList<FieldConfigGroup> mFieldConfigGroups;        // ArrayList of FieldConfigGroup objects
 
 
-    public SearchResultsConfig(ObjectNodeConfig rootObj, int searchResultID, 
-                                int searchResultDetailsID, int pageSize, 
-                                int maxRecords, boolean showEUID, 
+    public SearchResultsConfig(ObjectNodeConfig rootObj, int searchResultsID, 
+                                int searchResultsSummaryID, int searchResultDetailsID, 
+                                int pageSize, int maxRecords, boolean showEUID, 
                                 boolean showLID, ArrayList<FieldConfigGroup> fieldConfigGroups) {
                     
         mRootObj = rootObj;
-        mSearchResultID = searchResultID;
-        mSearchResultDetailID = searchResultDetailsID;
+        mSearchResultsID = searchResultsID;
+        if ((searchResultsSummaryID >= 0 && searchResultDetailsID >= 0) ||
+            (searchResultsSummaryID < 0 && searchResultDetailsID < 0))  {
+            // RESUME HERE
+            // throw exception
+        }
+        if (searchResultsSummaryID >= 0)  {
+            mSearchResultsSummaryID = searchResultsSummaryID;
+            mSearchResultsDetailID = DISABLED;
+        }
+        if (searchResultDetailsID >= 0)  {
+            mSearchResultsDetailID = searchResultDetailsID;
+            mSearchResultsSummaryID = DISABLED;
+        }
         mPageSize = pageSize;
         mMaxRecords = maxRecords;
         mShowEUID = showEUID;
@@ -92,25 +107,35 @@ public class SearchResultsConfig implements java.io.Serializable {
     }
     
     /**
-     * Getter for the mSearchResultID attribute
+     * Getter for the mSearchResultsID attribute
      *
      * @return The unique identifier for this instance of a SearchResultsConfig
-     * object.  This is used to determine which SearchResultsConfig object
-     * to use for displaying the results of a search.
+     * object. 
      */
-    public int getSearchResultID() {
-        return mSearchResultID;
+    public int getSearchResultsID() {
+        return mSearchResultsID;
     }
     
     /**
-     * Getter for the mSearchResultID attribute
+     * Getter for the mSearchResultsSummaryID attribute
      *
-     * @return The unique identifier for this instance of a SearchResultDetailsConfig
+     * @return The unique identifier for a SearchResultSummaryConfig
+     * object.  This is used to determine which SearchResultSummaryConfig object
+     * to use for displaying the summary of a record.
+     */
+    public int getSearchResultsSummaryID() {
+        return mSearchResultsSummaryID;
+    }
+    
+    /**
+     * Getter for the mSearchResultsDetailID attribute
+     *
+     * @return The unique identifier for a SearchResultDetailsConfig
      * object.  This is used to determine which SearchResultDetailsConfig object
      * to use for displaying the results of a search.
      */
-    public int getSearchResultDetailID() {
-        return mSearchResultDetailID;
+    public int getSearchResultsDetailID() {
+        return mSearchResultsDetailID;
     }
     
 

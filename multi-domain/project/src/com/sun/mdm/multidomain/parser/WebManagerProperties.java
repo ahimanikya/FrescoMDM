@@ -70,15 +70,15 @@ public class WebManagerProperties {
     
     public static String mTAG_SEARCH_RESULT_PAGES = "search-result-pages";
     
-    public static String mTAG_SEARCH_DETAILL = "search-detail";
+    public static String mTAG_SEARCH_DETAIL = "search-detail";
     
-    public static String mTAG_RECORD_DETIAL_PAGES = "record-detail-pages";
+    public static String mTAG_RECORD_DETAIL_PAGES = "record-detail-pages";
     
-    public static String mTAG_RECORD_DETIAL = "record-detail";
+    public static String mTAG_RECORD_DETAIL = "record-detail";
     
-    public static String mTAG_RECORD_DETIAL_ID = "record-detail-id";
+    public static String mTAG_RECORD_DETAIL_ID = "record-detail-id";
     
-    public static String mTAG_RECORD_DETIAL_NAME = "record-detail-name";
+    public static String mTAG_RECORD_DETAIL_NAME = "record-detail-name";
     
     public static String mTAG_FIELD_GROUP = "field-group";
     
@@ -103,6 +103,9 @@ public class WebManagerProperties {
     public static String mTAG_FIELD_GROUP_DESCRIPTION = "description";
     
     public static String mTAG_SCREEN_TITLE = "screen-title";
+    
+    // testing--raymond tam    
+    public static String mTAG_SEARCH_SUMMARY_ID = "search-summary-id";
     
     public static String mTAG_SEARCH_RESULT_ID = "search-result-id";
     

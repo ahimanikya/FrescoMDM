@@ -31,6 +31,7 @@ public abstract class ObjectScreenConfig {
 	private ArrayList<FieldConfig> mFieldConfigs;		// ArrayList of FieldConfig objects for the relationshipAttributes in the RelationshipObject.
 	private ArrayList<SearchScreenConfig> mSearchScreenConfigs;	// ArrayList of SearchScreenConfig objects
 	private ArrayList<SearchResultsConfig> mSearchResultsConfigs;	// ArrayList of SearchResultsConfig objects
+	private ArrayList<SearchResultsSummaryConfig> mSearchResultsSummaryConfigs;	// ArrayList of SearchResultsSummaryConfig objects
 	private ArrayList<SearchResultDetailsConfig> mSearchResultDetailsConfigs;	// ArrayList of SearchResultDetails 
     
 
@@ -38,47 +39,68 @@ public abstract class ObjectScreenConfig {
     	mFieldConfigs = new ArrayList<FieldConfig>();		
     	mSearchScreenConfigs = new ArrayList<SearchScreenConfig>();	
     	mSearchResultsConfigs = new ArrayList<SearchResultsConfig>();	
+    	mSearchResultsSummaryConfigs = new ArrayList<SearchResultsSummaryConfig>();
     	mSearchResultDetailsConfigs = new ArrayList<SearchResultDetailsConfig>();	
     }    
 
-    public String getID() {         // retrieves the ID
+    // retrieves the Domain ID
+    
+    public String getID() {         
         return mId;
     }
+    
+    // sets the Domain ID
 
-    public void setID(String id) {      // sets the ID
+    public void setID(String id) {
         mId = id;
     }
 
-    public String getDisplayName() {        // retrieves the display name for this domain
+    // retrieves the display name for this domain
+    
+    public String getDisplayName() {
         return mDisplayName;
     }
     
-    public void setDisplayName(String name) {   // sets the display name for this domain
+    // sets the display name for this domain
+    
+    public void setDisplayName(String name) {   
         mDisplayName = name;
     }
 
-    public ArrayList<FieldConfig> getFieldConfigs() {        // retrieves the FieldConfig objects for the attributes in the corresponding object
+    // retrieves the FieldConfig objects for the attributes in the corresponding object
+    
+    public ArrayList<FieldConfig> getFieldConfigs() {        
         return mFieldConfigs;
     }
 
-    public void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) {   // sets the FieldConfig objects for the attributes in the corresponding object
+    // sets the FieldConfig objects for the attributes in the corresponding object
+    
+    public void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) {   
         mFieldConfigs = fieldConfigs;
     }
 
-    public FieldConfig getFieldConfig(String fieldname) { // returns the field configuration information for a field.
+    // returns the field configuration information for a field.
+    
+    public FieldConfig getFieldConfig(String fieldname) { 
         // RESUME HERE
         return null;
     }
 
-    public void addFieldConfig(FieldConfig fieldConfig) { // add a field configuration class
+    // add a field configuration class
+    
+    public void addFieldConfig(FieldConfig fieldConfig) { 
         mFieldConfigs.add(fieldConfig);
     }
 
-    public ArrayList<SearchScreenConfig> getSearchScreenConfigs() { // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
+    // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
+    
+    public ArrayList<SearchScreenConfig> getSearchScreenConfigs() { 
         return mSearchScreenConfigs;
     }
 
-    public void setSearchScreenConfigs(ArrayList<SearchScreenConfig> searchScreenConfigs) { // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
+    // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
+    
+    public void setSearchScreenConfigs(ArrayList<SearchScreenConfig> searchScreenConfigs) { 
         mSearchScreenConfigs = searchScreenConfigs;
     }
     
@@ -93,19 +115,45 @@ public abstract class ObjectScreenConfig {
         mSearchScreenConfigs.remove(searchScreenConfig);
     }
 */    
-    public ArrayList<SearchResultsConfig> getSearchResultsConfigs() {  // returns the configuration for all first tier search results list screens (ArrayList of SearchResultsConfig objects)
+    // retrieves all search results configurations
+    
+    public ArrayList<SearchResultsConfig> getSearchResultsConfigs() {  
         return mSearchResultsConfigs;
     }
 
-    public void setSearchResultsConfigs(ArrayList<SearchResultsConfig> searchResultsConfigs) {  // returns the configuration for all first tier search results list screens (ArrayList of SearchResultsConfig objects)
+    // sets all search results configurations
+
+    public void setSearchResultsConfigs(ArrayList<SearchResultsConfig> searchResultsConfigs) {  
         mSearchResultsConfigs = searchResultsConfigs;
     }
 
     // add a search result configuration
+    
     public void addSearchResultsConfig(SearchResultsConfig searchResultsConfig) 
             throws Exception {
         mSearchResultsConfigs.add(searchResultsConfig);
     }
+    
+
+    // retrieves all SearchResultsSummaryConfig objects
+        
+    public ArrayList<SearchResultsSummaryConfig> getSearchResultsSummaryConfigs() {  
+        return mSearchResultsSummaryConfigs;
+    }
+
+    // sets all SearchResultsSummaryConfig objects
+    
+    public void  setSearchResultsSummaryConfigs(ArrayList<SearchResultsSummaryConfig>sRSC) {  
+        mSearchResultsSummaryConfigs = sRSC;
+    }
+
+    // add a search result summary configuration
+    public void addSearchResultsSummaryConfig(SearchResultsSummaryConfig sRSC) 
+            throws Exception {
+        mSearchResultsSummaryConfigs.add(sRSC);
+    }
+    
+    
     
     // RESUME HERE
 /*    
@@ -114,28 +162,47 @@ public abstract class ObjectScreenConfig {
         mSearchResultsConfigs.remove(searchResultsConfig);
     }
 */
-    public ArrayList<SearchResultDetailsConfig> getSearchResultDetailsConfigs() { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
+    // retrieves all search results detail configurations
+    
+    public ArrayList<SearchResultDetailsConfig> getSearchResultDetailsConfigs() { 
         return mSearchResultDetailsConfigs;
     }
+
+    // sets all search results detail configurations
 
     public void setSearchResultDetailsConfigs(ArrayList<SearchResultDetailsConfig> searchResultDetailsConfigs) { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
         mSearchResultDetailsConfigs = searchResultDetailsConfigs;
     }
 
-    public SearchResultsConfig getSearchResultsConfig(Integer searchScreenConfigId) 
-            throws Exception {  // returns the search results details configuration for a given SearchScreenConfig object.
-        return null;
-    }
-
-    public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) throws Exception {  // returns the search results details configuration for a given SearchResultsConfig object.
-        return null;
-    }
-    
     // add a search result details configuration
     public void addSearchResultDetailsConfig(SearchResultDetailsConfig searchResultDetailsConfig) 
             throws Exception {
         mSearchResultDetailsConfigs.add(searchResultDetailsConfig);
     }
+    
+    // retrieves the search results configuration for a given ID
+
+    public SearchResultsConfig getSearchResultsConfig(Integer searchScreenConfigId) 
+            throws Exception {  
+        // RESUME HERE
+        return null;
+    }
+
+    // retrieves the search results detail configuration for a given search results config ID
+
+    public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) throws Exception {  
+        // RESUME HERE
+        return null;
+    }
+    
+    // retrieves the search results summary configuration for a given search results config ID
+
+    public SearchResultsSummaryConfig getSearchResultsSummaryConfig(Integer searchResultsConfigId) throws Exception {  
+        // RESUME HERE
+        return null;
+    }
+    
+    
     // RESUME HERE
 /*    
     

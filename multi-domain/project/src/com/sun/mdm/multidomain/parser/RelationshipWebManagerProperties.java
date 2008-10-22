@@ -50,9 +50,9 @@ public class RelationshipWebManagerProperties {
     
     public static String mTAG_SEARCH_RESULT_PAGES = "search-result-pages";
     
-    public static String mTAG_SEARCH_DETAILL = "search-detail";
+    public static String mTAG_SEARCH_DETAIL = "search-detail";
     
-    public static String mTAG_RECORD_DETIAL = "record-detail";
+    public static String mTAG_RECORD_DETAIL = "record-detail";
     
     public static String mTAG_FIELD_GROUP = "field-group";
     
