@@ -20,25 +20,21 @@ Administer relationship, hierarchy, groups and/or categories.
 <p>This includes:
 </p>
 <ul><li> Defining the relationship types (domains, name, ...)</li><li>Define custom attributes associated with a record in a relationship or with a Group Instance</li><li> Defining a taxonomy for categories. IE what category
-is a sub-category and so on.</li><li>Define if a custom attribute is &nbsp;Searchable. &nbsp;Custom attributes legal Searchable values are &nbsp; ' <img style="width: 16px; height: 16px;" alt="" src="../attach/Check.png" />By Value', '<img style="width: 16px; height: 16px;" alt="" src="../attach/Check.png" />By Range' or 'No'<br /><br />If
-an attribute is Searchable by Range show a Drop-Down list by the field
-any dialog that allows a user to search for a Relationship with the
-selection of Search by: 'By Value', 'By
-Range'. &nbsp;By Value shows the entry field by the attribute and By
-Range shows&nbsp;From: entry-field To: entry-field.<br /><br />Once a selection is made the Web GUI should remember the preference by Association and Custom Attribute for the Session.&nbsp;<br /><br />&nbsp;</li></ul>
+is a sub-category and so on.</li><li>Define if a custom attribute is &nbsp;Searchable. &nbsp;<br />&nbsp;</li></ul>
 <h2 id="section-Administer-Screens">Screens</h2>
 <ul><li>
 <a class="wikipage" href="AdminRelationships.htm">Administer-&gt;Relationships</a>
 </li><li><a class="wikipage" href="AdminHierarchy.htm">Administer-&gt;Hierarchy</a>
 </li><li><a class="wikipage" href="AdminGroups.htm">Administer-&gt;Groups - &nbsp;10/15/2008 Needs to be updated for Group Instances - Andrea Kendall</a>
 </li><li><span class="wikipage">Administer-&gt;Categories</span>
-09/01/2008 TBD - Andrea Kendall</li></ul><h2>Example screens for Searchable set to "By Range"&nbsp; </h2>The
-"Search by Range" option is only used on screens that allow a user to
-'filter' by attribute values. &nbsp;Normally this is done during
-picking a set of relationships for the Maintain by Relationship screen.
-<br /><br />Here is an example of what a search might look like that contains a Search by Range custom attribute.<br /><br /><img style="width: 432px; height: 70px;" alt="" src="../attach/SearchAttributesByRangeS1.png" /><br /><br />After the user selects the Searcb by Range option the following is shown.<br /><br /><img style="width: 432px; height: 74px;" alt="" src="../attach/SearchAttributesByRangeS2.png" /><br /><br />This allows the user to optionally look for a an attribute between two ranges. <br /><br /><hr style="width: 100%; height: 2px;" />
+09/01/2008 TBD - Andrea Kendall</li></ul><h2>Handling of Searchable Attributes </h2>The
+exact attributes that are shown on a search screen are defined in the
+Netbeans Configuration. &nbsp;However, if no search screens definition
+exist then each searchable attribute is shown. &nbsp; Besides each
+search screen is an option to "Search by Range". &nbsp;If selecetd the
+attribute allows the user to specify a range of values to search on. <br /><br />Here is an example of what a search screen might look like with two searchable attributes.<br /><br /><img style="width: 432px; height: 70px;" alt="" src="../attach/SearchAttributesByRangeS1.png" /><br /><br />After the user selects the Searcb by Range option the following is shown.<br /><br /><img style="width: 432px; height: 74px;" alt="" src="../attach/SearchAttributesByRangeS2.png" /><br /><br />Note: This is considered a nice to have feature.<br /><br /><hr style="width: 100%; height: 2px;" />
 <div class="pageContent"><i>This page last
-changed on <a href="Diff.jsp?page=Administer&amp;r1=7&amp;r2=6">04-Aug-2008
-13:17:21 PDT</a> by&nbsp;</i><a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net.</a>
+changed on <a href="Diff.jsp?page=Administer&amp;r1=7&amp;r2=6">21-Oct-2008
+16:22:21 PDT</a> by&nbsp;</i><a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net.</a>
 </div>
 </body></html>
