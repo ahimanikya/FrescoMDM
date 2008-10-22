@@ -40,7 +40,7 @@ destination record and relationship attributes)</li>
 <h2>Implementation Details</h2>
 <h3><a href="ManRelbyRecSB.html">Story Boards.
 &nbsp;View this story board to see how the following screens
-interact.</a></h3>
+interact.</a></h3><br><span class="note-highlight">Note: The story board shows the flow not the actual look of the screen.</span>
 <br>
 <br>
 <h2>Screens</h2>
@@ -64,7 +64,7 @@ first be shown after the search button in the search area is selected.</li>
 <br>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the Domain "UKPatient" and the record "George Karlin" is
-selected. </span><br>
+selected. </span><br><br>The tree automaticly expands the first level of Relationships, Domains and records under each domain. <br>
 <br>
 <img style="width: 928px; height: 760px;" alt="" src="../attach/RelByRecordS2.png"><br>
 <br>
@@ -97,16 +97,10 @@ record&nbsp;Centerpoint, Owns Offices was expanded and the record
 <h4 style="color: rgb(51, 51, 255);">Updates Needed<br>
 </h4>
 <ul>
-<li>A
-Reassign action that is only available for the originally selected
-node. &nbsp;The "Reassign..." action would bring up a search
-overlay
-allow a user to select a different record from the same domain.
-&nbsp;This would&nbsp;</li>
-</ul>
-<h4><br>
-</h4>
-<h4><span style="color: rgb(0, 102, 0);">Notes on
+<li>A Replace action that is only available when the Reassign tree is
+shown and&nbsp;the Primary Node (in this case Dr. George Karlin) is
+selected. &nbsp; The Replace action assigns all relationships
+associated with the Primary Node with the newly selected node.</li></ul><h4><span style="color: rgb(0, 102, 0);">Notes on
 Relationship Model overview</span></h4>
 <br>
 <ul>
@@ -165,7 +159,7 @@ nodes from this pop up window or too many nodes have been shown on the
 tree. &nbsp;In this case we would show a single Selected... button that
 would bring up a dialog where the selected records would be shown first
 as show here:<br><br><br><img style="width: 402px; height: 148px;" alt="" src="../attach/TreeTooManyRecordsS2.png"><br><br><br>
-<br>
+Alternately the GUI chould just show a button showing the number of childern and a message to filter the children as shown here.<br><br><br>
 </li>
 </ul>
 <br><br>
@@ -304,8 +298,11 @@ a wireframe model of the screen</span><br>
 <br>
 <img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br>
 <span style="font-weight: bold;"></span>.<br>
-<h3><br></h3><h3><br></h3><h3>Find Overlay</h3>
-<br>Find dialog that allows for search based on record search critera and relationship attributes. &nbsp; <br><br>Details need to be worked out.<br><br><h3>Filter Overlay</h3><br>Filter relationships by values for relationship attributes. <br><br>Details need to be worked out.<br>
+<h3><br></h3><h3><br></h3><h3><br></h3> <h3>Find Overlay</h3>
+<br>Find dialog that allows for search based on record search critera and relationship attributes. &nbsp; <br><br>The search depends on the node of the selected domain or record. It only searches for records in that domain, <br><br><h3>Filter Overlay</h3><br>Filter
+dialog that allows user to enter record search and relationship
+attributes. &nbsp;A filter will update the tree so that only records
+with the specified attributes are shown on the tree. <br><br>The filter depends on the node of the selected domain or record. It only filters the records in that domain. <br><br>
 <br>
 <h3>Move Dialog - Not needed because we will support&nbsp;</h3>
 <br>
