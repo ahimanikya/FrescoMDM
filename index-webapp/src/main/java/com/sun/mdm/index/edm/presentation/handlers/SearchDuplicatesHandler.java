@@ -537,6 +537,22 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     potentialDuplicateSearchObject.setEUIDs(null);
                 }
             }
+            // added as fix of bug with Id 113 on 21-10-08
+           if (((super.getUpdateableFeildsMap().get("create_start_date") != null) 
+                    && (super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0))&&
+           ((super.getUpdateableFeildsMap().get("create_end_date") != null) 
+                    && (super.getUpdateableFeildsMap().get("create_end_date").toString().trim().length() > 0))){                
+               
+               Date fromdate = DateUtil.string2Date(super.getUpdateableFeildsMap().get("create_start_date").toString() + ((super.getUpdateableFeildsMap().get("create_start_time") != null && super.getUpdateableFeildsMap().get("create_start_time").toString().trim().length() > 0)? " " +super.getUpdateableFeildsMap().get("create_start_time").toString():" 00:00:00"));
+               Date todate = DateUtil.string2Date(super.getUpdateableFeildsMap().get("create_end_date").toString()+((super.getUpdateableFeildsMap().get("create_end_time") != null && super.getUpdateableFeildsMap().get("create_end_time").toString().trim().length() > 0)? " " +super.getUpdateableFeildsMap().get("create_end_time").toString():" 23:59:59"));
+               long startDate = fromdate.getTime();
+               long endDate = todate.getTime();
+                 if(endDate < startDate){
+                    errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                    return null;
+                   }
+         }    
             
             String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
             String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");

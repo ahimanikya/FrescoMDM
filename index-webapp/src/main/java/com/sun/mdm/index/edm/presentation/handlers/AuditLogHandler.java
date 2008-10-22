@@ -438,6 +438,24 @@ public class AuditLogHandler extends ScreenConfiguration {
 //              auditSearchObject.setEUID(null);
           }
         
+         // added as fix of bug with Id 113 on 21-10-08
+         if (((super.getUpdateableFeildsMap().get("StartDate") != null) 
+                    && (super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0))&&
+           ((super.getUpdateableFeildsMap().get("EndDate") != null) 
+                    && (super.getUpdateableFeildsMap().get("EndDate").toString().trim().length() > 0))){                
+               
+               Date fromdate = DateUtil.string2Date(super.getUpdateableFeildsMap().get("StartDate").toString() + ((super.getUpdateableFeildsMap().get("StartTime") != null && super.getUpdateableFeildsMap().get("StartTime").toString().trim().length() > 0)? " " +super.getUpdateableFeildsMap().get("StartTime").toString():" 00:00:00"));
+               Date todate = DateUtil.string2Date(super.getUpdateableFeildsMap().get("EndDate").toString()+((super.getUpdateableFeildsMap().get("EndTime") != null && super.getUpdateableFeildsMap().get("EndTime").toString().trim().length() > 0)? " " +super.getUpdateableFeildsMap().get("EndTime").toString():" 23:59:59"));
+               long startDate = fromdate.getTime();
+               long endDate = todate.getTime();
+                 if(endDate < startDate){
+                    errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                    return null;
+                   }
+         }                  
+        
+        
 
         String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
         String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
