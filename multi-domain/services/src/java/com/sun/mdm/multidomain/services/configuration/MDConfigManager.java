@@ -81,6 +81,19 @@ public class MDConfigManager {
         mDomainScreenConfigs.remove(domainName);
     }
     
+    //  retrieves a Domain Screen Configuration
+    
+	public DomainScreenConfig getDomainScreenConfig(String domainName) throws Exception {  
+        if (domainName == null || domainName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG517: Domain name cannot be null nor an empty string."));
+        }
+        DomainScreenConfig dSC = mDomainScreenConfigs.get(domainName);
+        if (dSC == null) {
+            throw new Exception(mLocalizer.t("CFG518: The domain named \"{0}\" could not be located.", domainName));
+        }
+        return dSC;
+	}
+	
     //  retrieves a Domain
     
 	public Domain getDomain(String domainName) throws Exception {  
@@ -234,25 +247,9 @@ public class MDConfigManager {
 	    return null;
 	}
 
-	public ObjectSensitivePlugIn getSecurityPlugIn() {  //  return the handle to the security plug-in
+    //  return the handle to the security plug-in
+	public ObjectSensitivePlugIn getSecurityPlugIn() {  
 	    return mSecurityPlugIn;
 	}
 
-	public ArrayList<Relationship> getRelationshipsForDomain(String sourceDomainName, String targetDomainName) {  //  retrieves Relationships for a source and target domain
-	    return null;
-	}
-
-	public ArrayList<Relationship> getRelationshipsForDomain(String domainName) {  //  retrieves all Relationships for a domain (can be source or target)
-	    return null;
-	}
-
-	public ArrayList<Relationship> getDomainsForRelationship(String relationshipName) {  //  retrieves Domains for a relationship (domain can be source or target). 
-	    return null;
-	}
-
-	public Relationship getRelationship(String relationshipName, String sourceDomainName, String targetDomainName)  { //  retrieves a Relationship
-	    return null;
-    }
-
-    
 }
