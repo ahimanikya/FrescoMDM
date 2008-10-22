@@ -49,7 +49,7 @@ public class MultiDomainModel {
     private final String mTagGroup = "group";
     private final String mTagCategory = "category";
     private final String mTagDirection = "direction";
-    private final String mTagFixedAttributes = "fixed-attributes";
+    private final String mTagPredefinedAttributes = "predefined-attributes";
     private final String mTagExtendedAttributes = "extended-attributes";
     private final String mTagAttribute = "attribute";
     private final String mTagDataType = "data-type";
@@ -276,7 +276,7 @@ public class MultiDomainModel {
                         linkType.targetDomain = getAttributeName(nl.item(i));
                     } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.direction = Utils.getStrElementValue(nl.item(i));
-                    } else if (mTagFixedAttributes.equals(((Element) nl.item(i)).getTagName())) {
+                    } else if (mTagPredefinedAttributes.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.setFixedAttributes(parseAttributes(nl.item(i)));
                     } else if (mTagExtendedAttributes.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.setExtendedAttributes(parseAttributes(nl.item(i)));
