@@ -67,11 +67,11 @@ public class ServiceManagerFactory {
 	 * Initialize ServiceManagerFactory.
 	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */
-	public void init() throws ServiceException {
-           if (!isInitialized) {
-                //serviceLocator = ServiceLocator.getInstance();
-                //multiDomainService = serviceLocator.getMultiDomainService();
-                //multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
+	public void initialize() throws ServiceException {
+            if (!isInitialized) {
+                serviceLocator = ServiceLocator.getInstance();
+                multiDomainService = serviceLocator.getMultiDomainService();
+                multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
                 isInitialized = true;
            }
 	}
@@ -82,7 +82,7 @@ public class ServiceManagerFactory {
 	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */
 	public GroupManager createGroupManager() throws ServiceException {
-                init();
+                initialize();
 		return new GroupManager(multiDomainMetaService, multiDomainService); 
 	}
 
@@ -92,7 +92,7 @@ public class ServiceManagerFactory {
 	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */	
 	public HierarchyManager createHierarchyManager() throws ServiceException {		
-            init();            
+            initialize();            
             return new HierarchyManager(multiDomainMetaService, multiDomainService); 
 	}
 
@@ -102,7 +102,7 @@ public class ServiceManagerFactory {
 	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */		
 	public RelationshipManager createRelationshipManager() throws ServiceException {
-            init();            
+            initialize();            
             return new RelationshipManager(multiDomainMetaService, multiDomainService);
 	}
 
@@ -112,7 +112,7 @@ public class ServiceManagerFactory {
 	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */			
 	public MetaDataManager createMetaDataManager() throws ServiceException {
-            init();            
+            initialize();            
             return new MetaDataManager(multiDomainMetaService, multiDomainService); 
 	}
 	
