@@ -22,14 +22,14 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.multidomain.services.configuration.Hierarchy;
+import com.sun.mdm.multidomain.hierarchy.HierarchyType;
 
 public class HierarchyScreenConfig extends ObjectScreenConfig {
 
     public HierarchyScreenConfig() {
     }
     
-    public Hierarchy getHierarchy() {       // retrieves the Hierarchy object for this hierarchy
+    public HierarchyType getHierarchy() {       // retrieves the Hierarchy object for this hierarchy
         return null;
     }
 }
