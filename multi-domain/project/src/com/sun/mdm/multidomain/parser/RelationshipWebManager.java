@@ -297,7 +297,7 @@ public class RelationshipWebManager {
             Element elmSearchDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES);
 
             for ( SearchDetail searchDetail : searchDetails) {
-                Element elmSDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_DETAILL);
+                Element elmSDetail = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_DETAIL);
                 elmSearchDetail.appendChild(elmSDetail);
 
                 Element elmResultName = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_RESULT_NAME);
@@ -308,7 +308,7 @@ public class RelationshipWebManager {
                 elmResultId.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getSearchResultID())));
                 elmSDetail.appendChild(elmResultId);
                 
-                Element elmDetailId = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_ID);
+                Element elmDetailId = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETAIL_ID);
                 elmDetailId.appendChild(xmlDoc.createTextNode(Integer.toString(searchDetail.getRecordDetailID())));
                 elmSDetail.appendChild(elmDetailId);
 
@@ -330,16 +330,16 @@ public class RelationshipWebManager {
             
             
             ArrayList<RecordDetail> recordDetailList = domain.getRecordDetailList();
-            Element elmRecordDetailPages = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_PAGES);
+            Element elmRecordDetailPages = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETAIL_PAGES);
 
 
             for (RecordDetail recDetail : recordDetailList) {
-                Element elmRecDetail = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL);
+                Element elmRecDetail = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETAIL);
                 elmRecordDetailPages.appendChild(elmRecDetail);
-                Element elmRecDetailId = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_ID);
+                Element elmRecDetailId = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETAIL_ID);
                 elmRecDetailId.appendChild(xmlDoc.createTextNode(Integer.toString(recDetail.getRecordDetailId())));
                 elmRecDetail.appendChild(elmRecDetailId);
-                Element elmRecDetailName = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETIAL_NAME);
+                Element elmRecDetailName = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_DETAIL_NAME);
                 elmRecDetailName.appendChild(xmlDoc.createTextNode(recDetail.getDisplayName()));
                 elmRecDetail.appendChild(elmRecDetailName);
                 ArrayList<FieldGroup> fieldGroups = recDetail.getFieldGroups();
@@ -667,7 +667,7 @@ public class RelationshipWebManager {
                     parseSearchPages(elm, domain, domainScreenConfig);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES)) {
                     parseSearchResultPages(elm, domain, domainScreenConfig);
-                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_PAGES)) {
+                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_PAGES)) {
                     parseRecordDetailPages(elm, domain, domainScreenConfig);
                 }
 
@@ -711,11 +711,11 @@ public class RelationshipWebManager {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
-                if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_ID)) {
+                if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_ID)) {
                     recordDetailID = RelationshipUtil.getIntElementValue(elm);
 //                    recordDetail = new RecordDetail(RelationshipUtil.getIntElementValue(elm));
                     recordDetail = new RecordDetail(recordDetailID);
-                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_NAME)) {
+                } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_NAME)) {
                     recordDetail.setDisplayName(RelationshipUtil.getStrElementValue(elm));
                 } else if (elementName.equals(WebManagerProperties.mTAG_FIELD_GROUP)) {
                     FieldGroup fieldGroup = new FieldGroup();
@@ -780,7 +780,7 @@ public class RelationshipWebManager {
                             fieldConfigGroups.add(fieldConfigGroup);
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_ID)) {
                             resultID = RelationshipUtil.getIntElementValue(subElm);
-                        } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETIAL_ID)) {
+                        } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_ID)) {
                             detailID = RelationshipUtil.getIntElementValue(subElm);   
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_ITEM_PER_PAGE)) {
                             itemPerPage = RelationshipUtil.getIntElementValue(subElm);
@@ -801,6 +801,7 @@ public class RelationshipWebManager {
                     // are showEUID and showLID necessary?
                     boolean showEUID = false;
                     boolean showLID = false;
+/*                    
                     SearchResultsConfig sResultsConfig = new SearchResultsConfig(null, 
                                                                                  resultID,
                                                                                  detailID,
@@ -809,6 +810,7 @@ public class RelationshipWebManager {
                                                                                  showEUID, showLID, 
                                                                                  fieldConfigGroups);
                     domainScreenConfig.addSearchResultsConfig(sResultsConfig);
+*/                                                                                
                 }
             }
         }
