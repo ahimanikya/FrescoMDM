@@ -49,7 +49,6 @@ import com.sun.mdm.multidomain.services.core.QueryBuilder;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
 import com.sun.mdm.multidomain.services.model.RelationshipSearch;
-import com.sun.mdm.multidomain.services.model.Field;
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
@@ -309,17 +308,17 @@ public class RelationshipManager {
         relationships.add(rs1);
         
          while(sourceDomainSearch.hasNext()) {
-             Field sf = sourceDomainSearch.next();
+             com.sun.mdm.multidomain.services.relationship.Attribute sf = sourceDomainSearch.next();
              System.out.println("Source => SearchField:" + sf.getName() + ":" + sf.getValue());
          }
                 
          while(targetDomainSearch.hasNext()) {
-             Field sf = targetDomainSearch.next();
+             com.sun.mdm.multidomain.services.relationship.Attribute sf = targetDomainSearch.next();
              System.out.println("target => SearchField:" + sf.getName() + ":" + sf.getValue());
          }
          
          while(relationshipSearch.hasNext()) {
-             Field sf = relationshipSearch.next();
+             com.sun.mdm.multidomain.services.relationship.Attribute sf = relationshipSearch.next();
              System.out.println("relationship => SearchField:" + sf.getName() + ":" + sf.getValue());
          }
         
@@ -366,12 +365,12 @@ public class RelationshipManager {
         
         ObjectRecord sr = new ObjectRecord();
         sr.setName(relationshipView.getSourceDomain());
-        sr.add(new Field("Foo1","Foo1"));
+        sr.add(new com.sun.mdm.multidomain.services.relationship.Attribute("Foo1","Foo1"));
         rsc.setSourceRecord(sr);
         
         ObjectRecord tr = new ObjectRecord();
         tr.setName(relationshipView.getSourceDomain());
-        tr.add(new Field("Foo2","Foo2"));
+        tr.add(new com.sun.mdm.multidomain.services.relationship.Attribute("Foo2","Foo2"));
         rsc.setTargetRecord(tr);
         
         RelationshipRecord rs = new RelationshipRecord();
@@ -422,7 +421,7 @@ public class RelationshipManager {
         */
         //demo
         ObjectRecord record = new ObjectRecord(object.getName(), object.getEUID());
-        record.add(new Field("foo","foo"));
+        record.add(new com.sun.mdm.multidomain.services.relationship.Attribute("foo","foo"));
         return record;
     }  
     public String addRelationship(RelationshipRecord relationshipRecord)

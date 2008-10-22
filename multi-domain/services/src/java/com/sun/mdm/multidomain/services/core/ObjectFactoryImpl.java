@@ -124,7 +124,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
             synchronized(ObjectFactoryImpl.class) {
             try {
                 if (mEIndexObject == null) {
-                    InputStream stream = ObjectFactoryImpl.class.getResourceAsStream("domains/" + objectName + "/object.xml");
+                    InputStream stream = ObjectFactoryImpl.class.getResourceAsStream("/domains/" + objectName + "/object.xml");
                     mEIndexObject = Utils.parseEIndexObject(new InputSource(stream));
                     stream.close();
                 }                

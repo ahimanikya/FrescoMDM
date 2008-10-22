@@ -25,11 +25,14 @@ package com.sun.mdm.multidomain.services.model;
 import java.util.List;
 import java.util.Date;
 
+import com.sun.mdm.multidomain.services.relationship.AttributeList;
+import com.sun.mdm.multidomain.services.relationship.Attribute;
+
 /**
  * RelationshipSearch class.
  * @author cye
  */
-public class RelationshipSearch extends FieldList {
+public class RelationshipSearch extends AttributeList {
     /* domain name */
     private String name;    
     private String sourceDomain;
@@ -41,8 +44,8 @@ public class RelationshipSearch extends FieldList {
     public RelationshipSearch() {
         super();
     }
-    public RelationshipSearch(List<Field> fields) {
-        super(fields);
+    public RelationshipSearch(List<Attribute> attributes) {
+        super(attributes);
     }
     public String getName() {
         return name;

@@ -39,7 +39,7 @@ public class ObjectFactoryRegistry {
         throws ConfigException {
         ObjectFactory entry = entries.get(name);
         if (entry == null) {
-            entry = new ObjectFactoryImpl(name);
+            entry = new ObjectNodeFactoryImpl(name);
             register(name, entry);
         }
         return entry;

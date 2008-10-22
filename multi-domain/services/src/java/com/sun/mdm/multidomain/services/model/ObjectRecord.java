@@ -24,11 +24,14 @@ package com.sun.mdm.multidomain.services.model;
 
 import java.util.List;
 
+import com.sun.mdm.multidomain.services.relationship.AttributeList;
+import com.sun.mdm.multidomain.services.relationship.Attribute;
+
 /**
  * ObjectRecord class.
  * @author cye
  */
-public class ObjectRecord extends FieldList {
+public class ObjectRecord extends AttributeList {
 
     private String name;
     private String EUID;
@@ -39,8 +42,8 @@ public class ObjectRecord extends FieldList {
         this.name = name;
         this.EUID = euid;
     }
-    public ObjectRecord(String name, String euid, List<Field> fields){
-        super(fields);
+    public ObjectRecord(String name, String euid, List<Attribute> attributes){
+        super(attributes);
         this.name = name;
         this.EUID = euid;
     }

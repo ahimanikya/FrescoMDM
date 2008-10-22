@@ -27,10 +27,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.exception.ObjectException;
 
 import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
@@ -45,7 +50,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 
-import com.sun.mdm.multidomain.services.model.Field;
+import com.sun.mdm.multidomain.services.relationship.Attribute;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.model.RelationshipSearch;
 import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
@@ -203,12 +208,12 @@ public class QueryBuilder {
         
         SystemObject[] systemObjects = new SystemObject[3];
                 
-        systemObjects[0] = ObjectBuilder.buildSystemObject(objectRef, searchCriteria);
+        systemObjects[0] = buildSystemObject(objectRef, searchCriteria);
         // The back-end multidomain service not support range yet.        
         // systemObjectFrom
-        systemObjects[1] = ObjectBuilder.buildSystemObject(objectRef, searchCriteriaFrom);
+        systemObjects[1] = buildSystemObject(objectRef, searchCriteriaFrom);
         // systemObjectTo
-        systemObjects[2] = ObjectBuilder.buildSystemObject(objectRef, searchCriteriaTo);
+        systemObjects[2] = buildSystemObject(objectRef, searchCriteriaTo);
         
         return systemObjects;
     }
@@ -220,9 +225,9 @@ public class QueryBuilder {
         relationship.setEffectiveToDate(relationshipSearch.getEndDate());
         relationship.setPurgeDate(relationshipSearch.getPurgeDate());        
         while(relationshipSearch.hasNext()) {
-            Field field = relationshipSearch.next();
+            Attribute field = relationshipSearch.next();
             com.sun.mdm.multidomain.association.Attribute attribute = new com.sun.mdm.multidomain.association.Attribute();
-            attribute.setName(field.getName());
+            attribute.setName(attribute.getName());
             relationship.setAttributeValue(attribute, field.getValue());
         }
         
@@ -320,4 +325,135 @@ public class QueryBuilder {
         }
         return relationship;
     } 
+    
+    public static SystemObject buildSystemObject(String objectName, Map<String, String> searchCriteria) 
+        throws ConfigException {	
+	SystemObject so = null;
+	try {
+            ObjectFactory objectFactory = ObjectFactoryRegistry.lookup(objectName);
+            ObjectNode topNode =objectFactory.create(objectName);
+            Iterator<String> keys = searchCriteria.keySet().iterator();        
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+		String value = (String) searchCriteria.get(key);
+            
+		if ((value != null) && (value.trim().length() > 0)) {
+                    int index = key.indexOf(".");
+                    if (index > -1) {
+                        String tmpRef = key.substring(0, index);
+			String fieldName = key.substring(index + 1);
+
+			if (tmpRef.equalsIgnoreCase(objectName)) {
+                            setObjectNodeFieldValue(topNode, fieldName, value);
+			} else {
+                            ArrayList<ObjectNode> childNodes = topNode.pGetChildren(tmpRef);
+                            ObjectNode node = null;
+                            if (childNodes == null) {
+                                node = objectFactory.create(tmpRef);
+				topNode.addChild(node);
+                            } else {
+                                node = (ObjectNode) childNodes.get(0);
+                            }                        
+                            setObjectNodeFieldValue(node, fieldName, value);
+                        }
+                    }
+                 }            
+            }        
+            so = new SystemObject();
+            so.setValue("ChildType", objectName);
+            so.setObject(topNode);        
+	} catch(ObjectException oe) {
+            throw new ConfigException(oe);
+	}
+        return so;		
+    }   
+
+    public static ObjectNode buildObjectNode(String objectName, Map<String, String> searchCriteria) 
+        throws ConfigException {		
+	ObjectNode objectNode = null;
+	try {
+            ObjectFactory objectFactory = ObjectFactoryRegistry.lookup(objectName);
+            objectNode = objectFactory.create(objectName);
+            Iterator<String> keys = searchCriteria.keySet().iterator();        
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+                String value = (String) searchCriteria.get(key);
+        
+                if ((value != null) && (value.trim().length() > 0)) {
+                    int index = key.indexOf(".");
+                    if (index > -1) {
+                        String tmpRef = key.substring(0, index);
+			String fieldName = key.substring(index + 1);
+			if (tmpRef.equalsIgnoreCase(objectName)) {
+                            setObjectNodeFieldValue(objectNode, fieldName, value);
+			} else {
+                            ArrayList<ObjectNode> childNodes = objectNode.pGetChildren(tmpRef);
+                            ObjectNode node = null;
+                            if (childNodes == null) {
+                                node = objectFactory.create(tmpRef);
+				objectNode.addChild(node);
+                            } else {
+                                node = (ObjectNode) childNodes.get(0);
+                            }                        
+                            setObjectNodeFieldValue(node, fieldName, value);
+                        }
+                    }
+                 }            
+            }        
+	} catch(ObjectException oe) {
+            throw new ConfigException(oe);
+	}
+        return objectNode;
+    }
+	
+    public static void setObjectNodeFieldValue(ObjectNode node, String field, String value)
+        throws ObjectException {
+        if (value == null) {
+            if (node.isNullable(field)) {
+                node.setValue(field, null);
+            	return;
+            } else {
+                //ObjectNodeConfig config = ConfigManager.getInstance().getObjectNodeConfig(node.pGetType());
+                //String fieldDisplayName = config.getFieldConfig(field).getDisplayName(); 
+                throw new ObjectException("Field [" + field + "] is required");
+            }
+        }
+        int type = node.pGetType(field);
+        try {
+            switch (type) {
+            case ObjectField.OBJECTMETA_DATE_TYPE:
+            case ObjectField.OBJECTMETA_TIMESTAMP_TYPE:
+                node.setValue(field, (Object) new SimpleDateFormat("mm/dd/yyyy").parse(value));
+            	break;
+            case ObjectField.OBJECTMETA_INT_TYPE:
+            	node.setValue(field, (Object) Integer.valueOf(value));
+            	break;
+            case ObjectField.OBJECTMETA_BOOL_TYPE:
+            	node.setValue(field, (Object) Boolean.valueOf(value));
+            	break;
+            case ObjectField.OBJECTMETA_BYTE_TYPE:
+            	node.setValue(field, (Object) Byte.valueOf(value));
+            	break;
+            case ObjectField.OBJECTMETA_CHAR_TYPE:
+            	node.setValue(field, (Object) new Character(value.charAt(0)));
+            	break;
+            case ObjectField.OBJECTMETA_LONG_TYPE:
+            	node.setValue(field, (Object) Long.valueOf(value));
+            	break;
+            case ObjectField.OBJECTMETA_FLOAT_TYPE:
+            	node.setValue(field, (Object) Float.valueOf(value));
+            	break;
+            	case ObjectField.OBJECTMETA_STRING_TYPE:
+            default:
+            	node.setValue(field, (Object) value);
+		break;
+            }
+        } catch (ParseException pex) {
+            
+        } catch (NumberFormatException nex) {
+            //ObjectNodeConfig config = ConfigManager.getInstance().getObjectNodeConfig(node.pGetType());
+            //String fieldDisplayName = config.getFieldConfig(field).getDisplayName(); 
+            throw new ObjectException("Invalid value [" + value + "] for field [" + field + "]"); 
+        }
+   }	        
 }

@@ -94,5 +94,32 @@ public class AttributeList implements Iterator<Attribute> {
     }
     public void remove() {
         throw new UnsupportedOperationException("not supported optional operation.");    
+    } 
+    public void setFieldValue(String name, String value){        
+        if (attributes == null) {
+            attributes = new ArrayList<Attribute>();
+        }
+        boolean found = false;
+        for (Attribute attribute : attributes){
+            if (name.equals(attribute.getName())) {
+                attribute.setValue(value);
+                found = true;
+            }
+        }
+        if(!found) {
+            attributes.add(new Attribute(name, value));
+        }
+    }
+    public String getFieldValue(String name) {        
+        String value = null;
+        if(attributes != null) {
+            for (Attribute attribute : attributes){
+                if (name.equals(attribute.getName())) {
+                    value = attribute.getValue();
+                    break;
+                }
+            }
+        }
+        return value;
     }    
 }

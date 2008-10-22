@@ -22,13 +22,16 @@
  */
 package com.sun.mdm.multidomain.services.model;
 
+import com.sun.mdm.multidomain.services.relationship.AttributeList;
+import com.sun.mdm.multidomain.services.relationship.Attribute;
+        
 import java.util.List;
 
 /**
  * DomainSearch class.
  * @author cye
  */
-public class DomainSearch extends FieldList {
+public class DomainSearch extends AttributeList {
     /* domain name */
     private String name;
     /* search type */
@@ -37,8 +40,8 @@ public class DomainSearch extends FieldList {
     public DomainSearch() {
         super();
     }
-    public DomainSearch(String name, String type, List<Field> fields) {
-        super(fields);
+    public DomainSearch(String name, String type, List<Attribute> attributes) {
+        super(attributes);
         this.name = name;
         this.type = type;
     }

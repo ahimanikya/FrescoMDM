@@ -48,4 +48,15 @@ public class Attribute {
     public void setValue(String value) {
         this.value = value;
     }   
+    @Override 
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+        if(object instanceof Attribute) {
+            Attribute attribute = (Attribute)object;
+            if(this.name.equals(attribute.getName()) &&
+               this.value.equals(attribute.getValue()))
+                isEqual = true;
+        }
+        return isEqual;
+    }    
 }
