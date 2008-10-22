@@ -23,6 +23,7 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class ObjectScreenConfig {
     private String mId;          // domain ID 
@@ -82,7 +83,13 @@ public abstract class ObjectScreenConfig {
     // returns the field configuration information for a field.
     
     public FieldConfig getFieldConfig(String fieldname) { 
-        // RESUME HERE
+        Iterator<FieldConfig> iter = mFieldConfigs.iterator();
+        while (iter.hasNext()) {
+            FieldConfig fc = iter.next();
+            if (fieldname.equalsIgnoreCase(fc.getName())) {
+                return fc;
+            }
+        }
         return null;
     }
 
@@ -180,29 +187,57 @@ public abstract class ObjectScreenConfig {
         mSearchResultDetailsConfigs.add(searchResultDetailsConfig);
     }
     
-    // retrieves the search results configuration for a given ID
+    // retrieves the search results configuration for a given search  result config ID
 
-    public SearchResultsConfig getSearchResultsConfig(Integer searchScreenConfigId) 
+    public SearchResultsConfig getSearchResultsConfig(Integer searchResultsConfigId) 
             throws Exception {  
-        // RESUME HERE
-        return null;
-    }
-
-    // retrieves the search results detail configuration for a given search results config ID
-
-    public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) throws Exception {  
-        // RESUME HERE
+        Iterator<SearchResultsConfig> iter = mSearchResultsConfigs.iterator();	
+        while(iter.hasNext()) {
+            SearchResultsConfig sRC = iter.next();
+            if (sRC.getSearchResultsID() == searchResultsConfigId.intValue()) {
+                return sRC;
+            }
+        }
         return null;
     }
     
     // retrieves the search results summary configuration for a given search results config ID
 
-    public SearchResultsSummaryConfig getSearchResultsSummaryConfig(Integer searchResultsConfigId) throws Exception {  
-        // RESUME HERE
+    public SearchResultsSummaryConfig getSearchResultsSummaryConfig(Integer searchResultsConfigId) 
+            throws Exception {  
+                
+        SearchResultsConfig sRC = getSearchResultsConfig(searchResultsConfigId);
+        int searchResultSummaryConfigID = sRC.getSearchResultsDetailID();
+
+        Iterator<SearchResultsSummaryConfig> iter = mSearchResultsSummaryConfigs.iterator();	
+        while(iter.hasNext()) {
+            SearchResultsSummaryConfig sRSC = iter.next();
+            if (sRSC.getSearchResultsSummaryID() ==searchResultSummaryConfigID) {
+                return sRSC;
+            }
+        }
         return null;
     }
     
+     // retrieves the search results detail configuration for a given search results config ID
+
+    public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) 
+            throws Exception {  
+
     
+        SearchResultsConfig sRC = getSearchResultsConfig(searchResultsConfigId);
+        int searchResultDetailsConfigID = sRC.getSearchResultsDetailID();
+        Iterator<SearchResultDetailsConfig> iter = mSearchResultDetailsConfigs.iterator();	
+        while(iter.hasNext()) {
+            SearchResultDetailsConfig sRDC = iter.next();
+            if (sRDC.getSearchResultDetailID() == searchResultDetailsConfigID) {
+                return sRDC;
+            }
+        }
+        return null;
+    }
+    
+   
     // RESUME HERE
 /*    
     
