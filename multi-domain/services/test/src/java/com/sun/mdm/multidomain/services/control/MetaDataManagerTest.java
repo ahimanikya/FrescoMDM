@@ -38,9 +38,9 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
  */
 public class MetaDataManagerTest extends TestCase {
 
-	private MetaDataManager metaDataManager;
+    private MetaDataManager metaDataManager;
 	
-	public MetaDataManagerTest (String name) {
+    public MetaDataManagerTest (String name) {
         super(name);
     }
     
