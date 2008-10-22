@@ -23,24 +23,66 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-public class RelationshipScreenConfig extends ObjectScreenConfig {
-	String mTargetDomainName;		// name of the target domain
+public class RelationshipScreenConfig {
+	private String mSourceDomainName;		// name of the target domain
+	private String mTargetDomainName;		// name of the target domain
+	private HashMap<String,  RelationshipScreenConfigInstance> mRelationshipScreenConfigInstances;
+	
+	// This class represents all the relationships for a source and target domain.
 
     public RelationshipScreenConfig() {
+        mRelationshipScreenConfigInstances = new HashMap<String,  RelationshipScreenConfigInstance>();
     }
     
-	Relationship getRelationship() {	// retrieves the Relationship object for this relationship
+    public RelationshipScreenConfig(String sourceDomainName, String targetDomainName) {
+        mSourceDomainName = sourceDomainName;
+        mTargetDomainName = targetDomainName;
+        mRelationshipScreenConfigInstances = new HashMap<String,  RelationshipScreenConfigInstance>();
+    }
+    
+	public Relationship getRelationship() {	// retrieves the Relationship object for this relationship
 	    return null;
 	}
 
-	String getTargetDomainName() {	// retrieves the name of the target domain
-	    return mTargetDomainName;
+	public void setSourceDomainName(String sourceDomainName) {	// sets the name of the source domain
+	    mSourceDomainName = sourceDomainName;
+	}
+	public String getSourceDomainName() {	// retrieves the name of the source domain
+	    return mSourceDomainName;
 	}
 
-	void setTargetDomainName(String targetDomainName) {	// sets the name of the target domain
+	public void setTargetDomainName(String targetDomainName) {	// sets the name of the target domain
 	    mTargetDomainName = targetDomainName;
 	}
+	public String getTargetDomainName() {	// retrieves the name of the target domain
+	    return mTargetDomainName;
+	}
+	
+	public HashMap<String,  RelationshipScreenConfigInstance> getRelationships() {
+	    return mRelationshipScreenConfigInstances;
+	}
+	
+	// add a relationship screen configuration instance
+	
+	public void addRelScreenConfigInstance(RelationshipScreenConfigInstance rSCObj) 
+	        throws Exception {
+	    // RESUME HERE--name should be passed in or retieved from rSCObj?
+	    mRelationshipScreenConfigInstances.put(rSCObj.getRelationshipName(), rSCObj);
+	}
 
+    // retrieves a relationshiop screen configuration object
+	public RelationshipScreenConfigInstance getRelScreenConfigInstance(String relationshipName) 
+	        throws Exception {
+	            
+	    return mRelationshipScreenConfigInstances.get(relationshipName);
+	}
+	
+    // removes a relationship screen configuration instance
+	public void removeRelScreenConfigInstance(String relationshipName) 
+	        throws Exception {
+	            
+	    mRelationshipScreenConfigInstances.remove(relationshipName);
+	}
 }

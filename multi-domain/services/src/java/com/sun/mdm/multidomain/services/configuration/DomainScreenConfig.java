@@ -22,23 +22,29 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.multidomain.services.configuration.Domain;
+import com.sun.mdm.multidomain.association.Domain;
 
 import java.util.ArrayList;
 
 public class DomainScreenConfig extends ObjectScreenConfig {
-    private Domain mDomain;             // domain associated with this Domain Screen Configuration
+    private Domain mDomain = null;             // domain associated with this Domain Screen Configuration
     private SummaryID mSummaryID;        // summary ID for a domain
     private ArrayList<GroupScreenConfig> mGroupScreenConfigs;   // ArrayList of GroupScreenConfig objects
     private ArrayList<HierarchyScreenConfig> mHierarchyScreenConfigs;   // ArrayList of hierarchyScreenConfig objects
-// RESUME HERE    
-// is this needed?    
-//	private ArrayList<RelationshipScreenConfig> mRelationshipScreenConfigs;	// ArrayList of RelationshipScreenConfig objects
+
 	private ArrayList<SearchScreenConfig> mSearchScreenConfigs;
     private ArrayList<SearchResultsConfig> mSearchResultsConfigs;   
     private ArrayList<SearchResultDetailsConfig> mSearchResultDetailsConfigs;   
 
     public DomainScreenConfig() {
+        mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
+        mHierarchyScreenConfigs = new ArrayList<HierarchyScreenConfig>();
+    }
+    
+    public DomainScreenConfig(Domain domain) {
+        mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
+        mHierarchyScreenConfigs = new ArrayList<HierarchyScreenConfig>();
+        mDomain = domain;
     }
     
     public Domain getDomain() {     // retrieves the Domain object for this domain

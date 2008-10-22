@@ -6,9 +6,7 @@ package com.sun.mdm.multidomain.parser;
 
 import com.sun.mdm.multidomain.parser.SearchOptions.Parameter;
 //import com.sun.mdm.multidomain.relationship.Relationship;
-// RESUME HERE
-// probably need to remove this later
-import com.sun.mdm.multidomain.services.configuration.Domain;
+import com.sun.mdm.multidomain.association.Domain;
 
 import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
@@ -20,6 +18,7 @@ import com.sun.mdm.multidomain.services.configuration.NameValuePair;
 import com.sun.mdm.multidomain.services.configuration.ObjectNodeConfig;
 import com.sun.mdm.multidomain.services.configuration.ObjectScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfig;
+import com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfigInstance;
 import com.sun.mdm.multidomain.services.configuration.ScreenObject;
 import com.sun.mdm.multidomain.services.configuration.SearchResultDetailsConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchResultsConfig;
@@ -68,7 +67,7 @@ public class MultiDomainWebManager {
     private ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
     private JNDIResources mJndiResources = null;
     private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
-//    private MDConfigManager mdcm = MDConfigManager.getInstance();
+    private static MDConfigManager mDcm = MDConfigManager.getInstance();
     
     private static String RELATIONSHIP_WEB_MANAGER = "RelationshipWebManager";
 
@@ -136,6 +135,8 @@ public class MultiDomainWebManager {
 
     private Element getRelationTypeToStr(Document xmlDoc) throws Exception{
         
+        // RESUME HERE--add code to handle relationships
+        
         Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
         for (RelationshipType relType : mRelationshipTypes) {
             String relTypeName = relType.getRelTypeName();
@@ -148,6 +149,7 @@ public class MultiDomainWebManager {
             relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_DESTINATION, destination);
             relTypeElm.setAttribute(WebManagerProperties.mTAG_NAME, relTypeName);
             ArrayList<RelationFieldReference> fieldRefs = relType.getRelFieldRefs();
+            
             for (RelationFieldReference fieldRef : fieldRefs) {
                 Element relTypeFieldElm = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_REF);
                 relTypeElm.appendChild(relTypeFieldElm);
@@ -178,7 +180,7 @@ public class MultiDomainWebManager {
             }
             
             relTypes.appendChild(relTypeElm);
-            
+
         }
         
         return relTypes;
@@ -439,7 +441,7 @@ public class MultiDomainWebManager {
      * constructs into RelationshipType class.
      * @param node
      */
-    private void parseRelTypes(Node node) {
+    private void parseRelTypes(Node node) throws Exception {
         String elementName = null;
         NodeList children = node.getChildNodes();
         for (int i1 = 0; i1 < children.getLength(); i1++) {
@@ -457,15 +459,41 @@ public class MultiDomainWebManager {
 
                 }
 
+                // testing--raymond tam
+                // RESUME HERE
+                
+                boolean newSourceTargetDomains = false;
+                RelationshipScreenConfig rSC = mDcm.getRelationshipScreenConfigs(sourceAttr, destAttr);
+                RelationshipScreenConfigInstance rSCI = null;
+                if (rSC == null) { // new source and target domains
+                    newSourceTargetDomains = true;
+                    rSC = new RelationshipScreenConfig(sourceAttr, destAttr);
+                    rSCI = new RelationshipScreenConfigInstance(nameAttr);
+                } else {
+                    rSCI = rSC.getRelScreenConfigInstance(nameAttr);
+                    if (rSCI == null) {
+                        rSCI = new RelationshipScreenConfigInstance();
+                    } else {
+                        // RESUME HERE
+                        // Throw an exception because the relationship name already exists
+                    }
+                }
+                
                 ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();
 
                 RelationshipType relType = new RelationshipType(nameAttr, destAttr, sourceAttr, fieldRefs);
 
-                parseType(elm, fieldRefs);
+                // testing--raymond tam
+//                parseType(elm, fieldRefs);
+                parseType(elm, fieldRefs, rSCI);
 
                 mRelationshipTypes.add(relType);
 
-
+                // testing--raymond tam
+                rSC.addRelScreenConfigInstance(rSCI);
+                if (newSourceTargetDomains) {
+                    mDcm.addRelationshipScreenConfig(rSC);
+                }
             }
         }
     }
@@ -475,7 +503,8 @@ public class MultiDomainWebManager {
      * @param node - relationship-type object
      * @param fieldRefs
      */
-    private void parseType(Node node, ArrayList<RelationFieldReference> fieldRefs) {
+    private void parseType(Node node, ArrayList<RelationFieldReference> fieldRefs, 
+            RelationshipScreenConfigInstance rSCI) throws Exception {
 
         String elementName = null;
 
@@ -484,7 +513,7 @@ public class MultiDomainWebManager {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
-                fieldRefs.add(parseRelFieldDef(elm));
+                fieldRefs.add(parseRelFieldDef(elm, rSCI));
             }
         }
     }
@@ -494,7 +523,9 @@ public class MultiDomainWebManager {
      * @param node
      * @return fieldRef - RelationFieldReference
      */
-    private RelationFieldReference parseRelFieldDef(Node node) {
+    private RelationFieldReference parseRelFieldDef(Node node, 
+            RelationshipScreenConfigInstance rSCI) throws Exception {
+                
         String elementName = null;
         String displayName = null;
         int displayOrder = -1;
@@ -504,6 +535,10 @@ public class MultiDomainWebManager {
         String valueList = null;
         String valueType = null;
         String fieldName = null;
+        // testing--raymond tam
+        String inputMask = null;
+        String valueMask = null;
+        boolean isSensitive = false;
 
         NodeList children = node.getChildNodes();
 
@@ -528,11 +563,54 @@ public class MultiDomainWebManager {
                     valueList = RelationshipUtil.getStrElementValue(elm);
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_TYPE)) {
                     valueType = RelationshipUtil.getStrElementValue(elm);
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_MASK)) {
+                    valueMask = RelationshipUtil.getStrElementValue(elm);
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_INPUT_MASK)) {
+                    inputMask = RelationshipUtil.getStrElementValue(elm);
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_IS_SENSITIVE)) {
+                    isSensitive = RelationshipUtil.getBooleanElementValue(elm);
                 }
 
             }
 
         }
+        // RESUME HERE
+/*
+        // optional field
+        String valueTypeStr = "String";
+        String valueTypeString = NodeUtil.getChildNodeText(e, VALUE_TYPE);
+        if (valueTypeString != null) {
+            valueTypeStr = valueTypeString;
+
+            // if value type is date set the date input mask automatically, based on date format
+            if (valueTypeStr.equals("date")) {
+                inputMask = getDateInputMask();
+            }
+        }
+
+        int valueType = getMetaType(valueTypeStr);
+*/
+        // RESUME HERE
+        String objName = null;
+        FieldConfig fieldConfig = new FieldConfig(null, objName, fieldName,
+                displayName, guiType, maxLen, valueType);
+        fieldConfig.setDisplayOrder(displayOrder);
+        fieldConfig.setKeyType(keyType);
+        fieldConfig.setSensitive(isSensitive);
+        fieldConfig.setValueList(valueList);
+        fieldConfig.setInputMask(inputMask);
+
+        if (valueMask != null) {
+        // RESUME HERE
+/*
+          if (inputMask == null || valueMask.length() != inputMask.length()) {
+            throw new IOException(mLocalizer.t("CFG506: Invalid value mask [{0}] for input mask [{1}]", valueMask, inputMask));
+          }
+*/          
+          fieldConfig.setValueMask(valueMask);
+        }
+
+        rSCI.addFieldConfig(fieldConfig);
 
         RelationFieldReference fieldRef = new RelationFieldReference(fieldName, displayName,
                 displayOrder, maxLen, guiType, valueList, valueType, keyType);
@@ -659,14 +737,15 @@ public class MultiDomainWebManager {
         String elementName = null;
         NodeList children = node.getChildNodes();
         DomainForWebManager domain = null;
-        // testing--raymond tam
         DomainScreenConfig domainScreenConfig = new DomainScreenConfig();
+        String domainName = null;
+        
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
                 if (elementName.equals(WebManagerProperties.mTAG_NAME)) {
-                    String domainName = RelationshipUtil.getStrElementValue(elm);
+                    domainName = RelationshipUtil.getStrElementValue(elm);
                     domain = new DomainForWebManager(domainName);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_PAGES)) {
                     parseSearchPages(elm, domain, domainScreenConfig);
@@ -679,10 +758,11 @@ public class MultiDomainWebManager {
             }
 
         }
-        // RESUME HERE
-//        Domain dm = new Domain();
-//        domainScreenConfig.setDomain(domain);
-//        mdcm.addDomainScreenConfig(domainScreenConfig);
+        // Build information for the service layer
+        Domain dm = new Domain(domainName);
+        domainScreenConfig.setDomain(dm);
+        mDcm.addDomainScreenConfig(domainScreenConfig);
+        
         return domain;
 
     }

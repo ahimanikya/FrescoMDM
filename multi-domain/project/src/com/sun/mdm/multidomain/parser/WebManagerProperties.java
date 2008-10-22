@@ -50,6 +50,15 @@ public class WebManagerProperties {
     public static String mTAG_REL_FIELD_VALUE_TYPE = "value-type";
     
     public static String mTAG_REL_FIELD_KEY_TYPE = "key-type";
+
+    // testing--raymond tam    
+    public static String mTAG_REL_FIELD_VALUE_MASK = "value-mask";
+    
+    // testing--raymond tam    
+    public static String mTAG_REL_FIELD_INPUT_MASK = "input-mask";
+    
+    // testing--raymond tam    
+    public static String mTAG_REL_FIELD_IS_SENSITIVE = "is-sensitive";
     
     public static String mTAG_PAGE_IDENTIFIER = "identifier";
     

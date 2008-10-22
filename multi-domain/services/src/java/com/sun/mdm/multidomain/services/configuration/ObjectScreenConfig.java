@@ -66,7 +66,12 @@ public abstract class ObjectScreenConfig {
     }
 
     public FieldConfig getFieldConfig(String fieldname) { // returns the field configuration information for a field.
+        // RESUME HERE
         return null;
+    }
+
+    public void addFieldConfig(FieldConfig fieldConfig) { // add a field configuration class
+        mFieldConfigs.add(fieldConfig);
     }
 
     public ArrayList<SearchScreenConfig> getSearchScreenConfigs() { // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)

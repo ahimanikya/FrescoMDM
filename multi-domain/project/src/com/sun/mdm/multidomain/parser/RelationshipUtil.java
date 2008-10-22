@@ -32,6 +32,16 @@ public class RelationshipUtil {
             return -1;
         }
     }
+    
+    public static boolean getBooleanElementValue(Node node) {
+        Node tnode = node.getFirstChild();
+
+        if (null != tnode) {
+            return Boolean.parseBoolean(tnode.getNodeValue());
+        } else {
+            return false;
+        }
+    }
 }
 
 

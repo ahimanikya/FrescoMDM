@@ -22,7 +22,8 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.services.configuration.Domain;
+import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.association.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
@@ -43,8 +44,8 @@ public class MDConfigManager {
 	private HashMap<Integer, ScreenObject> mScreens;
 	private HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
 	private HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
-	private MDConfigManager mInstance;	// instance
-	private Integer mInitialScreenID;	// ID of the initial screen
+	private static MDConfigManager mInstance = null;	// instance
+	private Integer mInitialScreenID;	                // ID of the initial screen
 	private ObjectSensitivePlugIn mSecurityPlugIn;
 	
 	
@@ -54,7 +55,7 @@ public class MDConfigManager {
 	public void init() {    //  initializes the config manager
 	}  
 
-	public MDConfigManager getInstance() {  //  obtains config manager, initializes if necessary
+	public static MDConfigManager getInstance() {  //  obtains config manager, initializes if necessary
 	    return mInstance;
 	}
 
@@ -67,9 +68,8 @@ public class MDConfigManager {
         if (dsc == null) {
             throw new Exception(mLocalizer.t("CFG506: Domain Screen Configuration cannot be null."));
         }
-        // RESUME HERE
-//        String domainName = dsc.getDomain().getName();
-//        mDomainScreenConfigs.put(domainName, dsc);
+        String domainName = dsc.getDomain().getName();
+        mDomainScreenConfigs.put(domainName, dsc);
     }
     
     // remove an entry from the DomainScreenConfig hashmap
@@ -116,23 +116,106 @@ public class MDConfigManager {
     }
     
     // add an entry into the Relationship hashmap
-    // I'm not sure this will work--relationships are defined within a domain
     
-    public void addRelationshipScreenConfig(RelationshipScreenConfig rsc) throws Exception {  
-        if (rsc == null) {
+    public void addRelationshipScreenConfig(RelationshipScreenConfig rSC) throws Exception {  
+        if (rSC == null) {
             throw new Exception(mLocalizer.t("CFG508: Relationship Screen Configuration cannot be null."));
         }
-        // RESUME HERE--retrieve the ScreenID from the ScreenObject
-        String relationshipName = null;
-        mRelationshipScreenConfigs.put(relationshipName, rsc);
+        String domainNames = rSC.getSourceDomainName() + rSC.getTargetDomainName();
+        mRelationshipScreenConfigs.put(domainNames, rSC);
+    }
+
+    // remove an entry into the Relationship hashmap.  These are all the relationships for a source
+    // and target domain.
+    
+    public void removeRelationshipScreenConfig(String sourceDomainName, String targetDomainName) throws Exception {  
+        if (sourceDomainName == null || targetDomainName == null) {
+            throw new Exception(mLocalizer.t("CFG513: Source Domain Name and " + 
+                                             "Destination Domain Name may not be null."));
+        }
+        mRelationshipScreenConfigs.remove(sourceDomainName + targetDomainName);
+    }
+
+    // Retrieves all the relationships for a source and target domain.  sourceDOmainName + targetDomainName is the key
+    
+    public RelationshipScreenConfig getRelationshipScreenConfigs(String sourceDomainName, String targetDomainName) 
+                        throws Exception {  
+                            
+        if (sourceDomainName == null || targetDomainName == null) {
+            throw new Exception(mLocalizer.t("CFG514: Source Domain Name and " + 
+                                             "Target Domain Name may not be null."));
+        }
+        return mRelationshipScreenConfigs.get(sourceDomainName + targetDomainName);
     }
     
-	public HashMap<String, RelationshipScreenConfig> getRelationships() {  //  returns hashmap of all Relationship instances (sourceDomain.name+targetDomain.name+relationshipName is the key)
+    // add a relationship config instance    
+   
+    public void addRelationshipScreenConfigInstance(RelationshipScreenConfigInstance rSCI)  throws Exception {  
+
+        if (rSCI == null) {
+                
+            throw new Exception(mLocalizer.t("CFG515: RelationshipScreenCOnfigInstanct may not be null."));
+        }
+        RelationshipType rel = rSCI.getRelationshipType();
+        String sourceDomainName = rel.getSourceDomain();
+        String targetDomainName = rel.getTargetDomain();
+//        String relationshipName = null;
+	    RelationshipScreenConfig rSC = 
+	            getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+	    if (rSC != null) {
+	        rSC.addRelScreenConfigInstance(rSCI);
+	    } else {
+                throw new Exception(mLocalizer.t("CFG516: Source Domain ({1}) and " +
+                                                 "Target Domain ({2}) not found.", 
+                                                 sourceDomainName,targetDomainName));       
+        }
+    }
+    
+
+    // remove a relationship config instance    
+   
+    public void removeRelationshipScreenConfigInstance(String sourceDomainName, String targetDomainName, 
+	                                                   String relationshipName)  throws Exception {  
+
+        if (sourceDomainName == null || targetDomainName == null || 
+            relationshipName == null) {
+                
+            throw new Exception(mLocalizer.t("CFG511: Source Domain Name, " + 
+                                             "Destination Domain Name and " + 
+                                             "Relationship Name may not be null."));
+        }
+	    RelationshipScreenConfig rSC = getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+	    if (rSC != null) {
+	        rSC.removeRelScreenConfigInstance(relationshipName);
+	    } else {
+                throw new Exception(mLocalizer.t("CFG512: Relationship ({0}) " +
+                                                 "not found for Source Domain ({1}), " +
+                                                 "Target Domain ({2})", 
+                                                 relationshipName, sourceDomainName,
+                                                 targetDomainName));
+	    }
+    }
+    
+    //  returns hashmap of all Relationship instances 
+	public HashMap<String, RelationshipScreenConfig> getRelationships() {  
 	    return mRelationshipScreenConfigs;
 	}
 
-	public HashMap<String, DomainScreenConfig> getDomainScreenConfigs(){  //  returns hashmap of all Domain Screen Configuration instances (domainName is the key)
-	    return mDomainScreenConfigs;
+	
+    //  returns a specific relationships for a source and target domain
+	public RelationshipScreenConfigInstance
+	        getRelationshipScreenConfig(String sourceDomainName, String targetDomainName, 
+	                                     String relationshipName)  throws Exception {  
+	    RelationshipScreenConfig rSC = getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+	    if (rSC != null) {
+	        return rSC.getRelScreenConfigInstance(relationshipName);
+	    } else {
+                throw new Exception(mLocalizer.t("CFG510: Relationship ({0}) " +
+                                                 "not found for Source Domain ({1}), " +
+                                                 "Target Domain ({2})", 
+                                                 relationshipName, targetDomainName,
+                                                 sourceDomainName));
+	    }
 	}
 	
 	//  returns a screen with the matching ID
