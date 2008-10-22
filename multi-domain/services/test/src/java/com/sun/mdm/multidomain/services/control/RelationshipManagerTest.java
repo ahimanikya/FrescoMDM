@@ -39,7 +39,7 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
-import com.sun.mdm.multidomain.services.util.ObjectBuilder;
+
 
 /**
  * RelationshipManagerTest class.
