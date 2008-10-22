@@ -38,8 +38,7 @@ import java.util.ArrayList;
  */
     /*
      * MultiDomainModel.xml
-     * <relationships>
-     *   <relationshp-type>
+     * <relationship>
      */
     public class Relationship {
         public static final String TYPE_RELATIONSHIP = "relationship";
@@ -82,7 +81,7 @@ import java.util.ArrayList;
             RelationshipType relationshipType = null;
             for (int i=0; alRelationshipTypes.size() > i; i++) {
                 relationshipType = (RelationshipType) alRelationshipTypes.get(i);
-                if (relationshipType.getRelTypeName().equals(name)) {
+                if (relationshipType.getName().equals(name)) {
                     break; 
                 }
             }
@@ -93,7 +92,7 @@ import java.util.ArrayList;
             RelationshipType relationshipType = null;
             for (int i=0; alRelationshipTypes.size() > i; i++) {
                 relationshipType = (RelationshipType) alRelationshipTypes.get(i);
-                if (relationshipType.getRelTypeName().equals(name) &&
+                if (relationshipType.getName().equals(name) &&
                     relationshipType.getSource().equals(sourceDomain) &&
                     relationshipType.getDestionation().equals(targetDomain)) {
                     break; 

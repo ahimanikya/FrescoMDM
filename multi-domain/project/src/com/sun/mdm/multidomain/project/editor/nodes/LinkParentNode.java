@@ -38,89 +38,89 @@ import org.openide.util.Lookup;
 
 import java.util.ArrayList;
 
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 /**
  *
  * @author kkao
  */
-public class RelationshipNode extends AbstractNode {
+public class LinkParentNode extends AbstractNode {
     EditorMainApp mEditorMainApp;
-    RelationshipNode mRelationshipNode;
+    LinkParentNode mLinkParentNode;
     String domain1;
     String domain2;
-    ArrayList <RelationshipTypeNode> alRelationshipTypeNodes = new ArrayList();
+    ArrayList <LinkBaseNode> alLinkBaseNodes = new ArrayList();
     
-    public RelationshipNode() {
+    public LinkParentNode() {
         super(Children.LEAF);
     }
 
-    public RelationshipNode(Children arg0, Lookup arg1) {
+    public LinkParentNode(Children arg0, Lookup arg1) {
         super(arg0, arg1);
     }
 
-    public RelationshipNode(Children arg0) {
+    public LinkParentNode(Children arg0) {
         super(arg0);
     }
     
-    public RelationshipNode(EditorMainApp editorMainApp, String domain1, String domain2) {
+    public LinkParentNode(EditorMainApp editorMainApp, String domain1, String domain2) {
         super(Children.LEAF);
         mEditorMainApp = editorMainApp;
-        mRelationshipNode = this;
+        mLinkParentNode = this;
         this.domain1 = domain1;
         this.domain2 = domain2;
         addNodeListener(new NodeAdapter() {
             @Override
             public void nodeDestroyed(NodeEvent ev) {
-                //mEditorMainApp.deleteRelationshipNode(mRelationshipNode);
+                //mEditorMainApp.deleteLinkParentNode(mLinkParentNode);
             }
         });
     }
     
     /**
      * 
-     * @param relationshipType
+     * @param linkType
      */
-    public void addRelationshipTypeNode(RelationshipType relationshipType) {
-        RelationshipTypeNode relationshipTypeNode = new RelationshipTypeNode(this, relationshipType);
-        alRelationshipTypeNodes.add(relationshipTypeNode);
+    public void addLinkBaseNode(LinkType linkType) {
+        LinkBaseNode linkTypeNode = new LinkBaseNode(this, linkType);
+        alLinkBaseNodes.add(linkTypeNode);
     }
     
     /**
      * 
-     * @param relationshipTypeNode
+     * @param linkTypeNode
      */
-    public void addRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
-        relationshipTypeNode.setParentRelationshipNode(this);
-        alRelationshipTypeNodes.add(relationshipTypeNode);
+    public void addLinkBaseNode(LinkBaseNode linkTypeNode ) {
+        linkTypeNode.setLinkParentNode(this);
+        alLinkBaseNodes.add(linkTypeNode);
     }
     
     /**
-     * Find and remove RelationshipTypeNode that matches relationshipTypeNode
-     * @param relationshipTypeNode
+     * Find and remove LinkBaseNode that matches linkTypeNode
+     * @param linkTypeNode
      */
-    public void deleteRelationshipTypeNode(RelationshipTypeNode relationshipTypeNode ) {
-        if (relationshipTypeNode != null &&
-            relationshipTypeNode.getParentRelationshipNode() != null &&
-            relationshipTypeNode.getParentRelationshipNode() == this) {
-            alRelationshipTypeNodes.remove(relationshipTypeNode);
+    public void deleteLinkBaseNode(LinkBaseNode linkTypeNode ) {
+        if (linkTypeNode != null &&
+            linkTypeNode.getLinkParentNode() != null &&
+            linkTypeNode.getLinkParentNode() == this) {
+            alLinkBaseNodes.remove(linkTypeNode);
         }
     }
     
     /**
-     * Find and remove RelationshipTypeNode that matches these params
-     * @param relationshipTypeName
+     * Find and remove LinkBaseNode that matches these params
+     * @param linkName
      * @param sourceDomain
      * @param targetDomain
      */
-    public void deleteRelationshipTypeNode(String relationshipTypeName, String sourceDomain, String targetDomain ) {
+    public void deleteLinkBaseNode(String linkName, String sourceDomain, String targetDomain ) {
         // 
-        for (int i=0; alRelationshipTypeNodes != null && i<alRelationshipTypeNodes.size(); i++) {
-            RelationshipTypeNode relationshipTypeNode = (RelationshipTypeNode) alRelationshipTypeNodes.get(i);
-            if (relationshipTypeNode.getRelationshipTypeName().equals(relationshipTypeName) &&
-                relationshipTypeNode.getRelationshipType().getSourceDomain().equals(sourceDomain) &&
-                relationshipTypeNode.getRelationshipType().getTargetDomain().equals(targetDomain)) {
-                alRelationshipTypeNodes.remove(i);
+        for (int i=0; alLinkBaseNodes != null && i<alLinkBaseNodes.size(); i++) {
+            LinkBaseNode linkTypeNode = (LinkBaseNode) alLinkBaseNodes.get(i);
+            if (linkTypeNode.getName().equals(linkName) &&
+                linkTypeNode.getLinkType().getSourceDomain().equals(sourceDomain) &&
+                linkTypeNode.getLinkType().getTargetDomain().equals(targetDomain)) {
+                alLinkBaseNodes.remove(i);
                 break;
             }
         }
@@ -144,10 +144,10 @@ public class RelationshipNode extends AbstractNode {
 
     /**
      * 
-     * @return ArrayList <RelationshipTypeNode>
+     * @return ArrayList <LinkBaseNode>
      */
-    public ArrayList <RelationshipTypeNode> getAllRelationshipTypeNodes() {
-        return alRelationshipTypeNodes;
+    public ArrayList <LinkBaseNode> getAllLinkBaseNodes() {
+        return alLinkBaseNodes;
     }
 
 }

@@ -43,14 +43,14 @@ import com.sun.mdm.multidomain.project.editor.EditorMainApp;
  *
  * @author kkao
  */
-public class CreateRelationshipAction extends CookieAction {
+public class CreateGroupAction extends CookieAction {
     private ProgressHandle mLoadProgress = null;
 
     /**
      * The log4j logger
      */
     private static final Logger mLog = Logger.getLogger(
-            CreateRelationshipAction.class.getName());
+            CreateGroupAction.class.getName());
 
     @Override
     protected Class<?>[] cookieClasses() {
@@ -62,7 +62,7 @@ public class CreateRelationshipAction extends CookieAction {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public CreateRelationshipAction() {
+    public CreateGroupAction() {
     }
 
     /**
@@ -80,13 +80,13 @@ public class CreateRelationshipAction extends CookieAction {
      * @return the cookie action name
      */
     public String getName() {
-        return NbBundle.getMessage(CreateRelationshipAction.class, "LBL_Action_Add_Relationship");
+        return NbBundle.getMessage(CreateGroupAction.class, "LBL_Action_Add_Group");
     }
     
     public void perform(final EditorMainApp editorMainApp) {
-        //ToDo - domain1 and domain2
-        //editorMainApp.addRelationshpNode(DEFAULT, DEFAULT);
+    
     }
+
     /**
      * Performs the cookie action for the selected node.
      *
@@ -98,7 +98,7 @@ public class CreateRelationshipAction extends CookieAction {
                 public void run() {
                     try {
                     } catch (Exception e) {
-                        mLog.severe(NbBundle.getMessage(CreateRelationshipAction.class, "MSG_FAILED_To_Add_Relationship")); // NOI18N
+                        mLog.severe(NbBundle.getMessage(CreateGroupAction.class, "MSG_FAILED_To_Add_Group")); // NOI18N
                         ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                         ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                     } finally {
@@ -107,7 +107,7 @@ public class CreateRelationshipAction extends CookieAction {
                 }
             });
         } catch (Exception ex) {
-            String msg = NbBundle.getMessage(CreateRelationshipAction.class, "MSG_FAILED_To_Perform_AddRelationshipAction") + ex.getMessage();
+            String msg = NbBundle.getMessage(CreateGroupAction.class, "MSG_FAILED_To_Perform_AddGroupAction") + ex.getMessage();
             mLog.info(msg);
             NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
             DialogDisplayer.getDefault().notify(desc);

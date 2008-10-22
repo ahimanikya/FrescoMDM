@@ -300,7 +300,7 @@ public class RelationshipCanvas extends JPanel implements MouseListener, MouseMo
         }
         
         public Dimension getPreferredSize() {
-            return new Dimension(32, 32);
+            return new Dimension(8, 8);
         }
         
         public Dimension getMinimumSize() {

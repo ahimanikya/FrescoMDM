@@ -42,14 +42,13 @@ public class MultiDomainModel {
     private final String mTagDateFormat = "dateformat";
     private final String mTagDomains = "domains";
     private final String mTagDomain = "domain";
-    private final String mTagDomain1 = "domain1";
-    private final String mTagDomain2 = "domain2";
-    private final String mTagRelationshipType = "relationship-type";
-    private final String mTagType = "type";
     private final String mTagSourceDomain = "source-domain";
     private final String mTagTargetDomain = "target-domain";
-    private final String mTagRelationships  = "relationships";
     private final String mTagRelationship  = "relationship";
+    private final String mTagHierarchy = "hierarchy";
+    private final String mTagGroup = "group";
+    private final String mTagCategory = "category";
+    private final String mTagDirection = "direction";
     private final String mTagFixedAttributes = "fixed-attributes";
     private final String mTagExtendedAttributes = "extended-attributes";
     private final String mTagAttribute = "attribute";
@@ -58,6 +57,7 @@ public class MultiDomainModel {
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
     private Relationships mRelationships = new Relationships();
+    private ArrayList <LinkType> mAlLinkTypes = new ArrayList();
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
     private boolean mModified = false;
@@ -104,45 +104,50 @@ public class MultiDomainModel {
         return strDatabase;
     }
 
-    public ArrayList <Relationship> getAllRelationships() {
-        return mRelationships.getAllRelationships();
+    public ArrayList <LinkType> getAllLinks() {
+        return this.mAlLinkTypes;
     }
     
-    public ArrayList <Relationship> getRelationshipsByDomain(String domainName) {
-        return mRelationships.getRelationshipsByDomain(domainName);
+    public ArrayList <String> getAssociatedDomains(String domainName) {
+        ArrayList <String> al = new ArrayList();
+        for (int i=0; i< this.mAlLinkTypes.size(); i++) {
+            LinkType linkType = (LinkType) mAlLinkTypes.get(i);
+            String sourceDomain = linkType.getSourceDomain();
+            String targetDomain = linkType.getTargetDomain();
+            String associatedDomain = null;
+            if (domainName.equals(sourceDomain) || domainName.equals(targetDomain)) {
+                associatedDomain = domainName.equals(sourceDomain) ? targetDomain : sourceDomain;
+                al.add(associatedDomain);
+            }
+        }
+        return al;
     }
     
     /**
-     * @param String name of Relationship Type
+     * @param String name of Link
      * @param String sourceDomain
      * @param String targetDomain
-     * @return RelationshipType
+     * @return LinkType
      */
-    public RelationshipType getRelationshipType(String name, String sourceDomain, String targetDomain) {
-        Relationship relationshp = mRelationships.getRelationship(sourceDomain, targetDomain);
-        RelationshipType relationshipType = null;
-        if (relationshp != null) {
-            relationshipType = relationshp.getRelationshipType(name, sourceDomain, targetDomain);
-        }
-        return relationshipType;
+    public LinkType getLinkType(String name, String sourceDomain, String targetDomain) {
+        LinkType linkType = null;
+        return linkType;
     }
 
     /**
-     * @return ArrayList of RelationshipType
+     * @return ArrayList of LinkType
      */
-    public ArrayList <RelationshipType> getRelationshipTypesByDomain(String domainName) {
-        ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
-        ArrayList alRelationships = mRelationships.getRelationshipsByDomain(domainName);
-        for (int i=0; alRelationships != null && i < alRelationships.size(); i++) {
-            Relationship relationship = (Relationship) alRelationships.get(i);
-            if (relationship != null) {
-                ArrayList al = relationship.getRelationshipTypesByDomain(domainName);
-                if (al != null) {
-                    alRelationshipTypes.addAll(al);
-                }
+    public ArrayList <LinkType> getLinkTypesByDomain(String domainName) {
+        ArrayList <LinkType> al = new ArrayList();
+        for (int i=0; i< this.mAlLinkTypes.size(); i++) {
+            LinkType linkType = (LinkType) mAlLinkTypes.get(i);
+            String sourceDomain = linkType.getSourceDomain();
+            String targetDomain = linkType.getTargetDomain();
+            if (domainName.equals(sourceDomain) || domainName.equals(targetDomain)) {
+                al.add(linkType);
             }
         }
-        return alRelationshipTypes;
+        return al;
     }
 
     /**
@@ -170,10 +175,7 @@ public class MultiDomainModel {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
-                        domain.name = Utils.getStrElementValue(nl.item(i));
-                    }
-                    if (mTagDeployment.equals(((Element) nl.item(i)).getTagName())) {
-                        //parseDeployment(nl.item(i));
+                        domain.name = getAttributeName(nl.item(i));
                     }
                 }
             }
@@ -250,15 +252,15 @@ public class MultiDomainModel {
     /**
      * @param node node
      */
-    public void parseRelationshipType(Node node, Relationship relationship) {
-        RelationshipType relationshipType = relationship.addRelationshipType();
+    public void parseLink(Node node, String type) {
+        LinkType linkType = new LinkType(type);
         String val = null;
         NamedNodeMap nnm = node.getAttributes();
         if (nnm != null) {
             Node attrName = nnm.getNamedItem(mTagName);
             if (attrName != null) {
                 try {
-                    val = attrName.getNodeValue();
+                    linkType.name = attrName.getNodeValue();
                 } catch (DOMException ex) {
                 }
             }
@@ -268,72 +270,21 @@ public class MultiDomainModel {
             NodeList nl = node.getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
-                        relationshipType.name = Utils.getStrElementValue(nl.item(i));
-                    } else if (mTagType.equals(((Element) nl.item(i)).getTagName())) {
-                        relationshipType.type = Utils.getStrElementValue(nl.item(i));
-                    } else if (mTagSourceDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        relationshipType.sourceDomain = Utils.getStrElementValue(nl.item(i));
+                    if (mTagSourceDomain.equals(((Element) nl.item(i)).getTagName())) {
+                        linkType.sourceDomain = getAttributeName(nl.item(i));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        relationshipType.targetDomain = Utils.getStrElementValue(nl.item(i));
+                        linkType.targetDomain = getAttributeName(nl.item(i));
+                    } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
+                        linkType.direction = Utils.getStrElementValue(nl.item(i));
                     } else if (mTagFixedAttributes.equals(((Element) nl.item(i)).getTagName())) {
-                        relationshipType.setFixedAttributes(parseAttributes(nl.item(i)));
+                        linkType.setFixedAttributes(parseAttributes(nl.item(i)));
                     } else if (mTagExtendedAttributes.equals(((Element) nl.item(i)).getTagName())) {
-                        relationshipType.setExtendedAttributes(parseAttributes(nl.item(i)));
+                        linkType.setExtendedAttributes(parseAttributes(nl.item(i)));
                     }
                 }
             }
         }
-    }
-    
-    /**
-     * @param node node
-     */
-    public void parseRelationship(Node node) {
-        Relationship relationship = new Relationship();
-        String val = null;
-        NamedNodeMap nnm = node.getAttributes();
-        if (nnm != null) {
-            Node attrName = nnm.getNamedItem(mTagName);
-            if (attrName != null) {
-                try {
-                    val = attrName.getNodeValue();
-                } catch (DOMException ex) {
-                }
-            }
-        }
-
-        if (node.hasChildNodes()) {
-            NodeList nl = node.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    if (mTagDomain1.equals(((Element) nl.item(i)).getTagName())) {
-                        relationship.setDomain1(getAttributeName(nl.item(i)));
-                    } else if (mTagDomain2.equals(((Element) nl.item(i)).getTagName())) {
-                        relationship.setDomain2(getAttributeName(nl.item(i)));
-                    } else if (mTagRelationshipType.equals(((Element) nl.item(i)).getTagName())) {
-                        parseRelationshipType(nl.item(i), relationship);
-                    }
-                }
-            }
-        }
-        mRelationships.addRelationship(relationship);
-    }
-
-    /**
-     * @param node node
-     */
-    public void parseRelationships(Node node) {
-        if (node.hasChildNodes()) {
-            NodeList nl = node.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    if (mTagRelationship.equals(((Element) nl.item(i)).getTagName())) {
-                        parseRelationship(nl.item(i));
-                    }
-                }
-            }
-        }
+        mAlLinkTypes.add(linkType);
     }
 
     /**
@@ -358,15 +309,18 @@ public class MultiDomainModel {
                     if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         if (mTagDatabase.equals(((Element) nl.item(i)).getTagName())) {
                             strDatabase = Utils.getStrElementValue(nl.item(i));
-                        }
-                        if (mTagDateFormat.equals(((Element) nl.item(i)).getTagName())) {
+                        } else if (mTagDateFormat.equals(((Element) nl.item(i)).getTagName())) {
                             strDateFormat = Utils.getStrElementValue(nl.item(i));
-                        }                       
-                        if (mTagDomains.equals(((Element) nl.item(i)).getTagName())) {
+                        } else if (mTagDomains.equals(((Element) nl.item(i)).getTagName())) {
                             parseDomains(nl.item(i));
-                        }
-                        if (mTagRelationships.equals(((Element) nl.item(i)).getTagName())) {
-                            parseRelationships(nl.item(i));
+                        } else if (mTagRelationship.equals(((Element) nl.item(i)).getTagName())) {
+                            parseLink(nl.item(i), LinkType.TYPE_RELATIONSHIP);
+                        } else if (mTagHierarchy.equals(((Element) nl.item(i)).getTagName())) {
+                            parseLink(nl.item(i), LinkType.TYPE_HIERARCHY);
+                        } else if (mTagGroup.equals(((Element) nl.item(i)).getTagName())) {
+                            parseLink(nl.item(i), LinkType.TYPE_GROUP);
+                        } else if (mTagCategory.equals(((Element) nl.item(i)).getTagName())) {
+                            parseLink(nl.item(i), LinkType.TYPE_CATEGORY);
                         }
                     }
                 }

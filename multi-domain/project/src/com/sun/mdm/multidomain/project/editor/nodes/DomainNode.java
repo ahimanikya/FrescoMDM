@@ -44,14 +44,14 @@ import org.xml.sax.InputSource;
 import java.util.Iterator;
 
 import com.sun.mdm.multidomain.parser.Relationship;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.MiNodeDef;
 import com.sun.mdm.multidomain.parser.MiFieldDef;
 import com.sun.mdm.multidomain.parser.MiObject;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
-import com.sun.mdm.multidomain.project.editor.TabListRelationshipTypes;
+import com.sun.mdm.multidomain.project.editor.TabRelationshipsPerDomain;
 
 /**
  *
@@ -64,9 +64,9 @@ public class DomainNode extends AbstractNode {
         
         );
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
-    private ArrayList <Relationship> alRelationships = new ArrayList();
-    private ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
-    TabListRelationshipTypes mTabListRelationshipTypes = null;
+    private ArrayList <String> alAssociatedDomains = new ArrayList();
+    private ArrayList <LinkType> alLinkTypes = new ArrayList();
+    TabRelationshipsPerDomain mTabRelationshipsPerDomain = null;
     File mSelectedDomain = null;
     MIQueryBuilder mMIQueryBuilder = null;
     
@@ -98,17 +98,17 @@ public class DomainNode extends AbstractNode {
      * 
      * @param domainName
      * @param selectedDomain
-     * @param ArrayList <RelationshipType> alRelationshipTypes
+     * @param ArrayList <LinkType> alLinkTypes
      */
-    public DomainNode(String domainName, File selectedDomain, ArrayList <Relationship> alRelationships, ArrayList <RelationshipType> alRelationshipTypes) {
+    public DomainNode(String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <LinkType> alLinkTypes) {
         super(Children.LEAF);
         setName(domainName);
         mSelectedDomain = selectedDomain;
-        this.alRelationships = alRelationships;
+        this.alAssociatedDomains = alAssociatedDomains;
         
         loadMiObjectNodes();
         loadMiQueryBuilder();
-        loadRelationshipTypes(domainName, alRelationshipTypes);
+        loadLinkTypes(domainName, alLinkTypes);
         addNodeListener(new NodeAdapter() {
             @Override
             public void nodeDestroyed(NodeEvent ev) {
@@ -221,31 +221,31 @@ public class DomainNode extends AbstractNode {
         return node.getFields();
     }
     
-    public void addRelationshipType(String relationshipTypeName, String sourceDomainName, String targetDomainName) {
-        //updateRelationshipTypes
+    public void addLinkType(String LinkTypeName, String sourceDomainName, String targetDomainName) {
+        //updateLinkTypes
     }
     
-    public void removeRelationshipType(String relationshipTypeName, String sourceDomainName, String targetDomainName) {
-        //updateRelationshipTypes
+    public void removeLinkType(String LinkTypeName, String sourceDomainName, String targetDomainName) {
+        //updateLinkTypes
     }
     
-    public ArrayList getRelationships() {
-        return alRelationships;
+    public ArrayList getAssociatedDomains() {
+        return alAssociatedDomains;
     }
     
-    public ArrayList getRelationshipTypes() {
-        return alRelationshipTypes;
+    public ArrayList getLinkTypes() {
+        return alLinkTypes;
     }
     
-    /** Update alRelationshipTypes and mTabListRelationshipTypes
+    /** Update alLinkTypes and mTabRelationshipsPerDomain
      * 
      */
-    public void loadRelationshipTypes(String domainName, ArrayList <RelationshipType> alRelationshipTypes) {
-        this.alRelationshipTypes = alRelationshipTypes;
-        mTabListRelationshipTypes = new TabListRelationshipTypes(domainName, this.alRelationshipTypes);
+    public void loadLinkTypes(String domainName, ArrayList <LinkType> alLinkTypes) {
+        this.alLinkTypes = alLinkTypes;
+        //mTabRelationshipsPerDomain = new TabRelationshipsPerDomain(domainName, this.alLinkTypes);
     }
     
-    public TabListRelationshipTypes getTabListRelationshipTypes() {
-        return mTabListRelationshipTypes;
+    public TabRelationshipsPerDomain getTabRelationshipsPerDomain() {
+        return mTabRelationshipsPerDomain;
     }
 }

@@ -43,7 +43,7 @@ import org.xml.sax.ErrorHandler;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.Relationship;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
@@ -143,19 +143,14 @@ public class EditorMainApp {
         this.mAlRelationshipNodes.remove(relationshipNode);
     }
     
-    private void loadRelationships() {
+    private void loadLinks() {
         //mAlRelationshipNodes
-        ArrayList <Relationship> alRelationships = mMultiDomainModel.getAllRelationships();
-        for (int i=0; alRelationships!=null && i<alRelationships.size(); i++) {
-            Relationship relationship = (Relationship) alRelationships.get(i);
-            RelationshipNode node = new RelationshipNode(this, relationship.getDomain1(), relationship.getDomain2());
+        ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllLinks();
+        for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
+            LinkType linkType = (LinkType) alLinkTypes.get(i);
+            //RelationshipNode node = new RelationshipNode(this, linkType.getSourceDomain(), linkType.getTargetDomain());
             //create RelationshipTypeNode list
-            ArrayList <RelationshipType> alRelationshipTypes = relationship.getAllRelationshipTypes();
-            for (int j=0; alRelationshipTypes!=null && j<alRelationshipTypes.size(); j++) {
-                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(j);
-                RelationshipTypeNode relationshipNode = new RelationshipTypeNode(node, relationshipType);
-            }
-            this.mAlRelationshipNodes.add(node);
+            //this.mAlRelationshipNodes.add(node);
         }
     }
     
@@ -181,9 +176,9 @@ public class EditorMainApp {
                         mMapDomainObjectXmls.put(domainName, objectXml);
                         mMapDomainQueryXmls.put(domainName, queryXml);
                         mMapDomainMidmXmls.put(domainName, midmXml);
-                        ArrayList <Relationship> alRelationships = this.mMultiDomainModel.getRelationshipsByDomain(domainName);
-                        ArrayList <RelationshipType> alRelationshipTypes = this.mMultiDomainModel.getRelationshipTypesByDomain(domainName);
-                        DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain), alRelationships, alRelationshipTypes);
+                        ArrayList <String> alAssociatedDomains = this.mMultiDomainModel.getAssociatedDomains(domainName);
+                        ArrayList <LinkType> alLinkTypes = this.mMultiDomainModel.getLinkTypesByDomain(domainName);
+                        DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain), alAssociatedDomains, alLinkTypes);
                         mMapDomainNodes.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
                     }
@@ -407,12 +402,12 @@ public class EditorMainApp {
             mMultiDomainApplication.loadAll();
 
             mMultiDomainModel = getMultiDomainModel(true);
-            loadRelationships();
+            loadLinks();
 
             // Load mMapDomainObjectXmls
             loadDomains();
             // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
-            //loadRelationshipTypeNodes();
+            //loadLinkTypeNodes();
 
             mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
             mEditorMainPanel.loadDomainNodesToCanvas();

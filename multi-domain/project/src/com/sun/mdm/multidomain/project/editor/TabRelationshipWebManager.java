@@ -6,9 +6,8 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
+import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
-import com.sun.mdm.multidomain.parser.RelationshipType;
-import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import java.util.ArrayList;
 import org.openide.util.NbBundle;
 
@@ -22,7 +21,7 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     
     private TabWebManagerDomains mTabDomains = null;
     
-    ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
+    ArrayList<LinkType> mLinkTypes = new ArrayList<LinkType>();
     
     MultiDomainWebManager mMultiDomainWebManager = null;
     
@@ -40,14 +39,14 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     public TabRelationshipWebManager(EditorMainApp editorMainApp, MultiDomainWebManager multiDomainWebManager) {  
         mEditorMainApp = editorMainApp;
         mMultiDomainWebManager = multiDomainWebManager;
-        mRelationshipTypes = mMultiDomainWebManager.getRelationshipTypes();
+        mLinkTypes = mMultiDomainWebManager.getLinkTypes();
         initComponents();
         generateTabs();
-        createRelationshipTypes();
+        createLinkTypes();
     }
     
     
-    private void createRelationshipTypes() {
+    private void createLinkTypes() {
         
     }
     
@@ -60,7 +59,7 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     
     protected TabWebManagerRelationshipTypes getRelationshipTypesTab() {
         if (mTabRelationshipTyps == null) {
-            mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mRelationshipTypes);
+            mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mLinkTypes);
         }
         
         return mTabRelationshipTyps;

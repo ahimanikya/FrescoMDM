@@ -63,7 +63,9 @@ import java.io.IOException;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
 import com.sun.mdm.multidomain.project.actions.CreateRelationshipAction;
-import com.sun.mdm.multidomain.project.actions.CreateRelationshipTypeAction;
+import com.sun.mdm.multidomain.project.actions.CreateHierarchyAction;
+import com.sun.mdm.multidomain.project.actions.CreateGroupAction;
+import com.sun.mdm.multidomain.project.actions.CreateCategoryAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -79,6 +81,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
+    static final ImageIcon RELATIONSHIPNODEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
+    static final ImageIcon HIERARCHYNODEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
+    static final ImageIcon GROUPNODEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/GroupNode.png"));
+    static final ImageIcon CATEGORYNODEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/CategoryNode.png"));
+
     static final ImageIcon DELETENODEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
@@ -93,7 +104,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
     private JButton mButtonAddRelationship;
-    private JButton mButtonAddRelationshipType;
+    private JButton mButtonAddHierarchy;
+    private JButton mButtonAddGroup;
+    private JButton mButtonAddCategory;
     private JButton mButtonDelete;
     private JButton mButtonSave;
     private EditorMainApp mEditorMainApp;
@@ -196,19 +209,34 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonAddDomain.setMnemonic('A');
         toolBar.add(mButtonAddDomain);
         mButtonAddRelationship = new JButton(new AddRelationshipAction(
-                    this.DOMAINIMAGEICON,
+                    this.RELATIONSHIPNODEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_AddRelationship")));
         mButtonAddRelationship.setBorder(null);
         mButtonAddRelationship.setMnemonic('R');
         toolBar.add(mButtonAddRelationship);
-        mButtonAddRelationshipType = new JButton(new AddRelationshipTypeAction(
-                    this.DOMAINIMAGEICON,
+        mButtonAddHierarchy = new JButton(new AddHierarchyAction(
+                    this.HIERARCHYNODEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_AddRelationshipType")));
-        mButtonAddRelationshipType.setBorder(null);
-        mButtonAddRelationshipType.setMnemonic('T');
-        toolBar.add(mButtonAddRelationshipType);
+                        "MSG_ToolTip_AddHierarchy")));
+        mButtonAddHierarchy.setBorder(null);
+        mButtonAddHierarchy.setMnemonic('H');
+        toolBar.add(mButtonAddHierarchy);
+        
+        mButtonAddGroup = new JButton(new AddGroupAction(
+                    this.GROUPNODEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_AddGroup")));
+        mButtonAddGroup.setBorder(null);
+        mButtonAddGroup.setMnemonic('G');
+        toolBar.add(mButtonAddGroup);
+        mButtonAddCategory = new JButton(new AddCategoryAction(
+                    this.CATEGORYNODEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_AddCategory")));
+        mButtonAddCategory.setBorder(null);
+        mButtonAddCategory.setMnemonic('H');
+        toolBar.add(mButtonAddCategory);
         toolBar.addSeparator();
         mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
@@ -369,15 +397,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         }
     }
      
-    /** Add a Relationship
+    /** Add a Hierarchy
      *
      */
-    public class AddRelationshipTypeAction extends AbstractAction {
+    public class AddHierarchyAction extends AbstractAction {
         /**
          *@param icon image icon
          *@param desc description
          */
-        public AddRelationshipTypeAction(ImageIcon icon, String desc) {
+        public AddHierarchyAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
         }
@@ -386,8 +414,54 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          *@param e Action event
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {           
-            Action action = SystemAction.get(CreateRelationshipTypeAction.class);
-            ((CreateRelationshipTypeAction) action).perform(mEditorMainApp);
+            Action action = SystemAction.get(CreateHierarchyAction.class);
+            ((CreateHierarchyAction) action).perform(mEditorMainApp);
+            action = null;
+        }
+    }
+    
+    /** Add a Hierarchy
+     *
+     */
+    public class AddGroupAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public AddGroupAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            Action action = SystemAction.get(CreateGroupAction.class);
+            ((CreateGroupAction) action).perform(mEditorMainApp);
+            action = null;
+        }
+    }
+    
+    /** Add a Category
+     *
+     */
+    public class AddCategoryAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public AddCategoryAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            Action action = SystemAction.get(CreateCategoryAction.class);
+            ((CreateCategoryAction) action).perform(mEditorMainApp);
             action = null;
         }
     }

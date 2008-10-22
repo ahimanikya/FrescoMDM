@@ -2,39 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.sun.mdm.multidomain.parser;
 
 import com.sun.mdm.multidomain.parser.SearchOptions.Parameter;
-//import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.association.Domain;
-
-import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
-import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
-import com.sun.mdm.multidomain.services.configuration.FieldConfig;
-import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
-import com.sun.mdm.multidomain.services.configuration.GroupScreenConfig;
-import com.sun.mdm.multidomain.services.configuration.HierarchyScreenConfig;
-import com.sun.mdm.multidomain.services.configuration.NameValuePair;
-import com.sun.mdm.multidomain.services.configuration.ObjectNodeConfig;
-import com.sun.mdm.multidomain.services.configuration.ObjectScreenConfig;
-import com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfig;
-import com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfigInstance;
-import com.sun.mdm.multidomain.services.configuration.ScreenObject;
-import com.sun.mdm.multidomain.services.configuration.SearchResultDetailsConfig;
-import com.sun.mdm.multidomain.services.configuration.SearchResultsConfig;
-import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
-import com.sun.mdm.multidomain.services.configuration.SearchScreenOptions;
-import com.sun.mdm.multidomain.services.configuration.SummaryID;
-//import com.sun.mdm.index.util.ObjectSensitivePlugIn;
-
-import com.sun.mdm.index.util.Localizer;
-import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
-import net.java.hulp.i18n.Logger;
-
-import java.util.HashMap;
 import java.util.ArrayList;
-
 
 import org.w3c.dom.NodeList;
 
@@ -62,12 +34,10 @@ import javax.xml.transform.stream.StreamResult;
  * @author wee
  */
 public class MultiDomainWebManager {
-
     private DomainsForWebManager mDomains = new DomainsForWebManager();
-    private ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
+    private ArrayList<LinkType> mLinkTypes = new ArrayList<LinkType>();
     private JNDIResources mJndiResources = null;
     private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
-    private static MDConfigManager mDcm = MDConfigManager.getInstance();
     
     private static String RELATIONSHIP_WEB_MANAGER = "RelationshipWebManager";
 
@@ -79,8 +49,8 @@ public class MultiDomainWebManager {
         return this.mDomains;
     }
 
-    public ArrayList<RelationshipType> getRelationshipTypes() {
-        return this.mRelationshipTypes;
+    public ArrayList<LinkType> getLinkTypes() {
+        return this.mLinkTypes;
     }
 
     public JNDIResources getJndiResources() {
@@ -135,11 +105,9 @@ public class MultiDomainWebManager {
 
     private Element getRelationTypeToStr(Document xmlDoc) throws Exception{
         
-        // RESUME HERE--add code to handle relationships
-        
         Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
-        for (RelationshipType relType : mRelationshipTypes) {
-            String relTypeName = relType.getRelTypeName();
+        for (LinkType relType : mLinkTypes) {
+            String relTypeName = relType.getName();
             String destination = relType.getDestionation();
             String source = relType.getSource();
             //Element elm = xmlDoc.createElement("relationship-types");
@@ -149,7 +117,6 @@ public class MultiDomainWebManager {
             relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_DESTINATION, destination);
             relTypeElm.setAttribute(WebManagerProperties.mTAG_NAME, relTypeName);
             ArrayList<RelationFieldReference> fieldRefs = relType.getRelFieldRefs();
-            
             for (RelationFieldReference fieldRef : fieldRefs) {
                 Element relTypeFieldElm = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_REF);
                 relTypeElm.appendChild(relTypeFieldElm);
@@ -180,7 +147,7 @@ public class MultiDomainWebManager {
             }
             
             relTypes.appendChild(relTypeElm);
-
+            
         }
         
         return relTypes;
@@ -404,7 +371,7 @@ public class MultiDomainWebManager {
      * The parseNode method parse RelationshipWebManager.xml file.
      * @param node - xml document.
      */
-    public void parseNode(Node node) throws Exception {
+    public void parseNode(Node node) {
 
         if (node.getNodeType() == Node.DOCUMENT_NODE) {
             NodeList nl1 = node.getChildNodes();
@@ -438,10 +405,10 @@ public class MultiDomainWebManager {
 
     /**
      * The methods parse relationship-types section of doc and
-     * constructs into RelationshipType class.
+     * constructs into LinkType class.
      * @param node
      */
-    private void parseRelTypes(Node node) throws Exception {
+    private void parseRelTypes(Node node) {
         String elementName = null;
         NodeList children = node.getChildNodes();
         for (int i1 = 0; i1 < children.getLength(); i1++) {
@@ -459,41 +426,15 @@ public class MultiDomainWebManager {
 
                 }
 
-                // testing--raymond tam
-                // RESUME HERE
-                
-                boolean newSourceTargetDomains = false;
-                RelationshipScreenConfig rSC = mDcm.getRelationshipScreenConfigs(sourceAttr, destAttr);
-                RelationshipScreenConfigInstance rSCI = null;
-                if (rSC == null) { // new source and target domains
-                    newSourceTargetDomains = true;
-                    rSC = new RelationshipScreenConfig(sourceAttr, destAttr);
-                    rSCI = new RelationshipScreenConfigInstance(nameAttr);
-                } else {
-                    rSCI = rSC.getRelScreenConfigInstance(nameAttr);
-                    if (rSCI == null) {
-                        rSCI = new RelationshipScreenConfigInstance();
-                    } else {
-                        // RESUME HERE
-                        // Throw an exception because the relationship name already exists
-                    }
-                }
-                
                 ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();
 
-                RelationshipType relType = new RelationshipType(nameAttr, destAttr, sourceAttr, fieldRefs);
+                LinkType relType = new LinkType(nameAttr, LinkType.TYPE_RELATIONSHIP, sourceAttr, destAttr, fieldRefs);
 
-                // testing--raymond tam
-//                parseType(elm, fieldRefs);
-                parseType(elm, fieldRefs, rSCI);
+                parseType(elm, fieldRefs);
 
-                mRelationshipTypes.add(relType);
+                mLinkTypes.add(relType);
 
-                // testing--raymond tam
-                rSC.addRelScreenConfigInstance(rSCI);
-                if (newSourceTargetDomains) {
-                    mDcm.addRelationshipScreenConfig(rSC);
-                }
+
             }
         }
     }
@@ -503,8 +444,7 @@ public class MultiDomainWebManager {
      * @param node - relationship-type object
      * @param fieldRefs
      */
-    private void parseType(Node node, ArrayList<RelationFieldReference> fieldRefs, 
-            RelationshipScreenConfigInstance rSCI) throws Exception {
+    private void parseType(Node node, ArrayList<RelationFieldReference> fieldRefs) {
 
         String elementName = null;
 
@@ -513,7 +453,7 @@ public class MultiDomainWebManager {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
-                fieldRefs.add(parseRelFieldDef(elm, rSCI));
+                fieldRefs.add(parseRelFieldDef(elm));
             }
         }
     }
@@ -523,9 +463,7 @@ public class MultiDomainWebManager {
      * @param node
      * @return fieldRef - RelationFieldReference
      */
-    private RelationFieldReference parseRelFieldDef(Node node, 
-            RelationshipScreenConfigInstance rSCI) throws Exception {
-                
+    private RelationFieldReference parseRelFieldDef(Node node) {
         String elementName = null;
         String displayName = null;
         int displayOrder = -1;
@@ -535,10 +473,6 @@ public class MultiDomainWebManager {
         String valueList = null;
         String valueType = null;
         String fieldName = null;
-        // testing--raymond tam
-        String inputMask = null;
-        String valueMask = null;
-        boolean isSensitive = false;
 
         NodeList children = node.getChildNodes();
 
@@ -563,54 +497,11 @@ public class MultiDomainWebManager {
                     valueList = RelationshipUtil.getStrElementValue(elm);
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_TYPE)) {
                     valueType = RelationshipUtil.getStrElementValue(elm);
-                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_MASK)) {
-                    valueMask = RelationshipUtil.getStrElementValue(elm);
-                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_INPUT_MASK)) {
-                    inputMask = RelationshipUtil.getStrElementValue(elm);
-                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_IS_SENSITIVE)) {
-                    isSensitive = RelationshipUtil.getBooleanElementValue(elm);
                 }
 
             }
 
         }
-        // RESUME HERE
-/*
-        // optional field
-        String valueTypeStr = "String";
-        String valueTypeString = NodeUtil.getChildNodeText(e, VALUE_TYPE);
-        if (valueTypeString != null) {
-            valueTypeStr = valueTypeString;
-
-            // if value type is date set the date input mask automatically, based on date format
-            if (valueTypeStr.equals("date")) {
-                inputMask = getDateInputMask();
-            }
-        }
-
-        int valueType = getMetaType(valueTypeStr);
-*/
-        // RESUME HERE
-        String objName = null;
-        FieldConfig fieldConfig = new FieldConfig(null, objName, fieldName,
-                displayName, guiType, maxLen, valueType);
-        fieldConfig.setDisplayOrder(displayOrder);
-        fieldConfig.setKeyType(keyType);
-        fieldConfig.setSensitive(isSensitive);
-        fieldConfig.setValueList(valueList);
-        fieldConfig.setInputMask(inputMask);
-
-        if (valueMask != null) {
-        // RESUME HERE
-/*
-          if (inputMask == null || valueMask.length() != inputMask.length()) {
-            throw new IOException(mLocalizer.t("CFG506: Invalid value mask [{0}] for input mask [{1}]", valueMask, inputMask));
-          }
-*/          
-          fieldConfig.setValueMask(valueMask);
-        }
-
-        rSCI.addFieldConfig(fieldConfig);
 
         RelationFieldReference fieldRef = new RelationFieldReference(fieldName, displayName,
                 displayOrder, maxLen, guiType, valueList, valueType, keyType);
@@ -715,7 +606,7 @@ public class MultiDomainWebManager {
 
     }
 
-    private void parseDomains(Node node) throws Exception {
+    private void parseDomains(Node node) {
         String elementName = null;
 
         NodeList children = node.getChildNodes();
@@ -732,43 +623,35 @@ public class MultiDomainWebManager {
 
     }
 
-    private DomainForWebManager parseDomain(Node node) throws Exception {
+    private DomainForWebManager parseDomain(Node node) {
 
         String elementName = null;
         NodeList children = node.getChildNodes();
         DomainForWebManager domain = null;
-        DomainScreenConfig domainScreenConfig = new DomainScreenConfig();
-        String domainName = null;
-        
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
                 if (elementName.equals(WebManagerProperties.mTAG_NAME)) {
-                    domainName = RelationshipUtil.getStrElementValue(elm);
-                    domain = new DomainForWebManager(domainName);
+                    String value = RelationshipUtil.getStrElementValue(elm);
+                    domain = new DomainForWebManager(value);                        
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_PAGES)) {
-                    parseSearchPages(elm, domain, domainScreenConfig);
+                    parseSearchPages(elm, domain);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES)) {
-                    parseSearchResultPages(elm, domain, domainScreenConfig);
+                    parseSearchResultPages(elm, domain);
                 } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_PAGES)) {
-                    parseRecordDetailPages(elm, domain, domainScreenConfig);
+                    parseRecordDetailPages(elm, domain);
                 }
 
             }
 
         }
-        // Build information for the service layer
-        Domain dm = new Domain(domainName);
-        domainScreenConfig.setDomain(dm);
-        mDcm.addDomainScreenConfig(domainScreenConfig);
-        
+
         return domain;
 
     }
     
-    private void parseRecordDetailPages(Node node, DomainForWebManager domain, 
-                                        DomainScreenConfig domainScreenConfig) throws Exception {
+    private void parseRecordDetailPages(Node node, DomainForWebManager domain) {
         String elementName = null;
         NodeList children = node.getChildNodes();
         ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
@@ -776,72 +659,50 @@ public class MultiDomainWebManager {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 //RecordDetail recordDetail = new RecordDetail(); 
-                parseRecordDetail(elm, domain, domainScreenConfig);
+                parseRecordDetail(elm, domain);
             }
         }
+
+
     }
     
-    private void parseRecordDetail(Node node, DomainForWebManager domain, 
-                                   DomainScreenConfig domainScreenConfig) throws Exception {
+    private void parseRecordDetail(Node node, DomainForWebManager domain) {
         String elementName = null;
         NodeList children = node.getChildNodes();
         ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
         RecordDetail recordDetail = null;
-        // testing--raymond tam
-        ArrayList<FieldConfigGroup> fieldConfigGroups = new ArrayList<FieldConfigGroup>();
-        int recordDetailID = 0;
-        
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
                 if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_ID)) {
-                    recordDetailID = RelationshipUtil.getIntElementValue(elm);
-//                    recordDetail = new RecordDetail(RelationshipUtil.getIntElementValue(elm));
-                    recordDetail = new RecordDetail(recordDetailID);
+                    recordDetail = new RecordDetail(RelationshipUtil.getIntElementValue(elm));
                 } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_NAME)) {
                     recordDetail.setDisplayName(RelationshipUtil.getStrElementValue(elm));
                 } else if (elementName.equals(WebManagerProperties.mTAG_FIELD_GROUP)) {
                     FieldGroup fieldGroup = new FieldGroup();
                     parseFieldGroup(elm, fieldGroup);
                     recordDetail.addFieldGroup(fieldGroup);                    
-                // testing--raymond tam
-                    FieldConfigGroup fieldConfigGroup = parseFieldGroup(elm);
-                    fieldConfigGroups.add(fieldConfigGroup);
                 }
             }
         }
         
         if (recordDetail != null) {
             domain.addRecordDetail(recordDetail);
-        // testing--raymond tam
-            // are showEUID and showLID necessary?
-            boolean showEUID = false;
-            boolean showLID = false;
-            
-            SearchResultDetailsConfig sResultDetailsConfig 
-                    = new SearchResultDetailsConfig(null, recordDetailID, 
-                                showEUID, showLID, fieldConfigGroups);
-            domainScreenConfig.addSearchResultDetailsConfig(sResultDetailsConfig);
         }
 
 
     }
 
-    private void parseSearchResultPages(Node node, DomainForWebManager domain, 
-                                        DomainScreenConfig domainScreenConfig) throws Exception {
+    private void parseSearchResultPages(Node node, DomainForWebManager domain) {
 
         String elementName = null;
         NodeList children = node.getChildNodes();
-        // testing--raymond tam
-        ArrayList<FieldConfigGroup> fieldConfigGroups = new ArrayList<FieldConfigGroup>();
-        
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             int resultID = -1;
             int itemPerPage = -1;
             int maxResult = -1;
             int detailID = -1;
-            int summaryID = -1;
             String resultName = null;
             ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
@@ -860,15 +721,10 @@ public class MultiDomainWebManager {
                             FieldGroup fieldGroup = new FieldGroup();
                             fieldGroups.add(fieldGroup);
                             parseFieldGroup(subElm, fieldGroup);
-                        // testing--raymond tam
-                            FieldConfigGroup fieldConfigGroup = parseFieldGroup(subElm);
-                            fieldConfigGroups.add(fieldConfigGroup);
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_ID)) {
                             resultID = RelationshipUtil.getIntElementValue(subElm);
                         } else if (elementName.equals(WebManagerProperties.mTAG_RECORD_DETAIL_ID)) {
-                            detailID = RelationshipUtil.getIntElementValue(subElm);  
-                        } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_SUMMARY_ID)) {
-                            summaryID = RelationshipUtil.getIntElementValue(subElm);  
+                            detailID = RelationshipUtil.getIntElementValue(subElm);   
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_ITEM_PER_PAGE)) {
                             itemPerPage = RelationshipUtil.getIntElementValue(subElm);
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_MAX_RESULT_SIZE)) {
@@ -884,26 +740,14 @@ public class MultiDomainWebManager {
                 if (resultID != -1 && itemPerPage != -1 && maxResult != -1) {
                     SearchDetail searchResult = new SearchDetail(resultID, itemPerPage, maxResult, detailID, resultName, fieldGroups);
                     domain.addSearchDetail(domain.getDomainName(), resultID, searchResult);
-                // testing--raymond tam
-                    // are showEUID and showLID necessary?
-                    boolean showEUID = false;
-                    boolean showLID = false;
-                    SearchResultsConfig sResultsConfig = new SearchResultsConfig(null, 
-                                                                                 resultID,
-                                                                                 summaryID,
-                                                                                 detailID,
-                                                                                 itemPerPage, 
-                                                                                 maxResult, 
-                                                                                 showEUID, showLID, 
-                                                                                 fieldConfigGroups);
-                    domainScreenConfig.addSearchResultsConfig(sResultsConfig);
                 }
             }
         }
+
+
     }
 
-    private void parseSearchPages(Node node, DomainForWebManager domain, 
-                                  DomainScreenConfig domainScreenConfig) throws Exception {
+    private void parseSearchPages(Node node, DomainForWebManager domain) {
 
         String elementName = null;
         NodeList children = node.getChildNodes();
@@ -920,10 +764,6 @@ public class MultiDomainWebManager {
                 Node childNode = (Node) elm;
                 NodeList subChildren = childNode.getChildNodes();
                 ArrayList<FieldGroup> fieldGroups = new ArrayList<FieldGroup>();
-                // testing--raymond tam
-                int screenOrder = 0;
-                ArrayList<FieldConfigGroup> fieldConfigGroups = new ArrayList<FieldConfigGroup>();
-                SearchScreenOptions searchScreenOptions = null;
                 for (int i2 = 0; i2 < subChildren.getLength(); i2++) {
                     if (subChildren.item(i2).getNodeType() == Node.ELEMENT_NODE) {
                         Element subElm = (Element) subChildren.item(i2);
@@ -939,15 +779,8 @@ public class MultiDomainWebManager {
                             FieldGroup fieldGroup = new FieldGroup();
                             fieldGroups.add(fieldGroup);
                             parseFieldGroup(subElm, fieldGroup);
-                        // testing--raymond tam
-                            FieldConfigGroup fieldConfigGroup = parseFieldGroup(subElm);
-                            fieldConfigGroups.add(fieldConfigGroup);
                         } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_OPTION)) {
                             searchOpt = parseSearchOption(subElm);
-                            // testing--raymond tam
-                            searchScreenOptions = parseSearchOptions(subElm);
-                        } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_SCREEN_ORDER)) {
-                            screenOrder = RelationshipUtil.getIntElementValue(subElm);
                         }
                         
                     }
@@ -959,72 +792,15 @@ public class MultiDomainWebManager {
                             searchResultID, instruction, fieldGroups);
                     simpleSearchType.setSearchOption(searchOpt);
                     domain.addSearchType(screenTitle, simpleSearchType);
-                    
-                    // testing--raymond tam
-                    // check on searchOpt
-                    // are showEUID and showLID necessary?
-                    boolean showEUID = false;
-                    boolean showLID = false;
-                    
-                    SearchScreenConfig sSConfig = new SearchScreenConfig(null, screenTitle, 
-                                                        instruction, searchResultID, 
-                                                        screenOrder, showEUID, 
-                                                        showLID, searchScreenOptions, 
-                                                        fieldConfigGroups);
-                    domainScreenConfig.addSearchScreenConfig(sSConfig);
+
                 }
 
             }
         }
+
+
     }
 
-    // testing--raymond tam
-    private SearchScreenOptions parseSearchOptions(Node node) {
-        String elementName = null;
-        NodeList children = node.getChildNodes();
-        
-        String displayName = null;
-        String queryBuilder = null;
-        boolean isWeighted = false;
-        int candidateThreshold = 0;
-        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        
-        for (int i1 = 0; i1 < children.getLength(); i1++) {
-            if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
-                Element elm = (Element) children.item(i1);
-                elementName = elm.getTagName();
-                if (elementName.equals(WebManagerProperties.mTAG_SEARCH_QUERY_BUILDER)) {
-                    queryBuilder = RelationshipUtil.getStrElementValue(elm);
-                } else  if (elementName.equals(WebManagerProperties.mTAG_SEARCH_WEIGHTED)) {
-                    isWeighted = Boolean.parseBoolean(RelationshipUtil.getStrElementValue(elm));
-                } else  if (elementName.equals(WebManagerProperties.mTAG_SEARCH_OPTION_PARAMETER)) {
-                    NodeList subChildren = elm.getChildNodes();
-                    String name = null;
-                    String value = null;
-                    for (int i2 = 0; i2 < subChildren.getLength(); i2++) {
-                        if (subChildren.item(i2).getNodeType() == Node.ELEMENT_NODE) {
-                            Element subElm = (Element) subChildren.item(i2);
-                            String subElementName = subElm.getTagName();
-                            if (subElementName.equals(WebManagerProperties.mTAG_OPTION_PARAMETER_NAME)) {
-                                name = RelationshipUtil.getStrElementValue(subElm);
-                            } else if (subElementName.equals(WebManagerProperties.mTAG_OPTION_PARAMETER_VALUE)) {
-                                value = RelationshipUtil.getStrElementValue(subElm);
-                            }
-
-                            if (name != null && value != null) {
-                                NameValuePair nvp = new NameValuePair(name, value);
-                                nameValuePairs.add(nvp);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        SearchScreenOptions searchOpt = new SearchScreenOptions(displayName, queryBuilder, 
-                                                                 isWeighted, candidateThreshold,
-                                                                 nameValuePairs);
-        return searchOpt;
-    }
     private SearchOptions parseSearchOption(Node node) {
         String elementName = null;
         NodeList children = node.getChildNodes();
@@ -1066,7 +842,6 @@ public class MultiDomainWebManager {
         }
         return searchOpt;
     }
-    
     private void parseFieldGroup(Node node, FieldGroup fieldGroup) {
         String elementName = null;
         NodeList children = node.getChildNodes();
@@ -1078,33 +853,6 @@ public class MultiDomainWebManager {
                 fieldGroup.addFieldRef(fieldGroup.createFieldRef(fieldName));
             }
         }
-    }
-    
-    // testing--raymond tam
-    private FieldConfigGroup parseFieldGroup(Node node) {
-        
-        String elementName = null;
-        String description = null;
-        FieldConfigGroup fieldConfigGroup = null;
-        NodeList children = node.getChildNodes();
-        for (int i1 = 0; i1 < children.getLength(); i1++) {
-            if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
-                Element elm = (Element) children.item(i1);
-                elementName = elm.getTagName();
-                if (elementName.equals(WebManagerProperties.mTAG_FIELD_GROUP_DESCRIPTION)) {
-                    description  = RelationshipUtil.getStrElementValue(elm);
-                }
-
-                String fieldName = RelationshipUtil.getStrElementValue(elm);
-                // RESUME HERE
-                // retrieve the rest of the fields
-                // create a new fieldconfig object
-//                fieldGroup.addFieldRef(fieldGroup.createFieldRef(fieldName));
-//                fieldConfigGroup = new FieldConfigGroup(...);
-                
-            }
-        }
-        return fieldConfigGroup;
     }
 
     private void parseRelJNDI(Node node) {
@@ -1154,4 +902,5 @@ public class MultiDomainWebManager {
         }
 
     }
+
 }

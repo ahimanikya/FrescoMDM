@@ -34,7 +34,7 @@ import javax.swing.table.TableModel;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.parser.Relationship;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.Attribute;
 /**
  *
@@ -44,7 +44,7 @@ public class TabOverview extends javax.swing.JPanel {
     private final String ALL_DOMAINS = org.openide.util.NbBundle.getMessage(TabOverview.class, "All_Domains");
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <Relationship> mAlRelationships;
-    private ArrayList <RelationshipType> mAlRelationshipTypes;
+    private ArrayList <LinkType> mAlLinkTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
     /** Creates new form TabOverview */
     public TabOverview(ArrayList <DomainNode> alDomainNodes) {
@@ -67,14 +67,11 @@ public class TabOverview extends javax.swing.JPanel {
         if (mAlDomainNodes != null) {
             domainNode = mAlDomainNodes.get(0);
             domainName = domainNode.getName();
-            ArrayList <RelationshipType> alRelationshipTypes = domainNode.getRelationshipTypes();
-            ArrayList <Relationship> alRelationships = domainNode.getRelationships();
-            if (alRelationshipTypes == null ||  alRelationshipTypes.size() == 0) {
-                for (int i=0; alRelationships != null && i < alRelationships.size(); i++) {
-                    Relationship rel = alRelationships.get(i);
-                    String domain1 = rel.getDomain1();
-                    String domain2 = rel.getDomain2();
-                    String domainWithRelationship = (domainName.equals(domain1)) ? domain2 : domain1;
+            ArrayList <LinkType> alLinkTypes = domainNode.getLinkTypes();
+            ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
+            if (alLinkTypes == null ||  alLinkTypes.size() == 0) {
+                for (int i=0; alAssociatedDomains != null && i < alAssociatedDomains.size(); i++) {
+                    String domainWithRelationship = alAssociatedDomains.get(i);
                     boolean bAdd = true;
                     for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
                         String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
@@ -88,8 +85,8 @@ public class TabOverview extends javax.swing.JPanel {
                     }
                 }
             } else {
-                for (int i=0; alRelationshipTypes != null && i < alRelationshipTypes.size(); i++) {
-                    RelationshipType type = alRelationshipTypes.get(i);
+                for (int i=0; alLinkTypes != null && i < alLinkTypes.size(); i++) {
+                    LinkType type = alLinkTypes.get(i);
                     String sourceDomain = type.getSourceDomain();
                     String targetDomain = type.getTargetDomain();
                     String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
@@ -143,9 +140,9 @@ public class TabOverview extends javax.swing.JPanel {
                         String relationshipSourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
                         String relationshipTargetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
                         // load attributes 
-                        // find it from mAlRelationshipTypes
-                        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
-                            RelationshipType type = mAlRelationshipTypes.get(i);
+                        // find it from mAlLinkTypes
+                        for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
+                            LinkType type = mAlLinkTypes.get(i);
                             String typeName = type.getName();
                             String sourceDomain = type.getSourceDomain();
                             String targetDomain = type.getTargetDomain();
@@ -218,9 +215,9 @@ public class TabOverview extends javax.swing.JPanel {
         jLabelAssociated.setBounds(10, 60, 110, 14);
 
         add(jComboBoxAssociatedDomains);
-        jComboBoxAssociatedDomains.setBounds(120, 60, 110, 20);
+        jComboBoxAssociatedDomains.setBounds(120, 60, 110, 22);
 
-        jScrollPaneRelationshipTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Relationship_Types_Defined"))); // NOI18N
+        jScrollPaneRelationshipTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Relationships_Defined"))); // NOI18N
 
         jTableRelationshipTypes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -236,7 +233,7 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneRelationshipTypes.setBounds(10, 90, 470, 120);
 
         add(jComboBoxAllDomains);
-        jComboBoxAllDomains.setBounds(120, 30, 110, 20);
+        jComboBoxAllDomains.setBounds(120, 30, 110, 22);
 
         jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Fixed_Attributes"))); // NOI18N
 
@@ -296,18 +293,15 @@ public class TabOverview extends javax.swing.JPanel {
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxAllDomains.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
-        mAlRelationshipTypes = domainNode.getRelationshipTypes();
-        ArrayList <Relationship> alRelationships = domainNode.getRelationships();
+        mAlLinkTypes = domainNode.getLinkTypes();
+        ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
         if (jComboBoxAssociatedDomains.getItemCount() > 0) {
             jComboBoxAssociatedDomains.removeAllItems();
         }
         jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
-        if (mAlRelationshipTypes == null ||  mAlRelationshipTypes.size() == 0) {
-            for (int i=0; alRelationships != null && i < alRelationships.size(); i++) {
-                Relationship rel = alRelationships.get(i);
-                String domain1 = rel.getDomain1();
-                String domain2 = rel.getDomain2();
-                String domainWithRelationship = (domainName.equals(domain1)) ? domain2 : domain1;
+        if (mAlLinkTypes == null ||  mAlLinkTypes.size() == 0) {
+            for (int i=0; alAssociatedDomains != null && i < alAssociatedDomains.size(); i++) {
+                String domainWithRelationship = alAssociatedDomains.get(i);
                 boolean bAdd = true;
                 for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
                     String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
@@ -321,8 +315,8 @@ public class TabOverview extends javax.swing.JPanel {
                 }
             }
         } else {
-            for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
-                RelationshipType type = mAlRelationshipTypes.get(i);
+            for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
+                LinkType type = mAlLinkTypes.get(i);
                 String sourceDomain = type.getSourceDomain();
                 String targetDomain = type.getTargetDomain();
                 String domainWithRelationship = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
@@ -345,15 +339,15 @@ public class TabOverview extends javax.swing.JPanel {
     private void onDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxAllDomains.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
-        mAlRelationshipTypes = domainNode.getRelationshipTypes();
+        mAlLinkTypes = domainNode.getLinkTypes();
 
         String associatedDomain = (String) jComboBoxAssociatedDomains.getSelectedItem();
         TableModelRelationshipType model = (TableModelRelationshipType) jTableRelationshipTypes.getModel();
         model.rows.clear();
         int index = 0;
 
-        for (int i=0; mAlRelationshipTypes != null && i < mAlRelationshipTypes.size(); i++) {
-            RelationshipType type = mAlRelationshipTypes.get(i);
+        for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
+            LinkType type = mAlLinkTypes.get(i);
             String sourceDomain = type.getSourceDomain();
             String targetDomain = type.getTargetDomain();
             boolean associated = false;

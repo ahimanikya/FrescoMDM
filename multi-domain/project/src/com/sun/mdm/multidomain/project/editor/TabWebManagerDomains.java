@@ -77,14 +77,14 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         //jTxtDomainName.setText(domain.getDomainName());
 
         // create table for Record Detail            
-        mRecordDetail = domain.getRecordDetailList();
+        mRecordDetail = (domain != null) ? domain.getRecordDetailList() : null;
         TableModelRecordDetail mTableRecordDetailModel = new TableModelRecordDetail(mRecordDetail);
         mTableRecordDetail = new JTable(mTableRecordDetailModel);
 
         jScrollPaneRecDetail.setViewportView(mTableRecordDetail);
 
         //create table for Search Result
-        mSearchResult = domain.getSearchDetail();
+        mSearchResult = (domain != null) ? domain.getSearchDetail() : null;
         TableModelSearchResult mTableSearchResultModel = new TableModelSearchResult(mSearchResult);
         mTableSearchResult = new JTable(mTableSearchResultModel);
         mJComboRecordDetail.removeAllItems();;
@@ -106,7 +106,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         jScrollPaneSearchResult.setViewportView(mTableSearchResult);
 
         //create table for Search Type
-        mSearchTypes = domain.getSearchType();
+        mSearchTypes = (domain != null) ? domain.getSearchType() : null;
         TableModelSearchPage mTableSearchTypeModel = new TableModelSearchPage(mSearchTypes);
         mTableSearchType = new JTable(mTableSearchTypeModel);
         int idx = 0;
