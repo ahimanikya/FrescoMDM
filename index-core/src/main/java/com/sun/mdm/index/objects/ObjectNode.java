@@ -824,7 +824,7 @@ public class ObjectNode implements Externalizable {
     *
     * @return String parent's object tag
     */
-   protected String getParentTag() {
+   public String getParentTag() {
        return mParentTag;
    }
 
