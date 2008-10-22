@@ -15,12 +15,16 @@ pageTracker._trackPageview();
 <body class="view">
 <h1>
 Administer</h1>
-Administer relationship, hierarchy, groups and/or categories.
+Administer relationship, hierarchy, groups and/or categories.<br /><br />In otherwords, create the template definition for any of the above Multi-Domain functions. 
 <p></p>
 <p>This includes:
 </p>
-<ul><li> Defining the relationship types (domains, name, ...)</li><li>Define custom attributes associated with a record in a relationship or with a Group Instance</li><li> Defining a taxonomy for categories. IE what category
-is a sub-category and so on.</li><li>Define if a custom attribute is &nbsp;Searchable. &nbsp;<br />&nbsp;</li></ul>
+<ul><li> Defining basic informaton about a relationship, hierarchy,
+group or category such as the name used by the APIs and the name shown
+to the user.</li><li>Indicate which of the Predefined Attributes will be used. </li><li>Define
+custom attributes. How the custom attributes are used depends on the
+Mult-Domain function that is being defined as follows:</li><ul><li>Hierarchy</li><ul><li>For the actual hiearchy. (This is a nice to have feature)</li><li>For a record that is included in the hiearchy, called a hiearchy node.</li></ul><li>Relationship</li><ul><li>For the relationship between two records.</li></ul><li>Groups</li><ul><li>For the Group Instance</li><li>For a record in a Group Instance</li></ul><li>Categories</li><ul><li>TBD.</li></ul></ul><li> Defining a taxonomy for categories. IE what category
+is a sub-category and so on.</li><li>Define if a custom attribute is can be used in a search search. &nbsp;I.E. is Searchable. &nbsp;<br />&nbsp;</li></ul>
 <h2 id="section-Administer-Screens">Screens</h2>
 <ul><li>
 <a class="wikipage" href="AdminRelationships.htm">Administer-&gt;Relationships</a>
@@ -32,7 +36,7 @@ exact attributes that are shown on a search screen are defined in the
 Netbeans Configuration. &nbsp;However, if no search screens definition
 exist then each searchable attribute is shown. &nbsp; Besides each
 search screen is an option to "Search by Range". &nbsp;If selecetd the
-attribute allows the user to specify a range of values to search on. <br /><br />Here is an example of what a search screen might look like with two searchable attributes.<br /><br /><img style="width: 432px; height: 70px;" alt="" src="../attach/SearchAttributesByRangeS1.png" /><br /><br />After the user selects the Searcb by Range option the following is shown.<br /><br /><img style="width: 432px; height: 74px;" alt="" src="../attach/SearchAttributesByRangeS2.png" /><br /><br />Note: This is considered a nice to have feature.<br /><br /><hr style="width: 100%; height: 2px;" />
+attribute allows the user to specify a range of values to search on. <br /><br />Here is an example of what a search screen might look like with two searchable attributes.<br /><br /><img style="width: 432px; height: 70px;" alt="" src="../attach/SearchAttributesByRangeS1.png" /><br /><br />After the user selects the Searcb by Range option the following is shown.<br /><br /><img style="width: 432px; height: 74px;" alt="" src="../attach/SearchAttributesByRangeS2.png" /><br /><br />Note: This is considered a nice to have feature but is highly desirable.<br /><br /><hr style="width: 100%; height: 2px;" />
 <div class="pageContent"><i>This page last
 changed on <a href="Diff.jsp?page=Administer&amp;r1=7&amp;r2=6">21-Oct-2008
 16:22:21 PDT</a> by&nbsp;</i><a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net.</a>
