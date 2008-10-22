@@ -5,10 +5,6 @@
 package com.sun.mdm.multidomain.parser;
 
 import com.sun.mdm.multidomain.parser.SearchOptions.Parameter;
-//import com.sun.mdm.multidomain.relationship.Relationship;
-// RESUME HERE
-// probably need to remove this later
-import com.sun.mdm.multidomain.services.configuration.Domain;
 
 import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
