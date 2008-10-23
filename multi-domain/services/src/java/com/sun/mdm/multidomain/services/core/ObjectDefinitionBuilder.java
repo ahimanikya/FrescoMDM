@@ -65,6 +65,9 @@ public class ObjectDefinitionBuilder {
     private static final String NAME = "name";
     private static final String RELATIONSHIPS = "relationships";
 
+    public ObjectDefinitionBuilder(){
+    }
+    
     /**
      * Parse the object-definition.xml inputStream to build the ObjectDefinition
      * object.
