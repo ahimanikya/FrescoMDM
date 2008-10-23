@@ -54,15 +54,12 @@
         
     <!-- relationship handling-->    
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.DomainSearch">
-        <param name="include" value="name, type, fields" />
+        <param name="include" value="name, type, attributes" />
     </convert>	        
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.RelationshipSearch">
-        <param name="include" value="name, fields" />
+        <param name="include" value="name, attributes" />
     </convert>	
         
-    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.Field">
-        <param name="include" value="name, value" />
-    </convert>	    
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.Attribute">
         <param name="include" value="name, value" />
     </convert>	
@@ -81,7 +78,7 @@
         <param name="include" value="name,EUID,highLight" />
     </convert>
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.ObjectRecord">
-        <param name="include" value="name,EUID,fields" />
+        <param name="include" value="name,EUID,attributes" />
     </convert>
     
     <convert match="com.sun.mdm.multidomain.services.core.ServiceException" converter="exception">
@@ -97,22 +94,21 @@
         ]]>
         <![CDATA[
             import java.util.List;
-            import com.sun.mdm.multidomain.services.model.Field;
+            import com.sun.mdm.multidomain.services.relationship.Attribute;
             import com.sun.mdm.multidomain.services.model.DomainSearch;
             import com.sun.mdm.multidomain.services.model.RelationshipSearch;
-            DomainSearch.setFields(List<Field> fields);            
-            List<Field> DomainSearch.getFields();
-            RelationshipSearch.setFields(List<Field> fields);            
-            List<Field> RelationshipSearch.getFields();     
+            DomainSearch.setAttributes(List<Attribute> attributes);            
+            List<Attribute> DomainSearch.getAttributes();
+            RelationshipSearch.setAttributes(List<Attribute> attributes);            
+            List<Attribute> RelationshipSearch.getAttributes();     
         ]]>        
         <![CDATA[
             import java.util.List;
-            import com.sun.mdm.multidomain.services.model.Field;
             import com.sun.mdm.multidomain.services.model.ObjectRecord;
             import com.sun.mdm.multidomain.services.relationship.Attribute;
             import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
-            ObjectRecord.setFields(List<Field> fields);            
-            List<Field> ObjectRecord.getFields();
+            ObjectRecord.setAttributes(List<Attribute> attributes);            
+            List<Attribute> ObjectRecord.getAttributes();
             RelationshipRecord.setAttributes(List<Attribute> attributes);            
             List<Attribute> RelationshipRecord.getAttributes(); 
         ]]>   
