@@ -113,7 +113,7 @@ public class ServiceManagerFactory {
 	 */			
 	public MetaDataManager createMetaDataManager() throws ServiceException {
             initialize();            
-            return new MetaDataManager(multiDomainMetaService, multiDomainService); 
+            return new MetaDataManager(multiDomainMetaService); 
 	}
 	
 }
