@@ -456,13 +456,33 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 										<!-- modified  on 15-10-08 for adding view button -->
 										<td valign="center" width="14px">
  											  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-													 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'>  
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType ==  "<%=minorObjType%>" &&
+											 systemcodeInEdit.length>0 && systemcodeInEdit == "<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit == "<%=selectedSoLID%>" ){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{											 											ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+													 }'>  
 														 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 											  </a>
 										</td>
 									  <td valign="center" width="14px">
 					                   <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){showUnSavedAlert(event,editMinorObjectType,editObjectType);}else{setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 onclick='javascript:
+											if(sbrInEdit.length<1 &&  newSoInEdit.length<1){
+												if(systemcodeInEdit.length<1 && lidInEdit.length<1){
+													editSOMinorflag = "true";
+ 												}else if(systemcodeInEdit.length>0 && lidInEdit.length>0 &&  systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit=="<%=selectedSoLID%>" && editMinorObjectType=="<%=minorObjType%>"){
+													editSOMinorflag = "true";
+ 												}else{
+													editSOMinorflag = "false";
+ 												}
+											}
+ 											if(editSOMinorflag=="false"){
+											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											else{
+											editSOMinorflag = "false";
+											setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -471,7 +491,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                                      <%} else if("merged".equalsIgnoreCase(soStatus) || "inactive".equalsIgnoreCase(soStatus)) {%>
 										  <td valign="center" width="14px">
  					                   <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>"
-											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
+											 onclick='javascript:
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 '> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 									  </td>
@@ -629,14 +651,35 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>" &&
+											 systemcodeInEdit.length>0 && systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit=="<%=selectedSoLID%>"){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>								 
 			                    <td valign="center" width="14px">
                                   <%if("active".equalsIgnoreCase(soStatus)) {%>
  									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){showUnSavedAlert(event,editMinorObjectType,editObjectType);}else{setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 onclick='javascript:
+											if(sbrInEdit.length<1 &&  newSoInEdit.length<1){
+												if(systemcodeInEdit.length<1 && lidInEdit.length<1){
+													editSOMinorflag = "true";
+ 												}else if(systemcodeInEdit.length>0 && lidInEdit.length>0 &&  systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit=="<%=selectedSoLID%>" && editMinorObjectType=="<%=minorObjType%>"){
+													editSOMinorflag = "true";
+ 												}else{
+													editSOMinorflag = "false";
+ 												}
+											}
+ 											if(editSOMinorflag=="false"){
+											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											else{
+											 editSOMinorflag = "false";
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -938,8 +981,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
-											 '> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>" &&
+											 systemcodeInEdit.length>0 && systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit=="<%=selectedSoLID%>"){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>
@@ -948,9 +995,21 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
  									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
-											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
-											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											if(sbrInEdit.length<1 &&  newSoInEdit.length<1){
+												if(systemcodeInEdit.length<1 && lidInEdit.length<1){
+													editSOMinorflag = "true";
+ 												}else if(systemcodeInEdit.length>0 && lidInEdit.length>0 &&  systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit=="<%=selectedSoLID%>" && editMinorObjectType=="<%=minorObjType%>"){
+													editSOMinorflag = "true";
+ 												}else{
+													editSOMinorflag = "false";
+ 												}
+											}
+ 											if(editSOMinorflag=="false"){
+											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											else{
+											editSOMinorflag = "false";											
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1169,8 +1228,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
-											 '> 
+											 onclick='javascript:
+											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>" &&
+											 systemcodeInEdit.length>0 && systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit=="<%=selectedSoLID%>"){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{																						 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>
@@ -1179,9 +1242,21 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
  									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
-											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
-											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											if(sbrInEdit.length<1 &&  newSoInEdit.length<1){
+												if(systemcodeInEdit.length<1 && lidInEdit.length<1){
+													editSOMinorflag = "true";
+ 												}else if(systemcodeInEdit.length>0 && lidInEdit.length>0 &&  systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit=="<%=selectedSoLID%>" && editMinorObjectType=="<%=minorObjType%>"){
+													editSOMinorflag = "true";
+ 												}else{
+													editSOMinorflag = "false";
+ 												}
+											}
+ 											if(editSOMinorflag=="false"){
+											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											else{
+											editSOMinorflag = "false";											 
+											  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1294,8 +1369,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 %>
              <script>
  					 var thisFrm = document.getElementById('<%=formName%>');
-			 		 editMinorObjectType = '';
-			         setEOEditIndex('-1');
+			 		 //editMinorObjectType = '';
+			         //setEOEditIndex('-1');
 			 </script>
 			 <%HashMap minorObjectMap  = (HashMap) thisMinorObjectList.get(intEditIndex);%>
                <!-- Generate the script to populate the user code maskings -->
@@ -1428,7 +1503,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							<%}%>
 							<script>
                             thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = true;
+                            thisFrm.elements['<%=k%>'].disabled = false;
  							</script>
 						<%}%>
 				   <%}%>
@@ -1455,7 +1530,6 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	 }
 
     </script>  
-   
    <%  
 		  ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
 	 // ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SO"+request.getParameter("MOT")+"ArrayList");
@@ -1611,6 +1685,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						
 						
 		           <%}%>
+					<% if(thisEoSystemObjectMap.get("Status").toString().equalsIgnoreCase("inactive")){
+					   for(int k=0;k<fcArray.length;k++) {%>
+    					<script>
+                            thisFrm.elements['<%=k%>'].readOnly = true;
+                            thisFrm.elements['<%=k%>'].disabled = true;
+ 						</script>
+ 					  <%}%>
+ 					<%}%>
 			   
 <% } else if(isdeactivateSO){%>
   <%

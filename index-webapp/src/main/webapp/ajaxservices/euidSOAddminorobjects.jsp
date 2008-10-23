@@ -782,15 +782,23 @@ if (isCancel){
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'> 
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && newSoInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+ 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || sbrInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0)){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
+											 }else{
+											 setNewSOInEditMode("NewSO");
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");
+											 setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1064,15 +1072,22 @@ if (isCancel){
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'> 
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && newSoInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>								  
 			                    <td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || sbrInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0)){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
+											 }else{ 
+											 setNewSOInEditMode("NewSO");
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1270,15 +1285,22 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");'>
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && newSoInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&isView=true&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");
+											 }'>
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>								  
 			                    <td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || sbrInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0)){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
+											 }else{ 
+											 setNewSOInEditMode("NewSO");											 
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1353,8 +1375,8 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 			   int intEditIndex = new Integer(editIndex).intValue();
 			 %>
 			 <script>
-				  editMinorObjectType = '';
-				 setEOEditIndex('-1');
+				 // editMinorObjectType = '';
+				  //setEOEditIndex('-1');
 			 </script>
 			 <%HashMap minorObjectMap  = (HashMap) editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().get(intEditIndex);%>
                <!-- Generate the script to populate the user code maskings -->
@@ -1413,7 +1435,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 						<%}%>
     					<script>
                             thisFrm.elements['<%=k%>'].readOnly = true
-                            thisFrm.elements['<%=k%>'].disabled = true;
+                            thisFrm.elements['<%=k%>'].disabled = false;
  						</script>
 					<%}%>
 						

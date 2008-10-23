@@ -628,8 +628,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","");
-											 '> 
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && sbrInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","");
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>								  
@@ -637,9 +641,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:
-											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
+											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -799,17 +805,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
-											 '> 
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && sbrInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","");
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>
 			                    <td valign="center" width="14px">
 								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" ||  newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
+											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1100,8 +1112,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
-											 '>  
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && sbrInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+ 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","");
+											 }'>  
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>
@@ -1109,9 +1125,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			                    <td valign="center"n width="14px">
 								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
+											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1343,17 +1361,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
-											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
-											 '> 
+											 onclick='javascript:
+ 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>"  && sbrInEdit.length>0){
+											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+											 else{
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&isView=true&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","");
+											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
 								</td>							  
 		                      <td valign="center" width="14px">
  								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
+											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" ||  newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
+											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1460,8 +1484,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 %>
              <script>
  					 var thisFrm = document.getElementById('<%=formName%>');
-			         setEOEditIndex('-1');
-					 editMinorObjectType='';
+			         //setEOEditIndex('-1');
+					 //editMinorObjectType='';
 			 </script>
  
 			 
@@ -1607,7 +1631,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					
      					<script>
                             thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = true;
+                            thisFrm.elements['<%=k%>'].disabled = false;
  						</script>
    		           <%}%>
 <% }  else if (isEdit)  { %>
@@ -1618,7 +1642,6 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       document.getElementById('EO<%=request.getParameter("MOT")%>cancelEdit').style.display = 'block'; 
 	  document.getElementById('EO<%=request.getParameter("MOT")%>buttons').style.visibility = 'visible';
 	  document.getElementById('EO<%=request.getParameter("MOT")%>buttons').style.display = 'block';
-
     </script>
   <%  
 	          ArrayList thisMinorObjectList = (ArrayList) editMainEuidHandler.getEditSingleEOHashMap().get("EOCODES"+request.getParameter("MOT")+"ArrayList");

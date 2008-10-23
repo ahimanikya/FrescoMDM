@@ -106,6 +106,14 @@ if(session!=null){
            var rand = "";
 		   var editMinorObjectType="";
 		   var editObjectType = "";
+		   var sbrInEdit = "";
+		   var systemcodeInEdit = "";
+ 		   var lidInEdit = "";
+		   var newSoInEdit = "";
+		   var editSOflag = "false";
+		   var addSOflag = "false";
+		   var editSOMinorflag = "false";
+
            function setRand(thisrand)  {
  	        rand = thisrand;
            }
@@ -132,6 +140,21 @@ if(session!=null){
 				editIndexid = editIndex;
 				editObjectType = objectType;
 	 		}
+			//added on 20-10-08 as a fix of 15
+			function setSBRInEditMode(sbr){
+				sbrInEdit = sbr;
+			}
+			
+			//added on 20-10-08 as a fix of 15
+			function setNewSOInEditMode(newso){
+				newSoInEdit = newso;
+			}
+
+			//added on 20-10-08 as a fix of 15
+			function setSOInEditMode(syscode,lid){
+ 					systemcodeInEdit = syscode;
+					lidInEdit = lid;
+  			}
 			
 			// added  on 22-09-08  			
 			function showUnSavedAlert(thisEvent,minorObjectType,editObjectType){

@@ -428,7 +428,25 @@ boolean isSessionActive = true;
 								<table cellpadding="0" cellspacing="0" border="0">
 								<tr>
 								  <td>
-								   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+								   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:
+ 									if(sbrInEdit.length<1 &&  systemcodeInEdit.length<1 && lidInEdit.length<1){
+										if(newSoInEdit.length<1){
+ 											addSOflag = 'true';newSoInEdit
+										}else if(newSoInEdit.length>0 && editMinorObjectType=='<h:outputText value="#{childNodesName}"/>'){
+ 											addSOflag = 'true';
+										}else{
+ 											addSOflag = 'false';
+										}
+									}
+ 									if(addSOflag=='false'){
+									showUnSavedAlert(event,editMinorObjectType,editObjectType);}
+									else{								   
+									   getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');
+									   ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event);
+									   editMinorObjectType = '';
+									   newSoInEdit = '';											   
+									   addSOflag = 'false';
+								   }">
 								   <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/> </span>
                                    </a>
 								  </td>
@@ -439,7 +457,11 @@ boolean isSessionActive = true;
 								  </td>
 								  <td>
 								   <div style="visibility:hidden;display:none;" id="AddSo<h:outputText value="#{childNodesName}"/>">
-											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
+											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:
+											 editMinorObjectType = '';
+											 setEOEditIndex('-1');
+ 											 newSoInEdit = '';											 
+											 cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
 											  <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
 											 </a>
 								  </td>
