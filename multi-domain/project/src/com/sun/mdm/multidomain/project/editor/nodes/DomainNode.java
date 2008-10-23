@@ -51,7 +51,7 @@ import com.sun.mdm.multidomain.parser.MiObject;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
-import com.sun.mdm.multidomain.project.editor.TabRelationshipsPerDomain;
+//import com.sun.mdm.multidomain.project.editor.TabRelationshipsPerDomain;
 
 /**
  *
@@ -66,7 +66,7 @@ public class DomainNode extends AbstractNode {
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
     private ArrayList <String> alAssociatedDomains = new ArrayList();
     private ArrayList <LinkType> alLinkTypes = new ArrayList();
-    TabRelationshipsPerDomain mTabRelationshipsPerDomain = null;
+    //TabRelationshipsPerDomain mTabRelationshipsPerDomain = null;
     File mSelectedDomain = null;
     MIQueryBuilder mMIQueryBuilder = null;
     
@@ -245,7 +245,7 @@ public class DomainNode extends AbstractNode {
         //mTabRelationshipsPerDomain = new TabRelationshipsPerDomain(domainName, this.alLinkTypes);
     }
     
-    public TabRelationshipsPerDomain getTabRelationshipsPerDomain() {
-        return mTabRelationshipsPerDomain;
-    }
+    //public TabRelationshipsPerDomain getTabRelationshipsPerDomain() {
+    //    return mTabRelationshipsPerDomain;
+    //}
 }
