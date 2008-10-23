@@ -114,13 +114,13 @@ public class DefineDeploymentPanel implements WizardDescriptor.Panel {
         WizardDescriptor wiz = (WizardDescriptor) settings;
 
         try {
-            wiz.putProperty(Properties.PROP_DATABASE, mComponent.getDatabase());
-            wiz.putProperty(Properties.PROP_DATE_FORMAT, mComponent.getDateFormat());
-            wiz.putProperty(Properties.PROP_TRANSACTION, mComponent.getTransaction());
+            wiz.putProperty(WizardProperties.PROP_DATABASE, mComponent.getDatabase());
+            wiz.putProperty(WizardProperties.PROP_DATE_FORMAT, mComponent.getDateFormat());
+            wiz.putProperty(WizardProperties.PROP_TRANSACTION, mComponent.getTransaction());
         } catch (Exception e) {
-            wiz.putProperty(Properties.PROP_DATABASE, "");
-            wiz.putProperty(Properties.PROP_DATE_FORMAT, "");
-            wiz.putProperty(Properties.PROP_TRANSACTION, "");
+            wiz.putProperty(WizardProperties.PROP_DATABASE, "");
+            wiz.putProperty(WizardProperties.PROP_DATE_FORMAT, "");
+            wiz.putProperty(WizardProperties.PROP_TRANSACTION, "");
         }
     }
 }

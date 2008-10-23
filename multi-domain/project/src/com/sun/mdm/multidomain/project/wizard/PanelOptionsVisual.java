@@ -204,7 +204,7 @@ public class PanelOptionsVisual extends javax.swing.JPanel {
     
     void store(WizardDescriptor d) {
         d.putProperty(WizardProperties.SET_AS_MAIN, setAsMainCheckBox.isSelected() ? Boolean.TRUE : Boolean.FALSE );
-        d.putProperty(Properties.SERVER_INSTANCE_ID, getSelectedServer());
+        d.putProperty(WizardProperties.SERVER_INSTANCE_ID, getSelectedServer());
         d.putProperty(WizardProperties.J2EE_LEVEL, getSelectedJ2eeSpec());
     }
     
