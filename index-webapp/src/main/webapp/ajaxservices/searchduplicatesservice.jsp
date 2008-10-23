@@ -486,7 +486,7 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 		   <table cellpadding="0" cellspacing="0" border="0">
 			 <tr>
 				 <td>
-				     <% String messages = "EUID '" + request.getParameter("EUID") + "' " + bundle.getString("euid_not_found_text"); %>     	 <b><%=messages%> </b>
+				     <% String messages = bundle.getString("pot_dup_error_text") + " '" + request.getParameter("EUID") +"' "; %>     	 <b><%=messages%> </b>
 				 </td>
 			 </tr>
 		   </table>
