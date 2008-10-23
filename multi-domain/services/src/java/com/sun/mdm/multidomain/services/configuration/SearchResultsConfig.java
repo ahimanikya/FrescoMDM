@@ -28,6 +28,11 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 import java.util.Iterator;
 import java.util.ArrayList;
 
@@ -39,6 +44,9 @@ import java.util.ArrayList;
  * @created July 27, 2007
  */
 public class SearchResultsConfig implements java.io.Serializable {
+
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SearchResultsConfig");
+    private static transient final Localizer mLocalizer = Localizer.get();
     
     public static int DISABLED = -1;       // indicates if a search result summary or search 
                                             // result detail screen is disabled.
@@ -58,14 +66,16 @@ public class SearchResultsConfig implements java.io.Serializable {
     public SearchResultsConfig(ObjectNodeConfig rootObj, int searchResultsID, 
                                 int searchResultsSummaryID, int searchResultDetailsID, 
                                 int pageSize, int maxRecords, boolean showEUID, 
-                                boolean showLID, ArrayList<FieldConfigGroup> fieldConfigGroups) {
+                                boolean showLID, ArrayList<FieldConfigGroup> fieldConfigGroups) 
+                throws Exception {
                     
         mRootObj = rootObj;
         mSearchResultsID = searchResultsID;
         if ((searchResultsSummaryID >= 0 && searchResultDetailsID >= 0) ||
             (searchResultsSummaryID < 0 && searchResultDetailsID < 0))  {
-            // RESUME HERE
-            // throw exception
+                
+            throw new Exception(mLocalizer.t("CFG531: Either Search Results Summary or " +
+                                             "Search Result Details must be defined. "));
         }
         if (searchResultsSummaryID >= 0)  {
             mSearchResultsSummaryID = searchResultsSummaryID;

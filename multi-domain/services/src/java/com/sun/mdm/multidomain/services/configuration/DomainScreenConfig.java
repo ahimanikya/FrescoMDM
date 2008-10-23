@@ -24,62 +24,117 @@ package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.association.Domain;
 
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DomainScreenConfig extends ObjectScreenConfig {
+    
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.DomainScreenConfig");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     private Domain mDomain = null;             // domain associated with this Domain Screen Configuration
     private SummaryID mSummaryID;        // summary ID for a domain
     private ArrayList<GroupScreenConfig> mGroupScreenConfigs;   // ArrayList of GroupScreenConfig objects
-    private ArrayList<HierarchyScreenConfig> mHierarchyScreenConfigs;   // ArrayList of hierarchyScreenConfig objects
+    private HashMap <String, HierarchyScreenConfig> mHierarchyScreenConfigs;   // key is the name of the hierarchyType
 
     public DomainScreenConfig() {
         mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
-        mHierarchyScreenConfigs = new ArrayList<HierarchyScreenConfig>();
+        mHierarchyScreenConfigs = new HashMap<String, HierarchyScreenConfig>();
     }
     
     public DomainScreenConfig(Domain domain) {
         mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
-        mHierarchyScreenConfigs = new ArrayList<HierarchyScreenConfig>();
+        mHierarchyScreenConfigs = new HashMap<String, HierarchyScreenConfig>();
         mDomain = domain;
     }
     
-    public Domain getDomain() {     // retrieves the Domain object for this domain
+    // retrieves the Domain object for this domain
+    
+    public Domain getDomain() {     
         return null;
     }
 
-    public void setDomain(Domain domain) {       // sets the Domain object for this domain
+    // sets the Domain object for this domain
+    
+    public void setDomain(Domain domain) {       
         mDomain = domain;
     }
 
-    public SummaryID getSummaryID() {   // retrieves the SummaryID for this domain
+    // retrieves the SummaryID for this domain
+    
+    public SummaryID getSummaryID() {   
         return mSummaryID;
     }
 
-    public void setSummaryID(SummaryID summaryID) { // sets the SummaryID for this domain
+    // sets the SummaryID for this domain
+    
+    public void setSummaryID(SummaryID summaryID) { 
         mSummaryID = summaryID;
     }
 
-    public ArrayList<GroupScreenConfig> getGroupScreenConfigs() {  // retrieves the GroupScreenConfig instances
+    // retrieves the GroupScreenConfig instances    
+    
+    public ArrayList<GroupScreenConfig> getGroupScreenConfigs() {  
         return mGroupScreenConfigs;
     }
 
-    public void setGroupScreenConfigs(ArrayList<GroupScreenConfig> configs) {  // sets the GroupScreenConfig instances
+    // sets the GroupScreenConfig instances
+    
+    public void setGroupScreenConfigs(ArrayList<GroupScreenConfig> configs) {  
         mGroupScreenConfigs = configs;
     }
 
-    public GroupScreenConfig getGroupScreenConfig(String hierarchyName) {   // retrieves the GroupScreenConfig object with the matching name
+    // retrieves the GroupScreenConfig object with the matching name
+    
+    public GroupScreenConfig getGroupScreenConfig(String hierarchyName) {   
         return null;
     }
 
-    public ArrayList<HierarchyScreenConfig> getHierarchyScreenConfigs() {      // retrieves the HierarchyScreenConfig instances
+    // retrieves the HierarchyScreenConfig instances
+    
+    public HashMap<String, HierarchyScreenConfig> getHierarchyScreenConfigs() {      
         return mHierarchyScreenConfigs;
     }
 
-    public void setHierarchyScreenConfigs(ArrayList<HierarchyScreenConfig> configs) {  // sets the HierarchyScreenConfig instances
-        mHierarchyScreenConfigs = configs;
+    // returns a Hierarchy screen configuration for a specific hierarchy
+    
+    public HierarchyScreenConfig getHierarchyScreenConfig(String hierarchyName) 
+            throws Exception {
+                
+        if (hierarchyName == null || hierarchyName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG522: Hierarchy name cannot be null " +
+                                             "or an empty string."));
+        }
+        HierarchyScreenConfig hSC = mHierarchyScreenConfigs.get(hierarchyName);
+        if (hSC == null) {
+            throw new Exception(mLocalizer.t("CFG523: Could not retrieve the hierarchy " +
+                                             "named \"{0}\" for the domain named \"{1}\".", 
+                                             hierarchyName, getDomain().getName()));
+        }
+        return hSC;
     }
+    
+    // add a Hierarchy screen config object
+    public void addHierarchyScreenConfig(HierarchyScreenConfig hSC) 
+            throws Exception {
 
-    public HierarchyScreenConfig getHierarcyScreenConfig(String hierarchyName, String targetDomainName) {          // retrieves the HierarchyScreenConfig object with the matching name and target domain
-        return null;
+        if (hSC == null) {
+            throw new Exception(mLocalizer.t("CFG524: Hierarchy screen configuration " + 
+                                            "cannot be null."));
+        }
+        String hierarchyName = hSC.getHierarchyType().getName();
+        if (mHierarchyScreenConfigs.containsKey(hierarchyName)) {
+            throw new Exception(mLocalizer.t("CFG525: Hierarchy screen configuration " + 
+                                             "cannot be added because it conflicts " +
+                                             "with the name of an existing hierarchy: {0}.", 
+                                             hierarchyName));
+        }
+        mHierarchyScreenConfigs.put(hierarchyName, hSC);
     }
+    
 }

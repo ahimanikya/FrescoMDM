@@ -53,10 +53,18 @@ public class MDConfigManager {
 	    init();
 	}
 
-	public void init() {    //  initializes the config manager
-	    mScreens = new HashMap<Integer, ScreenObject>();
-	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
-	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+	public MDConfigManager init() {    //  initializes the config manager
+        synchronized (MDConfigManager.class) {
+            if (mInstance != null) {
+                return mInstance;
+            }
+    	    mScreens = new HashMap<Integer, ScreenObject>();
+    	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
+    	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+    	    // RESUME HERE
+    	    // Initialize the MDConfigManager
+    	    return mInstance;
+    	}
 	}  
 
 	public static MDConfigManager getInstance() {  //  obtains config manager, initializes if necessary
@@ -64,6 +72,13 @@ public class MDConfigManager {
 	}
 
 	public void reinitialize() {  //  forces reinitialization of the config manager
+        synchronized (MDConfigManager.class) {
+    	    mScreens = new HashMap<Integer, ScreenObject>();
+    	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
+    	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+    	    // RESUME HERE
+    	    // Initialize the MDConfigManager
+    	}
 	}
 
     // add an entry into the DomainScreenConfig hashmap
@@ -73,6 +88,12 @@ public class MDConfigManager {
             throw new Exception(mLocalizer.t("CFG506: Domain Screen Configuration cannot be null."));
         }
         String domainName = dsc.getDomain().getName();
+        if (mDomainScreenConfigs.containsKey(domainName)) {
+            throw new Exception(mLocalizer.t("CFG519: Domain screen configuration " + 
+                                             "cannot be added because it conflicts " +
+                                             "with the name of an existing domain: {0}.", 
+                                             domainName));
+        }
         mDomainScreenConfigs.put(domainName, dsc);
     }
     
@@ -89,7 +110,7 @@ public class MDConfigManager {
     
 	public DomainScreenConfig getDomainScreenConfig(String domainName) throws Exception {  
         if (domainName == null || domainName.length() == 0) {
-            throw new Exception(mLocalizer.t("CFG517: Domain name cannot be null nor an empty string."));
+            throw new Exception(mLocalizer.t("CFG517: Domain name cannot be null or an empty string."));
         }
         DomainScreenConfig dSC = mDomainScreenConfigs.get(domainName);
         if (dSC == null) {
@@ -171,7 +192,7 @@ public class MDConfigManager {
 
         if (rSCI == null) {
                 
-            throw new Exception(mLocalizer.t("CFG515: RelationshipScreenCOnfigInstanct may not be null."));
+            throw new Exception(mLocalizer.t("CFG515: RelationshipScreenCOnfigInstance cannot be null."));
         }
         RelationshipType rel = rSCI.getRelationshipType();
         String sourceDomainName = rel.getSourceDomain();
@@ -207,7 +228,7 @@ public class MDConfigManager {
 	    } else {
                 throw new Exception(mLocalizer.t("CFG512: Relationship ({0}) " +
                                                  "not found for Source Domain ({1}), " +
-                                                 "Target Domain ({2})", 
+                                                 "Target Domain ({2}).", 
                                                  relationshipName, sourceDomainName,
                                                  targetDomainName));
 	    }
@@ -229,11 +250,31 @@ public class MDConfigManager {
 	    } else {
                 throw new Exception(mLocalizer.t("CFG510: Relationship ({0}) " +
                                                  "not found for Source Domain ({1}), " +
-                                                 "Target Domain ({2})", 
+                                                 "Target Domain ({2}).", 
                                                  relationshipName, targetDomainName,
                                                  sourceDomainName));
 	    }
 	}
+	
+    // retrieves the HierarchyScreenConfig object with the matching name and domain
+    
+    public HierarchyScreenConfig getHierarchyScreenConfig(String domainName, String hierarchyName) 
+            throws Exception {
+        DomainScreenConfig dSC = getDomainScreenConfig(domainName);
+        if (dSC == null)  {
+            throw new Exception(mLocalizer.t("CFG520: The domain named \"{0}\" could " +
+                                             "not be located for the hierarchy " + 
+                                             "named \"{1}\".", domainName, hierarchyName));
+        }
+        HierarchyScreenConfig hSC = dSC.getHierarchyScreenConfig(hierarchyName);
+        if (hSC == null)  {
+            throw new Exception(mLocalizer.t("CFG521: Could not retrieve the hierarchy " +
+                                             "named \"{0}\" for the domain named \"{1}\".", 
+                                             hierarchyName, domainName));
+        }
+        
+        return hSC;
+    }
 	
 	//  returns a screen with the matching ID
 

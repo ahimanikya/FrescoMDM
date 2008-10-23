@@ -44,7 +44,7 @@ public class SearchResultsSummaryConfig extends SearchResultsConfig implements j
                                       int searchResultDetailsID, int pageSize, 
                                       int maxRecords, boolean showEUID, 
                                       boolean showLID, 
-                                      ArrayList<FieldConfigGroup> fieldConfigGroups) {
+                                      ArrayList<FieldConfigGroup> fieldConfigGroups) throws Exception {
                                         
         super(rootObj, searchResultSummaryID, DISABLED, searchResultDetailsID, pageSize, 
               maxRecords, showEUID, showLID, fieldConfigGroups);                    

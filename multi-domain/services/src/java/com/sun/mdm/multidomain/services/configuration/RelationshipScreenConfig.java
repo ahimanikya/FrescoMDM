@@ -23,9 +23,19 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
+
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 import java.util.HashMap;
 
 public class RelationshipScreenConfig {
+
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfig");
+    private static transient final Localizer mLocalizer = Localizer.get();
+ 
 	private String mSourceDomainName;		// name of the target domain
 	private String mTargetDomainName;		// name of the target domain
 	private HashMap<String,  RelationshipScreenConfigInstance> mRelationshipScreenConfigInstances;
@@ -46,14 +56,26 @@ public class RelationshipScreenConfig {
 	    return null;
 	}
 
-	public void setSourceDomainName(String sourceDomainName) {	// sets the name of the source domain
+    // sets the name of the source domain
+    
+	public void setSourceDomainName(String sourceDomainName) throws Exception {	
+	    if (sourceDomainName == null || sourceDomainName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG526: Domain name cannot be null " +
+                                             "or an empty string."));
+	    }
 	    mSourceDomainName = sourceDomainName;
 	}
 	public String getSourceDomainName() {	// retrieves the name of the source domain
 	    return mSourceDomainName;
 	}
 
-	public void setTargetDomainName(String targetDomainName) {	// sets the name of the target domain
+    // sets the name of the target domain
+    
+	public void setTargetDomainName(String targetDomainName) throws Exception {	
+	    if (targetDomainName == null || targetDomainName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG527: Domain name cannot be null " +
+                                             "or an empty string."));
+	    }
 	    mTargetDomainName = targetDomainName;
 	}
 	public String getTargetDomainName() {	// retrieves the name of the target domain
@@ -66,22 +88,35 @@ public class RelationshipScreenConfig {
 	
 	// add a relationship screen configuration instance
 	
-	public void addRelScreenConfigInstance(RelationshipScreenConfigInstance rSCObj) 
+	public void addRelScreenConfigInstance(RelationshipScreenConfigInstance rSCI) 
 	        throws Exception {
-	    // RESUME HERE--name should be passed in or retieved from rSCObj?
-	    mRelationshipScreenConfigInstances.put(rSCObj.getRelationshipName(), rSCObj);
+	    if (rSCI == null) {
+            throw new Exception(mLocalizer.t("CFG528: Relationship screen " +
+                                             "configuration instance cannot be null."));
+	    }
+	    String relationshipName = rSCI.getRelationshipType().getName();
+	    mRelationshipScreenConfigInstances.put(relationshipName, rSCI);
 	}
 
     // retrieves a relationshiop screen configuration object
 	public RelationshipScreenConfigInstance getRelScreenConfigInstance(String relationshipName) 
 	        throws Exception {
 	            
+	    if (relationshipName == null || relationshipName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG529: Relationship name cannot be null " +
+                                             "or an empty string."));
+	    }
 	    return mRelationshipScreenConfigInstances.get(relationshipName);
 	}
 	
     // removes a relationship screen configuration instance
 	public void removeRelScreenConfigInstance(String relationshipName) 
 	        throws Exception {
+
+	    if (relationshipName == null || relationshipName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG530: Relationship name cannot be null " +
+                                             "or an empty string."));
+	    }
 	            
 	    mRelationshipScreenConfigInstances.remove(relationshipName);
 	}

@@ -30,13 +30,13 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
     private RelationshipType mRelationshipType = null;
     // RESUME HERE
     // Should this be obtained from the RelationshipType?
-    private String mRelationshipName = null;
+    private String mRelationshipDisplayName = null;
     
     public RelationshipScreenConfigInstance() {
     }
     
-    public RelationshipScreenConfigInstance(String relName) {
-        mRelationshipName = relName;
+    public RelationshipScreenConfigInstance(String relDisplayName) {
+        mRelationshipDisplayName = relDisplayName;
     }
     
     public RelationshipScreenConfigInstance(RelationshipType rel) {
@@ -51,11 +51,11 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
         return mRelationshipType;
     }
     
-    public void setRelationshipName(String name) {
-        mRelationshipName = name;
+    public void setRelationshipDisplayName(String relDisplayName) {
+        mRelationshipDisplayName = relDisplayName;
     }
     
-    public String getRelationshipName() {
-        return mRelationshipName;
+    public String getRelationshipDisplayName() {
+        return mRelationshipDisplayName;
     }
 }

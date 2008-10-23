@@ -22,6 +22,11 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
