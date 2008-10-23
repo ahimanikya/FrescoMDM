@@ -64,7 +64,7 @@ public class TabOverview extends javax.swing.JPanel {
         }
         
         ArrayList rows = new ArrayList();
-        if (mAlDomainNodes != null) {
+        if (mAlDomainNodes != null && mAlDomainNodes.size() > 0) {
             domainNode = mAlDomainNodes.get(0);
             domainName = domainNode.getName();
             ArrayList <LinkType> alLinkTypes = domainNode.getLinkTypes();

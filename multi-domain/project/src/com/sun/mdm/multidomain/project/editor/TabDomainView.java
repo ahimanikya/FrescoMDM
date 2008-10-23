@@ -34,12 +34,13 @@ public class TabDomainView extends javax.swing.JPanel {
         mDomains = domains;
         initComponents();
         ArrayList<DomainNode> domainNodes = mEditorMainApp.getDomainNodes();
-        for (DomainNode node : domainNodes) {
-            this.jCBDomainList.addItem(node.getName());
+        if (domainNodes.size() > 0) {
+            for (DomainNode node : domainNodes) {
+                this.jCBDomainList.addItem(node.getName());
+            }
+            this.jCBDomainList.setSelectedIndex(0);       
+            getDomain((String) jCBDomainList.getSelectedItem());
         }
-        this.jCBDomainList.setSelectedIndex(0);
-        
-        getDomain((String) jCBDomainList.getSelectedItem());
         
         this.jCBDomainList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent e) {

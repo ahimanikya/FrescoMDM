@@ -150,16 +150,16 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             //this.jCBRelationshipType.addItem(relationType);
             createFieldRefs(relType.getExtendedRelFieldRefs());
             
+        } else {
+            ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();
+            TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(fieldRefs);
+            mTableFields = new JTable(mTableFieldRefs);
         }
     }
     
     private void createFieldRefs(ArrayList<RelationFieldReference> fieldRefs) {
             TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(fieldRefs);
-            if (mTableFields != null) {
-                mTableFields.setModel(mTableFieldRefs);
-            } else {
-                mTableFields = new JTable(mTableFieldRefs);
-            }
+            mTableFields.setModel(mTableFieldRefs);
             mTableFields.getTableHeader().setReorderingAllowed(false);
             mTableFields.setRowSelectionAllowed(true);
             mTableFields.setRowSelectionInterval(0, 0);

@@ -51,14 +51,16 @@ public class TabDomainSearch extends javax.swing.JPanel {
         initComponents();
         //this.g
         ArrayList<DomainNode> domainNodes = mEditorMainApp.getDomainNodes();
-        for (DomainNode node : domainNodes) {
-            this.jCBDomainList.addItem(node.getName());
+        if (domainNodes.size() > 0) {
+            for (DomainNode node : domainNodes) {
+                this.jCBDomainList.addItem(node.getName());
+            }
+
+            this.jCBDomainList.setSelectedIndex(0);
+            getDomain((String) this.jCBDomainList.getSelectedItem());
+            mTableSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            mTableSearchType.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
-//        this.jCBDomainList.setSelectedItem(do);
-        this.jCBDomainList.setSelectedIndex(0);
-        getDomain((String) this.jCBDomainList.getSelectedItem());
-        mTableSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        mTableSearchType.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.jCBDomainList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent e) {
                 String selectDomain = (String) jCBDomainList.getSelectedItem();

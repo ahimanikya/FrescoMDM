@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.multidomain.project.wizard;
 
+import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import org.openide.WizardDescriptor;
 import org.openide.loaders.TemplateWizard;
 import org.openide.util.NbBundle;
@@ -323,6 +324,8 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
     }
     
     private void createMultiDomainWebManagerXml() {
+        MultiDomainWebManager multiDomainWebManager = new MultiDomainWebManager();
+        /**
         String tagHeaderObject = "<RelationshipWebManager xmlns:xsi=" +
                 "\"http://www.w3.org/2001/XMLSchema-instance" +
                 "\" xsi:noNamespaceSchemaLocation=\"schema/MultiDomainWebManager.xsd\">\n";
@@ -335,7 +338,10 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
                 tagTailObject;
 
         // Write xml to repository
+         */ 
+        
         try {
+            String strXml = multiDomainWebManager.writeToString();
             mWiz.putProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_WEB_MANAGER_FILE, strXml);
         } catch (Exception e) {
             mLogger.debug(e.getMessage());

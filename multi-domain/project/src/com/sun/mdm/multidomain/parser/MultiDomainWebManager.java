@@ -342,13 +342,14 @@ public class MultiDomainWebManager {
             elmDomain.appendChild(elmRecordDetailPages);
             
             Element elmRecordID = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_ID);
-            FieldGroup group = domain.getRecordIDFields().get(0);
-            for (FieldGroup.FieldRef field : group.getFeildRefs()) {
-               Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
-                elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
-                elmRecordID.appendChild(elmField);
+            if (domain.getRecordIDFields().size() > 0) {
+                FieldGroup group = domain.getRecordIDFields().get(0);
+                for (FieldGroup.FieldRef field : group.getFeildRefs()) {
+                    Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
+                    elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
+                    elmRecordID.appendChild(elmField);
+                }
             }
-            
             elmDomain.appendChild(elmRecordID);
             
             Element elmRecordSummary = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_SUMMARY);
@@ -376,23 +377,25 @@ public class MultiDomainWebManager {
 
     private Element getJndiResToStr(Document xmlDoc) {
         Element elmJNDI = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_JNDI);
-        Element elmProperties = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTIES);
-        elmJNDI.appendChild(elmProperties);
-        ArrayList<RelationshipProperty> properties = mJndiResources.getProperties();
-        for (RelationshipProperty property : properties) {
-            Element elmProperty = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTY);
-            elmProperty.setAttribute(WebManagerProperties.mTAG_PROPERTY_NAME, property.getPropertyName());
-            elmProperty.setAttribute(WebManagerProperties.mTAG_PROPERTY_VALUE, property.getPropertyValue());
-            elmProperties.appendChild(elmProperty);
-        }
-        ArrayList<RelationshipJDNIResources> jndiRes = mJndiResources.getJDNIResources();
-        for (RelationshipJDNIResources res : jndiRes) {
-            Element elmJDNIRes = xmlDoc.createElement(WebManagerProperties.mTAG_JNDIRESOURCES);
-            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_NAME, res.getJNDIName());
-            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_ID, res.getID());
-            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_RESOURCE_TYPE, res.getResourceType());
-            elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_DESCRIPTION, res.getDescription());
-            elmJNDI.appendChild(elmJDNIRes);
+        if (mJndiResources != null) {
+            Element elmProperties = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTIES);
+            elmJNDI.appendChild(elmProperties);
+            ArrayList<RelationshipProperty> properties = mJndiResources.getProperties();
+            for (RelationshipProperty property : properties) {
+                Element elmProperty = xmlDoc.createElement(WebManagerProperties.mTAG_PROPERTY);
+                elmProperty.setAttribute(WebManagerProperties.mTAG_PROPERTY_NAME, property.getPropertyName());
+                elmProperty.setAttribute(WebManagerProperties.mTAG_PROPERTY_VALUE, property.getPropertyValue());
+                elmProperties.appendChild(elmProperty);
+            }
+            ArrayList<RelationshipJDNIResources> jndiRes = mJndiResources.getJDNIResources();
+            for (RelationshipJDNIResources res : jndiRes) {
+                Element elmJDNIRes = xmlDoc.createElement(WebManagerProperties.mTAG_JNDIRESOURCES);
+                elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_NAME, res.getJNDIName());
+                elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_ID, res.getID());
+                elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_RESOURCE_TYPE, res.getResourceType());
+                elmJDNIRes.setAttribute(WebManagerProperties.mTAG_JNDI_DESCRIPTION, res.getDescription());
+                elmJNDI.appendChild(elmJDNIRes);
+            }
         }
         return elmJNDI;
     }
