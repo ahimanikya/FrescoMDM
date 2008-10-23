@@ -46,6 +46,11 @@ public class LinkType {
     
     private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
 
+    
+    public LinkType() {
+        
+    }
+    
     public LinkType(String type) {
         this.type = type;
     }
@@ -59,6 +64,7 @@ public class LinkType {
         this.targetDomain = targetDomain;
         this.mRelFieldRefs = fieldRefs;
     }
+    
 
     public String getDestionation() {
         return targetDomain;
