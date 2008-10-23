@@ -26,10 +26,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.sun.mdm.multidomain.association.Attribute;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.association.Domain;
-import com.sun.mdm.multidomain.services.control.MetaDataManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
 /**
@@ -50,56 +47,13 @@ public class MetaDataManagerTest extends TestCase {
     
     public void test001() {
     	try {
-    		List<Domain> domains = metaDataManager.getDomains();
-    		
-    		assertTrue(domains.size() == 10);
-    		assertTrue("Person".equals(domains.get(0).getName()));
-    		assertTrue("Company".equals(domains.get(1).getName()));
-    		assertTrue("Product".equals(domains.get(2).getName()));    				
-    	} catch(ServiceException sx) {
-    		fail(sx.getMessage());
-    	}
-    }
-
-    
-    public void test002() {
-    	try {
-    	    List<RelationshipType> types = metaDataManager.getRelationshipTypes("Person");
-       	
-            assertTrue(types.size() == 2);
-            assertTrue("designon".equals(types.get(1).getName()));
-            assertTrue("3".equals(types.get(1).getId()));
-    				
-            List<Attribute> attributes = types.get(1).getAttributes();
-            assertTrue(attributes.size() == 1);
-            assertTrue("location".equals(attributes.get(0).getName()));
-            assertTrue("Monrovia".equals(attributes.get(0).getDefaultValue()));
-    				    		
+            List<Domain> domains = metaDataManager.getDomains();	
+            assertTrue(domains.size() == 10);
+            assertTrue("Person".equals(domains.get(0).getName()));
+            assertTrue("Company".equals(domains.get(1).getName()));
+            assertTrue("Product".equals(domains.get(2).getName()));    				
     	} catch(ServiceException sx) {
             fail(sx.getMessage());
     	}
     }
-
-    public void test003() {
-    	try {
-    	    List<RelationshipType> types = metaDataManager.getRelationshipTypes();
-        	//rt1: Person -> Company
-    	    //rt2: Company -> Product
-    	    //rt3: Person -> Product
-    	    
-    		assertTrue(types.size() == 3);    	    
-    		assertTrue("Person".equals(types.get(0).getSourceDomain()));
-    		assertTrue("Company".equals(types.get(0).getTargetDomain()));
-
-    		assertTrue("Company".equals(types.get(1).getSourceDomain()));
-    		assertTrue("Product".equals(types.get(1).getTargetDomain()));
-
-    		assertTrue("Person".equals(types.get(2).getSourceDomain()));
-    		assertTrue("Product".equals(types.get(2).getTargetDomain()));
-    		
-    	} catch(ServiceException sx) {
-    		fail(sx.getMessage());
-    	}
-    }
-    
 }
