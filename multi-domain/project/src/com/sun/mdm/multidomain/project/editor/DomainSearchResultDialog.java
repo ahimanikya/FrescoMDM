@@ -446,7 +446,7 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 
     class TableModelFieldGroup extends AbstractTableModel {
 
-        private String columnNames[] = {NbBundle.getMessage(TabWebManagerDomains.class, "LBL_FIELD_GROUP"),};
+        private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD_GROUP"),};
         ArrayList fieldRows;
         final static int iColRecordDetailName = 0;
 
@@ -569,7 +569,7 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 
      class TableModelField extends AbstractTableModel {
 
-        private String columnNames[] = {NbBundle.getMessage(TabWebManagerDomains.class, "LBL_FIELD"),};
+        private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD"),};
         ArrayList fieldRows;
         final static int iColFieldName = 0;
         private FieldGroup mFieldGroup = null;

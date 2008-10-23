@@ -1,5 +1,5 @@
 /*
- * TabWebManagerDomains.java
+ * TabDomainSearch.java
  *
  * Created on September 22, 2008, 2:27 PM
  */
@@ -30,11 +30,10 @@ import org.openide.util.NbBundle;
  *
  * @author  wee
  */
-public class TabWebManagerDomains extends javax.swing.JPanel {
+public class TabDomainSearch extends javax.swing.JPanel {
 
     private EditorMainApp mEditorMainApp = null;
     private DomainsForWebManager mDomains = null;
-    private JTable mTableRecordDetail = null;
     private JTable mTableSearchResult = null;
     private JTable mTableSearchType = null;
     private ArrayList<RecordDetail> mRecordDetail;
@@ -45,8 +44,8 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
     
            
 
-    /** Creates new form TabWebManagerDomains */
-    public TabWebManagerDomains(EditorMainApp editorMainApp, DomainsForWebManager domains) {
+    /** Creates new form TabDomainSearch */
+    public TabDomainSearch(EditorMainApp editorMainApp, DomainsForWebManager domains) {
         mEditorMainApp = editorMainApp;
         mDomains = domains;
         initComponents();
@@ -58,7 +57,6 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
 //        this.jCBDomainList.setSelectedItem(do);
         this.jCBDomainList.setSelectedIndex(0);
         getDomain((String) this.jCBDomainList.getSelectedItem());
-        mTableRecordDetail.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         mTableSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         mTableSearchType.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.jCBDomainList.addItemListener(new java.awt.event.ItemListener() {
@@ -73,18 +71,15 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
     private void getDomain(String domainName) {
         
         DomainForWebManager domain = mDomains.getDomain(domainName);
-        //this.jCBDomainList.setSelectedItem(domain.getDomainName());
-        //jTxtDomainName.setText(domain.getDomainName());
-
-        // create table for Record Detail            
-        mRecordDetail = (domain != null) ? domain.getRecordDetailList() : null;
+        if (domain == null) {
+            domain = new DomainForWebManager(domainName);
+            mDomains.addDomain(domain);
+        }
+        
+        mRecordDetail = domain.getRecordDetailList();
         TableModelRecordDetail mTableRecordDetailModel = new TableModelRecordDetail(mRecordDetail);
-        mTableRecordDetail = new JTable(mTableRecordDetailModel);
-
-        jScrollPaneRecDetail.setViewportView(mTableRecordDetail);
-
         //create table for Search Result
-        mSearchResult = (domain != null) ? domain.getSearchDetail() : null;
+        mSearchResult = domain.getSearchDetail();
         TableModelSearchResult mTableSearchResultModel = new TableModelSearchResult(mSearchResult);
         mTableSearchResult = new JTable(mTableSearchResultModel);
         mJComboRecordDetail.removeAllItems();;
@@ -106,7 +101,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         jScrollPaneSearchResult.setViewportView(mTableSearchResult);
 
         //create table for Search Type
-        mSearchTypes = (domain != null) ? domain.getSearchType() : null;
+        mSearchTypes = domain.getSearchType();
         TableModelSearchPage mTableSearchTypeModel = new TableModelSearchPage(mSearchTypes);
         mTableSearchType = new JTable(mTableSearchTypeModel);
         int idx = 0;
@@ -132,6 +127,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
         columnSearchRes.setCellEditor(new DefaultCellEditor(mJComboSearchResult));
         jScrollPaneSearchPage.setViewportView(mTableSearchType);
         
+        
     }
 
     
@@ -152,95 +148,114 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jPanelRecordDetail = new javax.swing.JPanel();
-        jScrollPaneRecDetail = new javax.swing.JScrollPane();
-        jBtnAddRecDetail = new javax.swing.JButton();
-        jBtnRemoveRecDetail = new javax.swing.JButton();
-        jBtnEditRecordDetail = new javax.swing.JButton();
-        jPanelSearchResult = new javax.swing.JPanel();
-        jScrollPaneSearchResult = new javax.swing.JScrollPane();
-        jBtnAddSearchResult = new javax.swing.JButton();
-        jBtnRemoveSearchResult = new javax.swing.JButton();
-        jBtnEditSearchResult = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPaneSearchPage = new javax.swing.JScrollPane();
         jBtnAddSearchPage = new javax.swing.JButton();
         jBtnRemoveSearchPage = new javax.swing.JButton();
         jBtnEditSearchType = new javax.swing.JButton();
+        jBtnUp = new javax.swing.JButton();
+        jBtnDown = new javax.swing.JButton();
         jCBDomainList = new javax.swing.JComboBox();
+        jPanelSearchResult = new javax.swing.JPanel();
+        jScrollPaneSearchResult = new javax.swing.JScrollPane();
+        jBtnAddSearchResult = new javax.swing.JButton();
+        jBtnRemoveSearchResult = new javax.swing.JButton();
+        jBtnEditSearchResult = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Name")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "MSG_Name")); // NOI18N
 
-        jPanelRecordDetail.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jPanelRecordDetail.border.title"))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jPanel1.border.title"))); // NOI18N
 
-        jBtnAddRecDetail.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Add")); // NOI18N
-        jBtnAddRecDetail.addActionListener(new java.awt.event.ActionListener() {
+        jBtnAddSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnAddSearchPage.text")); // NOI18N
+        jBtnAddSearchPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddRecDetail(evt);
+                onAddSearchPage(evt);
             }
         });
 
-        jBtnRemoveRecDetail.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Remove")); // NOI18N
-        jBtnRemoveRecDetail.addActionListener(new java.awt.event.ActionListener() {
+        jBtnRemoveSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnRemoveSearchPage.text")); // NOI18N
+        jBtnRemoveSearchPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onRemoveRecDetail(evt);
+                onRemoveSearchPage(evt);
             }
         });
 
-        jBtnEditRecordDetail.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Edit")); // NOI18N
-        jBtnEditRecordDetail.addActionListener(new java.awt.event.ActionListener() {
+        jBtnEditSearchType.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Edit")); // NOI18N
+        jBtnEditSearchType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onEditRecordDetail(evt);
+                onEditSearchType(evt);
             }
         });
 
-        org.jdesktop.layout.GroupLayout jPanelRecordDetailLayout = new org.jdesktop.layout.GroupLayout(jPanelRecordDetail);
-        jPanelRecordDetail.setLayout(jPanelRecordDetailLayout);
-        jPanelRecordDetailLayout.setHorizontalGroup(
-            jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelRecordDetailLayout.createSequentialGroup()
+        jBtnUp.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnUp.text")); // NOI18N
+        jBtnUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onUp(evt);
+            }
+        });
+
+        jBtnDown.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnDown.text")); // NOI18N
+        jBtnDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onDown(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelRecordDetailLayout.createSequentialGroup()
-                        .add(jBtnAddRecDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jBtnAddSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jBtnEditRecordDetail)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jBtnRemoveRecDetail))
-                    .add(jScrollPaneRecDetail, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
+                        .add(jBtnEditSearchType)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnRemoveSearchPage))
+                    .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jBtnUp))
                 .addContainerGap())
         );
-        jPanelRecordDetailLayout.setVerticalGroup(
-            jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelRecordDetailLayout.createSequentialGroup()
-                .add(jScrollPaneRecDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jBtnAddSearchPage)
+                    .add(jBtnEditSearchType)
+                    .add(jBtnRemoveSearchPage)))
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(6, 6, 6)
+                .add(jBtnUp)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnRemoveRecDetail)
-                    .add(jBtnEditRecordDetail)
-                    .add(jBtnAddRecDetail))
-                .addContainerGap())
+                .add(jBtnDown))
         );
 
-        jPanelSearchResult.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jPanelSearchResult.border.title"))); // NOI18N
+        jPanelSearchResult.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jPanelSearchResult.border.title"))); // NOI18N
 
-        jBtnAddSearchResult.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jBtnAddSearchResult.text")); // NOI18N
+        jBtnAddSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnAddSearchResult.text")); // NOI18N
         jBtnAddSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddSearchResult(evt);
             }
         });
 
-        jBtnRemoveSearchResult.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jBtnRemoveSearchResult.text")); // NOI18N
+        jBtnRemoveSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnRemoveSearchResult.text")); // NOI18N
         jBtnRemoveSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveSearchResult(evt);
             }
         });
 
-        jBtnEditSearchResult.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Edit")); // NOI18N
+        jBtnEditSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Edit")); // NOI18N
         jBtnEditSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onEditSearchResult(evt);
@@ -254,7 +269,7 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
             .add(jPanelSearchResultLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanelSearchResultLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPaneSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                    .add(jScrollPaneSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelSearchResultLayout.createSequentialGroup()
                         .add(jBtnAddSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -274,71 +289,24 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                     .add(jBtnEditSearchResult)))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jPanel1.border.title"))); // NOI18N
-
-        jBtnAddSearchPage.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jBtnAddSearchPage.text")); // NOI18N
-        jBtnAddSearchPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddSearchPage(evt);
-            }
-        });
-
-        jBtnRemoveSearchPage.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "TabWebManagerDomains.jBtnRemoveSearchPage.text")); // NOI18N
-        jBtnRemoveSearchPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onRemoveSearchPage(evt);
-            }
-        });
-
-        jBtnEditSearchType.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDomains.class, "LBL_Edit")); // NOI18N
-        jBtnEditSearchType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onEditSearchType(evt);
-            }
-        });
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jBtnAddSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jBtnEditSearchType)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jBtnRemoveSearchPage)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnRemoveSearchPage)
-                    .add(jBtnEditSearchType)
-                    .add(jBtnAddSearchPage)))
-        );
-
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanelRecordDetail, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
                         .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 61, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jCBDomainList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanelSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .add(jCBDomainList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .add(layout.createSequentialGroup()
+                        .add(jPanelSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(30, 30, 30))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -348,75 +316,12 @@ public class TabWebManagerDomains extends javax.swing.JPanel {
                     .add(jLabel1)
                     .add(jCBDomainList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanelSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(18, 18, 18)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-private void onAddRecDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddRecDetail
-// TODO add your handling code here:
-    DomainForWebManager domain = mDomains.getDomain((String) jCBDomainList.getSelectedItem());
-    int recordDetailID = domain.generateRecordDetailID();
-    RecordDetail newRecordDetail = new RecordDetail(recordDetailID);
-    DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(newRecordDetail, true);
-    dlg.setVisible(true);
-    if (dlg.isModifed()) {
-        //mRecordDetail.add(newRecordDetail);
-        TableModelRecordDetail recordDetailModel = (TableModelRecordDetail) this.mTableRecordDetail.getModel();
-        int totalRowCount = recordDetailModel.getRowCount();
-        recordDetailModel.addRow(totalRowCount, newRecordDetail);
-        mTableRecordDetail.setModel(recordDetailModel);
-        mTableRecordDetail.setRowSelectionInterval(totalRowCount, totalRowCount);
-        //mTableRecordDetail.setSe
-        this.jBtnEditRecordDetail.setEnabled(true);
-        this.jBtnRemoveRecDetail.setEnabled(true);
-        this.jScrollPaneRecDetail.setViewportView(mTableRecordDetail);
-        mJComboRecordDetail.addItem(newRecordDetail.getDisplayName());
-        
-        this.enableSave();        
-    }
-    
-}//GEN-LAST:event_onAddRecDetail
-
-private void onRemoveRecDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveRecDetail
-// TODO add your handling code here:
-    int selectedRow = mTableRecordDetail.getSelectedRow();
-    TableModelRecordDetail model = (TableModelRecordDetail) mTableRecordDetail.getModel();
-    RecordDetail recordDet = model.getRow(selectedRow);
-    if (mDomains.getDomain((String) jCBDomainList.getSelectedItem()).isRecordDetailUsed(recordDet)) {
-        String warningMsg = NbBundle.getMessage(TabWebManagerDomains.class, "MSG_ERROR_DELETING_RECORD_DETAIL");
-        NotifyDescriptor errorNotify = new NotifyDescriptor.Message(
-                warningMsg,
-                NotifyDescriptor.ERROR_MESSAGE);
-        DialogDisplayer.getDefault().notify(errorNotify);
-
-    } else {
-        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-                NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Row_Prompt"),
-                NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Row_Title"),
-                NotifyDescriptor.YES_NO_OPTION);
-        if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
-            Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordDetailName);
-            mJComboRecordDetail.removeItem(recordDetail);
-            model.removeRow(selectedRow);
-            if (mTableRecordDetail.getRowCount() > 0) {
-                this.jBtnRemoveRecDetail.setEnabled(true);
-                mTableRecordDetail.setRowSelectionInterval(0, 0);
-            } else {
-                this.jBtnRemoveRecDetail.setEnabled(false);
-                this.jBtnEditRecordDetail.setEnabled(false);
-            }
-
-            mJComboRecordDetail.removeItem(evt);
-            this.enableSave();
-        }
-    }
-
-}//GEN-LAST:event_onRemoveRecDetail
 
 private void onAddSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSearchResult
 // TODO add your handling code here:
@@ -450,7 +355,7 @@ private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     TableModelSearchResult model = (TableModelSearchResult) mTableSearchResult.getModel();
     SearchDetail searchDetail = model.getRow(selectedRow);
     if (mDomains.getDomain((String) jCBDomainList.getSelectedItem()).isSearchDetailUsed(searchDetail)) {
-       String warningMsg = NbBundle.getMessage(TabWebManagerDomains.class, "MSG_ERROR_DELETING_SEARCH_DETAIL");
+       String warningMsg = NbBundle.getMessage(TabDomainSearch.class, "MSG_ERROR_DELETING_SEARCH_DETAIL");
         NotifyDescriptor errorNotify = new NotifyDescriptor.Message(
                 warningMsg,
                 NotifyDescriptor.ERROR_MESSAGE);
@@ -458,11 +363,11 @@ private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
     } else {
         int length = rs.length;
-        String prompt = (length == 1) ? NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Row_Prompt")
-                : NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Rows_Prompt");
+        String prompt = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Prompt")
+                : NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Rows_Prompt");
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                 prompt,
-                NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Row_Title"),
+                NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Title"),
                 NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             //TableModelSearchResult model = (TableModelSearchResult) mTableSearchResult.getModel();
@@ -487,7 +392,7 @@ private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void onAddSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSearchPage
 // TODO add your handling code here:
-    SimpleSearchType searchType = new SimpleSearchType("", -1, "", new ArrayList<FieldGroup>());
+    SimpleSearchType searchType = new SimpleSearchType("", -1, "", mTableSearchType.getRowCount(), new ArrayList<FieldGroup>());
     MIQueryBuilder queryBuilder = mEditorMainApp.getDomainNode((String) this.jCBDomainList.getSelectedItem()).getMiQueryBuilder();
     DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, true);
     dlg.setVisible(true);
@@ -511,11 +416,11 @@ private void onRemoveSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     
     int rs[] = this.mTableSearchType.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Rows_Prompt");
+    String prompt = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Prompt")
+            : NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Rows_Prompt");
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(TabWebManagerDomains.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Title"), 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelSearchPage model = (TableModelSearchPage) mTableSearchType.getModel();
@@ -567,21 +472,45 @@ private void onEditSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     }
 }//GEN-LAST:event_onEditSearchResult
 
-private void onEditRecordDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditRecordDetail
+private void onUp(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUp
 // TODO add your handling code here:
-    int selectedRow = this.mTableRecordDetail.getSelectedRow();
-    TableModelRecordDetail recordDetailModel = (TableModelRecordDetail) mTableRecordDetail.getModel();
-    RecordDetail recordDetail = recordDetailModel.getRow(selectedRow);
-    DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(recordDetail, false);
-    dlg.setVisible(true);
-    if (dlg.isModifed()) {
-        this.enableSave();        
-    }
-}//GEN-LAST:event_onEditRecordDetail
+    TableModelSearchPage model = (TableModelSearchPage) mTableSearchType.getModel();
+    int iSelectedRow = mTableSearchType.getSelectedRow();
+    SimpleSearchType movedUpRow = model.getRow(iSelectedRow);
+    int screenOrderUpRow = movedUpRow.getScreenOrder();
+    SimpleSearchType movedDownRow = model.getRow(iSelectedRow - 1);
+    int screenOrderDownRow = movedDownRow.getScreenOrder();
+    movedDownRow.setScreenOrder(screenOrderUpRow);
+    movedUpRow.setScreenOrder(screenOrderDownRow);
+    model.removeRow(iSelectedRow);
+    //if (iSelectedRow ==
+    iSelectedRow--;
+    model.addRow(iSelectedRow, movedUpRow);
+    mTableSearchType.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    this.enableSave(); 
+
+}//GEN-LAST:event_onUp
+
+private void onDown(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDown
+// TODO add your handling code here:
+    TableModelSearchPage model = (TableModelSearchPage) mTableSearchType.getModel();
+    int iSelectedRow = mTableSearchType.getSelectedRow();
+    SimpleSearchType movedRow = model.getRow(iSelectedRow);
+    int screenOrderMovedRow = movedRow.getScreenOrder();
+    model.removeRow(iSelectedRow);
+    SimpleSearchType previousRow = model.getRow(iSelectedRow);
+    int screenOrderPrevRow = previousRow.getScreenOrder();
+    previousRow.setScreenOrder(screenOrderMovedRow);
+    iSelectedRow++;
+    movedRow.setScreenOrder(screenOrderPrevRow);
+    model.addRow(iSelectedRow, movedRow);
+    mTableSearchType.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    this.enableSave();
+}//GEN-LAST:event_onDown
 
     class TableModelRecordDetail extends AbstractTableModel {
 
-        private String columnNames[] = {NbBundle.getMessage(TabWebManagerDomains.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD"),};
+        private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD"),};
         ArrayList fieldRows;
         final static int iColRecordDetailName = 0;
 
@@ -698,8 +627,8 @@ private void onEditRecordDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 
     class TableModelSearchResult extends AbstractTableModel {
 
-        private String columnNames[] = {NbBundle.getMessage(TabWebManagerDomains.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD"),
-            NbBundle.getMessage(TabWebManagerDomains.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD"),
+        private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD"),
+            NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD"),
         };
         ArrayList fieldRows;
         final static int iColRecordDetailName = 1;
@@ -833,8 +762,8 @@ private void onEditRecordDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 
     class TableModelSearchPage extends AbstractTableModel implements TableModelListener {
 
-        private String columnNames[] = {NbBundle.getMessage(TabWebManagerDomains.class, "LBL_DOMAIN_SEARCH_PAGE_FIELD"),
-            NbBundle.getMessage(TabWebManagerDomains.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD"),
+        private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_SEARCH_PAGE_FIELD"),
+            NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD"),
         };
         ArrayList fieldRows;
         final static int iColSearchPageName = 0;
@@ -974,21 +903,18 @@ private void onEditRecordDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBtnAddRecDetail;
     private javax.swing.JButton jBtnAddSearchPage;
     private javax.swing.JButton jBtnAddSearchResult;
-    private javax.swing.JButton jBtnEditRecordDetail;
+    private javax.swing.JButton jBtnDown;
     private javax.swing.JButton jBtnEditSearchResult;
     private javax.swing.JButton jBtnEditSearchType;
-    private javax.swing.JButton jBtnRemoveRecDetail;
     private javax.swing.JButton jBtnRemoveSearchPage;
     private javax.swing.JButton jBtnRemoveSearchResult;
+    private javax.swing.JButton jBtnUp;
     private javax.swing.JComboBox jCBDomainList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanelRecordDetail;
     private javax.swing.JPanel jPanelSearchResult;
-    private javax.swing.JScrollPane jScrollPaneRecDetail;
     private javax.swing.JScrollPane jScrollPaneSearchPage;
     private javax.swing.JScrollPane jScrollPaneSearchResult;
     // End of variables declaration//GEN-END:variables

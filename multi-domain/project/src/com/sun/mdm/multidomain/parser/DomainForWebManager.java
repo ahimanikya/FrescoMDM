@@ -6,7 +6,6 @@
 package com.sun.mdm.multidomain.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
@@ -22,6 +21,10 @@ public class DomainForWebManager {
     private ArrayList<SearchDetail> mSearchDetail = new ArrayList<SearchDetail>();
     
     private ArrayList<RecordDetail> mRecordDetailList = new ArrayList<RecordDetail>();
+    
+    private ArrayList<FieldGroup> mRecordIDFields = new ArrayList<FieldGroup>();
+    
+    private ArrayList<FieldGroup> mRecordSummaryFields = new ArrayList<FieldGroup>();
     
     private int searchDetailSeqValue = 0;
     
@@ -47,6 +50,22 @@ public class DomainForWebManager {
         return this.mRecordDetailList;
     }
     
+    public ArrayList<FieldGroup> getRecordIDFields() {
+        return this.mRecordIDFields;
+    }
+    
+    public ArrayList<FieldGroup> getRecordSummaryFields() {
+        return this.mRecordSummaryFields;
+    }
+    
+    public void setRecordIDFields(ArrayList<FieldGroup> fieldGroups) {
+        mRecordIDFields = fieldGroups;
+    }
+    
+    public void setRecordSummaryFields(ArrayList<FieldGroup> fieldGroups) {
+        mRecordSummaryFields = fieldGroups;
+    }
+    
     public void setRecordDetailList(ArrayList<RecordDetail> recordDetailList) {
          mRecordDetailList = recordDetailList;
         //this.mRecordDetail = recordDetail;
@@ -68,6 +87,14 @@ public class DomainForWebManager {
             recordDetailSeqValue = recordDetail.getRecordDetailId();
         }
         mRecordDetailList.add(recordDetail);
+    }
+    
+    public void addRecordIDField(FieldGroup fieldGroup) {
+        mRecordIDFields.add(fieldGroup);
+    }
+    
+    public void addRecordSummary(FieldGroup fieldGroup) {
+        this.mRecordSummaryFields.add(fieldGroup);
     }
     
     public void deleteRecordDetail(RecordDetail recordDetail) {

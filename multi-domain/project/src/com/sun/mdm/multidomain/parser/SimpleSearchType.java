@@ -23,12 +23,15 @@ public class SimpleSearchType {
     
     private SearchOptions mSearchOption = null;
     
+    private int mScreenOrder = -1;
+    
     public SimpleSearchType(String screenTitle, int screenResultID, 
-                            String instructionID, ArrayList<FieldGroup> fieldGroups) {
+                            String instructionID, int searchScreenOrder, ArrayList<FieldGroup> fieldGroups) {
         
         this.mScreenTitle = screenTitle;
         this.mSearchResultID = screenResultID;
         this.mInstruction = instructionID;
+        this.mScreenOrder = searchScreenOrder;
         this.mFieldGroups = fieldGroups;
     }
     
@@ -45,6 +48,10 @@ public class SimpleSearchType {
         this.mInstruction = instruction;
     }
     
+    public void setScreenOrder(int screenOrder) {
+        this.mScreenOrder = screenOrder;
+    }
+    
     public String getScreenTitle() {
         return this.mScreenTitle;
     }
@@ -55,6 +62,10 @@ public class SimpleSearchType {
     
     public String getInstruction() {
         return this.mInstruction;
+    }
+    
+    public int getScreenOrder() {
+        return this.mScreenOrder;
     }
     
     public ArrayList<FieldGroup> getFieldGroups() {

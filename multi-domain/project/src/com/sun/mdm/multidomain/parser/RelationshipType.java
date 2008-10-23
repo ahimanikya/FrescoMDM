@@ -30,17 +30,77 @@
 
 package com.sun.mdm.multidomain.parser;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author wee
  */
 public class RelationshipType extends LinkType {
     
+    private String mDisplayName = null;
+    
+    private ArrayList<RelationFieldReference> mRelFixedAttrs = new ArrayList<RelationFieldReference>();
+    
+    private ArrayList<RelationFieldReference> mRelExtendedAttrs = new ArrayList<RelationFieldReference>();
+
     RelationshipType () {
         super(LinkType.TYPE_RELATIONSHIP);
     }
+
+    public RelationshipType(String relationshipName, String source, String destionation, String displayName,
+                            ArrayList<RelationFieldReference> fixedFieldRefs, ArrayList<RelationFieldReference> extendedFieldRefs) {
+        
+        this.name = relationshipName;
+        this.targetDomain = destionation;
+        this.sourceDomain = source;
+        this.mDisplayName = displayName;
+        this.mRelFixedAttrs = fixedFieldRefs;
+        this.mRelExtendedAttrs = extendedFieldRefs;
+    }
+
+    
+    public String getDisplayName() {
+        return this.mDisplayName;
+    }
+
+
     
     public String getType() {
         return LinkType.TYPE_RELATIONSHIP;
     }
+    
+    public ArrayList<RelationFieldReference> getFixedRelFieldRefs() {
+        return mRelFixedAttrs;
+    }
+    public void addFixedRelFieldRef(RelationFieldReference fieldRef) {
+        mRelFixedAttrs.add(fieldRef);
+    }
+    
+    public void deleteFixedRelFieldRef(RelationFieldReference fieldRef) {
+        for (RelationFieldReference field : mRelFixedAttrs) {
+            if (field.getFieldName().equals(fieldRef.getFieldName())){
+                mRelFixedAttrs.remove(field);
+                break;
+            }
+        }
+    }
+   
+    public ArrayList<RelationFieldReference> getExtendedRelFieldRefs() {
+        return mRelExtendedAttrs;
+    }
+    
+    public void addExtendedRelFieldRef(RelationFieldReference fieldRef) {
+        mRelExtendedAttrs.add(fieldRef);
+    }
+    
+    public void deleteExtendedRelFieldRef(RelationFieldReference fieldRef) {
+        for (RelationFieldReference field : mRelExtendedAttrs) {
+            if (field.getFieldName().equals(fieldRef.getFieldName())){
+                mRelExtendedAttrs.remove(field);
+                break;
+            }
+        }
+    }    
+    
 }

@@ -8,6 +8,7 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -22,16 +23,16 @@ import org.openide.util.NbBundle;
  */
 public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     
-    private ArrayList<LinkType> mLinkTypes = null;
+    private ArrayList<RelationshipType> mRelationshipTypes = null;
     private JTable mTableFields;
     private boolean mModified = false;
     private EditorMainApp mEditorMainApp = null;
 
     /** Creates new form TabWebManagerRelationshipTypes */
-    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, ArrayList<LinkType> relationshipTypes) {
+    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, ArrayList<RelationshipType> relationshipTypes) {
         
         mEditorMainApp = editorMainApp;
-        mLinkTypes = relationshipTypes;
+        mRelationshipTypes = relationshipTypes;
         initComponents();
         createLinkTypes();
         jTxtDisplayOrder.setEditable(false);
@@ -87,9 +88,10 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             public void itemStateChanged(java.awt.event.ItemEvent e) {
                 String relTypeName = (String) jCBRelationshipType.getSelectedItem();
                 ArrayList<RelationFieldReference> fieldRefs = null;
-                for (LinkType relType : mLinkTypes) {
+                for (RelationshipType relType : mRelationshipTypes) {
                     if (relType.getName().equals(relTypeName)) {
-                        fieldRefs = relType.getRelFieldRefs();
+                        //fieldRefs = relType.getRelFieldRefs();
+                        fieldRefs = relType.getExtendedRelFieldRefs();
                         break;
                     }
                 }
@@ -138,15 +140,15 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     }
     private void createLinkTypes() {
         
-        for (LinkType relType : mLinkTypes) {
+        for (RelationshipType relType : mRelationshipTypes) {
             this.jCBRelationshipType.addItem(relType.getName());
         }
         
-        if (mLinkTypes != null && mLinkTypes.size() > 0) {
-            LinkType relType = mLinkTypes.get(0);
+        if (mRelationshipTypes != null && mRelationshipTypes.size() > 0) {
+            RelationshipType relType = mRelationshipTypes.get(0);
             String relationType = relType.getName();
             //this.jCBRelationshipType.addItem(relationType);
-            createFieldRefs(relType.getRelFieldRefs());
+            createFieldRefs(relType.getExtendedRelFieldRefs());
             
         }
     }

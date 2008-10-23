@@ -8,6 +8,7 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
+import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;
 import org.openide.util.NbBundle;
 
@@ -19,9 +20,13 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     
     private TabWebManagerRelationshipTypes mTabRelationshipTyps = null;
     
-    private TabWebManagerDomains mTabDomains = null;
+    private TabDomainSearch mTabDomains = null;
     
-    ArrayList<LinkType> mLinkTypes = new ArrayList<LinkType>();
+
+    private TabDomainView mTabDomainView = null;
+    
+    ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
+    //ArrayList<RelationshipType> mLinkTypes = new ArrayList<LinkType>();
     
     MultiDomainWebManager mMultiDomainWebManager = null;
     
@@ -31,15 +36,17 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     
     static final String TAB_RELATIONSHIP_TYPES = NbBundle.getMessage(TabRelationshipWebManager.class,
             "MSG_TAB_WEB_MANAGER_REL_TYPE");
-    static final String TAB_DOMAINS = NbBundle.getMessage(TabRelationshipWebManager.class,
-            "MSG_TAB_WEB_MANAGER_Domains");
+    static final String TAB_DOMAIN_SERCH = NbBundle.getMessage(TabRelationshipWebManager.class,
+            "MSG_TAB_WEB_MANAGER_Domain_SEARCH");
+    static final String TAB_DOMAIN_VIEW = NbBundle.getMessage(TabRelationshipWebManager.class,
+            "MSG_TAB_WEB_MANAGER_Domain_VIEW");
 
 
     /** Creates new form TabRelationshipWebManager */
     public TabRelationshipWebManager(EditorMainApp editorMainApp, MultiDomainWebManager multiDomainWebManager) {  
         mEditorMainApp = editorMainApp;
         mMultiDomainWebManager = multiDomainWebManager;
-        mLinkTypes = mMultiDomainWebManager.getLinkTypes();
+        mRelationshipTypes = mMultiDomainWebManager.getRelationshipTypes();
         initComponents();
         generateTabs();
         createLinkTypes();
@@ -53,24 +60,35 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     public void generateTabs() {
         getRelationshipTypesTab();
         getDoaminsTab();
+        getDomainViewTab();
         jTabbedPaneRelWebManager.addTab(TAB_RELATIONSHIP_TYPES, mTabRelationshipTyps);
-        jTabbedPaneRelWebManager.addTab(TAB_DOMAINS, mTabDomains);
+        jTabbedPaneRelWebManager.addTab(TAB_DOMAIN_VIEW, mTabDomainView);
+        jTabbedPaneRelWebManager.addTab(TAB_DOMAIN_SERCH, mTabDomains);
     }
     
     protected TabWebManagerRelationshipTypes getRelationshipTypesTab() {
         if (mTabRelationshipTyps == null) {
-            mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mLinkTypes);
+            mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mRelationshipTypes);
         }
         
         return mTabRelationshipTyps;
     }
 
-    protected TabWebManagerDomains getDoaminsTab() {
+    protected TabDomainSearch getDoaminsTab() {
         if (mTabDomains == null) {
-            mTabDomains = new TabWebManagerDomains(mEditorMainApp, mMultiDomainWebManager.getDomains());
+            mTabDomains = new TabDomainSearch(mEditorMainApp, mMultiDomainWebManager.getDomains());
         }
         
         return mTabDomains;
+    }
+    
+    
+    protected TabDomainView getDomainViewTab() {
+        if (mTabDomainView == null) {
+            mTabDomainView = new TabDomainView(mEditorMainApp, mMultiDomainWebManager.getDomains());
+        }
+        
+        return mTabDomainView;
     }
     /** This method is called from within the constructor to
      * initialize the form.

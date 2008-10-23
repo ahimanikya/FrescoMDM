@@ -13,7 +13,7 @@ public class RelationshipWebManagerProperties {
     
    public static String RELATIONSHIP_WEB_MANAGER = "RelationshipWebManager";
     
-    public static String RELATIONSHIP_TYPE = "relationship-types";
+    public static String RELATIONSHIP_TYPE = "relationships";
     
     public static String PAGE_DEFINITION = "page-definition";
     

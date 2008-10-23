@@ -11,15 +11,21 @@ package com.sun.mdm.multidomain.parser;
  */
 public class WebManagerProperties {
     
-    public static String mTAG_RELATIONSHIP_WEB_MANAGER = "RelationshipWebManager";
+    public static String mTAG_RELATIONSHIP_WEB_MANAGER = "MultiDomainWebManager";
     
-    public static String mTAG_RELATIONSHIP_TYPES = "relationship-types";
+    public static String mTAG_RELATIONSHIP_TYPES = "relationships";
     
-    public static String mTAG_RELATIONSHIP_TYPE = "relationship-type";
+    public static String mTAG_RELATIONSHIP_TYPE = "relationship";
     
     public static String mTAG_REL_FIELD_GROUP = "rs-field-group";
     
     public static String mTAG_RELATIONSHIP_TYPE_SOURCE = "Source";
+    
+    public static String mTAG_RELATIONSHIP_DISPLAY_NAME = "DisplayName";
+    
+    public static String mTAG_RELATIONSHIP_FIXED_ATTRS= "fixed-rs-fields";
+    
+    public static String mTAG_RELATIONSHIP_EXTENTED_ATTRS= "extended-rs-fields";
     
     public static String mTAG_RELATIONSHIP_TYPE_DESTINATION = "Destination";
     
@@ -74,6 +80,14 @@ public class WebManagerProperties {
     
     public static String mTAG_RECORD_DETAIL_PAGES = "record-detail-pages";
     
+
+    public static String mTAG_RECORD_ID = "record-id";
+    
+    public static String mTAG_RECORD_SUMMARY_PAGE = "record-summary-page";
+    
+    public static String mTAG_RECORD_SUMMARY = "record-summary";
+    
+
     public static String mTAG_RECORD_DETAIL = "record-detail";
     
     public static String mTAG_RECORD_DETAIL_ID = "record-detail-id";
@@ -112,7 +126,7 @@ public class WebManagerProperties {
     public static String mTAG_SEARCH_RESULT_NAME = "search-result-name";
     
     public static String mTAG_INSTRUCTION = "instruction";
-    
+        
     public static String mTAG_JNDIRESOURCES = "resource";
     
     public static String mTAG_PROPERTIES = "properties";
