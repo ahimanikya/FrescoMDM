@@ -24,6 +24,7 @@ package com.sun.mdm.multidomain.services.control;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 import net.java.hulp.i18n.Logger;
 
@@ -100,6 +101,16 @@ public class RelationshipManager {
      */
     public String addType(RelationshipType relationshipType) 
         throws ServiceException {
+        /* TBD
+        String relationshId = null;
+        try {
+            relationshId = multiDomainMetaService.createRelationshipType(relationshipType);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }          
+        */   
         // demo data
         for (RelationshipType rt:rts) {
             if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
@@ -123,6 +134,15 @@ public class RelationshipManager {
      */
     public void updateType(RelationshipType relationshipType) 
         throws ServiceException {
+        /* TBD
+        try {
+            multiDomainMetaService.updateRelationshipType(relationshipType);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }
+        */         
         // demo data
         boolean updated = false;
         for (RelationshipType rt:rts) {
@@ -148,6 +168,15 @@ public class RelationshipManager {
      */
     public void deleteType(RelationshipType relationshipType) 
         throws ServiceException {
+        /* TBD
+        try {
+            multiDomainMetaService.deleteRelationshipType(relationshipType);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }        
+        */
         // demo data
         boolean deleted = false;
         ArrayList<RelationshipType> temp = new ArrayList<RelationshipType>();
@@ -186,8 +215,22 @@ public class RelationshipManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<RelationshipType> getTypes(String domain) throws ServiceException {
-    	// demo data
-    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
+        
+        List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+        /* TBD
+        try {
+            RelationshipType[] relationships = multiDomainMetaService.getRelationshipTypes();
+            for (RelationshipType relationship : relationships) {
+                if(domain.equals(relationship.getSourceDomain()) ||
+                   domain.equals(relationship.getTargetDomain())) {
+                   relationshipTypes.add(relationship); 
+                }
+            }
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }          
+        */
+    	// demo data	
     	for (RelationshipType rt:rts) {
     		if (rt.getSourceDomain().equals(domain) || 
     			rt.getTargetDomain().equals(domain)) {
@@ -205,8 +248,24 @@ public class RelationshipManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) throws ServiceException {
-    	// demo data
-    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
+ 
+        List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+        /* TBD
+        try {
+            RelationshipType[] relationships = multiDomainMetaService.getRelationshipTypes(sourceDomain, targetDomain);
+            for (RelationshipType relationship : relationships) {
+                if(sourceDomain.equals(relationship.getSourceDomain()) ||
+                   targetDomain.equals(relationship.getTargetDomain())) {
+                   relationshipTypes.add(relationship); 
+                }
+            }
+         } catch(UserException uex) {
+             throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }
+        */             
+        // demo data  	
     	for (RelationshipType rt:rts) {
     		if (rt.getSourceDomain().equals(sourceDomain) && 
                     rt.getTargetDomain().equals(targetDomain)) {

@@ -31,19 +31,16 @@ import java.util.Date;
 
 import net.java.hulp.i18n.Logger;
 
-import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
-import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
 import com.sun.mdm.index.master.SystemDefinition;
-import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.objects.EnterpriseObject;
-import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
-import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+import com.sun.mdm.index.master.ProcessingException;
 
+import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.association.Attribute;
 import com.sun.mdm.multidomain.association.AttributeType;
 import com.sun.mdm.multidomain.association.Domain;
+
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
 
@@ -52,17 +49,9 @@ import com.sun.mdm.multidomain.services.util.Localizer;
  * @author cye
  */
 public class MetaDataManager {
-   private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.MetaDataManager");
-   private static Localizer localizer = Localizer.getInstance();
+    private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.control.MetaDataManager");
+    private static Localizer localizer = Localizer.getInstance();
 
-    public static final int METADATA_MANAGER = 0;	
-    public static final int RELATIONSHIP_MANAGER = 1;
-    public static final int HIERARCHY_MANAGER = 2;
-    public static final int GROUP_MANAGER = 3;
-    
-    public enum ServiceManagerType {METADATA_MANAGER,RELATIONSHIP_MANAGER,HIERARCHY_MANAGER, GROUP_MANAGER};
-        
-    private MultiDomainService multiDomainService;
     private MultiDomainMetaService multiDomainMetaService;
     
     /**
@@ -72,23 +61,32 @@ public class MetaDataManager {
     }
   
     /**
-     * Create a instance of MetaDataManager with the given MultiDomainMetaService and MultiDomainService. 
+     * Create a instance of MetaDataManager with the given MultiDomainMetaService. 
      * @param multiDomainMetaService MultiDomainMetaService.
-     * @param multiDomainService MultiDomainMetaService.
      */
-    public MetaDataManager (MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) {
+    public MetaDataManager (MultiDomainMetaService multiDomainMetaService) {
         this.multiDomainMetaService = multiDomainMetaService;
-    	this.multiDomainService = multiDomainService;
     }
     
     /**
      * Get a list of domains in name.
-     * @return ArrayList
+     * @return List<Domain> List of Domain.
      * @exception ServiceException
      */
     public List<Domain> getDomains() throws ServiceException {
+        
+        List<Domain> domains = new ArrayList<Domain>();
+        /* TBD
+        try {
+            String[] domainStrs = multiDomainMetaService.getDomains();
+            for(String domain : domainStrs) {
+                domains.add(new Domain(domain));
+            }
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }
+        */
     	// demo data
-    	ArrayList<Domain> domains = new ArrayList<Domain>();
         domains.add(new Domain("Person"));
         domains.add(new Domain("Company"));
         domains.add(new Domain("Product")); 
@@ -101,93 +99,24 @@ public class MetaDataManager {
         domains.add(new Domain("Order"));                  
         return domains;
     }
-    
+         
     /**
      * Get system information in string.
      * @return system info
      * @throws ServiceException
      */
-    public String getSystemInfo() throws ServiceException {
+     public String getMuliDomainSystemInfo() throws ServiceException {
     	// demo data    	
     	return "mutli-domain service build 2.0 running on localhost:8080";
-    }
-    
-    /**
-     * Get a list of RelationshipTypes
-     * @return a list of RelationshipType.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
-     */
-    public List<RelationshipType> getRelationshipTypes() throws ServiceException {
-    	// demo data
-    	RelationshipType rt1 = new RelationshipType();
-        rt1.setName("workfor");
-        rt1.setId("1");
-    	rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Company");    	
-    	RelationshipType rt2 = new RelationshipType();
-        rt2.setName("investon");
-        rt2.setId("2");
-    	rt2.setSourceDomain("Company");
-    	rt2.setTargetDomain("Product");    	    	
-    	RelationshipType rt3 = new RelationshipType();
-        rt3.setName("designon");
-        rt3.setId("3");
-    	rt3.setSourceDomain("Person");
-    	rt3.setTargetDomain("Product");    	    	
-    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
-    	relationshipTypes.add(rt1);
-    	relationshipTypes.add(rt2);
-    	relationshipTypes.add(rt3);    	
-        return relationshipTypes;
-    }
-    
-    /**
-     * Get a list of RelationshipTypes by the given domain.
-     * @param domain
-     * @return a list of RelationshipType.
-     * @throws com.sun.mdm.multidomain.services.core.ServiceException
-     */
-    public List<RelationshipType> getRelationshipTypes(String domain) throws ServiceException {
-    	// demo data
-    	RelationshipType rt1 = new RelationshipType();
-        rt1.setName("workfor");
-        rt1.setId("1");
-    	rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Company");    	
-    	RelationshipType rt2 = new RelationshipType();
-        rt2.setName("investon");
-        rt2.setId("2");
-    	rt2.setSourceDomain("Company");
-    	rt2.setTargetDomain("Product");    	    	
-    	RelationshipType rt3 = new RelationshipType();
-        rt3.setName("designon");
-        rt3.setId("3");
-    	rt3.setSourceDomain("Person");
-    	rt3.setTargetDomain("Product");    
+     }
         
-        Attribute attr = new Attribute("01", "location", new AttributeType(AttributeType.STRING), "Monrovia");
-        rt3.setAttribute(attr);
-    	ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
-    	rts.add(rt1);
-    	rts.add(rt2);
-    	rts.add(rt3);    	
-    	ArrayList<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();    	
-    	for (RelationshipType rt:rts) {
-    		if (rt.getSourceDomain().equals(domain) || 
-    			rt.getTargetDomain().equals(domain)) {
-    			relationshipTypes.add(rt);	
-    		}
-    	}
-    	return relationshipTypes;
-    }
-      
     /**
-     * Get a list of source system definitions for the given domain.
+     * Get a list of source system definition for the given domain.
      * @param domain
      * @return a list of SystemDefinition
      * @throws ServiceException
      */
-    public List<SystemDefinition> getSystemDefinitions(String domain) throws ServiceException {
+    public List<SystemDefinition> getDomainSystemDefinition(String domain) throws ServiceException {
     	// demo data
     	SystemDefinition sd1 = new SystemDefinition();
     	sd1.setSystemCode("SystemA");
@@ -223,19 +152,10 @@ public class MetaDataManager {
      * @throws ServiceException
      */
     public List<String> getCodes(String domain, String module) throws ServiceException {
-    	// demo data SUFFIX
-    	// demo data TITLE    	
-    	// demo data GENDER
-    	String[] gender = new String[]{"F", "M"};     	
-    	// demo data MSTATUS
-    	// demo data RACE
-    	// demo data ETHNIC
-    	// demo data RELIGION
-    	// demo data LANGUAGE
-    	// demo data NATIONAL
-    	// demo data CITIZEN
-    	// demo data ADDRTYPE
-    	// demo data PHONETYPE    	
+    	// SUFFIX,TITLE,GENDER,MSTATUS,RACE,ETHNIC,RELIGION,
+        // LANGUAGE,NATIONAL,CITIZEN,ADDRTYPE,PHONETYPE    	
+    	// demo data    	
+    	String[] gender = new String[]{"F", "M"};     	 	
     	return Arrays.asList(gender);
     }
     
@@ -246,97 +166,34 @@ public class MetaDataManager {
      * @throws ServiceException
      */
     public Map<String, List<String>> getCodeMap(String domain) throws ServiceException {
-    	Map<String, List<String>> codeMap = new HashMap<String, List<String>>();
-    	// demo data SUFFIX
-    	// demo data TITLE    	
-    	// demo data GENDER
-    	String[] gender = new String[]{"F", "M"};     	
-    	// demo data MSTATUS
-    	// demo data RACE
-    	// demo data ETHNIC
-    	// demo data RELIGION
-    	// demo data LANGUAGE
-    	// demo data NATIONAL
-    	// demo data CITIZEN
-    	// demo data ADDRTYPE
-    	// demo data PHONETYPE
+        Map<String, List<String>> codeMap = new HashMap<String, List<String>>();
+    	// SUFFIX,TITLE,GENDER,MSTATUS,RACE,ETHNIC,RELIGION,
+        // LANGUAGE,NATIONAL,CITIZEN,ADDRTYPE,PHONETYPE    	
+    	// demo data
+        String[] gender = new String[]{"F", "M"};
     	codeMap.put("GENDER", Arrays.asList(gender));
     	return codeMap;
     }
     
     /**
      * Get a list of user codes for the given domain.
-     * @param domain
-     * @param module
-     * @return a list of user codes
-     * @throws ServiceException
+     * @param domain.
+     * @param module.
+     * @return a list of user codes.
+     * @throws ServiceException.
      */
-    public List<String> getUserCodes(String domain, String module) throws ServiceException {
-    	List<String> codes = null;
-    	return codes;
+    public List<String> getUserCodes(String domain, String module) throws ServiceException {	
+    	throw new ServiceException("Not Implemented Yet!");
     }
  
     /**
      * Get a map of user codes for the given domain.
-     * @param domain
-     * @param module
-     * @return a list of user codes
-     * @throws ServiceException
+     * @param domain.
+     * @param module.
+     * @return a list of user codes.
+     * @throws ServiceException.
      */   
     public Map<String, List<String>> getUserCodeMap(String domain) throws ServiceException {
-    	Map<String, List<String>> codeMap = null;
-    	return codeMap;
+    	throw new ServiceException("Not Implemented Yet!");
     }
-    
-    /**
-     * Get a system object for the given localId from the given source system of the domain. 
-     * @param domain
-     * @param systemCode
-     * @param LocalId
-     * @return system object
-     * @throws ServiceException
-     */
-    public SystemObject getSystemObject(String domain, String systemCode, String LocalId) throws ServiceException {
-    	SystemObject systemObject = null;
-    	return systemObject;
-    }
-    
-    /**
-     * Query enterpriseObjects based the given search criteria and search options from the domain.
-     * @param domain
-     * @param eoSearchCriteria
-     * @param eoSearchOptions
-     * @return a list of EnterpriseObject
-     * @throws ServiceException
-     */
-    public List<EnterpriseObject> searchEnterpriseObject(String domain, EOSearchCriteria eoSearchCriteria, EOSearchOptions eoSearchOptions)throws ServiceException {
-    	List<EnterpriseObject> enterpriseObjects = null;
-    	// demo data
-    	return enterpriseObjects;
-    }
-    
-    /**
-     * Get a enterprise object for the given euid from the domain.
-     * @param domain
-     * @param euid
-     * @return enterprise object
-     * @throws ServiceException
-     */
-    public EnterpriseObject getEnterpriseObject(String domain, String euid) throws ServiceException {
-    	EnterpriseObject enterpriseObject = null;
-    	return enterpriseObject;
-    }
-    
-    /**
-     * Get a enterprise object for the given system obecjt from the domain.
-     * @param domain
-     * @param systemObject
-     * @return enterprise object
-     * @throws ServiceException
-     */
-    public EnterpriseObject getEnterpriseObject(String domain, SystemObject systemObject) throws ServiceException {
-    	EnterpriseObject enterpriseObject = null;
-    	return enterpriseObject;
-    }
-    
 }
