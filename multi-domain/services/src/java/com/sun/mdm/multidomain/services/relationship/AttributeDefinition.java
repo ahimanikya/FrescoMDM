@@ -158,5 +158,8 @@ public class AttributeDefinition {
     }
     public void setFields(Map<String, String> fields) {
         this.fields =  fields;
-    }    
+    }
+    public int size() {
+        return fields.size();
+    }
 }
