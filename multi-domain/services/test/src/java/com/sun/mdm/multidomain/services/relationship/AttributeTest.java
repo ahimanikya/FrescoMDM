@@ -20,11 +20,9 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.services.control;
+package com.sun.mdm.multidomain.services.relationship;
 
 import junit.framework.TestCase;
-
-import com.sun.mdm.multidomain.services.relationship.Attribute;
 
 /**
  * AttributeTest class.

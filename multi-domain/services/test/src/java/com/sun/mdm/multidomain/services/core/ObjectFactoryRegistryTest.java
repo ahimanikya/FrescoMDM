@@ -20,16 +20,12 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.services.control;
+package com.sun.mdm.multidomain.services.core;
 
 import junit.framework.TestCase;
 
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.exception.ObjectException;
-
-import com.sun.mdm.multidomain.services.core.ConfigException;
-import com.sun.mdm.multidomain.services.core.ObjectFactory;
-import com.sun.mdm.multidomain.services.core.ObjectFactoryRegistry;
 
 /**
  * ObjectFactoryRegistryTest class.

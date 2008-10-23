@@ -20,14 +20,11 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.services.control;
+package com.sun.mdm.multidomain.services.relationship;
 
 import java.util.List;
 import java.util.ArrayList;
 import junit.framework.TestCase;
-
-import com.sun.mdm.multidomain.services.relationship.Attribute;
-import com.sun.mdm.multidomain.services.relationship.AttributeList;
 
 /**
  * AttributeListTest class.
@@ -66,6 +63,5 @@ public class AttributeListTest extends TestCase {
         a = aList.next();
         assertTrue(a.getName().equals("FOO3"));
         assertTrue(a.getValue().equals("FOO3"));
-        
     }
 }
