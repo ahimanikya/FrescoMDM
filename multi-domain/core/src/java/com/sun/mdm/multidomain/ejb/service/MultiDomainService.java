@@ -32,7 +32,6 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 import com.sun.mdm.multidomain.association.AssociationValue;
-//import com.sun.mdm.multidomain.association.Association;
 import com.sun.mdm.multidomain.hierarchy.Hierarchy;
 import com.sun.mdm.multidomain.group.Group;
 import com.sun.mdm.multidomain.group.GroupMember;

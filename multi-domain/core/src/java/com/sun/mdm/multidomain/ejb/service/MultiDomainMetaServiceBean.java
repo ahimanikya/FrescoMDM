@@ -34,7 +34,6 @@ import javax.ejb.TransactionAttribute;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import javax.annotation.Resources;
 import javax.annotation.security.DeclareRoles;
         
 import com.sun.mdm.index.master.UserException;
