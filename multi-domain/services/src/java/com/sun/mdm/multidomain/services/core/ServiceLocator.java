@@ -23,9 +23,11 @@
 package com.sun.mdm.multidomain.services.core;
 
 import java.util.Hashtable;
+import java.util.Properties;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.naming.Context;
 
 import net.java.hulp.i18n.Logger;
 
@@ -33,7 +35,6 @@ import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
-import com.sun.mdm.multidomain.services.core.context.JndiProperties;
 
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 
@@ -76,7 +77,7 @@ public class ServiceLocator {
      * @return InitialContext InitialContext.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    private InitialContext getInitialContext(JndiProperties jndiProperties) 
+    private InitialContext getInitialContext(Properties jndiProperties) 
     	throws ServiceException {    	
     	//"java.naming.factory.initial", "com.sun.jndi.cosnaming.CNCtxFactory"
     	//"java.naming.provider.url", "iiop://localhost:3100"	  			
@@ -88,8 +89,8 @@ public class ServiceLocator {
                     !jndiProperties.isEmpty()) {
                     // external resources
                     Hashtable<String, String> env = new Hashtable<String, String>();
-                    env.put("java.naming.factory.initial", jndiProperties.getInitialContextFactory());
-                    env.put("java.naming.provider.url", jndiProperties.getProviderUrl());	  			
+                    env.put("java.naming.factory.initial", jndiProperties.getProperty(Context.INITIAL_CONTEXT_FACTORY));
+                    env.put("java.naming.provider.url", jndiProperties.getProperty(Context.PROVIDER_URL));	  			
                     initialContext = new InitialContext(env);		    		
                 } else {
                     // internal resources
@@ -111,9 +112,9 @@ public class ServiceLocator {
     public MultiDomainMetaService getMultiDomainMetaService()  
     	throws ServiceException { 
     	if (multiDomainMetaService == null) {
-            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getMultiDomainMetaService();
+            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getJndiResource("MultiDomainMetaService");
             jndiResource.setName("ejb/MultiDomainMetaService");
-            JndiProperties jndiProperties = new JndiProperties(); //TBD: MDConfigManager.getJndiProperties();                
+            Properties jndiProperties = new Properties(); //TBD: MDConfigManager.getJndiProperties();                
             String jndiName =  jndiResource.getName();    	
             /*TDB
             try {
@@ -135,9 +136,9 @@ public class ServiceLocator {
     public MultiDomainService getMultiDomainService()  
     	throws ServiceException { 
     	if (multiDomainService == null) {    		
-            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getMultiDomainService();
+            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getJndiResource(MultiDomainService);
              jndiResource.setName("ejb/MultiDomainService");
-            JndiProperties jndiProperties = new JndiProperties(); //TBD: MDConfigManager.getJndiProperties();                
+             Properties jndiProperties = new Properties(); //TBD: MDConfigManager.getJndiProperties();                
             String jndiName =  jndiResource.getName();  
             /* TDB
             try {
