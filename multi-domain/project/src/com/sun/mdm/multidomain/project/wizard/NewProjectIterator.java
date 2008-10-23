@@ -40,6 +40,7 @@ import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 
 import com.sun.mdm.multidomain.project.MultiDomainProjectGenerator;
+import com.sun.mdm.multidomain.util.Logger;
 
 import java.util.Enumeration;
 import org.netbeans.api.project.ProjectManager;
@@ -50,6 +51,9 @@ import org.netbeans.api.project.ProjectManager;
  *
  */
 public class NewProjectIterator implements WizardDescriptor.InstantiatingIterator {
+    private static final Logger mLogger = Logger.getLogger(
+            NewProjectIterator.class.getName()
+        );
     private java.awt.Image mSideBar = Utilities.loadImage(
             "com/sun/mdm/multidomain/project/resources/WizardSide.jpg");
     private transient WizardDescriptor mWiz;
@@ -59,6 +63,7 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
 
     // Also the list of steps in the left pane:
     private transient String[] steps = null;
+    final String xmlHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
     /** You should define what panels you want to use here:
      *
@@ -256,6 +261,11 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
     }
     
     public Set instantiate() throws IOException {
+        // Create configuration files here
+        //
+        createMultiDomainModelXml();
+        createMultiDomainWebManagerXml();
+        
         Set resultSet = new LinkedHashSet();
         File dirF = (File) this.mWiz.getProperty(WizardProperties.PROJECT_DIR);
         MultiDomainProjectGenerator.createProject(mWiz);
@@ -288,5 +298,47 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
     
     protected String getDefaultName() {
         return NbBundle.getMessage(NewProjectIterator.class, "LBL_NPW1_DefaultProjectName"); //NOI18N        
+    }
+    
+    private void createMultiDomainModelXml() {
+        String tagHeaderObject = "<Configuration xmlns:xsi=" +
+                "\"http://www.w3.org/2001/XMLSchema-instance" +
+                "\" xsi:noNamespaceSchemaLocation=\"schema/MultiDomainModel.xsd\">\n";
+        String tagTailObject = "</Configuration>";
+
+        // multi-level object data model
+        // relationships need to b removed.
+        String strXml = xmlHEADER + tagHeaderObject +
+                "    <database>" + mWiz.getProperty(WizardProperties.PROP_DATABASE) + "</database>\n" +
+                "    <dateformat>" + mWiz.getProperty(WizardProperties.PROP_DATABASE) + "</dateformat>\n" +
+                "    <domains>\n    </domains>\n" +
+                tagTailObject;
+
+        // Write xml to repository
+        try {
+            mWiz.putProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_MODEL_FILE, strXml);
+        } catch (Exception e) {
+            mLogger.debug(e.getMessage());
+        }
+    }
+    
+    private void createMultiDomainWebManagerXml() {
+        String tagHeaderObject = "<RelationshipWebManager xmlns:xsi=" +
+                "\"http://www.w3.org/2001/XMLSchema-instance" +
+                "\" xsi:noNamespaceSchemaLocation=\"schema/MultiDomainWebManager.xsd\">\n";
+        String tagTailObject = "</RelationshipWebManager>";
+
+        // multi-level object data model
+        // relationships need to b removed.
+        String strXml = xmlHEADER + tagHeaderObject + 
+                "    <domains>\n    </domains>\n" +
+                tagTailObject;
+
+        // Write xml to repository
+        try {
+            mWiz.putProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_WEB_MANAGER_FILE, strXml);
+        } catch (Exception e) {
+            mLogger.debug(e.getMessage());
+        }
     }
 }

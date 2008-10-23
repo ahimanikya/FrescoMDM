@@ -122,6 +122,8 @@ public class MultiDomainProjectGenerator {
         String serverInstanceID = (String)wDesc.getProperty("serverInstanceID");
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
+        String database = (String)wDesc.getProperty(WizardProperties.PROP_DATABASE);
+        String dateformat = (String)wDesc.getProperty(WizardProperties.PROP_DATE_FORMAT);
 
         try{
             createEjbWar(fo, mainProjectName, serverInstanceID, j2eeLevel);           
@@ -164,7 +166,7 @@ public class MultiDomainProjectGenerator {
         //multiDomainApplication.setApplicationName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_TARGET_VIEW_NAME).toString());
         //multiDomainApplication.setObjectName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_OBJECT_NAME).toString());
         try{
-           createConfigFile(srcRoot);
+           createConfigFile(wDesc, srcRoot);
         } catch (MultiDomainRepositoryException ex) {
             throw new IOException(ex.toString());         
         }
@@ -217,7 +219,7 @@ public class MultiDomainProjectGenerator {
         return projHelper;
     }
 
-    private static void createConfigFile(FileObject srcRoot)
+    private static void createConfigFile(WizardDescriptor wDesc, FileObject srcRoot)
             throws MultiDomainRepositoryException, IOException{
                  
             MultiDomainRepository repository  = MultiDomainRepository.getMultiDomainRepository();  
@@ -229,10 +231,10 @@ public class MultiDomainProjectGenerator {
             folder = srcRoot.createFolder(MultiDomainProjectProperties.CONFIGURATION_FOLDER); // NOI18N     
             String str;            
             // MULTI_DOMAIN_MODEL_XML
-            str = "";
+            str = (String) wDesc.getProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_MODEL_FILE);
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML, str);
-            // RELATIONSHIP_WEB_MANAGER_XML
-            str = "";
+            // MULTI_DOMAIN_WEB_MANAGER_XML
+            str = (String) wDesc.getProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_WEB_MANAGER_FILE);
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML, str);            
             
             // *** Sub folder - Database Script ***
