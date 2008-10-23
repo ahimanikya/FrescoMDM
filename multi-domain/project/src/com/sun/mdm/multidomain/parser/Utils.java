@@ -176,7 +176,7 @@ public class Utils {
      * @return ret RelationshipType
      * @throws ParserException exception
      */
-    public static MultiDomainWebManager parseRelationshipWebManager(InputSource xmlSource) throws ParserException {
+    public static MultiDomainWebManager parseMultiDomainWebManager(InputSource xmlSource) throws ParserException {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -185,7 +185,7 @@ public class Utils {
             ret.parseNode(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException("PAR503: Failed to parse RelationshipWebManager: " + 
+            throw new ParserException("PAR503: Failed to parse MultiDomainWebManager: " + 
                                                     xmlSource.getPublicId() + ":" + e.getMessage());
         }
     }

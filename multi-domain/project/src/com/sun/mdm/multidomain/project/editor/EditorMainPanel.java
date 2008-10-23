@@ -159,7 +159,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_MultiDomain_Model")));
 
         if (webManagerPanel == null) {
-            webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getRelationshipWebMAnager(true));
+            webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
         }
         
         mMultiViewPane.setViewportView(canvas);

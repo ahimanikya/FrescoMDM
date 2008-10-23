@@ -123,9 +123,9 @@ public class TabOverview extends javax.swing.JPanel {
             }
         });
         
-        ArrayList <FixedAttributeRow> rowsFixedAttribute = new ArrayList();
-        TableModelFixedAttribute modelFixedAttribute = new TableModelFixedAttribute(rowsFixedAttribute);
-        this.jTableFixedAttibutes.setModel(modelFixedAttribute);
+        ArrayList <PredefinedAttributeRow> rowsPredefinedAttribute = new ArrayList();
+        TableModelPredefinedAttribute modelPredefinedAttribute = new TableModelPredefinedAttribute(rowsPredefinedAttribute);
+        this.jTableFixedAttibutes.setModel(modelPredefinedAttribute);
         
         ArrayList <ExtendedAttributeRow> rowsExtendedAttribute = new ArrayList();
         TableModelExtendedAttribute modelExtendedAttribute = new TableModelExtendedAttribute(rowsExtendedAttribute);
@@ -150,13 +150,13 @@ public class TabOverview extends javax.swing.JPanel {
                                 relationshipSourceDomain.equals(sourceDomain) &&
                                 relationshipTargetDomain.equals(targetDomain)) {
                                 // Fixed attributes
-                                TableModelFixedAttribute modelFixedAttribute = (TableModelFixedAttribute) jTableFixedAttibutes.getModel();
-                                modelFixedAttribute.rows.clear();
+                                TableModelPredefinedAttribute modelPredefinedAttribute = (TableModelPredefinedAttribute) jTableFixedAttibutes.getModel();
+                                modelPredefinedAttribute.rows.clear();
                                 ArrayList <Attribute> al = type.getFixedAttributes();
                                 for (int j=0; al != null && j < al.size(); j++) {
                                     Attribute attr = (Attribute) al.get(j);
-                                    FixedAttributeRow row = new FixedAttributeRow(attr.getName(), attr.getValue());
-                                    modelFixedAttribute.addRow(j, row);
+                                    PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getValue());
+                                    modelPredefinedAttribute.addRow(j, row);
                                 }
                                 // Extended attributes
                                 TableModelExtendedAttribute modelExtendedAttribute = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
@@ -164,6 +164,10 @@ public class TabOverview extends javax.swing.JPanel {
                                 al = type.getExtendedAttributes();
                                 for (int j=0; al != null && j < al.size(); j++) {
                                     Attribute attr = (Attribute) al.get(j);
+                                    attr.getColumnName();
+                                    attr.getDataType();
+                                    attr.getDefaultValue();
+                                    attr.getType();
                                     ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getDataType(), attr.getValue());
                                     modelExtendedAttribute.addRow(j, row);
                                 }
@@ -207,15 +211,15 @@ public class TabOverview extends javax.swing.JPanel {
 
         jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
         add(jLabelDomainName);
-        jLabelDomainName.setBounds(10, 30, 110, 14);
+        jLabelDomainName.setBounds(10, 30, 110, 20);
         jLabelDomainName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabListRelationshipTypes.jLabelDomainName.AccessibleContext.accessibleName")); // NOI18N
 
         jLabelAssociated.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Associated_Domains")); // NOI18N
         add(jLabelAssociated);
-        jLabelAssociated.setBounds(10, 60, 110, 14);
+        jLabelAssociated.setBounds(260, 30, 110, 20);
 
         add(jComboBoxAssociatedDomains);
-        jComboBoxAssociatedDomains.setBounds(120, 60, 110, 22);
+        jComboBoxAssociatedDomains.setBounds(370, 30, 110, 22);
 
         jScrollPaneRelationshipTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Relationships_Defined"))); // NOI18N
 
@@ -230,12 +234,12 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneRelationshipTypes.setViewportView(jTableRelationshipTypes);
 
         add(jScrollPaneRelationshipTypes);
-        jScrollPaneRelationshipTypes.setBounds(10, 90, 470, 120);
+        jScrollPaneRelationshipTypes.setBounds(10, 60, 470, 150);
 
         add(jComboBoxAllDomains);
         jComboBoxAllDomains.setBounds(120, 30, 110, 22);
 
-        jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Fixed_Attributes"))); // NOI18N
+        jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Predefined_Attributes"))); // NOI18N
 
         jTableFixedAttibutes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -362,9 +366,9 @@ public class TabOverview extends javax.swing.JPanel {
         model.fireTableDataChanged();
         
         // clean up attribute tables
-        TableModelFixedAttribute modelFixedAttribute = (TableModelFixedAttribute) jTableFixedAttibutes.getModel();
-        modelFixedAttribute.rows.clear();
-        modelFixedAttribute.fireTableDataChanged();
+        TableModelPredefinedAttribute modelPredefinedAttribute = (TableModelPredefinedAttribute) jTableFixedAttibutes.getModel();
+        modelPredefinedAttribute.rows.clear();
+        modelPredefinedAttribute.fireTableDataChanged();
         TableModelExtendedAttribute modelExtendedAttribute = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
         modelExtendedAttribute.rows.clear();
         modelExtendedAttribute.fireTableDataChanged();
@@ -542,13 +546,13 @@ public class TabOverview extends javax.swing.JPanel {
         }
     }
     
-    class FixedAttributeRow {
+    class PredefinedAttributeRow {
         private String name;
-        private String value;
+        private String defaultValue;
 
-        public FixedAttributeRow(String name, String value) {
+        public PredefinedAttributeRow(String name, String defaultValue) {
             this.name = name;
-            this.value = value;
+            this.defaultValue = defaultValue;
         }
 
         public String getName() {
@@ -559,25 +563,25 @@ public class TabOverview extends javax.swing.JPanel {
             this.name = name;
         }
 
-        public String getValue() {
-            return value;
+        public String getDefaultValue() {
+            return defaultValue;
         }
 
-        public void setValue(String value) {
-            this.value = value;
+        public void setDefaultValue(String defaultValue) {
+            this.defaultValue = defaultValue;
         }
     }
 
     // Table model for Relationship Type
-    class TableModelFixedAttribute extends AbstractTableModel {
+    class TableModelPredefinedAttribute extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Name"),
-                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Value"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Default_Value"), 
                                         };
-        ArrayList <FixedAttributeRow> rows;
+        ArrayList <PredefinedAttributeRow> rows;
         final static int iColName = 0;
-        final static int iColValue = 1;
+        final static int iColDefaultValue = 1;
         
-        TableModelFixedAttribute(ArrayList rows) {
+        TableModelPredefinedAttribute(ArrayList rows) {
             this.rows = rows;
         }
         
@@ -598,13 +602,13 @@ public class TabOverview extends javax.swing.JPanel {
 
         public Object getValueAt(int row, int col) {
             if (rows != null) {
-                FixedAttributeRow singleRow = rows.get(row);
+                PredefinedAttributeRow singleRow = rows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColName:
                             return singleRow.getName();
-                        case iColValue:
-                            return singleRow.getValue();
+                        case iColDefaultValue:
+                            return singleRow.getDefaultValue();
                         default:
                             return null;
                     }
@@ -629,14 +633,14 @@ public class TabOverview extends javax.swing.JPanel {
          */
         public void setValueAt(Object value, int row, int col) {
             if (rows != null && row >=0 && row < rows.size()) {
-                FixedAttributeRow singleRow = (FixedAttributeRow) rows.get(row);
+                PredefinedAttributeRow singleRow = (PredefinedAttributeRow) rows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColName:
                             singleRow.setName((String) value);                            
                             break;
-                        case iColValue:
-                            singleRow.setValue((String) value);                            
+                        case iColDefaultValue:
+                            singleRow.setDefaultValue((String) value);                            
                             break;
                         default:
                             return;
@@ -651,13 +655,13 @@ public class TabOverview extends javax.swing.JPanel {
             this.fireTableRowsDeleted(index, index);
         }
         
-        public void addRow(int index, FixedAttributeRow row) {
+        public void addRow(int index, PredefinedAttributeRow row) {
             rows.add(row);
             this.fireTableRowsInserted(index, index);
         }
 
-        public FixedAttributeRow getRow(int index) {
-            FixedAttributeRow row = (FixedAttributeRow) rows.get(index);
+        public PredefinedAttributeRow getRow(int index) {
+            PredefinedAttributeRow row = (PredefinedAttributeRow) rows.get(index);
             return row;
         }
     }
@@ -665,12 +669,12 @@ public class TabOverview extends javax.swing.JPanel {
     class ExtendedAttributeRow {
         private String name;
         private String dataType;
-        private String value;
+        private String defaultValue;
 
-        public ExtendedAttributeRow(String name, String dataType, String value) {
+        public ExtendedAttributeRow(String name, String dataType, String defaultValue) {
             this.name = name;
             this.dataType = dataType;
-            this.value = value;
+            this.defaultValue = defaultValue;
         }
 
         public String getName() {
@@ -689,12 +693,12 @@ public class TabOverview extends javax.swing.JPanel {
             this.dataType = dataType;
         }
 
-        public String getValue() {
-            return value;
+        public String getDefaultValue() {
+            return defaultValue;
         }
 
-        public void setValue(String value) {
-            this.value = value;
+        public void setDefaultValue(String defaultValue) {
+            this.defaultValue = defaultValue;
         }
     }
 
@@ -702,12 +706,20 @@ public class TabOverview extends javax.swing.JPanel {
     class TableModelExtendedAttribute extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Name"),
                                          NbBundle.getMessage(TabOverview.class, "LBL_Attribute_ColumnName"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_DataType"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Default_Value"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Searchable"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_Required"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Attribute_ID"), 
                                         };
         ArrayList <ExtendedAttributeRow> rows;
         final static int iColName = 0;
         final static int iColColumnName = 1;
-        final static int iColValue = 2;
+        final static int iColDataType = 2;
+        final static int iColDefaultValue = 3;
+        final static int iColSearchable = 4;
+        final static int iColRequired = 5;
+        final static int iColAttributeID = 6;
         
         TableModelExtendedAttribute(ArrayList rows) {
             this.rows = rows;
@@ -737,8 +749,8 @@ public class TabOverview extends javax.swing.JPanel {
                             return singleRow.getName();
                         case iColColumnName:
                             return singleRow.getDataType();
-                        case iColValue:
-                            return singleRow.getValue();
+                        case iColDefaultValue:
+                            return singleRow.getDefaultValue();
                         default:
                             return null;
                     }
@@ -772,8 +784,8 @@ public class TabOverview extends javax.swing.JPanel {
                         case iColColumnName:
                             singleRow.setDataType((String) value);                            
                             break;
-                        case iColValue:
-                            singleRow.setValue((String) value);                            
+                        case iColDefaultValue:
+                            singleRow.setDefaultValue((String) value);                            
                             break;
                         default:
                             return;

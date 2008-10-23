@@ -440,7 +440,7 @@ public class EditorMainApp {
      */
     public String getRelationshipWebManagerXmlString() throws Exception {
         String xmlStr = null;
-        xmlStr = mMultiDomainApplication.getRelationshipWebMAnager(false).writeToString();
+        xmlStr = mMultiDomainApplication.getMultiDomainWebManager(false).writeToString();
         return xmlStr;
     }
 
@@ -453,7 +453,7 @@ public class EditorMainApp {
         try {
             InputStream objectdef = new ByteArrayInputStream(xml.getBytes());
             InputSource source = new InputSource(objectdef);
-            relationshipWebManager = com.sun.mdm.multidomain.parser.Utils.parseRelationshipWebManager(source);
+            relationshipWebManager = com.sun.mdm.multidomain.parser.Utils.parseMultiDomainWebManager(source);
         } catch (Exception ex) {
             displayError(ex);
         }
@@ -485,7 +485,7 @@ public class EditorMainApp {
             
             String relationshipWebManagerXml = getRelationshipWebManagerXmlString();
             if (relationshipWebManagerXml != null) {
-                mMultiDomainApplication.saveRelationshipWebManagerXml(relationshipWebManagerXml);
+                mMultiDomainApplication.saveMultiDomainWebManagerXml(relationshipWebManagerXml);
             } else {
                 String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
 

@@ -38,7 +38,6 @@ import org.xml.sax.InputSource;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
-import com.sun.mdm.multidomain.parser.RelationshipWebManager;
 import com.sun.mdm.multidomain.project.editor.ObjectTopComponent;
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -59,12 +58,12 @@ public class MultiDomainApplication extends MultiDomainProject {
     private boolean mModified = false;
     private MultiDomainModel mMultiDomainModel = null;      // OBJECT_XML
 
-    private MultiDomainWebManager mRelationshipWebManager = null;      // RelationshipWebManager.xml
+    private MultiDomainWebManager mMultiDomainWebManager = null;      // MultiDomainWebManager.xml
     private FileObject fileRelationshipMappings;
     private FileObject fileMultiDomainModel;
-    private FileObject fileobjRelationshipWebManager;
+    private FileObject fileobjMultiDomainWebManager;
     private FileObject fileobjMultiDomainModel;
-    private FileObject fileRelationshipWebManager;
+    private FileObject fileMultiDomainWebManager;
     
     
     /** Creates a new instance of MultiDomainApplication */
@@ -102,24 +101,24 @@ public class MultiDomainApplication extends MultiDomainProject {
         return mMultiDomainModel;
     }
 
-    /** Parses object.xml and returns com.sun.mdm.index.parser.RelationshipWebManager by parsing object.xml
+    /** Parses object.xml and returns com.sun.mdm.index.parser.MultiDomainWebManager by parsing object.xml
      * @throws RepositoryException failed to get value
-     * @return the RelationshipWebManager
+     * @return the MultiDomainWebManager
      */    
-    public MultiDomainWebManager getRelationshipWebMAnager(boolean bRefresh) {
+    public MultiDomainWebManager getMultiDomainWebManager(boolean bRefresh) {
         try {
-            if (mRelationshipWebManager == null || bRefresh == true) {
-                FileObject cf = this.getRelationshipWebManagerFile();
+            if (mMultiDomainWebManager == null || bRefresh == true) {
+                FileObject cf = this.getMultiDomainWebManagerFile();
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();
                     InputSource source = new InputSource(objectdef);
-                    mRelationshipWebManager = Utils.parseRelationshipWebManager(source);
+                    mMultiDomainWebManager = Utils.parseMultiDomainWebManager(source);
                 }
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
-        return mRelationshipWebManager;
+        return mMultiDomainWebManager;
     }
         
     /**
@@ -154,27 +153,27 @@ public class MultiDomainApplication extends MultiDomainProject {
         return mObjectTopComponent;
     }
        
-    /** chaeck out RelationshipWebManager
+    /** chaeck out MultiDomainWebManager
      *
      *@return boolean checked out
      */
-    private FileObject getRelationshipWebManagerXml() {
+    private FileObject getMultiDomainWebManagerXml() {
         try {
-            fileobjRelationshipWebManager = getRelationshipWebManagerFile();
+            fileobjMultiDomainWebManager = getMultiDomainWebManagerFile();
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
-        return fileobjRelationshipWebManager;
+        return fileobjMultiDomainWebManager;
     }
 
     /** Save OBJECT_DEF_FILE
      *
      *@param data
      */
-    public void saveRelationshipWebManagerXml(String strXml) {
+    public void saveMultiDomainWebManagerXml(String strXml) {
         try {
-            if (fileobjRelationshipWebManager != null) {
-                writeConfigurationFile(fileobjRelationshipWebManager, strXml);
+            if (fileobjMultiDomainWebManager != null) {
+                writeConfigurationFile(fileobjMultiDomainWebManager, strXml);
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
@@ -214,10 +213,10 @@ public class MultiDomainApplication extends MultiDomainProject {
      *
      *@param data
      */
-    public void saveRelationshipWebManagerXml(String strXml, String comment, boolean checkIn) {
+    public void saveMultiDomainWebManagerXml(String strXml, String comment, boolean checkIn) {
         try {
-            if (fileRelationshipWebManager != null) {
-                writeConfigurationFile(fileRelationshipWebManager, strXml);
+            if (fileMultiDomainWebManager != null) {
+                writeConfigurationFile(fileMultiDomainWebManager, strXml);
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
@@ -243,7 +242,7 @@ public class MultiDomainApplication extends MultiDomainProject {
     /** return the FileObject for object.xml
      * @return FileObject fo
      */ 
-    public FileObject getRelationshipWebManagerFile() {
+    public FileObject getMultiDomainWebManagerFile() {
         FileObject fo = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML, false);
         return fo;
     }
@@ -277,7 +276,7 @@ public class MultiDomainApplication extends MultiDomainProject {
      */
     public boolean getAllConfigurableFiles() {
         return (getMultiDomainModelXml() != null) &&
-               (getRelationshipWebManagerXml() != null);
+               (getMultiDomainWebManagerXml() != null);
     }
     
     private void writeConfigurationFile(FileObject file, String str) {
