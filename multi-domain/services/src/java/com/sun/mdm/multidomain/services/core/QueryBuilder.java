@@ -55,21 +55,18 @@ import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.model.RelationshipSearch;
 import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
-
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+        
 /**
  * QueryBuilder class.
  * @author cye
  */
 public class QueryBuilder {
-    
+    private static MDConfigManager configManager =  MDConfigManager.getInstance();
+            
     public QueryBuilder() {
     }
-    
-    public static MultiDomainSearchCriteria buildMultiDomainSearchCriteria(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch, RelationshipSearch relationshipSearch){
-         MultiDomainSearchCriteria mdSearchCriteria = new MultiDomainSearchCriteria();
-         return mdSearchCriteria;
-    }
-    
+       
     public static MultiDomainSearchOptions buildMultiDomainSearchOptions(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch)
         throws ConfigException {
          MultiDomainSearchOptions mdSearchOptions = new MultiDomainSearchOptions();
@@ -77,7 +74,7 @@ public class QueryBuilder {
          MultiDomainSearchOption mdSearchOption1 = buildMultiDomainSearchOption(sourceDomainSearch);
          MultiDomainSearchOption mdSearchOption2 = buildMultiDomainSearchOption(targetDomainSearch);
          
-         /*TBD:expect MultiDomainSearchOptions to provide a method to set search options for different domains.
+         /*TBD:MultiDomainSearchOptions provides a method to set search options for different domains.
          mdSearchOptions.setDomainSearchOption(sourceDomainSearch.getName(),mdSearchOption1);
          mdSearchOptions.setDomainSearchOption(targetDomainSearch.getName(),mdSearchOption2);
          */         
@@ -88,11 +85,12 @@ public class QueryBuilder {
         throws ConfigException {
         MultiDomainSearchOption mdSearchOption = new MultiDomainSearchOption();
         try {
-            //TBD: get from configuration API.
-            RelationshipScreenConfig screenConfig = new RelationshipScreenConfig();        
+            RelationshipScreenConfig screenConfig = new RelationshipScreenConfig();  //TBD:configManager.getRelationshipScreenConfig(domainSearch.getName());     
             // search result page
-            List<SearchResultsConfig> searchResultPages = null; //TBD:should get from screenConfig.getSearchResultsConfig();
-            Iterator searchResultPageIterator = searchResultPages.iterator();      
+            List<SearchResultsConfig> searchResultPages = null; //TBD:configManager.getSearchResultsConfig(domainSearch);
+            
+            //TBD: should base on Record-Id configuration.
+            Iterator searchResultPageIterator = searchResultPages.iterator();
             EPathArrayList searchResultFields = new EPathArrayList();
             String objectRef = null;
             int pageSize = 0;
@@ -114,7 +112,7 @@ public class QueryBuilder {
             searchResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
          
             // search page
-            List<SearchScreenConfig> searchPages = null; //TBD:should get from screenConfig.getSearchScreensConfig();
+            List<SearchScreenConfig> searchPages = null; //TBD:configManager.getSearchScreensConfig(domainSearch);
             Iterator searchPageIterator = searchPages.iterator();
             String queryBuilder = null;
             boolean isWeighted = false;
@@ -142,7 +140,7 @@ public class QueryBuilder {
         return mdSearchOption;
     } 
  
-    public static MultiDomainSearchCriteria buildMultiMultiDomainSearchCriteria(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch, RelationshipSearch relationshipSearch)
+    public static MultiDomainSearchCriteria buildMultiDomainSearchCriteria(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch, RelationshipSearch relationshipSearch)
         throws ConfigException {
         
         MultiDomainSearchCriteria mdSearchSearchCriteria = new MultiDomainSearchCriteria();
@@ -165,10 +163,9 @@ public class QueryBuilder {
         Map searchCriteriaFrom = new HashMap<String, String>();
         Map searchCriteriaTo = new HashMap<String, String>();
             
-        //TBD: get from configuration API.
-        RelationshipScreenConfig screenConfig = new RelationshipScreenConfig();        
+        RelationshipScreenConfig screenConfig = new RelationshipScreenConfig(); //TBD: configManager.getRelationshipScreenConfig(domainSearch.getName());       
         // search page
-        List<SearchScreenConfig> searchPages = null; //TBD:should get from screenConfig.getSearchScreensConfig();
+        List<SearchScreenConfig> searchPages = null; //TBD:configManager.getSearchScreensConfig(domainSearch.getName());
         Iterator searchPageIterator = searchPages.iterator();
         SearchScreenConfig searchPage = null;
         //TDB: a simple configuration API should be provied to get the specific searchPage for the given the search type.
@@ -238,10 +235,11 @@ public class QueryBuilder {
         throws ConfigException {
         EOSearchOptions eoSearchOptions = null;
         try {
-            //TBD: get from configuration API.
-            RelationshipScreenConfig screenConfig = new RelationshipScreenConfig();        
+            
+            RelationshipScreenConfig screenConfig = new RelationshipScreenConfig(); //TBD: configManager.getRelationshipScreenConfig(domainSearch.getName());       
             // search result page
-            List<SearchResultsConfig> searchResultPages = null; //TBD:should get from screenConfig.getSearchResultsConfig();
+            // TBD: this should base on search-result-details
+            List<SearchResultsConfig> searchResultPages = null; //TBD:configManager.getSearchResultsConfig(domainSearch.getName());
             Iterator searchResultPageIterator = searchResultPages.iterator();      
             EPathArrayList searchResultFields = new EPathArrayList();
             String objectRef = null;
@@ -262,7 +260,7 @@ public class QueryBuilder {
             searchResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
          
             // search page
-            List<SearchScreenConfig> searchPages = null; //TBD:should get from screenConfig.getSearchScreensConfig();
+            List<SearchScreenConfig> searchPages = null; //TBD:configManager.getSearchScreensConfig(domainSearch.getName());
             Iterator searchPageIterator = searchPages.iterator();
             String queryBuilder = null;
             boolean isWeighted = false;
@@ -294,6 +292,7 @@ public class QueryBuilder {
         EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
         SystemObject[] systemObjects = buildSystemObject(domainSearch);
         
+        /* range search supported */
         eoSearchCriteria.setSystemObject(systemObjects[0]);        
         eoSearchCriteria.setSystemObject2(systemObjects[1]);
         eoSearchCriteria.setSystemObject3(systemObjects[2]);

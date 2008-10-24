@@ -30,16 +30,25 @@ import java.util.Locale;
 import java.text.SimpleDateFormat;
 
 import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.exception.ObjectException;
+
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.PageIterator;
-
+import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.association.AssociationType;
+        
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
+import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.security.Operations;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
+import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 
@@ -52,17 +61,113 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
  * @author cye
  */
 public class ViewHelper {
+    public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
-            
-    public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages) {      
+    private static MDConfigManager configManager =  MDConfigManager.getInstance();
+    private static Operations operations = new Operations();
+    
+    public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages, String sourceDomain, String targetDomain, String relationshipName) {      
         List<RelationshipView> relationships = new ArrayList<RelationshipView>();
-        // ToDo
+        // base on Record-Id configuration
+        while(pages.hasNext()) {
+            MultiObject multiObject =  pages.next();
+            ObjectNode sourceObject = multiObject.getSourceDomainObject();
+            //TBD: configManager.getrecordIdEPathFields(sourceDomain);
+            EPathArrayList sourceRecordIdEPathFields = new EPathArrayList();
+             //TBD: configManager.getrecordIdConfigFields(sourceDomain);
+            List<FieldConfig> sourceRecordIdConfigFields = new ArrayList<FieldConfig>();
+            
+            String sourceHighLight = buildHighLight(sourceDomain, sourceRecordIdConfigFields, sourceRecordIdEPathFields, sourceObject);
+           
+            //TBD: should go through each one
+            ObjectNode targetObject =  multiObject.getRelationshipObjects()[0].getTargetObject();
+            //TBD: configManager.getrecordIdEPathFields(targetDomain);
+            EPathArrayList targetRecordIdEPathFields = new EPathArrayList();
+            //TBD: configManager.getrecordIdConfigFields(targetDomain);
+            List<FieldConfig> targetRecordIdConfigFields = new ArrayList<FieldConfig>();
+            
+            String targetHighLight = buildHighLight(targetDomain, targetRecordIdConfigFields, targetRecordIdEPathFields, targetObject); 
+            
+            Relationship relationship = multiObject.getRelationshipObjects()[0].getRelationship();     
+            RelationshipView relationshipView =  buildRelationshipView(relationship, sourceHighLight, targetHighLight);
+            relationships.add(relationshipView);
+        }        
         return relationships;
     }
     
-    public static RelationshipComposite buildRelationshipComposite(MultiObject relationshipObject) {
+    public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) {
+        String highLight = null;
+        //TBD: configManager.getDateFormat(domain);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        boolean hasSensitiveData = false;
+        try {
+            hasSensitiveData = configManager.getSecurityPlugIn() != null ? 
+                               configManager.getSecurityPlugIn().isDataSensitive(objectNode) : true;
+        } catch (Exception ignore) {
+        }
+        try {
+            for(int i = 0; i < recordIdEPathFields.size(); i++) {
+                EPath ePath = recordIdEPathFields.get(i);
+                FieldConfig fieldConfig  = recordIdConfigFields.get(i);          
+                Object value = EPathAPI.getFieldValue(ePath, objectNode);                        
+                if(value instanceof java.util.Date) {
+                    String dateField = simpleDateFormat.format(value);               
+                    if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        highLight = highLight + RECORD_ID_DELIMITER + resourceBundle.getString("SENSITIVE_FIELD_MASKING");
+                    } else {
+                        highLight = highLight + RECORD_ID_DELIMITER + dateField;
+                    }                               
+                } else {
+                    if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        highLight = highLight + RECORD_ID_DELIMITER + resourceBundle.getString("SENSITIVE_FIELD_MASKING");
+                    } else {
+                        if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
+                            value = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                            highLight = highLight + RECORD_ID_DELIMITER + value;             
+                        } else if ((fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) && value != null) {                                    
+                            value = fieldConfig.mask(value.toString());
+                            highLight = highLight + RECORD_ID_DELIMITER + value;
+                        } else if ((fieldConfig.getUserCode() != null && fieldConfig.getUserCode().length() > 0) && value != null) {                               
+                            value = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                            highLight = highLight + RECORD_ID_DELIMITER + value;                                
+                        } else {
+                            highLight = highLight + RECORD_ID_DELIMITER + value;
+                        }
+                    }
+                }     
+            }
+        } catch(EPathException eex) {         
+        } catch(ObjectException oex) {
+        }
+        return highLight;
+    }
+    
+    public static RelationshipView buildRelationshipView(Relationship relationship, String sourceHighLight, String targetHighLight) {   
+        RelationshipView relationshipView = new RelationshipView();        
+        relationshipView.setId(relationship.getRelationshipID());
+        relationshipView.setSourceEUID(relationship.getSourceEUID());
+        relationshipView.setTargetEUID(relationship.getTargetEUID());
+        relationshipView.setSourceHighLight(sourceHighLight);
+        relationshipView.setTargetHighLight(targetHighLight);           
+        return relationshipView;
+    }
+            
+    public static RelationshipComposite buildRelationshipComposite(MultiObject multiObject) {
         RelationshipComposite relationshipComposite = new RelationshipComposite();
-        // ToDo
+        
+        ObjectNode sourceObject = multiObject.getSourceDomainObject();
+        ObjectNode targetObject =  multiObject.getRelationshipObjects()[0].getTargetObject();
+        Relationship relationship = multiObject.getRelationshipObjects()[0].getRelationship();
+        
+        ObjectRecord sourceRecord = new ObjectRecord();
+        relationshipComposite.setSourceRecord(sourceRecord);
+        
+        ObjectRecord targetRecord = new ObjectRecord();
+        relationshipComposite.setTargetRecord(targetRecord);
+                
+        RelationshipRecord relationshipRecord = buildRelationshipRecord(relationship);
+        relationshipComposite.setRelationshipRecord(relationshipRecord);
+                
         return relationshipComposite;
     }
     
@@ -77,9 +182,8 @@ public class ViewHelper {
         //TBD:should get from screenConfig.getSearchResultsConfig();
         //EPathArrayList searchResultsEPathField = screenConfig.getSearchResultsEPathFields   
         EPathArrayList searchResultsFieldEPaths = new EPathArrayList();
-        ArrayList searchResultsConfigFields = new ArrayList<FieldConfig>();
+        List<FieldConfig> searchResultsConfigFields = new ArrayList<FieldConfig>();
         
-        Operations operations = new Operations();
         while(pages.hasNext()) {
             ObjectNode objectNode = pages.next();
             ObjectSensitivePlugIn plugin = null; //TBD: MDConfigManager.getInstance().getSecurityPlugIn();
@@ -95,7 +199,7 @@ public class ViewHelper {
                 record.setFieldValue("Weight", "0");
             }         
             for (int i = 0; i < searchResultsFieldEPaths.size(); i++) {
-                FieldConfig fieldConfig  = (FieldConfig) searchResultsConfigFields.get(i);
+                FieldConfig fieldConfig  = searchResultsConfigFields.get(i);
                 EPath ePath = searchResultsFieldEPaths.get(i);
                 try {
                     Object objectValue = EPathAPI.getFieldValue(ePath, objectNode);
@@ -132,16 +236,101 @@ public class ViewHelper {
 		          npe.printStackTrace();
                    }                
             }
-            //TBD: EUID?
+            //TBD: EUID
             record.setEUID("EUID"); 
             records.add(record);
         }
         
         return objects;
     } 
-    public static ObjectRecord buildObjectRecord(ObjectNode objectNode) {
+    
+    public static RelationshipRecord buildRelationshipRecord(Relationship relationship) {
+        RelationshipRecord relationshipRecord = new RelationshipRecord();
+        
+        RelationshipType type = (RelationshipType)relationship.getAssociationType();
+        relationshipRecord.setId(relationship.getRelationshipID());
+        relationshipRecord.setSourceEUID(relationship.getSourceEUID());
+        relationshipRecord.setTargetEUID(relationship.getTargetEUID());
+        relationshipRecord.setName(type.getName());
+        if(relationship.getEffectiveFromDate()!= null) {
+            relationshipRecord.setStartDate(relationship.getEffectiveFromDate());
+        }
+        if(relationship.getEffectiveToDate()!= null) {
+            relationshipRecord.setEndDate(relationship.getEffectiveToDate());
+        }
+        if(relationship.getPurgeDate()!= null) {
+            relationshipRecord.setPurgeDate(relationship.getPurgeDate());
+        }         
+        return relationshipRecord;
+    }
+    
+    public static ObjectRecord buildObjectRecord(String EUID, ObjectNode objectNode) {
+        //TBD: configManager.getDateFormat(domain);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        boolean hasSensitiveData = false;
+        try {
+            hasSensitiveData = configManager.getSecurityPlugIn() != null ? 
+                               configManager.getSecurityPlugIn().isDataSensitive(objectNode) : true;
+        } catch (Exception ignore) {
+        }
+        
+        //TBD: configManager.getSearchResultsFieldEPaths();
+        EPathArrayList searchResultsFieldEPaths = new EPathArrayList();
+        //TBD: configManager.getSearchResultsConfigFields();
+        List<FieldConfig> searchResultsConfigFields = new ArrayList<FieldConfig>();
+      
         ObjectRecord objectRecord = new ObjectRecord();
-        // ToDo
-        return objectRecord;
+        objectRecord.setEUID(EUID);
+        objectRecord.setName(objectNode.pGetTag());
+        
+        for (int i = 0; i < searchResultsFieldEPaths.size(); i++) {
+            FieldConfig fieldConfig  = searchResultsConfigFields.get(i);
+            EPath ePath = searchResultsFieldEPaths.get(i);
+            try {
+                Object objectValue = EPathAPI.getFieldValue(ePath, objectNode);
+                String stringValue = null;
+                com.sun.mdm.multidomain.services.relationship.Attribute attribute = 
+                            new com.sun.mdm.multidomain.services.relationship.Attribute(); 
+                if(objectValue instanceof java.util.Date) {
+                    String dateField = simpleDateFormat.format(objectValue);          
+                    if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        attribute.setName(fieldConfig.getFullFieldName());
+                        attribute.setValue(resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
+                    } else {
+                        attribute.setName(fieldConfig.getFullFieldName());
+                        attribute.setValue(dateField);
+                    }        
+                } else {
+                    if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        attribute.setName(fieldConfig.getFullFieldName());
+                        attribute.setValue(resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
+                    } else {
+                        if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && objectValue != null) {
+                            //value for the fields with VALUE LIST
+                            stringValue = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), objectValue.toString());
+                            attribute.setName(fieldConfig.getFullFieldName());
+                            attribute.setValue(stringValue);
+                        } else if ((fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) && objectValue != null) {
+                            //Mask the field values accordingly
+                            stringValue = fieldConfig.mask(objectValue.toString());
+                            attribute.setName(fieldConfig.getFullFieldName());
+                            attribute.setValue(stringValue);
+                        } else if ((fieldConfig.getUserCode() != null && fieldConfig.getUserCode().length() > 0) && objectValue != null) {
+                            //Get the value if the user code is present for the fields
+                            stringValue = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), objectValue.toString());
+                            attribute.setName(fieldConfig.getFullFieldName());
+                            attribute.setValue(stringValue);             
+                        } else {
+                            attribute.setName(fieldConfig.getFullFieldName());
+                            attribute.setValue(objectValue.toString());
+                        }
+                     }                                         
+                 }
+                 objectRecord.add(attribute);
+            } catch (EPathException eex) {
+            } catch(ObjectException oex) {
+            }
+       }
+       return objectRecord;
     }
 }
