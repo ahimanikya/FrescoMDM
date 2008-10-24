@@ -45,7 +45,7 @@ a field of the domain. <br />
 <br />
 </span><br />
 <br /><div style="margin-left: 40px;"><img style="width: 813px; height: 725px;" alt="" src="../attach/SelectHierRecord.png" /><br /></div>
-<br />
+<br /><br />If the user selects a node that is not on the hierarchy the code should handle this as follows.<br /><br /><ul><li>Nodes exist in the hierarchy<br /><br /><br />Show a dialog informing the user that the record is not in the hiearchy</li><li>The hierarchy is empty<br /><br />Show a dialog asking the user if they want to add this node as the root node </li></ul>
 <br />
 <h2>1. Initial screen </h2>
 First time the screen is shown in a session. <br />
@@ -125,11 +125,7 @@ record detail area. </p>
 <p></p>
 <img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS4.png" /><br />
 <br />
-<h2>Misc. Overlays</h2>
-<h3>Find Overlay</h3>
-<br />
-Find a record in the tree. <br />
-<br />This is exactly like the original Select Dialog except that the hierarchy is already selected. <br />
+<h2>Misc. Overlays</h2><br />
 <br />
 <h3>Add Overlay</h3>
 <br />
@@ -139,20 +135,10 @@ Note: The example does not show the expected search screen nor
 attributes for this example. <br />
 <br />
 <img style="width: 999px; height: 544px;" alt="" src="../attach/HierAddRecord.PNG" /><br />
+<br /><h3>Find Overlay</h3>
 <br />
-<h3>Move Overlay&nbsp;</h3>
-<br />
-Bring up a dialog that searches for the record to move the selected
-nodes under.<br />
-<br /><br /><span class="note-highlight">Note: Move dialog will not be needed inf Re-arrange &gt;&gt; option is implemented. &nbsp;<br /><br /></span><h3>Filter Records Overaly &nbsp;</h3><br />Brings
-up a dialog that allows users to optionally specify values for hiearchy
-node attributes (predefined and custom) or show all nodes. &nbsp; If a
-set of attribute values are entered &nbsp;the hieararchy tree is
-filtered to only show hieararchy nodes that have the specified
-attributes.
-&nbsp;Not specifying an attribute in the dialog meens that no filtering
-on
-the blank attribute occurs.<br /><br />
+Find a record in the tree. <br />
+<br />This is exactly like the original Select Dialog except that the hierarchy is already selected. <br /><br /><img style="width: 766px; height: 570px;" alt="" src="../attach/FindHierRecord.png" /><br /><span class="note-highlight"><br /></span><h3>Filter Records Overaly &nbsp;</h3><br />Filter both by search and hiearchy node attributes. &nbsp;<br /><br /><img style="width: 729px; height: 322px;" alt="" src="../attach/FilterHierRecord.png" /><br /><br />Resulting tree shows all nodes that fit the criteria. &nbsp; A filter icon should appear by&nbsp;the top org chart node. <br />
 <br />
 <h2>Look of tree with "Re-arrange &gt;&gt;" option to show a tree used for drag / drop re-assignments of records</h2>
 The following shows the look of the tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">Re-arrange &gt;&gt;</span></a> option. <br />
