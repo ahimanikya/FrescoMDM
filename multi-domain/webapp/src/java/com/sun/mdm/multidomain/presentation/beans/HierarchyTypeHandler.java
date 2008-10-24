@@ -22,15 +22,40 @@
  */
 package com.sun.mdm.multidomain.presentation.beans;
 
+import  java.util.List;
+import  java.util.ArrayList;
+        
+import com.sun.mdm.multidomain.hierarchy.HierarchyType;
+
+import com.sun.mdm.multidomain.services.control.HierarchyManager;
+import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
+import com.sun.mdm.multidomain.services.core.ServiceException;  
+
 /**
  * HierarchyTypeHandler class.
  * @author cye
  */
 public class HierarchyTypeHandler {
-
+    private HierarchyManager hierarchyManager;
+  
     /**
      * Create an instance of HierarchyTypeHandler.
      */
-    public HierarchyTypeHandler() {        
+    public HierarchyTypeHandler() 
+        throws ServiceException { 
+        hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager();
     }
+    public List<HierarchyType> getTypes(String domain) 
+        throws ServiceException { 
+        List<HierarchyType> types = null;
+        try {
+            types = hierarchyManager.getTypes(domain);
+        } catch(ServiceException sex) {
+            throw sex;
+        }
+        if(types == null) {
+            types = new ArrayList<HierarchyType>();
+        }
+        return types;        
+   }
 }
