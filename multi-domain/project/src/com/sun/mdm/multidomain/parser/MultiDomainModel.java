@@ -53,6 +53,11 @@ public class MultiDomainModel {
     private final String mTagExtendedAttributes = "extended-attributes";
     private final String mTagAttribute = "attribute";
     private final String mTagDataType = "data-type";
+    private final String mTagSearchable = "searchable";
+    private final String mTagRequired = "required";
+    private final String mTagAttributeID = "attributeID";
+    private final String mTagColumnName = "column-name";
+    private final String mTagDefaultValue = "default-value";
     private final String mTagValue = "value";
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
@@ -222,10 +227,18 @@ public class MultiDomainModel {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setName(Utils.getStrElementValue(nl.item(i)));
-                    } else if (mTagValue.equals(((Element) nl.item(i)).getTagName())) {
-                        attr.setValue(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagColumnName.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setColumnName(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagDefaultValue.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setDefaultValue(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagDataType.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setDataType(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagSearchable.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setSearchable(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagRequired.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setRequired(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagAttributeID.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setAttributeID(Utils.getStrElementValue(nl.item(i)));
                     }
                 }
             }

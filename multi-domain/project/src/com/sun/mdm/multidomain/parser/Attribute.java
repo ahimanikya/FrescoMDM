@@ -20,11 +20,12 @@ public class Attribute {
         String type;        // Fixed 0, Extended 1
         String columnName;  // which column name in the table does it bind to
         String displayName;
-        boolean searchable;
-        boolean isRequired;
+        String searchable;
+        String required;
         String value;
         String defaultValue;
-        String dataType; 
+        String dataType;
+        String attributeID;
 
         public void setColumnName(String columnName) {
             this.columnName = columnName;
@@ -46,20 +47,28 @@ public class Attribute {
             this.displayName = displayName;
         }
 
-        public void setIsRequired(boolean isRequired) {
-            this.isRequired = isRequired;
+        public void setRequired(String required) {
+            this.required = required;
         }
 
         public void setName(String name) {
             this.name = name;
         }
 
-        public void setSearchable(boolean searchable) {
+        public void setSearchable(String searchable) {
             this.searchable = searchable;
         }
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public String getAttributeID() {
+            return attributeID;
+        }
+
+        public void setAttributeID(String attributeID) {
+            this.attributeID = attributeID;
         }
 
         public String getColumnName() {
@@ -82,8 +91,8 @@ public class Attribute {
             return displayName;
         }
 
-        public boolean isIsRequired() {
-            return isRequired;
+        public boolean isRequired() {
+            return required.equals("true");
         }
 
         public String getName() {
@@ -91,7 +100,7 @@ public class Attribute {
         }
 
         public boolean isSearchable() {
-            return searchable;
+            return searchable.equals("true");
         }
 
         public String getType() {

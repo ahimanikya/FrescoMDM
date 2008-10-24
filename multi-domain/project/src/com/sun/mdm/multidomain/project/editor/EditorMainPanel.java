@@ -68,6 +68,7 @@ import com.sun.mdm.multidomain.project.actions.CreateGroupAction;
 import com.sun.mdm.multidomain.project.actions.CreateCategoryAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.util.Logger;
+import com.sun.mdm.multidomain.parser.LinkType;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
@@ -96,8 +97,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/Save.png"));
     static final String TAB_OVERVIEW = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_OVERVIEW");
-    static final String TAB_OBJECT_MODEL = NbBundle.getMessage(EditorMainPanel.class,
-            "MSG_TAB_MD_OBJECT_MODEL");
+    static final String TAB_ATTRIBUTES = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_ATTRIBUTES");
     static final String TAB_WEB_MANAGER = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_WEB_MANAGER");
 
@@ -157,12 +158,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mMultiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_MultiDomain_Model")));
-
-        if (webManagerPanel == null) {
-            webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
-        }
-        
         mMultiViewPane.setViewportView(canvas);
+        
+        
         //ToDo
         //setCurrentDomainNode
         //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
@@ -172,27 +170,47 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //    tab = node.getTabListRelationshipTypes();
         //}
         
-        mTabOverview = new TabOverview(mEditorMainApp.getDomainNodes());
+        ArrayList <DomainNode> alDomainNodes = mEditorMainApp.getDomainNodes();
+        DomainNode currentDomainNode = null; // use this to load web tabs for domain
+        LinkType currentLinkType = null;
+        if (alDomainNodes != null && alDomainNodes.size() > 0) {
+            currentDomainNode = alDomainNodes.get(0);
+            ArrayList <LinkType> alLinkTypes = currentDomainNode.getLinkTypes();
+            if (alLinkTypes != null && alLinkTypes.size() > 0) {
+                currentLinkType = alLinkTypes.get(0);
+            }
+        }
+        mTabOverview = new TabOverview(alDomainNodes);
+        JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                this.mTabOverview, this.canvas);
+        lefSplitPane.setOneTouchExpandable(true);
+        lefSplitPane.setDividerLocation(350);
+        
+        TabAttributes tabAttributes = new TabAttributes(currentLinkType);
+        if (webManagerPanel == null) {
+            webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
+        }
         JTabbedPane propertiesTabbedPane = new JTabbedPane();
-        propertiesTabbedPane.add(TAB_OVERVIEW, mTabOverview);
+        propertiesTabbedPane.add(TAB_ATTRIBUTES, tabAttributes);
         propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
-        JScrollPane propertiesPane = new JScrollPane();
-        propertiesPane.setBorder(new javax.swing.border.TitledBorder(
+        JScrollPane propertiesScrollPane = new JScrollPane();
+        propertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
-        propertiesPane.setViewportView(propertiesTabbedPane);
+        propertiesScrollPane.setViewportView(propertiesTabbedPane);
         
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                mMultiViewPane, propertiesPane);
-        splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(250);
+        JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                lefSplitPane, propertiesScrollPane);
+        mainSplitPane.setOneTouchExpandable(true);
+        mainSplitPane.setDividerLocation(300);
 
         //Provide minimum sizes for the two components in the split pane
-        Dimension minimumSize = new Dimension(250, 100);
-        mMultiViewPane.setMinimumSize(minimumSize);
+        Dimension minimumSize = new Dimension(350, 350);
+        //mMultiViewPane.setMinimumSize(minimumSize);
+        lefSplitPane.setMinimumSize(minimumSize);
         
-        return splitPane;
+        return mainSplitPane;
     }
 
     private JToolBar createToolBar() {
