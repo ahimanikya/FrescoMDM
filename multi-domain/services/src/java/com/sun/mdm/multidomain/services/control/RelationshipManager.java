@@ -344,16 +344,16 @@ public class RelationshipManager {
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
             MultiDomainSearchCriteria mdSearchCriteria = QueryBuilder.buildMultiDomainSearchCriteria(sourceDomainSearch, targetDomainSearch, relationshipSearch);
             PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);
-            relationships = ViewHelper.buildRelationshipView(pages);
-        } catch (ConfigException cex) 
+            relationships = ViewHelper.buildRelationshipView(pages, sourceDomainSearch.getName(), targetDomainSearch.getName(), relationshipSearch.getName());
+        } catch (ConfigException cex) {
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }
-        return relationships;
-        */  
+        //return relationships;
+        */
         //demo
         RelationshipView rs1 = new RelationshipView();
         rs1.setSourceDomain(sourceDomainSearch.getName());
@@ -449,6 +449,7 @@ public class RelationshipManager {
             EOSearchOptions eoSearchOptions = QueryBuilder.buildEOSearchOptions(domainSearch);
             EOSearchCriteria eoSearchCriteria = QueryBuilder.buildEOSearchCriteria(domainSearch);
             PageIterator<ObjectNode> pages = multiDomainService.searchEnterprises(domainSearch.getName(), eoSearchOptions, eoSearchCriteria);
+            // TBD: should return a lits of ObjectNode, EUID, and ComparisonScore.
             objects = ViewHelper.buildObjectView(pages, eoSearchOptions.isWeighted());
         } catch (ConfigException cex) {
             throw new ServiceException(cex);
