@@ -23,13 +23,17 @@
 package com.sun.mdm.multidomain.services.control;
 
 import java.util.List;
+import java.util.Arrays;
 
 import net.java.hulp.i18n.Logger;
+
+import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.master.ProcessingException;
 
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.hierarchy.HierarchyType;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
 
@@ -68,38 +72,38 @@ public class HierarchyManager {
     /**
      * Get a list of hierarchy types for the given domain name.
      * @param domain Domain name.
-     * @return List<RelationshipType> Lst of hierarchy types.
+     * @return List<HierarchyType> Lst of hierarchy types.
      * @throws ServiceException Thrown if an error occurs during processing.
      */    
-    public List<RelationshipType> getHierarchyTypes(String domain) throws ServiceException {
+    public List<HierarchyType> getHierarchyTypes(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");                
     }
     
     /**
      * Add a new HierarchyType.
-     * @param hierarchyType RelationshipType.
-     * @return String RelationshipType identifier which is newly added.
+     * @param hierarchyType HierarchyType.
+     * @return String HierarchyType identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addType(RelationshipType hierarchyType) throws ServiceException {
+    public String addType(HierarchyType hierarchyType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
      * Update an existing HierarchyType.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(RelationshipType hierarchyType) throws ServiceException {
+    public void updateType(HierarchyType hierarchyType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
      * Delete an existing HierarchyType.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(RelationshipType hierarchyType) throws ServiceException {
+    public void deleteType(HierarchyType hierarchyType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }   
     
@@ -116,31 +120,39 @@ public class HierarchyManager {
     /**
      * Get a list of hierarchy types for the given domain.
      * @param domain Domain name.
-     * @return List<RelationshipType> List of relationship type
+     * @return List<HierarchyType> List of relationship type
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipType> getTypes(String domain) throws ServiceException {
-    	List<RelationshipType> hierarchyTypes = null;
-    	return hierarchyTypes;
+    public List<HierarchyType> getTypes(String domain) throws ServiceException {
+    	List<HierarchyType> hierarchys = null;      
+        try {
+            HierarchyType[] hierarchyTypes = multiDomainMetaService.getHierarchyTypes(domain);
+            hierarchys = Arrays.asList(hierarchyTypes);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }                 
+    	return hierarchys;
     }
     
     /**
      * Get a total count of hierarchy relationship instances for the given relationship type.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @return int Count of hierarchy relationship instances.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipCount(RelationshipType hierarchyType) throws ServiceException {
+    public int getRelationshipCount(HierarchyType hierarchyType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");  
     }
     
     /**
      * Get a list of hierarchy relationship instances for the given relationship type.
-     * @param hierarchyType RelationshipType.
+     * @param hierarchyType HierarchyType.
      * @return List<Relationship> List of hierarchy relationship instances
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<Relationship> getRelationships(RelationshipType hierarchyType) throws ServiceException {
+    public List<Relationship> getRelationships(HierarchyType hierarchyType) throws ServiceException {
     	List<Relationship> hierarchys = null;
     	return hierarchys;
     }
