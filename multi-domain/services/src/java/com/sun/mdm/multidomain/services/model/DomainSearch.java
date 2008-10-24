@@ -36,6 +36,10 @@ public class DomainSearch extends AttributeList {
     private String name;
     /* search type */
     private String type;
+    /* attributes 
+     * Each attribute is defined a name with full qualified epath, e.g.,
+     * Person.FirstName = "Foo", Person.Address.City = "Foo", etc.
+     */
     
     public DomainSearch() {
         super();
