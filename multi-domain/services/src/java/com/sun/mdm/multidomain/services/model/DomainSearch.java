@@ -39,6 +39,8 @@ public class DomainSearch extends AttributeList {
     /* attributes 
      * Each attribute is defined a name with full qualified epath, e.g.,
      * Person.FirstName = "Foo", Person.Address.City = "Foo", etc.
+     * For simple search on EUID, EUID= "0000000001";
+     * For simple serach on local Id and syetem code, systemCode = "SystemA", localId="000-000-00001"
      */
     
     public DomainSearch() {
