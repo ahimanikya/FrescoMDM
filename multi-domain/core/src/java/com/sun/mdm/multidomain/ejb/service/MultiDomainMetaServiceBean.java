@@ -22,6 +22,9 @@
  */
 package com.sun.mdm.multidomain.ejb.service;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.ejb.Stateless;
 import javax.ejb.SessionContext;
 import javax.ejb.Local;
@@ -150,7 +153,22 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */        
     public HierarchyType[] getHierarchyTypes(String domain) 
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        //TBD: for test ejb framework only
+        List<HierarchyType> hierarchyTypes = new ArrayList<HierarchyType>();       
+        if ("FOO1".equals(domain)) {
+            HierarchyType type = new HierarchyType();
+            type.setDomain("FOO1");
+            type.setName("FOO1");
+            hierarchyTypes.add(type);
+        } else if ("FOO2".equals(domain)) {
+            HierarchyType type = new HierarchyType();
+            type.setDomain("FOO2");
+            type.setName("FOO2");
+            hierarchyTypes.add(type);
+        } else {
+            throw new UserException("can not find hierarchy due to unknown domain!");
+        }
+        return (HierarchyType[])hierarchyTypes.toArray(new HierarchyType[0]);     
     }
    
     /**
