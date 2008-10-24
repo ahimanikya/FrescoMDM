@@ -66,11 +66,9 @@ public class TabAttributes extends javax.swing.JPanel {
         al = linkType.getExtendedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
-            attr.getColumnName();
-            attr.getDataType();
-            attr.getDefaultValue();
-            attr.getType();
-            ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getDataType(), attr.getValue());
+            ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
+                        attr.getDataType(), attr.getDefaultValue(),
+                        attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
             modelExtendedAttribute.addRow(j, row);
         }
     }
@@ -274,13 +272,22 @@ public class TabAttributes extends javax.swing.JPanel {
     
     class ExtendedAttributeRow {
         private String name;
+        private String columnName;
         private String dataType;
         private String defaultValue;
+        private String searchable;
+        private String required;
+        private String attributeID;
 
-        public ExtendedAttributeRow(String name, String dataType, String defaultValue) {
+        public ExtendedAttributeRow(String name, String columnName, String dataType, String defaultValue,
+                String searchable, String required, String attributeID) {
             this.name = name;
+            this.columnName = columnName;
             this.dataType = dataType;
             this.defaultValue = defaultValue;
+            this.searchable = searchable;
+            this.required = required;
+            this.attributeID = attributeID;
         }
 
         public String getName() {
@@ -289,6 +296,14 @@ public class TabAttributes extends javax.swing.JPanel {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getColumnName() {
+            return columnName;
+        }
+
+        public void setColumnName(String columnName) {
+            this.columnName = columnName;
         }
 
         public String getDataType() {
@@ -305,6 +320,30 @@ public class TabAttributes extends javax.swing.JPanel {
 
         public void setDefaultValue(String defaultValue) {
             this.defaultValue = defaultValue;
+        }
+
+        public String getAttributeID() {
+            return attributeID;
+        }
+
+        public void setAttributeID(String attributeID) {
+            this.attributeID = attributeID;
+        }
+
+        public String getRequired() {
+            return required;
+        }
+
+        public void setRequired(String required) {
+            this.required = required;
+        }
+
+        public String getSearchable() {
+            return searchable;
+        }
+
+        public void setSearchable(String searchable) {
+            this.searchable = searchable;
         }
     }
 

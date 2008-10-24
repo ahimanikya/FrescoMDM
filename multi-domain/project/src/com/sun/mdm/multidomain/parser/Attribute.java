@@ -16,16 +16,16 @@ public class Attribute {
      *   <relationshp-type>
      *     <attributes>
      */
-        String name;
-        String type;        // Fixed 0, Extended 1
-        String columnName;  // which column name in the table does it bind to
-        String displayName;
-        String searchable;
-        String required;
-        String value;
-        String defaultValue;
-        String dataType;
-        String attributeID;
+        String name = "";
+        String type = "";       // Fixed 0, Extended 1
+        String columnName = "";  // which column name in the table does it bind to
+        String displayName = "";
+        String searchable = "true";
+        String required = "true";
+        String value = "";
+        String defaultValue = "";
+        String dataType = "";
+        String attributeID = "";
 
         public void setColumnName(String columnName) {
             this.columnName = columnName;
@@ -97,6 +97,14 @@ public class Attribute {
 
         public String getName() {
             return name;
+        }
+
+        public String getRequired() {
+            return required;
+        }
+
+        public String getSearchable() {
+            return searchable;
         }
 
         public boolean isSearchable() {
