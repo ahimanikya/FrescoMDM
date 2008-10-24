@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
+import net.java.hulp.i18n.Logger;
+
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.ObjectNode;
@@ -56,14 +58,20 @@ import com.sun.mdm.multidomain.services.model.RelationshipSearch;
 import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
-        
+import com.sun.mdm.multidomain.services.util.Localizer;
+
 /**
  * QueryBuilder class.
  * @author cye
  */
 public class QueryBuilder {
+    private static final String EUID_NAME = "EUID";
+    private static final String SYSTEM_CODE_NAME = "SystemCode";
+    private static final String LOCAL_ID_NAME = "LID";
     private static MDConfigManager configManager =  MDConfigManager.getInstance();
-            
+    private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.QueryBuilder");
+    private static Localizer localizer = Localizer.getInstance();
+           
     public QueryBuilder() {
     }
        
@@ -85,6 +93,19 @@ public class QueryBuilder {
         throws ConfigException {
         MultiDomainSearchOption mdSearchOption = new MultiDomainSearchOption();
         try {
+            String EUID = domainSearch.getFieldValue(EUID_NAME);
+            String localId = domainSearch.getFieldValue(LOCAL_ID_NAME);
+            String systemCode = domainSearch.getFieldValue(SYSTEM_CODE_NAME);    
+            if (EUID != null) {
+                // TBD: do EUID search. how to pass it back-end.
+            } else if (systemCode != null && localId != null) {
+                // TBD: systemcode and localId search. how to pass it back-end.
+            } else if (systemCode == null && localId != null) {
+                new ConfigException(localizer.t("WSC: system code for simple search is not defined for localId {0}", localId));
+            } else if (systemCode != null && localId == null) {
+                new ConfigException(localizer.t("WSC: local Id for simple search is not defined for system code {0}", systemCode));
+            }
+                    
             RelationshipScreenConfig screenConfig = new RelationshipScreenConfig();  //TBD:configManager.getRelationshipScreenConfig(domainSearch.getName());     
             // search result page
             List<SearchResultsConfig> searchResultPages = null; //TBD:configManager.getSearchResultsConfig(domainSearch);
