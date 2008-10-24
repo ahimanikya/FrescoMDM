@@ -36,7 +36,11 @@ Andrea Smith.&nbsp;</li>
 </ul>
 <li> View details of selected relationship (source record,
 destination record and relationship attributes)</li>
-</ul>
+</ul><h2>Terms<br>
+</h2>
+<dl><dt>Primary Record</dt><dd>The record that was selected from the initial "Select
+Record" screen. &nbsp;This record is shown as the first child of
+it's Domain on the Relationship Tree. </dd></dl>
 <h2>Implementation Details</h2>
 <h3><a href="ManRelbyRecSB.html">Story Boards.
 &nbsp;View this story board to see how the following screens
@@ -153,13 +157,10 @@ Nice to have would be the abliity to filter the table as follows: <br>
 </ul>
 &nbsp;<br>
 Here is an example of what a simple implementation of &nbsp;too
-many nodes to show might look like:<br><br><img style="width: 499px; height: 350px;" alt="" src="../attach/TreeTooManyRecords.png"><br><br><br>This
+many nodes to show might look like<br><br>Notes: &nbsp;Show already selected nodes first. &nbsp; May also want to add filtering and search to this dialog. <br><br><img style="width: 499px; height: 350px;" alt="" src="../attach/TreeTooManyRecords.png"><br><br><br>This
 still leaves the problem of what to do if the user selects too many
 nodes from this pop up window or too many nodes have been shown on the
-tree. &nbsp;In this case we would show a single Selected... button that
-would bring up a dialog where the selected records would be shown first
-as show here:<br><br><br><img style="width: 402px; height: 148px;" alt="" src="../attach/TreeTooManyRecordsS2.png"><br><br><br>
-Alternately the GUI chould just show a button showing the number of childern and a message to filter the children as shown here.<br><br><br>
+tree. &nbsp;In this case we would revert back to a single more...&nbsp;<br><br><br><br><br><br>
 </li>
 </ul>
 <br><br>
@@ -299,12 +300,20 @@ a wireframe model of the screen</span><br>
 <img style="width: 999px; height: 544px;" alt="" src="../attach/MaintainByRecordAddRecord.png"><br>
 <span style="font-weight: bold;"></span>.<br>
 <h3><br></h3><h3><br></h3><h3><br></h3> <h3>Find Overlay</h3>
-<br>Find dialog that allows for search based on record search critera and relationship attributes. &nbsp; <br><br>The search depends on the node of the selected domain or record. It only searches for records in that domain, <br><br><h3>Filter Overlay</h3><br>Filter
+<br>Find dialog that allows for search based on record search critera
+and relationship attributes. &nbsp; &nbsp; The find only finds records
+in the same level as the currently selected domain (or parent domain). <br><br>The search depends on the node of the selected domain or record. &nbsp;<br><br><dl><dt>Primary Record or Primary Domain</dt><dd>Search critera for domain</dd><dt><br>Relationship</dt><dd>Not supported</dd><dt><br>Domain or records under the same domain are selected</dt><dd>Search critera for domain and search criteria for relationship &nbsp;that the domain / records are associated with.</dd><dd></dd></dl><br>Results of the search are always shown on the tree even if the filter would not normally show the record. <br><br>The find overlay has up to three parts<br><ul><li>Search criteria based on domain</li><li>Search criteria based on a relationship</li><li>Records returned from the search shown in a summary table</li></ul>The
+main difference between the find and the filter is that the find shows
+all resulting records in the overlay and the fitler shows them on the
+tree.<br><br><h3>Filter Overlay</h3><br>Filter
 dialog that allows user to enter record search and relationship
 attributes. &nbsp;A filter will update the tree so that only records
-with the specified attributes are shown on the tree. <br><br>The filter depends on the node of the selected domain or record. It only filters the records in that domain. <br><br>
+with the specified attributes are shown on the tree. <br><br>The filter depends on the node of the selected domain or record. <br><br><dl><dt>Primary Record or Primary Domain</dt><dd>Filter critera for domain</dd><dt><br>Relationship</dt><dd>Not supported</dd><dt><br>Domain or records under the same domain are selected</dt><dd>Search critera for domain and&nbsp; search criteria for relationship &nbsp;that the domain / records are associated with.</dd></dl><br>The filter overlay has up to two parts<br><ul><li>Search criteria based on domain</li><li>Search criteria based on a relationship</li></ul>The
+results of the fiter are for the nodes below (or at the same level) as
+the selected domain / filter. &nbsp; A filter icon is show by the
+domain that was filtered.&nbsp; <br>
 <br>
-<h3>Move Dialog - Not needed because we will support&nbsp;</h3>
+<h3>Move Dialog - Not needed because we will support re-assign&nbsp;</h3>
 <br>
 Only available if nodes under the same parent have been selected or a
 single node has been selected. &nbsp;<br>
