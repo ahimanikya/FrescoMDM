@@ -113,17 +113,15 @@ public class ServiceLocator {
     	throws ServiceException { 
     	if (multiDomainMetaService == null) {
             JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getJndiResource("MultiDomainMetaService");
-            jndiResource.setName("ejb/MultiDomainMetaService");
+            jndiResource.setName("ejb/MULTIDOMAIN_APPLICATION_TOKEN_MultiDomainMetaService");
             Properties jndiProperties = new Properties(); //TBD: MDConfigManager.getJndiProperties();                
-            String jndiName =  jndiResource.getName();    	
-            /*TDB
+            String jndiName =  jndiResource.getName();
             try {
                 Object object = getInitialContext(jndiProperties).lookup(jndiName);
                 multiDomainMetaService = (MultiDomainMetaService)object;
             } catch (NamingException nex) {
                 throw new ServiceException(nex);    	
             }
-            */
     	}
     	return multiDomainMetaService;
     }      
@@ -137,17 +135,15 @@ public class ServiceLocator {
     	throws ServiceException { 
     	if (multiDomainService == null) {    		
             JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getJndiResource(MultiDomainService);
-             jndiResource.setName("ejb/MultiDomainService");
+             jndiResource.setName("ejb/MULTIDOMAIN_APPLICATION_TOKEN_MultiDomainService");
              Properties jndiProperties = new Properties(); //TBD: MDConfigManager.getJndiProperties();                
             String jndiName =  jndiResource.getName();  
-            /* TDB
             try {
                 Object object = getInitialContext(jndiProperties).lookup(jndiName);
                 multiDomainService = (MultiDomainService)object;
             } catch (NamingException nex) {
                 throw new ServiceException(nex);    	
-            }
-            */
+            }           
     	}
     	return multiDomainService;
     }      

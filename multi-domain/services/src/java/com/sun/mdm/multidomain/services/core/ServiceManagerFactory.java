@@ -50,6 +50,8 @@ public class ServiceManagerFactory {
         private static ServiceManagerFactory instance;
         private boolean isInitialized;
         
+        private boolean TBD = false; //TBD: to test ejb, enable it. In the end, should be reomved.
+                
 	/**
 	 * Create an instance of ServiceManagerFactory
 	 */
@@ -70,8 +72,11 @@ public class ServiceManagerFactory {
 	public void initialize() throws ServiceException {
             if (!isInitialized) {
                 serviceLocator = ServiceLocator.getInstance();
-                multiDomainService = serviceLocator.getMultiDomainService();
-                multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
+                //TBD
+                if (TBD == true) {
+                    multiDomainService = serviceLocator.getMultiDomainService();
+                    multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
+                }
                 isInitialized = true;
            }
 	}
