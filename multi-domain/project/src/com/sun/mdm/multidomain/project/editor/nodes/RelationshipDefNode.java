@@ -30,97 +30,32 @@
 
 package com.sun.mdm.multidomain.project.editor.nodes;
 
-import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
-import org.openide.nodes.NodeAdapter;
-import org.openide.nodes.NodeEvent;
-//import org.openide.nodes.CookieSet;
 import org.openide.util.Lookup;
 
 import com.sun.mdm.multidomain.parser.LinkType;
-import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
-
 /**
  *
  * @author kkao
  */
-public class LinkBaseNode extends AbstractNode {
-    LinkType mLinkType;
-    LinkBaseNode mLinkTypeNode;
-    String mLinkName;
-    TabRelationshipWebManager mTabRelationshipWebManager = null;
-    String type;
+public class RelationshipDefNode extends LinkBaseNode {
+    String sourceDomain;
+    String targetDomain;
     
-    public LinkBaseNode() {
+    public RelationshipDefNode() {
         super(Children.LEAF);
     }
 
-    public LinkBaseNode(Children arg0, Lookup arg1) {
+    public RelationshipDefNode(Children arg0, Lookup arg1) {
         super(arg0, arg1);
     }
 
-    public LinkBaseNode(Children arg0) {
+    public RelationshipDefNode(Children arg0) {
         super(arg0);
     }
     
-    /**
-     * 
-     * @param LinkParentNode
-     * @param linkType
-     */
-    public LinkBaseNode(LinkType linkType) {
+    public RelationshipDefNode(LinkType linkType) {
         super(Children.LEAF);
-        mLinkType = linkType;
-        mLinkTypeNode = this;
-        addNodeListener(new NodeAdapter() {
-            @Override
-            public void nodeDestroyed(NodeEvent ev) {
-                //ToDo - notify EditorMainApp
-            }
-        });
     }
 
-    /**
-     * 
-     * @return mLinkType
-     */
-    public LinkType getLinkType() {
-        return mLinkType;
-    }
-
-    /**
-     * 
-     * @return mLinkName
-     */
-    public String getName() {
-        return mLinkName;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-    public String getType() {
-        return this.type;
-    }
-
-    /**
-     * 
-     * @return sourceDomain
-     */
-    public String getSourceDomain() {
-        return mLinkType.getSourceDomain();
-    }
-
-    /**
-     * 
-     * @return targetDomain
-     */
-    public String getTargetDomain() {
-        return mLinkType.getTargetDomain();
-    }
-    
-    public TabRelationshipWebManager getTabRelationshipWebManager() {
-        return mTabRelationshipWebManager;
-    }
 }

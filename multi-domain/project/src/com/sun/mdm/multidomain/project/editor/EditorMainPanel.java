@@ -97,8 +97,14 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/Save.png"));
     static final String TAB_OVERVIEW = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_OVERVIEW");
-    static final String TAB_ATTRIBUTES = NbBundle.getMessage(EditorMainPanel.class,
-            "MSG_TAB_ATTRIBUTES");
+    static final String TAB_RELATIONSHIP = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_RELATIONSHIP");
+    static final String TAB_HIERARCHY = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_HIERARCHY");
+    static final String TAB_GROUP = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_GROUP");
+    static final String TAB_CATEGORY = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_CATEGORY");
     static final String TAB_WEB_MANAGER = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_WEB_MANAGER");
 
@@ -114,6 +120,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
     private JScrollPane mMultiViewPane;
+    private JTabbedPane mPropertiesTabbedPane = new JTabbedPane();
+    private JScrollPane mPropertiesScrollPane = new JScrollPane();
     private RelationshipCanvas canvas = null; //The component the user draws on
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
@@ -180,33 +188,38 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 currentLinkType = alLinkTypes.get(0);
             }
         }
-        mTabOverview = new TabOverview(alDomainNodes);
+        mTabOverview = new TabOverview(alDomainNodes,  mEditorMainApp.getLinkNodes());
         JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 this.mTabOverview, this.canvas);
         lefSplitPane.setOneTouchExpandable(true);
-        lefSplitPane.setDividerLocation(350);
+        lefSplitPane.setDividerLocation(400);
         
-        TabAttributes tabAttributes = new TabAttributes(currentLinkType);
+        javax.swing.JPanel defPanel = null;
+        String defTitle = TAB_RELATIONSHIP;
+        if (currentLinkType.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
+            defPanel = new TabRelationshipDef(currentLinkType);
+        } else if (currentLinkType.getType().equals(LinkType.TYPE_HIERARCHY)) {
+            defTitle = TAB_HIERARCHY;
+            defPanel = new TabHierarchyDef(currentLinkType);
+        }
         if (webManagerPanel == null) {
             webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
         }
-        JTabbedPane propertiesTabbedPane = new JTabbedPane();
-        propertiesTabbedPane.add(TAB_ATTRIBUTES, tabAttributes);
-        propertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
+        mPropertiesTabbedPane.add(defTitle, defPanel);
+        mPropertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
-        JScrollPane propertiesScrollPane = new JScrollPane();
-        propertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
+        mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
-        propertiesScrollPane.setViewportView(propertiesTabbedPane);
+        mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
         
         JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                lefSplitPane, propertiesScrollPane);
+                lefSplitPane, mPropertiesScrollPane);
         mainSplitPane.setOneTouchExpandable(true);
-        mainSplitPane.setDividerLocation(300);
+        mainSplitPane.setDividerLocation(400);
 
         //Provide minimum sizes for the two components in the split pane
-        Dimension minimumSize = new Dimension(350, 350);
+        Dimension minimumSize = new Dimension(400, 400);
         //mMultiViewPane.setMinimumSize(minimumSize);
         lefSplitPane.setMinimumSize(minimumSize);
         

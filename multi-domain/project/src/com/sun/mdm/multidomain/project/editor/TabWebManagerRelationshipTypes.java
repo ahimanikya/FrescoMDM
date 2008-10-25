@@ -159,7 +159,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     
     private void createFieldRefs(ArrayList<RelationFieldReference> fieldRefs) {
             TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(fieldRefs);
-            mTableFields.setModel(mTableFieldRefs);
+            mTableFields = new JTable(mTableFieldRefs);
             mTableFields.getTableHeader().setReorderingAllowed(false);
             mTableFields.setRowSelectionAllowed(true);
             mTableFields.setRowSelectionInterval(0, 0);

@@ -16,14 +16,13 @@ public class LinkType {
     public static final String TYPE_HIERARCHY = "hierarchy";
     public static final String TYPE_GROUP = "group";
     public static final String TYPE_CATEGORY = "category";
-    public static final String FIXED_ATTRIBUTE_TYPE = "0";
-    public static final String EXTENDED_ATTRIBUTE_TYPE = "1";
 
     /*
      * MultiDomainModel.xml
-     * <relationships>
-     *   <relationshp-type>
-     *     <attributes>
+     * <relationship>
+     * <hierarchy>
+     * <group>
+     * <category>
      */
     String name;
     String type;        // Relationship/Hierachy/Group/Category
@@ -35,6 +34,7 @@ public class LinkType {
     String sourceDomain;
     String targetDomain;
     String direction; // 1 one direction, 2 bidirectional
+    String description;
     boolean includeEffectiveFrom;
     boolean includeEffectiveTo;
     boolean includePurgeDate;
@@ -243,5 +243,13 @@ public class LinkType {
 
     public String getType() {
         return type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

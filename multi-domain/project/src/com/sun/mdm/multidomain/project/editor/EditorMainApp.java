@@ -42,14 +42,12 @@ import org.xml.sax.ErrorHandler;
 
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
-import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
-import com.sun.mdm.multidomain.project.editor.nodes.RelationshipNode;
-import com.sun.mdm.multidomain.project.editor.nodes.RelationshipTypeNode;
+import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
 import org.openide.filesystems.FileObject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -79,7 +77,7 @@ public class EditorMainApp {
     private Map mMapDomainMidmXmls = new HashMap();  // domainName, FileObject of midm.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
     private ArrayList mAlDomainNodes = new ArrayList();   // DomainNode
-    private ArrayList mAlRelationshipNodes = new ArrayList();   // RelationshipNode
+    private ArrayList <LinkBaseNode> mAlLinkNodes = new ArrayList <LinkBaseNode>();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
     private MultiDomainModel mMultiDomainModel;
@@ -128,30 +126,31 @@ public class EditorMainApp {
         EditorMainApp instance = (EditorMainApp) mMapInstances.get(instanceName);
         return instance;
     }
-    
-    
-    public void addRelationshpNode(String domain1, String domain2) {
-        RelationshipNode relationshipNode = new RelationshipNode(this, domain1, domain2);
-        this.mAlRelationshipNodes.add(relationshipNode);
-    }
-
-    public void adddRelationshipNode(RelationshipNode relationshipNode) {
-        this.mAlRelationshipNodes.add(relationshipNode);
-    }
-    
-    public void deleteRelationshipNode(RelationshipNode relationshipNode) {
-        this.mAlRelationshipNodes.remove(relationshipNode);
-    }
-    
+        
     private void loadLinks() {
-        //mAlRelationshipNodes
+        // build mAlLinkNodes
         ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllLinks();
         for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
             LinkType linkType = (LinkType) alLinkTypes.get(i);
-            //RelationshipNode node = new RelationshipNode(this, linkType.getSourceDomain(), linkType.getTargetDomain());
-            //create RelationshipTypeNode list
-            //this.mAlRelationshipNodes.add(node);
+            LinkBaseNode node = new LinkBaseNode(linkType);
+            this.mAlLinkNodes.add(node);
         }
+    }
+    
+    public ArrayList <LinkBaseNode> getLinkNodes() {
+        return mAlLinkNodes;
+    }
+    
+    public LinkBaseNode getLinkNode(String defName, String sourceDomain, String targetDomain) {
+        LinkBaseNode nodeFound = null;
+        for (int i=0; mAlLinkNodes!=null && i<mAlLinkNodes.size(); i++) {
+            LinkBaseNode node = (LinkBaseNode) mAlLinkNodes.get(i);
+            if (node.getName().equals(defName) && node.getSourceDomain().equals(sourceDomain) && node.getTargetDomain().equals(targetDomain)) {
+                nodeFound = node;
+                break;
+            }
+        }
+        return nodeFound;
     }
     
     /**

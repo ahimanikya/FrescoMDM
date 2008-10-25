@@ -82,7 +82,7 @@ public class LinkParentNode extends AbstractNode {
      * @param linkType
      */
     public void addLinkBaseNode(LinkType linkType) {
-        LinkBaseNode linkTypeNode = new LinkBaseNode(this, linkType);
+        LinkBaseNode linkTypeNode = new LinkBaseNode(linkType);
         alLinkBaseNodes.add(linkTypeNode);
     }
     
@@ -91,20 +91,7 @@ public class LinkParentNode extends AbstractNode {
      * @param linkTypeNode
      */
     public void addLinkBaseNode(LinkBaseNode linkTypeNode ) {
-        linkTypeNode.setLinkParentNode(this);
         alLinkBaseNodes.add(linkTypeNode);
-    }
-    
-    /**
-     * Find and remove LinkBaseNode that matches linkTypeNode
-     * @param linkTypeNode
-     */
-    public void deleteLinkBaseNode(LinkBaseNode linkTypeNode ) {
-        if (linkTypeNode != null &&
-            linkTypeNode.getLinkParentNode() != null &&
-            linkTypeNode.getLinkParentNode() == this) {
-            alLinkBaseNodes.remove(linkTypeNode);
-        }
     }
     
     /**

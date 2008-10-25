@@ -43,7 +43,6 @@ import java.io.InputStream;
 import org.xml.sax.InputSource;
 import java.util.Iterator;
 
-import com.sun.mdm.multidomain.parser.Relationship;
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.MiNodeDef;
 import com.sun.mdm.multidomain.parser.MiFieldDef;
@@ -51,7 +50,7 @@ import com.sun.mdm.multidomain.parser.MiObject;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
-//import com.sun.mdm.multidomain.project.editor.TabRelationshipsPerDomain;
+//import com.sun.mdm.multidomain.project.editor.TabDomainProperties;
 
 /**
  *
@@ -66,7 +65,7 @@ public class DomainNode extends AbstractNode {
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
     private ArrayList <String> alAssociatedDomains = new ArrayList();
     private ArrayList <LinkType> alLinkTypes = new ArrayList();
-    //TabRelationshipsPerDomain mTabRelationshipsPerDomain = null;
+    //TabDomainProperties mTabDomainProperties = null;
     File mSelectedDomain = null;
     MIQueryBuilder mMIQueryBuilder = null;
     
@@ -245,7 +244,7 @@ public class DomainNode extends AbstractNode {
         //mTabRelationshipsPerDomain = new TabRelationshipsPerDomain(domainName, this.alLinkTypes);
     }
     
-    //public TabRelationshipsPerDomain getTabRelationshipsPerDomain() {
-    //    return mTabRelationshipsPerDomain;
+    //public TabDomainProperties getTabDomainProperties() {
+    //    return mTabDomainProperties;
     //}
 }

@@ -37,6 +37,7 @@ import org.w3c.dom.DOMException;
 public class MultiDomainModel {
     private final String mTagConfiguration = "Configuration";
     private final String mTagName = "name";
+    private final String mTagPlugin = "plugin";
     private final String mTagDatabase = "database";
     private final String mTagAppServer = "appserver";
     private final String mTagDateFormat = "dateformat";
@@ -44,6 +45,7 @@ public class MultiDomainModel {
     private final String mTagDomain = "domain";
     private final String mTagSourceDomain = "source-domain";
     private final String mTagTargetDomain = "target-domain";
+    private final String mTagDescription = "description";
     private final String mTagRelationship  = "relationship";
     private final String mTagHierarchy = "hierarchy";
     private final String mTagGroup = "group";
@@ -287,8 +289,12 @@ public class MultiDomainModel {
                         linkType.sourceDomain = getAttributeName(nl.item(i));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.targetDomain = getAttributeName(nl.item(i));
+                    } else if (mTagPlugin.equals(((Element) nl.item(i)).getTagName())) {
+                        linkType.plugin = getAttributeName(nl.item(i));
                     } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.direction = Utils.getStrElementValue(nl.item(i));
+                    } else if (mTagDescription.equals(((Element) nl.item(i)).getTagName())) {
+                        linkType.description = Utils.getStrElementValue(nl.item(i));
                     } else if (mTagPredefinedAttributes.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.setFixedAttributes(parseAttributes(nl.item(i)));
                     } else if (mTagExtendedAttributes.equals(((Element) nl.item(i)).getTagName())) {

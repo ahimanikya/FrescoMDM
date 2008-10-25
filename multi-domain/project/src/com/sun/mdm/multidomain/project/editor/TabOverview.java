@@ -33,6 +33,7 @@ import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
+import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.Attribute;
 /**
@@ -45,7 +46,7 @@ public class TabOverview extends javax.swing.JPanel {
     private ArrayList <LinkType> mAlLinkTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
     /** Creates new form TabOverview */
-    public TabOverview(ArrayList <DomainNode> alDomainNodes) {
+    public TabOverview(ArrayList <DomainNode> alDomainNodes, ArrayList <LinkBaseNode> alLinkNodes) {
         initComponents();
         mAlDomainNodes = alDomainNodes;
         jComboBoxAllDomains.removeAllItems();
@@ -204,6 +205,8 @@ public class TabOverview extends javax.swing.JPanel {
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxAllDomains.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
+        //ToDo get properties panel from domainNode and present it
+        
         mAlLinkTypes = domainNode.getLinkTypes();
         ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
         if (jComboBoxAssociatedDomains.getItemCount() > 0) {
