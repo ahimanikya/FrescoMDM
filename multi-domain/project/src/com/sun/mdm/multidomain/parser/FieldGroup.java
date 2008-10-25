@@ -15,7 +15,7 @@ public class FieldGroup {
     
     private ArrayList<FieldRef> mFieldRefs = new ArrayList<FieldRef>();
     
-    public ArrayList<FieldRef> getFeildRefs() {
+    public ArrayList<FieldRef> getFieldRefs() {
         return this.mFieldRefs;
     }
     

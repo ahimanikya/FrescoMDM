@@ -62,7 +62,7 @@ public class TabDomainView extends javax.swing.JPanel {
         if (domain.getRecordIDFields().size() == 0) {
             fieldList = new ArrayList<FieldGroup.FieldRef>();
         } else {
-            fieldList = domain.getRecordIDFields().get(0).getFeildRefs();
+            fieldList = domain.getRecordIDFields().get(0).getFieldRefs();
         }
         
         TableModelRecordId recordIdModel = new TableModelRecordId(fieldList);

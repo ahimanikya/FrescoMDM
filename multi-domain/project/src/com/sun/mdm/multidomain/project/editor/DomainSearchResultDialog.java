@@ -576,7 +576,7 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 
         TableModelField(FieldGroup fieldGroup) {
             mFieldGroup = fieldGroup;
-            fieldRows = fieldGroup.getFeildRefs();
+            fieldRows = fieldGroup.getFieldRefs();
         }
 
         public int getColumnCount() {

@@ -344,7 +344,7 @@ public class MultiDomainWebManager {
             Element elmRecordID = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_ID);
             if (domain.getRecordIDFields().size() > 0) {
                 FieldGroup group = domain.getRecordIDFields().get(0);
-                for (FieldGroup.FieldRef field : group.getFeildRefs()) {
+                for (FieldGroup.FieldRef field : group.getFieldRefs()) {
                     Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
                     elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
                     elmRecordID.appendChild(elmField);
@@ -364,7 +364,7 @@ public class MultiDomainWebManager {
     private void getFieldGroup (ArrayList<FieldGroup> fieldGroups, Document xmlDoc, Node parent, String elmName){
         for (FieldGroup fieldGroup : fieldGroups) {
             Element elmGroup = xmlDoc.createElement(elmName);
-            ArrayList<FieldGroup.FieldRef> fields = fieldGroup.getFeildRefs();
+            ArrayList<FieldGroup.FieldRef> fields = fieldGroup.getFieldRefs();
             for (FieldGroup.FieldRef field : fields) {
                 Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
                 elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));

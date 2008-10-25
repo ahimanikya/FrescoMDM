@@ -873,7 +873,7 @@ private void onRemoveParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
 
         TableModelField(FieldGroup fieldGroup) {
             mFieldGroup = fieldGroup;
-            fieldRows = fieldGroup.getFeildRefs();
+            fieldRows = fieldGroup.getFieldRefs();
         }
 
         public int getColumnCount() {

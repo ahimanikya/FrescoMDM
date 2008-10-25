@@ -497,7 +497,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
 
         TableModelField(FieldGroup fieldGroup) {
             mFieldGroup = fieldGroup;
-            fieldRows = fieldGroup.getFeildRefs();
+            fieldRows = fieldGroup.getFieldRefs();
         }
 
         public int getColumnCount() {
