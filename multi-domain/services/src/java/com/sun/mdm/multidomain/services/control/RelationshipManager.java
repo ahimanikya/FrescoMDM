@@ -55,6 +55,8 @@ import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.util.Localizer;
@@ -331,6 +333,53 @@ public class RelationshipManager {
         rts.add(rt5);   
         rts.add(rt6);                           
     }
+    
+    public List<DomainRelationshipDefinitionObject> getDomainRelationshipDefinitionObjects(String domain) 
+        throws ServiceException {
+        List<DomainRelationshipDefinitionObject> types = new ArrayList<DomainRelationshipDefinitionObject>();
+        try {
+            List<RelationshipType> typeList = getTypes(domain);
+            for(RelationshipType type : typeList) {
+                String key = null;
+                if (domain.equals(type.getSourceDomain())) {
+                    key = type.getTargetDomain();
+                } else if (domain.equals(type.getTargetDomain())) {
+                    key = type.getSourceDomain();                        
+                } 
+                int index = types.indexOf(new DomainRelationshipDefinitionObject(key));
+                if(index == - 1) {
+                  DomainRelationshipDefinitionObject value = new DomainRelationshipDefinitionObject(key);
+                  types.add(value);  
+                  index = types.indexOf(value);
+                } 
+                DomainRelationshipDefinitionObject value = types.get(index);
+                value.add(type);                
+            }
+        } catch(ServiceException sex) {
+            throw sex;
+        }
+        return types;
+    }
+    
+    public DomainRelationshipObject searchDomainRelationshipObjects(DomainSearch domainSearch)
+        throws ServiceException {
+        DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
+        try {
+            MultiDomainSearchOption mdSearchOption = QueryBuilder.buildMultiDomainSearchOption(domainSearch);            
+            MultiDomainSearchOptions mdSearchOptions = new MultiDomainSearchOptions();            
+            //TBD mdSearchOptions.setDomainSearchOption(domainSearch.getName(),mdSearchOption);
+            MultiDomainSearchCriteria mdSearchCriteria = new MultiDomainSearchCriteria();
+            PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);            
+            domainRelationshipObject = ViewHelper.buildRelationshipView(pages, domainSearch.getName());
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch(UserException uex) {
+            throw new ServiceException(uex);
+        }        
+        return domainRelationshipObject;
+    }    
     
     public List<RelationshipView> searchRelationships(DomainSearch sourceDomainSearch, 
                                                       DomainSearch targetDomainSearch, 
