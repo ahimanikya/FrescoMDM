@@ -50,6 +50,8 @@ import com.sun.mdm.multidomain.parser.MiObject;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
+import com.sun.mdm.multidomain.project.editor.TabDomainSearch;
+import com.sun.mdm.multidomain.project.editor.TabDomainView;
 //import com.sun.mdm.multidomain.project.editor.TabDomainProperties;
 
 /**
@@ -66,6 +68,9 @@ public class DomainNode extends AbstractNode {
     private ArrayList <String> alAssociatedDomains = new ArrayList();
     private ArrayList <LinkType> alLinkTypes = new ArrayList();
     //TabDomainProperties mTabDomainProperties = null;
+    EditorMainApp mEditorMainApp;
+    TabDomainSearch mTabDomainSearch;
+    TabDomainView mTabDomainView;
     File mSelectedDomain = null;
     MIQueryBuilder mMIQueryBuilder = null;
     
@@ -99,9 +104,10 @@ public class DomainNode extends AbstractNode {
      * @param selectedDomain
      * @param ArrayList <LinkType> alLinkTypes
      */
-    public DomainNode(String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <LinkType> alLinkTypes) {
+    public DomainNode(EditorMainApp editorMainApp, String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <LinkType> alLinkTypes) {
         super(Children.LEAF);
         setName(domainName);
+        mEditorMainApp = editorMainApp;
         mSelectedDomain = selectedDomain;
         this.alAssociatedDomains = alAssociatedDomains;
         
@@ -241,10 +247,20 @@ public class DomainNode extends AbstractNode {
      */
     public void loadLinkTypes(String domainName, ArrayList <LinkType> alLinkTypes) {
         this.alLinkTypes = alLinkTypes;
-        //mTabRelationshipsPerDomain = new TabRelationshipsPerDomain(domainName, this.alLinkTypes);
     }
     
-    //public TabDomainProperties getTabDomainProperties() {
-    //    return mTabDomainProperties;
-    //}
+    public TabDomainSearch getDoaminsTab(boolean bRefresh) {
+        if (bRefresh || mTabDomainSearch == null) {
+            mTabDomainSearch = new TabDomainSearch(mEditorMainApp, mEditorMainApp.getRelationshipWebManager().getDomains());
+        }
+        return mTabDomainSearch;
+    }
+    
+    public TabDomainView getDomainViewTab(boolean bRefresh) {
+        if (bRefresh || mTabDomainView == null) {
+            mTabDomainView = new TabDomainView(mEditorMainApp, mEditorMainApp.getRelationshipWebManager().getDomains());
+        }
+        
+        return mTabDomainView;
+    }
 }

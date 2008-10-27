@@ -42,12 +42,14 @@ import com.sun.mdm.multidomain.parser.Attribute;
  */
 public class TabOverview extends javax.swing.JPanel {
     private final String ALL_DOMAINS = org.openide.util.NbBundle.getMessage(TabOverview.class, "All_Domains");
+    EditorMainPanel mEditorMainPanel;
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <LinkType> mAlLinkTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
     /** Creates new form TabOverview */
-    public TabOverview(ArrayList <DomainNode> alDomainNodes, ArrayList <LinkBaseNode> alLinkNodes) {
+    public TabOverview(EditorMainPanel editorMainPanel, ArrayList <DomainNode> alDomainNodes, ArrayList <LinkBaseNode> alLinkNodes) {
         initComponents();
+        mEditorMainPanel = editorMainPanel;
         mAlDomainNodes = alDomainNodes;
         jComboBoxAllDomains.removeAllItems();
         jComboBoxAssociatedDomains.removeAllItems();
@@ -185,28 +187,30 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneLinkTypes.setViewportView(jTableRelationshipTypes);
 
         add(jScrollPaneLinkTypes);
-        jScrollPaneLinkTypes.setBounds(10, 90, 390, 150);
+        jScrollPaneLinkTypes.setBounds(10, 90, 370, 150);
 
         add(jComboBoxAllDomains);
         jComboBoxAllDomains.setBounds(120, 30, 110, 22);
 
         jButtonAddRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         add(jButtonAddRelationshipType);
-        jButtonAddRelationshipType.setBounds(190, 240, 70, 23);
+        jButtonAddRelationshipType.setBounds(170, 240, 70, 23);
 
         jButtonDeleteRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         add(jButtonDeleteRelationshipType);
-        jButtonDeleteRelationshipType.setBounds(260, 240, 71, 23);
+        jButtonDeleteRelationshipType.setBounds(240, 240, 71, 23);
 
         jButtonEdit.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Edit")); // NOI18N
         add(jButtonEdit);
-        jButtonEdit.setBounds(330, 240, 70, 23);
+        jButtonEdit.setBounds(310, 240, 70, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxAllDomains.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
-        //ToDo get properties panel from domainNode and present it
+        
+        //get properties panel from domainNode and present it
+        mEditorMainPanel.loadDomainProperties(domainNode);
         
         mAlLinkTypes = domainNode.getLinkTypes();
         ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();

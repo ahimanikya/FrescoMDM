@@ -69,7 +69,7 @@ public class EditorMainApp {
      * this is a singleton
      */
     private MultiDomainApplication mMultiDomainApplication;
-    //private EditorMainApp mInstance;
+    private static EditorMainApp mInstance;
     private ObjectTopComponent mObjectTopComponent = null;
     private static Map mMapInstances = new HashMap();  // projName, instance
     private Map mMapDomainObjectXmls = new HashMap();  // domainName, FileObject of object.xml
@@ -101,11 +101,11 @@ public class EditorMainApp {
      * @return EditorMainApp instance
      */
     public static EditorMainApp createInstance(String instanceName) {
-        EditorMainApp instance = (EditorMainApp) mMapInstances.get(instanceName);
-        if (instance == null) {
-            instance = new EditorMainApp(instanceName);
+        mInstance = (EditorMainApp) mMapInstances.get(instanceName);
+        if (mInstance == null) {
+            mInstance = new EditorMainApp(instanceName);
         }
-        return instance;
+        return mInstance;
     }
 
     /**
@@ -123,8 +123,8 @@ public class EditorMainApp {
      * @return EditorMainApp instance
      */
     public static EditorMainApp getInstance(String instanceName) {
-        EditorMainApp instance = (EditorMainApp) mMapInstances.get(instanceName);
-        return instance;
+        mInstance = (EditorMainApp) mMapInstances.get(instanceName);
+        return mInstance;
     }
         
     private void loadLinks() {
@@ -177,7 +177,7 @@ public class EditorMainApp {
                         mMapDomainMidmXmls.put(domainName, midmXml);
                         ArrayList <String> alAssociatedDomains = this.mMultiDomainModel.getAssociatedDomains(domainName);
                         ArrayList <LinkType> alLinkTypes = this.mMultiDomainModel.getLinkTypesByDomain(domainName);
-                        DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(domain), alAssociatedDomains, alLinkTypes);
+                        DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(domain), alAssociatedDomains, alLinkTypes);
                         mMapDomainNodes.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
                     }
@@ -238,7 +238,7 @@ public class EditorMainApp {
                 mMapDomainObjectXmls.put(domainName, objectXml);
                 mMapDomainQueryXmls.put(domainName, queryXml);
                 mMapDomainMidmXmls.put(domainName, midmXml);
-                DomainNode domainNode = new DomainNode(domainName, FileUtil.toFile(newDomainFolder), null, null);
+                DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToCanvas(domainNode, -1);
             } catch (IOException ex) {
@@ -447,16 +447,8 @@ public class EditorMainApp {
         return mMultiDomainApplication.getMultiDomainModel(refresh);
     }
 
-    public MultiDomainWebManager getRelationshipWebManager(String xml) {
-        MultiDomainWebManager relationshipWebManager = null;
-        try {
-            InputStream objectdef = new ByteArrayInputStream(xml.getBytes());
-            InputSource source = new InputSource(objectdef);
-            relationshipWebManager = com.sun.mdm.multidomain.parser.Utils.parseMultiDomainWebManager(source);
-        } catch (Exception ex) {
-            displayError(ex);
-        }
-        return relationshipWebManager;
+    public MultiDomainWebManager getRelationshipWebManager() {
+        return mMultiDomainApplication.getMultiDomainWebManager(false);
     }
     
     public void enableSaveAction(boolean flag) {

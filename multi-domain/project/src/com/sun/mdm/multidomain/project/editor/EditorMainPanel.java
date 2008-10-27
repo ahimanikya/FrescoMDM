@@ -105,8 +105,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             "MSG_TAB_GROUP");
     static final String TAB_CATEGORY = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_CATEGORY");
-    static final String TAB_WEB_MANAGER = NbBundle.getMessage(EditorMainPanel.class,
-            "MSG_TAB_WEB_MANAGER");
+    static final String TAB_WEB_MANAGER_Domain_VIEW = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_WEB_MANAGER_Domain_VIEW");
+    static final String TAB_WEB_MANAGER_Domain_SEARCH = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_WEB_MANAGER_Domain_SEARCH");
 
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
@@ -147,17 +149,18 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "TITLE_DefineRelationships"));
 
         this.add(createToolBar(), BorderLayout.PAGE_START);
-        // ToDo load domains etc
-        // Read MultiDomainModel
-        // Populate Model structures
-        // Populate canvas with DomainNodes (EditorMainApp has a map for DomainNodes)
         JSplitPane splitPane = createSplitPane(); // Put tree and table in a split pane splitPane
-
         this.add(splitPane, BorderLayout.CENTER);
     }
-
     
     private void addListeners() {
+    }
+    
+    public void loadDomainProperties(DomainNode currentDomainNode) {
+        mPropertiesTabbedPane.removeAll();
+        mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_VIEW, currentDomainNode.getDomainViewTab(true));
+        mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_SEARCH, currentDomainNode.getDoaminsTab(true));
+        mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
     
     private JSplitPane createSplitPane() {
@@ -177,45 +180,22 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //if (node != null) {
         //    tab = node.getTabListRelationshipTypes();
         //}
+        mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
+                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                                    NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
         
         ArrayList <DomainNode> alDomainNodes = mEditorMainApp.getDomainNodes();
-        //DomainNode currentDomainNode = null; // use this to load web tabs for domain
-        //LinkType currentLinkType = null;
-        //if (alDomainNodes != null && alDomainNodes.size() > 0) {
-        //    currentDomainNode = alDomainNodes.get(0);
-        //    ArrayList <LinkType> alLinkTypes = currentDomainNode.getLinkTypes();
-        //    if (alLinkTypes != null && alLinkTypes.size() > 0) {
-        //        currentLinkType = alLinkTypes.get(0);
-        //    }
-        //}
-        mTabOverview = new TabOverview(alDomainNodes,  mEditorMainApp.getLinkNodes());
+        DomainNode currentDomainNode = null; // use this to load web tabs for domain
+        if (alDomainNodes != null && alDomainNodes.size() > 0) {
+            currentDomainNode = alDomainNodes.get(0);
+            loadDomainProperties(currentDomainNode);
+        }
+        mTabOverview = new TabOverview(this, alDomainNodes,  mEditorMainApp.getLinkNodes());
         JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 this.mTabOverview, this.canvas);
         lefSplitPane.setOneTouchExpandable(true);
         lefSplitPane.setDividerLocation(400);
-        
-        //javax.swing.JPanel defPanel = null;
-        //String defTitle = TAB_RELATIONSHIP;
-        //if (currentLinkType != null) {
-        //    if (currentLinkType.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
-        //        defPanel = new TabRelationshipDef(currentLinkType);
-        //   } else if (currentLinkType.getType().equals(LinkType.TYPE_HIERARCHY)) {
-        //        defTitle = TAB_HIERARCHY;
-        //        defPanel = new TabHierarchyDef(currentLinkType);
-        //    }
-        //}
-        
-        if (webManagerPanel == null) {
-            webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
-        }
-        //mPropertiesTabbedPane.add(defTitle, defPanel);
-        mPropertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
-        
-        mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
-                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                    NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
-        mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
-        
+                
         JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 lefSplitPane, mPropertiesScrollPane);
         mainSplitPane.setOneTouchExpandable(true);
