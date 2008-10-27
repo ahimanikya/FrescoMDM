@@ -24,12 +24,15 @@ package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;     
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject;
 
 /**
  * RelationshipTypeHandler class.
@@ -68,6 +71,17 @@ public class RelationshipTypeHandler {
         return types;
     }
 
+    public List<DomainRelationshipDefinitionObject> getDomainRelationshipDefinitionObjects(String domain)             
+        throws ServiceException {
+        List<DomainRelationshipDefinitionObject> relationshipDefs = null;
+        try {
+            relationshipDefs = relationshipManager.getDomainRelationshipDefinitionObjects(domain);
+        } catch(ServiceException sex) {
+            throw sex;
+        }
+        return relationshipDefs;
+    }
+    
         /**
      * Get all relationshiptypes for the given domain name.
      * @param domain Domain name.

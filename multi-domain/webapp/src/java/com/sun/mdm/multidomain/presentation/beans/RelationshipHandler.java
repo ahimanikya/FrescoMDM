@@ -31,6 +31,7 @@ import com.sun.mdm.multidomain.services.model.RelationshipSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
@@ -60,6 +61,10 @@ public class RelationshipHandler {
                                                        relationshipSearch);
         
     }
+    public DomainRelationshipObject searchDomainRelationshipObjects(DomainSearch domainSearch)
+        throws ServiceException {
+        return relationshipManager.searchDomainRelationshipObjects(domainSearch);        
+    }        
     public RelationshipComposite getRelationship(RelationshipView relationship)
         throws ServiceException {   
         return relationshipManager.getRelationship(relationship);
