@@ -44,7 +44,7 @@ it's Domain on the Relationship Tree. </dd></dl>
 <h2>Implementation Details</h2>
 <h3><a href="ManRelbyRecSB.html">Story Boards.
 &nbsp;View this story board to see how the following screens
-interact.</a></h3><br><span class="note-highlight">Note: The story board shows the flow not the actual look of the screen.</span>
+interact.</a></h3><br><span class="note-highlight"><span style="font-weight: bold; font-style: italic;">Note</span>: The story board shows the flow not the actual look of the screen.</span>
 <br>
 <br>
 <h2>Screens</h2>
@@ -98,7 +98,12 @@ record&nbsp;Centerpoint, Owns Offices was expanded and the record
 <br>
 <img style="width: 926px; height: 736px;" alt="" src="../attach/RelByRecordS3.png"><br>
 <br>
-<h4 style="color: rgb(51, 51, 255);">Updates Needed<br>
+<h4 style="color: rgb(51, 51, 255);"><br></h4><h4><br>
+<span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
+after the Dr. George Karlin was reselected followed and the second tree was shown by selecting Rearrange.</span></h4><br>The second tree shows <span style="font-weight: bold;">all</span>
+the records in the originally selected domain iregardless of if they
+have relationships to them or not. &nbsp;The records can be further
+expanded to see their relationships. <br><br><img style="width: 967px; height: 565px;" alt="" src="../attach/RelByRecordS4.png">&nbsp;<span class="note-highlight" style="font-weight: bold; font-style: italic;"></span><h4 style="color: rgb(51, 51, 255);"></h4><h4 style="color: rgb(51, 51, 255);">Updates Needed<br>
 </h4>
 <ul>
 <li>A Replace action that is only available when the Reassign tree is
@@ -160,10 +165,9 @@ Here is an example of what a simple implementation of &nbsp;too
 many nodes to show might look like<br><br>Notes: &nbsp;Show already selected nodes first. &nbsp; May also want to add filtering and search to this dialog. <br><br><img style="width: 499px; height: 350px;" alt="" src="../attach/TreeTooManyRecords.png"><br><br><br>This
 still leaves the problem of what to do if the user selects too many
 nodes from this pop up window or too many nodes have been shown on the
-tree. &nbsp;In this case we would revert back to a single more...&nbsp;<br><br><br><br><br><br>
-</li>
+tree. &nbsp;In this case we would revert back to a single more with the selected nodes shown on top...&nbsp;<br><br><br></li>
 </ul>
-<br><br>
+<br>
 <h4><span style="color: rgb(0, 102, 0);">Organization
 on tree</span></h4>
 <br>
@@ -279,17 +283,14 @@ Tree using domains: Customers, Accounts, Locations</span>
 </ul>
 <br><h4><span style="color: rgb(0, 102, 0);">Alternate
 to Tree Look and Feel</span></h4>
-<br>
-Go
-back to the box look as shown on the Story Board and add a "Make
-Current Record" option that would switch the current node to the
-selected node. <span style="font-weight: bold;"></span><br>
-<br>
-The user could navigate back to the original record as it would be
+<br>This shows the original look and feel where only relationships to the original record are shown. <br>
+<br>Drill down for other records could be supported by providing an
+additional 'make current' selection. The user could navigate back to
+the original record as it would be
 shown in one of the relationships in the boxes. <br>
 <br>
 To see the&nbsp;<a href="ManRelByRecTable.html">Table
-Look and Feel</a> click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>.
+Look and Feel</a> for maintain by relationships click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>.
 <br><br><br><br>
 <h3>Add Records to Relationship<br>
 </h3>
@@ -371,7 +372,7 @@ currently selected nodes
 <dl>
 <dt>&nbsp; &nbsp;</dt>
 </dl>
-<h2>Alternate Look of tree with "Re-assign&gt;&gt;"
+<h2>Look of tree with "Re-assign&gt;&gt;"
 option</h2>
 <br>
 <br>
