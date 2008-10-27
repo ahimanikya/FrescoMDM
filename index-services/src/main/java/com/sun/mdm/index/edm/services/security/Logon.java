@@ -36,6 +36,7 @@
 
 package com.sun.mdm.index.edm.services.security;
 
+import com.sun.mdm.index.ejb.master.MasterController;
 import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.control.UserProfile;
 import java.io.IOException;
@@ -110,12 +111,19 @@ public class Logon {
             }
             // Obtain the length of the EUID fields from the MasterController
             int euidLength = 32;
+            MasterController mc = null;
+            
             try {
-                
-                euidLength 
-                    = ((Integer) QwsController.getMasterController()
-                                              .getConfigurationValue("EUID_LENGTH"))
-                                              .intValue();
+                mc = QwsController.getMasterController();
+            } catch (Exception e) {
+                if (e instanceof UserException) {          
+                    throw new Exception(mLocalizer.t("SRS510: Failed to obtain a connection to the " +
+                                                     "MasterController: {0}", 
+                                                    e.getMessage()));
+                }
+            }
+            try {
+                euidLength = ((Integer) mc.getConfigurationValue("EUID_LENGTH")).intValue();
             } catch (Exception e) {
                 // UserException doesn't need a stack trace, and ProcessingException
                 // stack trace is already logged in the MC.
