@@ -179,36 +179,36 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //}
         
         ArrayList <DomainNode> alDomainNodes = mEditorMainApp.getDomainNodes();
-        DomainNode currentDomainNode = null; // use this to load web tabs for domain
-        LinkType currentLinkType = null;
-        if (alDomainNodes != null && alDomainNodes.size() > 0) {
-            currentDomainNode = alDomainNodes.get(0);
-            ArrayList <LinkType> alLinkTypes = currentDomainNode.getLinkTypes();
-            if (alLinkTypes != null && alLinkTypes.size() > 0) {
-                currentLinkType = alLinkTypes.get(0);
-            }
-        }
+        //DomainNode currentDomainNode = null; // use this to load web tabs for domain
+        //LinkType currentLinkType = null;
+        //if (alDomainNodes != null && alDomainNodes.size() > 0) {
+        //    currentDomainNode = alDomainNodes.get(0);
+        //    ArrayList <LinkType> alLinkTypes = currentDomainNode.getLinkTypes();
+        //    if (alLinkTypes != null && alLinkTypes.size() > 0) {
+        //        currentLinkType = alLinkTypes.get(0);
+        //    }
+        //}
         mTabOverview = new TabOverview(alDomainNodes,  mEditorMainApp.getLinkNodes());
         JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 this.mTabOverview, this.canvas);
         lefSplitPane.setOneTouchExpandable(true);
         lefSplitPane.setDividerLocation(400);
         
-        javax.swing.JPanel defPanel = null;
-        String defTitle = TAB_RELATIONSHIP;
-        if (currentLinkType != null) {
-            if (currentLinkType.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
-                defPanel = new TabRelationshipDef(currentLinkType);
-            } else if (currentLinkType.getType().equals(LinkType.TYPE_HIERARCHY)) {
-                defTitle = TAB_HIERARCHY;
-                defPanel = new TabHierarchyDef(currentLinkType);
-            }
-        }
+        //javax.swing.JPanel defPanel = null;
+        //String defTitle = TAB_RELATIONSHIP;
+        //if (currentLinkType != null) {
+        //    if (currentLinkType.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
+        //        defPanel = new TabRelationshipDef(currentLinkType);
+        //   } else if (currentLinkType.getType().equals(LinkType.TYPE_HIERARCHY)) {
+        //        defTitle = TAB_HIERARCHY;
+        //        defPanel = new TabHierarchyDef(currentLinkType);
+        //    }
+        //}
         
         if (webManagerPanel == null) {
             webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
         }
-        mPropertiesTabbedPane.add(defTitle, defPanel);
+        //mPropertiesTabbedPane.add(defTitle, defPanel);
         mPropertiesTabbedPane.add(TAB_WEB_MANAGER, webManagerPanel);
         
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
