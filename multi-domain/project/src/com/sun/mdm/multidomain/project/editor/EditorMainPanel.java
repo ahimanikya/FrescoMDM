@@ -196,12 +196,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         
         javax.swing.JPanel defPanel = null;
         String defTitle = TAB_RELATIONSHIP;
-        if (currentLinkType.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
-            defPanel = new TabRelationshipDef(currentLinkType);
-        } else if (currentLinkType.getType().equals(LinkType.TYPE_HIERARCHY)) {
-            defTitle = TAB_HIERARCHY;
-            defPanel = new TabHierarchyDef(currentLinkType);
+        if (currentLinkType != null) {
+            if (currentLinkType.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
+                defPanel = new TabRelationshipDef(currentLinkType);
+            } else if (currentLinkType.getType().equals(LinkType.TYPE_HIERARCHY)) {
+                defTitle = TAB_HIERARCHY;
+                defPanel = new TabHierarchyDef(currentLinkType);
+            }
         }
+        
         if (webManagerPanel == null) {
             webManagerPanel = new TabRelationshipWebManager(mEditorMainApp, mMultiDomainApplication.getMultiDomainWebManager(true));
         }
