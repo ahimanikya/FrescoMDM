@@ -55,7 +55,7 @@ How to use the solution.
 
         4. Make sure that the GlassFish server is started.
 
-	5. Right click on the USA Patient project and select 
+	5. Right click on the AUSPatient project and select 
            "Generate Master Index Files".
 
 	6. Build and deploy the AUSPatient project.
