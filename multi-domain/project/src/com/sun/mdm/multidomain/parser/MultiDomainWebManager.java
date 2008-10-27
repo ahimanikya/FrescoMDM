@@ -108,7 +108,7 @@ public class MultiDomainWebManager {
         for (RelationshipType relType : mRelationshipTypes) {
             //RelationshipType relType = (RelationshipType) linkType;
             String relTypeName = relType.getName();
-            String destination = relType.getDestionation();
+            String destination = relType.getTargetDomain();
             String source = relType.getSource();
             String displayName = relType.getDisplayName();
             Element relTypeElm = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPE);

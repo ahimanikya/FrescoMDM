@@ -94,7 +94,7 @@ import java.util.ArrayList;
                 relationshipType = (RelationshipType) alRelationshipTypes.get(i);
                 if (relationshipType.getName().equals(name) &&
                     relationshipType.getSource().equals(sourceDomain) &&
-                    relationshipType.getDestionation().equals(targetDomain)) {
+                    relationshipType.getTargetDomain().equals(targetDomain)) {
                     break; 
                 }
             }

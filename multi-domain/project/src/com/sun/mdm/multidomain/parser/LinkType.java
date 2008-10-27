@@ -64,11 +64,6 @@ public class LinkType {
         this.targetDomain = targetDomain;
         this.mRelFieldRefs = fieldRefs;
     }
-    
-
-    public String getDestionation() {
-        return targetDomain;
-    }
 
     public String getSource() {
         return sourceDomain;

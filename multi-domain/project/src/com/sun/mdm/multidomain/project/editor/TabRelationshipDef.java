@@ -467,9 +467,17 @@ public class TabRelationshipDef extends javax.swing.JPanel {
                         case iColName:
                             return singleRow.getName();
                         case iColColumnName:
+                            return singleRow.getColumnName();
+                        case iColDataType:
                             return singleRow.getDataType();
                         case iColDefaultValue:
                             return singleRow.getDefaultValue();
+                        case iColSearchable:
+                            return singleRow.getSearchable();
+                        case iColRequired:
+                            return singleRow.getRequired();
+                        case iColAttributeID:
+                            return singleRow.getAttributeID();
                         default:
                             return null;
                     }
@@ -501,10 +509,19 @@ public class TabRelationshipDef extends javax.swing.JPanel {
                             singleRow.setName((String) value);                            
                             break;
                         case iColColumnName:
-                            singleRow.setDataType((String) value);                            
+                            singleRow.setColumnName((String) value);                            
                             break;
                         case iColDefaultValue:
                             singleRow.setDefaultValue((String) value);                            
+                            break;
+                        case iColSearchable:
+                            singleRow.setSearchable((String) value);
+                            break;
+                        case iColRequired:
+                            singleRow.setRequired((String) value);
+                            break;
+                        case iColAttributeID:
+                            singleRow.setAttributeID((String) value);
                             break;
                         default:
                             return;
