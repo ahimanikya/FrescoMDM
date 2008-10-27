@@ -100,7 +100,7 @@ public class TabOverview extends javax.swing.JPanel {
                     if (bAdd) {
                         jComboBoxAssociatedDomains.addItem(domainWithLinks);
                     }
-                    LinkTypeRow r = new LinkTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
+                    LinkTypeRow r = new LinkTypeRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
                     rows.add(r);
                 }
             }
@@ -127,9 +127,10 @@ public class TabOverview extends javax.swing.JPanel {
                     {
                         int iSelectedRow = jTableRelationshipTypes.getSelectedRow();
                         TableModelLinkType model = (TableModelLinkType) jTableRelationshipTypes.getModel();
+                        String linkType = (String) model.getValueAt(iSelectedRow,  model.iColLinkType);
                         String linkName = (String) model.getValueAt(iSelectedRow,  model.iColLinkName);
-                        String relationshipSourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
-                        String relationshipTargetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
+                        String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
+                        String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
                         }
                     }
             });
@@ -184,22 +185,22 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneLinkTypes.setViewportView(jTableRelationshipTypes);
 
         add(jScrollPaneLinkTypes);
-        jScrollPaneLinkTypes.setBounds(10, 90, 310, 150);
+        jScrollPaneLinkTypes.setBounds(10, 90, 390, 150);
 
         add(jComboBoxAllDomains);
         jComboBoxAllDomains.setBounds(120, 30, 110, 22);
 
         jButtonAddRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         add(jButtonAddRelationshipType);
-        jButtonAddRelationshipType.setBounds(130, 240, 70, 23);
+        jButtonAddRelationshipType.setBounds(190, 240, 70, 23);
 
         jButtonDeleteRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         add(jButtonDeleteRelationshipType);
-        jButtonDeleteRelationshipType.setBounds(200, 240, 71, 23);
+        jButtonDeleteRelationshipType.setBounds(260, 240, 71, 23);
 
         jButtonEdit.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Edit")); // NOI18N
         add(jButtonEdit);
-        jButtonEdit.setBounds(270, 240, 51, 23);
+        jButtonEdit.setBounds(330, 240, 70, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
@@ -269,7 +270,7 @@ public class TabOverview extends javax.swing.JPanel {
                 associated = (associatedDomain.equals(sourceDomain)) | (associatedDomain.equals(targetDomain));
             }
             if (jComboBoxAssociatedDomains.getSelectedIndex() == 0 || associated) {
-                LinkTypeRow r = new LinkTypeRow(type.getName(), type.getType(), type.getSourceDomain(), type.getTargetDomain());
+                LinkTypeRow r = new LinkTypeRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
                 model.addRow(index++, r);
             }
         }
@@ -289,13 +290,12 @@ public class TabOverview extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     
     class LinkTypeRow {
-
         private String linkName;
         private String type;
         private String sourceDomain;
         private String targetDomain;
 
-        public LinkTypeRow(String linkName, String type, String sourceDomain, String targetDomain) {
+        public LinkTypeRow(String type, String linkName, String sourceDomain, String targetDomain) {
             this.linkName = linkName;
             this.type = type;
             this.sourceDomain = sourceDomain;
@@ -337,14 +337,14 @@ public class TabOverview extends javax.swing.JPanel {
 
     // Table model for Relationship Type
     class TableModelLinkType extends AbstractTableModel {
-        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_RelationshipType_Name"),
-                                         NbBundle.getMessage(TabOverview.class, "LBL_RelationshipType_Type"), 
+        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Link_Type"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Link_Name"),
                                          NbBundle.getMessage(TabOverview.class, "LBL_Source_Domain"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Target_Domain"), 
                                         };
         ArrayList <LinkTypeRow> rows;
-        final static int iColLinkName = 0;
-        final static int iColRelationshipTypeType = 1;
+        final static int iColLinkType = 0;
+        final static int iColLinkName = 1;
         final static int iColSourceDomain = 2;
         final static int iColTargetDomain = 3;
         
@@ -374,7 +374,7 @@ public class TabOverview extends javax.swing.JPanel {
                     switch (col) {
                         case iColLinkName:
                             return singleRow.getLinkName();
-                        case iColRelationshipTypeType:
+                        case iColLinkType:
                             return singleRow.getRelationshipTypeType();
                         case iColSourceDomain:
                            return singleRow.getSourceDomain();
@@ -410,7 +410,7 @@ public class TabOverview extends javax.swing.JPanel {
                         case iColLinkName:
                             singleRow.setLinkName((String) value);                            
                             break;
-                        case iColRelationshipTypeType:
+                        case iColLinkType:
                             singleRow.setRelationshipTypeType((String) value);                            
                             break;
                         case iColSourceDomain:

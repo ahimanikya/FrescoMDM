@@ -115,7 +115,6 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jTextDomain2 = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "MSG_TAB_RELATIONSHIP"))); // NOI18N
-        setLayout(null);
 
         jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Predefined_Attributes"))); // NOI18N
 
@@ -137,9 +136,6 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         });
         jScrollPaneAttributes.setViewportView(jTableFixedAttibutes);
 
-        add(jScrollPaneAttributes);
-        jScrollPaneAttributes.setBounds(10, 180, 550, 200);
-
         jScrollPaneExtendedAttibutes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Extended_Attributes"))); // NOI18N
 
         jTableExtendedAttributes.setModel(new javax.swing.table.DefaultTableModel(
@@ -152,54 +148,88 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         ));
         jScrollPaneExtendedAttibutes.setViewportView(jTableExtendedAttributes);
 
-        add(jScrollPaneExtendedAttibutes);
-        jScrollPaneExtendedAttibutes.setBounds(10, 390, 550, 190);
-
         jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Add")); // NOI18N
-        add(jButtonAddExtendedAttribute);
-        jButtonAddExtendedAttribute.setBounds(380, 590, 90, 23);
 
         jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Remove")); // NOI18N
-        add(jButtonDeleteExtendedAttribute);
-        jButtonDeleteExtendedAttribute.setBounds(470, 590, 80, 23);
 
         jLabelName.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Name")); // NOI18N
-        add(jLabelName);
-        jLabelName.setBounds(20, 20, 70, 20);
-        add(jTextName);
-        jTextName.setBounds(90, 20, 140, 20);
 
         jComboBoxDirection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "---->", "<----", "<--->" }));
         jComboBoxDirection.setPreferredSize(new java.awt.Dimension(55, 22));
         jComboBoxDirection.setVerifyInputWhenFocusTarget(false);
-        add(jComboBoxDirection);
-        jComboBoxDirection.setBounds(240, 50, 60, 20);
 
         jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Plugin")); // NOI18N
-        add(jLabelPlugin);
-        jLabelPlugin.setBounds(260, 20, 50, 20);
-
-        add(jComboBoxPlugin);
-        jComboBoxPlugin.setBounds(310, 20, 150, 20);
 
         jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Description")); // NOI18N
-        add(jLabelDescription);
-        jLabelDescription.setBounds(20, 80, 70, 20);
 
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
-        add(jScrollPane1);
-        jScrollPane1.setBounds(90, 80, 370, 90);
-
         jLabelDomains.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Domains_Colon")); // NOI18N
-        add(jLabelDomains);
-        jLabelDomains.setBounds(20, 50, 60, 20);
-        add(jTextDomain1);
-        jTextDomain1.setBounds(90, 50, 140, 19);
-        add(jTextDomain2);
-        jTextDomain2.setBounds(310, 50, 150, 19);
+
+				org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);         
+				this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jTextName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(30, 30, 30)
+                .add(jLabelPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jComboBoxPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jLabelDomains, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(jTextDomain1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(jComboBoxDirection, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(jTextDomain2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createSequentialGroup()
+                .add(14, 14, 14)
+                .add(jLabelDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 370, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createSequentialGroup()
+                .add(4, 4, 4)
+                .add(jScrollPaneAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 550, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createSequentialGroup()
+                .add(4, 4, 4)
+                .add(jScrollPaneExtendedAttibutes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 550, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createSequentialGroup()
+                .add(374, 374, 374)
+                .add(jButtonAddExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jButtonDeleteExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 80, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelDomains, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextDomain1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxDirection, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextDomain2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(10, 10, 10)
+                .add(jScrollPaneAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 200, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(jScrollPaneExtendedAttibutes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jButtonAddExtendedAttribute)
+                    .add(jButtonDeleteExtendedAttribute)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 

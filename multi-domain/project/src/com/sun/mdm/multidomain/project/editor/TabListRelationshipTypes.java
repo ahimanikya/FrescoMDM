@@ -193,8 +193,8 @@ public class TabListRelationshipTypes extends javax.swing.JPanel {
 
     // Table model for Relationship Type
     class TableModelRelationshipType extends AbstractTableModel {
-        private	String columnNames [] = {NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_RelationshipType_Name"),
-                                         NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_RelationshipType_Type"), 
+        private	String columnNames [] = {NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Link_Name"),
+                                         NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Link_Type"), 
                                          NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Source_Domain"), 
                                          NbBundle.getMessage(TabListRelationshipTypes.class, "LBL_Target_Domain"), 
                                         };
