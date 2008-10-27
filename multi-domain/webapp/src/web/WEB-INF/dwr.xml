@@ -17,6 +17,7 @@
       <include method="addRelationshipType" />            
       <include method="deleteRelationshipType" /> 
       <include method="getRelationshipTypeCount" />
+      <include method="getDomainRelationshipDefinitionObjects" />            
     </create>
 
     <create creator="spring" javascript="RelationshipHandler" scope="session">
@@ -28,7 +29,7 @@
       <include method="addRelationship" />
       <include method="updateRelationship" />
       <include method="deleteRelationship" />
-    
+      <include method="searchDomainRelationshipObjects" />      
     </create>
 
     <create creator="spring" javascript="HierarchyTypeHandler" scope="session">
@@ -53,8 +54,20 @@
         <param name="include" value="name, sourceDomain, targetDomain, attributes" />
     </convert>	
 
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefinitionView">
+        <param name="include" value="name, id, sourceDomain, targetDomain, biDirection" />
+    </convert>	
+
     <convert converter="bean" match="com.sun.mdm.multidomain.association.Attribute">
         <param name="include" value="name" />
+    </convert>	
+
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject">
+        <param name="include" value="name, relationshipDefinitions" />
+    </convert>	
+        
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject">
+        <param name="include" value="domain, primaryObject, relationshipViews" />
     </convert>	
         
     <!-- relationship handling-->    
@@ -89,7 +102,24 @@
     <convert match="com.sun.mdm.multidomain.services.core.ServiceException" converter="exception">
       <param name="include" value="message,lineNumber"/>
     </convert>
+    
     <signatures>
+        <![CDATA[
+            import java.util.List;
+            import java.util.Map;            
+            import com.sun.mdm.multidomain.services.relationship.RelationshipView;            
+            import com.sun.mdm.multidomain.services.relationship.RelationshipDefinitionView;                        
+            import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;            
+            DomainRelationshipObject.setRelationshipViews(Map<RelationshipDefinitionView, List<RelationshipView>> relationshipViews);
+            Map<RelationshipDefinitionView, List<RelationshipView>> DomainRelationshipObject.getRelationshipViews();  
+        ]]>                
+        <![CDATA[
+            import java.util.List;
+            import com.sun.mdm.multidomain.relationship.RelationshipType;
+            import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject;
+            DomainRelationshipDefinitionObject.setRelationshipDefinitions(List<RelationshipType> relationshipDefinitions);
+            List<RelationshipType> DomainRelationshipDefinitionObject.getRelationshipDefinitions();  
+        ]]>        
         <![CDATA[
             import java.util.List;
             import com.sun.mdm.multidomain.association.Attribute;
