@@ -37,14 +37,16 @@ import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.association.AssociationType;
         
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefinitionView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
 import com.sun.mdm.multidomain.services.security.Operations;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
@@ -66,6 +68,43 @@ public class ViewHelper {
     private static MDConfigManager configManager =  MDConfigManager.getInstance();
     private static Operations operations = new Operations();
     
+    public static DomainRelationshipObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) {
+        DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
+        domainRelationshipObject.setDomain(primaryDomain);                
+    
+        MultiObject multiObject =  pages.first();
+        ObjectNode sourceObject = multiObject.getSourceDomainObject();
+        //TBD: configManager.getrecordIdEPathFields(sourceDomain);
+        EPathArrayList sourceRecordIdEPathFields = new EPathArrayList();
+        //TBD: configManager.getrecordIdConfigFields(sourceDomain);
+        List<FieldConfig> sourceRecordIdConfigFields = new ArrayList<FieldConfig>();            
+        String sourceHighLight = buildHighLight(primaryDomain, sourceRecordIdConfigFields, sourceRecordIdEPathFields, sourceObject);
+        ObjectView primaryObject = new ObjectView();
+        primaryObject.setName(sourceObject.pGetTag());
+        //TBD: how to get EUID of sourceObject?
+        //primaryObject.setEUID((String)sourceObject.getValue("EUID"));
+        primaryObject.setHighLight(sourceHighLight);
+        domainRelationshipObject.setPrimaryObject(primaryObject);
+                
+        RelationshipObject[] relationshipObjects = multiObject.getRelationshipObjects();
+        for(RelationshipObject relationshipObject : relationshipObjects) {
+            ObjectNode targetObject = relationshipObject.getTargetObject();
+            Relationship relationship = relationshipObject.getRelationship();
+            
+            //TBD: configManager.getrecordIdEPathFields(targetDomain);
+            EPathArrayList targetRecordIdEPathFields = new EPathArrayList();
+            //TBD: configManager.getrecordIdConfigFields(targetDomain);
+            List<FieldConfig> targetRecordIdConfigFields = new ArrayList<FieldConfig>();            
+            String targetHighLight = buildHighLight(targetObject.pGetTag(), targetRecordIdConfigFields, targetRecordIdEPathFields, targetObject); 
+            
+            RelationshipDefinitionView relationshipDef = buildRelationshipDefinitionView(relationship);
+            RelationshipView relationshipView = buildRelationshipView(relationship, sourceHighLight, targetHighLight);            
+            domainRelationshipObject.addRelationshipView(relationshipDef, relationshipView);
+        }    
+                    
+        return domainRelationshipObject;
+    }
+
     public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages, String sourceDomain, String targetDomain, String relationshipName) {      
         List<RelationshipView> relationships = new ArrayList<RelationshipView>();
         // base on Record-Id configuration
@@ -140,6 +179,17 @@ public class ViewHelper {
         } catch(ObjectException oex) {
         }
         return highLight;
+    }
+
+    public static RelationshipDefinitionView buildRelationshipDefinitionView(Relationship relationship) {   
+        RelationshipDefinitionView relationshipDefinitionView = new RelationshipDefinitionView();        
+        RelationshipType type = (RelationshipType)relationship.getAssociationType();
+        relationshipDefinitionView.setName(type.getName());
+        relationshipDefinitionView.setId(type.getId());
+        relationshipDefinitionView.setSourceDomain(type.getSourceDomain());
+        relationshipDefinitionView.setTargetDomain(type.getTargetDomain());
+        relationshipDefinitionView.setBiDirection(type.getDirection()== RelationshipType.DirectionMode.BIDIRECTIONAL? true : false);        
+        return relationshipDefinitionView;
     }
     
     public static RelationshipView buildRelationshipView(Relationship relationship, String sourceHighLight, String targetHighLight) {   
