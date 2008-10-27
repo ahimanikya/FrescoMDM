@@ -89,9 +89,8 @@ public class AttributeList implements Iterator<Attribute> {
            return e;
         } else {
             throw new NoSuchElementException();
-        }
-       
-    }
+        }       
+    }    
     public void remove() {
         throw new UnsupportedOperationException("not supported optional operation.");    
     } 
