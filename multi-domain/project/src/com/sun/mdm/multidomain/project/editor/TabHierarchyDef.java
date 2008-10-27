@@ -46,10 +46,13 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         this.jTextName.setText(linkType.getName());
         // ToDo Get plugin list
         this.jComboBoxPlugin.insertItemAt(linkType.getPlugin(), 0);
+        this.jComboBoxPlugin.setSelectedIndex(0);
         //this.jComboBoxPlugin.setSelectedItem(linkType.getPlugin());
         //ToDo
         //this.jTextEffectiveFrom.setText(linkType.getEffectiveFrom());
         //this.jTextEffectiveTo.setText(linkType.getEffectiveTo());
+        String description = linkType.getDescription();
+        this.jTextAreaDescription.setText(description);
         
         ArrayList <PredefinedAttributeRow> rowsPredefinedAttribute = new ArrayList();
         TableModelPredefinedAttribute modelPredefinedAttribute = new TableModelPredefinedAttribute(rowsPredefinedAttribute);
@@ -105,7 +108,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jLabelEffectiveTo = new javax.swing.JLabel();
         jTextEffectiveTo = new javax.swing.JTextField();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Attributes"))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
         setLayout(null);
 
         jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Predefined_Attributes"))); // NOI18N
@@ -158,14 +161,14 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         add(jLabelName);
         jLabelName.setBounds(20, 20, 70, 20);
         add(jTextName);
-        jTextName.setBounds(90, 20, 140, 20);
+        jTextName.setBounds(110, 20, 170, 20);
 
         jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Plugin")); // NOI18N
         add(jLabelPlugin);
-        jLabelPlugin.setBounds(240, 20, 50, 20);
+        jLabelPlugin.setBounds(300, 20, 80, 20);
 
         add(jComboBoxPlugin);
-        jComboBoxPlugin.setBounds(310, 20, 150, 20);
+        jComboBoxPlugin.setBounds(380, 20, 180, 20);
 
         jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Description")); // NOI18N
         add(jLabelDescription);
@@ -176,19 +179,19 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextAreaDescription);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(90, 90, 370, 90);
+        jScrollPane1.setBounds(90, 90, 470, 90);
 
         jLabelEffectiveFrom.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_EffectiveFrom")); // NOI18N
         add(jLabelEffectiveFrom);
-        jLabelEffectiveFrom.setBounds(20, 50, 100, 20);
+        jLabelEffectiveFrom.setBounds(20, 50, 90, 20);
         add(jTextEffectiveFrom);
-        jTextEffectiveFrom.setBounds(130, 50, 100, 19);
+        jTextEffectiveFrom.setBounds(110, 50, 170, 19);
 
         jLabelEffectiveTo.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_EffectiveTo")); // NOI18N
         add(jLabelEffectiveTo);
-        jLabelEffectiveTo.setBounds(240, 50, 100, 20);
+        jLabelEffectiveTo.setBounds(300, 50, 80, 20);
         add(jTextEffectiveTo);
-        jTextEffectiveTo.setBounds(340, 50, 120, 19);
+        jTextEffectiveTo.setBounds(380, 50, 180, 19);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -456,9 +459,17 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                         case iColName:
                             return singleRow.getName();
                         case iColColumnName:
+                            return singleRow.getColumnName();
+                        case iColDataType:
                             return singleRow.getDataType();
                         case iColDefaultValue:
                             return singleRow.getDefaultValue();
+                        case iColSearchable:
+                            return singleRow.getSearchable();
+                        case iColRequired:
+                            return singleRow.getRequired();
+                        case iColAttributeID:
+                            return singleRow.getAttributeID();
                         default:
                             return null;
                     }
@@ -490,10 +501,19 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                             singleRow.setName((String) value);                            
                             break;
                         case iColColumnName:
-                            singleRow.setDataType((String) value);                            
+                            singleRow.setColumnName((String) value);                            
                             break;
                         case iColDefaultValue:
                             singleRow.setDefaultValue((String) value);                            
+                            break;
+                        case iColSearchable:
+                            singleRow.setSearchable((String) value);
+                            break;
+                        case iColRequired:
+                            singleRow.setRequired((String) value);
+                            break;
+                        case iColAttributeID:
+                            singleRow.setAttributeID((String) value);
                             break;
                         default:
                             return;
@@ -517,6 +537,18 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             ExtendedAttributeRow row = (ExtendedAttributeRow) rows.get(index);
             return row;
         }
+    }
+
+    public String getPlugin() {
+        return (String) jComboBoxPlugin.getSelectedItem();
+    }
+
+    public String getDescription() {
+        return jTextAreaDescription.getText();
+    }
+
+    public String getHierarchyDefName() {
+        return jTextName.getText();
     }
 
 }

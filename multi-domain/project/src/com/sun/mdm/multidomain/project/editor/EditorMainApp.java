@@ -132,7 +132,7 @@ public class EditorMainApp {
         ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllLinks();
         for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
             LinkType linkType = (LinkType) alLinkTypes.get(i);
-            LinkBaseNode node = new LinkBaseNode(linkType);
+            LinkBaseNode node = new LinkBaseNode(this, linkType);
             this.mAlLinkNodes.add(node);
         }
     }

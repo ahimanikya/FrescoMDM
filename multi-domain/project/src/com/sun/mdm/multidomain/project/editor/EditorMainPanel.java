@@ -67,6 +67,7 @@ import com.sun.mdm.multidomain.project.actions.CreateHierarchyAction;
 import com.sun.mdm.multidomain.project.actions.CreateGroupAction;
 import com.sun.mdm.multidomain.project.actions.CreateCategoryAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
+import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.parser.LinkType;
 
@@ -109,6 +110,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             "MSG_TAB_WEB_MANAGER_Domain_VIEW");
     static final String TAB_WEB_MANAGER_Domain_SEARCH = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_WEB_MANAGER_Domain_SEARCH");
+    static final String TAB_WEB_MANAGER_PAGE_DEFINITIONS = NbBundle.getMessage(EditorMainPanel.class,
+            "MSG_TAB_WEB_MANAGER_PAGE_DEFINITIONS");
+    
+
 
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
@@ -163,6 +168,21 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
     
+    public void loadLinkProperties(LinkBaseNode currentLinkNode) {
+        mPropertiesTabbedPane.removeAll();
+        String title = TAB_RELATIONSHIP;
+        if (currentLinkNode.getType().equals(LinkType.TYPE_HIERARCHY)) {
+            title = TAB_HIERARCHY;
+        } else if (currentLinkNode.getType().equals(LinkType.TYPE_GROUP)) {
+            title = TAB_GROUP;
+        } else if (currentLinkNode.getType().equals(LinkType.TYPE_CATEGORY)) {
+            title = TAB_CATEGORY;
+        }
+        mPropertiesTabbedPane.add(title, currentLinkNode.getLinkDefTab(true));
+        mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentLinkNode.getRelationshipTypesTab(true));
+        mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
+    }
+    
     private JSplitPane createSplitPane() {
         // Put tree and table in a split pane splitPane
         mMultiViewPane = new JScrollPane();
@@ -190,7 +210,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             currentDomainNode = alDomainNodes.get(0);
             loadDomainProperties(currentDomainNode);
         }
-        mTabOverview = new TabOverview(this, alDomainNodes,  mEditorMainApp.getLinkNodes());
+        mTabOverview = new TabOverview(this, mEditorMainApp, alDomainNodes,  mEditorMainApp.getLinkNodes());
         JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 this.mTabOverview, this.canvas);
         lefSplitPane.setOneTouchExpandable(true);

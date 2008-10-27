@@ -82,7 +82,7 @@ public class LinkParentNode extends AbstractNode {
      * @param linkType
      */
     public void addLinkBaseNode(LinkType linkType) {
-        LinkBaseNode linkTypeNode = new LinkBaseNode(linkType);
+        LinkBaseNode linkTypeNode = new LinkBaseNode(mEditorMainApp, linkType);
         alLinkBaseNodes.add(linkTypeNode);
     }
     

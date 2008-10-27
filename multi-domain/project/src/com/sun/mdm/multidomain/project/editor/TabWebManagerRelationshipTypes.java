@@ -7,7 +7,7 @@
 package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;
 import javax.swing.JTable;
@@ -34,7 +34,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         mEditorMainApp = editorMainApp;
         mRelationshipTypes = relationshipTypes;
         initComponents();
-        createLinkTypes();
+        createRelationshipTypes();
         jTxtDisplayOrder.setEditable(false);
         
         /**
@@ -91,7 +91,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 for (RelationshipType relType : mRelationshipTypes) {
                     if (relType.getName().equals(relTypeName)) {
                         //fieldRefs = relType.getRelFieldRefs();
-                        fieldRefs = relType.getExtendedRelFieldRefs();
+                        //fieldRefs = relType.getExtendedRelFieldRefs();
                         break;
                     }
                 }
@@ -138,7 +138,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         }
 
     }
-    private void createLinkTypes() {
+    private void createRelationshipTypes() {
         
         for (RelationshipType relType : mRelationshipTypes) {
             this.jCBRelationshipType.addItem(relType.getName());
@@ -148,7 +148,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             RelationshipType relType = mRelationshipTypes.get(0);
             String relationType = relType.getName();
             //this.jCBRelationshipType.addItem(relationType);
-            createFieldRefs(relType.getExtendedRelFieldRefs());
+            //createFieldRefs(relType.getExtendedRelFieldRefs());
             
         } else {
             ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();

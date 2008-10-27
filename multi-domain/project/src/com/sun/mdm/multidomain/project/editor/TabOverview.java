@@ -43,13 +43,15 @@ import com.sun.mdm.multidomain.parser.Attribute;
 public class TabOverview extends javax.swing.JPanel {
     private final String ALL_DOMAINS = org.openide.util.NbBundle.getMessage(TabOverview.class, "All_Domains");
     EditorMainPanel mEditorMainPanel;
+    EditorMainApp mEditorMainApp;
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <LinkType> mAlLinkTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
     /** Creates new form TabOverview */
-    public TabOverview(EditorMainPanel editorMainPanel, ArrayList <DomainNode> alDomainNodes, ArrayList <LinkBaseNode> alLinkNodes) {
+    public TabOverview(EditorMainPanel editorMainPanel, EditorMainApp editorMainApp, ArrayList <DomainNode> alDomainNodes, ArrayList <LinkBaseNode> alLinkNodes) {
         initComponents();
         mEditorMainPanel = editorMainPanel;
+        mEditorMainApp = editorMainApp;
         mAlDomainNodes = alDomainNodes;
         jComboBoxAllDomains.removeAllItems();
         jComboBoxAssociatedDomains.removeAllItems();
@@ -57,11 +59,14 @@ public class TabOverview extends javax.swing.JPanel {
 
         DomainNode domainNode;
         String domainName;
-        for (int i=0; mAlDomainNodes != null && i < mAlDomainNodes.size(); i++) {
-            domainNode = mAlDomainNodes.get(i);
-            domainName = domainNode.getName();
-            mMapDomainNodes.put(domainName, domainNode);
-            jComboBoxAllDomains.addItem(domainName);
+        if ( mAlDomainNodes != null && mAlDomainNodes.size() > 0) {
+            for (int i=0; i < mAlDomainNodes.size(); i++) {
+                domainNode = mAlDomainNodes.get(i);
+                domainName = domainNode.getName();
+                mMapDomainNodes.put(domainName, domainNode);
+                jComboBoxAllDomains.addItem(domainName);
+            }
+            jComboBoxAllDomains.setSelectedIndex(0);
         }
         
         ArrayList rows = new ArrayList();
@@ -109,9 +114,9 @@ public class TabOverview extends javax.swing.JPanel {
         }
         jComboBoxAssociatedDomains.setSelectedIndex(0);
         TableModelLinkType model = new TableModelLinkType(rows);
-        jTableRelationshipTypes.setModel(model);
+        jTableLinkTypes.setModel(model);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-        //jTableRelationshipTypes.setRowSorter(sorter);
+        //jTableLinkTypes.setRowSorter(sorter);
         
         jComboBoxAllDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -124,17 +129,19 @@ public class TabOverview extends javax.swing.JPanel {
             }
         });
 
-        jTableRelationshipTypes.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableLinkTypes.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     {
-                        int iSelectedRow = jTableRelationshipTypes.getSelectedRow();
-                        TableModelLinkType model = (TableModelLinkType) jTableRelationshipTypes.getModel();
+                        int iSelectedRow = jTableLinkTypes.getSelectedRow();
+                        TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
                         String linkType = (String) model.getValueAt(iSelectedRow,  model.iColLinkType);
                         String linkName = (String) model.getValueAt(iSelectedRow,  model.iColLinkName);
                         String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
                         String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
-                        }
+                        LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
+                        mEditorMainPanel.loadLinkProperties(linkNode);
                     }
+                }
             });
             
 
@@ -153,11 +160,10 @@ public class TabOverview extends javax.swing.JPanel {
         jLabelAssociated = new javax.swing.JLabel();
         jComboBoxAssociatedDomains = new javax.swing.JComboBox();
         jScrollPaneLinkTypes = new javax.swing.JScrollPane();
-        jTableRelationshipTypes = new javax.swing.JTable();
+        jTableLinkTypes = new javax.swing.JTable();
         jComboBoxAllDomains = new javax.swing.JComboBox();
         jButtonAddRelationshipType = new javax.swing.JButton();
         jButtonDeleteRelationshipType = new javax.swing.JButton();
-        jButtonEdit = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Participating_Domains"))); // NOI18N
         setLayout(null);
@@ -165,7 +171,7 @@ public class TabOverview extends javax.swing.JPanel {
         jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
         add(jLabelDomainName);
         jLabelDomainName.setBounds(10, 30, 110, 20);
-        jLabelDomainName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabListRelationshipTypes.jLabelDomainName.AccessibleContext.accessibleName")); // NOI18N
+        jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
 
         jLabelAssociated.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Associated_Domains")); // NOI18N
         add(jLabelAssociated);
@@ -176,7 +182,7 @@ public class TabOverview extends javax.swing.JPanel {
 
         jScrollPaneLinkTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Links_Defined"))); // NOI18N
 
-        jTableRelationshipTypes.setModel(new javax.swing.table.DefaultTableModel(
+        jTableLinkTypes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -184,7 +190,7 @@ public class TabOverview extends javax.swing.JPanel {
                 "Name", "Source Domain", "Target Domain"
             }
         ));
-        jScrollPaneLinkTypes.setViewportView(jTableRelationshipTypes);
+        jScrollPaneLinkTypes.setViewportView(jTableLinkTypes);
 
         add(jScrollPaneLinkTypes);
         jScrollPaneLinkTypes.setBounds(10, 90, 370, 150);
@@ -194,15 +200,11 @@ public class TabOverview extends javax.swing.JPanel {
 
         jButtonAddRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         add(jButtonAddRelationshipType);
-        jButtonAddRelationshipType.setBounds(170, 240, 70, 23);
+        jButtonAddRelationshipType.setBounds(240, 240, 70, 23);
 
         jButtonDeleteRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         add(jButtonDeleteRelationshipType);
-        jButtonDeleteRelationshipType.setBounds(240, 240, 71, 23);
-
-        jButtonEdit.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Edit")); // NOI18N
-        add(jButtonEdit);
-        jButtonEdit.setBounds(310, 240, 70, 23);
+        jButtonDeleteRelationshipType.setBounds(310, 240, 71, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
@@ -261,7 +263,7 @@ public class TabOverview extends javax.swing.JPanel {
         mAlLinkTypes = domainNode.getLinkTypes();
 
         String associatedDomain = (String) jComboBoxAssociatedDomains.getSelectedItem();
-        TableModelLinkType model = (TableModelLinkType) jTableRelationshipTypes.getModel();
+        TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
         model.rows.clear();
         int index = 0;
 
@@ -284,13 +286,12 @@ public class TabOverview extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddRelationshipType;
     private javax.swing.JButton jButtonDeleteRelationshipType;
-    private javax.swing.JButton jButtonEdit;
     private javax.swing.JComboBox jComboBoxAllDomains;
     private javax.swing.JComboBox jComboBoxAssociatedDomains;
     private javax.swing.JLabel jLabelAssociated;
     private javax.swing.JLabel jLabelDomainName;
     private javax.swing.JScrollPane jScrollPaneLinkTypes;
-    private javax.swing.JTable jTableRelationshipTypes;
+    private javax.swing.JTable jTableLinkTypes;
     // End of variables declaration//GEN-END:variables
     
     class LinkTypeRow {
