@@ -81,6 +81,7 @@ public class EditorMainApp {
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
     private MultiDomainModel mMultiDomainModel;
+    private MultiDomainWebManager mMultiDomainWebManager;
     
     /**
      * Creates a new instance of EditorMainApp the constructor is decleared private
@@ -130,11 +131,15 @@ public class EditorMainApp {
     private void loadLinks() {
         // build mAlLinkNodes
         ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllLinks();
+        //ArrayList <LinkType> allWebLinkTypes = this.mMultiDomainWebManager.getRelationshipTypes();
+        
         for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
             LinkType linkType = (LinkType) alLinkTypes.get(i);
-            LinkBaseNode node = new LinkBaseNode(this, linkType);
+            LinkType webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
+            LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
             this.mAlLinkNodes.add(node);
         }
+        
     }
     
     public ArrayList <LinkBaseNode> getLinkNodes() {
@@ -342,7 +347,7 @@ public class EditorMainApp {
      */
     public FileObject getDomainQueryXml(String domainName) {
         FileObject xml = null;
-        if (!mMapDomainQueryXmls.containsKey(domainName)) {
+        if (mMapDomainQueryXmls.containsKey(domainName)) {
             xml = (FileObject) mMapDomainQueryXmls.get(domainName);
         }
         return xml;
@@ -355,7 +360,7 @@ public class EditorMainApp {
      */
     public FileObject getDomainMidmXml(String domainName) {
         FileObject xml = null;
-        if (!mMapDomainMidmXmls.containsKey(domainName)) {
+        if (mMapDomainMidmXmls.containsKey(domainName)) {
             xml = (FileObject) mMapDomainMidmXmls.get(domainName);
         }
         return xml;
@@ -401,6 +406,7 @@ public class EditorMainApp {
             mMultiDomainApplication.loadAll();
 
             mMultiDomainModel = getMultiDomainModel(true);
+            mMultiDomainWebManager = getMultiDomainWebManager(true);
             loadLinks();
 
             // Load mMapDomainObjectXmls
@@ -447,9 +453,11 @@ public class EditorMainApp {
         return mMultiDomainApplication.getMultiDomainModel(refresh);
     }
 
-    public MultiDomainWebManager getRelationshipWebManager() {
-        return mMultiDomainApplication.getMultiDomainWebManager(false);
+    public MultiDomainWebManager getMultiDomainWebManager(boolean refresh) {
+        return mMultiDomainApplication.getMultiDomainWebManager(refresh);
     }
+ 
+    
     
     public void enableSaveAction(boolean flag) {
         this.mMultiDomainApplication.setModified(flag);
