@@ -53,7 +53,7 @@ public class TabOverview extends javax.swing.JPanel {
         mEditorMainPanel = editorMainPanel;
         mEditorMainApp = editorMainApp;
         mAlDomainNodes = alDomainNodes;
-        jComboBoxAllDomains.removeAllItems();
+        jComboBoxSelectedDomain.removeAllItems();
         jComboBoxAssociatedDomains.removeAllItems();
         jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
 
@@ -64,9 +64,9 @@ public class TabOverview extends javax.swing.JPanel {
                 domainNode = mAlDomainNodes.get(i);
                 domainName = domainNode.getName();
                 mMapDomainNodes.put(domainName, domainNode);
-                jComboBoxAllDomains.addItem(domainName);
+                jComboBoxSelectedDomain.addItem(domainName);
             }
-            jComboBoxAllDomains.setSelectedIndex(0);
+            jComboBoxSelectedDomain.setSelectedIndex(0);
         }
         
         ArrayList rows = new ArrayList();
@@ -118,14 +118,14 @@ public class TabOverview extends javax.swing.JPanel {
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         //jTableLinkTypes.setRowSorter(sorter);
         
-        jComboBoxAllDomains.addItemListener(new java.awt.event.ItemListener() {
+        jComboBoxSelectedDomain.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                onAllDomainsItemStateChanged(evt);
+                onSelectedDomainItemStateChanged(evt);
             }
         });
         jComboBoxAssociatedDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                onDomainsItemStateChanged(evt);
+                onAssociatedDomainsItemStateChanged(evt);
             }
         });
 
@@ -161,7 +161,7 @@ public class TabOverview extends javax.swing.JPanel {
         jComboBoxAssociatedDomains = new javax.swing.JComboBox();
         jScrollPaneLinkTypes = new javax.swing.JScrollPane();
         jTableLinkTypes = new javax.swing.JTable();
-        jComboBoxAllDomains = new javax.swing.JComboBox();
+        jComboBoxSelectedDomain = new javax.swing.JComboBox();
         jButtonAddRelationshipType = new javax.swing.JButton();
         jButtonDeleteRelationshipType = new javax.swing.JButton();
 
@@ -195,8 +195,8 @@ public class TabOverview extends javax.swing.JPanel {
         add(jScrollPaneLinkTypes);
         jScrollPaneLinkTypes.setBounds(10, 90, 370, 150);
 
-        add(jComboBoxAllDomains);
-        jComboBoxAllDomains.setBounds(120, 30, 110, 22);
+        add(jComboBoxSelectedDomain);
+        jComboBoxSelectedDomain.setBounds(120, 30, 110, 22);
 
         jButtonAddRelationshipType.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         add(jButtonAddRelationshipType);
@@ -207,8 +207,8 @@ public class TabOverview extends javax.swing.JPanel {
         jButtonDeleteRelationshipType.setBounds(310, 240, 71, 23);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void onAllDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
-        String domainName = (String) jComboBoxAllDomains.getSelectedItem();
+    private void onSelectedDomainItemStateChanged(java.awt.event.ItemEvent evt) {
+        String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         
         //get properties panel from domainNode and present it
@@ -257,8 +257,8 @@ public class TabOverview extends javax.swing.JPanel {
         jComboBoxAssociatedDomains.setSelectedIndex(0);
     }
 
-    private void onDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
-        String domainName = (String) jComboBoxAllDomains.getSelectedItem();
+    private void onAssociatedDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
+        String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         mAlLinkTypes = domainNode.getLinkTypes();
 
@@ -286,8 +286,8 @@ public class TabOverview extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddRelationshipType;
     private javax.swing.JButton jButtonDeleteRelationshipType;
-    private javax.swing.JComboBox jComboBoxAllDomains;
     private javax.swing.JComboBox jComboBoxAssociatedDomains;
+    private javax.swing.JComboBox jComboBoxSelectedDomain;
     private javax.swing.JLabel jLabelAssociated;
     private javax.swing.JLabel jLabelDomainName;
     private javax.swing.JScrollPane jScrollPaneLinkTypes;
@@ -315,11 +315,11 @@ public class TabOverview extends javax.swing.JPanel {
             this.linkName = linkName;
         }
         
-        public String getRelationshipTypeType() {
+        public String getLinkType() {
             return type;
         }
 
-        public void setRelationshipTypeType(String type) {
+        public void setLinkType(String type) {
             this.type = type;
         }
 
@@ -380,7 +380,7 @@ public class TabOverview extends javax.swing.JPanel {
                         case iColLinkName:
                             return singleRow.getLinkName();
                         case iColLinkType:
-                            return singleRow.getRelationshipTypeType();
+                            return singleRow.getLinkType();
                         case iColSourceDomain:
                            return singleRow.getSourceDomain();
                         case iColTargetDomain:
@@ -416,7 +416,7 @@ public class TabOverview extends javax.swing.JPanel {
                             singleRow.setLinkName((String) value);                            
                             break;
                         case iColLinkType:
-                            singleRow.setRelationshipTypeType((String) value);                            
+                            singleRow.setLinkType((String) value);                            
                             break;
                         case iColSourceDomain:
                             singleRow.setSourceDomain((String) value);                            
@@ -448,5 +448,17 @@ public class TabOverview extends javax.swing.JPanel {
         }
     }
 
-
+    public void setCurrentDomainNode(DomainNode node, boolean bNew) {
+        String domainName = node.getName();
+        if (bNew) {
+            this.mAlDomainNodes.add(node);
+            this.mMapDomainNodes.put(domainName, node);
+            int idx = jComboBoxSelectedDomain.getItemCount();
+            jComboBoxSelectedDomain.insertItemAt(domainName, idx);
+            jComboBoxSelectedDomain.setSelectedItem(idx);
+        } else {
+            //jComboBoxAllDomains.setSelectedItem(domainName);
+        }
+        
+    }
 }

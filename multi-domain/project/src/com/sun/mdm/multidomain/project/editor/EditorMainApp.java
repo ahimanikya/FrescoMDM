@@ -240,7 +240,7 @@ public class EditorMainApp {
                 mMapDomainMidmXmls.put(domainName, midmXml);
                 DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
-                mEditorMainPanel.addDomainNodeToCanvas(domainNode, -1);
+                mEditorMainPanel.addDomainNodeToCanvas(domainNode, -1, true);
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }

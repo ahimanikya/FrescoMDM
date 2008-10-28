@@ -364,14 +364,14 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     public void loadDomainNodesToCanvas() {
         ArrayList <DomainNode> al = mEditorMainApp.getDomainNodes();
         for (int i=0; i<al.size(); i++) {
-            addDomainNodeToCanvas(al.get(i), i);
+            addDomainNodeToCanvas(al.get(i), i, false);
         }
     }
     
     /** Add a Domain Node to the canvas
      *
      */
-    public boolean addDomainNodeToCanvas(DomainNode node, int index) {
+    public boolean addDomainNodeToCanvas(DomainNode node, int index, boolean bNew) {
         boolean added = false;
         int cnt = index;
         if (cnt < 0) {
@@ -382,6 +382,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         label.setBounds(10, cnt * 30, 80, 20);
         //mMultiViewPane.setViewportView(canvas);
         //populate properties
+        mTabOverview.setCurrentDomainNode(node, bNew);
         return added;
     }
      

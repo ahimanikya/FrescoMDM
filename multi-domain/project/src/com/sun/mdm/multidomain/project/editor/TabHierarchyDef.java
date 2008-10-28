@@ -179,7 +179,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextAreaDescription);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(90, 90, 470, 90);
+        jScrollPane1.setBounds(110, 90, 450, 90);
 
         jLabelEffectiveFrom.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_EffectiveFrom")); // NOI18N
         add(jLabelEffectiveFrom);
