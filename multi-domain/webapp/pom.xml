@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+  	<artifactId>multi-domain</artifactId>
+    <groupId>mural</groupId>
+    <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
+	</parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mural</groupId>
+  <artifactId>multidomain-webapp</artifactId>
+  <packaging>war</packaging>
+  <name>Multi-Domain Web Manager</name>
+  <version>${mural.currentVersion}</version>
+  <url>http://mural.dev.java.net</url>
+
+	<build>
+		<finalName>multidomain-webapp</finalName>
+ 		<sourceDirectory>src</sourceDirectory>
+   	<testSourceDirectory>test</testSourceDirectory>       
+    <resources>
+    	<resource>
+				<directory>src/resources</directory>
+      </resource>
+    	<resource>
+				<directory>src/java</directory>
+      </resource>      
+   	</resources>
+    <plugins>
+    	<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>                    
+        <execution>
+        	<id>install-dwr-jar</id>
+          <phase>process-resources</phase>
+          <goals><goal>install-file</goal></goals>
+          <configuration>
+          	<generatePom>true</generatePom>
+            <packaging>jar</packaging>
+            <groupId>mural</groupId>
+            <artifactId>dwr</artifactId>
+            <version>${mural.currentVersion}</version>
+            <file>${basedir}/lib/dwr.jar</file>
+          </configuration>
+        </execution>
+        </executions>
+      </plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+        <execution>
+        	<id>copying</id>
+          <phase>process-resources</phase>
+          <goals><goal>run</goal></goals>
+          <configuration>
+          	<tasks>
+            <mkdir dir="${basedir}/target/multidomain-webapp"/>
+            <copy todir="${basedir}/target/multidomain-webapp">
+            	<fileset dir="src/web/">
+              	<include name="**/*"/>                    
+              </fileset>
+            </copy>
+           <copy todir="target/multidomain-webapp/WEB-INF/lib">
+            	<fileset dir="${basedir}/lib/">
+              	<include name="dwr.jar"/>
+              </fileset>
+           </copy>                     
+            <copy todir="target/multidomain-webapp/WEB-INF/lib">
+            	<fileset dir="${basedir}/../../lib/">
+              	<include name="net.java.hulp.i18n.jar"/>
+              </fileset>
+           </copy>                                                    
+           <copy todir="target/multidomain-webapp/WEB-INF/lib">
+           		<fileset dir="${basedir}/../../index-core/target/">
+              	<include name="index-core.jar"/>
+              </fileset>
+           </copy>                          
+           <copy todir="target/multidomain-webapp/WEB-INF/lib">
+           		<fileset dir="${basedir}/../../index-services/target/">
+              	<include name="com-sun-mdm-index-services.jar"/>
+              </fileset>
+           </copy>
+           <copy todir="target/multidomain-webapp/WEB-INF/lib">
+           		<fileset dir="${basedir}/../core/target/">
+              	<include name="multidomain-core.jar"/>
+              </fileset>
+           </copy>                                                    
+           <copy todir="target/multidomain-webapp/WEB-INF/lib">
+           		<fileset dir="${basedir}/../services/target/">
+              	<include name="multidomain-services.jar"/>
+              </fileset>
+           </copy>                          
+           </tasks>
+				</configuration>
+		</execution>
+    <execution>
+    	<id>remove-java-file</id>
+      <!--This isn't really a test phase, but it's the best place to put it because -->
+      <!--there is no other place to put it before the package phase is executed -->
+      <phase>test</phase>
+      <goals><goal>run</goal></goals>
+      <configuration>
+      	<tasks>
+        <delete>
+        	<fileset dir="${basedir}/target/classes/jsp" includes="**/*.java"/>                    
+        </delete>                      
+        </tasks>
+      </configuration>
+		</execution>                  
+		<execution>
+    	<id>extract-globalized-messages</id>
+      <phase>process-classes</phase>
+      <goals><goal>run</goal></goals>
+      <configuration>
+      	<tasks>
+        <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
+        <classpath refid="maven.test.classpath"/>
+        </taskdef>
+        <i18n dir="${project.build.directory}/classes" file= "${basedir}/src/resources/com/sun/mdm/multidomain/presentation/util/messages.properties" prefix="MDM-MD-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+        </tasks> 
+			</configuration>
+		</execution>
+		</executions>
+    </plugin>
+    <plugin>
+			<groupId>org.mortbay.jetty</groupId>
+      <artifactId>maven-jetty-jspc-plugin</artifactId>
+      <executions>
+      <execution>
+      <id>jspc</id>
+      <goals><goal>jspc</goal></goals>
+      </execution>
+      </executions>
+      <configuration>
+      	<source>1.5</source> 
+        <target>1.5</target> 
+        <webAppSourceDirectory>${basedir}/src/web</webAppSourceDirectory>
+        <classesDirectory>${basedir}/target</classesDirectory>
+      </configuration>
+		</plugin>
+    </plugins>
+    </build>
+    <dependencies>
+		<dependency>
+    	<groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+		</dependency>
+    <dependency>
+			<groupId>mural</groupId>
+      <artifactId>index-core</artifactId>
+      <version>${mural.currentVersion}</version>
+      <scope>compile</scope>
+		</dependency>
+    <dependency>
+			<groupId>mural</groupId>
+      <artifactId>index-services-jar</artifactId>
+      <version>${mural.currentVersion}</version>
+      <scope>compile</scope>
+		</dependency>
+    <dependency>    	
+    	<groupId>mural</groupId>      
+      <artifactId>multidomain-core</artifactId>      
+      <version>${mural.currentVersion}</version>        
+		</dependency>       	
+    <dependency>    	
+			<groupId>mural</groupId>      
+      <artifactId>multidomain-services</artifactId>      
+      <version>${mural.currentVersion}</version>        
+		</dependency>       	            
+    <dependency>
+    	<groupId>javax.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+		</dependency>
+    <dependency>
+    	<groupId>javax.faces</groupId>
+      <artifactId>jsf-impl</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+		</dependency>
+    <dependency>
+    	<groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>compile</scope>
+		</dependency>
+		<!--
+    <dependency>
+    	<groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.1</version>
+      <scope>compile</scope>
+		</dependency>        
+    <dependency>
+			<groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-tools</artifactId>
+      <version>2.1EA1</version>
+		</dependency>
+		-->
+		<dependency> 
+    <groupId>org.springframework</groupId> 
+    <artifactId>spring</artifactId> 
+     <version>2.5.5</version> 
+		</dependency> 
+			<dependency> 
+    <groupId>org.springframework</groupId> 
+    <artifactId>spring-webmvc</artifactId> 
+     <version>2.5.5</version> 
+		</dependency> 	
+    </dependencies>
+    <properties>
+        <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
+    </properties>
+</project>
