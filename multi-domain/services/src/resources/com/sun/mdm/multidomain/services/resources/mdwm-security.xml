@@ -6,37 +6,51 @@
         <role>
             <role-name>MDWM.Administrator</role-name>
             <operations>
-                <name>Domains_Add</name>
-                <name>Domains_SearchView</name>
-                <name>Domains_Update</name>
-                <name>Relationships_Add</name>
-                <name>Relationships_SearchView</name>
-                <name>Relationships_Update</name>
-                <name>Hierarchies_Add</name>
-                <name>Hierarchies_SearchView</name>
-                <name>Hierarchies_Update</name>
+                <name>AdminRelationships_ReadWrite</name>
+                <name>AdminHierarchies_ReadWrite</name>
+                <name>ManageRelationship_ReadWrite</name>
+                <name>ManageHierarchies_ReadWrite</name>
             </operations>
         </role>
+        
         <role>
-            <role-name>MDWM.Clerk</role-name>
+            <role-name>MDWM.ManageRelationship</role-name>
             <operations>
-                <name>Domains_SearchView</name>
-                <name>Relationships_SearchView</name>
-                <name>Hierarchies_SearchView</name>
+                <name>ManageRelationship_ReadWrite</name>
             </operations>
         </role>
+        
         <role>
-            <role-name>MDWM.DataEntry</role-name>
-            <inheritance>
-                <inherits-from>MDWM.Clerk</inherits-from>
-                <excluded-operations>
-                <name>Hierarchies_SearchView</name>
-                </excluded-operations>
-            </inheritance>
+            <role-name>MDWM.ManageHierarchies</role-name>
             <operations>
-                <name>Domains_Add</name>
-                <name>Domains_Update</name>
+                <name>ManageHierarchies_ReadWrite</name>
             </operations>
         </role>
+        
+        <role>
+            <role-name>MDWM.ViewOnly</role-name>
+            <operations>
+                <name>ManageRelationship_ViewOnly</name>
+                <name>ManageHierarchies_ViewOnly</name>
+            </operations>
+        </role>
+        
+        
+        <role>
+          <role-name>MDWM.FutureUse</role-name>
+            <operations>
+                <name>AdminRelationships_ViewOnly</name>
+                <name>AdminHierarchies_ViewOnly</name> 
+                <name>AdminGroups_ReadWrite</name>
+                <name>AdminGroups_ViewOnly</name>
+                <name>AdminCategories_ReadWrite</name>
+                <name>AdminCategories_ViewOnly</name>
+                <name>ManageGroups_ReadWrite</name>
+                <name>ManageGroups_ViewOnly</name>
+                <name>ManageCategories_ReadWrite</name>
+                <name>ManageCategories_ViewOnly</name>
+            </operations>
+        </role>
+ 
     </roles>
 </mdwm-security>
