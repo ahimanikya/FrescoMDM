@@ -41,16 +41,19 @@ import java.util.ArrayList;
 public class SearchResultDetailsConfig implements java.io.Serializable {
     
     private ObjectNodeConfig mRootObj;      // object configuration
+    private String mDisplayName;            // display name
     private int mSearchResultDetailID; // search result details screen configuration ID
     private boolean mShowEUID;  // indicates if the EUID should be displayed
     private boolean mShowLID;   // indicates if the LID should be displayed
     private ArrayList<FieldConfigGroup> mFieldConfigGroups;    // ArrayList of FieldConfigGroup objects
 
 
-    public SearchResultDetailsConfig(ObjectNodeConfig rootObj, int searchResultDetailID, 
-                                boolean showEUID, boolean showLID, ArrayList fieldConfigGroups) {
+    public SearchResultDetailsConfig(ObjectNodeConfig rootObj, String displayName, 
+                                int searchResultDetailID, boolean showEUID, 
+                                boolean showLID, ArrayList fieldConfigGroups) {
                     
         mRootObj = rootObj;
+        mDisplayName = displayName;
         mSearchResultDetailID = searchResultDetailID;
         mShowEUID = showEUID;
         mShowLID = showLID;
@@ -93,6 +96,15 @@ public class SearchResultDetailsConfig implements java.io.Serializable {
     }
     
 
+    /**
+     * Getter for the mDisplayName attribute
+     *
+     * @return The display name for the record details.
+     */
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+    
     /**
      * Getter for the mRootObj attribute
      *

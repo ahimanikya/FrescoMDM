@@ -253,6 +253,40 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      * @param maxLength max length of the field 
      * @param gvalueList value list of the field
      */
+    public FieldConfig(String rootObj, String objRef, String name, 
+                       String displayName, String guiType, 
+                       int maxLength, String valueList,
+                       String inputMask, String valueMask,
+                       int valueType, boolean keyType, 
+                       boolean isSensitive,
+                       int displayOrder) {
+        this.objRef = objRef;
+        this.rootObj = rootObj;
+        this.name = name;
+        this.displayName = displayName;
+        this.maxLength = maxLength;
+        this.guiType = guiType;
+        this.keyType = keyType;
+        this.sensitive = isSensitive;
+        this.displayOrder = displayOrder;
+        this.valueType = valueType;
+        setValueList(valueList);
+        this.inputMask = inputMask;
+        this.valueMask = valueMask;
+        this.exPos = new int[0];
+    }
+    
+    /**
+     * Construct a FieldConfig object with all required properties
+     *
+     * @param rootObj root object to which this field belongs
+     * @param objRef obj ref of the field
+     * @param name name of the field
+     * @param displayName dislay name of the field
+     * @param guiType gui type of the field
+     * @param maxLength max length of the field 
+     * @param gvalueList value list of the field
+     */
     public FieldConfig(String objRef, String name, 
                        String displayName, String guiType, 
                        int maxLength, String gvalueList) {

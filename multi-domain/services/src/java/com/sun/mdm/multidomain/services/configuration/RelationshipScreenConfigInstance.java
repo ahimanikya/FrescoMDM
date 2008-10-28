@@ -23,6 +23,7 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.relationship.RelationshipType;
+import java.util.ArrayList;
 
 public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
 
@@ -31,12 +32,23 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
     // RESUME HERE
     // Should this be obtained from the RelationshipType?
     private String mRelationshipDisplayName = null;
+    private String mRelationshipName = null;
+    private ArrayList<FieldConfig> mPredefinedAttributes;
+    private ArrayList<FieldConfig> mExtendedAttributes;
     
     public RelationshipScreenConfigInstance() {
+        mPredefinedAttributes = new ArrayList<FieldConfig> ();
+        mExtendedAttributes = new ArrayList<FieldConfig> ();
     }
     
-    public RelationshipScreenConfigInstance(String relDisplayName) {
+    public RelationshipScreenConfigInstance(String relName,
+                                            String relDisplayName,
+                                            ArrayList<FieldConfig> predefinedAttributes,
+                                            ArrayList<FieldConfig> extendedAttributes) {
+        mRelationshipName = relName;                                         
         mRelationshipDisplayName = relDisplayName;
+        mPredefinedAttributes = predefinedAttributes;
+        mExtendedAttributes = extendedAttributes;
     }
     
     public RelationshipScreenConfigInstance(RelationshipType rel) {
@@ -51,6 +63,14 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
         return mRelationshipType;
     }
     
+    public void setRelationshipName(String relName) {
+        mRelationshipName = relName;
+    }
+    
+    public String getRelationshipName() {
+        return mRelationshipName;
+    }
+    
     public void setRelationshipDisplayName(String relDisplayName) {
         mRelationshipDisplayName = relDisplayName;
     }
@@ -58,4 +78,24 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
     public String getRelationshipDisplayName() {
         return mRelationshipDisplayName;
     }
+    
+    public void setPredefinedAttributes(ArrayList<FieldConfig> predefinedAttributes) {
+        mPredefinedAttributes = predefinedAttributes;
+    }
+
+    public ArrayList<FieldConfig> getPredefinedAttributes() {
+        return mPredefinedAttributes;
+    }
+    
+    public void setExtendedAttributes(ArrayList<FieldConfig> extendedAttributes) {
+        mExtendedAttributes = extendedAttributes;
+    }
+
+    public ArrayList<FieldConfig> getExtendedAttributes() {
+        return mExtendedAttributes;
+    }
+    
+    // RESUME HERE
+    // add more stuff from LinkType.java
+    
 }

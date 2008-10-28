@@ -51,6 +51,7 @@ public class SearchResultsConfig implements java.io.Serializable {
     public static int DISABLED = -1;       // indicates if a search result summary or search 
                                             // result detail screen is disabled.
     private ObjectNodeConfig mRootObj;      // object configuration
+    private String mDisplayName;            // display name
     private int mSearchResultsID;           // search result screen configuration ID
     private int mSearchResultsSummaryID;     // search result summary screen configuration ID
     private int mSearchResultsDetailID;      // search result details screen configuration ID
@@ -63,13 +64,14 @@ public class SearchResultsConfig implements java.io.Serializable {
     private ArrayList<FieldConfigGroup> mFieldConfigGroups;        // ArrayList of FieldConfigGroup objects
 
 
-    public SearchResultsConfig(ObjectNodeConfig rootObj, int searchResultsID, 
+    public SearchResultsConfig(ObjectNodeConfig rootObj, String displayName, int searchResultsID, 
                                 int searchResultsSummaryID, int searchResultDetailsID, 
                                 int pageSize, int maxRecords, boolean showEUID, 
                                 boolean showLID, ArrayList<FieldConfigGroup> fieldConfigGroups) 
                 throws Exception {
                     
         mRootObj = rootObj;
+        mDisplayName = displayName;
         mSearchResultsID = searchResultsID;
         if ((searchResultsSummaryID >= 0 && searchResultDetailsID >= 0) ||
             (searchResultsSummaryID < 0 && searchResultDetailsID < 0))  {
@@ -91,6 +93,17 @@ public class SearchResultsConfig implements java.io.Serializable {
         mShowLID = showLID;
         mFieldConfigGroups = fieldConfigGroups;
     }
+
+    /**
+     * Getter for the mSearchResultsID attribute
+     *
+     * @return The unique identifier for this instance of a SearchResultsConfig
+     * object. 
+     */
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+    
     
     /**
      * Constructs an ArrayList of ePaths for the FieldConfigGroup objects

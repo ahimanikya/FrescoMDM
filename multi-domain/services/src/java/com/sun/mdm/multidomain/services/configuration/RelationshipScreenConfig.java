@@ -36,7 +36,7 @@ public class RelationshipScreenConfig {
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfig");
     private static transient final Localizer mLocalizer = Localizer.get();
  
-	private String mSourceDomainName;		// name of the target domain
+	private String mSourceDomainName;		// name of the source domain
 	private String mTargetDomainName;		// name of the target domain
 	private HashMap<String,  RelationshipScreenConfigInstance> mRelationshipScreenConfigInstances;
 	
@@ -53,6 +53,7 @@ public class RelationshipScreenConfig {
     }
     
 	public Relationship getRelationship() {	// retrieves the Relationship object for this relationship
+	    // RESUME HERE
 	    return null;
 	}
 
@@ -87,6 +88,7 @@ public class RelationshipScreenConfig {
 	}
 	
 	// add a relationship screen configuration instance
+	// RESUME HERE--add check if relationship already exists
 	
 	public void addRelScreenConfigInstance(RelationshipScreenConfigInstance rSCI) 
 	        throws Exception {

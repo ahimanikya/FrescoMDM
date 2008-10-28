@@ -40,13 +40,14 @@ import java.util.ArrayList;
  */
 public class SearchResultsSummaryConfig extends SearchResultsConfig implements java.io.Serializable {
     
-    public SearchResultsSummaryConfig(ObjectNodeConfig rootObj, int searchResultSummaryID, 
+    public SearchResultsSummaryConfig(ObjectNodeConfig rootObj, String displayName,
+                                      int searchResultSummaryID, 
                                       int searchResultDetailsID, int pageSize, 
                                       int maxRecords, boolean showEUID, 
                                       boolean showLID, 
                                       ArrayList<FieldConfigGroup> fieldConfigGroups) throws Exception {
                                         
-        super(rootObj, searchResultSummaryID, DISABLED, searchResultDetailsID, pageSize, 
+        super(rootObj, displayName, searchResultSummaryID, DISABLED, searchResultDetailsID, pageSize, 
               maxRecords, showEUID, showLID, fieldConfigGroups);                    
 
     }
