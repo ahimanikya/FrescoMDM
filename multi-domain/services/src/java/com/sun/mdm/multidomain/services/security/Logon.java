@@ -36,19 +36,15 @@
 
 package com.sun.mdm.multidomain.services.security;
 
-// testing--raymond tam
-//import com.sun.mdm.index.ejb.master.MasterController;
-// import com.sun.mdm.index.edm.control.QwsController;
-//import com.sun.mdm.index.edm.control.UserProfile;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 
 // testing--raymond tam
 //import com.sun.mdm.index.edm.services.configuration.ValidationService;
-//import com.sun.mdm.index.edm.util.DateUtil;
-//import com.sun.mdm.index.edm.util.QwsUtil;
-//import com.sun.mdm.index.master.UserException;
-//import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.multidomain.services.security.util.DateUtil;
+import com.sun.mdm.multidomain.services.security.util.QwsUtil;
+import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.util.Localizer;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
@@ -76,9 +72,9 @@ public class Logon {
     public static void  initializeConfigurationSecurity()
         throws Exception {
 
-        // Initialize the ConfigManager.
+        // Initialize the MDConfigManager.
         try {
-            MDConfigManager.init();
+            MDConfigManager.getInstance().init();
         } catch (Exception e) {
             throw new ConfigException(mLocalizer.t("SRS505: An error occurred in the Multi-Domain ConfigManager: {0}", 
                                          e.getMessage()));
@@ -98,88 +94,34 @@ public class Logon {
      *
      *  @throws Exception if an error is encountered.
      */
-// testing--raymond tam
-/*     
+
     public static void  initializeQWSControllerValidationDate ()
         throws Exception {
 
-        // Check if MasterController is available
-        // To get to MasterController, ConfigManager is required. 
-        if (QwsController.getMasterController() == null 
-            || QwsController.getValidationService() == null) {
-            try {
-                QwsController.init();
-            } catch (Exception e) {
-                throw new Exception(mLocalizer.t("SRS502: Failed to instantiate the Master Controller: {0}", 
-                                         QwsUtil.getRootCause(e).getMessage()));
-            }
-            // Obtain the length of the EUID fields from the MasterController
-            int euidLength = 32;
-            MasterController mc = null;
-            
-            try {
-                mc = QwsController.getMasterController();
-            } catch (Exception e) {
-                if (e instanceof UserException) {          
-                    throw new Exception(mLocalizer.t("SRS510: Failed to obtain a connection to the " +
-                                                     "MasterController: {0}", 
-                                                    e.getMessage()));
-                }
-            }
-            try {
-                euidLength = ((Integer) mc.getConfigurationValue("EUID_LENGTH")).intValue();
-            } catch (Exception e) {
-                // UserException doesn't need a stack trace, and ProcessingException
-                // stack trace is already logged in the MC.
-                if (e instanceof UserException) {          
-                    throw new Exception(mLocalizer.t("SRS503: Failed to get length of EUID: {0}", 
-                                             QwsUtil.getRootCause(e).getMessage()));
-                } else if (!(e instanceof ProcessingException)) {
-                    throw new Exception(mLocalizer.t("SRS504: Failed to get length of EUID: {0}", 
-                                             e.getMessage()));
-                }
-            }
-            // Reset any EUID fields in the ScreenObjects to the 
-            // correct length obtained from the MasterController
-            ConfigManager.getInstance().setEuidLength(euidLength);
-            // Re-initialize the ValidationService as it depends on 
-            // CodeLookupService and MasterController
-            try {
-                ValidationService.init();
-            } catch (Exception e) {
-                throw new Exception(mLocalizer.t("SRS505: Failed to instantiate CodeLookup manager: {0}", 
-                                                 QwsUtil.getRootCause(e).getMessage()));
-            }
-            
-            // Initialize the date format in DateUtil for EDM to convert 
-            // date/string back and forth
-            try {
-                DateUtil.init();
-            } catch (Exception e) {
-                throw new Exception(mLocalizer.t("SRS506: Failed to instantiate Date Utility: {0}", 
-                                                 QwsUtil.getRootCause(e).getMessage()));
-            }
-        } else {
-            // Restart the ValidationService and DateUtil in case there were 
-            // problems with logging in the EDM or if the database connection 
-            // was lost.  Otherwise, the EDM will not display values for 
-            // the pull-down menus.
-            try {
-               ValidationService.init();
-            } catch (Exception e) {
-                throw new Exception(mLocalizer.t("SRS507: Failed to instantiate CodeLookup manager: {0}", 
-                                                 QwsUtil.getRootCause(e).getMessage()));
-            }
-            
-            // initialize the date format in DateUtil for EDM to convert date/string back and forth
-            try {
-               DateUtil.init();
-            } catch (Exception e) {
-                throw new Exception(mLocalizer.t("SRS508: Failed to instantiate Date Utility: {0}", 
-                                                 QwsUtil.getRootCause(e).getMessage()));
-            }
+        try {
+            QwsController.init();
+        } catch (Exception e) {
+            throw new Exception(mLocalizer.t("SRS507: Failed to instantiate the QWS Controller: {0}", 
+                                     QwsUtil.getRootCause(e).getMessage()));
         }
-
+        // testing--raymond tam
+        //RESUME HERE
+        // Re-initialize the ValidationService as it depends on CodeLookupService
+/*        
+        try {
+            ValidationService.init();
+        } catch (Exception e) {
+            throw new Exception(mLocalizer.t("SRS505: Failed to instantiate CodeLookup manager: {0}", 
+                                             QwsUtil.getRootCause(e).getMessage()));
+        }
+*/        
+        // Initialize the date format in DateUtil for EDM to convert 
+        // date/string back and forth
+        try {
+            DateUtil.init();
+        } catch (Exception e) {
+            throw new Exception(mLocalizer.t("SRS508: Failed to instantiate Date Utility: {0}", 
+                                             QwsUtil.getRootCause(e).getMessage()));
+        }
     }
-*/    
 }
