@@ -8,7 +8,7 @@
             <operations>
                 <name>AdminRelationships_ReadWrite</name>
                 <name>AdminHierarchies_ReadWrite</name>
-                <name>ManageRelationship_ReadWrite</name>
+                <name>ManageRelationships_ReadWrite</name>
                 <name>ManageHierarchies_ReadWrite</name>
             </operations>
         </role>
@@ -16,7 +16,7 @@
         <role>
             <role-name>MDWM.ManageRelationship</role-name>
             <operations>
-                <name>ManageRelationship_ReadWrite</name>
+                <name>ManageRelationships_ReadWrite</name>
             </operations>
         </role>
         
@@ -30,7 +30,7 @@
         <role>
             <role-name>MDWM.ViewOnly</role-name>
             <operations>
-                <name>ManageRelationship_ViewOnly</name>
+                <name>ManageRelationships_ViewOnly</name>
                 <name>ManageHierarchies_ViewOnly</name>
             </operations>
         </role>
