@@ -29,6 +29,7 @@
  */
 package com.sun.mdm.multidomain.project.editor.nodes;
 
+import com.sun.mdm.multidomain.parser.DomainForWebManager;
 import com.sun.mdm.multidomain.parser.MIQueryBuilder;
 import java.util.ArrayList;
 import org.openide.nodes.AbstractNode;
@@ -251,14 +252,16 @@ public class DomainNode extends AbstractNode {
     
     public TabDomainSearch getDoaminsTab(boolean bRefresh) {
         if (bRefresh || mTabDomainSearch == null) {
-            mTabDomainSearch = new TabDomainSearch(mEditorMainApp, mEditorMainApp.getRelationshipWebManager().getDomains());
+            DomainForWebManager domain = mEditorMainApp.getMultiDomainWebManager(false).getDomains().getDomain(this.getName());
+            mTabDomainSearch = new TabDomainSearch(mEditorMainApp, domain);
         }
         return mTabDomainSearch;
     }
     
     public TabDomainView getDomainViewTab(boolean bRefresh) {
         if (bRefresh || mTabDomainView == null) {
-            mTabDomainView = new TabDomainView(mEditorMainApp, mEditorMainApp.getRelationshipWebManager().getDomains());
+            DomainForWebManager domain = mEditorMainApp.getMultiDomainWebManager(false).getDomains().getDomain(this.getName());
+            mTabDomainView = new TabDomainView(mEditorMainApp, domain);
         }
         
         return mTabDomainView;

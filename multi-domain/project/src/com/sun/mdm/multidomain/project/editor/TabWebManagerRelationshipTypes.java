@@ -6,8 +6,8 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
+import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
-import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;
 import javax.swing.JTable;
@@ -23,28 +23,32 @@ import org.openide.util.NbBundle;
  */
 public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     
-    private ArrayList<RelationshipType> mRelationshipTypes = null;
+    private ArrayList<LinkType> mRelationshipTypes = null;
     private JTable mTableFields;
     private boolean mModified = false;
     private EditorMainApp mEditorMainApp = null;
+    private LinkType mLinkType = null;
+    //private 
 
     /** Creates new form TabWebManagerRelationshipTypes */
-    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, ArrayList<RelationshipType> relationshipTypes) {
+    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, LinkType linkType) {
         
         mEditorMainApp = editorMainApp;
-        mRelationshipTypes = relationshipTypes;
+        //mRelationshipTypes = relationshipTypes;
+        mLinkType = linkType;
         initComponents();
         createRelationshipTypes();
         jTxtDisplayOrder.setEditable(false);
+        this.jTextFieldLinkType.setEditable(false);
+         this.jTextFieldLinkType.setText(mLinkType.getName());
         
-        /**
+
         mTableFields.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 retreiveFieldProperties();
             }
          
         });
-        */
         
         ListSelectionModel rowSM = mTableFields.getSelectionModel();
         rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -84,25 +88,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 }
             });
             
-        jCBRelationshipType.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent e) {
-                String relTypeName = (String) jCBRelationshipType.getSelectedItem();
-                ArrayList<RelationFieldReference> fieldRefs = null;
-                for (RelationshipType relType : mRelationshipTypes) {
-                    if (relType.getName().equals(relTypeName)) {
-                        //fieldRefs = relType.getRelFieldRefs();
-                        //fieldRefs = relType.getExtendedRelFieldRefs();
-                        break;
-                    }
-                }
-                
-                if (fieldRefs != null) {
-                    createFieldRefs(fieldRefs);                    
-                }
-                
-            }
-            
-        });
+
     }
     
     
@@ -139,25 +125,25 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
     }
     private void createRelationshipTypes() {
-        
-        for (RelationshipType relType : mRelationshipTypes) {
-            this.jCBRelationshipType.addItem(relType.getName());
-        }
-        
+        RelationshipType relType = (RelationshipType) mLinkType;
+        String relationType = relType.getName();
+
+        mTableFields = new JTable();
+        createFieldRefs(relType);
+    /**
         if (mRelationshipTypes != null && mRelationshipTypes.size() > 0) {
-            RelationshipType relType = mRelationshipTypes.get(0);
-            String relationType = relType.getName();
-            //this.jCBRelationshipType.addItem(relationType);
-            //createFieldRefs(relType.getExtendedRelFieldRefs());
             
         } else {
             ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();
             TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(fieldRefs);
             mTableFields = new JTable(mTableFieldRefs);
         }
+             */ 
     }
     
-    private void createFieldRefs(ArrayList<RelationFieldReference> fieldRefs) {
+    private void createFieldRefs(RelationshipType relType) {
+            ArrayList<RelationFieldReference> fieldRefs = relType.getFixedRelFieldRefs();
+            fieldRefs.addAll(relType.getFixedRelFieldRefs());
             TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(fieldRefs);
             mTableFields = new JTable(mTableFieldRefs);
             mTableFields.getTableHeader().setReorderingAllowed(false);
@@ -178,6 +164,8 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                     jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
                     jRBKeyValue.setSelected(mSelectedRow.getKeyType());
                 }
+                
+                jLayeredPane1.setVisible(true);
                 
                 jBtnUp.setEnabled(true);
                 jBtnDown.setEnabled(true);
@@ -203,7 +191,6 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jCBRelationshipType = new javax.swing.JComboBox();
         jLabelRelTypes = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jTxtDisplayName = new javax.swing.JTextField();
@@ -219,6 +206,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         onCancel = new javax.swing.JButton();
         jBtnUp = new javax.swing.JButton();
         jBtnDown = new javax.swing.JButton();
+        jTextFieldLinkType = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -234,7 +222,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 jTxtDisplayNameActionPerformed(evt);
             }
         });
-        jTxtDisplayName.setBounds(110, 50, 167, 19);
+        jTxtDisplayName.setBounds(110, 50, 120, 19);
         jLayeredPane1.add(jTxtDisplayName, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLabel1.text")); // NOI18N
@@ -304,6 +292,9 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             }
         });
 
+        jTextFieldLinkType.setEditable(false);
+        jTextFieldLinkType.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jTextFieldLinkType.text")); // NOI18N
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -321,9 +312,9 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .add(22, 22, 22)
                 .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jCBRelationshipType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 172, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(316, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(263, Short.MAX_VALUE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(369, Short.MAX_VALUE)
                 .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -336,14 +327,14 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jCBRelationshipType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelRelTypes))
+                    .add(jLabelRelTypes)
+                    .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(18, 18, 18)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                     .add(onCancel)
@@ -533,7 +524,6 @@ class TableModelRelationshipField extends AbstractTableModel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnDown;
     private javax.swing.JButton jBtnUp;
-    private javax.swing.JComboBox jCBRelationshipType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -542,6 +532,7 @@ class TableModelRelationshipField extends AbstractTableModel {
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JRadioButton jRBKeyValue;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextFieldLinkType;
     private javax.swing.JTextField jTxtDisplayName;
     private javax.swing.JTextField jTxtDisplayOrder;
     private javax.swing.JTextField jTxtGuiType;

@@ -51,6 +51,7 @@ import com.sun.mdm.multidomain.project.editor.TabWebManagerRelationshipTypes;
  */
 public class LinkBaseNode extends AbstractNode {
     LinkType mLinkType;
+    LinkType mWebLinkType;
     LinkBaseNode mLinkTypeNode;
     String mLinkName;
     EditorMainApp mEditorMainApp;
@@ -75,10 +76,11 @@ public class LinkBaseNode extends AbstractNode {
      * @param LinkParentNode
      * @param linkType
      */
-    public LinkBaseNode(EditorMainApp editorMainApp, LinkType linkType) {
+    public LinkBaseNode(EditorMainApp editorMainApp, LinkType linkType, LinkType webLinkType) {
         super(Children.LEAF);
         mEditorMainApp = editorMainApp;
-        mLinkType = linkType;       
+        mLinkType = linkType;
+        mWebLinkType = webLinkType;
         mLinkTypeNode = this;
         addNodeListener(new NodeAdapter() {
             @Override
@@ -141,9 +143,7 @@ public class LinkBaseNode extends AbstractNode {
     
     public TabWebManagerRelationshipTypes getRelationshipTypesTab(boolean bRefresh) {
         if (mTabWebManagerRelationshipTypes == null) {
-            java.util.ArrayList al = new java.util.ArrayList();
-            al.add(mLinkType);
-            mTabWebManagerRelationshipTypes = new TabWebManagerRelationshipTypes(mEditorMainApp, al);
+            mTabWebManagerRelationshipTypes = new TabWebManagerRelationshipTypes(mEditorMainApp, mWebLinkType);
         }
         
         return mTabWebManagerRelationshipTypes;

@@ -68,26 +68,29 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
     
     protected TabWebManagerRelationshipTypes getRelationshipTypesTab() {
         if (mTabRelationshipTyps == null) {
-            mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mRelationshipTypes);
+            //mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mRelationshipTypes);
         }
         
         return mTabRelationshipTyps;
     }
 
     protected TabDomainSearch getDoaminsTab() {
+        /**
         if (mTabDomains == null) {
             mTabDomains = new TabDomainSearch(mEditorMainApp, mMultiDomainWebManager.getDomains());
         }
+         */ 
         
         return mTabDomains;
     }
     
     
     protected TabDomainView getDomainViewTab() {
+        /**
         if (mTabDomainView == null) {
             mTabDomainView = new TabDomainView(mEditorMainApp, mMultiDomainWebManager.getDomains());
         }
-        
+        */
         return mTabDomainView;
     }
     /** This method is called from within the constructor to

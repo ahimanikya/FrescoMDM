@@ -27,13 +27,21 @@ public class TabDomainView extends javax.swing.JPanel {
     private EditorMainApp mEditorMainApp = null;
     private DomainsForWebManager mDomains = null;
     private ArrayList<RecordDetail> mRecordDetail;
+    private DomainForWebManager mDomain = null;
 
     /** Creates new form TabDomainView */
-    public TabDomainView(EditorMainApp editorMainApp, DomainsForWebManager domains) {
+    public TabDomainView(EditorMainApp editorMainApp, DomainForWebManager domain) {
         mEditorMainApp = editorMainApp;
-        mDomains = domains;
+
+        mDomain = domain;
         initComponents();
-        ArrayList<DomainNode> domainNodes = mEditorMainApp.getDomainNodes();
+        //this.jTxtDomain.setEditable(false);
+        
+        //ArrayList<DomainNode> domainNodes = mEditorMainApp.getDomainNodes();
+        
+        getDomain(domain.getDomainName());
+        
+        /**
         if (domainNodes.size() > 0) {
             for (DomainNode node : domainNodes) {
                 this.jCBDomainList.addItem(node.getName());
@@ -41,39 +49,45 @@ public class TabDomainView extends javax.swing.JPanel {
             this.jCBDomainList.setSelectedIndex(0);       
             getDomain((String) jCBDomainList.getSelectedItem());
         }
+         */ 
         
+        /**
         this.jCBDomainList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent e) {
                 String selectDomain = (String) jCBDomainList.getSelectedItem();
                 getDomain(selectDomain);
             }
         });
+         */ 
     }
 
     private void getDomain(String domainName) {
         jCBIncludeEUID.setSelected(false);
-        DomainForWebManager domain = mDomains.getDomain(domainName);
+        //DomainForWebManager domain = mDomains.getDomain(domainName);
+        /**
         if (domain == null) {
             domain = new DomainForWebManager(domainName);
             mDomains.addDomain(domain);
         }
+         */ 
+        this.jTxtDomain.setText(domainName);
         
         ArrayList<FieldGroup.FieldRef> fieldList = null;
-        if (domain.getRecordIDFields().size() == 0) {
+        if (mDomain.getRecordIDFields().size() == 0) {
             fieldList = new ArrayList<FieldGroup.FieldRef>();
         } else {
-            fieldList = domain.getRecordIDFields().get(0).getFieldRefs();
+            fieldList = mDomain.getRecordIDFields().get(0).getFieldRefs();
         }
         
         TableModelRecordId recordIdModel = new TableModelRecordId(fieldList);
         jTableRecordID.setModel(recordIdModel);
         jPanelRecordHighLight.setVisible(true);
 
-        TableModelRecordSummary recordSummaryModel = new TableModelRecordSummary(domain.getRecordSummaryFields());
+        TableModelRecordSummary recordSummaryModel = new TableModelRecordSummary(mDomain.getRecordSummaryFields());
         jTableRecordSummay.setModel(recordSummaryModel);
         jPanelDomainSummary.setVisible(true);
 
-        mRecordDetail = domain.getRecordDetailList();
+        mRecordDetail = mDomain.getRecordDetailList();
         TableModelRecordDetail mTableRecordDetailModel = new TableModelRecordDetail(mRecordDetail);
         jTableRecordDetail.setModel(mTableRecordDetailModel);
         jPanelRecordDetail.setVisible(true);
@@ -99,7 +113,6 @@ private void enableSave() {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jCBDomainList = new javax.swing.JComboBox();
         jPanelRecordHighLight = new javax.swing.JPanel();
         jCBIncludeEUID = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -118,6 +131,7 @@ private void enableSave() {
         jBtnAddDetail = new javax.swing.JButton();
         jBtnRemoveDetail = new javax.swing.JButton();
         jBtnEditDetail = new javax.swing.JButton();
+        jTxtDomain = new javax.swing.JTextField();
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "MSG_Name")); // NOI18N
 
@@ -312,6 +326,9 @@ private void enableSave() {
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
+        jTxtDomain.setEditable(false);
+        jTxtDomain.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "TabDomainView.jTxtDomain.text")); // NOI18N
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -325,7 +342,7 @@ private void enableSave() {
                     .add(layout.createSequentialGroup()
                         .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jCBDomainList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 161, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -334,14 +351,14 @@ private void enableSave() {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
-                    .add(jCBDomainList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(26, 26, 26)
                 .add(jPanelRecordHighLight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jPanelDomainSummary, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -367,8 +384,8 @@ private void onEditSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 
 private void onAddDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDetail
 // TODO add your handling code here:
-        DomainForWebManager domain = mDomains.getDomain((String) jCBDomainList.getSelectedItem());
-    int recordDetailID = domain.generateRecordDetailID();
+    //DomainForWebManager domain = mDomains.getDomain((String) jCBDomainList.getSelectedItem());
+    int recordDetailID = mDomain.generateRecordDetailID();
     RecordDetail newRecordDetail = new RecordDetail(recordDetailID);
     DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(newRecordDetail, true);
     dlg.setVisible(true);
@@ -391,7 +408,7 @@ private void onRemoveDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         int selectedRow = jTableRecordDetail.getSelectedRow();
     TableModelRecordDetail model = (TableModelRecordDetail) jTableRecordDetail.getModel();
     RecordDetail recordDet = model.getRow(selectedRow);
-    if (mDomains.getDomain((String) jCBDomainList.getSelectedItem()).isRecordDetailUsed(recordDet)) {
+    if (mDomain.isRecordDetailUsed(recordDet)) {
         String warningMsg = NbBundle.getMessage(TabDomainView.class, "MSG_ERROR_DELETING_RECORD_DETAIL");
         NotifyDescriptor errorNotify = new NotifyDescriptor.Message(
                 warningMsg,
@@ -463,7 +480,11 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
                 if (singleRow != null) {
                     switch (col) {
                         case iColRecordDetailName:
+                            if (singleRow.getDescription() != null && singleRow.getDescription().length() > 0) {
+                                return singleRow.getDescription();
+                            }
                             return "FieldGroup-" + row;
+                            
                         default:
                             return null;
                     }
@@ -806,7 +827,6 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
     private javax.swing.JButton jBtnRemoveDetail;
     private javax.swing.JButton jBtnRmvHighLightField;
     private javax.swing.JButton jBtnRmvSummaryGroup;
-    private javax.swing.JComboBox jCBDomainList;
     private javax.swing.JCheckBox jCBIncludeEUID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanelDomainSummary;
@@ -818,6 +838,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
     private javax.swing.JTable jTableRecordDetail;
     private javax.swing.JTable jTableRecordID;
     private javax.swing.JTable jTableRecordSummay;
+    private javax.swing.JTextField jTxtDomain;
     // End of variables declaration//GEN-END:variables
 
 }
