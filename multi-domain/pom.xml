@@ -12,12 +12,12 @@
     <artifactId>multi-domain</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    <name>Master Index Multi-Domain</name>
+    <name>Multi-Domain Manager</name>
     <url>http://maven.apache.org</url>
     <modules>
         <module>project</module>        
         <module>core</module>                
         <module>services</module>                
-        <!--module>webapp</module-->        
+        <module>webapp</module>        
     </modules>
 </project>
