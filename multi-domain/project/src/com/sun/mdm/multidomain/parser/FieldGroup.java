@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class FieldGroup {
     
+    private String mDescription = null;
+    
     private ArrayList<FieldRef> mFieldRefs = new ArrayList<FieldRef>();
     
     public ArrayList<FieldRef> getFieldRefs() {
@@ -35,6 +37,14 @@ public class FieldGroup {
     public FieldRef createFieldRef(String fieldName) {
         return new FieldRef(fieldName);
         
+    }
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String mDescription) {
+        this.mDescription = mDescription;
     }
     
     public class FieldRef {

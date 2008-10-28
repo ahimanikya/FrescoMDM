@@ -189,7 +189,8 @@ public class Utils {
                                                     xmlSource.getPublicId() + ":" + e.getMessage());
         }
     }
-/**
+
+    /**
      * @param xmlSource object definition
      * @return ret EIndexObject
      * @throws ParserException exception

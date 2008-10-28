@@ -101,7 +101,7 @@ public class MultiDomainApplication extends MultiDomainProject {
         return mMultiDomainModel;
     }
 
-    /** Parses object.xml and returns com.sun.mdm.index.parser.MultiDomainWebManager by parsing object.xml
+    /** Parses MultiDomainWebManager.xml and returns com.sun.mdm.index.parser.MultiDomainWebManager by parsing object.xml
      * @throws RepositoryException failed to get value
      * @return the MultiDomainWebManager
      */    

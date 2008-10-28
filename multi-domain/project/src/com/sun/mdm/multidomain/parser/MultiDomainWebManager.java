@@ -18,7 +18,7 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,6 +41,7 @@ public class MultiDomainWebManager {
     private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
     
     private static String RELATIONSHIP_WEB_MANAGER = "MultiDomainWebManager";
+    
 
     /**
      * Parse method will parse RelationshipWebManager.xml
@@ -63,6 +64,15 @@ public class MultiDomainWebManager {
 
     public JNDIResources getJndiResources() {
         return this.mJndiResources;
+    }
+    
+    public LinkType getLinkType(String name, String source, String target) {
+        for (LinkType type : mRelationshipTypes) {
+            if (type.getName().equals(name) && type.getSourceDomain().equals(source) && type.getTargetDomain().equals(target)) {
+                return type;
+            }
+        }
+        return null;
     }
 
     public String writeToString() throws IOException, Exception {
@@ -205,6 +215,7 @@ public class MultiDomainWebManager {
         return elmPageDefs;
     }
 
+    
     private Element getDomainsToStr(Document xmlDoc) throws Exception {
         Element elmDomains = xmlDoc.createElement(WebManagerProperties.mTAG_DOMAINS);
         ArrayList<DomainForWebManager> domains = mDomains.getDomains();
@@ -463,7 +474,7 @@ public class MultiDomainWebManager {
                 
                 ArrayList<RelationFieldReference> extendedFieldRefs = new ArrayList<RelationFieldReference>();
 
-                RelationshipType relType = new RelationshipType(nameAttr, destAttr, sourceAttr, displayAttr, fixedFieldRefs, extendedFieldRefs);
+                RelationshipType relType = new RelationshipType(nameAttr, sourceAttr, destAttr, displayAttr, fixedFieldRefs, extendedFieldRefs);
                 
                 parseType(elm, relType);
 
