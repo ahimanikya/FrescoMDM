@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NOTE:  This is a sample file.  It contains the basic format for the security -->
+<!-- configuration file (mdwm-security.xml)                                               -->
+<mdwm-security xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/mdwm-security.xsd">
+    <roles>
+        <role>
+            <role-name>MDWM.Administrator</role-name>
+            <operations>
+                <name>Domains_SearchView</name>
+                <name>Domains_Update</name>
+                <name>Relationships_SearchView</name>
+                <name>Relationships_Update</name>
+                <name>Hierarchies_SearchView</name>
+                <name>Hierarchies_Update</name>
+            </operations>
+        </role>
+        <role>
+            <role-name>MDWM.Clerk</role-name>
+            <operations>
+                <name>Domains_SearchView</name>
+                <name>Relationships_SearchView</name>
+                <name>Hierarchies_SearchView</name>
+            </operations>
+        </role>
+        <role>
+            <role-name>MDWM.DataEntry</role-name>
+            <inheritance>
+                <inherits-from>MDWM.Clerk</inherits-from>
+                <excluded-operations>
+                <name>Hierarchies_SearchView</name>
+                </excluded-operations>
+            </inheritance>
+            <operations>
+                <name>Domains_Update</name>
+            </operations>
+        </role>
+    </roles>
+</mdwm-security>
