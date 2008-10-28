@@ -60,7 +60,11 @@ changed. &nbsp;Deleting an attribute decresses the available count by
 one. &nbsp;Changing the type decresses the available count for the old
 type by one and incresses the count for the new type by one.
 &nbsp;(Example, changing "AString" to type char would make the strings
-count 1 of 20 and the char count 76 of 100). <br /><br /><br /><hr style="width: 100%; height: 2px;" />
+count 1 of 20 and the char count 76 of 100). <br /><br /><h2>Security Operations</h2><br /><table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td class="t-packs tblheader" style="font-weight: bold;">Operation</td><td class="t-packs tblheader" style="font-weight: bold;">Effect</td><td class="t-packs tblheader"><span style="font-weight: bold;">Must Implement</span></td></tr><tr><td>AdminHierarchies_ReadWrite</td><td>Allows user to view, add, delete and updatee relationships and attributes associated with a specific relationship. <br /></td><td>Yes</td></tr><tr><td>AdminHierarchies _ViewOnly</td><td>View
+only mode of relationship and Add / Edit relationship dialog. &nbsp; If
+user has access to this operation and not the
+AdminRelationships_ReadWrite operation then View... is shown by each
+relationship instead of Edit. <br /></td><td>No<br /></td></tr></tbody></table><br /><h3>Notes</h3><br /><ul><li>If neither operation is assigned to a user than the Administer-&gt;Hierarchies tab is not shown. </li></ul><br /><hr style="width: 100%; height: 2px;" />
 <div class="pageactions"> <i>This page last
 changed on 12-Aug-2008
 09:41:53 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>

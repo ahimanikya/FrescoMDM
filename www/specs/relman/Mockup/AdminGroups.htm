@@ -11,35 +11,76 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script></head>
+</script>
+</head>
 <body class="view">
 <br />
 <h1 class="pagename">Administer-&gt;Groups</h1>
 <p>Define what domains are in a group. Also define what
 attributes are with each group relationship.
-</p><h2>Use Cases&nbsp;</h2><ul><li>View and maintain group definitions.
-</li><li> View and maintain attributes that are associated
-with a specific group -&gt; domain relationship. Such as how long
-the relationship is good for. i.e. how long is a record in a group. </li>
-<li> View and maintain extended attributes a specific
-group -&gt; domain relationship. </li>
+</p>
+<h2>Use Cases&nbsp;</h2>
+<ul>
+<li>View and maintain group definitions for a specific domain.
+</li>
+<li> View and maintain attributes that are associated
+with a specific group instance. &nbsp;A group instance is a set of
+records that share a common attribute, such as a household.
+&nbsp;An examples of group instance attributes are&nbsp;
+"number of residents" and "original occupent".&nbsp; </li>
+<li> View and maintain custom attributes for records that
+belong to a group instance. &nbsp;An example of a group record
+custom attribute is "household head" which would be true or
+false.&nbsp;</li>
 </ul>
-
 <br />
-
-<h2>Screen<b> </b></h2><br /><img style="width: 859px; height: 842px;" alt="Administer Groups" src="../attach/AdministerGroups.png" /><br />
-<br /><h2>Notes</h2><ul><li>If moving several items at a time via the
-Move Up/Down &nbsp;function acts as if each line was moved separately.
-&nbsp;I.E. For Move Up - Adate would move before AString and
-&nbsp;Afloat would move before AnInt. </li></ul><br />
-
-
-
-<h2><span style="color: blue;">Updates
-Needed</span></h2><br /><ul><li>Main screen</li></ul><ul><ul><li>Change "Used in Rules" to "Used in Service API"&nbsp;</li></ul><li>Dialog</li><ul><li>The selected rows should be highlighted.</li><li>Select all for checkboxes that are used to select rows</li><li>Include these&nbsp;Attributes should read "Include these Attributes for a Group Instance"&nbsp;</li><li>Define Custom Attributes should read "Define Custom Attributes for a Group Instance"</li><li>Lengths for string fields only. &nbsp;The length is used on the GUI to limit the number of characters a user can type. &nbsp;</li><li>Nice to have: &nbsp;Way to view other searchable attributes like patterns used for validation on the GUI </li><li>Nice to have: &nbsp;Show format of a Group Instance - as a set of ePaths &nbsp;</li></ul></ul><h2 style="color: rgb(153, 0, 0);">Issues</h2><ul><li>[<i><a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a>.] </i>Should
-the Display Names be shown on the Web Applciation? &nbsp; It may not
-make sense to show these if they are associated with the rm.xml
-(multi-domain manager xml) file.<br /><br />If we do show these then we may need to also allow users to enter display names for the extended attributes.</li><li>Do we need attributes for both the entire group and each record&nbsp;n a group? &nbsp;</li></ul><span style="color: red;"></span><hr style="width: 100%; height: 2px;" /><span style="color: red;"></span><div class="pageactions"> <i>This page last
+<h2>Screen<b> </b></h2>
+<ul>
+<li>Similar to the other administer screens except that this
+will have separate tabs to define attributes for the group instance and
+attributes for the custom records.&nbsp;</li>
+</ul>
+<br />
+<h2>Security Operations</h2>
+<br />
+<table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td class="tblheader">Operation</td>
+<td class="tblheader">Effect</td>
+<td class="tblheader">Must Implement</td>
+</tr>
+<tr>
+<td>AdminGroups_ReadWrite</td>
+<td>Allows user to view, add, delete and updatee
+relationships and attributes associated with a specific relationship. <br />
+</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AdminGroups_ViewOnly</td>
+<td>View
+only mode of relationship and Add / Edit relationship dialog.
+&nbsp; If user
+has access to this operation and not the AdminRelationships_ReadWrite
+operation then View... is shown by each relationship instead of Edit. <br />
+</td>
+<td>No<br />
+</td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>Notes</h3>
+<br />
+<ul>
+<li>If neither operation is assigned to a user than the
+Administer-&gt;Groups tab is not shown. </li>
+</ul>
+<br />
+<span style="color: red;"></span>
+<hr style="width: 100%; height: 2px;" /><span style="color: red;"></span>
+<div class="pageactions"> <i>This page last
 changed on 03-Sept-2008
 12:31:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a>.</i>
 </div>

@@ -47,32 +47,32 @@ grayed out.<br><br>
 <table style="text-align: left; width: 487px; height: 148px;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr>
-<td style="font-weight: bold; background-color: rgb(204, 204, 204); text-align: center;">Action</td>
-<td style="font-weight: bold; background-color: rgb(204, 204, 204); text-align: center;">Supported</td>
+<td class="tblheader" style="font-weight: bold; text-align: center;">Action</td>
+<td class="tblheader" style="font-weight: bold; text-align: center;">Supported</td>
 </tr>
 <tr>
 <td>Add</td>
-<td>When a single Domain under a Relationship is selected.<br>
-<br>
-Example: The domain hospital under the Admitted to relationship is selected. <br>
+<td>User has ManageRelationships_ReadWrite permission.<br><br>When a single Domain under a Relationship is selected. 
+&nbsp; <br><br>Example: The domain hospital under the Admitted to relationship is selected. <br><br>
 </td>
 </tr>
 <tr>
 <td>Move&nbsp;</td>
-<td>Destination tree is shown. <br>
-<br>
+<td>User has ManageRelationships_ReadWrite permission.<br><br>Destination tree is shown. <br><br>
 Appropriate nodes are selected. <br>
 </td>
 </tr>
 <tr>
 <td>Replace</td>
-<td>The original source record is selected. &nbsp; <br><br>A single record is selected.<br></td>
+<td>User has ManageRelationships_ReadWrite permission.<br><br>The original source record is selected. &nbsp; <br><br>A single record is selected on the reassign tree.<br><br><span style="font-style: italic;">Issue</span>:
+Should we support this for all records ? If a user selects a single
+record it can be replaced by any record on the right hand tree? <br></td>
 </tr>
 <tr>
 <td>Delete</td>
-<td>Any node except the root node. </td>
+<td>User has ManageRelationships_ReadWrite permission.<br><br>Any node except the root node. </td>
 </tr>
-<tr>
+<tr><td>Reassign</td><td>User has ManageRelationships_ReadWrite permission.</td></tr><tr>
 <td>Find</td>
 <td>A single domain or records from a single domain are selected.<br><br>Disabled if a relationship node is selected.<br>  </td>
 </tr>

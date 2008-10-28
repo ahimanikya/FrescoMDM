@@ -11,7 +11,8 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
-</script></head>
+</script>
+</head>
 <body class="view">
 <div class="pageContent">
 <h1 class="pagename"><a name="Top"></a>Administer-&gt;Relationships</h1>
@@ -26,7 +27,8 @@ like ManagerOf and the source and target domains.<br />
 including the 'direction' of the relationship (A -&gt; B, A
 &lt;--&gt; B)&nbsp;
 </li>
-<li> View and maintain which predefined attributes are included and required by a relationship </li>
+<li> View and maintain which predefined attributes are included
+and required by a relationship </li>
 <li> View and maintain custom attributes associated with the
 specific relationship.</li>
 </ul>
@@ -42,11 +44,20 @@ Up/Down &nbsp;function acts as if each line was moved separately.
 &nbsp;I.E. For
 Move Up - Adate would move before AString and &nbsp;Afloat would
 move before
-AnInt.</li><li>Clone features are 'nice to have'.
+AnInt.</li>
+<li>Clone features are 'nice to have'.
 &nbsp;These would bring up the entire list for the associated
 'browse'
-function so a user could select and clone a definition.</li><li>Title of the overlay. &nbsp;&nbsp;</li><ul><li>Launched from Add... 'Add Relationship'&nbsp;</li><li>Launched forom Edit... 'Edit Relationship'</li></ul><li>The Edit Relationship screen needs to check if the database has any data
-associated with the Relationship. &nbsp;If it does than everything in the
+function so a user could select and clone a definition.</li>
+<li>Title of the overlay. &nbsp;&nbsp;</li>
+<ul>
+<li>Launched from Add... 'Add Relationship'&nbsp;</li>
+<li>Launched forom Edit... 'Edit Relationship'</li>
+</ul>
+<li>The Edit Relationship screen needs to check if the database
+has any data
+associated with the Relationship. &nbsp;If it does than everything
+in the
 dialog should be disabled except Plugin,
 Description, Required check boxes, Add and Searchable.</li>
 </ul>
@@ -55,26 +66,92 @@ Description, Required check boxes, Add and Searchable.</li>
 <span style="color: blue;">Updates
 Needed</span></h2>
 <span style="font-style: italic; font-weight: bold; color: rgb(153, 0, 0);"></span>
-<br /><ul><li>General</li><ul><li>Buttons shown also show icons for add / delete</li></ul></ul>
-<br /><ul><li>Dialog</li><ul><li>Relationship Attribute Area&nbsp;</li><ul>
+<br />
+<ul>
+<li>General</li>
+<ul>
+<li>Buttons shown also show icons for add / delete</li>
+</ul>
+</ul>
+<br />
+<ul>
+<li>Dialog</li>
+<ul>
+<li>Relationship Attribute Area&nbsp;</li>
+<ul>
 <li>Define Custom Attributes</li>
-<ul><li> Add a button that allows all attributes to be
+<ul>
+<li> Add a button that allows all attributes to be
 selected / unselected for the column that is used to delete attributes</li>
 </ul>
-</ul></ul></ul><br /><h2>Implementing the Available Progress Bars</h2><br />The
+</ul>
+</ul>
+</ul>
+<br />
+<h2>Implementing the Available Progress Bars</h2>
+<br />
+The
 progress bars are considered a "nice to have" feature. &nbsp;
 &nbsp;They inform the user on the number for each datatype that is
-available to use as a custom attribute. &nbsp;<br /><br />When the user
+available to use as a custom attribute. &nbsp;<br />
+<br />
+When the user
 adds an attribute of a certain type the value in the bar is increased
-by one. &nbsp;When the bar gets to 100% than the specified type can not be selected from the type pull down. &nbsp;<br /><br />Other
+by one. &nbsp;When the bar gets to 100% than the specified type can
+not be selected from the type pull down. &nbsp;<br />
+<br />
+Other
 updates to the bar are made when an attribute is deleted or the type is
-changed. &nbsp;Deleting an attribute decresses the available count by one.
-&nbsp;Changing the type decresses the available count for the old type by
-one and incresses the count for the new type by one. &nbsp;(Example,
+changed. &nbsp;Deleting an attribute decresses the available count
+by one.
+&nbsp;Changing the type decresses the available count for the old
+type by
+one and incresses the count for the new type by one.
+&nbsp;(Example,
 changing "AString" to type char would make the strings count 1 of 20
 and the char count 76 of 100).<br />
 <br />
-<div class="attachments"><br /><br /><hr style="width: 100%; height: 2px;" /></div>
+<br />
+<h2>Security Operations</h2>
+<br />
+<table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td class="tblheader">Operation</td>
+<td class="tblheader">Effect</td>
+<td class="tblheader">Must Implement</td>
+</tr>
+<tr>
+<td>AdminRelationships_ReadWrite</td>
+<td>Allows user to view, add, delete and updatee
+relationships and attributes associated with a specific relationship. <br />
+</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AdminRelationships_ViewOnly</td>
+<td>View
+only mode of relationship and Add / Edit relationship dialog.
+&nbsp; If user
+has access to this operation and not the AdminRelationships_ReadWrite
+operation then View... is shown by each relationship instead of Edit. <br />
+</td>
+<td>No<br />
+</td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>Notes</h3>
+<br />
+<ul>
+<li>If neither operation is assigned to a user than the
+Administer-&gt;Relationships tab is not shown. </li>
+</ul>
+<br />
+<div class="attachments"><br />
+<br />
+<hr style="width: 100%; height: 2px;" /></div>
 <div class="pageactions"> <i>This page last
 changed on 22-Oct-2008 12:31:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
 </div>

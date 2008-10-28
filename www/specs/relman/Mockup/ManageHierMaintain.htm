@@ -135,13 +135,18 @@ Note: The example does not show the expected search screen nor
 attributes for this example. <br />
 <br />
 <img style="width: 999px; height: 544px;" alt="" src="../attach/HierAddRecord.PNG" /><br />
-<br /><h3>Find Overlay</h3>
+<br />If the Add Overlay is shown and there are no records in the
+hierarchy then only allow a single record to be selected. &nbsp;This
+will become the root node for the hierarchy. &nbsp;<br /><br /><h3>Find Overlay</h3>
 <br />
 Find a record in the tree. <br />
 <br />This is exactly like the original Select Dialog except that the hierarchy is already selected. <br /><br /><img style="width: 766px; height: 570px;" alt="" src="../attach/FindHierRecord.png" /><br /><span class="note-highlight"><br /></span><h3>Filter Records Overaly &nbsp;</h3><br />Filter both by search and hiearchy node attributes. &nbsp;<br /><br /><img style="width: 729px; height: 322px;" alt="" src="../attach/FilterHierRecord.png" /><br /><br />Resulting tree shows all nodes that fit the criteria. &nbsp; A filter icon should appear by&nbsp;the top org chart node. <br />
 <br />
 <h2>Look of tree with "Re-arrange &gt;&gt;" option to show a tree used for drag / drop re-assignments of records</h2>
-The following shows the look of the tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">Re-arrange &gt;&gt;</span></a> option. <br />
+The following shows the look of the tree with a <a href="ManHeirMove.html"><span style="font-weight: bold;">Re-arrange &gt;&gt;</span></a> option. <br /><br /><h2>Security Operations</h2><br /><table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td class="t-packs tblheader" style="font-weight: bold;">Operation</td><td class="t-packs tblheader" style="font-weight: bold;">Effect</td><td class="t-packs tblheader"><span style="font-weight: bold;">Must Implement</span></td></tr><tr><td>ManageHierarchies_ReadWrite</td><td><ul><li>User has access to all buttons as shown in the mock up. &nbsp;</li></ul></td><td>Yes</td></tr><tr><td>ManageHierarchies_ViewOnly</td><td><ul><li>The only buttons a user can choose are "Select", "Find", "Filter", "View Summary" and "View Details".&nbsp;</li><li>The Add, Move, Delete, Replace and Rearrange buttons are not shown. &nbsp;</li><li>The tree only supports a single select to view relationship and record details. &nbsp;Drag / Drop on the tree is disabled.</li><li>The relationship attributes are read only so neither the Save nor the Revert button is displayed for these. <br /><br />A
+nice to have feature would be that when in View Only mode either the
+Calender button would not be shown or it would not allow the user to
+change the date.&nbsp;</li></ul></td><td style="vertical-align: top;">Yes<br /></td></tr></tbody></table><br /><h3>Notes</h3><br /><ul><li>If neither operation is assigned to a user than the Manage-&gt;Hierarchies tab is not shown </li></ul><br /><br />
 <br />
 <hr style="width: 100%; height: 2px;" />
 <ul>

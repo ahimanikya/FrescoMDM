@@ -382,7 +382,10 @@ similiar however there are some important differences. <br>
 <br>
 These differences have to do with the way drag / drop and the actions
 for the tree work and can be read about at <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on
-Relationship Tree.</span></a><br><br><br>
+Relationship Tree.</span></a><br><br><h2>Security Operations</h2><br><table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td class="t-packs tblheader" style="font-weight: bold;">Operation</td><td class="t-packs tblheader" style="font-weight: bold;">Effect</td><td class="t-packs tblheader"><span style="font-weight: bold;">Must Implement</span></td></tr><tr><td>ManageRelationships_ReadWrite</td><td><ul><li>User has access to all buttons as shown in the mock up. &nbsp;</li><li>Implement multi-select on the tree and drag /drop.</li></ul></td><td>Yes</td></tr><tr><td>ManageRelationships_ViewOnly</td><td><ul><li>The only buttons a user can choose are "Select", "Find", "Filter", "View Summary" and "View Details".&nbsp;</li><li>The Add, Move, Delete, Replace and Rearrange buttons are not shown. &nbsp;</li><li>The tree only supports a single select to view relationship and record details. &nbsp;Drag / Drop on the tree is disabled.</li><li>The relationship attributes are read only so neither the Save nor the Revert button is displayed. <br><br>A
+nice to have feature would be that when in View Only mode either the
+Calender button would not be shown or it would not allow the user to
+change the date.&nbsp;</li></ul></td><td style="vertical-align: top;">Yes<br></td></tr></tbody></table><br><h3>Notes</h3><br><ul><li>If neither operation is assigned to a user than the Manage-&gt;Relationships tab is not shown </li></ul>
 <br>
 <a href="RecordsMoveRules.html"><span style="font-weight: bold;"></span></a>
 <div class="pageactions"><i>This page lastchanged on
