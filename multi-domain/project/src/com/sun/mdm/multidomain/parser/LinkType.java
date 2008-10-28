@@ -33,15 +33,17 @@ public class LinkType {
     String targetRelationshipName;
     String sourceDomain;
     String targetDomain;
-    String direction; // 1 one direction, 2 bidirectional
+    String direction = "1"; // 1 one direction, 2 bidirectional
     String description;
+    String effectiveFrom;
+    String effectiveTo;
     boolean includeEffectiveFrom;
     boolean includeEffectiveTo;
     boolean includePurgeDate;
     boolean effectiveFromRequired;
     boolean effectiveToRequired;
     boolean purgeDateRequired;
-    ArrayList <Attribute> fixedAttributes;
+    ArrayList <Attribute> predefinedAttributes;
     ArrayList <Attribute> extendedAttributes;
     
     private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
@@ -86,8 +88,8 @@ public class LinkType {
         }
     }
     
-    public void setFixedAttributes(ArrayList<Attribute> attributes) {
-        this.fixedAttributes = attributes;
+    public void setPredefinedAttributes(ArrayList<Attribute> attributes) {
+        this.predefinedAttributes = attributes;
     }
     
     public void setExtendedAttributes(ArrayList<Attribute> attributes) {
@@ -168,8 +170,8 @@ public class LinkType {
     //    return al;
     // }
 
-    public ArrayList<Attribute> getFixedAttributes() {
-        return fixedAttributes;
+    public ArrayList<Attribute> getPredefinedAttributes() {
+        return predefinedAttributes;
     }
 
     public ArrayList<Attribute> getExtendedAttributes() {
@@ -246,5 +248,21 @@ public class LinkType {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEffectiveFrom() {
+        return effectiveFrom;
+    }
+
+    public void setEffectiveFrom(String effectiveFrom) {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+    public String getEffectiveTo() {
+        return effectiveTo;
+    }
+
+    public void setEffectiveTo(String effectiveTo) {
+        this.effectiveTo = effectiveTo;
     }
 }

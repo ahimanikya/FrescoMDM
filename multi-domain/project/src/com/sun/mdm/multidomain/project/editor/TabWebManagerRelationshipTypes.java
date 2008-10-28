@@ -37,10 +37,13 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         //mRelationshipTypes = relationshipTypes;
         mLinkType = linkType;
         initComponents();
-        createRelationshipTypes();
+        mTableFields = new JTable();
+        if (mLinkType != null) {
+            createRelationshipTypes();
+            this.jTextFieldLinkType.setText(mLinkType.getName());
+        }
         jTxtDisplayOrder.setEditable(false);
         this.jTextFieldLinkType.setEditable(false);
-         this.jTextFieldLinkType.setText(mLinkType.getName());
         
 
         mTableFields.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -128,7 +131,6 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         RelationshipType relType = (RelationshipType) mLinkType;
         String relationType = relType.getName();
 
-        mTableFields = new JTable();
         createFieldRefs(relType);
     /**
         if (mRelationshipTypes != null && mRelationshipTypes.size() > 0) {

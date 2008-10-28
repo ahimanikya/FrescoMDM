@@ -128,6 +128,14 @@ public class EditorMainApp {
         return mInstance;
     }
         
+    public LinkBaseNode addLink(LinkType linkType) {
+        // wee get a new webLinkType here
+        LinkType webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
+        LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
+        this.mAlLinkNodes.add(node);
+        return node;
+    }
+    
     private void loadLinks() {
         // build mAlLinkNodes
         ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllLinks();

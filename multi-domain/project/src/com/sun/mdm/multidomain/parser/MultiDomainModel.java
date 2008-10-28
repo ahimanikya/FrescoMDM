@@ -51,6 +51,8 @@ public class MultiDomainModel {
     private final String mTagGroup = "group";
     private final String mTagCategory = "category";
     private final String mTagDirection = "direction";
+    private final String mTagEffectiveFrom = "effective-from";
+    private final String mTagEffectiveTo = "effective-to";
     private final String mTagPredefinedAttributes = "predefined-attributes";
     private final String mTagExtendedAttributes = "extended-attributes";
     private final String mTagAttribute = "attribute";
@@ -286,17 +288,21 @@ public class MultiDomainModel {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagSourceDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.sourceDomain = getAttributeName(nl.item(i));
+                        linkType.setSourceDomain(getAttributeName(nl.item(i)));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.targetDomain = getAttributeName(nl.item(i));
+                        linkType.setTargetDomain(getAttributeName(nl.item(i)));
                     } else if (mTagPlugin.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.plugin = getAttributeName(nl.item(i));
+                        linkType.setPlugin(getAttributeName(nl.item(i)));
                     } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.direction = Utils.getStrElementValue(nl.item(i));
+                        linkType.setDirection(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagDescription.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.description = Utils.getStrElementValue(nl.item(i));
+                        linkType.setDescription(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagEffectiveFrom.equals(((Element) nl.item(i)).getTagName())) {
+                        linkType.setEffectiveFrom(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagEffectiveTo.equals(((Element) nl.item(i)).getTagName())) {
+                        linkType.setEffectiveTo(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagPredefinedAttributes.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setFixedAttributes(parseAttributes(nl.item(i)));
+                        linkType.setPredefinedAttributes(parseAttributes(nl.item(i)));
                     } else if (mTagExtendedAttributes.equals(((Element) nl.item(i)).getTagName())) {
                         linkType.setExtendedAttributes(parseAttributes(nl.item(i)));
                     }

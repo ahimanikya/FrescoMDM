@@ -63,7 +63,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         this.jTableExtendedAttributes.setModel(modelExtendedAttribute);
         // Predefined attributes
         modelPredefinedAttribute.rows.clear();
-        ArrayList <Attribute> al = linkType.getFixedAttributes();
+        ArrayList <Attribute> al = linkType.getPredefinedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
             PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getValue());

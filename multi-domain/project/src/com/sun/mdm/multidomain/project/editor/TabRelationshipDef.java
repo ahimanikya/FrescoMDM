@@ -48,18 +48,21 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         
         this.jTextName.setText(linkType.getName());
         // Get plugin list
-        this.jComboBoxPlugin.insertItemAt(linkType.getPlugin(), 0);
-        this.jComboBoxPlugin.setSelectedIndex(0);
+        if (linkType.getPlugin() != null) {
+            this.jComboBoxPlugin.insertItemAt(linkType.getPlugin(), 0);
+            this.jComboBoxPlugin.setSelectedIndex(0);
+        }
         //this.jComboBoxPlugin.setSelectedItem(linkType.getPlugin());
         this.jTextDomain1.setText(linkType.getSourceDomain());
         this.jTextDomain2.setText(linkType.getTargetDomain());
         String direction = linkType.getDirection();
-        if (direction.equals("1")) {
+        if (direction == null || direction.equals("1")) {
             this.jComboBoxDirection.setSelectedIndex(0);
         }
         String description = linkType.getDescription();
-        this.jTextAreaDescription.setText(description);
-        
+        if (description != null) {
+            this.jTextAreaDescription.setText(description);
+        }
         ArrayList <PredefinedAttributeRow> rowsPredefinedAttribute = new ArrayList();
         TableModelPredefinedAttribute modelPredefinedAttribute = new TableModelPredefinedAttribute(rowsPredefinedAttribute);
         this.jTableFixedAttibutes.setModel(modelPredefinedAttribute);
@@ -69,7 +72,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         this.jTableExtendedAttributes.setModel(modelExtendedAttribute);
         // Predefined attributes
         modelPredefinedAttribute.rows.clear();
-        ArrayList <Attribute> al = linkType.getFixedAttributes();
+        ArrayList <Attribute> al = linkType.getPredefinedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
             PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getValue());
