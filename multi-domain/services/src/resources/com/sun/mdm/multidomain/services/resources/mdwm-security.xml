@@ -6,10 +6,13 @@
         <role>
             <role-name>MDWM.Administrator</role-name>
             <operations>
+                <name>Domains_Add</name>
                 <name>Domains_SearchView</name>
                 <name>Domains_Update</name>
+                <name>Relationships_Add</name>
                 <name>Relationships_SearchView</name>
                 <name>Relationships_Update</name>
+                <name>Hierarchies_Add</name>
                 <name>Hierarchies_SearchView</name>
                 <name>Hierarchies_Update</name>
             </operations>
@@ -31,6 +34,7 @@
                 </excluded-operations>
             </inheritance>
             <operations>
+                <name>Domains_Add</name>
                 <name>Domains_Update</name>
             </operations>
         </role>
