@@ -264,10 +264,10 @@
     <Component class="javax.swing.JTextField" name="jTxtDomain">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jTxtDomain.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTxtDomainActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

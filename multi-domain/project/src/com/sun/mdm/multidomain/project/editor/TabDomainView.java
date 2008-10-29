@@ -327,7 +327,6 @@ private void enableSave() {
         );
 
         jTxtDomain.setEditable(false);
-        jTxtDomain.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "TabDomainView.jTxtDomain.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -368,10 +367,45 @@ private void onAddHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
 
 private void onRemoveHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveHighLightField
 // TODO add your handling code here:
+    int selectedRow = this.jTableRecordSummay.getSelectedRow();
+    TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
+    FieldGroup selectedGroup = model.getRow(selectedRow);   
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Prompt"),
+            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Title"),
+            NotifyDescriptor.YES_NO_OPTION);
+    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+        Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordDetailName);
+        model.removeRow(selectedRow);
+        if (jTableRecordDetail.getRowCount() > 0) {
+            jTableRecordDetail.setRowSelectionInterval(0, 0);
+        } else {
+            this.jBtnRmvSummaryGroup.setEnabled(false);
+            this.jBtnEditSummaryGroup.setEnabled(false);
+        }
+
+        this.enableSave();
+    }
+    
+    
 }//GEN-LAST:event_onRemoveHighLightField
 
 private void onAddSummayGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSummayGroup
 // TODO add your handling code here:
+    FieldGroup newGroup = new FieldGroup();
+    FieldGroupDialog dlg = new FieldGroupDialog(newGroup);
+    dlg.setVisible(true);
+    if (dlg.isModified()) {
+        TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
+        model.addRow(model.getRowCount(), newGroup);
+        jTableRecordSummay.setModel(model);
+        //mDomain.getRecordSummaryFields().add(newGroup);
+        this.jBtnRmvSummaryGroup.setEnabled(true);
+        this.jBtnEditSummaryGroup.setEnabled(true);
+        enableSave();
+
+    }
+
 }//GEN-LAST:event_onAddSummayGroup
 
 private void onRemoveSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSummaryGroup
@@ -380,6 +414,17 @@ private void onRemoveSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void onEditSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditSummaryGroup
 // TODO add your handling code here:
+    int selectedRow = this.jTableRecordSummay.getSelectedRow();
+    TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
+    FieldGroup selectedGroup = model.getRow(selectedRow);
+    if (selectedGroup.getDescription() == null || selectedGroup.getDescription().length() == 0) {
+        selectedGroup.setDescription("FieldGroup-" + selectedRow);
+    }
+    FieldGroupDialog dlg = new FieldGroupDialog(selectedGroup);
+    dlg.setVisible(true);
+    if (dlg.isModified()) {
+        enableSave();
+    }
 }//GEN-LAST:event_onEditSummaryGroup
 
 private void onAddDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDetail
@@ -493,9 +538,9 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
             return null;
         }
 
-        public RecordDetail getRow(int row) {
+        public FieldGroup getRow(int row) {
             if (fieldRows != null) {
-                RecordDetail singleRow = (RecordDetail) fieldRows.get(row);
+                FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
                 return singleRow;
             }
             return null;
@@ -542,7 +587,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, RecordDetail row) {
+        public void addRow(int index, FieldGroup row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);

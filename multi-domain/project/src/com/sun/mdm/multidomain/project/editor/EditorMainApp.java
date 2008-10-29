@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.multidomain.project.editor;
 
+import com.sun.mdm.multidomain.parser.Attribute;
 import java.util.Map;
 import java.util.HashMap;
 import java.awt.Cursor;
@@ -43,15 +44,14 @@ import org.xml.sax.ErrorHandler;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.RelationFieldReference;
+import com.sun.mdm.multidomain.parser.RelationshipType;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
 import org.openide.filesystems.FileObject;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import org.xml.sax.InputSource;
 
 /**
  * Main application class for Multi-Domain MDM Configuration Editor
@@ -131,6 +131,23 @@ public class EditorMainApp {
     public LinkBaseNode addLink(LinkType linkType) {
         // wee get a new webLinkType here
         LinkType webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
+        if (webLinkType == null) {
+            webLinkType = mMultiDomainWebManager.createLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
+            int displayOrder = 1;
+            for (Attribute al : linkType.getPredefinedAttributes()) {
+                RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
+                        displayOrder++, 1, "TextBox", null, null, false);
+                ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
+            }
+
+            for (Attribute al : linkType.getExtendedAttributes()) {
+                RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
+                        displayOrder++, 1, "TextBox", null, null, false);
+                ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
+            }
+
+            //linkType.getExtendedAttributes().get(0).
+        }
         LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
         this.mAlLinkNodes.add(node);
         return node;
@@ -144,6 +161,24 @@ public class EditorMainApp {
         for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
             LinkType linkType = (LinkType) alLinkTypes.get(i);
             LinkType webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
+            if (webLinkType == null) {
+                webLinkType = mMultiDomainWebManager.createLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());       
+                //ArrayList
+                int displayOrder = 1;
+                for (Attribute al : linkType.getPredefinedAttributes()) {
+                    
+                    RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
+                            displayOrder++, 1, "TextBox", null, null, false);
+                    ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
+                }
+
+                for (Attribute al : linkType.getExtendedAttributes()) {
+                    RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
+                            displayOrder++, 1, "TextBox", null, null, false);
+                    ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
+                }
+                
+            }
             LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
             this.mAlLinkNodes.add(node);
         }

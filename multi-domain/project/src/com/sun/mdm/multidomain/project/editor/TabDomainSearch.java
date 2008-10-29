@@ -311,7 +311,11 @@ public class TabDomainSearch extends javax.swing.JPanel {
         );
 
         jTxtDomain.setEditable(false);
-        jTxtDomain.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jTxtDomain.text")); // NOI18N
+        jTxtDomain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtDomainActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -531,6 +535,10 @@ private void onDown(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDown
     mTableSearchType.setRowSelectionInterval(iSelectedRow, iSelectedRow);
     this.enableSave();
 }//GEN-LAST:event_onDown
+
+private void jTxtDomainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtDomainActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_jTxtDomainActionPerformed
 
     class TableModelRecordDetail extends AbstractTableModel {
 
