@@ -165,6 +165,10 @@ public class ConnectionUtil {
                 mDBProduct = DB_ORACLE;
             }
         }
+        /* change the database server default value for AutoCommit */
+        if (mDBProduct == DB_MYSQL) {
+            con.setAutoCommit(false);
+        }
 
     }
 
