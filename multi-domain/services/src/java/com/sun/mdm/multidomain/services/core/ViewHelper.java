@@ -65,14 +65,10 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
-    private static MDConfigManager configManager =  null;
     private static Operations operations = new Operations();
-
-    public ViewHelper() throws ConfigException {
-        configManager =  MDConfigManager.getInstance();
-    }   
-     
+    
     public static DomainRelationshipObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) {
+        MDConfigManager configManager =  MDConfigManager.getInstance();        
         DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
         domainRelationshipObject.setDomain(primaryDomain);                
     
@@ -139,6 +135,7 @@ public class ViewHelper {
     }
     
     public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) {
+        MDConfigManager configManager =  MDConfigManager.getInstance();                
         String highLight = null;
         //TBD: configManager.getDateFormat(domain);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
@@ -319,6 +316,7 @@ public class ViewHelper {
     }
     
     public static ObjectRecord buildObjectRecord(String EUID, ObjectNode objectNode) {
+        MDConfigManager configManager =  MDConfigManager.getInstance();        
         //TBD: configManager.getDateFormat(domain);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         boolean hasSensitiveData = false;

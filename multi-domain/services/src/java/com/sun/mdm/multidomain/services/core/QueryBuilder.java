@@ -68,16 +68,12 @@ public class QueryBuilder {
     private static final String EUID_NAME = "EUID";
     private static final String SYSTEM_CODE_NAME = "SystemCode";
     private static final String LOCAL_ID_NAME = "LID";
-    private static MDConfigManager configManager =  null;
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.QueryBuilder");
     private static Localizer localizer = Localizer.getInstance();
-           
-    public QueryBuilder() throws ConfigException {
-        configManager =  MDConfigManager.getInstance();
-    }
-       
+                  
     public static MultiDomainSearchOptions buildMultiDomainSearchOptions(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch)
-        throws ConfigException {
+        throws ConfigException {        
+         MDConfigManager configManager =  MDConfigManager.getInstance();        
          MultiDomainSearchOptions mdSearchOptions = new MultiDomainSearchOptions();
 
          MultiDomainSearchOption mdSearchOption1 = buildMultiDomainSearchOption(sourceDomainSearch);
@@ -92,6 +88,7 @@ public class QueryBuilder {
     
     public static MultiDomainSearchOption buildMultiDomainSearchOption(DomainSearch domainSearch) 
         throws ConfigException {
+        MDConfigManager configManager =  MDConfigManager.getInstance();                
         MultiDomainSearchOption mdSearchOption = new MultiDomainSearchOption();
         try {
             String EUID = domainSearch.getFieldValue(EUID_NAME);
@@ -163,8 +160,8 @@ public class QueryBuilder {
     } 
  
     public static MultiDomainSearchCriteria buildMultiDomainSearchCriteria(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch, RelationshipSearch relationshipSearch)
-        throws ConfigException {
-        
+        throws ConfigException {        
+        MDConfigManager configManager =  MDConfigManager.getInstance();                
         MultiDomainSearchCriteria mdSearchSearchCriteria = new MultiDomainSearchCriteria();
         Relationship relationship = buildRelationship(relationshipSearch);
         SystemObject object1 = buildSystemObject(sourceDomainSearch)[0];
@@ -179,8 +176,8 @@ public class QueryBuilder {
     } 
 
     public static SystemObject[] buildSystemObject(DomainSearch domainSearch)
-        throws ConfigException {        
-        
+        throws ConfigException {                
+        MDConfigManager configManager =  MDConfigManager.getInstance();                
         Map searchCriteria = new HashMap<String, String>();
         Map searchCriteriaFrom = new HashMap<String, String>();
         Map searchCriteriaTo = new HashMap<String, String>();
@@ -255,6 +252,7 @@ public class QueryBuilder {
     
     public static EOSearchOptions buildEOSearchOptions(DomainSearch domainSearch) 
         throws ConfigException {
+        MDConfigManager configManager =  MDConfigManager.getInstance();                
         EOSearchOptions eoSearchOptions = null;
         try {
             
@@ -310,7 +308,6 @@ public class QueryBuilder {
     
     public static EOSearchCriteria buildEOSearchCriteria(DomainSearch domainSearch)
         throws ConfigException {
-        
         EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
         SystemObject[] systemObjects = buildSystemObject(domainSearch);
         
@@ -428,7 +425,8 @@ public class QueryBuilder {
     }
 	
     public static void setObjectNodeFieldValue(ObjectNode node, String field, String value)
-        throws ObjectException {
+        throws ObjectException, ConfigException {
+        MDConfigManager configManager =  MDConfigManager.getInstance();                
         if (value == null) {
             if (node.isNullable(field)) {
                 node.setValue(field, null);
