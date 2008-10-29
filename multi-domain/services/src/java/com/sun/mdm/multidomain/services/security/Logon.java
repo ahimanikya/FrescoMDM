@@ -41,8 +41,8 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
 
 // testing--raymond tam
 //import com.sun.mdm.index.edm.services.configuration.ValidationService;
-import com.sun.mdm.multidomain.services.security.util.DateUtil;
-import com.sun.mdm.multidomain.services.security.util.QwsUtil;
+import com.sun.mdm.index.edm.util.DateUtil;
+import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.util.Localizer;
@@ -99,7 +99,7 @@ public class Logon {
         throws Exception {
 
         try {
-            QwsController.init();
+            /* QwsController.init(); */
         } catch (Exception e) {
             throw new Exception(mLocalizer.t("SRS507: Failed to instantiate the QWS Controller: {0}", 
                                      QwsUtil.getRootCause(e).getMessage()));
