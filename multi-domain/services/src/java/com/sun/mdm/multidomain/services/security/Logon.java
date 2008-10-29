@@ -99,7 +99,7 @@ public class Logon {
         throws Exception {
 
         try {
-            /* QwsController.init(); */
+            QwsController.init();
         } catch (Exception e) {
             throw new Exception(mLocalizer.t("SRS507: Failed to instantiate the QWS Controller: {0}", 
                                      QwsUtil.getRootCause(e).getMessage()));
