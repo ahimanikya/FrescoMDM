@@ -316,7 +316,7 @@ public class MDConfigManager {
 
 	// testing--raymond tam
 	// RESUME HERE
-    public static JndiResource getJndiResource(String id, String name, String type, String description) {
+    public static JndiResource getJndiResource(String id) {
         return null;
     }
     
