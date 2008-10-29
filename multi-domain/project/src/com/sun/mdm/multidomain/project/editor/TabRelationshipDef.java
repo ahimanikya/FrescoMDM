@@ -42,10 +42,12 @@ import com.sun.mdm.multidomain.parser.Attribute;
  * @author  kkao
  */
 public class TabRelationshipDef extends javax.swing.JPanel {
+    LinkType mLinkType;
+    
     /** Creates new form TabAttributes */
     public TabRelationshipDef(LinkType linkType) {
         initComponents();
-        
+        mLinkType = linkType;
         this.jTextName.setText(linkType.getName());
         // Get plugin list
         if (linkType.getPlugin() != null) {
@@ -159,6 +161,11 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jScrollPaneExtendedAttibutes.setBounds(10, 370, 466, 200);
 
         jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Add")); // NOI18N
+        jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddExtendedAttribute(evt);
+            }
+        });
         add(jButtonAddExtendedAttribute);
         jButtonAddExtendedAttribute.setBounds(330, 570, 70, 23);
 
@@ -204,6 +211,44 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         add(jTextDomain2);
         jTextDomain2.setBounds(310, 40, 160, 20);
     }// </editor-fold>//GEN-END:initComponents
+
+private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
+
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    if (dialog.getReturnStatus() == AddLinkDialog.RET_OK) {
+                        String attrName = dialog.getAttributeName();
+                        String dataType = dialog.getDataType();
+                        String columnName = dialog.getColumnName();
+                        String defaultValue = dialog.getDefaultValue();
+                        String searchable = dialog.getSearchable() == true ? "true" : "false";
+                        String required = dialog.getRequired() == true ? "true" : "false";
+                        String attributeID = ""; //dialog.getAttributeID();
+                        //    if (linkNode != null) {
+                            //Already exists
+                        //    } else {
+                                // add new Attribute
+                        Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
+                            searchable, required, attributeID);
+                        mLinkType.addExtendedAttribute(attr);
+                        //attr = mEditorMainApp.addAttribute(attr);
+                        // add a new row
+                        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
+                        ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
+                            attr.getDataType(), attr.getDefaultValue(),
+                            attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
+                        model.addRow(model.getRowCount(), row);
+                        model.fireTableDataChanged();
+                    }
+                }
+            });
+            dialog.setVisible(true);
+        }
+    });
+}//GEN-LAST:event_onAddExtendedAttribute
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

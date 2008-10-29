@@ -96,6 +96,13 @@ public class LinkType {
         this.extendedAttributes = attributes;
     }
 
+    public void addExtendedAttribute(Attribute attribute) {
+        if (this.extendedAttributes == null) {
+            this.extendedAttributes = new ArrayList <Attribute>();
+        }
+        this.extendedAttributes.add(attribute);
+    }
+    
     public void setDirection(String direction) {
         this.direction = direction;
     }

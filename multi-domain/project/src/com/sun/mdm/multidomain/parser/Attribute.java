@@ -10,6 +10,9 @@ package com.sun.mdm.multidomain.parser;
  * @author kkao
  */
 public class Attribute {
+    public Attribute() {
+        
+    }
     /*
      * MultiDomainModel.xml
      * <relationships>
@@ -26,7 +29,18 @@ public class Attribute {
         String defaultValue = "";
         String dataType = "";
         String attributeID = "";
+    public Attribute(String name, String columnName, String dataType, String defaultValue,
+            String searchable, String required, String attributeID) {
+        this.name = name;
+        this.columnName = columnName;
+        this.dataType = dataType;
+        this.defaultValue = defaultValue;
+        this.searchable = searchable;
+        this.required = required;
+        this.attributeID = attributeID;
+    }
 
+       
         public void setColumnName(String columnName) {
             this.columnName = columnName;
         }
