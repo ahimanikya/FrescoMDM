@@ -65,9 +65,13 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
-    private static MDConfigManager configManager =  MDConfigManager.getInstance();
+    private static MDConfigManager configManager =  null;
     private static Operations operations = new Operations();
-    
+
+    public ViewHelper() throws ConfigException {
+        configManager =  MDConfigManager.getInstance();
+    }   
+     
     public static DomainRelationshipObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) {
         DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
         domainRelationshipObject.setDomain(primaryDomain);                
@@ -140,8 +144,8 @@ public class ViewHelper {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         boolean hasSensitiveData = false;
         try {
-            hasSensitiveData = configManager.getSecurityPlugIn() != null ? 
-                               configManager.getSecurityPlugIn().isDataSensitive(objectNode) : true;
+            hasSensitiveData = configManager.getObjectSensitivePlugIn() != null ? 
+                               configManager.getObjectSensitivePlugIn().isDataSensitive(objectNode) : true;
         } catch (Exception ignore) {
         }
         try {
@@ -236,7 +240,7 @@ public class ViewHelper {
         
         while(pages.hasNext()) {
             ObjectNode objectNode = pages.next();
-            ObjectSensitivePlugIn plugin = null; //TBD: MDConfigManager.getInstance().getSecurityPlugIn();
+            ObjectSensitivePlugIn plugin = null; //TBD: MDConfigManager.getInstance().getObjectSensitivePlugIn();
             boolean hasSensitiveData = plugin != null ? plugin.equals(objectNode) : true;
             ObjectRecord record = new ObjectRecord();
             //Set the comparision score
@@ -319,8 +323,8 @@ public class ViewHelper {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         boolean hasSensitiveData = false;
         try {
-            hasSensitiveData = configManager.getSecurityPlugIn() != null ? 
-                               configManager.getSecurityPlugIn().isDataSensitive(objectNode) : true;
+            hasSensitiveData = configManager.getObjectSensitivePlugIn() != null ? 
+                               configManager.getObjectSensitivePlugIn().isDataSensitive(objectNode) : true;
         } catch (Exception ignore) {
         }
         

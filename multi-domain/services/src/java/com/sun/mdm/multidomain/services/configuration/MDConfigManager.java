@@ -24,7 +24,10 @@ package com.sun.mdm.multidomain.services.configuration;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipType;
 import com.sun.mdm.multidomain.association.Domain;
+import com.sun.mdm.multidomain.services.core.ConfigException;
+import com.sun.mdm.multidomain.services.core.context.JndiResource;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
+
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.LocalizationSupport;
@@ -32,6 +35,7 @@ import net.java.hulp.i18n.Logger;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Properties;
 
 
 public class MDConfigManager {
@@ -39,21 +43,22 @@ public class MDConfigManager {
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.MDConfigManager");
     private static transient final Localizer mLocalizer = Localizer.get();
     
+	private static MDConfigManager mInstance = null;	// instance
     public static final String FIELD_DELIM = ".";
+    private static String DATEFORMAT;
+	private static ObjectSensitivePlugIn mObjectSensitivePlugIn;
     
 	private HashMap<Integer, ScreenObject> mScreens;
 	private HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
 	private HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
-	private static MDConfigManager mInstance = null;	// instance
 	private Integer mInitialScreenID;	                // ID of the initial screen
-	private ObjectSensitivePlugIn mSecurityPlugIn;
 	
 	
-	public MDConfigManager() {
+	public MDConfigManager() throws ConfigException {
 	    init();
 	}
 
-	public MDConfigManager init() {    //  initializes the config manager
+	public MDConfigManager init() throws ConfigException {    //  initializes the config manager
         synchronized (MDConfigManager.class) {
             if (mInstance != null) {
                 return mInstance;
@@ -63,6 +68,23 @@ public class MDConfigManager {
     	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
     	    // RESUME HERE
     	    // Initialize the MDConfigManager
+    	    
+//            String dateFormat = MetaDataService.getDateFormat();
+            String dateFormat = "MM/dd/yyyy";
+            
+            if (dateFormat == null || dateFormat.trim().length() == 0) {
+                mLogger.info(mLocalizer.x("CFG001: The date format is not defined in object definition file."));
+                DATEFORMAT = "MM/dd/yyyy";
+            } else {
+                if (isDateFormatValid(dateFormat)) {
+                    DATEFORMAT = dateFormat;
+                } else {
+                    throw new ConfigException(mLocalizer.t("CFG532: Date format '{0}" + 
+                            "' in object definition configuration is not supported.", dateFormat));
+                }
+            }
+            mLogger.info(mLocalizer.x("CFG002: The date format is {0}", DATEFORMAT));
+    	    
     	    return mInstance;
     	}
 	}  
@@ -292,9 +314,85 @@ public class MDConfigManager {
 	    return null;
 	}
 
-    //  return the handle to the security plug-in
-	public ObjectSensitivePlugIn getSecurityPlugIn() {  
-	    return mSecurityPlugIn;
+	// testing--raymond tam
+	// RESUME HERE
+    public static JndiResource getJndiResource(String id, String name, String type, String description) {
+        return null;
+    }
+    
+	// testing--raymond tam
+	// RESUME HERE
+    public static Properties getJndiProperties() {
+        return null;
+    }
+
+    //  set the handle to the security plug-in
+	public static void setObjectSensitivePlugIn(ObjectSensitivePlugIn plugIn) {  
+	    mObjectSensitivePlugIn = plugIn;
 	}
+
+    //  return the handle to the security plug-in
+	public static ObjectSensitivePlugIn getObjectSensitivePlugIn() {  
+	    return mObjectSensitivePlugIn;
+    }
+    
+    /**
+     * Gets the DATEFORMAT attribute of the ConfigManager class
+     *
+     * @return the date format defined in object definition
+     */
+    public static String getDateFormat() {
+        return DATEFORMAT;
+    }
+    
+    /**
+     * Gets the input mask of date in the ConfigManager class
+     *
+     * @return the input mask of date based on the date format
+     */
+    public static String getDateInputMask() {
+        String format = DATEFORMAT;
+        String dateMask = format.replace('M', 'D');
+        dateMask = dateMask.replace('d', 'D');
+        dateMask = dateMask.replace('y', 'D');
+        return dateMask;
+    }
+    
+    // validate that the date format is supported or not
+    private static boolean isDateFormatValid(String format) {
+        int dotIdx = format.indexOf('.');
+        int slashIdx = format.indexOf('/');
+        int dashIdx = format.indexOf('-');
+        if (dotIdx == -1 &&  slashIdx == -1 && dashIdx == -1) {
+                return false;
+        }
+        
+        if (dotIdx > -1) {
+            format = format.replace('.', '/');
+            return isValid(format);
+        }
+        if (slashIdx > -1) {
+            return isValid(format);
+        }
+        if (dashIdx > -1) {
+            format = format.replace('-', '/');
+            return isValid(format);
+        }
+        return false;
+    }
+    
+    private static boolean isValid(String format) {
+        if (format.equals("MM/dd/yyyy")) {
+            return true;
+        } else if (format.equals("dd/MM/yyyy")) {
+            return true;
+        } else if (format.equals("yyyy/MM/dd")) {
+            return true;
+        } else if (format.equals("yyyy/dd/MM")) {
+            return true;
+        }
+        return false;
+    }
+    
 
 }

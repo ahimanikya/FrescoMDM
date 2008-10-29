@@ -270,7 +270,7 @@ public final class QwsUtil {
                 qwsResources = ResourceBundle.getBundle("QWS");
             }
         } catch (MissingResourceException e) {
-            mLogger.severe(mLocalizer.x("SRU001: Error occurred while getting " + 
+            mLogger.severe(mLocalizer.x("CFG533: Error occurred while getting " + 
                                         "resource bundle: {0}", e.getMessage()));
         }
 
@@ -387,7 +387,7 @@ public final class QwsUtil {
 //                                               .getObjectNodeConfig(node.pGetType());
                 ObjectNodeConfig config = null;
                 String fieldDisplayName = config.getFieldConfig(field).getDisplayName(); 
-                throw new ValidationException(mLocalizer.t("SRU500: Field [{0}] is required", fieldDisplayName));
+                throw new ValidationException(mLocalizer.t("CFG534: Field [{0}] is required", fieldDisplayName));
           }
         }
 
@@ -471,7 +471,7 @@ public final class QwsUtil {
 //                                               .getObjectNodeConfig(node.pGetType());
             ObjectNodeConfig config = null;
             String fieldDisplayName = config.getFieldConfig(field).getDisplayName(); 
-            throw new ValidationException(mLocalizer.t("SRU501: Invalid value [{0}] for field [{1}]: {2}", 
+            throw new ValidationException(mLocalizer.t("CFG535: Invalid value [{0}] for field [{1}]: {2}", 
                                                        valueString, fieldDisplayName, e.getMessage()));
         }
     }
@@ -533,7 +533,7 @@ public final class QwsUtil {
                       return (Object) valueString;
                 }
         } catch (Exception e) {
-            throw new ObjectException(mLocalizer.t("SRU502: Invalid value [{0}] for field type [{1}]: {2}", 
+            throw new ObjectException(mLocalizer.t("CFG536: Invalid value [{0}] for field type [{1}]: {2}", 
                                                    valueString, type, e.getMessage()));
         }
     }
@@ -577,13 +577,13 @@ public final class QwsUtil {
 
 
     public static boolean isObjectNodeSensitive(ObjectNode obj) throws ObjectException, ConfigException {
-      if (MDConfigManager.getInstance().getSecurityPlugIn() == null) {
+      if (MDConfigManager.getInstance().getObjectSensitivePlugIn() == null) {
           return false;
       }
       try {
-          return MDConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(obj);
+          return MDConfigManager.getInstance().getObjectSensitivePlugIn().isDataSensitive(obj);
       } catch (Exception ex) {
-            throw new ObjectException(mLocalizer.t("SRU503: Failed to detect sensitivity of object node: {0}",
+            throw new ObjectException(mLocalizer.t("CFG537: Failed to detect sensitivity of object node: {0}",
                                                    ex.getMessage()));
       }
     }

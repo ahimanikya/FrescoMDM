@@ -68,11 +68,12 @@ public class QueryBuilder {
     private static final String EUID_NAME = "EUID";
     private static final String SYSTEM_CODE_NAME = "SystemCode";
     private static final String LOCAL_ID_NAME = "LID";
-    private static MDConfigManager configManager =  MDConfigManager.getInstance();
+    private static MDConfigManager configManager =  null;
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.QueryBuilder");
     private static Localizer localizer = Localizer.getInstance();
            
-    public QueryBuilder() {
+    public QueryBuilder() throws ConfigException {
+        configManager =  MDConfigManager.getInstance();
     }
        
     public static MultiDomainSearchOptions buildMultiDomainSearchOptions(DomainSearch sourceDomainSearch, DomainSearch targetDomainSearch)
