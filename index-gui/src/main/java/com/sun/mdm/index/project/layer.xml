@@ -26,20 +26,22 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
 <filesystem>
     <folder name="Templates">
-        <folder name="Project">
-            <folder name="MDM">
-                <attr name="position" intvalue="50"/>
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.index.project.ui.wizards.Bundle"/>
-                <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/project.html"/>
-
-                <!-- Add template for the Master Index enterprize project -->
-                <file name="emptyMasterIndexProject.xml">
-                    <attr name="template" boolvalue="true"/>
-                    <attr name="templateWizardIterator" newvalue="com.sun.mdm.index.project.ui.wizards.EVIEWIterator"/>
+        <folder name="Project">        
+            <folder name="CAPS">
+                <folder name="MDM">
+                    <attr name="position" intvalue="2000"/>
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.index.project.ui.wizards.Bundle"/>
-                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/eviewproProjectIcon.png"/>
-                    <attr name="templateWizardURL" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/emptyProject.html"/>
-                </file>
+                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/project.html"/>
+
+                    <!-- Add template for the Master Index enterprize project -->
+                    <file name="Master Index Application">
+                        <attr name="template" boolvalue="true"/>
+                        <attr name="templateWizardIterator" newvalue="com.sun.mdm.index.project.ui.wizards.EVIEWIterator"/>
+                        <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.index.project.ui.wizards.Bundle"/>
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/eviewproProjectIcon.png"/>
+                        <attr name="templateWizardURL" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/emptyProject.html"/>
+                    </file>
+                </folder>
             </folder>
         </folder>
     </folder>
