@@ -38,7 +38,8 @@ public class MultiDomainSearchOptions {
      * which contains fully-qualified field name named FQFN. e.g., Person.FirstName,
      * Person.LastName.
      */
-    private Map<String, EPathArrayList> ePathArrayLists;
+    private Map<String, DomainSearchOption> domainSearchOptions 
+            = new HashMap<String, DomainSearchOption>();
     /**
      * Maximum elements to be retrieved.
      */
@@ -47,20 +48,12 @@ public class MultiDomainSearchOptions {
      * Page size.
      */
     private int pageSize;
-    /**
-     * Whether to use weighted option.
-     */
-    private boolean isWeighted;
-    /**
-     * QueryBuilder serach Id.
-     */
-    private String searchId;
+ 
+    
   /**
    * Public constructor.
    */
   public MultiDomainSearchOptions() {
-	  ePathArrayLists = new HashMap<String, EPathArrayList>();
-	  isWeighted = true;
 	  pageSize = 10;
 	  maxElements = 100;;
   }
@@ -97,7 +90,49 @@ public class MultiDomainSearchOptions {
 	  this.maxElements = maxElements;
   }
   
+ 
+  
   /**
+   * Set Domain Search Option.
+   * @param searchOptions A domain specific search options
+   * @param domain
+   */
+  public void setOptions(String domain, DomainSearchOption searchOptions) {
+    domainSearchOptions.put(domain, searchOptions);
+  } 
+  
+  /**
+   * Get Domain specific search option for the given domain.
+   * @param domain
+   * @return DomainSearchOption
+   */
+  public DomainSearchOption getOptions(String domain) {
+    return domainSearchOptions.get(domain);
+  }            
+  
+  /**
+   * Get complete map of all Domain specific search option.
+   * @return Map<domain name, DomainSearchOption>
+  
+   */
+  public Map<String, DomainSearchOption> getOptions() {
+    return domainSearchOptions;
+  }
+  
+  
+  public class DomainSearchOption {
+      private String domain;
+    /**
+     * Whether to use weighted option.
+     */
+    private boolean isWeighted;
+    /**
+     * QueryBuilder serach Id.
+     */
+    private String searchId;
+    
+    private EPathArrayList ePathArrayList;
+       /**
    * Get isWeighted.
    * @return isWeighted
    */
@@ -130,20 +165,12 @@ public class MultiDomainSearchOptions {
   }
   
   /**
-   * Get size of epath array list.
-   * @return size
-   */
-  public int size() {
-    return ePathArrayLists != null ? ePathArrayLists.size() : 0;
-  }
-  
-  /**
    * Set epath array list.
    * @param ePathArrayList
    * @param domain
    */
-  public void setOptions(String domain, EPathArrayList fields) {
-    ePathArrayLists.put(domain, fields);
+  public void setOptions(EPathArrayList fields) {
+    ePathArrayList = fields;
   } 
   
   /**
@@ -151,7 +178,26 @@ public class MultiDomainSearchOptions {
    * @param domain
    * @return epath array list.
    */
-  public EPathArrayList getOptions(String domain) {
-    return ePathArrayLists.get(domain);
-  }            
+  public EPathArrayList getOptions() {
+    return ePathArrayList;
+  }
+  
+  /**
+   * set domain
+   * @param domain
+   */
+  public void setDomain(String domain) {
+      this.domain = domain;
+  }
+  
+  /**
+   * get Domain 
+   * @return domain name
+   */
+  
+  public String getDomain() {
+      return domain;
+  }
+            
+  } 
 }

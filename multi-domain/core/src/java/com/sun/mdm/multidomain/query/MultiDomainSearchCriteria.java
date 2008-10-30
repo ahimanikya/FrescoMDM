@@ -30,7 +30,11 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.multidomain.relationship.Relationship;
 
 /**
- * MultiDomainSearchCriteria class.
+ * MultiDomainSearchCriteria class. This class is used to specify different 
+ * search critera for relationships.
+ * You can filter by Relationship field values, each domain system object field values.
+ * The net filter is the union of all EUIDs that satisfy the Relationship and domain
+ * search criterias.
  * @author SwaranjitDua
  * @author cye
  */
@@ -39,8 +43,10 @@ public class MultiDomainSearchCriteria {
      * Relationship defines search relationship attributes. 
      */
     private Relationship relationship;
+    private String EUID;
     /**
-     * Each domain has a system object.
+     * Each domain has a system object that is used for search criteri
+     * in that domain.
      */
     private Map<String, SystemObject> systemObjects;   
 
@@ -52,7 +58,8 @@ public class MultiDomainSearchCriteria {
     }
     
     /**
-     * Set relationtship instance.
+     * Set relationtship instance. The non-values are used as filter criteria for 
+     * search
      * @param relationship
      */
     public void setRelationship(Relationship relationship) {
@@ -66,6 +73,25 @@ public class MultiDomainSearchCriteria {
     public Relationship getRelationship() {
         return relationship;
     }    
+    
+    /**
+     * set EUID. If EUID is set, then domain search criteria or Relatiolnship 
+     * values are not used for search.
+     * So this takes precedence over other search criteria. Only if EUID is not
+     * set, then only domain search criteria and Relationship is considered for search.
+     * @param euid
+     */
+    public void setEUID(String euid) {
+        this.EUID = euid;
+    }
+    
+    /**
+     * get EUID
+     * @return EUID
+     */
+    public String getEUID() {
+        return EUID;
+    }
         
     /**
      * Get size of query object.
