@@ -95,9 +95,37 @@ public class LinkType {
     public void setExtendedAttributes(ArrayList<Attribute> attributes) {
         this.extendedAttributes = attributes;
     }
+    
+    /** Delete a predefined attribute
+     * 
+     * @param attrName
+     */
+    public void deleteExtendedAttribute(String attrName) {
+        for (int i=0; i < predefinedAttributes.size(); i++) {
+            Attribute attr = predefinedAttributes.get(i);
+            if (attrName.equals(attr.getName())) {
+                predefinedAttributes.remove(i);
+                break;
+            }
+        }
+    }
 
-    public void addExtendedAttribute(Attribute attribute) {
-        this.extendedAttributes.add(attribute);
+    /** Add a predefined attribute
+     * 
+     * @param attribute
+     */
+    public void addExtendedAttribute(Attribute newAttr) {
+        boolean found = false;
+        for (int i=0; i < predefinedAttributes.size(); i++) {
+            Attribute attr = predefinedAttributes.get(i);
+            if (newAttr.getName().equals(attr.getName())) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            this.extendedAttributes.add(newAttr);
+        }
     }
     
     public void setDirection(String direction) {

@@ -34,6 +34,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
+import org.openide.NotifyDescriptor;
+import org.openide.DialogDisplayer;
 
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.Attribute;
@@ -170,6 +172,11 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jButtonAddExtendedAttribute.setBounds(330, 570, 70, 23);
 
         jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Remove")); // NOI18N
+        jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onRemoveExtendedAttribute(evt);
+            }
+        });
         add(jButtonDeleteExtendedAttribute);
         jButtonDeleteExtendedAttribute.setBounds(400, 570, 71, 23);
 
@@ -194,7 +201,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
 
         jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Description")); // NOI18N
         add(jLabelDescription);
-        jLabelDescription.setBounds(10, 80, 57, 14);
+        jLabelDescription.setBounds(10, 80, 53, 14);
 
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
@@ -223,14 +230,10 @@ private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 String searchable = dialog.getSearchable() == true ? "true" : "false";
                 String required = dialog.getRequired() == true ? "true" : "false";
                 String attributeID = ""; //dialog.getAttributeID();
-                //    if (linkNode != null) {
-                //Already exists
-                //    } else {
                 // add new Attribute
                 Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                                searchable, required, attributeID);
                 mLinkType.addExtendedAttribute(attr);
-                //attr = mEditorMainApp.addAttribute(attr);
                 // add a new row
                 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
                 ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
@@ -240,6 +243,29 @@ private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 model.fireTableDataChanged();
             }
 }//GEN-LAST:event_onAddExtendedAttribute
+
+private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveExtendedAttribute
+        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
+        int rs[] = jTableExtendedAttributes.getSelectedRows();
+        int length = rs.length;
+        String prompt = (length == 1) ? NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Row_Prompt")
+                                        : NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Rows_Prompt");
+
+        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                                 prompt, 
+                                 NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 NotifyDescriptor.YES_NO_OPTION);
+        if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+            for (int i=length - 1; i>=0 && i < length; i--) {
+                int idx = rs[i];
+                ExtendedAttributeRow row = model.getRow(idx);
+                mLinkType.deleteExtendedAttribute(row.getName());
+                model.removeRow(idx);
+            }
+            model.fireTableDataChanged();
+        }
+
+}//GEN-LAST:event_onRemoveExtendedAttribute
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

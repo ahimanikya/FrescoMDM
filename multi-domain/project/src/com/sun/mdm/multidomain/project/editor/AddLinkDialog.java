@@ -100,6 +100,7 @@ public class AddLinkDialog extends javax.swing.JDialog {
         jLabelTargetDomain = new javax.swing.JLabel();
         jComboBoxTargetDomains = new javax.swing.JComboBox();
 
+        setTitle(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "TITLE_Add_Link")); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);

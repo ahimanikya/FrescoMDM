@@ -31,6 +31,8 @@ import javax.swing.table.AbstractTableModel;
 //import javax.swing.table.TableColumn;
 //import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
+import org.openide.NotifyDescriptor;
+import org.openide.DialogDisplayer;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
@@ -221,11 +223,24 @@ public class TabOverview extends javax.swing.JPanel {
 
 private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLink
     TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
-    int idx = jTableLinkTypes.getSelectedRow();
-    LinkTypeRow row = model.getRow(idx);
-    mEditorMainApp.deleteLink(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
-    model.removeRow(idx);
-    model.fireTableDataChanged();
+        int rs[] = jTableLinkTypes.getSelectedRows();
+        int length = rs.length;
+        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
+                                        : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
+
+        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                                 prompt, 
+                                 NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 NotifyDescriptor.YES_NO_OPTION);
+            if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+                for (int i=length - 1; i>=0 && i < length; i--) {
+                    int idx = rs[i];
+                    LinkTypeRow row = model.getRow(idx);
+                    mEditorMainApp.deleteLink(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
+                    model.removeRow(idx);
+                }
+                model.fireTableDataChanged();
+            }
 }//GEN-LAST:event_onRemoveLink
 
 private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddLink

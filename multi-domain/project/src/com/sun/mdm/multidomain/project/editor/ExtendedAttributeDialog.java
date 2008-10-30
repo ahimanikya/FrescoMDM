@@ -92,6 +92,8 @@ public class ExtendedAttributeDialog extends javax.swing.JDialog {
         jCheckBoxSearchable = new javax.swing.JCheckBox();
         jCheckBoxRequired = new javax.swing.JCheckBox();
 
+        setTitle(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "TITLE_Extended_Attribute")); // NOI18N
+
         okButton.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_OK")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
