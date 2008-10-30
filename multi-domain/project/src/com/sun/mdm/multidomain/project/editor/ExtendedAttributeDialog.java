@@ -23,8 +23,6 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author  kkao

@@ -39,10 +39,12 @@ import com.sun.mdm.multidomain.parser.Attribute;
  * @author  kkao
  */
 public class TabHierarchyDef extends javax.swing.JPanel {
+    LinkType mLinkType;
+    
     /** Creates new form TabAttributes */
     public TabHierarchyDef(LinkType linkType) {
         initComponents();
-        
+        mLinkType = linkType;
         this.jTextName.setText(linkType.getName());
         // ToDo Get plugin list
         this.jComboBoxPlugin.insertItemAt(linkType.getPlugin(), 0);
@@ -150,6 +152,11 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jScrollPaneExtendedAttibutes.setBounds(10, 390, 550, 190);
 
         jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Add")); // NOI18N
+        jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddExtendedAttribute(evt);
+            }
+        });
         add(jButtonAddExtendedAttribute);
         jButtonAddExtendedAttribute.setBounds(380, 590, 90, 23);
 
@@ -193,6 +200,35 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         add(jTextEffectiveTo);
         jTextEffectiveTo.setBounds(380, 50, 180, 19);
     }// </editor-fold>//GEN-END:initComponents
+
+private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
+            final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
+            dialog.setVisible(true);
+            if (dialog.isModified()) {
+                String attrName = dialog.getAttributeName();
+                String dataType = dialog.getDataType();
+                String columnName = dialog.getColumnName();
+                String defaultValue = dialog.getDefaultValue();
+                String searchable = dialog.getSearchable() == true ? "true" : "false";
+                String required = dialog.getRequired() == true ? "true" : "false";
+                String attributeID = ""; //dialog.getAttributeID();
+                //    if (linkNode != null) {
+                //Already exists
+                //    } else {
+                // add new Attribute
+                Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
+                                               searchable, required, attributeID);
+                mLinkType.addExtendedAttribute(attr);
+                //attr = mEditorMainApp.addAttribute(attr);
+                // add a new row
+                TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
+                ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
+                                                            attr.getDataType(), attr.getDefaultValue(),
+                                                            attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
+                model.addRow(model.getRowCount(), row);
+                model.fireTableDataChanged();
+            }
+}//GEN-LAST:event_onAddExtendedAttribute
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

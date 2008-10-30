@@ -23,8 +23,6 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author  kkao
@@ -38,8 +36,9 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
 
     /** Creates new form AddLinkTypelDialog */
     public PredefinedAttributeDialog() {
-        super();
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
+        enableBtnOK();
     }
     
     public String getAttributeName() {
@@ -93,39 +92,51 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
         jCheckBoxSearchable = new javax.swing.JCheckBox();
         jCheckBoxRequired = new javax.swing.JCheckBox();
 
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                closeDialog(evt);
-            }
-        });
-
-        okButton.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_OK")); // NOI18N
+        okButton.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_OK")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
-        cancelButton.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Cancel")); // NOI18N
+        cancelButton.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Cancel")); // NOI18N
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
-        jLabelColumnName.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Column_Name_Colon")); // NOI18N
+        jLabelColumnName.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Column_Name_Colon")); // NOI18N
 
-        jLabelName.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Name")); // NOI18N
+        jLabelName.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Name")); // NOI18N
 
-        jLabelDataType.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Data_Type_Colon")); // NOI18N
+        jTextFieldName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                onNameKeyReleased(evt);
+            }
+        });
+
+        jLabelDataType.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Data_Type_Colon")); // NOI18N
 
         jComboBoxDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "date", "int", "boolean" }));
 
-        jLabelDefaultValue.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Default_Value_Colon")); // NOI18N
+        jLabelDefaultValue.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Default_Value_Colon")); // NOI18N
 
-        jCheckBoxSearchable.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Searchable")); // NOI18N
+        jTextFieldColumnName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                onColumnNameKeyReleased(evt);
+            }
+        });
 
-        jCheckBoxRequired.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Required")); // NOI18N
+        jTextFieldDefaultValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                onDefaultValueKeyReleased(evt);
+            }
+        });
+
+        jCheckBoxSearchable.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Searchable")); // NOI18N
+
+        jCheckBoxRequired.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Required")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,11 +209,19 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_closeDialog
+private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onNameKeyReleased
+    enableBtnOK();
+}//GEN-LAST:event_onNameKeyReleased
 
+private void onColumnNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onColumnNameKeyReleased
+    enableBtnOK();
+}//GEN-LAST:event_onColumnNameKeyReleased
+
+private void onDefaultValueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onDefaultValueKeyReleased
+    enableBtnOK();
+}//GEN-LAST:event_onDefaultValueKeyReleased
+
+    /** Closes the dialog */
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -211,6 +230,13 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
     
     public boolean isModified() {
         return bModified;
+    }
+    
+    private void enableBtnOK() {
+        boolean flag = (this.jTextFieldColumnName.getText().length() == 0 || 
+                        this.jTextFieldDefaultValue.getText().length() == 0 || 
+                        this.jTextFieldName.getText().length() == 0);
+        this.okButton.setEnabled(!flag);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
