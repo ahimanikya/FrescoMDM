@@ -128,6 +128,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldName">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onNameKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelSourceDomain">
       <Properties>

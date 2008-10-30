@@ -41,10 +41,11 @@ public class AddLinkDialog extends javax.swing.JDialog {
         initComponents();
         jComboBoxLinkTypes.insertItemAt("relationship", 0);
         jComboBoxLinkTypes.insertItemAt("hierarchy", 1);
-        jComboBoxLinkTypes.insertItemAt("group", 2);
-        jComboBoxLinkTypes.insertItemAt("category", 3);
+        //jComboBoxLinkTypes.insertItemAt("group", 2);
+        //jComboBoxLinkTypes.insertItemAt("category", 3);
         jComboBoxLinkTypes.setSelectedIndex(0);
         setDomains(alDomains);
+        enableBtnOK();
     }
 
     public void setDomains(ArrayList alDomains) {
@@ -123,6 +124,12 @@ public class AddLinkDialog extends javax.swing.JDialog {
 
         jLabelName.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Name")); // NOI18N
 
+        jTextFieldName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                onNameKeyReleased(evt);
+            }
+        });
+
         jLabelSourceDomain.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Source_Domain_Colon")); // NOI18N
 
         jLabelTargetDomain.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Target_Domain_Colon")); // NOI18N
@@ -195,10 +202,19 @@ public class AddLinkDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
+private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onNameKeyReleased
+    enableBtnOK();
+}//GEN-LAST:event_onNameKeyReleased
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
+    }
+    
+    private void enableBtnOK() {
+        boolean flag = (this.jTextFieldName.getText().length() == 0);
+        this.okButton.setEnabled(!flag);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

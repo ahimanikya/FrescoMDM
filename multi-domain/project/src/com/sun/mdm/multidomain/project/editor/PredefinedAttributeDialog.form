@@ -7,6 +7,9 @@
     <SyntheticProperty name="generateSize" type="boolean" value="true"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="closeDialog"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -125,9 +128,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldName">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onNameKeyReleased"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDataType">
       <Properties>
@@ -156,14 +156,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldColumnName">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onColumnNameKeyReleased"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldDefaultValue">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onDefaultValueKeyReleased"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBoxSearchable">
       <Properties>

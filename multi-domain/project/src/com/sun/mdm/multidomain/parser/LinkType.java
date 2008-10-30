@@ -43,8 +43,8 @@ public class LinkType {
     boolean effectiveFromRequired;
     boolean effectiveToRequired;
     boolean purgeDateRequired;
-    ArrayList <Attribute> predefinedAttributes;
-    ArrayList <Attribute> extendedAttributes;
+    ArrayList <Attribute> predefinedAttributes = new ArrayList <Attribute>();
+    ArrayList <Attribute> extendedAttributes = new ArrayList <Attribute>();
     
     private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
 
@@ -97,9 +97,6 @@ public class LinkType {
     }
 
     public void addExtendedAttribute(Attribute attribute) {
-        if (this.extendedAttributes == null) {
-            this.extendedAttributes = new ArrayList <Attribute>();
-        }
         this.extendedAttributes.add(attribute);
     }
     
