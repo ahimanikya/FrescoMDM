@@ -135,20 +135,9 @@ public class TabOverview extends javax.swing.JPanel {
 
         jTableLinkTypes.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    {
-                        int iSelectedRow = jTableLinkTypes.getSelectedRow();
-                        TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
-                        String linkType = (String) model.getValueAt(iSelectedRow,  model.iColLinkType);
-                        String linkName = (String) model.getValueAt(iSelectedRow,  model.iColLinkName);
-                        String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
-                        String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
-                        LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
-                        mEditorMainPanel.loadLinkProperties(linkNode);
-                    }
+                    onLinkTypeSelected();
                 }
             });
-            
-
     }
 
     /** This method is called from within the constructor to
@@ -178,11 +167,13 @@ public class TabOverview extends javax.swing.JPanel {
         jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
 
         jLabelAssociated.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Associated_Domains")); // NOI18N
+        jLabelAssociated.setEnabled(false);
         add(jLabelAssociated);
-        jLabelAssociated.setBounds(10, 60, 110, 20);
+        jLabelAssociated.setBounds(240, 30, 110, 20);
 
+        jComboBoxAssociatedDomains.setEnabled(false);
         add(jComboBoxAssociatedDomains);
-        jComboBoxAssociatedDomains.setBounds(120, 60, 110, 22);
+        jComboBoxAssociatedDomains.setBounds(350, 30, 20, 22);
 
         jScrollPaneLinkTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Links_Defined"))); // NOI18N
 
@@ -197,7 +188,7 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneLinkTypes.setViewportView(jTableLinkTypes);
 
         add(jScrollPaneLinkTypes);
-        jScrollPaneLinkTypes.setBounds(10, 90, 370, 150);
+        jScrollPaneLinkTypes.setBounds(10, 60, 370, 180);
 
         add(jComboBoxSelectedDomain);
         jComboBoxSelectedDomain.setBounds(120, 30, 110, 22);
@@ -222,7 +213,7 @@ public class TabOverview extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLink
-    TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
+        TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
         int rs[] = jTableLinkTypes.getSelectedRows();
         int length = rs.length;
         String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
@@ -240,6 +231,13 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onR
                     model.removeRow(idx);
                 }
                 model.fireTableDataChanged();
+                // update properties tab
+                if (model.getRowCount() > 0) {
+                    jTableLinkTypes.setRowSelectionInterval(0, 0);
+                    onLinkTypeSelected();
+                } else {
+                    mEditorMainPanel.loadLinkProperties(null);
+                }
             }
 }//GEN-LAST:event_onRemoveLink
 
@@ -352,6 +350,17 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
         }
         model.fireTableDataChanged();
     }
+    
+    private void onLinkTypeSelected() {
+        int iSelectedRow = jTableLinkTypes.getSelectedRow();
+        TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
+        String linkType = (String) model.getValueAt(iSelectedRow,  model.iColLinkType);
+        String linkName = (String) model.getValueAt(iSelectedRow,  model.iColLinkName);
+        String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
+        String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
+        LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
+        mEditorMainPanel.loadLinkProperties(linkNode);
+     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddLink;

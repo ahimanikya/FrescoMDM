@@ -170,16 +170,20 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     
     public void loadLinkProperties(LinkBaseNode currentLinkNode) {
         mPropertiesTabbedPane.removeAll();
-        String title = TAB_RELATIONSHIP;
-        if (currentLinkNode.getType().equals(LinkType.TYPE_HIERARCHY)) {
-            title = TAB_HIERARCHY;
-        } else if (currentLinkNode.getType().equals(LinkType.TYPE_GROUP)) {
-            title = TAB_GROUP;
-        } else if (currentLinkNode.getType().equals(LinkType.TYPE_CATEGORY)) {
-            title = TAB_CATEGORY;
+        if (currentLinkNode != null) {
+            String title = "Unknown";
+            if (currentLinkNode.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
+                title = TAB_RELATIONSHIP;
+            } else if (currentLinkNode.getType().equals(LinkType.TYPE_HIERARCHY)) {
+                title = TAB_HIERARCHY;
+            } else if (currentLinkNode.getType().equals(LinkType.TYPE_GROUP)) {
+                title = TAB_GROUP;
+            } else if (currentLinkNode.getType().equals(LinkType.TYPE_CATEGORY)) {
+                title = TAB_CATEGORY;
+            }
+            mPropertiesTabbedPane.add(title, currentLinkNode.getLinkDefTab(true));
+            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentLinkNode.getRelationshipTypesTab(true));
         }
-        mPropertiesTabbedPane.add(title, currentLinkNode.getLinkDefTab(true));
-        mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentLinkNode.getRelationshipTypesTab(true));
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
     
