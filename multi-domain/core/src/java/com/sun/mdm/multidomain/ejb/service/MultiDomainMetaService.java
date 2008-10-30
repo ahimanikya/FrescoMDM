@@ -25,10 +25,10 @@ package com.sun.mdm.multidomain.ejb.service;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 
-import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.hierarchy.HierarchyType;
-import com.sun.mdm.multidomain.group.GroupType;
-import com.sun.mdm.multidomain.group.GroupMemberType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.multidomain.group.GroupDef;
+import com.sun.mdm.multidomain.group.GroupMemberDef;
 
         
 /**
@@ -47,212 +47,212 @@ public interface MultiDomainMetaService {
         throws ProcessingException;
     
     /**
-     * Get all relational types types for all domains.
-     * @return RelationshipType[] An array of relationship type.
+     * Get all relational Defs Defs for all domains.
+     * @return RelationshipDef[] An array of relationship Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
      */
-    public RelationshipType[] getRelationshipTypes() 
+    public RelationshipDef[] getRelationshipDefs() 
         throws ProcessingException;
     
     /**
-     * Get all relationship types of the given source domain and target domains.
+     * Get all relationship Defs of the given source domain and target domains.
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
-     * @return RelationshipType[] An array of relation type.
+     * @return RelationshipDef[] An array of relation Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source domain or target domain 
      * is passed as a parameter.
      */
-    public RelationshipType[] getRelationshipTypes(String sourceDomain, String targetDomain) 
+    public RelationshipDef[] getRelationshipDefs(String sourceDomain, String targetDomain) 
         throws ProcessingException, UserException;
     
     /**
-     * Create a relationship type and persist the relationship type in the database.
-     * @param relationshipType RelationshipType.
-     * @return String Relationship type identifier which is newly created. 
+     * Create a relationship Def and persist the relationship Def in the database.
+     * @param relationshipDef RelationshipDef.
+     * @return String Relationship Def identifier which is newly created. 
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid relationship type is passed as a parameter.
+     * @throws UserException Thrown if an invalid relationship Def is passed as a parameter.
      */
-    public String createRelationshipType(RelationshipType relationshipType)  
+    public String createRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException;
     
     /**
-     * Update an existing relationship type and persist in the database.
-     * @param relationshipType RelationshipType.
+     * Update an existing relationship Def and persist in the database.
+     * @param relationshipDef RelationshipDef.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid relationship type is passed as a parameter.
+     * @throws UserException Thrown if an invalid relationship Def is passed as a parameter.
      */
-    public void updateRelationshipType(RelationshipType relationshipType)  
+    public void updateRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException;
     
     /**
-     * Delete an existing relation type from the database.
-     * @param relationshipType RelationshipType.
+     * Delete an existing relation Def from the database.
+     * @param relationshipDef RelationshipDef.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid relationship type is passed as a parameter.
+     * @throws UserException Thrown if an invalid relationship Def is passed as a parameter.
      */
-    public void deleteRelationshipType(RelationshipType relationshipType)  
+    public void deleteRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException;
 
     /**
-     * Delete an existing relation type from the database for the given source domain 
-     * and the target domain and relationship type name.
+     * Delete an existing relation Def from the database for the given source domain 
+     * and the target domain and relationship Def name.
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
-     * @param relationshipType Relationship type name.
+     * @param relationshipDef Relationship Def name.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source domain or target domain or 
-     * relationship type name is passed as a parameter.
+     * relationship Def name is passed as a parameter.
      */
-    public void deleteRelationshipType(String sourceDomain, String targetDomain, String relationshipTypeName)  
+    public void deleteRelationshipDef(String sourceDomain, String targetDomain, String relationshipDefName)  
         throws ProcessingException, UserException;
     
     /**
-     * Get all Hierarchy types for the given domain.
+     * Get all Hierarchy Defs for the given domain.
      * @param domain Domain name.
-     * @return HierarchyType[] An array of relationship type.
+     * @return HierarchyDef[] An array of relationship Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid domain name is passed as a parameter.
      */
-    public HierarchyType[] getHierarchyTypes(String domain) 
+    public HierarchyDef[] getHierarchyDefs(String domain) 
         throws ProcessingException, UserException;
    
     /**
-     * Create a new hierarchy type and persist the hierarchy type in the database.
-     * @param hierarchyType HierarchyType.
-     * @return String Hierarchy type identifier which is newly created. 
+     * Create a new hierarchy Def and persist the hierarchy Def in the database.
+     * @param hierarchyDef HierarchyDef.
+     * @return String Hierarchy Def identifier which is newly created. 
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
+     * @throws UserException Thrown if an invalid hierarchy Def is passed as a parameter.
      */
-    public String createHierarchyType(HierarchyType hierarchyType)  
+    public String createHierarchyDef(HierarchyDef hierarchyDef)  
         throws ProcessingException, UserException;
     
     
     /**
-     * Update an existing hierarchy type and persist the hierarchy type in the database.
-     * @param hierarchyType HierarchyType.
+     * Update an existing hierarchy Def and persist the hierarchy Def in the database.
+     * @param hierarchyDef HierarchyDef.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
+     * @throws UserException Thrown if an invalid hierarchy Def is passed as a parameter.
      */
-    public void updateHierarchyType(HierarchyType hierarchyType)  
+    public void updateHierarchyDef(HierarchyDef hierarchyDef)  
         throws ProcessingException, UserException;
 
     /**
-     * Delete an existing hierarchy type from the database for the given hierarchy type.
-     * @param hierarchyType HierarchyType.
+     * Delete an existing hierarchy Def from the database for the given hierarchy Def.
+     * @param hierarchyDef HierarchyDef.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid hierarchy type is passed as a parameter.
+     * @throws UserException Thrown if an invalid hierarchy Def is passed as a parameter.
      */
-    public void deleteHierarchyType(HierarchyType hierarchyType) 
+    public void deleteHierarchyDef(HierarchyDef hierarchyDef) 
         throws ProcessingException, UserException;
     
     /**
-     * Delete an existing hierarchy type from the database for the given domain and 
-     * hierarchy type name.
+     * Delete an existing hierarchy Def from the database for the given domain and 
+     * hierarchy Def name.
      * @param domain Domain name.
-     * @param name HierarchyType name.
+     * @param name HierarchyDef name.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid domain name or hierarchy name is 
      * passed as a parameter.
      */
-    public void deleteHierarchyType(String domain, String name) 
+    public void deleteHierarchyDef(String domain, String name) 
         throws ProcessingException, UserException;
          
     /**
-     * Get all group types for the given domain name.
+     * Get all group Defs for the given domain name.
      * @param domain Domain name.
-     * @return GroupType[] An array of group type.
+     * @return GroupDef[] An array of group Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
      */
-    public GroupType[] getGroupTypes(String domain) 
+    public GroupDef[] getGroupDefs(String domain) 
         throws ProcessingException;
         
     /**
-     * Create a new group type and persist in the database.
-     * @param groupType Group Type.
-     * @return String Group type identifier which is newly created.
+     * Create a new group Def and persist in the database.
+     * @param groupDef Group Def.
+     * @return String Group Def identifier which is newly created.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     * @throws UserException Thrown if an invalid group Def is passed as a parameter.
      */
-    public String createGroupType(GroupType groupType) 
+    public String createGroupDef(GroupDef groupDef) 
         throws ProcessingException, UserException;
     
     /**
-     * Update an existing group type and persist in the database.
-     * @param groupType Group Type.
+     * Update an existing group Def and persist in the database.
+     * @param groupDef Group Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     * @throws UserException Thrown if an invalid group Def is passed as a parameter.
      */
-    public void updateGroupType(GroupType groupType) 
+    public void updateGroupDef(GroupDef groupDef) 
         throws ProcessingException, UserException;
     
 
     /**
-     * Delete an existing group type for the given group type.
-     * @param groupType Group Type
+     * Delete an existing group Def for the given group Def.
+     * @param groupDef Group Def
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     * @throws UserException Thrown if an invalid group Def is passed as a parameter.
      */
-    public void deleteGroupType(GroupType groupType) 
+    public void deleteGroupDef(GroupDef groupDef) 
         throws ProcessingException, UserException;
     
     /**
-     * Delete an existing group type for the given domain name.
+     * Delete an existing group Def for the given domain name.
      * @param domain Domain name.
-     * @param name Group type name.
+     * @param name Group Def name.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid domain name or group type name is 
+     * @throws UserException Thrown if an invalid domain name or group Def name is 
      * passed as a parameter.
      */
-    public void deleteGroupType(String domain, String name) 
+    public void deleteGroupDef(String domain, String name) 
         throws ProcessingException, UserException;
             
     /**
-     * Get all group member types for the given domain name.
+     * Get all group member Defs for the given domain name.
      * @param domain Domain name.
-     * @return GroupMemberType[] An array of group type.
+     * @return GroupMemberDef[] An array of group Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
      */
-    public GroupMemberType[] getGroupMemberTypes(String domain) 
+    public GroupMemberDef[] getGroupMemberDefs(String domain) 
         throws ProcessingException;
         
     /**
-     * Create a new group type and persist in the database.
-     * @param groupMemberType Group Member Type.
-     * @return String Group member type identifier which is newly created.
+     * Create a new group Def and persist in the database.
+     * @param groupMemberDef Group Member Def.
+     * @return String Group member Def identifier which is newly created.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     * @throws UserException Thrown if an invalid group Def is passed as a parameter.
      */
-    public String createGroupMemberType(GroupMemberType groupMemberType) 
+    public String createGroupMemberDef(GroupMemberDef groupMemberDef) 
         throws ProcessingException, UserException;
     
     /**
-     * Update an existing group member type and persist in the database.
-     * @param groupMemberType Group Member Type.
+     * Update an existing group member Def and persist in the database.
+     * @param groupMemberDef Group Member Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     * @throws UserException Thrown if an invalid group Def is passed as a parameter.
      */
-    public void updateGroupMemberType(GroupMemberType groupMemberType) 
+    public void updateGroupMemberDef(GroupMemberDef groupMemberDef) 
         throws ProcessingException, UserException;
     
 
     /**
-     * Delete an existing group member type for the given group member type.
-     * @param groupMemberType GroupMemberType
+     * Delete an existing group member Def for the given group member Def.
+     * @param groupMemberDef GroupMemberDef
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid group type is passed as a parameter.
+     * @throws UserException Thrown if an invalid group Def is passed as a parameter.
      */
-    public void deleteGroupMemberType(GroupMemberType groupMemberType) 
+    public void deleteGroupMemberDef(GroupMemberDef groupMemberDef) 
         throws ProcessingException, UserException;
     
     /**
-     * Delete an existing group Member type for the given domain name.
+     * Delete an existing group Member Def for the given domain name.
      * @param domain Domain name.
-     * @param name Group Member type name.
+     * @param name Group Member Def name.
      * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid domain name or group type name is 
+     * @throws UserException Thrown if an invalid domain name or group Def name is 
      * passed as a parameter.
      */
-    public void deleteGroupMemberType(String domain, String name) 
+    public void deleteGroupMemberDef(String domain, String name) 
         throws ProcessingException, UserException;
 }

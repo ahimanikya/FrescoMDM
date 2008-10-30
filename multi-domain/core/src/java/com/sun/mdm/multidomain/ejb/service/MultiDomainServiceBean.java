@@ -43,8 +43,8 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
-import com.sun.mdm.multidomain.association.AssociationValue;
-import com.sun.mdm.multidomain.hierarchy.Hierarchy;
+import com.sun.mdm.multidomain.attributes.AttributesValue;
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 import com.sun.mdm.multidomain.group.Group;
@@ -106,7 +106,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createRelationship()
      */        
-    public String createRelationship(Relationship relationship)
+    public int createRelationship(Relationship relationship)
     throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -115,20 +115,23 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createRelationship()
      */            
     
-    public String createRelationship(String sourceSystemCode, String sourceLID, 
+    public int createRelationship(String sourceSystemCode, String sourceLID, 
             String targetSystemCode, String targetLID, 
-            AssociationValue relationshipValue)     
+            AttributesValue relationshipValue)     
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
+      
+        
     }
 
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createRelationship()
      */            
-    public String createRelationship(MultiFieldValuePair sourceMultiPairValue, MultiFieldValuePair targetMultiPairValue, 
-            AssociationValue relationshipValue) 
+    public int createRelationship(MultiFieldValuePair sourceMultiPairValue, MultiFieldValuePair targetMultiPairValue, 
+            AttributesValue attributesValue) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
+        
     }
     
     /**
@@ -142,7 +145,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteRelationship()
      */   
-    public void deleteRelationship(String relationshipid) 
+    public void deleteRelationship(int relationshipid) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -162,6 +165,8 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
+                
+                              
     }
 
     /**
@@ -182,17 +187,23 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createHierarchy()
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#addHierarchyNode()
      */ 
-    public String createHierarchy(Hierarchy hierarchy)
+    public int addHierarchyNode(HierarchyNode hierarchy)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
     
+    public int[] addHierarchyNodes(int parentNodeID, HierarchyNode[] nodes)
+            throws ProcessingException, UserException {
+           throw new ProcessingException("Not Implemented Yet.");
+    }
+      
+    
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createHierarchy()
      */  
-    public String[] createHierarchy(MultiFieldValuePair parentFieldValues, MultiFieldValuePair[] childFieldValues, AssociationValue hierarchyValue)
+    public int[] addHierarchyNodes(MultiFieldValuePair parentFieldValues, MultiFieldValuePair[] childFieldValues, AttributesValue attributesValue)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -201,7 +212,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteHierarchy()
      */ 
     
-    public void deleteHierarchy(String hierarchyid)
+    public void deleteHierarchy(int nodeID)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -210,7 +221,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#updateHierarchy()
      */ 
-    public void updateHierarchy(Hierarchy hierarchy)
+    public void updateHierarchyNode(HierarchyNode hierarchy)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -218,8 +229,13 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchHierarchy()
      */
-    public HierarchyObjectTree searchHierarchy(String hierarchytypeid, String EUID, EPathArrayList ePathFields)
+    public HierarchyObjectTree searchHierarchy(int hierarchyDefid, String EUID, EPathArrayList ePathFields)
         throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet.");
+    }
+    
+     public void moveHierarchyNodes(int[] nodeIDs, int newParentNodeID)
+             throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
             
@@ -243,7 +259,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteGroup()
      */                                            
-    public void deleteGroup(String groupId)
+    public void deleteGroup(int groupId)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -251,7 +267,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteGroupMember()
      */                                            
-    public void deleteGroupMember(String groupMemberID)
+    public void deleteGroupMember(int groupMemberID)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -275,7 +291,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getGroupMembers()
      */                                            
-    public ObjectNode[] getGroupMembers(String groupId, EPathArrayList fields) 
+    public ObjectNode[] getGroupMembers(int groupId, EPathArrayList fields) 
             throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }

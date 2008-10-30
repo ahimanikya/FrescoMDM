@@ -42,10 +42,10 @@ import javax.annotation.security.DeclareRoles;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
         
-import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.hierarchy.HierarchyType;
-import com.sun.mdm.multidomain.group.GroupType;
-import com.sun.mdm.multidomain.group.GroupMemberType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.multidomain.group.GroupDef;
+import com.sun.mdm.multidomain.group.GroupMemberDef;
 
 /**
  * The enterprise beans implementation of MultiDomainMetaService that is explpsed to the clients.
@@ -101,57 +101,57 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipTypes() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipDefs() 
      */
-    public RelationshipType[] getRelationshipTypes() 
+    public RelationshipDef[] getRelationshipDefs() 
         throws ProcessingException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipTypes() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipDefs() 
      */    
-    public RelationshipType[] getRelationshipTypes(String sourceDomain, String targetDomain) 
+    public RelationshipDef[] getRelationshipDefs(String sourceDomain, String targetDomain) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createRelationshipType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createRelationshipDef() 
      */        
-    public String createRelationshipType(RelationshipType relationshipType)  
+    public String createRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }    
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateRelationshipType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateRelationshipDef() 
      */        
-    public void updateRelationshipType(RelationshipType relationshipType)  
+    public void updateRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteRelationshipType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteRelationshipDef() 
      */        
-    public void deleteRelationshipType(RelationshipType relationshipType)  
+    public void deleteRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteRelationshipType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteRelationshipDef() 
      */        
-    public void deleteRelationshipType(String sourceDomain, String targetDomain, String relationshipTypeName)  
+    public void deleteRelationshipDef(String sourceDomain, String targetDomain, String relationshipDefName)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyTypes() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyDefs() 
      */        
-    public HierarchyType[] getHierarchyTypes(String domain) 
+    public HierarchyDef[] getHierarchyDefs(String domain) 
         throws ProcessingException, UserException {
         //TBD: for test ejb framework only
         List<HierarchyType> hierarchyTypes = new ArrayList<HierarchyType>();       
@@ -172,112 +172,112 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     }
    
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createHierarchyType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createHierarchyDef() 
      */        
-    public String createHierarchyType(HierarchyType hierarchyType)  
+    public String createHierarchyDef(HierarchyDef hierarchyDef)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateHierarchyType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateHierarchyDef() 
      */        
-    public void updateHierarchyType(HierarchyType hierarchyType)  
+    public void updateHierarchyDef(HierarchyDef hierarchyDef)  
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteHierarchyType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteHierarchyDef() 
      */        
-    public void deleteHierarchyType(HierarchyType hierarchyType) 
+    public void deleteHierarchyDef(HierarchyDef hierarchyDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteHierarchyType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteHierarchyDef() 
      */        
-    public void deleteHierarchyType(String domain, String name) 
+    public void deleteHierarchyDef(String domain, String name) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
          
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getGroupTypes() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getGroupDefs() 
      */        
-    public GroupType[] getGroupTypes(String domain) 
+    public GroupDef[] getGroupDefs(String domain) 
         throws ProcessingException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
         
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createGroupType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createGroupDef() 
      */        
-    public String createGroupType(GroupType groupType) 
+    public String createGroupDef(GroupDef groupDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateGroupType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateGroupDef() 
      */        
-    public void updateGroupType(GroupType groupType) 
+    public void updateGroupDef(GroupDef groupDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupDef() 
      */        
-    public void deleteGroupType(GroupType groupType) 
+    public void deleteGroupDef(GroupDef groupDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }    
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupDef() 
      */        
-    public void deleteGroupType(String domain, String name) 
+    public void deleteGroupDef(String domain, String name) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }      
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getGroupMemberTypes() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getGroupMemberDefs() 
      */   
-    public GroupMemberType[] getGroupMemberTypes(String domain) 
+    public GroupMemberDef[] getGroupMemberDefs(String domain) 
     throws ProcessingException {
     	   throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createGroupMemberType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createGroupMemberDef() 
      */        
-    public String createGroupMemberType(GroupMemberType groupMemberType) 
+    public String createGroupMemberDef(GroupMemberDef groupMemberDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateGroupMemberType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#updateGroupMemberDef() 
      */        
-    public void updateGroupMemberType(GroupMemberType groupMemberType) 
+    public void updateGroupMemberDef(GroupMemberDef groupMemberDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupMemberType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupMemberDef() 
      */        
-    public void deleteGroupMemberType(GroupMemberType groupMemberType) 
+    public void deleteGroupMemberDef(GroupMemberDef groupMemberDef) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }    
     
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupMemberType() 
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#deleteGroupMemberDef() 
      */        
-    public void deleteGroupMemberType(String domain, String name) 
+    public void deleteGroupMemberDef(String domain, String name) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }      
