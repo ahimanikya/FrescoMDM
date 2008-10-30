@@ -252,18 +252,39 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
     <table>
 	   <tr>
 	     <td>
+		 <% boolean concurrentModification = false;%>
      <%
 		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 	      StringBuffer msgs = new StringBuffer("<ul>");	
           while (messagesIter.hasNext()) {
                      FacesMessage facesMessage = (FacesMessage) messagesIter.next();
+                     if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				       concurrentModification = true;
+			         }
+			         
                      msgs.append("<li>");
 					 msgs.append(facesMessage.getSummary());
 					 msgs.append("</li>");
           }
 		  msgs.append("</ul>");		  
      %>     	 
-     <%=msgs%>
+	 <%if(concurrentModification) {%>
+	  <table><tr><td>
+		  <script>
+				window.location = "#top";
+				document.getElementById("activeDiv").innerHTML = 'EUID <%=srcDestnEuids[0]%>  <%=bundle.getString("concurrent_mod_text")%>';
+				document.getElementById("activeDiv").style.visibility="visible";
+				document.getElementById("activeDiv").style.display="block";
+				popUrl = "";
+				getFormValues('advancedformData');
+				setRand(Math.random());
+				ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')
+
+		 </script>
+	 </td></tr></table>
+	 <%} else {%>
+      <%=msgs%>
+	 <%}%>
 	 <script>
    		 euids="";
          euidArray = [];

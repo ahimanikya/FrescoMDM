@@ -642,6 +642,7 @@ function ClearContents(thisForm)  {
 			   if(thisFrm.elements[i].readOnly != true)
               thisFrm.elements[i].selectedIndex = "0";
 		   }  else {
+			   if(thisFrm.elements[i].readOnly != true)
               thisFrm.elements[i].value = "";
 		   }
         }

@@ -154,6 +154,7 @@ SourceHandler  sourceHandler   = (SourceHandler)session1.getAttribute("SourceHan
 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 String editTitle = bundle.getString("source_rec_edit_but");
 String deleteTitle = bundle.getString("source_rec_delete_but");
+String active_euid_text = bundle.getString("active_euid_text") ;
 
 ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
 HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
@@ -544,30 +545,54 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 window.location = "#top";
 		 </script>
 		 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
-     <%}%>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
+	 <%}%>
  <%} else {%> <!-- merged euid condition-->
         <table>
          <tr><td><!-- Modified  on 23-09-2008 for all information popups -->
          <script>
 			window.location = "#top";
-			document.getElementById("successMessageDiv").innerHTML = '<%=megredEuid%>  <%=bundle.getString("active_euid_text")%>  <%=editEuid%>.';
-			document.getElementById("successDiv").style.visibility="visible";
-			document.getElementById("successDiv").style.display="block";
+  			document.getElementById("activemessageDiv").innerHTML='<%=megredEuid%> <%=active_euid_text%> <%=editEuid%>.';
+			document.getElementById('activeDiv').style.visibility='visible';
+			document.getElementById('activeDiv').style.display='block';
+			popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+
          </script>
          </td>
          </tr>
@@ -1859,22 +1884,45 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <script>
 			 window.location = "#top";
 		 </script>
-		 <div class="ajaxalert">
+				 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
+
      <%}%>
 
 
@@ -1942,22 +1990,45 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <script>
 			 window.location = "#top";
 		 </script>
-		 <div class="ajaxalert">
+				 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
+
      <%}%>
  
 <% } else if (isLocking){ %> 	<!-- Explicitly  Locking the SBR fields as chosen by the user-->
@@ -2014,22 +2085,45 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <script>
 			 window.location = "#top";
 		 </script>
-		 <div class="ajaxalert">
+		 		 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
+
   <%}%>
  
 <% } else if (isUnLocking){ %> 	<!-- UnLocking the SBR fields-->
@@ -2077,22 +2171,45 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 <script>
 			 window.location = "#top";
 		 </script>
-		 <div class="ajaxalert">
+				 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
+
   <%}%>
 
 
@@ -2129,21 +2246,44 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 window.location = "#top";
 		 </script>
 		 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
+
   <%}%>
 
 <% } else if (isCacncelEOEdit){ %> 	<!-- isCancel Edit EO operation-->

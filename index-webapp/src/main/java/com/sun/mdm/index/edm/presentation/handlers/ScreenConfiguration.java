@@ -955,7 +955,7 @@ public class ScreenConfiguration {
 
         } catch (Exception e) {
             //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
-            mLogger.error(mLocalizer.x("SNC004: Failed to get SearchScreenField GroupArray:{0}", e.getMessage())); 
+            mLogger.error(mLocalizer.x("SNC003: Failed to get SearchScreenField GroupArray:{0}", e.getMessage())); 
         }
         
         return searchScreenFieldGroupArray;
@@ -1113,7 +1113,7 @@ public class ScreenConfiguration {
                 }
             }
         } catch (Exception e)  {
-                             mLogger.error(mLocalizer.x("SRC076: Failed to check masking :{0}", e.getMessage()),e);
+                             mLogger.error(mLocalizer.x("SNC004: Failed to check masking :{0}", e.getMessage()),e);
             return false;
         }                
         return true;

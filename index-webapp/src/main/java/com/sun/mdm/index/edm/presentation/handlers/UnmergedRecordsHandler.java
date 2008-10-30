@@ -34,7 +34,6 @@ package com.sun.mdm.index.edm.presentation.handlers;
 import com.sun.mdm.index.report.ReportException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.event.*;
 import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.util.DateUtil;
@@ -43,7 +42,6 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.MultirowReportConfig1;
 import com.sun.mdm.index.report.MultirowReportObject1;
@@ -57,8 +55,6 @@ import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
-import com.sun.mdm.index.util.LogUtil;
-//import com.sun.mdm.index.util.Logger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -74,11 +70,6 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
-import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
-import com.sun.mdm.index.edm.util.QwsUtil;
-import com.sun.mdm.index.master.ProcessingException;
-import com.sun.mdm.index.master.UserException;
-import net.java.hulp.i18n.LocalizationSupport;
 import com.sun.mdm.index.objects.exception.ObjectException;
 
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -360,14 +351,14 @@ public class UnmergedRecordsHandler    {
                 String msg = bundle.getString("timeFrom");
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
-                mLogger.info(mLocalizer.x("UMG002: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("UMG001: {0}",errorMessage));
                 return null;
             }            
             //if only time fields are entered validate for the date fields 
             if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_from");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("UMG201: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("UMG002: {0} ",errorMessage));
                 return null;
             }
         }
@@ -411,7 +402,7 @@ public class UnmergedRecordsHandler    {
             if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_to");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("UMG202: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("UMG006: {0} ",errorMessage));
                 return null;
             }
        }    
@@ -422,7 +413,7 @@ public class UnmergedRecordsHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-                mLogger.info(mLocalizer.x("UMG006: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("UMG007: {0}",errorMessage));
                 return null;
             } else {
                 try {
@@ -437,7 +428,7 @@ public class UnmergedRecordsHandler    {
                     }
                     createEndTime="";
                 } catch (ValidationException validationException) {
-                     mLogger.error(mLocalizer.x("UMG007: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
+                     mLogger.error(mLocalizer.x("UMG008: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     return null;
@@ -454,7 +445,7 @@ public class UnmergedRecordsHandler    {
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                     mLogger.info(mLocalizer.x("UMG008: {0}",errorMessage));
+                     mLogger.info(mLocalizer.x("UMG009: {0}",errorMessage));
                     return null;
                    }
         }  

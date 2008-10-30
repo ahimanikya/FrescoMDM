@@ -154,26 +154,31 @@ public class ViewMergeTreeHandler {
 
             htmlNodeTreeDataModel.addNode(euidNode);
 
-//        } catch (ProcessingException ex) {
-//            mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
-//            return SERVICE_LAYER_ERROR;
-//        } catch (UserException ex) {
-//            mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
-//            return SERVICE_LAYER_ERROR;
-//        } catch (Exception ex) {
-//            mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
-//            return SERVICE_LAYER_ERROR;
-//        }
-            // modified exceptional handling logic
+             // modified exceptional handling logic
             }catch  (Exception ex) {
-            if (ex instanceof ValidationException) {                
+            if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
                 mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("VMT004: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("VMT005: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return SERVICE_LAYER_ERROR;
         }
  

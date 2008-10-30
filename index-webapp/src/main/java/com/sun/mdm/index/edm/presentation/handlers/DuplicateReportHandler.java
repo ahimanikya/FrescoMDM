@@ -33,19 +33,14 @@ import com.sun.mdm.index.edm.presentation.valueobjects.DuplicateRecords;
 import com.sun.mdm.index.report.ReportException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.event.*;
 import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
 import com.sun.mdm.index.master.search.transaction.TransactionIterator;
-import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
-import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.MultirowReportConfig1;
 import com.sun.mdm.index.report.MultirowReportObject1;
 import com.sun.mdm.index.report.PotentialDuplicateReport;
@@ -76,11 +71,6 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
-import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
-import com.sun.mdm.index.edm.util.QwsUtil;
-import com.sun.mdm.index.master.ProcessingException;
-import com.sun.mdm.index.master.UserException;
-import net.java.hulp.i18n.LocalizationSupport;
 
 public class DuplicateReportHandler    {
     /* @param reportType the report type*/
@@ -361,7 +351,7 @@ public class DuplicateReportHandler    {
                 String msg1 = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.info(mLocalizer.x("RPT018: {0}",errorMessage));
+                 mLogger.info(mLocalizer.x("DUPRPT001: {0}",errorMessage));
                 return null;
             }            
             
@@ -369,7 +359,7 @@ public class DuplicateReportHandler    {
             if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_from");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("RPT201: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("DUPRPT002: {0} ",errorMessage));
                 return null;
             }
         }
@@ -381,7 +371,7 @@ public class DuplicateReportHandler    {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                  mLogger.info(mLocalizer.x("RPT025: {0}",message));
+                  mLogger.info(mLocalizer.x("DUPRPT003: {0}",message));
                 return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
@@ -395,7 +385,7 @@ public class DuplicateReportHandler    {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                     mLogger.error(mLocalizer.x("RPT019: {0}",errorMessage),validationException);
+                     mLogger.error(mLocalizer.x("DUPRPT004: {0}",errorMessage),validationException);
                      return null;
                 }
             }
@@ -409,7 +399,7 @@ public class DuplicateReportHandler    {
                 String msg1 = bundle.getString("timeTo");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.info(mLocalizer.x("RPT020: {0}",message));
+                 mLogger.info(mLocalizer.x("DUPRPT005: {0}",message));
                 return null;
             } 
 
@@ -417,7 +407,7 @@ public class DuplicateReportHandler    {
             if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_to");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("RPT202: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("DUPRPT006: {0} ",errorMessage));
                 return null;
             }
        }    
@@ -429,7 +419,7 @@ public class DuplicateReportHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("RPT021: {0}",message));
+                mLogger.error(mLocalizer.x("DUPRPT007: {0}",message));
                 return null;
             } else {
                 try {
@@ -443,7 +433,7 @@ public class DuplicateReportHandler    {
                     //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT022: {0}",errorMessage), validationException);
+                    mLogger.error(mLocalizer.x("DUPRPT008: {0}",errorMessage), validationException);
                     return null;
                 }
             }           
@@ -458,7 +448,7 @@ public class DuplicateReportHandler    {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                    mLogger.info(mLocalizer.x("RPT023: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("DUPRPT009: {0}",errorMessage));
                     return null;
                    }
         }
@@ -491,7 +481,7 @@ public class DuplicateReportHandler    {
         }    
         */
         if (errorMessage != null && errorMessage.length() != 0)  {            
-            throw new ValidationException(mLocalizer.t("RPT503: {0}",errorMessage));
+            throw new ValidationException(mLocalizer.t("DUPRPT501: {0}",errorMessage));
         } else {
             return pdrConfig;
         }                                 

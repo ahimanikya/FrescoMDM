@@ -29,7 +29,6 @@ package com.sun.mdm.index.edm.presentation.handlers;
 
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.event.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -44,13 +43,9 @@ import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.util.LogUtil;
-//import com.sun.mdm.index.util.Logger;
-import java.rmi.RemoteException;
 
 import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServletRequest;
@@ -61,9 +56,6 @@ import java.util.HashMap;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import java.util.Iterator;
-import net.java.hulp.i18n.LocalizationSupport;
-
-//import net.java.hulp.i18n.Logger;
 
 
 public class AuditLogHandler extends ScreenConfiguration {
@@ -181,7 +173,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
-               mLogger.info(mLocalizer.x("AUD009: Validation failed : {0}" , errorMessage));
+                mLogger.info(mLocalizer.x("AUD001: Validation failed : {0}" , errorMessage));
                 return null;
             }
 
@@ -229,7 +221,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString("LID_only");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
-                mLogger.info(mLocalizer.x("AUD010: {0} ",errorMessage ));
+                mLogger.info(mLocalizer.x("AUD002: {0} ",errorMessage ));
                 return null;
 
             }
@@ -241,7 +233,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                      errorMessage = bundle.getString("enter_LID");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                    // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
-                    mLogger.info(mLocalizer.x("AUD011: LID/SystemCode Validation failed : {0}" , errorMessage));
+                    mLogger.info(mLocalizer.x("AUD003: LID/SystemCode Validation failed : {0}" , errorMessage));
                     return null;
 
                 }
@@ -261,20 +253,35 @@ public class AuditLogHandler extends ScreenConfiguration {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             String msg = bundle.getString("LID_SYSTEM_CODE");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
-                            mLogger.info(mLocalizer.x("AUD012: LID Validation failed : {0}", LID, errorMessage));
+                            mLogger.info(mLocalizer.x("AUD004: LID Validation failed : {0}", LID, errorMessage));
                             return null;
                         }
                     } 
 
                     catch (Exception ex) {
                         if (ex instanceof ValidationException) {
-                            mLogger.error(mLocalizer.x("AUD015: Service Layer Validation Exception has occurred"), ex);
+                            mLogger.error(mLocalizer.x("AUD005: Service Layer Validation Exception has occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         } else if (ex instanceof UserException) {
-                            mLogger.error(mLocalizer.x("AUD016: Service Layer User Exception occurred"), ex);
+                            mLogger.error(mLocalizer.x("AUD006: Service Layer User Exception occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         } else if (!(ex instanceof ProcessingException)) {
-                            mLogger.error(mLocalizer.x("AUD017: Error  occurred"), ex);
+                            mLogger.error(mLocalizer.x("AUD007: Error  occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                        } else if (ex instanceof ProcessingException) {
+                            String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                            if (exceptionMessage.indexOf("stack trace") != -1) {
+                                String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                                if (exceptionMessage.indexOf("message=") != -1) {
+                                    parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                                }
+                                mLogger.error(mLocalizer.x("AUD008: Service Layer Processing Exception occurred"), ex);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                            } else {
+                                mLogger.error(mLocalizer.x("AUD009: Error  occurred"), ex);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                            }
                         }
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         return null;
                     }
 
@@ -290,7 +297,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                   
-                    mLogger.info(mLocalizer.x("AUD013: Invalid date format : {0} : {1}" ,fieldErrors[0],fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("AUD010: Invalid date format : {0} : {1}" ,fieldErrors[0],fieldErrors[1]));
                     return null;
                 }
 
@@ -303,7 +310,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));                   
-                    mLogger.info(mLocalizer.x("AUD014: Invalid time format : {0} :{1}" ,fieldErrors[0],fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("AUD011: Invalid time format : {0} :{1}" ,fieldErrors[0],fieldErrors[1]));
                     return null;
                 }
 
@@ -355,20 +362,35 @@ public class AuditLogHandler extends ScreenConfiguration {
             
         } catch (ValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage,exceptionMessaage));
-            mLogger.error(mLocalizer.x("AUD001: ValidationException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
+            mLogger.error(mLocalizer.x("AUD012: ValidationException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
             //mLogger.error("ValidationException ex : " + ex.toString());
             return null;
         } 
 
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("AUD002: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("AUD013: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("AUD003: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("AUD014: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("AUD004: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("AUD015: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("AUD016: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("AUD017: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
              return null;
         }
         return resultsArrayList;
@@ -396,35 +418,37 @@ public class AuditLogHandler extends ScreenConfiguration {
                         errorMessage = bundle.getString("system_object_not_found_error_message");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                        // mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
-                        mLogger.info(mLocalizer.x("AUD006: LID/SYSTEM CODE : {0}" ,errorMessage));
+                        mLogger.info(mLocalizer.x("AUD018: LID/SYSTEM CODE : {0}" ,errorMessage));
                         
                     } else {
                         EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                         auditSearchObject.setEUID(eo.getEUID());
                     }
-                } 
-//                catch (ProcessingException ex) {
-//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, exceptionMessaage));
-//                    //mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
-//                    //mLogger.error("ProcessingException ex : " + ex.toString());
-//                   mLogger.error(mLocalizer.x("AUD007: ProcessingException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
-//                   
-//                } catch (UserException ex) {
-//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
-//                   // mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
-//                    //mLogger.error("UserException ex : " + ex.toString());
-//                     mLogger.error(mLocalizer.x("AUD008: UserException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
-//                    
-//                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("AUD007: Service Layer Validation Exception has occurred"), ex);
+                        mLogger.error(mLocalizer.x("AUD019: Service Layer Validation Exception has occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                     } else if (ex instanceof UserException) {
-                        mLogger.error(mLocalizer.x("AUD008: Service Layer User Exception occurred"), ex);
+                        mLogger.error(mLocalizer.x("AUD020: Service Layer User Exception occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                     } else if (!(ex instanceof ProcessingException)) {
-                        mLogger.error(mLocalizer.x("AUD020: Error  occurred"), ex);
+                        mLogger.error(mLocalizer.x("AUD021: Error  occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    } else if (ex instanceof ProcessingException) {
+                        String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                        if (exceptionMessage.indexOf("stack trace") != -1) {
+                            String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                            if (exceptionMessage.indexOf("message=") != -1) {
+                                parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                            }
+                            mLogger.error(mLocalizer.x("AUD022: Service Layer Processing Exception occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                        } else {
+                            mLogger.error(mLocalizer.x("AUD023: Error  occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                        }
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return null;
                 }
 
             }

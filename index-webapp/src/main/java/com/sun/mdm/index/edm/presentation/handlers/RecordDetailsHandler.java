@@ -189,7 +189,7 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                 if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
                     errorMessage = bundle.getString("enter_LID");// "Please Enter LID Value";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.info(mLocalizer.x("RDH003: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("RDH004: {0}",errorMessage));
                     return null;
 
                 }
@@ -208,19 +208,35 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                         if (so == null) {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
-                             mLogger.info(mLocalizer.x("RDH004: {0} ", errorMessage));
+                             mLogger.info(mLocalizer.x("RDH005: {0} ", errorMessage));
                             return null;
                         }
-                    }                    
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         if (ex instanceof ValidationException) {
-                             mLogger.error(mLocalizer.x("RDH005: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
+                            mLogger.error(mLocalizer.x("RDH006: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         } else if (ex instanceof UserException) {
-                            mLogger.error(mLocalizer.x("RDH006: Encountered the UserException:{0} ", ex.getMessage()),ex);
+                            mLogger.error(mLocalizer.x("RDH007: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         } else if (!(ex instanceof ProcessingException)) {
-                            mLogger.error(mLocalizer.x("RDH035: Error  occurred"), ex);
+                            mLogger.error(mLocalizer.x("RDH008: Error  occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                        } else if (ex instanceof ProcessingException) {
+                            String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                            if (exceptionMessage.indexOf("stack trace") != -1) {
+                                String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                                if (exceptionMessage.indexOf("message=") != -1) {
+                                    parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                                }
+                                mLogger.error(mLocalizer.x("RDH009: Error  occurred"), ex);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                            } else {
+                                mLogger.error(mLocalizer.x("RDH010: Error  occurred"), ex);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                            }
+                            return null;
                         }
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+
                     }
 
                 }
@@ -234,7 +250,7 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
-                    mLogger.info(mLocalizer.x("RDH007: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("RDH011: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
                     return null;
                 }
 
@@ -247,7 +263,7 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
-                    mLogger.info(mLocalizer.x("RDH008: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("RDH012: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
                     return null;
                 }
 
@@ -318,7 +334,7 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                     searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next(); 
                    
                     if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(super.getSelectedSearchType())) {
-                        //get the EO search option from the EDM.xml file here as per the search type                      
+                        //get the EO search option from the midm.xml file here as per the search type                      
                         eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
                         //set the weighted searched paramater here.
                         if (searchScreenConfig.getOptions().getIsWeighted()) {
@@ -478,108 +494,35 @@ public class RecordDetailsHandler extends ScreenConfiguration {
             }
         // End here            
         // SambaG
-        }
-
-        catch (Exception ex) {
+        } catch (Exception ex) {
+            String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH009: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH013: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH075: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH014: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH076: Error  occurred"), ex);
-            }else if (ex instanceof ProcessingException) {
-                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                mLogger.error(mLocalizer.x("RDH015: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
                 if (exceptionMessage.indexOf("stack trace") != -1) {
                     String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
                     if (exceptionMessage.indexOf("message=") != -1) {
-                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    mLogger.error(mLocalizer.x("RDH099: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("RDH016: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
-                    return null;
                 } else {
-                    mLogger.error(mLocalizer.x("RDH100: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("RDH017: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
-                     return null;
                 }
             }
-
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-             return null;
+            return null;
         }
     }
-
-    /**
-     * 
-     * @param event
-     */
-    public void setPreviewEnterpriseObjectValues(ActionEvent event) {
-
-        String fnameExpression = (String) event.getComponent().getAttributes().get("fnameExpression");
-        Object fvalueVaueExpression = (Object) event.getComponent().getAttributes().get("fvalueVaueExpression");
-        HashMap eoMultiMergePreviewMap = (HashMap) httpRequest.getAttribute("eoMultiMergePreview");
-        
-        HashMap mergePersonfieldValuesMapEO = (HashMap) eoMultiMergePreviewMap.get("ENTERPRISE_OBJECT");
-        
-
-       // masterControllerService.modifySBR(sbr, hm);
-
-        HashMap fieldValuesMerge = (HashMap) session.getAttribute("mergedEOMap");
-
-        if (fieldValuesMerge != null) {
-            fieldValuesMerge.put(fnameExpression, fvalueVaueExpression); //set the value for the preview section
-            session.setAttribute("mergedEOMap", fieldValuesMerge);  //restore the session object again.
-        }
-
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public String makeDifferentPersonAction() {
-        try {
-            
-            //resolve the potential duplicate as per resolve type
-            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? false : true;
-            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "R": "A";
-
-            //flag=false incase of autoresolve
-            //flag = true incase of permanant resolve
-
-            masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
-            ArrayList modifiedArrayList = new ArrayList();
-
-            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
-            //reset the status and set it back in session
-            for (int i = 0; i < eoArrayList.size(); i++) {
-                HashMap objectHashMap = (HashMap) eoArrayList.get(i);
-                //set the resolve type for the selected potential duplicate
-                if(this.getPotentialDuplicateId().equals((String)objectHashMap.get("PotDupId"))) {
-                  objectHashMap.put("Status", resolveString);
-                }
-                modifiedArrayList.add(objectHashMap);
-            }
-            session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
-
-        } 
-        
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("RDH010: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH011: Encountered the UserException:{0} ", ex.getMessage()),ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH036: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-
-        return "Compare Duplicates";
-    }
-
-    /** 
+ 
+     /** 
      * Added  on 07/06/2008
      * 
      * This method is called from the ajax services for resolving the potential duplicate.
@@ -618,17 +561,32 @@ public class RecordDetailsHandler extends ScreenConfiguration {
             }
             session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
 
-        } 
-        // modified exceptional handling logic
-        catch (Exception ex) {
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("RDH040: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("RDH018: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH041: Encountered the UserException:{0} ", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("RDH019: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH042: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH020: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH021: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH022: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return modifiedArrayList;
     }   
@@ -666,154 +624,37 @@ public class RecordDetailsHandler extends ScreenConfiguration {
             }
             session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
 
-        }
-
-        // modified exceptional handling logic
-        catch (Exception ex) {
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH012: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH023: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH013: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH024: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH037: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH025: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH026: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH027: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return modifiedArrayList;
     }
 
-
-    
-    
-    /**
-     * 
-     * @param event
-     */
-    public void unresolvePotentialDuplicateAction(ActionEvent event) {
-        try {
-//            String sourceEUID = (String) event.getComponent().getAttributes().get("sourceEUID");
-//            String destinationEUID = (String) event.getComponent().getAttributes().get("destinationEUID");
-
-            //get potential duplicate ID
-            String potDupId = (String) event.getComponent().getAttributes().get("potDupId");
-            ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
-
-            session.removeAttribute("comapreEuidsArrayList");
-
-            //un resolve the potential duplicate as per resolve type
-            masterControllerService.unresolvePotentialDuplicate(potDupId);
-            ArrayList modifiedArrayList = new ArrayList();
-            //reset the status and set it back in session
-            for (int i = 0; i < eoArrayList.size(); i++) {
-                HashMap objectHashMap = (HashMap) eoArrayList.get(i);
-                //set the resolve type to "U" (UnResolve)for the selected potential duplicate
-                if(potDupId.equals((String)objectHashMap.get("PotDupId"))) {
-                  objectHashMap.put("Status", "U");
-                }
-                modifiedArrayList.add(objectHashMap);
-            }
-            session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
-
-        } 
-
-        // modified exceptional handling logic
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH051: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH052: Encountered the UserException:{0} ", ex.getMessage()), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH053: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void getEUIDDetails(ActionEvent event) {
-        try {
-            String euid = (String) event.getComponent().getAttributes().get("euid");
-
-            EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
-            ArrayList newEOArrayList = new ArrayList();
-            newEOArrayList.add(eo);
-
-            session.setAttribute("enterpriseArrayList", newEOArrayList);
-        }
-
-        // modified exceptional handling logic
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH014: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH015: Encountered the UserException:{0} ", ex.getMessage()), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH096: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-
-
-
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void keepEuidsAction(ActionEvent event) {
-        String sourceEUID = (String) event.getComponent().getAttributes().get("sourceEUID");
-        String destinationEUID = (String) event.getComponent().getAttributes().get("destinationEUID");
-
-        //set both source and destination euids in the session
-        session.setAttribute("sourceEUIDSessionObj", sourceEUID);
-        session.setAttribute("destinationEUIDSessionObj", destinationEUID);
-    }
-
-    /**
-     * 
-     * @param event 
-     * 
-     */
-    public void getMergedEnterpriseObject(ActionEvent event) {
-        try {
-            String sourceEUID = (String) event.getComponent().getAttributes().get("finalSourceEuid");
-            String destinationEUID = (String) event.getComponent().getAttributes().get("finalDestinationEuid");
-
-            EnterpriseObject sourceEnterpriseObject = masterControllerService.getEnterpriseObject(sourceEUID);//get source EO
-            EnterpriseObject destinationEnterpriseObject = masterControllerService.getEnterpriseObject(destinationEUID);//get destination EO
-
-
-            //get the merged result for the source and destination using master master controller.
-            EnterpriseObject mergeResultEO = masterControllerService.getPostMergeEO(sourceEnterpriseObject, destinationEnterpriseObject);
-
-            
-            HashMap fieldValuesMergeMap = midmUtilityManager.getEOFieldValues(mergeResultEO, screenObject, super.getResultsConfigArray().toArray());
-            //Add the EUID to the hashmap
-            fieldValuesMergeMap.put("EUID", mergeResultEO.getEUID());
-
-            //set the merged Enterprise object in the session for displaying the preview in compare duplicates screen
-            session.setAttribute("mergedEO", mergeResultEO);
-            session.setAttribute("mergedEOMap", fieldValuesMergeMap);
-        } 
-
-        // modified exceptional handling logic
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("RDH016: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH066: Encountered the UserException:{0} ", ex.getMessage()),ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH067: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-
-    }
-    /** 
+     /** 
      * Added  on 07/06/2008<br>
      * 
      * This method is used to get the preview of the surviving enterprise object. <br>
@@ -884,19 +725,33 @@ public class RecordDetailsHandler extends ScreenConfiguration {
 //            httpRequest.setAttribute("eoMultiMergePreview", eoMultiMergePreview);
 
 
-        } 
-
-        // modified exceptional handling logic
-                    catch (Exception ex) {
-                        if (ex instanceof ValidationException) {
-                             mLogger.error(mLocalizer.x("RDH077: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
-                        } else if (ex instanceof UserException) {
-                            mLogger.error(mLocalizer.x("RDH078: Encountered the UserException:{0} ", ex.getMessage()),ex);
-                        } else if (!(ex instanceof ProcessingException)) {
-                            mLogger.error(mLocalizer.x("RDH79: Error  occurred"), ex);
-                        }
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+        } catch (Exception ex) {// modified exceptional handling logic
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RDH028: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RDH029: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RDH030: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
+                    mLogger.error(mLocalizer.x("RDH031: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH032: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
+            }
+            return null;
+        }
 
         //Insert Audit logs 
         try {
@@ -907,17 +762,31 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                     "EUID Merge Confirm",
                     new Integer(screenObject.getID()).intValue(),
                     "View two selected EUIDs of the merge confirm page");
-        } 
-        // modified exceptional handling logic
-        catch (Exception ex) {
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("RDH019: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("RDH033: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH020: Encountered the UserException:{0} ", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("RDH034: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH021: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH035: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH036: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH037: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
 
@@ -1039,19 +908,32 @@ public class RecordDetailsHandler extends ScreenConfiguration {
 
             session.setAttribute("comapreEuidsArrayList", finalMergeList);
 
-        } 
-
-        // modified exceptional handling logic
-        catch (Exception ex) {
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH082: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH038: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH083: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH039: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH084: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH040: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH041: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH042: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-             return null;
+            return null;
         }
         //Insert Audit logs 
         try {
@@ -1062,374 +944,37 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                                                     "EUID Multi Merge Confirm",
                                                     new Integer(screenObject.getID()).intValue(),
                                                     "View two selected EUIDs of the merge confirm page");
-        } 
-        catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            mLogger.error(mLocalizer.x("RDH025: Encountered the UserException :{0} ", ex.getMessage()), ex);
-            return null;
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            mLogger.error(mLocalizer.x("RDH026: Encountered the ObjectException :{0} ", ex.getMessage()), ex);
-            return null;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
-            mLogger.error(mLocalizer.x("RDH027: Encountered the Exception :{0} ", ex.getMessage()), ex);
+        } catch (Exception ex) {// modified exceptional handling logic
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("RDH043: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("RDH044: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("RDH045: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH046: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH047: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
+            }
             return null;
         }
 
         return finalMergeList;
     }
-
-        
-        public String previewPostMultiMergedEnterpriseObject() {
-        try {
-            //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
-            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
-            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
-
-
-            String[] allEUIDs = mergeEuids.split("##");
-            
-            
-            ArrayList srcsList  = new ArrayList();
-            for (int i = 0; i < allEUIDs.length; i++) {
-                if(i !=0 ) {
-                    srcsList.add(allEUIDs[i]);
-                }
-            }    
-            
-            Object[] sourceEUIDObjs =  srcsList.toArray();
-            
-            String[] sourceEUIDs  = new String[srcsList.size()];
-            
-            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
-            for (int i = 0; i < sourceEUIDObjs.length; i++) {
-                String sourceEuid = (String) sourceEUIDObjs[i];
-                sourceEUIDs[i] = sourceEuid;
-                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
-            }
-
-//            httpRequest.setAttribute("sourceEUIDs", sourceEUIDs);
-
-//            httpRequest.setAttribute("destnEuid", destnEuid);
-            
-            EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
-
-            HashMap eoMultiMergePreview = midmUtilityManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
-
-//            httpRequest.setAttribute("eoMultiMergePreview", eoMultiMergePreview);
-
-
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-             mLogger.error(mLocalizer.x("RDH017: Encountered the  ProcessingException :{0} ", ex.getMessage()),ex);
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-            mLogger.error(mLocalizer.x("RDH018: Encountered the  UserException :{0} ", ex.getMessage()),ex);
-        }
-        
-      //Insert Audit logs 
-       try {
-       //String userName, String euid1, String euid2, String function, int screeneID, String detail
-        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               destnEuid, 
-                                               "",
-                                               "EUID Merge Confirm",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "View two selected EUIDs of the merge confirm page");
-        } catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("RDH069: Encountered the  UserException :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-          mLogger.error(mLocalizer.x("RDH070: Encountered the  ObjectException :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("RDH071: Encountered the Exception :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        }
-        
-        return this.SEARCH_PATIENT_DETAILS;
-}
-        
-        
-        
-  public String performMultiMergedEnterpriseObject() {
-        try {
-         
-            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
-
-
-            HashMap eoHashMap = eoHashMap = (HashMap) midmUtilityManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT_CODES");
-      
-           
-            String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
-
-            HashMap updatedEoMap = new HashMap();
-            
-            //when user modifies the person fields the only  update the enterprise object
-            if (selectedFieldsValue.length > 1) {
-                updatedEoMap.put(MasterControllerService.HASH_MAP_TYPE, eoHashMap.get(MasterControllerService.HASH_MAP_TYPE));
-                updatedEoMap.put(MasterControllerService.MINOR_OBJECT_ID, eoHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
-                //Modify destination EO values with selected values 
-                for (int i = 0; i < selectedFieldsValue.length; i++) {
-                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
-                    //if blank value is entered overwrite the value with null
-                    if(sourceEuidFull[1] != null && "null".equalsIgnoreCase(sourceEuidFull[1])) {
-                       updatedEoMap.put(sourceEuidFull[0], null);                        
-                    } else {
-                      updatedEoMap.put(sourceEuidFull[0], sourceEuidFull[1]);
-                     }
-                   
-                }
-                //Modify CHANGED sbr values here
-                masterControllerService.modifySBR(destinationEO.getSBR(), updatedEoMap);
-
-                masterControllerService.updateEnterpriseObject(destinationEO);
-
-                //get the modifed EO and merge it
-                destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
-            }
-            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
-            
-            String[] allEUIDs = mergeEuids.split("##");
-            
-            ArrayList srcsList  = new ArrayList();
-            for (int i = 0; i < allEUIDs.length; i++) {
-                if(i !=0 ) {
-                    srcsList.add(allEUIDs[i]);
-                }
-            }    
-            
-            Object[] sourceEUIDObjs =  srcsList.toArray();
-            
-            String[] sourceEUIDs  = new String[srcsList.size()];
-            
-            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
-            
-            for (int i = 0; i < sourceEUIDObjs.length; i++) {
-                String sourceEuid = (String) sourceEUIDObjs[i];
-                sourceEUIDs[i] = sourceEuid;
-                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
-            }
-
-            EnterpriseObject resulteo = masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
-            session.removeAttribute("comapreEuidsArrayList");
-            
-           HashMap eoMultiMergePreview = midmUtilityManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
-
-           ArrayList finalMergeList  = new ArrayList();
-           finalMergeList.add(eoMultiMergePreview);
-
-            session.setAttribute("comapreEuidsArrayList",finalMergeList);
-            
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("RDH022: Encountered the ObjectException :{0} ", ex.getMessage()),ex);
-        } catch (ValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("RDH023: Encountered the  ValidationException :{0} ", ex.getMessage()),ex);
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-              mLogger.error(mLocalizer.x("RDH024: Encountered the Exception :{0} ", ex.getMessage()),ex);
-        }
-      //Insert Audit logs 
-       try {
-       //String userName, String euid1, String euid2, String function, int screeneID, String detail
-        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               destnEuid, 
-                                               "",
-                                               "EUID Multi Merge Confirm",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "View two selected EUIDs of the merge confirm page");
-        }
-       catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("RDH025: Encountered the UserException :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-   mLogger.error(mLocalizer.x("RDH026: Encountered the ObjectException :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("RDH027: Encountered the Exception :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        }
-
-        return this.SEARCH_PATIENT_DETAILS;
-}        
-
-  
-  public void undoMultiMerge(ActionEvent event) {
-      httpRequest.removeAttribute("eoMultiMergePreview");
-  }
-    
-    
-    
-    
-    
-    public String singleEuidSearch() {
-        NavigationHandler navigationHandler = new NavigationHandler();
-        session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-
-        try {
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(this.getSingleEUID());
-            //Throw exception if EO is found null.
-            if (enterpriseObject == null) {
-                session.removeAttribute("enterpriseArrayList");
-                String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            } else {
-                eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                newArrayList.add(eoMap);
-            }
-//            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("RDH028: Encountered the ProcessingException :{0} ", ex.getMessage()));
-            return this.SERVICE_LAYER_ERROR;
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("RDH029: Encountered the UserException :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        }
-        
-        
-      //Insert Audit logs after adding the new System Object
-       try {
-       //String userName, String euid1, String euid2, String function, int screeneID, String detail
-        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               this.getSingleEUID(), 
-                                               "",
-                                               "EO View/Edit",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "View/Edit detail of enterprise object");
-        } catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-            mLogger.error(mLocalizer.x("RDH032: Failed to insert Audit log :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-         mLogger.error(mLocalizer.x("RDH030: Failed to insert Audit log :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-           mLogger.error(mLocalizer.x("RDH031: Failed to insert Audit log :{0} ", ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
-        }
-
-        return "EUID Details";
-    }
-
-    public String compareEuidSearch() {
-        try {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid1() != null && !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    String msg1 = bundle.getString("EUID1");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  msg1+errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid1(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                }
-            }
-            if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-//                    session.removeAttribute("comapreEuidsArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    String msg2 = bundle.getString("EUID2");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid2(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                }
-            }
-            if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    String msg3 = bundle.getString("EUID3");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid3(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
-                }
-            }
-            if (this.getEuid4() != null && this.getEuid4().length() > 0 ) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    String msg4 = bundle.getString("EUID4");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4 + errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid4(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
-                }
-            }
-           
-            session.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-           mLogger.error(mLocalizer.x("RDH033: Encountered  ProcessingException:{0} ", ex.getMessage()),ex);
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("RDH034: Encountered  UserException:{0} ", ex.getMessage()),ex);
-        }
-
-        return "EUID Details";
-    }
-
-
+ 
     public String[] getStringEUIDs(String euids) {
 
         StringTokenizer stringTokenizer = new StringTokenizer(euids, ",");
@@ -1442,86 +987,6 @@ public class RecordDetailsHandler extends ScreenConfiguration {
         return euidsArray;
     }
 
-    /**
-     * 
-     * @param event
-     */
-    public void activateEO(ActionEvent event) {
-        try {
-            String euid = (String) event.getComponent().getAttributes().get("eoValueExpression");
-
-            EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(euid);
-
-            //Activate the enterprise object
-            masterControllerService.activateEnterpriseObject(enterpriseObject.getEUID());
-
-            EnterpriseObject updatedEnterpriseObject = masterControllerService.getEnterpriseObject(enterpriseObject.getEUID());
-
-            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(updatedEnterpriseObject, screenObject);
-
-            ArrayList updatedEOList = new ArrayList();
-            updatedEOList.add(eoMap);
-
-            //Keep the updated SO in the session again
-            httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
-
-        } 
-
-        // modified exceptional handling logic
-    catch (Exception ex) {
-        if (ex instanceof ValidationException) {
-             mLogger.error(mLocalizer.x("RDH043: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
-        } else if (ex instanceof UserException) {
-            mLogger.error(mLocalizer.x("RDH044: Encountered the UserException:{0} ", ex.getMessage()),ex);
-        } else if (!(ex instanceof ProcessingException)) {
-            mLogger.error(mLocalizer.x("RDH096: Error  occurred"), ex);
-        }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-    }
-
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void deactivateEO(ActionEvent event) {
-        try {
-
-            String euid = (String) event.getComponent().getAttributes().get("eoValueExpression");
-
-            EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(euid);
-
-
-            //Deactivate the enterprise object
-            masterControllerService.deactivateEnterpriseObject(enterpriseObject.getEUID());
-
-            EnterpriseObject updatedEnterpriseObject = masterControllerService.getEnterpriseObject(enterpriseObject.getEUID());
-
-            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(updatedEnterpriseObject, screenObject);
-
-            ArrayList updatedEOList = new ArrayList();
-            updatedEOList.add(eoMap);
-
-            //Keep the updated SO in the session again
-            httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
-
-        } 
-
-        // modified exceptional handling logic
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH045: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH046: Encountered the UserException:{0} ", ex.getMessage()), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH097: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-
-    //Keep the updated SO in the session again
-    }
     //get and setters for resultsArray
     public ArrayList getResultArrayList() {
         return resultArrayList;
@@ -1584,240 +1049,7 @@ public class RecordDetailsHandler extends ScreenConfiguration {
         sysobj.setObject(topNode);
         return sysobj;
     }
-
-    /**
-     * 
-     * @param event
-     */
-    public void mergePreviewEnterpriseObject(ActionEvent event) {
-
-        String srcEUIDVaueExpression = (String) event.getComponent().getAttributes().get("mainEOVaueExpression");
-        String destnEUIDVaueExpression = (String) event.getComponent().getAttributes().get("duplicateEOVaueExpression");
-        HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
-        String sbrEUID = (String) mergredHashMapVaueExpression.get("EUID");
-        String destnId = (sbrEUID.equalsIgnoreCase(srcEUIDVaueExpression)) ? destnEUIDVaueExpression : srcEUIDVaueExpression;
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
-        SBR finalSBR = midmUtilityManager.getEnterpriseObject(sbrEUID).getSBR();
-        //Object[] resultsConfigFeilds  = getSearchResultsScreenConfigArray().toArray();
-        SourceHandler sourceHandler = new SourceHandler();
-        Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-
-        try {
-            for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
-                FieldConfig fieldConfig = (FieldConfig) personConfigFeilds[ifc];
-
-                Object strValue = mergredHashMapVaueExpression.get(fieldConfig.getFullFieldName());
-                String dateField;
-                String fieldName = fieldConfig.getFullFieldName().substring(fieldConfig.getFullFieldName().indexOf(".") + 1, fieldConfig.getFullFieldName().length());
-                if (strValue != null) {
-                    if (fieldConfig.getValueType() == 6) {
-                        dateField = simpleDateFormatFields.format(mergredHashMapVaueExpression.get(fieldConfig.getFullFieldName()));
-                        QwsUtil.setObjectNodeFieldValue(finalSBR.getObject(), fieldName, dateField, finalSBR);
-                    } else {
-                        QwsUtil.setObjectNodeFieldValue(finalSBR.getObject(), fieldName, strValue.toString(), finalSBR);
-                    }
-                } else {
-                    QwsUtil.setObjectNodeFieldValue(finalSBR.getObject(), fieldName, null, finalSBR);
-                }
-            }
-            EnterpriseObject sourceEO = masterControllerService.getEnterpriseObject(sbrEUID);
-            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnId);
-
-            MergeResult mergeResult = masterControllerService.mergeEnterpriseObject(sourceEO, destinationEO);
-            EnterpriseObject finalMergredDestnEO = mergeResult.getDestinationEO();
-            ArrayList finalMergredDestnEOArrayList = new ArrayList();
-            finalMergredDestnEOArrayList.add(finalMergredDestnEO);
-            session.removeAttribute("mergedEOMap");
-            session.removeAttribute("enterpriseArrayList");
-            session.removeAttribute("finalArrayList");
-
-            session.setAttribute("enterpriseArrayList", finalMergredDestnEOArrayList);
-
-        } 
-
-        // modified exceptional handling logic
-            catch (Exception ex) {
-                if (ex instanceof ValidationException) {
-                     mLogger.error(mLocalizer.x("RDH047: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("RDH048: Encountered the UserException:{0} ", ex.getMessage()),ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("RDH099: Error  occurred"), ex);
-                }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            }
-    }
-
-    /**
-     * 
-     * @param event
-     * @throws com.sun.mdm.index.objects.exception.ObjectException 
-     */
-    public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
-
-            //ArrayList newArrayList = new ArrayList();
-            String euidUnmerge = (String) event.getComponent().getAttributes().get("unMergeEuidVE");
-
-            //HashMap unmergeEO = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-            //newArrayList.add(unmergeEO);
-        try {
-            MergeResult unmerge = masterControllerService.unMerge(euidUnmerge);
-            ArrayList newArrayList = new ArrayList();
-            EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidUnmerge);
-            HashMap eoHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-            newArrayList.add(eoHashMap);
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-            if (unmerge.getDestinationEO() != null && unmerge.getSourceEO() != null) {
-                //Insert audit log here for EUID UNMERGE
-                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                                        unmerge.getDestinationEO().getEUID(),
-                                                        unmerge.getSourceEO().getEUID(),
-                                                        "EUID Unmerge",
-                                                        new Integer(screenObject.getID()).intValue(),
-                                                        "Unmerge two enterprise objects");
-            }
-
-
-        } 
-     // modified exceptional handling logic
-            catch (Exception ex) {
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("RDH049: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("RDH050: Encountered the UserException:{0} ", ex.getMessage()), ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("RDH091: Error  occurred"), ex);
-                }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            }
-
-    }
-
-    public void viewMergedRecords(ActionEvent event) throws ObjectException {
-
-        //HashMap unmergedHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("unmergedEOValueExpression");
-        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
-        String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewmerge");
-        ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
-        httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
-        try {
-            EnterpriseObjectHistory viewMergehist = masterControllerService.viewMergeRecords(transactionNumber);
-            ArrayList mergeEOList = new ArrayList();
-
-            if (viewMergehist.getBeforeEO1() != null) {
-                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO1(), screenObject);
-                mergeEOList.add(eoMap);
-                //mergeEOList.add(viewMergehist.getBeforeEO1());
-            }
-            if (viewMergehist.getBeforeEO2() != null) {
-                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO2(), screenObject);
-                mergeEOList.add(eoMap);
-                //mergeEOList.add(viewMergehist.getBeforeEO2());
-            }
-//          if(viewMergehist.getAfterEO() !=null){
-//              mergeEOList.add(viewMergehist.getAfterEO());
-//          }
-            if (viewMergehist.getAfterEO2() != null) {
-                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
-                mergeEOList.add(eoMap);
-                //mergeEOList.add(viewMergehist.getAfterEO2());
-            }
-
-
-            httpRequest.setAttribute("mergeEOList"+euid, mergeEOList);
-
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("RDH092: Failed to get merge records ", ex.getMessage()),ex);
-        }
-    }
-
-    public void viewHistory(ActionEvent event) throws ObjectException {
-        // session.removeAttribute("eoHistory");  
-
-        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
-        
-        ArrayList newArrayListHistory = new ArrayList();
-        EnterpriseObject eoHist = null;
-        try {
-            ArrayList viewHistoryEOList = masterControllerService.viewHistory(euid);
-            for (int i = 0; i < viewHistoryEOList.size(); i++) {
-                HashMap objectHistMap  = (HashMap) viewHistoryEOList.get(i);
-                String key = (String) objectHistMap.keySet().toArray()[0];
-                
-                HashMap objectHistMapUpdated  = new HashMap();
-                if(objectHistMap.get(key) != null) {
-                    eoHist = (EnterpriseObject) objectHistMap.get(key);
-                    objectHistMapUpdated.put(key, midmUtilityManager.getEnterpriseObjectAsHashMap(eoHist, screenObject));
-                    newArrayListHistory.add(objectHistMapUpdated);
-                }                
-                               
-            }
-         
-            httpRequest.setAttribute("eoHistory" + euid, newArrayListHistory);
-
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-              mLogger.error(mLocalizer.x("RDH093: Failed to get history ", ex.getMessage()),ex);
-        }
-    }
-
-    public void removeHistory(ActionEvent event) throws ObjectException {
-        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
-        httpRequest.removeAttribute("eoHistory" + euid);
-    }
-
-    public void viewSource(ActionEvent event) throws ObjectException {
-        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
-        
-        ArrayList newArrayList = new ArrayList();
-        try {
-            EnterpriseObject enterpriseObject  = masterControllerService.getEnterpriseObject(euid);
-            Collection itemsSource = enterpriseObject.getSystemObjects();
-            Iterator iterSources  = itemsSource.iterator();
-            while (iterSources.hasNext()) {
-                SystemObject systemObject =(SystemObject)iterSources.next();
-                newArrayList.add(midmUtilityManager.getSystemObjectAsHashMap(systemObject, screenObject));
-           }
-
-            httpRequest.setAttribute("eoSources"+enterpriseObject.getEUID(), newArrayList);
-
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("RDH054: Failed to view source ", ex.getMessage()),ex);
-        }
-    }
-
-    public void removeSource(ActionEvent event) throws ObjectException {
-        EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
-        httpRequest.removeAttribute("eoSources");
-    }
-
-//    public PatientDetails[] getPatientDetailsVO() {
-//        patientDetailsVO = new PatientDetails[this.resultArrayList.size()];
-//        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-//        int size = this.resultArrayList.size();
-//
-//        HashMap values = new HashMap();
-//        for (int i = 0; i < size; i++) {
-//            patientDetailsVO[i] = new PatientDetails();
-//            values = (HashMap) resultArrayList.get(i);
-//            String dateField = ((Date) values.get("Person.DOB") ).toString();
-//            patientDetailsVO[i].setEuid((String) values.get("EUID"));
-//            patientDetailsVO[i].setFirstName((String) values.get("Person.FirstName"));
-//            patientDetailsVO[i].setLastName((String) values.get("Person.LastName"));
-//            patientDetailsVO[i].setDob(dateField);
-//            patientDetailsVO[i].setSsn((String) values.get("Person.SSN"));
-//            patientDetailsVO[i].setAddressLine1((String) values.get("Person.Address.AddressLine1"));
-//        }
-//
-//        return patientDetailsVO;
-//    }
-//
-//    public void setPatientDetailsVO(PatientDetails[] patientDetailsVO) {
-//        this.patientDetailsVO = patientDetailsVO;
-//    }
-
+  
     public String getSingleEUID() {
         return singleEUID;
     }
@@ -1906,49 +1138,6 @@ public class RecordDetailsHandler extends ScreenConfiguration {
         this.compareEuids = compareEuids;
     }
 
-    /**
-     * 
-     * @return String
-     */
-    public String buildCompareEuids() {
-        ArrayList euidsMapList = new ArrayList();
-
-        String[] euids = this.compareEuids.split("##");
-        for (int i = 0; i < euids.length; i++) {
-            try {
-                String sourceEuid = euids[i];
-                EnterpriseObject eo = masterControllerService.getEnterpriseObject(sourceEuid);
-                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                euidsMapList.add(eoMap);
-                //Insert audit log here for EUID search
-                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                        sourceEuid,
-                        "",
-                        "EO View/Edit",
-                        new Integer(screenObject.getID()).intValue(),
-                        "View/Edit detail of enterprise object");
-
-            }
-
-        // modified exceptional handling logic
-            catch (Exception ex) {
-                if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("RDH055: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-                } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("RDH056: Encountered the UserException:{0} ", ex.getMessage()), ex);
-                } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("RDH057: Error  occurred"), ex);
-                }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            }
-
-        }
-
-        session.setAttribute("comapreEuidsArrayList", euidsMapList);
-        return "Compare Duplicates";
-
-    }
-
     public String getSelectedMergeFields() {
         return selectedMergeFields;
     }
@@ -2004,13 +1193,30 @@ public class RecordDetailsHandler extends ScreenConfiguration {
         } // modified exceptional handling logic
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH058: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH048: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH059: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH049: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH060: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH050: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH051: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH052: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
     return euidsMapList;        
   }
@@ -2040,19 +1246,32 @@ public class RecordDetailsHandler extends ScreenConfiguration {
 
             session.setAttribute("eocomparision", "yes");
 
-        } 
-
-        
-// modified exceptional handling logic
-        catch (Exception ex) {
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH088: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH053: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH089: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("RDH054: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH090: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("RDH055: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH056: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH057: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return euidsMapList;
     }
@@ -2122,16 +1341,31 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                 errorMessage += bundle.getString("enterprise_object_not_found_error_message");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             }
-        } // modified exceptional handling logic
-        catch (Exception ex) {
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("RDH058: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
                 mLogger.error(mLocalizer.x("RDH059: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error(mLocalizer.x("RDH060: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("RDH061: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("RDH062: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
         return euidsMapList;
@@ -2169,18 +1403,33 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                 errorMessage += bundle.getString("enterprise_object_not_found_error_message");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             }
-        } // modified exceptional handling logic
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RDH058: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RDH059: Encountered the UserException:{0} ", ex.getMessage()), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RDH060: Error  occurred"), ex);
+            } catch (Exception ex) {// modified exceptional handling logic
+                if (ex instanceof ValidationException) {
+                    mLogger.error(mLocalizer.x("RDH063: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                } else if (ex instanceof UserException) {
+                    mLogger.error(mLocalizer.x("RDH064: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                } else if (!(ex instanceof ProcessingException)) {
+                    mLogger.error(mLocalizer.x("RDH065: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                } else if (ex instanceof ProcessingException) {
+                    String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                    if (exceptionMessage.indexOf("stack trace") != -1) {
+                        String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                        if (exceptionMessage.indexOf("message=") != -1) {
+                            parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                        }
+                        mLogger.error(mLocalizer.x("RDH066: Error  occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    } else {
+                        mLogger.error(mLocalizer.x("RDH067: Error  occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                    }
+
+                }
+                return null;
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            return null;
-        }
         return euidsMapList;
     }
     
@@ -2220,21 +1469,10 @@ public class RecordDetailsHandler extends ScreenConfiguration {
  
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
-             mLogger.error(mLocalizer.x("RDH092: Failed to get merge records ", ex.getMessage()),ex);
+             mLogger.error(mLocalizer.x("RDH068: Failed to get merge records ", ex.getMessage()),ex);
              return null;
         }
     }
         
 }
-
-
-   
-
-
-
-
-
-
-
-
 

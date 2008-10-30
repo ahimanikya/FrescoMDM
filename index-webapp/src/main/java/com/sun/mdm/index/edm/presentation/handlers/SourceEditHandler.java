@@ -33,12 +33,8 @@ import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +48,6 @@ import com.sun.mdm.index.master.UserException;
 import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.xml.bind.ValidationException;
-import net.java.hulp.i18n.LocalizationSupport;
 
 
 public class SourceEditHandler {
@@ -132,45 +127,11 @@ public class SourceEditHandler {
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC013: Failed to update the SO:{0}" , ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCED001: Failed to update the SO:{0}" , ex.getMessage()),ex);
         }
         return UPDATE_SUCCESS;
    }
-    /**
-     * 
-     * @param event
-     */
-    public void editLID(ActionEvent event){
-
-        try {
-            SystemObject singleSystemObjectEdit = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
-            SourceHandler sourceHandler = new SourceHandler();
-            EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
-            
-            HashMap editSystemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObjectEdit, personEPathArrayList);
-
-            session.setAttribute("singleSystemObjectLID", singleSystemObjectEdit);
-            session.setAttribute("systemObjectMap", editSystemObjectMap);
-            
-            //set the single SO hash map for single so EDITING
-            this.setEditSingleSOHashMap(editSystemObjectMap);                
-                         
-            session.setAttribute("keyFunction", "editSO");
-
-        } catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC014: Failed to edit LID:{0}", ex.getMessage()), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC015: Failed to edit LID:{0}", ex.getMessage()), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC115: Failed to edit LID:{0}", ex.getMessage()), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-                   
-   }
-
-    
+     
     public ArrayList getSingleSOHashMapArrayList() {
         return singleSOHashMapArrayList;
     }

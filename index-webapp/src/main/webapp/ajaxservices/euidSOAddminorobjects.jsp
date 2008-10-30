@@ -707,22 +707,44 @@ if (isCancel){
 	    </script>
 
 	<% } else { %> <!-- In case of service layer exception -->
-	<div class="ajaxalert">
+		 <div class="ajaxalert">
+		 	<% boolean concurrentModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
-								<%= facesMessage.getSummary() %>
-				             </li>
+ 								
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       } else {
+			                    %>
+				                 <li><%= facesMessage.getSummary() %></li>
+								<%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
-	</div>
+		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
+
 	<%}%>
 <% } else if (isDelete) { %>   <!-- Delete Minor Object  -->
     <script>

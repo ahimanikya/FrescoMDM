@@ -31,7 +31,6 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
-import com.sun.mdm.index.edm.common.PullDownListItem;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
@@ -47,8 +46,6 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.exception.ObjectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,8 +53,6 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
@@ -69,7 +64,6 @@ import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import javax.xml.bind.ValidationException;
-import net.java.hulp.i18n.LocalizationSupport;
 
 public class SourceHandler {
 
@@ -311,23 +305,23 @@ public class SourceHandler {
 
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("SRC018: Validation Exception occurred :{0}", ex.getMessage()),ex);
+                 mLogger.error(mLocalizer.x("SRCHND001: Validation Exception occurred :{0}", ex.getMessage()),ex);
             } else if (ex instanceof UserException) {
-                 mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()),ex);
+                 mLogger.error(mLocalizer.x("SRCHND002: UserException  occurred :{0}", ex.getMessage()),ex);
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()),ex);
-            }else if (ex instanceof ProcessingException) {
+                mLogger.error(mLocalizer.x("SRCHND003: UserException  occurred :{0}", ex.getMessage()),ex);
+            } else if (ex instanceof ProcessingException) {
                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
                 if (exceptionMessage.indexOf("stack trace") != -1) {
                     String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
                     if (exceptionMessage.indexOf("message=") != -1) {
                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
                     }
-                    mLogger.error(mLocalizer.x("SRC200: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCHND004: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
                     return null;
                 } else {
-                    mLogger.error(mLocalizer.x("SRC201: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCHND005: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
                      return null;
                 }
@@ -483,43 +477,6 @@ public class SourceHandler {
         this.setSearchType(searchTypeValue);    
    }
     
-    /**
-     * 
-     * @param event
-     */
-    public void deleteSOAddress(ActionEvent event){
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");       
-   }
-
-    /**
-     * 
-     * @param event
-     */
-    public void addSOAddress(ActionEvent event){
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");
-   }
-
-    /**
-     * 
-     * @param event
-     */
-    public void removeSingleLID(ActionEvent event){
-        // set the tab name to be view/edit
-            session.setAttribute("tabName", "View/Edit");
-            session.removeAttribute("singleSystemObjectLID");   
-   }
-    
-   public String cancelEditLID(){
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");
-        session.removeAttribute("singleSystemObjectLID");   
-        SourceAddHandler sourceAddHandlerFaces = (SourceAddHandler)session.getAttribute("SourceAddHandler");
-        sourceAddHandlerFaces.getNewSOHashMap().clear();
-
-        return NavigationHandler.SOURCE_RECORDS;
-   }
 
    public String cancelSaveLID(){
         // set the tab name to be view/edit
@@ -534,127 +491,7 @@ public class SourceHandler {
         return NavigationHandler.SOURCE_RECORDS;
    }
     
-    /**
-     * 
-     * @param event
-     */
-    public void editLID(ActionEvent event){ 
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");
-        try {
-            SystemObject singleSystemObjectEdit = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
-            EPathArrayList personEPathArrayList = buildPersonEpaths();
-            HashMap editSystemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObjectEdit, personEPathArrayList);
-
-            session.setAttribute("singleSystemObjectLID", singleSystemObjectEdit);
-            session.setAttribute("systemObjectMap", editSystemObjectMap);
-            
-            //set the single SO hash map for single so EDITING
-            this.setEditSingleSOHashMap(editSystemObjectMap);
-            this.setReadOnlySingleSOHashMap(editSystemObjectMap);
-            
-            //set address array list of hasmap for editing
-            ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Address"), "Address",null);
-            this.setSingleAddressHashMapArrayList(addressMapArrayList);
-
-            //set phone array list of hasmap for editing
-            ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Phone"), "Phone",null);
-            this.setSinglePhoneHashMapArrayList(phoneMapArrayList);
-           
-            //set alias array list of hasmap for editing
-            ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Alias"), "Alias",null);
-            this.setSingleAliasHashMapArrayList(aliasMapArrayList);
-           
-
-            session.setAttribute("keyFunction", "editSO");
-        }
-
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-               mLogger.error(mLocalizer.x("SRC020: Unable to edit LID  ValidationException occurred:{0}", ex.getMessage()),ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC021: Unable to edit LID  UserException occurred:{0}", ex.getMessage()),ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC022: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void activateSO(ActionEvent event){
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");
-    
-        try {
-            SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
-            masterControllerService.activateSystemObject(systemObject);             
-            SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
-            //get the System Object as hashmap
-            HashMap updatedSoMap = midmUtilityManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
-             
-            SourceAddHandler sourceAddHandler = (SourceAddHandler) session.getAttribute("SourceAddHandler");
-
-            //update the handler variable for editing
-            sourceAddHandler.setNewSOHashMap(updatedSoMap);
-            
-           //Keep the updated SO in the session again
-            session.setAttribute("singleSystemObjectLID", updatedSystemObject);
-            session.setAttribute("keyFunction", "editSO");
-        }              
-
-
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("SRC023: ValidationException Occurred Unable to activate SO :{0}", ex.getMessage()),ex);
-            } else if (ex instanceof UserException) {
-                  mLogger.error(mLocalizer.x("SRC024: UserException Occurred Unable to activate SO :{0}", ex.getMessage()),ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                 mLogger.error(mLocalizer.x("SRC085: UserException Occurred Unable to activate SO :{0}", ex.getMessage()),ex);
-               
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-
-   }
-    /**
-     * 
-     * @param event
-     */
-    public void deactivateSO(ActionEvent event){
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");
-
-        try {
-            SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");          
-            masterControllerService.deactivateSystemObject(systemObject);
-            SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
-            
-            setDeactivatedSOHashMap(midmUtilityManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
-            
-            //Keep the updated SO in the session again
-            session.setAttribute("singleSystemObjectLID", updatedSystemObject);
-            session.setAttribute("keyFunction","editSO");
-        }
-        
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC025: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC026: Encountered the UserException:{0} ", ex.getMessage()), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC027: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
- 
-          //session.setAttribute("keyFunction","editSO");
-   }
-    
-    /**
+   /**
      * 
      * @return 
      */
@@ -678,67 +515,12 @@ public class SourceHandler {
             //session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction","editSO");
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC028: Unable to update SO :{0}", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SRCHND006: Unable to update SO :{0}", ex.getMessage()),ex);
         }
         return UPDATE_SUCCESS;
           //session.setAttribute("keyFunction","viewSO");
    }
-    /**
-     * 
-     * @param event
-     */
-    public void viewEUID(ActionEvent event){
-            
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");            
-            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
-            SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
-            EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
-            HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-            ArrayList newEOArrayList = new ArrayList();
-            newEOArrayList.add(eoMap);
-            
-            session.setAttribute("comapreEuidsArrayList",newEOArrayList);          
-   }
-
-    /**
-     * 
-     * @param event
-     */
-    public void setLIDValue(ActionEvent event){
-        // set the tab name to be view/edit
-        session.setAttribute("tabName", "View/Edit");
-        
-        try {
-            String sourceLID = (String) event.getComponent().getAttributes().get("sourceLID");
-            String sourceSystem = (String) event.getComponent().getAttributes().get("sourceSystem");
-            SystemObject systemObject = masterControllerService.getSystemObject(sourceSystem, sourceLID);
-            EPathArrayList  personEPathArrayList  = buildPersonEpaths();
-            HashMap systemObjectMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-            
-                //set the single SO hash map for single so
-                this.setSingleSOHashMap(systemObjectMap);
-                
-                ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Address"),"Address",null);
-                this.setSingleAddressHashMapArrayList(addressMapArrayList);
-
-                ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Phone"),"Phone",null);
-                this.setSinglePhoneHashMapArrayList(phoneMapArrayList);                
-                
-                ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Alias"),"Alias",null);
-                this.setSingleAliasHashMapArrayList(aliasMapArrayList);                
-                
-            
-            session.setAttribute("singleSystemObjectLID", systemObject);
-            session.setAttribute("systemObjectMap", systemObjectMap);
-            session.setAttribute("keyFunction","viewSO");
-           
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC029: Unable to set LID value :{0}", ex.getMessage()),ex);
-        }
-    
-   }
-
+ 
     public ArrayList getViewEditScreenConfigArray() {
         ArrayList basicSearchFieldConfigs;
         HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -1011,7 +793,7 @@ public class SourceHandler {
             }
             
         } catch (Exception ex) {
-             mLogger.error(mLocalizer.x("SRC030: Failed to build Epaths :{0}", ex.getMessage()),ex);
+             mLogger.error(mLocalizer.x("SRCHND007: Failed to build Epaths :{0}", ex.getMessage()),ex);
         }
         return ePathArrayList;
 
@@ -1038,7 +820,7 @@ public class SourceHandler {
 			}
             }
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC031: Failed to build Epaths :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCHND008: Failed to build Epaths :{0}", ex.getMessage()),ex);
         }
         return ePathArrayList;
 
@@ -1061,7 +843,7 @@ public class SourceHandler {
             }
             }
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC070: Failed to build Field config list :{0}", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SRCHND009: Failed to build Field config list :{0}", ex.getMessage()),ex);
         }
         return fcArrayList;
 
@@ -1102,7 +884,7 @@ public class SourceHandler {
                 }
             }}
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC032: Failed to get all field configs :{0}", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SRCHND010: Failed to get all field configs :{0}", ex.getMessage()),ex);
         }
 
         allFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1184,7 +966,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC033: Failed to get field configs :{0}", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SRCHND011: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         addressFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1210,7 +992,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC034: Failed to get field configs :{0}", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SRCHND012: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         phoneFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1235,7 +1017,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC035: Failed to get field configs :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCHND013: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         aliasFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1268,7 +1050,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-          mLogger.error(mLocalizer.x("SRC036: Failed to get field configs :{0}", ex.getMessage()),ex);
+          mLogger.error(mLocalizer.x("SRCHND014: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         personFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1350,7 +1132,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC037: Failed to get all node field configs :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCHND015: Failed to get all node field configs :{0}", ex.getMessage()),ex);
         }
          
         return newHashMap;
@@ -1384,7 +1166,7 @@ public class SourceHandler {
 
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC038: Failed to get all child Node Names :{0}", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SRCHND016: Failed to get all child Node Names :{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
@@ -1418,7 +1200,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC039: Failed to get all field configs sizes:{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCHND017: Failed to get all field configs sizes:{0}", ex.getMessage()),ex);
         }
         return newHashMap;
     }
@@ -1451,7 +1233,7 @@ public class SourceHandler {
             }
             }
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC040: Failed to get field configs :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRCHND018: Failed to get field configs :{0}", ex.getMessage()));
         }
 
         rootNodeFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1486,7 +1268,7 @@ public class SourceHandler {
            }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC041: Failed to get EO child list:{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCHND019: Failed to get EO child list:{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
@@ -1518,7 +1300,7 @@ public class SourceHandler {
             }
             }
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC042: Failed to get child node list :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCHND020: Failed to get child node list :{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
@@ -1539,11 +1321,11 @@ public class SourceHandler {
         
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("SRC043: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
+                 mLogger.error(mLocalizer.x("SRCHND021: Encountered the ValidationException :{0} ", ex.getMessage()),ex);
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC044: Encountered the UserException:{0} ", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("SRCHND022: Encountered the UserException:{0} ", ex.getMessage()),ex);
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC099: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("SRCHND023: Error  occurred"), ex);
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
@@ -1633,7 +1415,7 @@ public class SourceHandler {
                     Float.parseFloat(thisValue);
                 }
             } catch (Exception e) {
-                 mLogger.error(mLocalizer.x("SRC095: Failed to check isNumber() :{0}", e.getMessage()),e);
+                 mLogger.error(mLocalizer.x("SRCHND024: Failed to check isNumber() :{0}", e.getMessage()),e);
                 return false;
             }
         }
@@ -1669,7 +1451,7 @@ public class SourceHandler {
                 }
             }
         } catch (Exception e)  {
-                             mLogger.error(mLocalizer.x("SRC076: Failed to check masking :{0}", e.getMessage()),e);
+                             mLogger.error(mLocalizer.x("SRCHND025: Failed to check masking :{0}", e.getMessage()),e);
             return false;
         }                
         return true;
@@ -1763,11 +1545,11 @@ public class SourceHandler {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC018: Validation Exception occurred :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND026: Validation Exception occurred :{0}", ex.getMessage()), ex);
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND027: UserException  occurred :{0}", ex.getMessage()), ex);
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND028: Exception  occurred :{0}", ex.getMessage()), ex);
             } else if (ex instanceof ProcessingException) {
                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
                 if (exceptionMessage.indexOf("stack trace") != -1) {
@@ -1775,11 +1557,11 @@ public class SourceHandler {
                     if (exceptionMessage.indexOf("message=") != -1) {
                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    mLogger.error(mLocalizer.x("SRC200: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCHND029: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
                     return null;
                 } else {
-                    mLogger.error(mLocalizer.x("SRC201: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCHND030: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
                     return null;
                 }
@@ -1837,13 +1619,29 @@ public class SourceHandler {
             activateMsg = "The LID: "+this.LID+" has been activated";
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC025: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND031: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC026: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND032: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC027: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("SRCHND033: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRCHND034: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("SRCHND035: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return activateMsg;
     //session.setAttribute("keyFunction","editSO");
@@ -1894,13 +1692,29 @@ public class SourceHandler {
             deactivateMsg = "The LID: "+this.LID+" has been deactivated";
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC025: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND036: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC026: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND037: Encountered the UserException:{0} ", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC027: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("SRCHND038: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRCHND039: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("SRCHND040: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return deactivateMsg;
     }
@@ -1942,12 +1756,15 @@ public class SourceHandler {
                 euid = eo.getEUID();
             }
         } catch (Exception ex) {
-           if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC018: Validation Exception occurred :{0}", ex.getMessage()), ex);
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("SRCHND041: Validation Exception occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC019: UserException  occurred :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND042: UserException  occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC172: UserException  occurred :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCHND043: Exception  occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof ProcessingException) {
                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
                 if (exceptionMessage.indexOf("stack trace") != -1) {
@@ -1955,15 +1772,14 @@ public class SourceHandler {
                     if (exceptionMessage.indexOf("message=") != -1) {
                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    mLogger.error(mLocalizer.x("SRC200: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCHND044: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
-                    return null;
                 } else {
-                    mLogger.error(mLocalizer.x("SRC201: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCHND045: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
-                    return null;
                 }
             }
+            return null;
         }
         return euid;
     }

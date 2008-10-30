@@ -250,8 +250,11 @@ boolean isSessionActive = true;
               <tr>
                 <td>
                		<script> 
- 			            alert("EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%> ");
-						if((fromPage != null && fromPage.length > 0 ) && (duplicateEuids != null && duplicateEuids.length > 0 ) ) {
+						window.location = "#top";
+						document.getElementById("successMessageDiv").innerHTML = 'EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%>';
+						document.getElementById("successDiv").style.visibility="visible";
+						document.getElementById("successDiv").style.display="block";
+ 						if((fromPage != null && fromPage.length > 0 ) && (duplicateEuids != null && duplicateEuids.length > 0 ) ) {
                            window.location = '/<%=URI%>/compareduplicates.jsf?fromPage='+fromPage+'&duplicateEuids='+duplicateEuids;
 						 } else {
  		                    window.location = '/<%=URI%>/compareduplicates.jsf?euids='+alleuidsArray;
@@ -286,22 +289,41 @@ boolean isSessionActive = true;
 
 			
 			<%  } else {%>
-        <div class="ajaxalert">
-    	  <table>
+		 <% boolean concurrentModification = false;%>
+	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
 				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
-								<%= facesMessage.getSummary() %>
+ 								<%= facesMessage.getSummary() %>
+								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
+				                       concurrentModification = true;
+			                       }
+			                    %>
 				             </li>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
-		 </table>
-    	</div>
+		</table>
+		</div>
+
+		<%if(concurrentModification) {%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 23-09-2008 for all information popups -->
+								  <script>
+										window.location = "#top";
+										document.getElementById("successMessageDiv").innerHTML = 'EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%>';
+										document.getElementById("successDiv").style.visibility="visible";
+										document.getElementById("successDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+ 		<%}%>
 
         <%}
 			}%>

@@ -500,7 +500,6 @@ public class AssumeMatchReportHandler  {
    public AssumedMatchReportConfig getAssumedMatchReportSearchObject()  throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          AssumedMatchReportConfig amrc = new AssumedMatchReportConfig(); 
 
         //Form Validation of  Start Time
@@ -511,14 +510,14 @@ public class AssumeMatchReportHandler  {
                 String msg1 = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1+ errorMessage, errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("ASM028: Start time validation failed: {0}",message));
+                mLogger.info(mLocalizer.x("AMRH001: Start time validation failed: {0}",message));
                 return null;
             }            
                 //if only time fields are entered validate for the date fields 
             if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_from");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("ASM202: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("AMRH002: {0} ",errorMessage));
                 return null;
             }
     }
@@ -530,7 +529,7 @@ public class AssumeMatchReportHandler  {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                  //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.info(mLocalizer.x("ASM029: Start Date validation failed :{0} :{1}",message,errorMessage));
+                 mLogger.info(mLocalizer.x("AMRH003: Start Date validation failed :{0} :{1}",message,errorMessage));
                 return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
@@ -548,7 +547,7 @@ public class AssumeMatchReportHandler  {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                    mLogger.error(mLocalizer.x("ASM030: Validation failed :{0}",errorMessage),validationException);
+                    mLogger.error(mLocalizer.x("AMRH004: Validation failed :{0}",errorMessage),validationException);
                     return null;
                 }
             }
@@ -562,14 +561,14 @@ public class AssumeMatchReportHandler  {
                 String msg2 = bundle.getString("timeTo");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.info(mLocalizer.x("ASM031: Validation failed :{0}",msg2+errorMessage));
+                 mLogger.info(mLocalizer.x("AMRH005: Validation failed :{0}",msg2+errorMessage));
                 return null;
             } 
             //if only time fields are entered validate for the date fields 
             if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_to");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("ASM201: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("AMRH006: {0} ",errorMessage));
                 return null;
             }
        }    
@@ -582,7 +581,7 @@ public class AssumeMatchReportHandler  {
                  //String msg3 = bundle.getString("End_Date");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.info(mLocalizer.x("ASM032: Validation failed :{0}",errorMessage));
+                 mLogger.info(mLocalizer.x("AMRH007: Validation failed :{0}",errorMessage));
                 return null;
             } else {
                 try {
@@ -600,7 +599,7 @@ public class AssumeMatchReportHandler  {
                     //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("ASM033: Validation failed :{0}",errorMessage),validationException);
+                    mLogger.error(mLocalizer.x("AMRH008: Validation failed :{0}",errorMessage),validationException);
                     return null;
                 }
             }           
@@ -615,7 +614,7 @@ public class AssumeMatchReportHandler  {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                    // Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   mLogger.info(mLocalizer.x("ASM034: Validation failed :{0}",errorMessage));
+                   mLogger.info(mLocalizer.x("AMRH009: Validation failed :{0}",errorMessage));
                    return null;
                    }
         }
@@ -627,7 +626,7 @@ public class AssumeMatchReportHandler  {
                 String msg4 = bundle.getString("ReportSize");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4+errorMessage, errorMessage));
                 //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                mLogger.info(mLocalizer.x("ASM035: Validation failed :{0}",errorMessage));
+                mLogger.info(mLocalizer.x("AMRH010: Validation failed :{0}",errorMessage));
                 return null;
             }
         }    
@@ -642,7 +641,7 @@ public class AssumeMatchReportHandler  {
         amrc.setPageSize(getPageSize());
         
         if (errorMessage != null && errorMessage.length() != 0)  {            
-            throw new ValidationException(mLocalizer.t("ASM501: {0}",errorMessage));
+            throw new ValidationException(mLocalizer.t("AMRH501: {0}",errorMessage));
         } else {
             return amrc;
         }                                 

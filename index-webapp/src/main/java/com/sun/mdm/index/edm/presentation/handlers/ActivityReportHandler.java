@@ -31,17 +31,13 @@ package com.sun.mdm.index.edm.presentation.handlers;
 import com.sun.mdm.index.edm.presentation.valueobjects.ActivityRecords;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.event.*;
 import com.sun.mdm.index.edm.control.QwsController;
 
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.master.search.transaction.TransactionIterator;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.KeyStatisticsReport;
 import com.sun.mdm.index.report.KeyStatisticsReportConfig;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.report.ReportException;
@@ -52,12 +48,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.logging.Level;
-//import java.util.logging.Logger;
 import java.util.ResourceBundle;
-import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
-import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import java.util.HashMap;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
@@ -65,9 +57,7 @@ import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.ProcessingException;
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
-import net.java.hulp.i18n.LocalizationSupport;
 import org.omg.CORBA.UserException;
 
 /** Creates a new instance of ActivityReportHandler*/ 
@@ -173,14 +163,29 @@ public class ActivityReportHandler {
         }
         }
       catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("RPT070: Service Layer Validation Exception has occurred"), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("RPT071: Service Layer User Exception occurred"), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("RPT072: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+          if (ex instanceof ValidationException) {
+              mLogger.error(mLocalizer.x("ACTRPT001: Service Layer Validation Exception has occurred"), ex);
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+          } else if (ex instanceof UserException) {
+              mLogger.error(mLocalizer.x("ACTRPT002: Service Layer User Exception occurred"), ex);
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+          } else if (!(ex instanceof ProcessingException)) {
+              mLogger.error(mLocalizer.x("ACTRPT003: Error  occurred"), ex);
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+          } else if (ex instanceof ProcessingException) {
+              String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+              if (exceptionMessage.indexOf("stack trace") != -1) {
+                  String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                  if (exceptionMessage.indexOf("message=") != -1) {
+                      parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                  }
+                  mLogger.error(mLocalizer.x("ACTRPT004: Service Layer Processing Exception occurred"), ex);
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+              } else {
+                  mLogger.error(mLocalizer.x("ACTRPT005: Error  occurred"), ex);
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+              }
+          }
             return null;
         }
         return finalOutputList;
@@ -386,14 +391,14 @@ public class ActivityReportHandler {
                 String em = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, em + errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("RPT002: {0}", errorMessage));
+                mLogger.info(mLocalizer.x("ACTRPT006: {0}", errorMessage));
                 return null;            
             }
             //if only time fields are entered validate for the date fields 
             if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_from");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("RPT201: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("ACTRPT007: {0} ",errorMessage));
                 return null;
             }
         }
@@ -405,7 +410,7 @@ public class ActivityReportHandler {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("RPT003: {0}", message));
+                mLogger.info(mLocalizer.x("ACTRPT008: {0}", message));
                 return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
@@ -419,7 +424,7 @@ public class ActivityReportHandler {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                    mLogger.error(mLocalizer.x("RPT004: {0}", errorMessage), validationException);
+                    mLogger.error(mLocalizer.x("ACTRPT009: {0}", errorMessage), validationException);
                     return null;
                 }
             }
@@ -439,7 +444,7 @@ public class ActivityReportHandler {
                 String msg = bundle.getString("timeTo");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("RPT005: {0}", message));
+                mLogger.info(mLocalizer.x("ACTRPT010: {0}", message));
                 return null;
             }
 
@@ -447,7 +452,7 @@ public class ActivityReportHandler {
             if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_to");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("RPT202: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("ACTRPT011: {0} ",errorMessage));
                 return null;
             }
         }
@@ -459,7 +464,7 @@ public class ActivityReportHandler {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("RPT006: {0}", message));
+                mLogger.info(mLocalizer.x("ACTRPT012: {0}", message));
                 return null;
             } else {
                 try {
@@ -473,7 +478,7 @@ public class ActivityReportHandler {
                     
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT007: {0}", validationException.toString()), validationException);
+                    mLogger.error(mLocalizer.x("ACTRPT013: {0}", validationException.toString()), validationException);
                     return null;
                 }
             }
@@ -488,7 +493,7 @@ public class ActivityReportHandler {
             if (endDate < startDate) {
                 errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                mLogger.info(mLocalizer.x("RPT008: {0}", errorMessage));
+                mLogger.info(mLocalizer.x("ACTRPT014: {0}", errorMessage));
                 return null;
             }
         }
@@ -497,7 +502,7 @@ public class ActivityReportHandler {
        arConfig.setPageSize(getPageSize());
 
         if (errorMessage != null && errorMessage.length() != 0) {
-            throw new ValidationException(mLocalizer.t("RPT501: Encountered the validationException:{0}", errorMessage));
+            throw new ValidationException(mLocalizer.t("ACTRPT015: Encountered the validationException:{0}", errorMessage));
         } else {
             return arConfig;
         }
@@ -768,7 +773,7 @@ public class ActivityReportHandler {
         } catch (ValidationException ex) {
             String errorMessage = bundle.getString("ERROR_start_date");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            mLogger.error(mLocalizer.x("RPT060: {0}", errorMessage), ex);
+            mLogger.error(mLocalizer.x("ACTRPT016: {0}", errorMessage), ex);
             return null;
         }
         return monthNam;
@@ -787,7 +792,7 @@ public class ActivityReportHandler {
             } catch (ValidationException ex) {
                 String errorMessage = bundle.getString("ERROR_start_date");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                mLogger.error(mLocalizer.x("RPT061: {0}", errorMessage), ex);
+                mLogger.error(mLocalizer.x("ACTRPT017: {0}", errorMessage), ex);
                 return 0;
             }
         }

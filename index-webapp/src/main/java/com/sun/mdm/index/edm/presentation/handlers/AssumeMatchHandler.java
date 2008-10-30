@@ -125,7 +125,6 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         session.removeAttribute("enterpriseArrayList");
         session.removeAttribute("previewAMEO");
         try {
-            HashMap newFieldValuesMap = new HashMap();
             super.setUpdateableFeildsMap(getParametersMap());
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());            
@@ -213,12 +212,27 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     } catch (Exception ex) {
                         if (ex instanceof ValidationException) {
                             mLogger.error(mLocalizer.x("ASM006: Service Layer Validation Exception has occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         } else if (ex instanceof UserException) {
                             mLogger.error(mLocalizer.x("ASM007: Service Layer User Exception occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         } else if (!(ex instanceof ProcessingException)) {
-                            mLogger.error(mLocalizer.x("ASM090: Error  occurred"), ex);
+                            mLogger.error(mLocalizer.x("ASM009: Error  occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                        } else if (ex instanceof ProcessingException) {
+                            String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                            if (exceptionMessage.indexOf("stack trace") != -1) {
+                                String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                                if (exceptionMessage.indexOf("message=") != -1) {
+                                    parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                                }
+                                mLogger.error(mLocalizer.x("ASM010: Service Layer Processing Exception occurred"), ex);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                            } else {
+                                mLogger.error(mLocalizer.x("ASM011: Error  occurred"), ex);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                            }
                         }
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                         return null;
                     }                     
                 }
@@ -231,7 +245,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     //mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
-                   mLogger.error(mLocalizer.x("ASM008: Date Validation failed :{0}:{1}:" ,fieldErrors[0],fieldErrors[1]));
+                   mLogger.error(mLocalizer.x("ASM012: Date Validation failed :{0}:{1}:" ,fieldErrors[0],fieldErrors[1]));
                     return null;
                 }
             }
@@ -243,7 +257,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     //mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
-                     mLogger.error(mLocalizer.x("ASM009: Time Validation failed:{0}:{1}:" ,fieldErrors[0],fieldErrors[1]));
+                     mLogger.error(mLocalizer.x("ASM013: Time Validation failed:{0}:{1}:" ,fieldErrors[0],fieldErrors[1]));
                     return null;
                 }
             }
@@ -304,13 +318,28 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             request.setAttribute("assumeMatchList", resultsArray);
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM010: Encountered the ValidationException: {0}" ,ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("ASM014: Encountered the ValidationException: {0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM011: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM015: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM012: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM016: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("ASM017: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("ASM018: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         
         }
@@ -341,7 +370,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     if (so == null) {
                         errorMessage = bundle.getString("system_object_not_found_error_message");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
-                        mLogger.error(mLocalizer.x("ASM116: LID/SYSTEM CODE validation failed:{0}" , errorMessage));
+                        mLogger.error(mLocalizer.x("ASM019: LID/SYSTEM CODE validation failed:{0}" , errorMessage));
 
                     } else {
                         EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
@@ -357,13 +386,29 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
                 } catch (Exception ex) {
                     if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("ASM016: Service Layer Validation Exception has occurred"), ex);
+                        mLogger.error(mLocalizer.x("ASM020: Service Layer Validation Exception has occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                     } else if (ex instanceof UserException) {
-                        mLogger.error(mLocalizer.x("ASM017: Service Layer User Exception occurred"), ex);
+                        mLogger.error(mLocalizer.x("ASM021: Service Layer User Exception occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
                     } else if (!(ex instanceof ProcessingException)) {
-                        mLogger.error(mLocalizer.x("ASM018: Error  occurred"), ex);
+                        mLogger.error(mLocalizer.x("ASM022: Error  occurred"), ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    } else if (ex instanceof ProcessingException) {
+                        String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                        if (exceptionMessage.indexOf("stack trace") != -1) {
+                            String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                            if (exceptionMessage.indexOf("message=") != -1) {
+                                parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                            }
+                            mLogger.error(mLocalizer.x("ASM023: Service Layer Processing Exception occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                        } else {
+                            mLogger.error(mLocalizer.x("ASM024: Error  occurred"), ex);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                        }
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    return null;
                 }
 
             }
@@ -674,13 +719,28 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM050: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM025: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM051: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM026: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM052: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM027: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("ASM028: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("ASM029: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
         //amArrayList.add(beforeMap);
@@ -744,87 +804,6 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     }
 
     /** 
-     * This method provides functionality to preview/simulate the UNDo on an existing Assumed Match
-     * @param event 
-     * @exception ProcessingException An error has occured.
-     * @exception UserException Invalid id
-     */
-    public void previewUndoAssumedMatch(ActionEvent event) {
-        try {
-            String assumedMatchId = (String) event.getComponent().getAttributes().get("previewamIdValueExpression");
-            ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
-            httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
-
-            EnterpriseObject newEO = masterControllerService.previewUndoAssumedMatch(assumedMatchId);
-
-            //Insert audit log for preview assumed match
-            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               newEO.getEUID(), 
-                                               "",
-                                               "Assumed Match Comparison",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "Compare the selected EUID of the Assumed Match Search Result (Preview)");
-            
-            HashMap previewAMEO = midmUtilityManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
-
-            httpRequest.setAttribute("undoAssumedMatchId", assumedMatchId);
-            httpRequest.setAttribute("previewAMEO", previewAMEO);
-
-        } catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM014: Service Layer Validation Exception has occurred"), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM019: Service Layer User Exception occurred"), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM020: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void undoMatch(ActionEvent event) {
-        try {
-            String assumedMatchId = (String) event.getComponent().getAttributes().get("previewamIdValueExpression");
-            String amEuid = masterControllerService.undoAssumedMatch(assumedMatchId);
-            
-            ArrayList euidsMapList = new ArrayList();
-            EnterpriseObject amPreviewEnterpriseObject = masterControllerService.getEnterpriseObject(amEuid);
-            httpRequest.removeAttribute("previewAMEO");
-            httpRequest.removeAttribute("amEoList");
-            //Insert audit log for preview assumed match
-            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               amEuid, 
-                                               "",
-                                               "Undo Assumed Match",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "Undo Assumed Match");
-
-            if (amPreviewEnterpriseObject != null) {
-                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);
-                euidsMapList.add(eoMap);
-            }
-             
-            //ArrayList newArrayList = new ArrayList();
-            //newArrayList.add(amPreviewEnterpriseObject);
-
-            httpRequest.setAttribute("comapreEuidsArrayList", euidsMapList);
-
-        } catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM021: Service Layer Validation Exception has occurred"), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM022: Service Layer User Exception occurred"), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM091: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-    }
-    /** 
      * This method provides functionality to preview/simulate the UNDO on an existing Assumed Match
      * @param event 
      * @exception ProcessingException An error has occured.
@@ -849,13 +828,29 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM092: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM030: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM093: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM031: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM094: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM032: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("ASM033: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("ASM034: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            return null;
         }
         return previewAMEO;
     }
@@ -888,13 +883,28 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM095: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM035: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM096: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM036: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM097: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM037: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("ASM038: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("ASM039: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
     }
@@ -911,14 +921,29 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("ASM098: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM040: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("ASM099: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM041: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("ASM100: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("ASM042: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("ASM043: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("ASM044: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-			return null;
+            return null;
         }
         return eoArrayList;
 
@@ -944,15 +969,30 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 }
             }
         } catch (Exception ex) {
-                    if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("PDH101: Service Layer Validation Exception has occurred"), ex);
-                    } else if (ex instanceof UserException) {
-                        mLogger.error(mLocalizer.x("PDH102: Service Layer User Exception occurred"), ex);
-                    } else if (!(ex instanceof ProcessingException)) {
-                        mLogger.error(mLocalizer.x("PDH103: Error  occurred"), ex);
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("ASM045: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("ASM046: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("ASM047: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    mLogger.error(mLocalizer.x("ASM048: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("ASM049: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
                 }
+            }
+        }
         return amEOHashMap;
     }
     

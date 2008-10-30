@@ -36,15 +36,12 @@ import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -52,7 +49,6 @@ import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.util.QwsUtil;
-import java.rmi.UnexpectedException;
 import java.util.ResourceBundle;
 import javax.xml.bind.ValidationException;
 
@@ -179,40 +175,34 @@ public class SourceAddHandler {
             
             //adding summary message after creating systemobjec
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
-        }           
-      catch (Exception ex) {
+        }   catch (Exception ex) {
           
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC001: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("SRCADD001: Service Layer Validation Exception has occurred"), ex);
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-
-
-                mLogger.error(mLocalizer.x("SRC002: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("SRCADD002: Service Layer User Exception occurred"), ex);
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-
-
-                mLogger.error(mLocalizer.x("SRC003: Error  occurred"), ex);
+                 mLogger.error(mLocalizer.x("SRCADD003: Error  occurred"), ex);
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof ProcessingException) {
-
                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
                 if (exceptionMessage.indexOf("stack trace") != -1) {
                     String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
                     if (exceptionMessage.indexOf("message=") != -1) {
                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
                     }
-                    mLogger.error(mLocalizer.x("SRC103: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCADD04: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
                     return SourceAddHandler.SERVICE_LAYER_ERROR;
                 } else {
-                    mLogger.error(mLocalizer.x("SRC104: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCADD005: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
                     return SourceAddHandler.SERVICE_LAYER_ERROR;
                 }
             }
-
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-            return SourceAddHandler.SERVICE_LAYER_ERROR;
+             return SourceAddHandler.SERVICE_LAYER_ERROR;
         }
 
             
@@ -229,11 +219,26 @@ public class SourceAddHandler {
        }
           catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC004: Service Layer Valdation  Exception occurred while inserting audit log"),ex);
+                mLogger.error(mLocalizer.x("SRCADD006: Service Layer Valdation  Exception occurred while inserting audit log"),ex);
             } else if (ex instanceof UserException) {
-               mLogger.error(mLocalizer.x("SRC005: Service Layer UserException occurred while inserting audit log"),ex);
+               mLogger.error(mLocalizer.x("SRCADD007: Service Layer UserException occurred while inserting audit log"),ex);
             } else if (!(ex instanceof ProcessingException)) {
-                 mLogger.error(mLocalizer.x("SRC093: Error  occurred"), ex);           
+                 mLogger.error(mLocalizer.x("SRCADD008: Error  occurred"), ex);           
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRCADD009: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                    return SourceAddHandler.SERVICE_LAYER_ERROR;
+                } else {
+                    mLogger.error(mLocalizer.x("SRCADD010: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                    return SourceAddHandler.SERVICE_LAYER_ERROR;
+                }
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
              
@@ -261,27 +266,42 @@ public class SourceAddHandler {
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
 
-                mLogger.info(mLocalizer.x("SRC077: {0}", errorMessage));
+                mLogger.info(mLocalizer.x("SRCADD011: {0}", errorMessage));
                 session.setAttribute("validation", "Validation Failed");
             } else if (systemObject == null) {
 
                 errorMessage = bundle.getString("Validation_Success"); //"Validation Success.";
                 //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,errorMessage,errorMessage));
 
-                mLogger.info(mLocalizer.x("SRC078: {0}", errorMessage));
+                mLogger.info(mLocalizer.x("SRCADD012: {0}", errorMessage));
                 session.setAttribute("validation", "Validation Success");
             }
 
            
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC007: ValidationException Exception occurred :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCADD013: ValidationException Exception occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC008: UserException Exception occurred:{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCADD014: UserException Exception occurred:{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC009: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("SRCADD015: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("SRCADD016: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("SRCADD017: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
 
         }
 
@@ -307,11 +327,11 @@ public class SourceAddHandler {
         } catch (Exception ex) {            
              
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("SRC071: ValidationException has occurred:{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCADD018: ValidationException has occurred:{0}", ex.getMessage()), ex);
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("SRC072: UserException  has occurred:{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCADD019: UserException  has occurred:{0}", ex.getMessage()), ex);
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("SRC073: UserException  has occurred:{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("SRCADD020: UserException  has occurred:{0}", ex.getMessage()), ex);
             } else if (ex instanceof ProcessingException) {
                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
                 if (exceptionMessage.indexOf("stack trace") != -1) {
@@ -320,11 +340,11 @@ public class SourceAddHandler {
                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
                     }
 
-                    mLogger.error(mLocalizer.x("SRC113: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCADD021: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
                     return SourceAddHandler.SERVICE_LAYER_ERROR;
                 } else {
-                    mLogger.error(mLocalizer.x("SRC114: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("SRCADD022: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
 
                     return SourceAddHandler.SERVICE_LAYER_ERROR;
@@ -572,36 +592,9 @@ public class SourceAddHandler {
     public void setNewSOEnteredFieldValues(String newSOEnteredFieldValues) {
         this.newSOEnteredFieldValues = newSOEnteredFieldValues;
     }
-//------------------------------Methods used on the View/Edit tab
+    //------------------------------Methods used on the View/Edit tab
     
-/**
-     * 
-     * @param event
-     */
-    public void editLID(ActionEvent event){
-        SystemObject singleSystemObjectEdit = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
-        SourceHandler sourceHandler = new SourceHandler();
-        EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
-        MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
-        //HashMap editSystemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObjectEdit, personEPathArrayList);
-        HashMap editSystemObjectMap = midmUtilityManager.getSystemObjectAsHashMap(singleSystemObjectEdit, screenObject);
-        SourceHandler sourceHandlerFaces = (SourceHandler)session.getAttribute("SourceHandler");
-
-
-        session.setAttribute("singleSystemObjectLID", singleSystemObjectEdit);
-        session.setAttribute("systemObjectMap", editSystemObjectMap);
-
-        if("active".equalsIgnoreCase((String) editSystemObjectMap.get("Status")) ) {
-           //set the single SO hash map for single so EDITING
-           this.setNewSOHashMap(editSystemObjectMap);
-        } else {
-            sourceHandlerFaces.setDeactivatedSOHashMap(editSystemObjectMap);
-        }
-
-        //set address array list of hasmap for editing
-        session.setAttribute("keyFunction", "editSO");
-   }
-    /**
+     /**
      * 
      * @param SystemObject
      */
@@ -704,7 +697,7 @@ public class SourceAddHandler {
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC074: Exception has occurred:{0}",ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCADD023: Exception has occurred:{0}",ex.getMessage()),ex);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return SERVICE_LAYER_ERROR;
         }
@@ -735,7 +728,7 @@ public class SourceAddHandler {
         //set address array list of hasmap for editing
         session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC074: Exception has occurred:{0}",ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("SRCADD024: Exception has occurred:{0}",ex.getMessage()),ex);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             
         }

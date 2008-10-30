@@ -475,13 +475,28 @@ public class MidmUtilityManager {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("MUM008: Failed to get SystemObject   :{0}", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("MUM008: Failed to get SystemObject   :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("MUM009: Failed to get SystemObject  :{0}", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("MUM009: Failed to get SystemObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("MUM090: Failed to get SystemObject  :{0}", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("MUM010: Failed to get SystemObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("MUM011: Failed to get SystemObject due to ProcessingException"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("MUM012: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
            
 
@@ -683,27 +698,31 @@ public class MidmUtilityManager {
 
 
             return enterpriseObjectHashMap;
-//        } catch (ObjectException ex) {
-//           mLogger.error(mLocalizer.x("MUM010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-//        } catch (ConnectionInvalidException ex) {
-//           mLogger.error(mLocalizer.x("MUM011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-//        } catch (OPSException ex) {
-//            mLogger.error(mLocalizer.x("MUM012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-//        } catch (ProcessingException ex) {
-//            mLogger.error(mLocalizer.x("MUM013: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
-//        } catch (UserException ex) {
-//            mLogger.error(mLocalizer.x("MUM014: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
-//        }
          } catch (Exception ex) {
-                    if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("MUM010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-                    } else if (ex instanceof UserException) {
-                         mLogger.error(mLocalizer.x("MUM011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-                    } else if (!(ex instanceof ProcessingException)) {
-                       mLogger.error(mLocalizer.x("MUM012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("MUM013: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("MUM014: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("MUM015: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-               }
+                    mLogger.error(mLocalizer.x("MUM016: Failed to get EnterpriseObject due to ProcessingException"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("MUM017: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+            }
+        }
                    
 
             return enterpriseObjectHashMap;
@@ -821,23 +840,31 @@ public class MidmUtilityManager {
 
                 }
             }
-//        } catch (ProcessingException ex) {
-//             mLogger.error(mLocalizer.x("MUM015: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-//        } catch (UserException ex) {
-//             mLogger.error(mLocalizer.x("MUM016: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-//        } catch (RemoteException ex) {
-//             mLogger.error(mLocalizer.x("MUM017: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-//        }
-        }catch (Exception ex) {
-                    if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("MUM015: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
-                    } else if (ex instanceof UserException) {
-                        mLogger.error(mLocalizer.x("PDH086: Service Layer User Exception occurred"), ex);
-                    } else if (!(ex instanceof ProcessingException)) {
-                        mLogger.error(mLocalizer.x("MUM017: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("MUM018: Failed to get EnterpriseObject history :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("MUM019: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("MUM020: Failed to get EnterpriseObject history :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+                    mLogger.error(mLocalizer.x("MUM021: Failed to get EnterpriseObject history due to ProcessingException"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("MUM022: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
                 }
+            }
+        }
                    
         return newArrayListHistory;
     }
@@ -970,13 +997,28 @@ public class MidmUtilityManager {
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("MUM018: Failed to get EOSources :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("MUM023: Failed to get EOSources :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("MUM019: Failed to get EOSources :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("MUM024: Failed to get EOSources :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("MUM091: Failed to get EOSources :{0}", ex.getMessage()), ex);
+                mLogger.error(mLocalizer.x("MUM025: Failed to get EOSources :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("MUM026: Failed to get EOSources due to ProcessingException"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("MUM027: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
                    
         return newArrayList;
@@ -1153,15 +1195,30 @@ public class MidmUtilityManager {
 
             
         }catch (Exception ex) {
-                    if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("MUM020: Service Layer Validation Exception has occurred"), ex);
-                    } else if (ex instanceof UserException) {
-                        mLogger.error(mLocalizer.x("MUM021: Service Layer User Exception occurred"), ex);
-                    } else if (!(ex instanceof ProcessingException)) {
-                        mLogger.error(mLocalizer.x("MUM080: Error  occurred"), ex);
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("MUM028: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("MUM029: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("MUM030: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-                     return "Exception_Occured";
+                    mLogger.error(mLocalizer.x("MUM031: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("MUM032: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+            }
+            return "Exception_Occured";
            }
         return mergedEuid;
     }
@@ -1176,9 +1233,9 @@ public class MidmUtilityManager {
             enterpriseObject = QwsController.getMasterController().getEnterpriseObject(systemObjectPK);
             eoStatus = enterpriseObject.getStatus();
         } catch (ProcessingException ex) {
-            mLogger.severe(mLocalizer.x("MUM022: Could not retrieve an EnterpriseObject Status for SystemObject : {0}", ex.getMessage()));
+            mLogger.severe(mLocalizer.x("MUM033: Could not retrieve an EnterpriseObject Status for SystemObject : {0}", ex.getMessage()));
         } catch (UserException ex) {
-            mLogger.severe(mLocalizer.x("MUM023: Could not retrieve an EnterpriseObject: Status for SystemObject : {0}", ex.getMessage()));
+            mLogger.severe(mLocalizer.x("MUM034: Could not retrieve an EnterpriseObject: Status for SystemObject : {0}", ex.getMessage()));
         } 
         return eoStatus;
 
@@ -1491,19 +1548,31 @@ public class MidmUtilityManager {
 
 
             return enterpriseObjectHashMap;
-          } catch (Exception ex) {
-                    if (ex instanceof ValidationException) {
-                        mLogger.error(mLocalizer.x("MUM010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-                    } else if (ex instanceof UserException) {
-                         mLogger.error(mLocalizer.x("MUM011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-                    } else if (!(ex instanceof ProcessingException)) {
-                       mLogger.error(mLocalizer.x("MUM012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
-                    }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-               }
-                   
-
-
+         } catch (Exception ex) {
+             if (ex instanceof ValidationException) {
+                 mLogger.error(mLocalizer.x("MUM035: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             } else if (ex instanceof UserException) {
+                 mLogger.error(mLocalizer.x("MUM036: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             } else if (!(ex instanceof ProcessingException)) {
+                 mLogger.error(mLocalizer.x("MUM037: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+             } else if (ex instanceof ProcessingException) {
+                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                 if (exceptionMessage.indexOf("stack trace") != -1) {
+                     String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                     if (exceptionMessage.indexOf("message=") != -1) {
+                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                     }
+                     mLogger.error(mLocalizer.x("MUM038: Failed to get EnterpriseObject due to ProcessingException"), ex);
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                 } else {
+                     mLogger.error(mLocalizer.x("MUM039: Error  occurred"), ex);
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                 }
+             }
+         }
         return enterpriseObjectHashMap;
     }
  

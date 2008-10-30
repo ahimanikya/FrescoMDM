@@ -32,24 +32,19 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager;
-import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 //import com.sun.mdm.index.util.LogUtil;
 //import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
-import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.objects.EnterpriseObject;
-import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import javax.faces.event.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -57,7 +52,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
-import net.java.hulp.i18n.LocalizationSupport;
+import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchIterator;
+import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchSearchObject;
+import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
+import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject;
 
 public class DashboardHandler  {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.DashboardHandler");
@@ -92,64 +90,95 @@ public class DashboardHandler  {
     
     public int getCountPotentialDuplicates(){
         try {
+            PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
 
             Timestamp tsCurrentTime = new Timestamp(new java.util.Date().getTime());
             Long currentTime = new java.util.Date().getTime();
+            potentialDuplicateSearchObject.setCreateEndDate(tsCurrentTime);
+
             long milliSecsInADay = 86400000L;
 
             Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
-            countPotentialDuplicates = masterControllerService.countPotentialDuplicates(ts24HrsBack, tsCurrentTime);
-             
-         } 
+            potentialDuplicateSearchObject.setCreateStartDate(ts24HrsBack);
 
-        catch (Exception ex) {
+            PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
+
+            countPotentialDuplicates = pdPageIterArray.count();
+
+        } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB003: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH001: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB002: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH002: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB012: Error  occurred"), ex);
-            }else if (ex instanceof ProcessingException) {
+                mLogger.error(mLocalizer.x("DBH003: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
                 if (exceptionMessage.indexOf("stack trace") != -1) {
                     String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
                     if (exceptionMessage.indexOf("message=") != -1) {
-                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=")+8, parsedString.length());
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
                     }
-                    mLogger.error(mLocalizer.x("DHB100: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("DBH004: Service Layer Processing Exception occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
                     return 0;
                 } else {
-                    mLogger.error(mLocalizer.x("DHB101: Error  occurred"), ex);
+                    mLogger.error(mLocalizer.x("DBH005: Error  occurred"), ex);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
-                     return 0;
+                    return 0;
                 }
             }
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-} 
-        return countPotentialDuplicates;
+      } 
+       return countPotentialDuplicates;
     }
     
      public int getCountAssumedMatches(){
         try {
 
+            AssumedMatchSearchObject assumedMatchSearchObject = new AssumedMatchSearchObject();
+            
             Timestamp tsCurrentTime = new Timestamp(new java.util.Date().getTime());
+            
+            assumedMatchSearchObject.setCreateEndDate(tsCurrentTime);
+            
             Long currentTime = new java.util.Date().getTime();
             long milliSecsInADay = 86400000L;
 
             Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
-            countAssumedMatches = masterControllerService.countAssumedMatches(ts24HrsBack, tsCurrentTime);
-        }
-         catch (Exception ex) {
-             if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("DHB009: Service Layer Validation Exception has occurred"), ex);
-             } else if (ex instanceof UserException) {
-                 mLogger.error(mLocalizer.x("DHB008: Service Layer User Exception occurred"), ex);
-             } else if (!(ex instanceof ProcessingException)) {
-                 mLogger.error(mLocalizer.x("DHB012: Error  occurred"), ex);
-             }
-//             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            
+            assumedMatchSearchObject.setCreateStartDate(ts24HrsBack);
+            AssumedMatchIterator amIter = masterControllerService.lookupAssumedMatches(assumedMatchSearchObject);            
+
+            countAssumedMatches = amIter.count();
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("DBH006: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("DBH007: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("DBH008: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("DBH009: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("DBH010: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+            }
+            return 0;
          }
             return countAssumedMatches;
     }
@@ -233,159 +262,37 @@ public class DashboardHandler  {
                 }
             }
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } 
-
-        catch (Exception ex) {
+        } catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB013: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH011: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB014: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH012: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB025: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH013: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("DBH014: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("DBH015: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
              returnString =  "dashboard";
         }
       
         return returnString;
     }
 
-    public String lookupEuid2() {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-        try {
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-  					String errorMessage = this.getEuid2()+" : ";
-					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid2(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } 
-
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB015: Service Layer Validation Exception has occurred"), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB016: Service Layer User Exception occurred"), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB026: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-        return "EUID Details";
-    }
-
-    public String lookupEuid3() {
-             session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-        try {
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-					String errorMessage = this.getEuid3()+" : ";
-					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid3(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } 
-
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB017: Service Layer Validation Exception has occurred"), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB018: Service Layer User Exception occurred"), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB027: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-        return "EUID Details";
-    }
-
-    public String lookupEuid4() {
-        session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-        try {
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-					String errorMessage = this.getEuid4()+" : ";
-					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid4(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } 
-
-        catch (Exception ex) {
-            if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB019: Service Layer Validation Exception has occurred"), ex);
-            } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB020: Service Layer User Exception occurred"), ex);
-            } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB028: Error  occurred"), ex);
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-        }
-        return "EUID Details";
-    }
-
-     /** 
+    /** 
      * 
      * Modified on 11/06/2008
      * 
@@ -593,13 +500,28 @@ public class DashboardHandler  {
 
         catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB021: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH016: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB022: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH017: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB029: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH018: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("DBH019: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("DBH020: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
         }
 
         return "Compare Duplicates";
@@ -810,13 +732,28 @@ public class DashboardHandler  {
 
          catch (Exception ex) {
             if (ex instanceof ValidationException) {
-                mLogger.error(mLocalizer.x("DHB021: Service Layer Validation Exception has occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH021: Service Layer Validation Exception has occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (ex instanceof UserException) {
-                mLogger.error(mLocalizer.x("DHB022: Service Layer User Exception occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH022: Service Layer User Exception occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             } else if (!(ex instanceof ProcessingException)) {
-                mLogger.error(mLocalizer.x("DHB029: Error  occurred"), ex);
+                mLogger.error(mLocalizer.x("DBH023: Error  occurred"), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("DBH024: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("DBH025: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
             return null;
         }
         return newArrayList;

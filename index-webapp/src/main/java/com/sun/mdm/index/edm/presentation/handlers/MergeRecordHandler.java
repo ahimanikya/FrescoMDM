@@ -33,7 +33,6 @@ import com.sun.mdm.index.edm.presentation.valueobjects.MergedRecords;
 import com.sun.mdm.index.report.ReportException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.event.*;
 import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.util.DateUtil;
@@ -41,8 +40,6 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.MergeReport;
 import com.sun.mdm.index.report.MergeReportConfig;
 import com.sun.mdm.index.report.MergeReportRow;
@@ -74,11 +71,6 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.presentation.security.Operations;
-import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
-import com.sun.mdm.index.edm.util.QwsUtil;
-import com.sun.mdm.index.master.ProcessingException;
-import com.sun.mdm.index.master.UserException;
-import net.java.hulp.i18n.LocalizationSupport;
 
 /** Creates a new instance of DeactivatedReportsHandler*/ 
 public class MergeRecordHandler    {
@@ -349,7 +341,7 @@ public class MergeRecordHandler    {
                 String msg1 = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,msg1 + errorMessage, errorMessage));
                 //mLogger.error(errorMessage);
-                 mLogger.info(mLocalizer.x("MRG002: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("MRGH001: {0} ",errorMessage));
                  return null;
             }            
             
@@ -357,7 +349,7 @@ public class MergeRecordHandler    {
             if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_from");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("MRG201: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("MRGH002: {0} ",errorMessage));
                 return null;
             }
 
@@ -370,7 +362,7 @@ public class MergeRecordHandler    {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 // mLogger.error(errorMessage);
-                 mLogger.info(mLocalizer.x("MRG003: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("MRGH003: {0} ",errorMessage));
                  return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
@@ -384,7 +376,7 @@ public class MergeRecordHandler    {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //mLogger.error(errorMessage);
-                    mLogger.error(mLocalizer.x("MRG004: {0}:{1} ",errorMessage,validationException.getMessage()),validationException);
+                    mLogger.error(mLocalizer.x("MRGH004: {0}:{1} ",errorMessage,validationException.getMessage()),validationException);
                     return null;
                 }
             }
@@ -399,14 +391,14 @@ public class MergeRecordHandler    {
                  
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 //mLogger.error(errorMessage);
-                mLogger.info(mLocalizer.x("MRG005: {0} ",errorMessage));
+                mLogger.info(mLocalizer.x("MRGH005: {0} ",errorMessage));
                 return null;
             } 
             //if only time fields are entered validate for the date fields 
             if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
                 errorMessage = bundle.getString("enter_date_to");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.info(mLocalizer.x("MRG202: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("MRGH006: {0} ",errorMessage));
                 return null;
             }
        }    
@@ -418,7 +410,7 @@ public class MergeRecordHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error(errorMessage);
-                mLogger.info(mLocalizer.x("MRG006: {0} ",errorMessage));
+                mLogger.info(mLocalizer.x("MRGH007: {0} ",errorMessage));
                 return null;
             } else {
                 try {
@@ -433,7 +425,7 @@ public class MergeRecordHandler    {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //mLogger.error(errorMessage);
-                    mLogger.error(mLocalizer.x("MRG007: {0}:{1} ",errorMessage,validationException.getMessage()),validationException);
+                    mLogger.error(mLocalizer.x("MRGH008: {0}:{1} ",errorMessage,validationException.getMessage()),validationException);
                     return null;
                 }
             }           
@@ -449,7 +441,7 @@ public class MergeRecordHandler    {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //mLogger.error(errorMessage);
-                    mLogger.info(mLocalizer.x("MRG008: {0} ",errorMessage));
+                    mLogger.info(mLocalizer.x("MRGH009: {0} ",errorMessage));
                     return null;
                    }
         }   
