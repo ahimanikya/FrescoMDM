@@ -230,18 +230,33 @@ boolean isSessionActive = true;
  
 
 
-	
-<%						    
-          
-	     if(isMergePreview) {
-              
+<!-- modified as fix for bug #202 on 23-10-08  -->	
+<%		boolean isMergedEuid = false;
+ 	     if(isMergePreview) {              
 			  String[] srcDestnEuids = request.getParameter("PREVIEW_SRC_DESTN_EUIDS").split(",");
  
               eoMultiMergePreview = recordDetailsHandler.previewMultiMergeEnterpriseObject(srcDestnEuids);
 			  messagesIter = FacesContext.getCurrentInstance().getMessages(); 
  		   %>
            <% if(eoMultiMergePreview != null ) {%>
-               <%if (eoMultiMergePreview.get(RecordDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {
+				<%if(eoMultiMergePreview.get("Merged_EUID") != null ) {
+					isMergedEuid  = true;
+				%>
+ 					<%if(isMergedEuid && srcDestnEuids!=null){
+ 					%>
+  							<table>
+							 <tr><td>
+								  <script>
+  									 popUrl='#top';
+									 document.getElementById("activemessageDiv").innerHTML='<%=eoMultiMergePreview.get("Merged_EUID_Message")%>';
+									 document.getElementById('activeDiv').style.visibility='visible';
+									 document.getElementById('activeDiv').style.display='block';
+								  </script>
+								</td>
+							 </tr>
+						  </table>
+ 					  <%}%>
+			<%} else if (eoMultiMergePreview.get(RecordDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {
 			   eoArrayList.clear();
 
 			   
@@ -330,7 +345,8 @@ boolean isSessionActive = true;
    
 
 
-<%			
+<%
+  boolean alreadyMerged = false;
   boolean isConcurrentModification = true;
 	     if(isMergeFinal) {
               
@@ -338,17 +354,32 @@ boolean isSessionActive = true;
  
               eoArrayList = recordDetailsHandler.multiMergeEnterpriseObject(srcDestnEuids) ;
 			  messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-
-              
-			
-  %>
-
+    %>
+	<!-- modified as fix for bug #202 on 23-10-08  -->	
             <% if(eoArrayList != null ) {
 				Object[] eoArrayListObjects = eoArrayList.toArray();
 				HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
-    			
-				%>
-              <%if (eoHashMapValues.get(RecordDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {%>
+ 				if(eoHashMapValues!=null && eoHashMapValues.size()>0){
+					if(eoHashMapValues.get("Merged_EUID")!=null){
+						alreadyMerged = true;
+					}
+				}
+  			%>
+			<%if(alreadyMerged){%>
+ 				<table>
+				 <tr><td>
+					  <script>
+						 popUrl='#top';
+						 document.getElementById("activemessageDiv").innerHTML='<%=eoHashMapValues.get("Merged_EUID_Message")%>';
+						 document.getElementById('activeDiv').style.visibility='visible';
+						 document.getElementById('activeDiv').style.display='block';
+					  </script>
+					</td>
+				 </tr>
+			  </table>
+ 			<%}%>
+			<%if(!alreadyMerged){%>
+               <%if (eoHashMapValues.get(RecordDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {%>
 			  <table>
               <tr>
                 <td>
@@ -395,8 +426,9 @@ boolean isSessionActive = true;
              </tr>
             </table>
            <%}%> <!-- Concurrent modification error -->
-			<%  } else {%>
-        <div class="ajaxalert">
+		   <%}//end of if(!alreadyMerged)%>	
+		<%  } else {%>
+         <div class="ajaxalert">
     	  <table>
 			<tr>
 				<td>
@@ -508,7 +540,7 @@ boolean isSessionActive = true;
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
 
-            if (!isPopulateMergeFields && eoArrayList != null) {
+            if (!alreadyMerged && !isMergedEuid && !isPopulateMergeFields && eoArrayList != null) {
             %>  
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>

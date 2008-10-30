@@ -671,6 +671,15 @@ public class RecordDetailsHandler extends ScreenConfiguration {
     public HashMap previewMultiMergeEnterpriseObject(String[] srcDestnEuids) {
         HashMap eoMultiMergePreview = null;
         try {
+            // modified as fix for bug #202, on 23-10-08
+            String mergeEuid  = midmUtilityManager.getMergedEuid(srcDestnEuids[0]);            
+            if(mergeEuid != null && mergeEuid.length() > 0) {
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put("Merged_EUID_Message", mergeEuid+" "+ bundle.getString("active_euid_text") + " " +srcDestnEuids[0]);
+                retHashMap.put("Merged_EUID", mergeEuid );
+                return retHashMap;
+            }            
+            
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
             
 
@@ -809,7 +818,18 @@ public class RecordDetailsHandler extends ScreenConfiguration {
     public ArrayList multiMergeEnterpriseObject(String[] srcDestnEuids) {
         ArrayList finalMergeList = new ArrayList();
         try {
-
+ 
+            //modified as fix for bug #202 on 23-10-08
+            String mergeEuid  = midmUtilityManager.getMergedEuid(srcDestnEuids[0]);
+            
+            if(mergeEuid != null && mergeEuid.length() > 0) {
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put("Merged_EUID_Message", mergeEuid+" "+ bundle.getString("active_euid_text") + " " +srcDestnEuids[0]);
+                retHashMap.put("Merged_EUID", mergeEuid );
+                ArrayList retList  = new ArrayList();
+                retList.add(retHashMap);
+                return retList;
+            }
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(srcDestnEuids[0]);
  
            //get the revision number from the session and which is available in DB
@@ -1475,4 +1495,5 @@ public class RecordDetailsHandler extends ScreenConfiguration {
     }
         
 }
+
 
