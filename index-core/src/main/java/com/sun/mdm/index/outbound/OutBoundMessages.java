@@ -39,6 +39,8 @@ public class OutBoundMessages {
     public static final String DEA = "DEA";
      /** REA */
     public static final String REA = "REA";
+    /** UNDO ASSUMED MATCH */
+    public static final String UAM = "UAM";
       
     /** Creates a new instance of OutBoundMessages */
     private OutBoundMessages() {

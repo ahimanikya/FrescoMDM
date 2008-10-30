@@ -1948,6 +1948,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     execPessimistic(con, origEO.getEUID(), transId,
                             beforeMatchFields, origEO, null);
                 }
+                
+                mOutBoundSender.send(OutBoundMessages.UAM, result.getTransactionResult().getTMID(),
+                    origEO, result.getEnterpriseObject2());
 
                 if (mLogger.isLoggable(Level.FINE)) {
                     mLogger.fine("undoAssumedMatch(): new EUID constructed: "

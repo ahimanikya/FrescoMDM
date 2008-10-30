@@ -108,14 +108,26 @@ public class OutBoundSender {
      *    and is sent to the topic.
      */
     public void send(String eventType, String id, MergeResult mresult) throws OutBoundException {
+        this.send(eventType, id, mresult.getSourceEO(), mresult.getDestinationEO());
+    }
+    
+    /**
+     * Publish the eventType and two EnterpriseObject to a topic
+     * @param eventType values are UPD, ADD, MRG, UNMRG, DEA, REA
+     * @param id the id
+     * @param enterpriseObj1 first enterprise object to be stringified to xml
+     * @param enterpriseObj2 second enterprise object to be stringified to xml
+     *    and is sent to the topic.
+     */
+    public void send(String eventType, String id, 
+        EnterpriseObject enterpriseObj1, EnterpriseObject enterpriseObj2) throws OutBoundException {
+        
         if (!mOutboundOn) {
             return;
         }
-        EnterpriseObject eo1 = mresult.getSourceEO();
-        EnterpriseObject eo2 = mresult.getDestinationEO();
                       
         ObjectNodeXML msgBuilder = new ObjectNodeXML();
-        String xml = msgBuilder.constructMrgXml(eventType, id, eo1, eo2);
+        String xml = msgBuilder.constructMrgXml(eventType, id, enterpriseObj1, enterpriseObj2);
         send(eventType, xml);
     }
     
