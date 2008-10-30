@@ -32,14 +32,16 @@ import com.sun.mdm.index.objects.ObjectNode;
  * @author SwaranjitDua
  */
 public class MultiObject {
-	private ObjectNode sourceDomainObject;
-    private RelationshipObject[] relationshipObjects;
+	private ObjectNode sourceDomainObject;	
+	private RelationshipDomain[] relationshipDomains;
+	
     
     /**
      * Create an instance of MultiObject.
      */
     public void MultiObject(){
     }
+         
     /**
      * get Primary Domain Object
      * @return primaryDomainObject
@@ -56,22 +58,77 @@ public class MultiObject {
     	this.sourceDomainObject = object;
     }
     
-    /**
-     * Set an array of RelationshipObject.
-     * @param relationshipObjects Array of RelationshipObject.
-     */
-    public void setRelationshipObjects(RelationshipObject[] relationshipObjects) {
-        this.relationshipObjects = relationshipObjects;
+  /*  
+    public int getRelationshipTypeCount() {
+    	
     }
     
-    /**
-     * Get an array of RelationshipObject.
-     * @return RelationshipObject[] Array of RelationshipObject.
-     */
-    public RelationshipObject[] getRelationshipObjects() {
-        return relationshipObjects;
+    public int getRelationshipCount(RelationshipType type) {
+    	
     }
+    */
     
+    /**
+     * RelationshipDomain class. 
+     * This represents a relationship between source domain in MultiObject to target domain
+     * in this class. 
+     * This is encapsulated within MultiObject.
+     */
+    public static class RelationshipDomain {
+        private String domain;
+        private RelationshipObject[] relationshipObjects;
+        
+        /**
+         * Public constructor
+         */
+        public RelationshipDomain() {
+        }
+        
+        /**
+         * get Domain
+         * @return
+         */
+        public String getDomain() {
+        	return domain;
+        }
+        
+        /**
+         *  set Domain
+         * @param domain
+         */
+        
+        public void setDomain(String domain) {
+        	this.domain = domain;
+        }
+        
+        /**
+         * Set an array of RelationshipObject.
+         * @param relationshipObjects Array of RelationshipObject.
+         */
+        public void setRelationshipObjects(RelationshipObject[] relationshipObjects) {
+            this.relationshipObjects = relationshipObjects;
+        }
+        
+        /**
+         * Get an array of RelationshipObject.
+         * @return RelationshipObject[] Array of RelationshipObject.
+         */
+        public RelationshipObject[] getRelationshipObjects() {
+            return relationshipObjects;
+        }
+        
+        /*
+        public int getRelationshipTypeCount() {
+        	
+        }
+        
+        public int getRelationshipCount(RelationshipType type) {
+        	
+        }
+          */
+                  
+    }
+        
     
     /**
      * RelationshipObject class. 

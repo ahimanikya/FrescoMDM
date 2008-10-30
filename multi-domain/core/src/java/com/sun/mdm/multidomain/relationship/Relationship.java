@@ -21,8 +21,11 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.multidomain.relationship;
-
-import com.sun.mdm.multidomain.association.Association;
+import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
+import com.sun.mdm.multidomain.attributes.Attribute;
+import java.io.Serializable;
 
 /**
  * Relationship class. 
@@ -30,13 +33,19 @@ import com.sun.mdm.multidomain.association.Association;
  * Ex. Relationship between Patient "John Smith" and Doctor "Watkins".
  * The relationship is between by sourceEUID and targetEUID and uniquely represented by
  * relationshipID.
- * @author cye
  * @author SwaranjitDua
+ * @author cye
+
  */
-public class Relationship extends Association {
-    private String relationshipID;
+public class Relationship implements Serializable  {
+    private int relationshipID;
     private String sourceEUID;
     private String targetEUID;
+    private Date effectiveFromDate;
+    private Date effectiveToDate;
+    private Date purgeDate;
+    private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
+    private RelationshipDef relationshipDef;
     
     
     /**
@@ -47,9 +56,9 @@ public class Relationship extends Association {
     
     /**
      * Get relationship Id.
-     * @return String Relationship Id.
+     * @return int Relationship Id.
      */
-    public String getRelationshipID() {
+    public int getRelationshipID() {
     	return relationshipID;
     }
     
@@ -57,7 +66,7 @@ public class Relationship extends Association {
      * Set relationship Id.
      * @param relationshipID Relationship Id.
      */
-    public void setRelationshipID(String relationshipID){
+    public void setRelationshipID(int relationshipID){
     	this.relationshipID = relationshipID;
     }
     
@@ -91,5 +100,93 @@ public class Relationship extends Association {
      */
     public void setTargetEUID(String targetEUID) {
     	this.targetEUID = targetEUID;
+    }
+    
+        /**
+     * Get start date attribute.
+     * @return Date Start date attribute.
+     */
+    public Date getEffectiveFromDate() {
+        return effectiveFromDate;
+    }
+    
+    /**
+     * Set Start date attribute.
+     * @param effectiveFromDate Start date attribute.
+     */
+    public void setEffectiveFromDate(Date effectiveFromDate) {
+        this.effectiveFromDate = effectiveFromDate;
+    }  
+    
+    /**
+     * Get end date attribute.
+     * @return Date End date attribute.
+     */    
+    public Date getEffectiveToDate() {
+        return effectiveToDate;
+    }
+  
+    /**
+     * Set End date attribute.
+     * @param effectiveToDate End date attribute.
+     */    
+    public void setEffectiveToDate(Date effectiveToDate) {
+        this.effectiveToDate = effectiveToDate;
+    }
+    
+    /**
+     * Get Purge date attribute.
+     * @return Date Purge date attribute.
+     */     
+    public Date getPurgeDate() {
+        return purgeDate;
+    }
+   
+    /**
+     * Set Purge date attribute.
+     * @param purgeDate Purge date attribute.
+     */       
+    public void setPurgeDate(Date purgeDate) {
+        this.purgeDate = purgeDate;
+    } 
+    
+    /**
+     * Set attribute value.
+     * @param attribute Attribute.
+     * @param value Attribute value.
+     */
+    public void setAttributeValue(Attribute attribute, String value) {
+    	attributeValues.put(attribute, value);
+    }
+    
+    /**
+     * Get attribute value.
+     * @param attribute Attribute.
+     * @return String Attribute value.
+     */
+    public String getAttributeValue(Attribute attribute) {
+    	return attributeValues.get(attribute);
+    }
+    
+    /**
+     * Set attribute value.
+     * @param attribute Attribute.
+     * @param value Attribute value.
+     */
+    public void setAttributes(Map<Attribute,String> attributeValues) {
+    	this.attributeValues = attributeValues;
+    }
+    
+    /**
+     * Get attribute value.
+     * @param attribute Attribute.
+     * @return String Attribute value.
+     */
+    public Map<Attribute,String> getAttributes() {
+    	return attributeValues;
+    }  
+    
+    public RelationshipDef getRelationshipDef() {
+        return relationshipDef;
     }
 }
