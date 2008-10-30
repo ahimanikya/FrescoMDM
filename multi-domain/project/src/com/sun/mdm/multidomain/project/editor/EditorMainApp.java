@@ -128,8 +128,13 @@ public class EditorMainApp {
         return mInstance;
     }
         
+    /** Add a Link 
+     * 
+     * @param linkType
+     * @return
+     */
     public LinkBaseNode addLink(LinkType linkType) {
-        // wee get a new webLinkType here
+        mMultiDomainModel.addLink(linkType);
         LinkType webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
         if (webLinkType == null) {
             webLinkType = mMultiDomainWebManager.createLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
@@ -151,6 +156,29 @@ public class EditorMainApp {
         LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
         this.mAlLinkNodes.add(node);
         return node;
+    }
+    
+    /** Delete a link from MultiDomainModel, MultiDomainWebManager and mAlLinkNodes
+     * 
+     * @param defName
+     * @param sourceDomain
+     * @param targetDomain
+     */
+    public void deleteLink(String defName, String sourceDomain, String targetDomain) {      
+        mMultiDomainModel.deleteLink(defName, sourceDomain, targetDomain);
+        // delete webLinkType here
+        LinkType webLinkType = mMultiDomainWebManager.getLinkType(defName, sourceDomain, targetDomain);        
+        if (webLinkType == null) {
+            //ToDo - wee
+            //mMultiDomainWebManager.deleteLink(linkType);
+        }
+        for (int i=0; mAlLinkNodes!=null && i<mAlLinkNodes.size(); i++) {
+            LinkBaseNode node = (LinkBaseNode) mAlLinkNodes.get(i);
+            if (node.getName().equals(defName) && node.getSourceDomain().equals(sourceDomain) && node.getTargetDomain().equals(targetDomain)) {
+                mAlLinkNodes.remove(i);
+                break;
+            }
+        }
     }
     
     private void loadLinks() {

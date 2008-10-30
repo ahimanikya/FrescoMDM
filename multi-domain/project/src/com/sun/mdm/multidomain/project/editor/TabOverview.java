@@ -220,7 +220,12 @@ public class TabOverview extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLink
-// TODO add your handling code here:
+    TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
+    int idx = jTableLinkTypes.getSelectedRow();
+    LinkTypeRow row = model.getRow(idx);
+    mEditorMainApp.deleteLink(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
+    model.removeRow(idx);
+    model.fireTableDataChanged();
 }//GEN-LAST:event_onRemoveLink
 
 private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddLink

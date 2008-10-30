@@ -158,7 +158,33 @@ public class MultiDomainModel {
         }
         return al;
     }
-
+    
+    /**
+     * 
+     * @param defName
+     * @param sourceDomain
+     * @param targetDomain
+     */
+    public void deleteLink(String defName, String sourceDomain, String targetDomain) {
+        for (int i=0; i< this.mAlLinkTypes.size(); i++) {
+            LinkType linkType = (LinkType) mAlLinkTypes.get(i);
+            if (linkType.getName().equals(defName) &&
+                linkType.getSourceDomain().equals(sourceDomain) &&
+                linkType.getTargetDomain().equals(targetDomain)) {
+                mAlLinkTypes.remove(i);
+                break;
+            }
+        }
+    }
+    
+    /** Add a link to the array mAlLinkTypes
+     * 
+     * @param linkType
+     */
+    public void addLink(LinkType linkType) {
+        mAlLinkTypes.add(linkType);
+    }
+    
     /**
      * @param String domain name
      * @return Domain
