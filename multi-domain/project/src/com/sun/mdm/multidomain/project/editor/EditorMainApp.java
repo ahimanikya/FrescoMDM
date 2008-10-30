@@ -168,9 +168,9 @@ public class EditorMainApp {
         mMultiDomainModel.deleteLink(defName, sourceDomain, targetDomain);
         // delete webLinkType here
         LinkType webLinkType = mMultiDomainWebManager.getLinkType(defName, sourceDomain, targetDomain);        
-        if (webLinkType == null) {
+        if (webLinkType != null) {
             //ToDo - wee
-            //mMultiDomainWebManager.deleteLink(linkType);
+            mMultiDomainWebManager.deleteLinkType(webLinkType);
         }
         for (int i=0; mAlLinkNodes!=null && i<mAlLinkNodes.size(); i++) {
             LinkBaseNode node = (LinkBaseNode) mAlLinkNodes.get(i);
@@ -317,6 +317,7 @@ public class EditorMainApp {
                 DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToCanvas(domainNode, -1, true);
+                mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }

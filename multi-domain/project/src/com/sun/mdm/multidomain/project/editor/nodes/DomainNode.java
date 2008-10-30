@@ -183,6 +183,22 @@ public class DomainNode extends AbstractNode {
         return miObject;
     }
 
+    public DomainForWebManager getMidmObject() {
+        DomainForWebManager domainWebObject = null;
+        try {
+            //mEditorMainApp.getDomainMidmXml(PROP_NAME)
+            FileObject objectXml = mEditorMainApp.getDomainMidmXml(mSelectedDomain.getName());
+            if (objectXml != null) {
+                InputStream objectdef = objectXml.getInputStream();
+                InputSource source = new InputSource(objectdef);
+                domainWebObject = Utils.parseMidmObject(source);
+            }
+        } catch (Exception ex) {
+                mLog.severe(ex.getMessage());
+        }
+        return domainWebObject;
+    }
+    
     private void addChildren(MiNodeDef node) {
         ArrayList children = node.getChildren();
         if (children != null) {

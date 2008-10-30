@@ -209,6 +209,25 @@ public class Utils {
         }
     }
     
+    /**
+     * @param xmlSource object definition
+     * @return ret EIndexObject
+     * @throws ParserException exception
+     */
+    public static DomainForWebManager parseMidmObject(InputSource xmlSource) throws ParserException {
+        try {
+            /**
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            mDoc = docBuilder.parse(xmlSource);
+             */ 
+            MIDMObjectDef ret = new MIDMObjectDef();
+            return ret.parseMIDMNode(xmlSource);
+        } catch (Exception e) {
+            throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
+                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+        }
+    }    
 /**
      * @param xmlSource object definition
      * @return ret EIndexObject

@@ -79,6 +79,21 @@ public class MultiDomainWebManager {
         this.mRelationshipTypes.add((RelationshipType) linkType);
         
         return linkType;
+    }   
+    
+    public void deleteLinkType(String name, String source, String target) {
+        for (LinkType type : mRelationshipTypes) {
+            if (type.getName().equals(name) && type.getSourceDomain().equals(source) && type.getTargetDomain().equals(target)) {
+                mRelationshipTypes.remove(type);
+                return;
+            }
+        }
+        
+    }
+    
+    public void deleteLinkType(LinkType linkType) {
+        mRelationshipTypes.remove(linkType);
+      
     }    
 
 

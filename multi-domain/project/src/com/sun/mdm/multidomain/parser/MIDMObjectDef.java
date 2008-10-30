@@ -6,7 +6,6 @@
 package com.sun.mdm.multidomain.parser;
 
 import com.sun.mdm.multidomain.parser.SearchOptions.Parameter;
-import java.io.InputStream;
 import java.util.ArrayList;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
@@ -17,6 +16,7 @@ import java.util.HashMap;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.xml.sax.InputSource;
 
 /**
  *
@@ -79,9 +79,9 @@ public class MIDMObjectDef {
     
     //private ObjectNode objNode = null;
     
-    public void parseMIDMNode(InputStream input, DomainForWebManager domain) throws Exception {
+    public DomainForWebManager parseMIDMNode(InputSource input) throws Exception {
         
-        mDomain = domain;
+        //mDomain = domain;
 
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         builder = docBuilderFactory.newDocumentBuilder();
@@ -92,11 +92,16 @@ public class MIDMObjectDef {
         NodeList children = root.getChildNodes();
         ChildElementIterator itr = new ChildElementIterator(root);
 
+        boolean isRootNode = false;
         while ( itr.hasNext() ) {
             Element element = (Element)itr.next();
             if (element.getTagName().startsWith("node")) {
                 try {
                     ObjectNode objNodeConfig = buildObjectNode(element);
+                    if (!isRootNode) {
+                        mDomain = new DomainForWebManager(objNodeConfig.getName());
+                        isRootNode = true;
+                    }
 
                     // build a node
                     objNodeConfigMap.put(objNodeConfig.getName(), objNodeConfig);
@@ -132,12 +137,15 @@ public class MIDMObjectDef {
 
         }
         
+        return mDomain;
+        
         
     }
     
     private ObjectNode buildObjectNode(Element element) throws IOException, Exception {
 
         String objName = NodeUtil.getChildNodeText(element, NODE_NAME);
+        //mDomain = new DomainForWebManager(objName);
         
         String attr = element.getAttribute(NODE_DISPLAY_ORDER);
         String attr1 = element.getAttribute(MERGE_MUST_DELETE);
