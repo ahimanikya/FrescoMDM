@@ -57,8 +57,8 @@ public class TabOverview extends javax.swing.JPanel {
         mEditorMainApp = editorMainApp;
         mAlDomainNodes = alDomainNodes;
         jComboBoxSelectedDomain.removeAllItems();
-        jComboBoxAssociatedDomains.removeAllItems();
-        jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
+        //jComboBoxAssociatedDomains.removeAllItems();
+        //jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
 
         DomainNode domainNode;
         String domainName;
@@ -80,6 +80,7 @@ public class TabOverview extends javax.swing.JPanel {
             ArrayList <LinkType> alLinkTypes = domainNode.getLinkTypes();
             ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
             if (alLinkTypes == null ||  alLinkTypes.size() == 0) {
+                /*
                 for (int i=0; alAssociatedDomains != null && i < alAssociatedDomains.size(); i++) {
                     String domainWithLinks = alAssociatedDomains.get(i);
                     boolean bAdd = true;
@@ -94,12 +95,14 @@ public class TabOverview extends javax.swing.JPanel {
                         jComboBoxAssociatedDomains.addItem(domainWithLinks);
                     }
                 }
+                 */
             } else {
                 for (int i=0; alLinkTypes != null && i < alLinkTypes.size(); i++) {
                     LinkType type = alLinkTypes.get(i);
                     String sourceDomain = type.getSourceDomain();
                     String targetDomain = type.getTargetDomain();
                     String domainWithLinks = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
+                    /*
                     boolean bAdd = true;
                     for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
                         String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
@@ -111,12 +114,13 @@ public class TabOverview extends javax.swing.JPanel {
                     if (bAdd) {
                         jComboBoxAssociatedDomains.addItem(domainWithLinks);
                     }
+                     */
                     LinkTypeRow r = new LinkTypeRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
                     rows.add(r);
                 }
             }
         }
-        jComboBoxAssociatedDomains.setSelectedIndex(0);
+        //jComboBoxAssociatedDomains.setSelectedIndex(0);
         TableModelLinkType model = new TableModelLinkType(rows);
         jTableLinkTypes.setModel(model);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
@@ -127,12 +131,18 @@ public class TabOverview extends javax.swing.JPanel {
                 onSelectedDomainItemStateChanged(evt);
             }
         });
+        jComboBoxSelectedDomain.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    onSelectedDomainItemStateChanged(null);
+                }
+            });
+        /*
         jComboBoxAssociatedDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 onAssociatedDomainsItemStateChanged(evt);
             }
         });
-
+        */
         jTableLinkTypes.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     onLinkTypeSelected();
@@ -150,8 +160,6 @@ public class TabOverview extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabelDomainName = new javax.swing.JLabel();
-        jLabelAssociated = new javax.swing.JLabel();
-        jComboBoxAssociatedDomains = new javax.swing.JComboBox();
         jScrollPaneLinkTypes = new javax.swing.JScrollPane();
         jTableLinkTypes = new javax.swing.JTable();
         jComboBoxSelectedDomain = new javax.swing.JComboBox();
@@ -163,17 +171,8 @@ public class TabOverview extends javax.swing.JPanel {
 
         jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
         add(jLabelDomainName);
-        jLabelDomainName.setBounds(10, 30, 110, 20);
+        jLabelDomainName.setBounds(20, 30, 100, 20);
         jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
-
-        jLabelAssociated.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Associated_Domains")); // NOI18N
-        jLabelAssociated.setEnabled(false);
-        add(jLabelAssociated);
-        jLabelAssociated.setBounds(240, 30, 110, 20);
-
-        jComboBoxAssociatedDomains.setEnabled(false);
-        add(jComboBoxAssociatedDomains);
-        jComboBoxAssociatedDomains.setBounds(350, 30, 20, 22);
 
         jScrollPaneLinkTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Links_Defined"))); // NOI18N
 
@@ -191,7 +190,7 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneLinkTypes.setBounds(10, 60, 370, 180);
 
         add(jComboBoxSelectedDomain);
-        jComboBoxSelectedDomain.setBounds(120, 30, 110, 22);
+        jComboBoxSelectedDomain.setBounds(120, 30, 260, 22);
 
         jButtonAddLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddLink.addActionListener(new java.awt.event.ActionListener() {
@@ -283,12 +282,13 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
         mEditorMainPanel.loadDomainProperties(domainNode);
         
         mAlLinkTypes = domainNode.getLinkTypes();
-        ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
-        if (jComboBoxAssociatedDomains.getItemCount() > 0) {
-            jComboBoxAssociatedDomains.removeAllItems();
-        }
-        jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
+        // ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
+        // if (jComboBoxAssociatedDomains.getItemCount() > 0) {
+        //     jComboBoxAssociatedDomains.removeAllItems();
+        // }
+        // jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
         if (mAlLinkTypes == null ||  mAlLinkTypes.size() == 0) {
+            /*
             for (int i=0; alAssociatedDomains != null && i < alAssociatedDomains.size(); i++) {
                 String domainWithLinks = alAssociatedDomains.get(i);
                 boolean bAdd = true;
@@ -303,12 +303,14 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
                     jComboBoxAssociatedDomains.addItem(domainWithLinks);
                 }
             }
+             */
         } else {
             for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
                 LinkType type = mAlLinkTypes.get(i);
                 String sourceDomain = type.getSourceDomain();
                 String targetDomain = type.getTargetDomain();
                 String domainWithLinks = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
+                /*
                 boolean bAdd = true;
                 for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
                     String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
@@ -320,17 +322,19 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
                 if (bAdd) {
                     jComboBoxAssociatedDomains.addItem(domainWithLinks);
                 }
+                 */
             }
         }
-        jComboBoxAssociatedDomains.setSelectedIndex(0);
+        //jComboBoxAssociatedDomains.setSelectedIndex(0);
     }
 
+    /*
     private void onAssociatedDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         mAlLinkTypes = domainNode.getLinkTypes();
 
-        String associatedDomain = (String) jComboBoxAssociatedDomains.getSelectedItem();
+        //String associatedDomain = (String) jComboBoxAssociatedDomains.getSelectedItem();
         TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
         model.rows.clear();
         int index = 0;
@@ -341,8 +345,7 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
             String targetDomain = type.getTargetDomain();
             boolean associated = false;
             if (associatedDomain != null) {
-                associated = (associatedDomain.equals(sourceDomain)) | (associatedDomain.equals(targetDomain));
-            }
+                associated = (associatedDomain.equals(sourceDomain)) | (associatedDomain.equals(targetDomain));            }
             if (jComboBoxAssociatedDomains.getSelectedIndex() == 0 || associated) {
                 LinkTypeRow r = new LinkTypeRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
                 model.addRow(index++, r);
@@ -350,6 +353,7 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
         }
         model.fireTableDataChanged();
     }
+     */
     
     private void onLinkTypeSelected() {
         int iSelectedRow = jTableLinkTypes.getSelectedRow();
@@ -365,9 +369,7 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddLink;
     private javax.swing.JButton jButtonDeleteLink;
-    private javax.swing.JComboBox jComboBoxAssociatedDomains;
     private javax.swing.JComboBox jComboBoxSelectedDomain;
-    private javax.swing.JLabel jLabelAssociated;
     private javax.swing.JLabel jLabelDomainName;
     private javax.swing.JScrollPane jScrollPaneLinkTypes;
     private javax.swing.JTable jTableLinkTypes;
