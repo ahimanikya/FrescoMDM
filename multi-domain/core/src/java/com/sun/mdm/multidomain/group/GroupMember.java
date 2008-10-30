@@ -25,7 +25,8 @@ package com.sun.mdm.multidomain.group;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
-import com.sun.mdm.multidomain.association.Association;
+import java.io.Serializable;
+import com.sun.mdm.multidomain.attributes.Attribute;
 
 /**
  * GroupMember class
@@ -33,10 +34,15 @@ import com.sun.mdm.multidomain.association.Association;
  * The assocation is between a member EUID and a groupID.
  * @author SwaranjitDua
  */
-public class GroupMember extends Association {
-    private String groupMemberID;
-    private String memberEUID;
-    private String groupID;
+public class GroupMember implements Serializable {
+    private int groupMemberID;
+    private int memberEUID;
+    private int groupID;
+    private Date effectiveFromDate;
+    private Date effectiveToDate;
+    private Date purgeDate;
+    private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
+    private GroupMemberDef groupMemberDef;
 
     
     /**
@@ -49,7 +55,7 @@ public class GroupMember extends Association {
      * Get group Id.
      * @return String Group Id.
      */
-    public String getGroupID() {
+    public int getGroupID() {
     	return groupID;
     }
     
@@ -57,7 +63,7 @@ public class GroupMember extends Association {
      * Set group Id.
      * @param groupID Group Id.
      */
-    public void setGroupID(String groupID){
+    public void setGroupID(int groupID){
     	this.groupID = groupID;
     }
     
@@ -65,7 +71,7 @@ public class GroupMember extends Association {
      * Get groupMember Id.
      * @return String Group Member Id.
      */
-    public String getGroupMemberID() {
+    public int getGroupMemberID() {
     	return groupMemberID;
     }
     
@@ -73,7 +79,7 @@ public class GroupMember extends Association {
      * Set groupMemeber Id.
      * @param groupID GroupMemeber Id.
      */
-    public void setGroupMemberID(String groupMemberID){
+    public void setGroupMemberID(int groupMemberID){
     	this.groupMemberID = groupMemberID;
     }
     
@@ -82,7 +88,7 @@ public class GroupMember extends Association {
      * Get Member EUID
      * @return memberEUID
      */
-    public String getMemberEUID() {
+    public int getMemberEUID() {
     	return memberEUID;
     }
     
@@ -90,9 +96,93 @@ public class GroupMember extends Association {
      *  set memberEUID
      * @param memberEUID
      */
-    public void setMemberEUID(String memberEUID) {
+    public void setMemberEUID(int memberEUID) {
     	this.memberEUID = memberEUID;
     }
+    
+        /**
+     * Get start date attribute.
+     * @return Date Start date attribute.
+     */
+    public Date getEffectiveFromDate() {
+        return effectiveFromDate;
+    }
+    
+    /**
+     * Set Start date attribute.
+     * @param effectiveFromDate Start date attribute.
+     */
+    public void setEffectiveFromDate(Date effectiveFromDate) {
+        this.effectiveFromDate = effectiveFromDate;
+    }  
+    
+    /**
+     * Get end date attribute.
+     * @return Date End date attribute.
+     */    
+    public Date getEffectiveToDate() {
+        return effectiveToDate;
+    }
+  
+    /**
+     * Set End date attribute.
+     * @param effectiveToDate End date attribute.
+     */    
+    public void setEffectiveToDate(Date effectiveToDate) {
+        this.effectiveToDate = effectiveToDate;
+    }
+    
+    /**
+     * Get Purge date attribute.
+     * @return Date Purge date attribute.
+     */     
+    public Date getPurgeDate() {
+        return purgeDate;
+    }
+   
+    /**
+     * Set Purge date attribute.
+     * @param purgeDate Purge date attribute.
+     */       
+    public void setPurgeDate(Date purgeDate) {
+        this.purgeDate = purgeDate;
+    } 
+    
+    /**
+     * Set attribute value.
+     * @param attribute Attribute.
+     * @param value Attribute value.
+     */
+    public void setAttributeValue(Attribute attribute, String value) {
+    	attributeValues.put(attribute, value);
+    }
+    
+    /**
+     * Get attribute value.
+     * @param attribute Attribute.
+     * @return String Attribute value.
+     */
+    public String getAttributeValue(Attribute attribute) {
+    	return attributeValues.get(attribute);
+    }
+    
+    /**
+     * Set attribute value.
+     * @param attribute Attribute.
+     * @param value Attribute value.
+     */
+    public void setAttributes(Map<Attribute,String> attributeValues) {
+    	this.attributeValues = attributeValues;
+    }
+    
+    /**
+     * Get attribute value.
+     * @param attribute Attribute.
+     * @return String Attribute value.
+     */
+    public Map<Attribute,String> getAttributes() {
+    	return attributeValues;
+    }        
     
    
 }
