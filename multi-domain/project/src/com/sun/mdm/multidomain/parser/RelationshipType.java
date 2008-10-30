@@ -48,11 +48,11 @@ public class RelationshipType extends LinkType {
         super(LinkType.TYPE_RELATIONSHIP);
     }
 
-    public RelationshipType(String relationshipName, String source, String destionation, String displayName,
+    public RelationshipType(String relationshipName, String source, String destination, String displayName,
                             ArrayList<RelationFieldReference> fixedFieldRefs, ArrayList<RelationFieldReference> extendedFieldRefs) {
         
         this.name = relationshipName;
-        this.targetDomain = destionation;
+        this.targetDomain = destination;
         this.sourceDomain = source;
         this.mDisplayName = displayName;
         this.mRelFixedAttrs = fixedFieldRefs;
@@ -64,8 +64,6 @@ public class RelationshipType extends LinkType {
         return this.mDisplayName;
     }
 
-
-    
     public String getType() {
         return LinkType.TYPE_RELATIONSHIP;
     }
