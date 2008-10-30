@@ -23,6 +23,7 @@
 package com.sun.mdm.multidomain.hierarchy;
 
 import com.sun.mdm.index.objects.ObjectNode;
+import java.io.Serializable;
 
 
 /**
@@ -32,10 +33,9 @@ import com.sun.mdm.index.objects.ObjectNode;
  * 
  * @author SwaranjitDua
  */
-public class HierarchyObject {
-    private ObjectNode parentObject;
-    private ObjectNode childObject;
-    private Hierarchy hierarchy;
+public class HierarchyObject implements Serializable {
+    private ObjectNode object;
+    private HierarchyNode node;
     
     /**
      * Public constructor
@@ -46,59 +46,41 @@ public class HierarchyObject {
     /**
      * Public constructor
      */
-    public HierarchyObject(ObjectNode parent, ObjectNode child, Hierarchy hierarchy) {
-    	/* @@Todo validate that euids in parentObject and childObject are consistent with 
-    	 * the EUIDs in hierarchy*/
-    	this.parentObject = parent;
-    	this.childObject = child;
-    	this.hierarchy = hierarchy;
+    public HierarchyObject(ObjectNode object, HierarchyNode node) {    	
+    	this.object = object;
+    	this.node = node;
     	
     }
     
-    /**
-     * Set parent object node.
-     * @param parentObject
-     */
-    public void setParentObject(ObjectNode parentObject) {
-        this.parentObject = parentObject;
-    }
-    
-    /**
-     * Get parent object node.
-     * @return parent object node
-     */
-    public ObjectNode getParentObject() {
-        return parentObject;
-    }
     
     /**
      * Set target object node.
      * @param targetObject
      */
-    public void setChildObject(ObjectNode childObject) {
-        this.childObject = childObject;
+    public void setObject(ObjectNode object) {
+        this.object = object;
     }
     /**
      * Get target domain object node.
      * @return target object node 
      */
-    public ObjectNode getChildObject() {
-        return childObject;
+    public ObjectNode getObject() {
+        return object;
     }  
     
     /**
      * Set Hierarchy 
      * @param Hierarchy 
      */
-    public void setHierarchy(Hierarchy hierarchy) {
-        this.hierarchy = hierarchy;
+    public void setHierarchyNode(HierarchyNode hierarchy) {
+        this.node = hierarchy;
     }
     
     /**
      * Get Hierarchy instance.
      * @return Hierarchy instance
      */
-    public Hierarchy getHierarchy() {
-        return hierarchy;
+    public HierarchyNode getHierarchyNode() {
+        return node;
     }     
 }

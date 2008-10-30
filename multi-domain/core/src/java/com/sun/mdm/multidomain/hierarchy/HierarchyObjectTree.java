@@ -21,7 +21,7 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.multidomain.hierarchy;
-
+import java.io.Serializable;
 import com.sun.mdm.index.objects.ObjectNode;
 
 /**
@@ -30,7 +30,7 @@ import com.sun.mdm.index.objects.ObjectNode;
  * Encapsulates an object, all its ancestors and all its immediate children.
  * @author SwaranjitDua
  */
-public class HierarchyObjectTree {
+public class HierarchyObjectTree implements Serializable {
     /**
      * Current object.
      */
@@ -38,8 +38,6 @@ public class HierarchyObjectTree {
     /**
      * All ancestors of the current object up to root. The ancestors are in order of 
      * position in the array. The 1st element is the 1st parent  and the last element is root.
-     * An Hierarchy ith element in the array - contains parent ObjectNode that is child ObjectNode 
-     * for i+1 element in this array and contains child ObjectNode that is parent Object of i-1 element.
      */
     private HierarchyObject[] ancestors;
     /**
