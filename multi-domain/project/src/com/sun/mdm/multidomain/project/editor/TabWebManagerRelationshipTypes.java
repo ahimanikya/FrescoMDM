@@ -182,35 +182,37 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             mTableFields = new JTable(mTableFieldRefs);
             mTableFields.getTableHeader().setReorderingAllowed(false);
             mTableFields.setRowSelectionAllowed(true);
-            mTableFields.setRowSelectionInterval(0, 0);
-            //mTableFields.setR
-            jScrollPane1.setViewportView(mTableFields);
-            int iSelectedRow = mTableFields.getSelectedRow();
-            TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-            String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
-            if (fieldName != null) {
-                FieldAttributeRow mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
-                //mTableFields.clearSelection();
-                if (mSelectedRow != null) {
-                    jTxtDisplayName.setText(mSelectedRow.getDisplayName());
-                    jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
-                    //jTxtGuiType.setText(mSelectedRow.getGuiType());
-                    jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
+            if (attrs.size() > 0 ) {
+                mTableFields.setRowSelectionInterval(0, 0);
+                jScrollPane1.setViewportView(mTableFields);
+                int iSelectedRow = mTableFields.getSelectedRow();
+                TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+                String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
+                if (fieldName != null) {
+                    FieldAttributeRow mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
+                    //mTableFields.clearSelection();
+                    if (mSelectedRow != null) {
+                        jTxtDisplayName.setText(mSelectedRow.getDisplayName());
+                        jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
+                        //jTxtGuiType.setText(mSelectedRow.getGuiType());
+                        jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
                     //jRBKeyValue.setSelected(mSelectedRow.getKeyType());
-                }
-                
-                jLayeredPane1.setVisible(true);
-                
-                jBtnUp.setEnabled(true);
-                jBtnDown.setEnabled(true);
+                    }
 
-                if (iSelectedRow == 0) {
-                    jBtnUp.setEnabled(false);
-                } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
-                    jBtnDown.setEnabled(false);
-                }
+                    jLayeredPane1.setVisible(true);
 
+                    jBtnUp.setEnabled(true);
+                    jBtnDown.setEnabled(true);
+
+                    if (iSelectedRow == 0) {
+                        jBtnUp.setEnabled(false);
+                    } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
+                        jBtnDown.setEnabled(false);
+                    }
+
+                }
             }
+            //mTableFields.setR
 
         
     }
