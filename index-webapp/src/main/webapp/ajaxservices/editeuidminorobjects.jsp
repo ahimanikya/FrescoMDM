@@ -448,6 +448,27 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 }%>
 
 <%if (!isValidationErrorOccured && isSave) { %>  <!-- Save System Object -->
+
+	<!-- modified as fix of bug 133 on 30-10-08 -->
+	<%if(midmUtilityManager.getEnterpriseObject(editEuid)!=null && midmUtilityManager.getEnterpriseObject(editEuid).getStatus().equalsIgnoreCase("inactive")){%>
+		<div class="ajaxalert">
+		  <table>
+				<tr>
+					<td>
+							  <script>
+									document.getElementById("activemessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("already_deactivated_text")%>';
+									document.getElementById("activeDiv").style.visibility="visible";
+									document.getElementById("activeDiv").style.display="block";
+									window.location = "#top";
+									popUrl ='/<%=URI%>/euiddetails.jsf?euid=<%=editEuid%>';
+ 							  </script>
+				   <td>
+				<tr>
+			</table>
+		</div>
+ 	<%}else{%>
+
+
   <%
      String megredEuid  = midmUtilityManager.getMergedEuid(editEuid);
 	  
@@ -598,6 +619,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
          </tr>
          </table>
 
+  <%}%>
  <%}%>
 <%}else if (isLoad) {%>
    <script> 
