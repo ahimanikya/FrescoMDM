@@ -6,6 +6,7 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
+import com.sun.mdm.multidomain.parser.Attribute;
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.RelationshipType;
@@ -96,6 +97,24 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
     }
     
+
+    public void addFieldReference(Attribute modelAttr) {
+        String fieldName = modelAttr.getName();
+        String displayName = modelAttr.getName();
+        int displayFieldOrder = mTableFields.getRowCount() + 1;
+        int maxLen = 1;
+        String guiType = "TextBox";
+        String valueList = null;
+        String valueType = modelAttr.getType();
+        boolean keyType = false;
+
+        FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder,
+                maxLen, true, guiType, valueList, valueType, keyType);
+        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        model.addRow(mTableFields.getRowCount(), row);
+        mTableFields.setModel(model);
+
+    }
     
     private void retreiveFieldProperties() {
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
