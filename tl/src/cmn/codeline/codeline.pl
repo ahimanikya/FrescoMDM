@@ -40,7 +40,7 @@ $TESTING = 0;
 #what is the release management codeline name?
 #warning - don't read this from the environment, as all
 #values in this file apply to a specific RE codeline.
-$CODELINE = "main";
+$CODELINE = "soarelease";
 
 #official name of the product. Same comments as above:
 $PRODUCT = "odmmi";
@@ -58,7 +58,7 @@ $PRODUCT = "odmmi";
 );
 
 %MINOR_VERSION = (
-    'odmmi', '1',
+    'odmmi', '1.3',
 );
 
 #this is the current release number:
@@ -171,7 +171,7 @@ $KIT_DIRNAME = $PRODUCT;        #this is not always the same, e.g., "conduct"
 $LOG_SERVER="luna";
 $LOG_VOLUME="rmstage";
 %REGRESS_DIRS=(
-    "solsparc", "/net/birch.stc.com/space/bld/ojc/main/build/open-jbi-components/main/solsparc",
+    "solsparc", "/net/birch.stc.com/space/bld/ojc/soarelease/build/open-jbi-components/soarlease/solsparc",
     "solx86", "/net/drcook.stc.com/space/bld/ojc/main/build/open-jbi-components/main/solx86",
     "redhat", "/net/tbd.stc.com/space/bld/ojc/main/build/open-jbi-components/main/redhat",
     "macosx", "/net/tbd.stc.com/space/bld/ojc/main/build/open-jbi-components/main/macosx",
