@@ -164,7 +164,7 @@ public class ProxyInitialContext
      */    
     public Object lookup(String name) throws NamingException {
         Object result = null;
-        if (name.equals(com.sun.mdm.index.util.JNDINames.BBE_DATASOURCE)) {
+        if ((name.equals(com.sun.mdm.index.util.JNDINames.BBE_DATASOURCE)) || (name.equals(com.sun.mdm.index.util.JNDINames.SEQ_DATASOURCE))) {
             try {
                 String vendor = System.getProperty("proxy.datasource.vendor");
                 
@@ -227,7 +227,7 @@ public class ProxyInitialContext
             } catch (SQLException e) {
                 throw new NamingException(e.getMessage());
             }
-        }
+        }        
         mLogger.debug("looking up mapping: " + name);
         Object values = null;
         try {    
