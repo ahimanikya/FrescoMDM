@@ -41,6 +41,19 @@ public class ExtendedAttributeDialog extends javax.swing.JDialog {
         enableBtnOK();
     }
     
+    public ExtendedAttributeDialog(String name, String columnName, String dataType, 
+                                   String defaultValue, String searchable, String required) {
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
+        initComponents();
+        jTextFieldName.setText(name);
+        jTextFieldColumnName.setText(columnName);
+        jComboBoxDataType.setSelectedItem(dataType);
+        jTextFieldDefaultValue.setText(defaultValue);
+        jCheckBoxSearchable.setSelected(searchable.equals("true"));
+        jCheckBoxRequired.setSelected(required.equals("true"));
+        enableBtnOK();
+    }
+    
     public String getAttributeName() {
         return jTextFieldName.getText();
     }

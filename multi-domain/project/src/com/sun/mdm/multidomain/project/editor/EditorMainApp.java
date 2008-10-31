@@ -343,8 +343,13 @@ public class EditorMainApp {
                 FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
                 FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
                 FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
-                domainsFolder.delete();
-                removed = true;
+                FileObject selectedDomainFolder = domainsFolder.getFileObject(domainName);
+                if (selectedDomainFolder != null) {
+                    selectedDomainFolder.delete();
+                    removed = true;
+                }
+                
+                //ToDo remove all link types too
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }

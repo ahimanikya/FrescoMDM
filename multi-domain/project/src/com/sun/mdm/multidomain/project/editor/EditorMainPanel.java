@@ -214,7 +214,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             currentDomainNode = alDomainNodes.get(0);
             loadDomainProperties(currentDomainNode);
         }
-        mTabOverview = new TabOverview(this, mEditorMainApp, alDomainNodes,  mEditorMainApp.getLinkNodes());
+        mTabOverview = new TabOverview(this, mEditorMainApp);
         JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 this.mTabOverview, this.canvas);
         lefSplitPane.setOneTouchExpandable(true);

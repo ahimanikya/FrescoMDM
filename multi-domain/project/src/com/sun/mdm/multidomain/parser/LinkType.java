@@ -101,10 +101,10 @@ public class LinkType {
      * @param attrName
      */
     public void deleteExtendedAttribute(String attrName) {
-        for (int i=0; i < predefinedAttributes.size(); i++) {
-            Attribute attr = predefinedAttributes.get(i);
+        for (int i=0; i < extendedAttributes.size(); i++) {
+            Attribute attr = extendedAttributes.get(i);
             if (attrName.equals(attr.getName())) {
-                predefinedAttributes.remove(i);
+                extendedAttributes.remove(i);
                 break;
             }
         }
@@ -116,8 +116,8 @@ public class LinkType {
      */
     public void addExtendedAttribute(Attribute newAttr) {
         boolean found = false;
-        for (int i=0; i < predefinedAttributes.size(); i++) {
-            Attribute attr = predefinedAttributes.get(i);
+        for (int i=0; i < extendedAttributes.size(); i++) {
+            Attribute attr = extendedAttributes.get(i);
             if (newAttr.getName().equals(attr.getName())) {
                 found = true;
                 break;
@@ -125,6 +125,31 @@ public class LinkType {
         }
         if (!found) {
             this.extendedAttributes.add(newAttr);
+        }
+    }
+
+    /** Update a predefined attribute
+     * 
+     * @param oldName if found - replace;  if not - add
+     * @param attribute
+     */
+    public void updateExtendedAttribute(String oldName, Attribute newAttr) {
+        boolean found = false;
+        for (int i=0; i < extendedAttributes.size(); i++) {
+            Attribute attr = extendedAttributes.get(i);
+            if (oldName.equals(attr.getName())) {
+                found = true;
+                attr.setName(newAttr.getName());
+                attr.setColumnName(newAttr.getColumnName());
+                attr.setDataType(newAttr.getDataType());
+                attr.setDefaultValue(newAttr.getDefaultValue());
+                attr.setSearchable(newAttr.getSearchable());
+                attr.setRequired(newAttr.getRequired());
+                break;
+            }
+        }
+        if (!found) {
+            addExtendedAttribute(newAttr);
         }
     }
     

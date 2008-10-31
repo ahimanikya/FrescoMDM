@@ -92,6 +92,17 @@ public class TabRelationshipDef extends javax.swing.JPanel {
                         attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
             modelExtendedAttribute.addRow(j, row);
         }
+        
+        jTableExtendedAttributes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    onEditExtendedAttribute(null);
+                } else {
+                    onExtendedAttributesSelected();
+                }
+            }
+        });
+
     }
 
     /** This method is called from within the constructor to
@@ -120,6 +131,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jLabelDomains = new javax.swing.JLabel();
         jTextDomain1 = new javax.swing.JTextField();
         jTextDomain2 = new javax.swing.JTextField();
+        jButtonEditExtendedAttribute = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
         setLayout(null);
@@ -169,16 +181,17 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             }
         });
         add(jButtonAddExtendedAttribute);
-        jButtonAddExtendedAttribute.setBounds(330, 570, 70, 23);
+        jButtonAddExtendedAttribute.setBounds(230, 570, 80, 23);
 
         jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Remove")); // NOI18N
+        jButtonDeleteExtendedAttribute.setEnabled(false);
         jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveExtendedAttribute(evt);
             }
         });
         add(jButtonDeleteExtendedAttribute);
-        jButtonDeleteExtendedAttribute.setBounds(400, 570, 71, 23);
+        jButtonDeleteExtendedAttribute.setBounds(310, 570, 80, 23);
 
         jLabelName.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Name")); // NOI18N
         add(jLabelName);
@@ -217,6 +230,16 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jTextDomain1.setBounds(70, 40, 160, 19);
         add(jTextDomain2);
         jTextDomain2.setBounds(310, 40, 160, 20);
+
+        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Edit")); // NOI18N
+        jButtonEditExtendedAttribute.setEnabled(false);
+        jButtonEditExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onEditExtendedAttribute(evt);
+            }
+        });
+        add(jButtonEditExtendedAttribute);
+        jButtonEditExtendedAttribute.setBounds(390, 570, 80, 23);
     }// </editor-fold>//GEN-END:initComponents
 
 private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
@@ -267,10 +290,47 @@ private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
 
 }//GEN-LAST:event_onRemoveExtendedAttribute
 
+private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditExtendedAttribute
+        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttributes.getModel();
+        int idx = this.jTableExtendedAttributes.getSelectedRow();
+        ExtendedAttributeRow row = model.getRow(idx);
+        String oldName = row.getName();
+        final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
+        dialog.setVisible(true);
+        if (dialog.isModified()) {
+            String attrName = dialog.getAttributeName();
+            String dataType = dialog.getDataType();
+            String columnName = dialog.getColumnName();
+            String defaultValue = dialog.getDefaultValue();
+            String searchable = dialog.getSearchable() == true ? "true" : "false";
+            String required = dialog.getRequired() == true ? "true" : "false";
+            String attributeID = ""; //dialog.getAttributeID();
+            // Replace Attribute
+            Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
+                                           searchable, required, attributeID);
+            mLinkType.updateExtendedAttribute(oldName, attr);
+            // update row
+            row.setName(attrName);
+            row.setColumnName(columnName);
+            row.setDataType(dataType);
+            row.setDefaultValue(defaultValue);
+            row.setSearchable(searchable);
+            row.setRequired(required);
+            model.fireTableDataChanged();
+            jTableExtendedAttributes.setRowSelectionInterval(idx, idx);
+        }
+}//GEN-LAST:event_onEditExtendedAttribute
 
+    private void onExtendedAttributesSelected() {
+        int cnt = jTableExtendedAttributes.getSelectedRowCount();
+        jButtonDeleteExtendedAttribute.setEnabled(true);
+        jButtonEditExtendedAttribute.setEnabled(cnt==1);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddExtendedAttribute;
     private javax.swing.JButton jButtonDeleteExtendedAttribute;
+    private javax.swing.JButton jButtonEditExtendedAttribute;
     private javax.swing.JComboBox jComboBoxDirection;
     private javax.swing.JComboBox jComboBoxPlugin;
     private javax.swing.JLabel jLabelDescription;
