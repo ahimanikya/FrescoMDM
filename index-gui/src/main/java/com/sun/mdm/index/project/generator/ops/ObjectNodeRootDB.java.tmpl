@@ -52,24 +52,24 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
     static {
 		mSelectString =
 		"       select \n"+
-		"               systemcode, \n"+
-		"               lid, \n"+
+		"               SYSTEMCODE, \n"+
+		"               LID, \n"+
 [SBYNTAG:SQLCOLLIST-BEGIN]		
-		"               [sbyntag:fieldnames().toLowerCase] \n"+
+		"               [sbyntag:fieldnames().toUpperCase] \n"+
 [SBYNTAG:SQLCOLLIST-END]		
 		"       from \n"+
-		"               sbyn_[sbyntag:objname.toLowerCase][sbyntag:sbr.toLowerCase] \n"+
+		"               SBYN_[sbyntag:objname.toUpperCase][sbyntag:sbr.toUpperCase] \n"+
 		"       where \n"+
-		"               systemcode = ? and \n"+
-		"               lid = ? \n";
+		"               SYSTEMCODE = ? and \n"+
+		"               LID = ? \n";
 		
 		mInsertString =
-		"       insert into sbyn_[sbyntag:objname.toLowerCase][sbyntag:sbr.toLowerCase] \n"+
+		"       insert into SBYN_[sbyntag:objname.toUpperCase][sbyntag:sbr.toUpperCase] \n"+
 		"       ( \n"+
-		"               systemcode, \n"+
-		"               lid, \n"+
+		"               SYSTEMCODE, \n"+
+		"               LID, \n"+
 [SBYNTAG:SQLCOLLIST-BEGIN]		
-		"               [sbyntag:fieldnames().toLowerCase] \n"+
+		"               [sbyntag:fieldnames().toUpperCase] \n"+
 [SBYNTAG:SQLCOLLIST-END]		
 		"       ) \n"+
 		"       values \n"+
@@ -77,25 +77,25 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
 		"               ?, \n"+
 		"               ?, \n"+
 [SBYNTAG:SQL?LIST-BEGIN]		
-		"               [sbyntag:fieldnames().toLowerCase] \n"+
+		"               [sbyntag:fieldnames().toUpperCase] \n"+
 [SBYNTAG:SQL?LIST-END]		
 		"       ) \n";
 		
 		mUpdateString =
-		"       update sbyn_[sbyntag:objname.toLowerCase][sbyntag:sbr.toLowerCase] \n"+
+		"       update SBYN_[sbyntag:objname.toUpperCase][sbyntag:sbr.toUpperCase] \n"+
 		"       set \n"+
-		"               systemcode = ?, \n"+
-		"               lid = ?, \n"+
+		"               SYSTEMCODE = ?, \n"+
+		"               LID = ?, \n"+
 [SBYNTAG:SQLSETLIST-BEGIN]		
-		"               [sbyntag:fieldnames().toLowerCase] \n"+
+		"               [sbyntag:fieldnames().toUpperCase] \n"+
 [SBYNTAG:SQLSETLIST-END]		
 		"       where \n"+
-		"               [sbyntag:objname.toLowerCase]id = ? \n";
+		"               [sbyntag:objname.toUpperCase]ID = ? \n";
 		
 		mDeleteString =
-		"       delete from sbyn_[sbyntag:objname.toLowerCase][sbyntag:sbr.toLowerCase] \n"+
+		"       delete from SBYN_[sbyntag:objname.toUpperCase][sbyntag:sbr.toUpperCase] \n"+
 		"       where \n"+
-		"               [sbyntag:objname.toLowerCase]id = ? \n";
+		"               [sbyntag:objname.toUpperCase]ID = ? \n";
     }
 
     public [sbyntag:objname.makeClassName][sbyntag:sbr]DB() 
@@ -109,39 +109,39 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
             throw new OPSException ("[sbyntag:objname.makeClassName][sbyntag:sbr]DB: invalid parent key(s) in create()");
         }
         
-        [sbyntag:objname.makeClassName]Object [sbyntag:objname.toLowerCase]_obj = ([sbyntag:objname.makeClassName]Object) node;                    
+        [sbyntag:objname.makeClassName]Object [sbyntag:objname.toUpperCase]_obj = ([sbyntag:objname.makeClassName]Object) node;                    
 	    PreparedStatement stmt = null;
 		try {
             log("creating [sbyntag:objname.makeClassName][sbyntag:sbr]");
         
 		    stmt = getStatement(mInsertString, conn);
 	    	int count = 1;
-                if ([sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id() == null) {
-                    [sbyntag:objname.toLowerCase]_obj.set[sbyntag:objname.makeClassName]Id(CUIDManager.getNextUID(conn, "[sbyntag:objname.toUpperCase][sbyntag:sbr]"));
+                if ([sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id() == null) {
+                    [sbyntag:objname.toUpperCase]_obj.set[sbyntag:objname.makeClassName]Id(CUIDManager.getNextUID(conn, "[sbyntag:objname.toUpperCase][sbyntag:sbr]"));
                 }
 	    	for(int i=0; i<keys.length; i++) {
 	    	    stmt.setString(count++, keys[i]);
                 log("    keys[" + i + "]: " + keys[i]);
 	    	}
 [SBYNTAG:REP-BEGIN]
-			setParam(stmt, count++, "[sbyntag:fieldtypes()]", [sbyntag:objname.toLowerCase]_obj.get[sbyntag:fieldnames().makeClassName]());
+			setParam(stmt, count++, "[sbyntag:fieldtypes()]", [sbyntag:objname.toUpperCase]_obj.get[sbyntag:fieldnames().makeClassName]());
 [SBYNTAG:REP-END]
 	    
 	    	stmt.executeUpdate();
 [SBYNTAG:REP-BEGIN]	    
-			ArrayList [sbyntag:seclist().toLowerCase]_list = (ArrayList)[sbyntag:objname.toLowerCase]_obj.get[sbyntag:seclist().makeClassName]();
-			if (null != [sbyntag:seclist().toLowerCase]_list)
+			ArrayList [sbyntag:seclist().toUpperCase]_list = (ArrayList)[sbyntag:objname.toUpperCase]_obj.get[sbyntag:seclist().makeClassName]();
+			if (null != [sbyntag:seclist().toUpperCase]_list)
 			{
-				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toLowerCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
-				for(int i=0; i<[sbyntag:seclist().toLowerCase]_list.size(); i++)
+				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toUpperCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
+				for(int i=0; i<[sbyntag:seclist().toUpperCase]_list.size(); i++)
 				{
-				   	[sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toLowerCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toLowerCase]_list.get(i);
-                                        if ([sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id() == null) {
-                                            [sbyntag:seclist().toLowerCase]_obj.set[sbyntag:seclist().makeClassName]Id(com.sun.mdm.index.idgen.CUIDManager.getNextUID(conn, "[sbyntag:seclist().toUpperCase]"));
+				   	[sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toUpperCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toUpperCase]_list.get(i);
+                                        if ([sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id() == null) {
+                                            [sbyntag:seclist().toUpperCase]_obj.set[sbyntag:seclist().makeClassName]Id(com.sun.mdm.index.idgen.CUIDManager.getNextUID(conn, "[sbyntag:seclist().toUpperCase]"));
                                         }
 				   	String[] pid = new String[1];
-				   	pid[0] = [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id();
-				   	[sbyntag:seclist().toLowerCase].create(conn, opsmap, pid, [sbyntag:seclist().toLowerCase]_obj);
+				   	pid[0] = [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id();
+				   	[sbyntag:seclist().toUpperCase].create(conn, opsmap, pid, [sbyntag:seclist().toUpperCase]_obj);
 				}
 			}
 					
@@ -158,7 +158,7 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
                     params = addobject(params, keys[i]);
                 }
 [SBYNTAG:REP-BEGIN]
-			    params = addobject(params, [sbyntag:objname.toLowerCase]_obj.get[sbyntag:fieldnames().makeClassName]());
+			    params = addobject(params, [sbyntag:objname.toUpperCase]_obj.get[sbyntag:fieldnames().makeClassName]());
 [SBYNTAG:REP-END]
                 String sql = sql2str(mInsertString, params);
                 throw new OPSException(sql + e.getMessage());
@@ -215,29 +215,29 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
 				if (null == a_ret)
 			    	a_ret = new ArrayList();
 			
-				[sbyntag:objname.makeClassName]Object [sbyntag:objname.toLowerCase]_obj = new [sbyntag:objname.makeClassName]Object();
+				[sbyntag:objname.makeClassName]Object [sbyntag:objname.toUpperCase]_obj = new [sbyntag:objname.makeClassName]Object();
 [SBYNTAG:REP-BEGIN]
-				[sbyntag:objname.toLowerCase]_obj.set[sbyntag:fieldnames().makeClassName](getValue(r_set, "[sbyntag:fieldnames()]", "[sbyntag:fieldtypes()]"));
+				[sbyntag:objname.toUpperCase]_obj.set[sbyntag:fieldnames().makeClassName](getValue(r_set, "[sbyntag:fieldnames()]", "[sbyntag:fieldtypes()]"));
 [SBYNTAG:REP-END]
 				
 				String[] pid = null;
 [SBYNTAG:REP-BEGIN]
-				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toLowerCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
+				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toUpperCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
 				pid = new String[1];
-				pid[0] = [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id();
-				ArrayList [sbyntag:seclist().toLowerCase]_list = [sbyntag:seclist().toLowerCase].get(conn, opsmap, pid);
-				if (null != [sbyntag:seclist().toLowerCase]_list)
+				pid[0] = [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id();
+				ArrayList [sbyntag:seclist().toUpperCase]_list = [sbyntag:seclist().toUpperCase].get(conn, opsmap, pid);
+				if (null != [sbyntag:seclist().toUpperCase]_list)
 				{
-			    	for(int i=0; i<[sbyntag:seclist().toLowerCase]_list.size(); i++)
+			    	for(int i=0; i<[sbyntag:seclist().toUpperCase]_list.size(); i++)
 			    	{
-						[sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toLowerCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toLowerCase]_list.get(i);
-						[sbyntag:objname.toLowerCase]_obj.add[sbyntag:seclist().makeClassName]([sbyntag:seclist().toLowerCase]_obj);
+						[sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toUpperCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toUpperCase]_list.get(i);
+						[sbyntag:objname.toUpperCase]_obj.add[sbyntag:seclist().makeClassName]([sbyntag:seclist().toUpperCase]_obj);
 			    	}
 				}
 			
 [SBYNTAG:REP-END]
-				[sbyntag:objname.toLowerCase]_obj.resetAll();
-				a_ret.add([sbyntag:objname.toLowerCase]_obj);
+				[sbyntag:objname.toUpperCase]_obj.resetAll();
+				a_ret.add([sbyntag:objname.toUpperCase]_obj);
 	    	}
 		}
 		catch (SQLException e)
@@ -278,15 +278,15 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
             throw new OPSException ("[sbyntag:objname.makeClassName][sbyntag:sbr]DB: invalid parent key(s) in update()");
         }
                     
-        [sbyntag:objname.makeClassName]Object [sbyntag:objname.toLowerCase]_obj = ([sbyntag:objname.makeClassName]Object)node;
+        [sbyntag:objname.makeClassName]Object [sbyntag:objname.toUpperCase]_obj = ([sbyntag:objname.makeClassName]Object)node;
 	    PreparedStatement stmt = null;
     	try
     	{
             log("updating [sbyntag:objname.makeClassName][sbyntag:sbr]");
     
-    		if (![sbyntag:objname.toLowerCase]_obj.isAdded())
+    		if (![sbyntag:objname.toUpperCase]_obj.isAdded())
     		{
-				if ([sbyntag:objname.toLowerCase]_obj.isUpdated())
+				if ([sbyntag:objname.toUpperCase]_obj.isUpdated())
 				{
 				    stmt = getStatement(mUpdateString, conn);
 					int count = 1;
@@ -296,41 +296,41 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
                         log("    keys[" + i + "]: " + keys[i]);
 					}
 [SBYNTAG:REP-BEGIN]				
-					setParam(stmt, count++, "[sbyntag:fieldtypes()]", [sbyntag:objname.toLowerCase]_obj.get[sbyntag:fieldnames().makeClassName]());
+					setParam(stmt, count++, "[sbyntag:fieldtypes()]", [sbyntag:objname.toUpperCase]_obj.get[sbyntag:fieldnames().makeClassName]());
 [SBYNTAG:REP-END]
-					stmt.setString(count++, [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id());
+					stmt.setString(count++, [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id());
 					
 					stmt.executeUpdate();
-					[sbyntag:objname.toLowerCase]_obj.setUpdateFlag(false);
+					[sbyntag:objname.toUpperCase]_obj.setUpdateFlag(false);
 	    		}
-	    	    else if ([sbyntag:objname.toLowerCase]_obj.isRemoved())
+	    	    else if ([sbyntag:objname.toUpperCase]_obj.isRemoved())
 	    	    {
-			    	this.remove(conn, opsmap, [sbyntag:objname.toLowerCase]_obj);
+			    	this.remove(conn, opsmap, [sbyntag:objname.toUpperCase]_obj);
 	    	    }
 
-                if (![sbyntag:objname.toLowerCase]_obj.isRemoved()) {
+                if (![sbyntag:objname.toUpperCase]_obj.isRemoved()) {
 [SBYNTAG:REP-BEGIN]				
-    				ArrayList [sbyntag:seclist().toLowerCase]_list = (ArrayList)[sbyntag:objname.toLowerCase]_obj.get[sbyntag:seclist().makeClassName]();
-    				if (null != [sbyntag:seclist().toLowerCase]_list)
+    				ArrayList [sbyntag:seclist().toUpperCase]_list = (ArrayList)[sbyntag:objname.toUpperCase]_obj.get[sbyntag:seclist().makeClassName]();
+    				if (null != [sbyntag:seclist().toUpperCase]_list)
     				{
-        				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toLowerCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
-    	    			for(int i=0; i<[sbyntag:seclist().toLowerCase]_list.size(); i++)
+        				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toUpperCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
+    	    			for(int i=0; i<[sbyntag:seclist().toUpperCase]_list.size(); i++)
     	    			{
-    						[sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toLowerCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toLowerCase]_list.get(i);
-                            if (![sbyntag:seclist().toLowerCase]_obj.isAdded() && [sbyntag:seclist().toLowerCase]_obj.isKeyChanged() && [sbyntag:seclist().toLowerCase]_obj.isUpdated()) {
-                                ObjectNode n = [sbyntag:seclist().toLowerCase]_obj.copy();
+    						[sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toUpperCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toUpperCase]_list.get(i);
+                            if (![sbyntag:seclist().toUpperCase]_obj.isAdded() && [sbyntag:seclist().toUpperCase]_obj.isKeyChanged() && [sbyntag:seclist().toUpperCase]_obj.isUpdated()) {
+                                ObjectNode n = [sbyntag:seclist().toUpperCase]_obj.copy();
                                 n.resetAll();
-                                [sbyntag:seclist().toLowerCase]_obj.unChange();
-                                node.deleteChild([sbyntag:seclist().toLowerCase]_obj);
+                                [sbyntag:seclist().toUpperCase]_obj.unChange();
+                                node.deleteChild([sbyntag:seclist().toUpperCase]_obj);
                                 node.addChild(n);
-    						    [sbyntag:seclist().toLowerCase].remove(conn, opsmap, [sbyntag:seclist().toLowerCase]_obj);
+    						    [sbyntag:seclist().toUpperCase].remove(conn, opsmap, [sbyntag:seclist().toUpperCase]_obj);
     						    String[] pid = new String[1];
-    						    pid[0] = [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id();
-    						    [sbyntag:seclist().toLowerCase].create(conn, opsmap, pid, n);
+    						    pid[0] = [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id();
+    						    [sbyntag:seclist().toUpperCase].create(conn, opsmap, pid, n);
                             } else {
     						    String[] pid = new String[1];
-    						    pid[0] = [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id();
-    						    [sbyntag:seclist().toLowerCase].update(conn, opsmap, pid, [sbyntag:seclist().toLowerCase]_obj);
+    						    pid[0] = [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id();
+    						    [sbyntag:seclist().toUpperCase].update(conn, opsmap, pid, [sbyntag:seclist().toUpperCase]_obj);
     	    			    }
     	    			}
     				}
@@ -340,7 +340,7 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
 	    	}
 	    	else
 	    	{
-				this.create(conn, opsmap, keys, [sbyntag:objname.toLowerCase]_obj);
+				this.create(conn, opsmap, keys, [sbyntag:objname.toUpperCase]_obj);
 	    	}
 
 	    }	
@@ -355,10 +355,10 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
                     params = addobject(params, keys[i]);
                 }
 [SBYNTAG:REP-BEGIN]				
-                params = addobject(params, [sbyntag:objname.toLowerCase]_obj.get[sbyntag:fieldnames().makeClassName]());
+                params = addobject(params, [sbyntag:objname.toUpperCase]_obj.get[sbyntag:fieldnames().makeClassName]());
 [SBYNTAG:REP-END]
-                params = addobject(params, [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id());
-    	        log("    sbyntag:objname.makeClassName]Id: " + [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id());
+                params = addobject(params, [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id());
+    	        log("    sbyntag:objname.makeClassName]Id: " + [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id());
     
                 String sql = sql2str(mUpdateString, params);	
                 throw new OPSException(sql + e.getMessage());
@@ -388,28 +388,28 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
     
     public void remove(Connection conn, HashMap opsmap, ObjectNode node) throws OPSException
     {
-        [sbyntag:objname.makeClassName]Object [sbyntag:objname.toLowerCase]_obj = ([sbyntag:objname.makeClassName]Object) node;
+        [sbyntag:objname.makeClassName]Object [sbyntag:objname.toUpperCase]_obj = ([sbyntag:objname.makeClassName]Object) node;
 	    PreparedStatement stmt = null;
 		try
 		{
             log("to remove [sbyntag:objname.makeClassName][sbyntag:sbr]");
 
 [SBYNTAG:REP-BEGIN]		    
-		    ArrayList [sbyntag:seclist().toLowerCase]_list = (ArrayList)[sbyntag:objname.toLowerCase]_obj.get[sbyntag:seclist().makeClassName]();
-		    if (null != [sbyntag:seclist().toLowerCase]_list)
+		    ArrayList [sbyntag:seclist().toUpperCase]_list = (ArrayList)[sbyntag:objname.toUpperCase]_obj.get[sbyntag:seclist().makeClassName]();
+		    if (null != [sbyntag:seclist().toUpperCase]_list)
 		    {
-				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toLowerCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
-				for(int i=0; i<[sbyntag:seclist().toLowerCase]_list.size(); i++)
+				[sbyntag:seclist().makeClassName][sbyntag:sbr]DB [sbyntag:seclist().toUpperCase] = ([sbyntag:seclist().makeClassName][sbyntag:sbr]DB)opsmap.get("[sbyntag:seclist()][sbyntag:sbr]DB");
+				for(int i=0; i<[sbyntag:seclist().toUpperCase]_list.size(); i++)
 				{
-				    [sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toLowerCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toLowerCase]_list.get(i);
-				    [sbyntag:seclist().toLowerCase].remove(conn, opsmap, [sbyntag:seclist().toLowerCase]_obj);
+				    [sbyntag:seclist().makeClassName]Object [sbyntag:seclist().toUpperCase]_obj = ([sbyntag:seclist().makeClassName]Object)[sbyntag:seclist().toUpperCase]_list.get(i);
+				    [sbyntag:seclist().toUpperCase].remove(conn, opsmap, [sbyntag:seclist().toUpperCase]_obj);
 				}
 		    }
 		    
 [SBYNTAG:REP-END]		    
             stmt = getStatement(mDeleteString, conn);
-		    stmt.setString(1, [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id());
-	        log("    sbyntag:objname.makeClassName]Id: " + [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id());
+		    stmt.setString(1, [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id());
+	        log("    sbyntag:objname.makeClassName]Id: " + [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id());
 	        
 		    stmt.executeUpdate();
 		}
@@ -419,7 +419,7 @@ public final class [sbyntag:objname.makeClassName][sbyntag:sbr]DB
             try
             {
                 ArrayList params = new ArrayList();
-                params = addobject(params, [sbyntag:objname.toLowerCase]_obj.get[sbyntag:objname.makeClassName]Id());
+                params = addobject(params, [sbyntag:objname.toUpperCase]_obj.get[sbyntag:objname.makeClassName]Id());
                 String sql = sql2str(mDeleteString, params);
                 throw new OPSException(sql + e.getMessage());
             }
