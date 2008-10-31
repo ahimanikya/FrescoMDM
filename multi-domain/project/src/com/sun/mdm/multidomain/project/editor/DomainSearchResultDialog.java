@@ -37,16 +37,18 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
     private NumbericVerifier verifier = new NumbericVerifier();
     
     /** Creates new form DomainSearchResultDialog */
-    public DomainSearchResultDialog(SearchDetail searchDetail, ArrayList<RecordDetail> recordDetailList, boolean isNew) {
+    public DomainSearchResultDialog(SearchDetail searchDetail, boolean isNew) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mSearchDetail = searchDetail;
-        mRecordDetailList = recordDetailList;
+        //mRecordDetailList = recordDetailList;
         //super(parent, modal);
         initComponents();
+        /**
          for (RecordDetail recDet : mRecordDetailList) {
             this.jCBRecordDetail.insertItemAt(recDet.getDisplayName(), recDet.getRecordDetailId() - 1);
         }
 
+         */ 
         jSpinnerItemPerPage.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
         jSpinnerMaxItems.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
         jSpinnerItemPerPage.setInputVerifier(verifier);
@@ -87,10 +89,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         
     }
     
-    public String getSelectRecordDetail() {
-        return (String) this.jCBRecordDetail.getSelectedItem();
-    }
-    
+
     public boolean isModified() {
         return this.bModified;
     }
@@ -99,7 +98,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
      * load info for New Search Detail
      */
     private void loadNewSearchDetail() {
-        jCBRecordDetail.setSelectedIndex(0);
+        //jCBRecordDetail.setSelectedIndex(0);
         TableModelFieldGroup groupModel = new TableModelFieldGroup(mSearchDetail.getFieldGroups());
         jTableFieldGroup.setModel(groupModel);
         TableModelField fieldModel = new TableModelField(new FieldGroup());
@@ -114,7 +113,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jTxtResultName.setText(mSearchDetail.getDisplayName());
         jSpinnerItemPerPage.setValue(setIntegerValue(mSearchDetail.getItemPerPage()));
         jSpinnerMaxItems.setValue(setIntegerValue(mSearchDetail.getMaxResultSize()));
-        jCBRecordDetail.setSelectedIndex(mSearchDetail.getRecordDetailID() - 1);
+        //jCBRecordDetail.setSelectedIndex(mSearchDetail.getRecordDetailID() - 1);
         TableModelFieldGroup groupModel = new TableModelFieldGroup(mSearchDetail.getFieldGroups());
         jTableFieldGroup.setModel(groupModel);
         TableModelField fieldModel = new TableModelField(mSearchDetail.getFieldGroups().get(0));
@@ -140,8 +139,6 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jSpinnerItemPerPage = new javax.swing.JSpinner();
         jLabelMaxItems = new javax.swing.JLabel();
         jSpinnerMaxItems = new javax.swing.JSpinner();
-        jLabel1 = new javax.swing.JLabel();
-        jCBRecordDetail = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableFieldGroup = new javax.swing.JTable();
@@ -170,8 +167,6 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jLabelItemPerPage.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_DOMAIN_SEARCH_RESULT_ITEM_PER_PAGE")); // NOI18N
 
         jLabelMaxItems.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_DOMAIN_SEARCH_RESULT_MAX_ITEMS")); // NOI18N
-
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD")); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jPanel1.border.title"))); // NOI18N
 
@@ -304,15 +299,10 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(19, 19, 19)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
+                        .add(19, 19, 19)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelSearchResultName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelMaxItems))
@@ -321,15 +311,20 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                             .add(jTxtResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                                 .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerMaxItems)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
-                            .add(jCBRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 107, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
-                .add(jBtnOK)
-                .add(18, 18, 18)
-                .add(jBtnCancel)
-                .addContainerGap())
+                                .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))))
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 313, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jBtnOK)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jBtnCancel)))))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -346,23 +341,19 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelMaxItems)
                     .add(jSpinnerMaxItems, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(19, 19, 19)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jLabel1)
-                    .add(jCBRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jBtnOK)
                     .add(jBtnCancel))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-477)/2, (screenSize.height-449)/2, 477, 449);
+        setBounds((screenSize.width-477)/2, (screenSize.height-400)/2, 477, 400);
     }// </editor-fold>//GEN-END:initComponents
 
 private void jTxtResultNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtResultNameActionPerformed
@@ -375,12 +366,14 @@ private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
     mSearchDetail.setDisplayName(this.jTxtResultName.getText());
     mSearchDetail.setItemPerPage(getIntValue(this.jSpinnerItemPerPage.getValue()));
     mSearchDetail.setMaxResultSize(getIntValue(this.jSpinnerMaxItems.getValue()));
+    /**
     for (RecordDetail recordDetail : mRecordDetailList) {
         if (recordDetail.getDisplayName().equals((String) this.jCBRecordDetail.getSelectedItem())) {
             mSearchDetail.setRecordDetailID(recordDetail.getRecordDetailId());
             break;
         }
     }
+     */ 
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
     mSearchDetail.setFieldGroups(fieldGroupModel.getAllRows());
     this.dispose();
@@ -705,8 +698,6 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     private javax.swing.JButton jBtnOK;
     private javax.swing.JButton jBtnRemoveField;
     private javax.swing.JButton jBtnRemoveGroup;
-    private javax.swing.JComboBox jCBRecordDetail;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelItemPerPage;
     private javax.swing.JLabel jLabelMaxItems;
     private javax.swing.JLabel jLabelSearchResultName;

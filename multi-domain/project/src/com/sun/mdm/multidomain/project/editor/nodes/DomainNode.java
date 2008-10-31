@@ -269,6 +269,10 @@ public class DomainNode extends AbstractNode {
     public TabDomainSearch getDoaminsTab(boolean bRefresh) {
         if (bRefresh || mTabDomainSearch == null) {
             DomainForWebManager domain = mEditorMainApp.getMultiDomainWebManager(false).getDomains().getDomain(this.getName());
+            if (domain == null) {
+                domain = getMidmObject();
+                mEditorMainApp.getMultiDomainWebManager(false).getDomains().addDomain(domain);
+            }
             mTabDomainSearch = new TabDomainSearch(mEditorMainApp, domain);
         }
         return mTabDomainSearch;
@@ -277,6 +281,10 @@ public class DomainNode extends AbstractNode {
     public TabDomainView getDomainViewTab(boolean bRefresh) {
         if (bRefresh || mTabDomainView == null) {
             DomainForWebManager domain = mEditorMainApp.getMultiDomainWebManager(false).getDomains().getDomain(this.getName());
+            if (domain == null) {
+                domain = getMidmObject();
+                mEditorMainApp.getMultiDomainWebManager(false).getDomains().addDomain(domain);
+            }
             mTabDomainView = new TabDomainView(mEditorMainApp, domain);
         }
         

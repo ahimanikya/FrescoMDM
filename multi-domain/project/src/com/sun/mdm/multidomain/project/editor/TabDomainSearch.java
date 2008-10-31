@@ -73,30 +73,9 @@ public class TabDomainSearch extends javax.swing.JPanel {
     }
     
     private void getDomain(String domainName) {
-        
-        //DomainForWebManager domain = mDomains.getDomain(domainName);
-        /**
-        if (domain == null) {
-            domain = new DomainForWebManager(domainName);
-            mDomains.addDomain(domain);
-            MIDMObjectDef midmObject = new MIDMObjectDef();
-            FileObject midmFileObject = mEditorMainApp.getDomainMidmXml(domainName);
 
-            try {
-             InputStream is = midmFileObject.getInputStream();
- 
-              midmObject.parseMIDMNode(is, domain);
-            } catch (Exception e) {
-                
-            }
-        }
-         */ 
         
-        
-        
-        //mRecordDetail = domain.getRecordDetailList();
-        //TableModelRecordDetail mTableRecordDetailModel = new TableModelRecordDetail(mRecordDetail);
-        //create table for Search Result
+        mRecordDetail = mDomain.getRecordDetailList();
         this.jTxtDomain.setText(domainName);
         mSearchResult = mDomain.getSearchDetail();
         TableModelSearchResult mTableSearchResultModel = new TableModelSearchResult(mSearchResult);
@@ -358,7 +337,7 @@ private void onAddSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     int searchDetailID = mDomain.generateSearchResultID();
 
     SearchDetail searchDetail = new SearchDetail(searchDetailID, 1, 1, 1, "", new ArrayList<FieldGroup>());
-    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, mRecordDetail, true);
+    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, true);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         TableModelSearchResult searchResultModel = (TableModelSearchResult) this.mTableSearchResult.getModel();
@@ -368,7 +347,7 @@ private void onAddSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
         this.jBtnEditSearchResult.setEnabled(true);
         this.jBtnRemoveSearchResult.setEnabled(true);
         mTableSearchResult.setModel(searchResultModel);
-        this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
+        //this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
         this.jScrollPaneSearchResult.setViewportView(mTableSearchResult);
         this.mJComboSearchResult.addItem(searchDetail.getDisplayName());
         this.enableSave();
@@ -491,10 +470,10 @@ private void onEditSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     int selectedRow = this.mTableSearchResult.getSelectedRow();
     TableModelSearchResult searchResult = (TableModelSearchResult) mTableSearchResult.getModel();
     SearchDetail searchDetail = searchResult.getRow(selectedRow);
-    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, mRecordDetail, false);
+    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, false);
     dlg.setVisible(true);
     if (dlg.isModified()) {
-        this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
+        //this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
         this.jScrollPaneSearchResult.setViewportView(mTableSearchResult);
         this.enableSave();
     }
