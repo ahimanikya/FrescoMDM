@@ -34,9 +34,14 @@ import java.io.InputStream;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.util.Localizer;
+import com.sun.mdm.index.util.ConnectionUtilForSequence;
+import com.sun.mdm.index.ejb.sequence.SequenceEJB;
+import com.sun.mdm.index.ejb.sequence.SequenceEJBLocal;
+import com.sun.mdm.index.util.JNDINames;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,16 +57,41 @@ public class DefaultEuidGenerator implements EuidGenerator {
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private transient final Localizer mLocalizer = Localizer.get();
     private int mIdLength;
+    private int mTrialCount = 5; //Need to read this from the EIUD config
     private int mChecksumLength;
     private int mChunkSize;
-    private long mNextEUID = -1;
+    private static Long mNextEUID = new Long(-1);
     private String mChecksumClassname = "com.sun.mdm.index.idgen.impl.DefaultChecksumCalculator";
     private ChecksumCalculator mChecksumCalculator = null;
+    private static boolean sequeneceDatabaseAvailable = false;
+    private static String DatabaseType = ObjectFactory.getDatabase();
+    private static SequenceEJBLocal mseqLocal = null;
 
     /** Default constructor for DefaultEuidGenerator
      * @throws SEQException An exception occurred
      */
     public DefaultEuidGenerator() throws SEQException {
+        
+        try {
+            Context init = new InitialContext();
+            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
+        } catch (NamingException ex) {
+                throw new SEQException("Could not Find Sequence EJB " + ex.getMessage());            
+        } catch (Exception ex) {
+            System.out.println("Failed to get Sequence EJB " + ex.getMessage());
+        }
+    	
+    	if ((mseqLocal.pingDatabase()).equals("Up")) {
+               sequeneceDatabaseAvailable = true;
+	        if (mLogger.isLoggable(Level.FINE)) {
+	                mLogger.fine("Sequence Connection Pool is Available");
+	        } 
+	}
+        else if (!DatabaseType.equalsIgnoreCase("Oracle")) { 
+        //Database is not Oracle and the Sequence Generator Pool is not available. Throw SQLException.
+            throw new SEQException(mLocalizer.t("IDG502A: A Sequence Generator Connection Pool required for " + DatabaseType +
+                                                " database was not found or not reachable"));	
+        } 
     }
 
     /** Parameters of the euid generator represented in the configuration XML
@@ -77,6 +107,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
             mIdLength = ((Integer) value).intValue();
         } else if (parameterName.equals("ChecksumLength")) {
             mChecksumLength = ((Integer) value).intValue();
+        } else if (parameterName.equals("ChecksumTry")) {
+            mTrialCount = ((Integer) value).intValue();    
         } else if (parameterName.equals("ChunkSize")) {
             mChunkSize = ((Integer) value).intValue();
         } else if (parameterName.equals("ChecksumCalculatorClass")) {
@@ -93,7 +125,7 @@ public class DefaultEuidGenerator implements EuidGenerator {
      * @exception SEQException an error occurred
      * @return next EUID
      */
-    public synchronized String getNextEUID(Connection con) throws SEQException {
+    public String getNextEUID(Connection con) throws SEQException {
         String euid = null;
 
         /*
@@ -101,21 +133,46 @@ public class DefaultEuidGenerator implements EuidGenerator {
          * here, but that would be putting a restriction on the checksum
          * algorithm implementations.
          */
-        for (;;) {
+        boolean  validEUID = false;
+        String retVal = null;
+        int trialCount = 0;
+        while (!validEUID && trialCount < mTrialCount) {
             try {
-                if (mNextEUID != -1) {
-                    if (mNextEUID % mChunkSize == 0) {
-                        mNextEUID = xgetNextEUID(con);
+                if (DatabaseType.equalsIgnoreCase("Oracle") &&
+                         !sequeneceDatabaseAvailable) {
+                    synchronized(mNextEUID) {
+                            long val = mNextEUID.longValue();
+                            if (val != -1) {
+                                if (val % mChunkSize == 0) {
+                                    val = xgetNextEUID(con);
+                                }
+                                euid = String.valueOf(val);
+                            } else {
+                                val = xgetNextEUID(con);
+                                euid = String.valueOf(val);
+                            }
+                            mNextEUID = new Long(val + 1);
                     }
-                    euid = String.valueOf(mNextEUID);
                 } else {
-                    mNextEUID = xgetNextEUID(con);
-                    euid = String.valueOf(mNextEUID);
+                    synchronized(mNextEUID) {
+                            long val = mNextEUID.longValue();
+                            if (val != -1) {
+                                if (val % mChunkSize == 0) {
+                                    val = mseqLocal.xgetNextEUID(mChunkSize, DatabaseType);
+                                }
+                                euid = String.valueOf(val);
+                            } else {
+                                val = mseqLocal.xgetNextEUID(mChunkSize, DatabaseType);
+                                euid = String.valueOf(val);
+                            }
+                            mNextEUID = new Long(val + 1);
+                    }
                 }
             } catch (SEQException e) {
                 throw e;
             }
-            String retVal;
+            
+            
             String sChecksum;
             if (mChecksumLength > 0) {
                 if (mChecksumCalculator == null) {
@@ -137,18 +194,20 @@ public class DefaultEuidGenerator implements EuidGenerator {
                 sChecksum = mChecksumCalculator.calcChecksum(formatEUID(euid));
                 if (sChecksum == null) {
                     // skip this EUID because no checksum could be calculated
-                    mNextEUID++;
+                    //mNextEUID++;
+                    trialCount++;
                     continue;
                 }
                 retVal = formatEUID(euid) + sChecksum;
             } else {
                 retVal = formatEUID(euid);
             }
-            mNextEUID++;
+            //mNextEUID++;
 
-            return retVal;
-
+            //return retVal;
+            validEUID = true;
         }
+        return retVal;
     }
 
     /** Get the EUID length
@@ -164,14 +223,17 @@ public class DefaultEuidGenerator implements EuidGenerator {
 
     private long xgetNextEUID(Connection conn) throws SEQException {
         long nextValue;
+        
+        /*Note: This method only will be used by Oracle. Some code might be useless*/
         try {
-            if (ObjectFactory.getDatabase().equalsIgnoreCase("Oracle")) {
+            if (DatabaseType.equalsIgnoreCase("Oracle")) {
                 nextValue = getSeqNoByFunction(conn);
-            } else if (ObjectFactory.getDatabase().equalsIgnoreCase("MySQL")) {
+            } else if (DatabaseType.equalsIgnoreCase("MySQL")) {
                 nextValue = getSeqNoByMySQLFunction(conn);
             } else {
                 nextValue = getSeqNoByProcedure(conn);
-            }
+            }            
+            	
         } catch (Exception exp) {
             throw new SEQException(mLocalizer.t("IDG505: Could not retrieve the " +
                     "next EUID: (0}", exp));
