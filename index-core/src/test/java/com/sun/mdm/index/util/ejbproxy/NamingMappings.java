@@ -64,6 +64,10 @@ public class NamingMappings extends ListResourceBundle {
             new String[] {"com.sun.mdm.index.ejb.master.MasterControllerLocal", 
                           "com.sun.mdm.index.ejb.master.MasterControllerEJB"}},
 
+        {JNDINames.EJB_SEQUENCE, 
+            new String[] {"com.sun.mdm.index.ejb.sequence.SequenceEJBLocal", 
+                          "com.sun.mdm.index.ejb.sequence.SequenceEJB"}},
+                          
         {JNDINames.EJB_REF_PAGEDATA, 
             new String[] {"com.sun.mdm.index.ejb.page.PageDataRemote", 
                           "com.sun.mdm.index.ejb.page.PageDataEJB"}},
