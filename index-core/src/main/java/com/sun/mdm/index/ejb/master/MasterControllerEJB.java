@@ -24,6 +24,7 @@
 package com.sun.mdm.index.ejb.master;
 
 import com.sun.mdm.index.ejb.page.PageDataRemote;
+import com.sun.mdm.index.ejb.sequence.SequenceEJBLocal;
 
 import com.sun.mdm.index.master.ConnectionInvalidException;
 import com.sun.mdm.index.master.MatchResult;
@@ -59,6 +60,7 @@ import com.sun.mdm.index.update.UpdateResult;
 import com.sun.mdm.index.util.Localizer;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBs;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.SessionContext;
@@ -83,14 +85,20 @@ import javax.interceptor.InvocationContext;
 @Stateless(mappedName="ejb/_EVIEW_OBJECT_TOKEN_MasterController")
 @Remote(MasterControllerRemote.class)
 @Local(MasterControllerLocal.class)
-@EJB(   name="ejb/PageDataRemote",
+@EJBs({   
+    @EJB (name="ejb/PageDataRemote",
         beanInterface=PageDataRemote.class,
-        mappedName="ejb/_EVIEW_OBJECT_TOKEN_PageData")
+        mappedName="ejb/_EVIEW_OBJECT_TOKEN_PageData"),
+    @EJB (name="ejb/SequenceEJBLocal",
+        beanInterface=SequenceEJBLocal.class,
+        mappedName="ejb/_EVIEW_OBJECT_TOKEN_SequenceEJB")    
+})
+
 @Resources ({
 
     @Resource(  name="jdbc/BBEDataSource",
                 type=javax.sql.DataSource.class,
-                mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" ),
+                mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" ),                
     @Resource(  name="jms/outBoundSender",
                 type=javax.jms.ConnectionFactory.class,
                 mappedName="jms/_EVIEW_OBJECT_TOKEN_OutBoundSender" )
