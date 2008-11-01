@@ -15,10 +15,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
       - for the index controller we are using ParameterizableViewController, so we must
       - define an explicit mapping for it.
       -->
+    <bean id="loginController" class="com.sun.mdm.multidomain.presentation.web.LoginController">
+        <property name="commandName"><value>applicationHandler</value></property>
+        <property name="commandClass"><value>com.sun.mdm.multidomain.presentation.beans.ApplicationHandler</value></property>
+    </bean>
+    
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
                 <prop key="/index.htm">indexController</prop>
+                <prop key="/login.htm">loginController</prop>
                 <prop key="/managerelationshiptype.htm">manageRelationshipType</prop>                
                 <prop key="/managerelationship.htm">manageRelationship</prop>                
                 <prop key="/managehierarchytype.htm">manageHierarchyType</prop>                

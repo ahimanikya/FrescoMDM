@@ -16,6 +16,14 @@
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
+        <run-as>
+            <role-name>MultiDomain.Admin</role-name>
+        </run-as>
+        <security-role-ref>
+            <description/>
+            <role-name>MultiDomain.Admin</role-name>
+            <role-link>MultiDomain.Admin</role-link>
+        </security-role-ref>
     </servlet>
     
     <!-- DWR servlet -->
@@ -47,7 +55,11 @@
     <welcome-file-list>
         <welcome-file>/redirect.jsp</welcome-file>
     </welcome-file-list>
-    
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>com.sun.mdm.multidomain.presentation.mdwm</param-value>
+    </context-param>
+
     <error-page>
         <error-code>404</error-code>
         <location>/Error404.jsp</location>
@@ -61,7 +73,7 @@
         <web-resource-collection>
             <web-resource-name>mdwmresources</web-resource-name>
             <description>protect all resources of  multidomain web manager</description>
-            <url-pattern>/</url-pattern>           
+            <url-pattern>*.jsp</url-pattern>           
             <http-method>GET</http-method>
             <http-method>POST</http-method>
             <http-method>HEAD</http-method>
@@ -79,7 +91,7 @@
             <description/>
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
-        </security-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>file</realm-name>
@@ -96,5 +108,10 @@
         <description/>
         <role-name>MultiDomain.User</role-name>
     </security-role>
-    
+    <jsp-config>
+        <taglib>
+        <taglib-uri>/spring</taglib-uri>
+        <taglib-location>/WEB-INF/tld/spring.tld</taglib-location>
+        </taglib>
+    </jsp-config>
     </web-app>
