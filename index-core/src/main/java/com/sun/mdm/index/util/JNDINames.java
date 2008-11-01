@@ -33,6 +33,8 @@ public interface JNDINames {
     public static final String EJB_REF_MASTER ="java:comp/env/ejb/MasterControllerRemote";
     /** JNDI name for the MasterControllerLocal */ 
     public static final String EJB_LOCAL_REF_MASTER ="java:comp/env/ejb/MasterControllerLocal";
+    /** JNDI name for the MasterControllerLocal */ 
+    public static final String EJB_SEQUENCE ="java:comp/env/ejb/SequenceEJBLocal";
     /** JNDI name for the PageDataRemote */    
     public static final String EJB_REF_PAGEDATA ="java:comp/env/ejb/PageDataRemote";
     /** JNDI name for the CodeLookupRemote */    
@@ -41,8 +43,10 @@ public interface JNDINames {
     public static final String EJB_REF_REPORTGENERATOR ="java:comp/env/ejb/ReportGeneratorRemote";
     /** JNDI name for the BatchReportGeneratorRemote */    
     public static final String EJB_REF_BATCHREPORTGENERATOR ="java:comp/env/ejb/BatchReportGeneratorRemote";
-    /** JNDI name for the data source */    
+    /** JNDI name for the main data source */    
     public static final String BBE_DATASOURCE = "java:comp/env/jdbc/BBEDataSource";
+    /** JNDI name for the sequence data source */    
+    public static final String SEQ_DATASOURCE = "java:comp/env/jdbc/SEQDataSource";
     /** JNDI name for the XA data source */    
     public static final String BBE_XADATASOURCE = "java:comp/env/jdbc/XABBEDataSource";
     /** JNDI name for the OuntBound TopicConnectionFactory */    
