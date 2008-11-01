@@ -64,6 +64,7 @@
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
   Operations operations = new Operations();
+  String URL = new String();
  %>
 
 <f:view>
@@ -103,6 +104,8 @@
 	   	   }
 		   // LID merge related global javascript variables
 		   var euids="";
+		   var popUrl="";
+		   var reloadUrl="";
 		   var fromPage="";
 		   var duplicateEuids = "";
            var euidArray = [];
@@ -154,7 +157,7 @@
 								<% 
 								 String pageName = request.getParameter("fromUrl");
 								 String previousQuery = request.getQueryString();
-								 String URL= pageName+"?"+previousQuery+"&back=true";
+								 URL= pageName+"?"+previousQuery+"&back=true";
 								 %>
  			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
@@ -199,7 +202,7 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
 								<% 
 								 String pageName = request.getParameter("fromUrl");
 								 String previousQuery = request.getQueryString();
-								 String URL= pageName+"?"+previousQuery+"&back=true";
+								 URL= pageName+"?"+previousQuery+"&back=true";
 								 %>
  			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
@@ -397,6 +400,9 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
 <script type="text/javascript">
     makeDraggable("resolvePopupDiv");
     makeDraggable("mergeDiv");
+    makeDraggable("mergeConfirmationDiv");
+    makeDraggable("activeDiv");
+	
 </script>
        <div id="activeDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
              <form id="activeMerge" name="activeMerge" >
@@ -436,6 +442,91 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
                  </table>
              </form>
          </div>
+
+		 <div id="successDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+               <form id="successDiv">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:window.location=popUrl;"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:window.location=popUrl;"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="successMessageDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:window.location=popUrl;">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+ 		 	 <!-- added as a fix of 6710694 -->
+		       <div id="mergeConfirmationDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
+             <form id="activeMerge" name="activeMerge" >
+                 <table cellspacing="0" cellpadding="0" border="0">
+ 					 <tr>
+					     <th title="<%=bundle.getString("move")%>">&nbsp;<h:outputText value="#{msgs.popup_information_text}"/></th> 
+					     <th>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+						</th>
+					  </tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr>
+					     <td colspan="2" ><b><div id="mergeConfirmationmessageDiv"></div></b></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2" border="2"  align="right" valign="top" >
+                            <table align="center">
+						      <tr>
+							 <td>&nbsp;</td>
+							 <td> 
+                               <a title="<h:outputText value="#{msgs.source_inpatient1_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="if(reloadUrl.length<1) { 
+								           window.location.reload(true);
+										  }else {
+                                            window.location = reloadUrl;
+										    reloadUrl='';
+ 										  }";
+ 							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient1_text}"/></span>
+                                </a>
+							  </td>
+							  <td>
+                              <a title="<h:outputText value="#{msgs.source_inpatient2_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="window.location = '<%=URL%>' ;"
+  							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient2_text}"/></span>
+                                </a>
+							  </td>
+							 </tr>
+							 </table>
+					     </td>
+                     </tr> 
+                 </table>
+             </form>
+         </div>
+
      </html>
     </f:view>
     

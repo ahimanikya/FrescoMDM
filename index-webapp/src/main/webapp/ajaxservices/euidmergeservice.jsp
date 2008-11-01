@@ -242,16 +242,16 @@ boolean isSessionActive = true;
 				<%if(eoMultiMergePreview.get("Merged_EUID") != null ) {
 					isMergedEuid  = true;
 				%>
- 					<%if(isMergedEuid && srcDestnEuids!=null){
+ 					<%if(isMergedEuid && srcDestnEuids!=null){ //bug #202
  					%>
   							<table>
 							 <tr><td>
 								  <script>
-  									 popUrl='#top';
-									 document.getElementById("activemessageDiv").innerHTML='<%=eoMultiMergePreview.get("Merged_EUID_Message")%>';
-									 document.getElementById('activeDiv').style.visibility='visible';
-									 document.getElementById('activeDiv').style.display='block';
-								  </script>
+ 						            reloadUrl ='euiddetails.jsf?euid=<%=eoMultiMergePreview.get("Merged_EUID")%>';
+									document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_merged_text")%>";
+									document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+									document.getElementById("mergeConfirmationDiv").style.display="block";
+ 								  </script>
 								</td>
 							 </tr>
 						  </table>
@@ -259,22 +259,15 @@ boolean isSessionActive = true;
 			<%} else if (eoMultiMergePreview.get(RecordDetailsHandler.CONCURRENT_MOD_ERROR) != null ) {
 			   eoArrayList.clear();
 
-			   
-                %> <!-- Clear all the values in the arraylist here -->
+             %> <!-- Clear all the values in the arraylist here -->
               <table>
               <tr>
                 <td>
                		<script> 
-						window.location = "#top";
-						document.getElementById("successMessageDiv").innerHTML = 'EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%>';
-						document.getElementById("successDiv").style.visibility="visible";
-						document.getElementById("successDiv").style.display="block";
- 						if((fromPage != null && fromPage.length > 0 ) && (duplicateEuids != null && duplicateEuids.length > 0 ) ) {
-                           window.location = '/<%=URI%>/compareduplicates.jsf?fromPage='+fromPage+'&duplicateEuids='+duplicateEuids;
-						 } else {
- 		                    window.location = '/<%=URI%>/compareduplicates.jsf?euids='+alleuidsArray;
-						}
-              	    </script>
+						document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%>";
+						document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+						document.getElementById("mergeConfirmationDiv").style.display="block";
+					</script>
                    </td>
                </tr>
              </table>
@@ -305,46 +298,65 @@ boolean isSessionActive = true;
 			
 			<%  } else {%>
 		 <% boolean concurrentModification = false;%>
+		 <% boolean concurrentMergeModification = false;%>
+
 	  <table>
 			<tr>
 				<td>
 				      <ul>
 			            <% while (messagesIter.hasNext())   { %>
-				             <li>
 								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-								<% if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
-				                       concurrentModification = true;
-			                       }
+								<%if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS531") != -1) {
+									concurrentModification = true;
+								}			                    
+								%>
+								<%
+ 								if(facesMessage.getSummary().indexOf("MDM-MI-OPS537") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS535") != -1) {
+				                       concurrentMergeModification = true;
+								   }
 			                    %>
-				             </li>
+								
+		                      <%if(!concurrentMergeModification && !concurrentModification){%>
+				                <li>
+ 								<%= facesMessage.getSummary() %>
+								</li>
+							 <%}%>
 						 <% } %>
 				      </ul>
 				<td>
 			<tr>
 		</table>
 		</div>
-
+		<%if(concurrentMergeModification){%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+  										document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%>";
+										document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+										document.getElementById("mergeConfirmationDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+		<%}%>
 		<%if(concurrentModification) {%>
 			  <table>
 					<tr>
 						<td><!-- Modified  on 23-09-2008 for all information popups -->
-								  <script>
-										window.location = "#top";
-										document.getElementById("successMessageDiv").innerHTML = 'EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%>';
-										document.getElementById("successDiv").style.visibility="visible";
-										document.getElementById("successDiv").style.display="block";
-								  </script>
+						  <script>
+								document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%>";
+								document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+								document.getElementById("mergeConfirmationDiv").style.display="block";
+						  </script>
 					   <td>
 					<tr>
 				</table>
  		<%}%>
 
         <%}
-			}%>
-   
-
-
+	}%>
+  
 <%
   boolean alreadyMerged = false;
   boolean isConcurrentModification = true;
@@ -365,14 +377,15 @@ boolean isSessionActive = true;
 					}
 				}
   			%>
-			<%if(alreadyMerged){%>
+			<%if(alreadyMerged){%><!-- 202 -->
  				<table>
 				 <tr><td>
 					  <script>
-						 popUrl='#top';
-						 document.getElementById("activemessageDiv").innerHTML='<%=eoHashMapValues.get("Merged_EUID_Message")%>';
-						 document.getElementById('activeDiv').style.visibility='visible';
-						 document.getElementById('activeDiv').style.display='block';
+						reloadUrl ='euiddetails.jsf?euid=<%=eoHashMapValues.get("Merged_EUID")%>';
+						document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_merged_text")%>";
+						document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+						document.getElementById("mergeConfirmationDiv").style.display="block";
+
 					  </script>
 					</td>
 				 </tr>
@@ -387,8 +400,11 @@ boolean isSessionActive = true;
 					    //merge_destnEuid
 					    document.getElementById('mergeDiv').style.visibility ='hidden';
 					    document.getElementById('mergeDiv').style.display ='none';
-  			            alert("EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("concurrent_mod_text")%> ");
- 		                window.location = '/<%=URI%>/compareduplicates.jsf?euids='+alleuidsArray;
+ 						document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%>";
+						document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+						document.getElementById("mergeConfirmationDiv").style.display="block";
+
+
   				      </script>
                   </td>
                </tr>
@@ -428,23 +444,62 @@ boolean isSessionActive = true;
            <%}%> <!-- Concurrent modification error -->
 		   <%}//end of if(!alreadyMerged)%>	
 		<%  } else {%>
-         <div class="ajaxalert">
-    	  <table>
-			<tr>
-				<td>
-				      <ul>
-			            <% while (messagesIter.hasNext())   { %>
-				             <li>
-								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
-								<%= facesMessage.getSummary() %>
-				             </li>
-						 <% } %>
-				      </ul>
-				<td>
-			<tr>
-		 </table>
-    	</div>
 
+ 	  <%boolean concurrentMergeModification = false;%>
+	  <%boolean concurrentModification = false;%>
+      <div id="ajaxalert">
+		  <table>
+				<tr>
+					<td>
+						  <ul>
+							<% while (messagesIter.hasNext())   { %>
+									<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+									<%if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS531") != -1) {
+										concurrentModification = true;
+									}			                    
+									%>
+									<%
+									if(facesMessage.getSummary().indexOf("MDM-MI-OPS537") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS535") != -1) {
+										   concurrentMergeModification = true;
+									   }
+									%>
+								  <%if(!concurrentMergeModification && !concurrentModification){%>
+										<li>
+										 <%= facesMessage.getSummary() %>
+										</li>
+								   <%}%>
+							 <% } %>
+						  </ul>
+					<td>
+				<tr>
+			</table>
+		</div>
+		<%if(concurrentMergeModification){%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+  										document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%> ";
+										document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+										document.getElementById("mergeConfirmationDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+		<%}%>
+		<%if(concurrentModification){%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+  										document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%>";
+										document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+										document.getElementById("mergeConfirmationDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+		<%}%>
         <%}%>
 		<%}%>
 
