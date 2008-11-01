@@ -4,53 +4,106 @@
 <mdwm-security xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/mdwm-security.xsd">
     <roles>
         <role>
-            <role-name>MDWM.Administrator</role-name>
+            <role-name>MultiDomain.Admin</role-name>
+            <role-ref>MultiDomain.Relationship.Admin</role-ref>                
+            <role-ref>MultiDomain.Hierarchy.Admin</role-ref>                
+            <role-ref>MultiDomain.Group.Admin</role-ref>                
+        </role>
+
+        <role>
+            <role-name>MultiDomain.User</role-name>
+            <role-ref>MultiDomain.Relationship.User</role-ref>                
+            <role-ref>MultiDomain.Hierarchy.User</role-ref>                
+            <role-ref>MultiDomain.Group.User</role-ref>                
+        </role>
+
+        <role>
+            <role-name>MultiDomain.View</role-name>
+      			<role-ref>MultiDomain.Relationship.View</role-ref>                
+            <role-ref>MultiDomain.Hierarchy.View</role-ref>                
+            <role-ref>MultiDomain.Group.View</role-ref>                
+        </role>
+        
+        <!-- Relationship -->
+        <role>
+            <role-name>MultiDomain.Relationship.Admin</role-name>
             <operations>
-                <name>AdminRelationships_ReadWrite</name>
-                <name>AdminHierarchies_ReadWrite</name>
-                <name>ManageRelationships_ReadWrite</name>
-                <name>ManageHierarchies_ReadWrite</name>
+                <name>RelationshipDefinition_ReadWrite</name>          
+                <name>Relationship_ReadWrite</name>
+                <name>Relationship_History_Read</name>
             </operations>
         </role>
         
         <role>
-            <role-name>MDWM.ManageRelationship</role-name>
+            <role-name>MultiDomain.Relationship.User</role-name>
             <operations>
-                <name>ManageRelationships_ReadWrite</name>
+            		<name>RelationshipDefinition_Read</name>          
+                <name>Relationship_ReadWrite</name>
+                <name>Relationship_History_Read</name>
+            </operations>
+        </role>
+
+        <role>
+            <role-name>MultiDomain.Relationship.View</role-name>
+            <operations>
+                <name>Relationship_Read</name>
+                <name>Relationship_History_Read</name>
+            </operations>
+        </role>
+
+        <!-- Hierarchy  -->
+        <role>
+            <role-name>MultiDomain.Hierarchy.Admin</role-name>
+            <operations>
+                <name>HierarchyDefinition_ReadWrite</name>          
+                <name>Hierarchy_ReadWrite</name>
+                <name>Hierarchy_History_Read</name>
             </operations>
         </role>
         
         <role>
-            <role-name>MDWM.ManageHierarchies</role-name>
+            <role-name>MultiDomain.Hierarchy.User</role-name>
             <operations>
-                <name>ManageHierarchies_ReadWrite</name>
+                <name>HierarchyDefinition_Read</name>          
+                <name>Hierarchy_ReadWrite</name>
+                <name>Hierarchy_History_Read</name>
+            </operations>
+        </role>
+
+        <role>
+            <role-name>MultiDomain.Hierarchy.View</role-name>
+            <operations>
+                <name>Hierarchy_Read</name>
+                <name>Hierarchy_History_Read</name>                
+            </operations>
+        </role>
+
+        <!-- Group  -->
+        <role>
+            <role-name>MultiDomain.Group.Admin</role-name>
+            <operations>
+                <name>GroupDefinition_ReadWrite</name>                                   
+                <name>Group_ReadWrite</name>                                
+                <name>Group_History_Read</name>                                                
             </operations>
         </role>
         
         <role>
-            <role-name>MDWM.ViewOnly</role-name>
+            <role-name>MultiDomain.Group.User</role-name>
             <operations>
-                <name>ManageRelationships_ViewOnly</name>
-                <name>ManageHierarchies_ViewOnly</name>
+                <name>GroupDefinition_Read</name>                                   
+                <name>Group_ReadWrite</name>                            
+                <name>Group_History_Read</name>                                                                
             </operations>
         </role>
-        
-        
+
         <role>
-          <role-name>MDWM.FutureUse</role-name>
+            <role-name>MultiDomain.Group.View</role-name>
             <operations>
-                <name>AdminRelationships_ViewOnly</name>
-                <name>AdminHierarchies_ViewOnly</name> 
-                <name>AdminGroups_ReadWrite</name>
-                <name>AdminGroups_ViewOnly</name>
-                <name>AdminCategories_ReadWrite</name>
-                <name>AdminCategories_ViewOnly</name>
-                <name>ManageGroups_ReadWrite</name>
-                <name>ManageGroups_ViewOnly</name>
-                <name>ManageCategories_ReadWrite</name>
-                <name>ManageCategories_ViewOnly</name>
+                <name>Group_Read</name>                            
+                <name>Group_History_Read</name>                                                                
             </operations>
         </role>
- 
+                 
     </roles>
 </mdwm-security>
