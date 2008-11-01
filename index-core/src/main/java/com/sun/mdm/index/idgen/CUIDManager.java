@@ -31,12 +31,20 @@ import java.sql.SQLException;
 import java.sql.CallableStatement;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.util.HashMap;
 import com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.master.ConnectionInvalidException;
+import com.sun.mdm.index.ejb.sequence.SequenceEJB;
+import com.sun.mdm.index.ejb.sequence.SequenceEJBLocal;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
+import com.sun.mdm.index.util.JNDINames;
 import com.sun.mdm.index.util.Localizer;
+import com.sun.mdm.index.util.ConnectionUtilForSequence;
+import net.java.hulp.i18n.Logger;
+import java.util.logging.Level;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -56,15 +64,40 @@ public class CUIDManager {
     private static HashMap mSeqCache;
     private static EuidGenerator mEuidGenerator;
     private static boolean isInitialized = false;
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.idgen." + CUIDManager.class.getName());
     private transient static final Localizer mLocalizer = Localizer.get();
+    private static boolean sequeneceDatabaseAvailable = false;
+    private static String DatabaseType = ObjectFactory.getDatabase();
+    private static SequenceEJBLocal mseqLocal = null;
 
     private static void init() throws SEQException {
-        mSeqCache = new HashMap();
-
-
+        mSeqCache = new HashMap();	
+        
+        try {
+            Context init = new InitialContext();
+            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
+        } catch (NamingException ex) {
+                throw new SEQException("Could not Find Sequence EJB " + ex.getMessage());            
+        } catch (Exception ex) {
+            System.out.println("Failed to get Sequence EJB " + ex.getMessage());
+        }
+        
+        if ((mseqLocal.pingDatabase()).equals("Up")) {
+               sequeneceDatabaseAvailable = true;
+	        if (mLogger.isLoggable(Level.FINE)) {
+	                mLogger.fine("Sequence Connection Pool is Available");
+	        } 
+	}
+        else if (!DatabaseType.equalsIgnoreCase("Oracle")) { 
+        //Database is not Oracle and the Sequence Generator Pool is not available. Throw SQLException.
+            throw new SEQException(mLocalizer.t("IDG502A: A Sequence Generator Connection Pool required for " + DatabaseType +
+                                                " database was not found or not reachable"));	
+        }         
+            
+        
         try {
 
-
+            
             EuidGeneratorConfiguration dmConfig = (EuidGeneratorConfiguration) ConfigurationService.getInstance().getConfiguration(
                     EuidGeneratorConfiguration.EUID_GENERATOR);
             if (dmConfig == null) {
@@ -94,34 +127,57 @@ public class CUIDManager {
     public static String getNextUID(Connection con, String seqName) throws SEQException {
 
         String uid = null;
-
+        
         synchronized (com.sun.mdm.index.idgen.CUIDManager.class) {
             if (!isInitialized) {
                 init();
             }
         }
-
+        
         try {
             if (seqName.equals("EUID")) {
                 uid = mEuidGenerator.getNextEUID(con);
             } else {
-                if (mSeqCache.containsKey(seqName)) {
-                    synchronized (mSeqCache) {
-                        Integer seq = (Integer) mSeqCache.get(seqName);
-                        int nextId = seq.intValue() + 1;
-                        if (nextId % CHUNK_SIZE == 0) {
-                            Integer nextChunk = xgetNextUID(con, seqName);
-                            nextId = nextChunk.intValue();
+                if (DatabaseType.equalsIgnoreCase("Oracle") &&
+                                 !sequeneceDatabaseAvailable) {
+                    if (mSeqCache.containsKey(seqName)) {
+                        synchronized (mSeqCache) {
+                            Integer seq = (Integer) mSeqCache.get(seqName);
+                            int nextId = seq.intValue() + 1;
+                            if (nextId % CHUNK_SIZE == 0) {
+                                Integer nextChunk = xgetNextUID(con, seqName);
+                                nextId = nextChunk.intValue();
+                            }
+                            mSeqCache.put(seqName, new Integer(nextId));
+                            uid = String.valueOf(nextId);
                         }
-                        mSeqCache.put(seqName, new Integer(nextId));
-                        uid = String.valueOf(nextId);
+                    } else {
+                        synchronized (mSeqCache) {
+                            Integer nextChunk = xgetNextUID(con, seqName);
+                            //mSeqCache.put(seqName, new Integer(nextChunk.intValue() + 1));
+                            mSeqCache.put(seqName, nextChunk);
+                            uid = nextChunk.toString();
+                        }
                     }
-                } else {
-                    synchronized (mSeqCache) {
-                        Integer nextChunk = xgetNextUID(con, seqName);
-                        //mSeqCache.put(seqName, new Integer(nextChunk.intValue() + 1));
-                        mSeqCache.put(seqName, nextChunk);
-                        uid = nextChunk.toString();
+                } else { //If other database than Oracle use SequenceEJB
+                    if (mSeqCache.containsKey(seqName)) {
+                        synchronized (mSeqCache) {
+                            Integer seq = (Integer) mSeqCache.get(seqName);
+                            int nextId = seq.intValue() + 1;
+                            if (nextId % CHUNK_SIZE == 0) {
+                                Integer nextChunk = mseqLocal.xgetNextUID(seqName, DatabaseType);
+                                nextId = nextChunk.intValue();
+                            }
+                            mSeqCache.put(seqName, new Integer(nextId));
+                            uid = String.valueOf(nextId);
+                        }
+                    } else {
+                        synchronized (mSeqCache) {
+                            Integer nextChunk = mseqLocal.xgetNextUID(seqName, DatabaseType);
+                            //mSeqCache.put(seqName, new Integer(nextChunk.intValue() + 1));
+                            mSeqCache.put(seqName, nextChunk);
+                            uid = nextChunk.toString();
+                        }
                     }
                 }
 
@@ -134,7 +190,9 @@ public class CUIDManager {
             }
         } catch (SEQException e) {
             throw e;
-        }
+        } catch (Exception e) {
+            throw new SEQException(mLocalizer.t("IDG502B: Connection not available for sequence generation", e));	
+        }	
 
 
 
@@ -145,16 +203,18 @@ public class CUIDManager {
             throws SEQException /* ,ConnectionInvalidException */ {
         int nextValue;
 
-
+        /*Note: This method only will be used by Oracle. Some code might be useless*/
         try {
             /* Prepare SP Call Statement.       */
-            if (ObjectFactory.getDatabase().equalsIgnoreCase("Oracle")) {
+            if (DatabaseType.equalsIgnoreCase("Oracle")) {
                 nextValue = getSeqNoByFunction(seqName, con);
-            } else if (ObjectFactory.getDatabase().equalsIgnoreCase("MySQL")) {
+            } else if (DatabaseType.equalsIgnoreCase("MySQL")) {
                 nextValue = getSeqNoByMySQLFunction(seqName, con);
             } else {
                 nextValue = getSeqNoByProcedure(seqName, con);
             }
+            if (!DatabaseType.equalsIgnoreCase("Oracle")) //Oracle will be automatically committed by the PL/SQL Function PRAGMA AUTONOMOUS
+            	con.commit();
         } catch (SQLException exp) {
             throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " +
                     "ID from the EUID generator: (0}", exp.getMessage()));
