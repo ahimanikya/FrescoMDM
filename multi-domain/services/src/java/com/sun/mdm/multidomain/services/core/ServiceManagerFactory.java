@@ -55,10 +55,11 @@ public class ServiceManagerFactory {
 	/**
 	 * Create an instance of ServiceManagerFactory
 	 */
-	private ServiceManagerFactory() {
+	private ServiceManagerFactory() throws ServiceException {
+            initialize();
 	}
 	
-        public static ServiceManagerFactory Instance() {
+        public static ServiceManagerFactory Instance() throws ServiceException {
             if (instance == null) {
                 instance = new ServiceManagerFactory();
             }
