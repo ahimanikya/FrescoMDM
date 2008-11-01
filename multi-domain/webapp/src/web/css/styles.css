@@ -12,11 +12,135 @@ top: 0px;
 left: 0px; 
 background-color: #E4EFF3;
 background-image: url(../images/sun-logo.png);
-background-position: 100px 1px;
+background-position: 40px 1px;
 background-repeat: no-repeat; 
-height: 50px; width:100%; 
+height: 40px; width:100%; 
 padding:0px; 
 border: none;
 margin: 0;
 }
-		
+
+.loginPrompt {
+  font-size:13px;
+}
+
+.chooseLangPrompt {
+  font-size:12px;
+  position:relative;
+  top: -10px;  
+}
+/* import from midm styles.css and need to redesign */
+body {
+  background-color:#F7FBFF;
+  /*
+  background-image: url(../images/login-backimage.jpg);
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+  background-position:center; 
+  */
+}
+
+INPUT {
+  font-family: Arial, Helvetica, sans-serif;
+  background-repeat:no-repeat;     
+  font-size:12px;
+  padding-top:2px;
+  padding-bottom:2px;
+}
+
+INPUT.READONLY {
+  font-family: Arial, Helvetica, sans-serif;
+  background-repeat:no-repeat;               
+  background: buttonface;
+  background-color:#efefef;
+  font-color:#efefef;       
+  font-size:12px;          
+  padding-top:2px;
+  padding-bottom:2px;          
+  color:#837F74;           
+}
+
+#mainContent {
+  width:100%;
+  overflow:auto;
+  float:left;
+}
+
+.loginForm {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:15px;
+  color:#837F74;
+  text-align:left;
+  text-align:center;
+  vertical-align:middle;       
+  width:330px;
+  height:370px;
+  background-image:url(../images/login-box.png);
+  background-repeat:no-repeat;
+  font-weight:bold;
+  vertical-align:middle;
+  position:relative;
+  top: 100px;
+}
+
+.loginForm  table {
+  font-family:  Arial, Helvetica, sans-serif;
+  width:230px;
+  height:370px;
+  font-size:15px;         
+}
+
+.loginForm  table td {
+  font-family: Arial, Helvetica, sans-serif;
+  background-repeat:no-repeat;      
+  font-size:15px;
+  padding-left:30px;
+  color:#837F74;
+  height:22px;  
+}
+
+.blueline {
+  background-image:url(../images/bgline.gif);
+  background-repeat: repeat-x; 
+  position:relative;
+  width:100%;
+  padding-left:0px; 
+  padding-top:0px; 
+  padding-right:0px;
+  padding-bottom:0px; 
+}
+
+a.button {
+  background: transparent url('../images/bg_button_a.png') no-repeat scroll top right;
+  color: #FFFFFF;
+  display: block;
+  float: left;
+  height: 24px;
+  margin-right: 6px;
+  padding-right: 18px; /* sliding doors padding */
+  text-decoration: none;
+  font-family: arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: bold;
+  font-variant: normal;
+}
+
+a.button span {
+  background: transparent url('../images/bg_button_span.png') no-repeat;
+  display: block;
+  color: #FFFFFF;
+  line-height: 14px;
+  padding: 5px 0 5px 18px;
+}
+a.button:active {
+  background-position: bottom right;
+  color: #FFFFFF;
+  outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+  background-position: bottom left;
+  padding: 6px 0 4px 18px; /* push text down 1px */
+}
+	
