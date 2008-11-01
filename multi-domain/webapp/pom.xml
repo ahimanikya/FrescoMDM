@@ -119,7 +119,7 @@
         <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
         <classpath refid="maven.test.classpath"/>
         </taskdef>
-        <i18n dir="${project.build.directory}/classes" file= "${basedir}/src/resources/com/sun/mdm/multidomain/presentation/util/messages.properties" prefix="MDM-MD-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+        <i18n dir="${project.build.directory}/classes" file= "${basedir}/src/java/com/sun/mdm/multidomain/presentation/util/messages.properties" prefix="MDM-MD-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
         </tasks> 
 			</configuration>
 		</execution>
