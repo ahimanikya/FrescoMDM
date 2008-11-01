@@ -389,7 +389,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       <td>
       <script>
   		window.location = "#top";
-		document.getElementById("successMessageDiv").innerHTML = "'<%=enterpriseObject.getEUID()%>' <%=bundle.getString("concurrent_mod_text")%> <%=bundle.getString("login_try_again_text")%>";
+		document.getElementById("successMessageDiv").innerHTML = "'<%=enterpriseObject.getEUID()%>' <%=bundle.getString("concurrent_mod_text")%>";
 		document.getElementById("successDiv").style.visibility="visible";
 		document.getElementById("successDiv").style.display="block";
         
