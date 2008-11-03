@@ -20,7 +20,7 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.association;
+package com.sun.mdm.multidomain.attributes;
 
 /**
  * Domain class.
