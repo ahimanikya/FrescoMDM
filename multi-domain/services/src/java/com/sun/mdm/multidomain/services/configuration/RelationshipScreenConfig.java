@@ -96,7 +96,7 @@ public class RelationshipScreenConfig {
             throw new Exception(mLocalizer.t("CFG528: Relationship screen " +
                                              "configuration instance cannot be null."));
 	    }
-	    String relationshipName = rSCI.getRelationshipType().getName();
+	    String relationshipName = rSCI.getRelationshipDef().getName();
 	    mRelationshipScreenConfigInstances.put(relationshipName, rSCI);
 	}
 

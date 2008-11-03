@@ -35,7 +35,7 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-//import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.association.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.util.Localizer;
@@ -786,7 +786,7 @@ public class MDConfigManager {
                 
             throw new ConfigException(mLocalizer.t("CFG515: RelationshipScreenCOnfigInstance cannot be null."));
         }
-        com.sun.mdm.multidomain.relationship.RelationshipType rel = rSCI.getRelationshipType();
+        RelationshipDef rel = rSCI.getRelationshipDef();
         String sourceDomainName = rel.getSourceDomain();
         String targetDomainName = rel.getTargetDomain();
 	    RelationshipScreenConfig rSC = 

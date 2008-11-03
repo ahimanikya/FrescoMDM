@@ -22,31 +22,31 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.multidomain.hierarchy.HierarchyType;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 
 public class HierarchyScreenConfig extends ObjectScreenConfig {
 
-    private HierarchyType mHierarchyType = null;
+    private HierarchyType mHierarchyDef = null;
     private String mChildRoleDisplayName = null;
     private String mParentRoleDisplayName = null;
     
     public HierarchyScreenConfig() {
     }
     
-    public HierarchyScreenConfig(HierarchyType hierarchyType, 
+    public HierarchyScreenConfig(HierarchyDef hierarchyDef, 
                                  String hierarchyDisplayName,
                                  String childRoleDisplayName, 
                                  String parentRoleDisplayName) {
-        mHierarchyType = hierarchyType;
+        mHierarchyDef = hierarchyDef;
         mChildRoleDisplayName = childRoleDisplayName;
         mParentRoleDisplayName = parentRoleDisplayName;
         setDisplayName(hierarchyDisplayName);
     }
     
-     // retrieves the HierarchyType object for this hierarchy
+     // retrieves the HierarchyDef object for this hierarchy
    
-    public HierarchyType getHierarchyType() {      
-        return mHierarchyType;
+    public HierarchyDef getHierarchyDef() {      
+        return mHierarchyDef;
     }
     
     // retrieve the child role name

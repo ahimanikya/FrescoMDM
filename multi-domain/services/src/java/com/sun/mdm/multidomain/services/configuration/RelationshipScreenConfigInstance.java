@@ -22,15 +22,14 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import java.util.ArrayList;
 
 public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
 
-//    private Relationship mRelationship = null;
-    private RelationshipType mRelationshipType = null;
+    private RelationshipDef mRelationshipDef = null;
     // RESUME HERE
-    // Should this be obtained from the RelationshipType?
+    // Should this be obtained from the RelationshipDef?
     private String mRelationshipDisplayName = null;
     private String mRelationshipName = null;
     private ArrayList<FieldConfig> mPredefinedAttributes;
@@ -51,16 +50,16 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
         mExtendedAttributes = extendedAttributes;
     }
     
-    public RelationshipScreenConfigInstance(RelationshipType rel) {
-        mRelationshipType = rel;
+    public RelationshipScreenConfigInstance(RelationshipDef rel) {
+        mRelationshipDef = rel;
     }
     
-    public void setRelationship(RelationshipType rel) {
-        mRelationshipType = rel;
+    public void setRelationship(RelationshipDef rel) {
+        mRelationshipDef = rel;
     }
     
-    public RelationshipType getRelationshipType() {
-        return mRelationshipType;
+    public RelationshipDef getRelationshipDef() {
+        return mRelationshipDef;
     }
     
     public void setRelationshipName(String relName) {

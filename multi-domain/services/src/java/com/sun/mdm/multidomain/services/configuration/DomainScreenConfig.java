@@ -127,7 +127,7 @@ public class DomainScreenConfig extends ObjectScreenConfig {
             throw new Exception(mLocalizer.t("CFG524: Hierarchy screen configuration " + 
                                             "cannot be null."));
         }
-        String hierarchyName = hSC.getHierarchyType().getName();
+        String hierarchyName = hSC.getHierarchyDef().getName();
         if (mHierarchyScreenConfigs.containsKey(hierarchyName)) {
             throw new Exception(mLocalizer.t("CFG525: Hierarchy screen configuration " + 
                                              "cannot be added because it conflicts " +
