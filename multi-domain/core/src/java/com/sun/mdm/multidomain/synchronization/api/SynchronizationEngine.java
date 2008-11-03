@@ -2,8 +2,9 @@ package com.sun.mdm.multidomain.synchronization.api;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Set;
 
-import com.sun.mdm.multidomain.association.AssociationType;
+import com.sun.mdm.multidomain.attributes.AttributesDef;
 
 public interface SynchronizationEngine {
 
@@ -42,8 +43,10 @@ public interface SynchronizationEngine {
      * @param ruleName the name of the rule to execute
      * @param associationType the association type
      * @param sourceEUID the source master record EUID
+     * @param eventType the type of event
      */
-    public void executeRule(String domain, String ruleName, AssociationType associationType, String sourceEUID);
+    public void executeRule(String domain, String ruleName, AttributesDef attributesDef, String sourceEUID,
+            String eventType);
     
     /**
      * Execute all rules registered to the specific domain in this engine.
@@ -51,16 +54,19 @@ public interface SynchronizationEngine {
      * @param domain the domain
      * @param associationType the association type
      * @param sourceEUID the source master record EUID
+     * @param eventType the type of event
      */
-    public void executeRules(String domain, AssociationType associationType, String sourceEUID);
+    public void executeRules(String domain, AttributesDef attributesDef, String sourceEUID,
+            String eventType);
     
     /**
      * Execute all rules in all domains registered in this engine.
      * 
      * @param associationType the association type
      * @param sourceEUID the source master record EUID
+     * @param eventType the type of event
      */
-    public void executeAllRules(AssociationType associationType, String sourceEUID);
+    public void executeAllRules(AttributesDef attributesDef, String sourceEUID, String eventType);
     
     /**
      * Get a particular rule defined by the rule name.
@@ -72,12 +78,27 @@ public interface SynchronizationEngine {
     public Rule getRule(String domain, String ruleName);
 
     /**
+     * Returns registered domains in this engine.
+     * 
+     * @return the set of registered domains
+     */
+    public Set<String> getDomains();
+    
+    /**
      * Return a collection of all rules defined in this engine.
      *  
      * @param domain the domain from which to retrieve all rules from
      * @return collection of rules
      */
-    public Collection<Rule> getRules(String domain);
+    public Collection<Rule> getRulesByDomain(String domain);
+    
+    /**
+     * Return a collection of all rules by rule type.
+     * 
+     * @param type the type of the rule
+     * @return collection of rules
+     */
+    public Collection<Rule> getRulesByType(RuleType type);
 
     /**
      * Register a rule in this engine.

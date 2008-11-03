@@ -2,11 +2,6 @@ package com.sun.mdm.multidomain.synchronization.api;
 
 public interface Rule {
     
-    public static final String RELATIONSHIP = "RELATIONSHIP";
-    public static final String HIERARCHY = "HIERARCHY";
-    public static final String GROUP = "GROUP";
-    public static final String CATEGORY = "CATEGORY";
-    
     /**
      * Return name of this rule.
      * 
@@ -19,5 +14,12 @@ public interface Rule {
      * 
      * @return the type
      */
-    public String getType();
+    public RuleType getType();
+    
+    /**
+     * Return a string describing this rule.
+     * 
+     * @return the description
+     */
+    public String getDescription();
 }

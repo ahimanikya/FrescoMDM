@@ -17,14 +17,14 @@ public interface Helper {
      * 
      * @param rule the rule to register
      */
-    public void registerRule(JarFile rule);
+    public Rule registerRule(JarFile rule);
     
     /**
      * Delete a rule (remove from artifact)
      * 
      * @param ruleName the rule name to delete
      */
-    public void deleteRule(String ruleName);
+    public Rule deleteRule(String ruleName);
     
     /**
      * Generates rules artifact to load in rules engine.

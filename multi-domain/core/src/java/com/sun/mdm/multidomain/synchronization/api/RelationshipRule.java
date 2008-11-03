@@ -1,7 +1,7 @@
 package com.sun.mdm.multidomain.synchronization.api;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 
 public interface RelationshipRule extends Rule {
 
@@ -13,6 +13,6 @@ public interface RelationshipRule extends Rule {
      * @param sourceEUID the source record EUID
      * @return the relationship or null if none
      */
-    public Relationship createRelationship(RelationshipType relationshipType, String sourceEUID);
+    public Relationship createRelationship(RelationshipDef relationshipDef, String sourceEUID);
     
 }
