@@ -41,7 +41,6 @@ import com.sun.mdm.index.ejb.sequence.SequenceEJBLocal;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.util.JNDINames;
 import com.sun.mdm.index.util.Localizer;
-import com.sun.mdm.index.util.ConnectionUtilForSequence;
 import net.java.hulp.i18n.Logger;
 import java.util.logging.Level;
 
