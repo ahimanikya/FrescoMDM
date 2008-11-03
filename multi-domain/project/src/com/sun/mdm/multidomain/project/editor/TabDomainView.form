@@ -18,13 +18,15 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanelRecordDetail" alignment="0" min="-2" max="-2" attributes="1"/>
-                  <Component id="jPanelDomainSummary" alignment="0" max="32767" attributes="1"/>
                   <Component id="jPanelRecordHighLight" alignment="0" max="32767" attributes="1"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" pref="77" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTxtDomain" min="-2" pref="210" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="jPanelDomainSummary" alignment="0" max="32767" attributes="1"/>
+                      <Component id="jPanelRecordDetail" alignment="0" max="32767" attributes="1"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -78,14 +80,14 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="407" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jBtnAddHighLightField" max="32767" attributes="1"/>
-                              <Component id="jBtnRmvHighLightField" alignment="1" min="-2" max="-2" attributes="1"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jBtnRmvHighLightField" max="32767" attributes="1"/>
+                              <Component id="jBtnAddHighLightField" alignment="0" pref="83" max="32767" attributes="1"/>
                           </Group>
                       </Group>
                       <Component id="jCBIncludeEUID" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <EmptySpace pref="28" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -102,7 +104,7 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="jBtnAddHighLightField" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="jBtnRmvHighLightField" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
@@ -191,12 +193,12 @@
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="412" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jBtnRmvSummaryGroup" max="32767" attributes="0"/>
-                      <Component id="jBtnAddSummayGroup" alignment="0" pref="71" max="32767" attributes="0"/>
-                      <Component id="jBtnEditSummaryGroup" alignment="0" pref="71" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jBtnEditSummaryGroup" linkSize="2" max="32767" attributes="1"/>
+                      <Component id="jBtnAddSummayGroup" linkSize="2" alignment="0" max="32767" attributes="1"/>
+                      <Component id="jBtnRmvSummaryGroup" linkSize="2" alignment="0" pref="82" max="32767" attributes="1"/>
                   </Group>
-                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                  <EmptySpace pref="29" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -301,29 +303,32 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane3" min="-2" pref="415" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jBtnAddDetail" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="jBtnRemoveDetail" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="jBtnEditDetail" linkSize="1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jBtnEditDetail" linkSize="1" alignment="0" max="32767" attributes="1"/>
+                      <Component id="jBtnRemoveDetail" linkSize="1" alignment="0" max="32767" attributes="1"/>
+                      <Component id="jBtnAddDetail" linkSize="1" alignment="0" min="-2" pref="81" max="-2" attributes="1"/>
                   </Group>
-                  <EmptySpace pref="33" max="32767" attributes="0"/>
+                  <EmptySpace pref="27" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" pref="153" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                           <Component id="jBtnAddDetail" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Component id="jBtnRemoveDetail" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Component id="jBtnEditDetail" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane3" alignment="0" min="-2" pref="153" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="35" max="32767" attributes="0"/>
               </Group>

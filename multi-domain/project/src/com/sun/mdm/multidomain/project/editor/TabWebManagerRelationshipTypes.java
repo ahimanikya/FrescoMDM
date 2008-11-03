@@ -76,7 +76,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                                 jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1));
                             }
                             jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
-                            //jTxtGuiType.setText(mSelectedRow.getGuiType());
+                            jTxtDataType.setText(mSelectedRow.getValueType());
                             jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
                             //jRBKeyValue.setSelected(mSelectedRow.getKeyType());
                         }
@@ -104,12 +104,12 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         int displayFieldOrder = mTableFields.getRowCount() + 1;
         int maxLen = 1;
         String guiType = "TextBox";
-        String valueList = null;
+        String valueList = modelAttr.getType();
         String valueType = modelAttr.getType();
-        boolean keyType = false;
+        boolean sensitive = false;
 
         FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder,
-                maxLen, true, guiType, valueList, valueType, keyType);
+                maxLen, true, guiType, valueList, valueType, sensitive, "", "");
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
         model.addRow(mTableFields.getRowCount(), row);
         mTableFields.setModel(model);
@@ -131,10 +131,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                         mSelectedRow.setDisplayOrder(iSelectedRow + 1);
                         jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1));
                     }
-                    jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
-                    //jTxtGuiType.setText(mSelectedRow.getGuiType());
+                    jTxtDataType.setText(mSelectedRow.getValueType());
                     jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
-                    //jRBKeyValue.setSelected(mSelectedRow.getKeyType());
+                    this.jTxtInputMask.setText(mSelectedRow.getInputMask());
+                    this.jTxtValueMask.setText(mSelectedRow.getValueMask());
+                    this.jRBSensitive.setSelected(mSelectedRow.isSensitive());
                 }
             }
             jBtnUp.setEnabled(true);
@@ -176,10 +177,12 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 String guiType = field.getGuiType();
                 String valueList = field.getValueList();
                 String valueType = field.getValueType();
-                boolean keyType = field.getKeyType();
+                boolean senstive = field.isSensitive();
+                String inputMask = field.getInputMask();
+                String valueMask = field.getOutputMask();
 
                 FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
-                        maxLen, true, guiType, valueList, valueType, keyType);
+                        maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask);
                 attrs.add(row);
             }
             for (RelationFieldReference field : relType.getExtendedRelFieldRefs()) {
@@ -190,11 +193,13 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 String guiType = field.getGuiType();
                 String valueList = field.getValueList();
                 String valueType = field.getValueType();
-                boolean keyType = field.getKeyType();
+                boolean senstive = field.isSensitive();
+                String inputMask = field.getInputMask();
+                String valueMask = field.getOutputMask();
 
 
                 FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
-                        maxLen, false, guiType, valueList, valueType, keyType);
+                        maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask);
                 attrs.add(row);
             }
             TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(attrs);
@@ -213,9 +218,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                     if (mSelectedRow != null) {
                         jTxtDisplayName.setText(mSelectedRow.getDisplayName());
                         jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
-                        //jTxtGuiType.setText(mSelectedRow.getGuiType());
                         jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
-                    //jRBKeyValue.setSelected(mSelectedRow.getKeyType());
+                        jTxtDataType.setText(mSelectedRow.getValueType());
+                        this.jTxtInputMask.setText(mSelectedRow.getInputMask());
+                        this.jTxtValueMask.setText(mSelectedRow.getValueMask());
+                        this.jRBSensitive.setSelected(mSelectedRow.isSensitive());
                     }
 
                     jLayeredPane1.setVisible(true);
@@ -255,8 +262,12 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jTxtMaxLength = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTxtGuiType = new javax.swing.JTextField();
-        jRBKeyValue = new javax.swing.JRadioButton();
+        jTxtDataType = new javax.swing.JTextField();
+        jRBSensitive = new javax.swing.JRadioButton();
+        jLabelInputMask = new javax.swing.JLabel();
+        jTxtInputMask = new javax.swing.JTextField();
+        jLabelValueMask = new javax.swing.JLabel();
+        jTxtValueMask = new javax.swing.JTextField();
         onOK = new javax.swing.JButton();
         onCancel = new javax.swing.JButton();
         jBtnUp = new javax.swing.JButton();
@@ -279,17 +290,19 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         jTxtDisplayName.setBounds(110, 50, 120, 19);
         jLayeredPane1.add(jTxtDisplayName, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLabel1.text")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
         jLabel1.setBounds(10, 50, 90, 14);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLabel2.text")); // NOI18N
+        jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
         jLabel2.setBounds(10, 80, 87, 14);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jTxtDisplayOrder.setEditable(false);
         jTxtDisplayOrder.setBounds(110, 80, 107, 19);
         jLayeredPane1.add(jTxtDisplayOrder, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLabel3.text")); // NOI18N
+        jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
         jLabel3.setBounds(10, 110, 87, 14);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -301,26 +314,51 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         jTxtMaxLength.setBounds(110, 110, 107, 19);
         jLayeredPane1.add(jTxtMaxLength, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLabel4.text")); // NOI18N
+        jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_TYPE")); // NOI18N
         jLabel4.setBounds(10, 140, 87, 14);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jTxtGuiType.addActionListener(new java.awt.event.ActionListener() {
+        jTxtDataType.setEditable(false);
+        jTxtDataType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onjTxtGuiType(evt);
+                onjTxtDataType(evt);
             }
         });
-        jTxtGuiType.setBounds(110, 140, 100, 19);
-        jLayeredPane1.add(jTxtGuiType, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jTxtDataType.setBounds(110, 140, 100, 19);
+        jLayeredPane1.add(jTxtDataType, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jRBKeyValue.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jRBKeyValue.text")); // NOI18N
-        jRBKeyValue.addActionListener(new java.awt.event.ActionListener() {
+        jRBSensitive.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_IS_SENSITIVE")); // NOI18N
+        jRBSensitive.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBKeyValueActionPerformed(evt);
+                onRBSensitive(evt);
             }
         });
-        jRBKeyValue.setBounds(110, 170, 73, 23);
-        jLayeredPane1.add(jRBKeyValue, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jRBSensitive.setBounds(120, 230, 73, 23);
+        jLayeredPane1.add(jRBSensitive, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabelInputMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_INPUT_MASK")); // NOI18N
+        jLabelInputMask.setBounds(10, 170, 70, 20);
+        jLayeredPane1.add(jLabelInputMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jTxtInputMask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onInputMask(evt);
+            }
+        });
+        jTxtInputMask.setBounds(110, 170, 120, 19);
+        jLayeredPane1.add(jTxtInputMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_VALUE_MASK")); // NOI18N
+        jLabelValueMask.setBounds(10, 210, 70, 14);
+        jLayeredPane1.add(jLabelValueMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jTxtValueMask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onValueMask(evt);
+            }
+        });
+        jTxtValueMask.setBounds(110, 200, 120, 19);
+        jLayeredPane1.add(jTxtValueMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_OK")); // NOI18N
         onOK.addActionListener(new java.awt.event.ActionListener() {
@@ -355,27 +393,27 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jBtnUp, 0, 0, Short.MAX_VALUE)
-                    .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE))
-                .add(28, 28, 28)
-                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                .add(56, 56, 56))
-            .add(layout.createSequentialGroup()
                 .add(22, 22, 22)
                 .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(369, Short.MAX_VALUE)
-                .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(onCancel)
-                .add(94, 94, 94))
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(layout.createSequentialGroup()
+                        .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(onCancel))
+                    .add(layout.createSequentialGroup()
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(jBtnUp, 0, 0, Short.MAX_VALUE)
+                            .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE))
+                        .add(28, 28, 28)
+                        .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
+                .add(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -387,26 +425,30 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(18, 18, 18)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                                .add(18, 18, 18)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                    .add(onCancel)
-                                    .add(onOK)))
-                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 297, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLayeredPane1)))
                     .add(layout.createSequentialGroup()
                         .add(92, 92, 92)
                         .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 37, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
                         .add(jBtnDown)))
+                .add(18, 18, 18)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(onCancel)
+                    .add(onOK))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-private void jRBKeyValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBKeyValueActionPerformed
+private void onRBSensitive(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRBSensitive
 // TODO add your handling code here:
-}//GEN-LAST:event_jRBKeyValueActionPerformed
+    int selectedRow = mTableFields.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setSensitive(this.jRBSensitive.isSelected());
+    
+}//GEN-LAST:event_onRBSensitive
 
 private void onDisplayNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDisplayNameActionPerformed
 // TODO add your handling code here:            
@@ -442,10 +484,12 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             String guiType = row.getGuiType();
             String valueList = row.getValueList();
             String valueType = row.getValueType();
-            boolean keyType = row.isKeyType();
+            boolean isSensitive = row.isSensitive();
+            String inputMask = row.getInputMask();
+            String valueMask = row.getValueMask();
             
             RelationFieldReference field = new RelationFieldReference(name, displayName, displayOrder,
-                    maxLen, guiType, valueList, valueType, keyType);
+                    maxLen, guiType, valueList, valueType, inputMask, valueMask, isSensitive);
             if (row.isPredefined()) {
                 ((RelationshipType) mLinkType).getFixedRelFieldRefs().add(field);
             } else {
@@ -491,9 +535,27 @@ private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDown
     
 }//GEN-LAST:event_onDownBtn
 
-private void onjTxtGuiType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onjTxtGuiType
+private void onjTxtDataType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onjTxtDataType
 // TODO add your handling code here:
-}//GEN-LAST:event_onjTxtGuiType
+}//GEN-LAST:event_onjTxtDataType
+
+private void onInputMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onInputMask
+// TODO add your handling code here:
+    int selectedRow = mTableFields.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setInputMask(this.jTxtInputMask.getText());
+    
+}//GEN-LAST:event_onInputMask
+
+private void onValueMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onValueMask
+// TODO add your handling code here:
+    int selectedRow = mTableFields.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setValueMask(this.jTxtValueMask.getText());
+    
+}//GEN-LAST:event_onValueMask
 
     class FieldAttributeRow {
         private String name;
@@ -504,13 +566,15 @@ private void onjTxtGuiType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         private String guiType;                
         private String valueList;        
         private String valueType;        
-        private boolean keyType;
+        private boolean sensitive;
+        private String inputMask;
+        private String valueMask;
 
 
 
         public FieldAttributeRow(String name, String displayName, int displayOrder, 
                 int maxLength, boolean isPredefined, String guiType, String valueList, String valueType,
-                boolean keyType) {
+                boolean sensitive, String inputMask, String valueMask) {
             this.name = name;
             this.displayName = displayName;
             this.displayOrder = displayOrder;
@@ -519,7 +583,9 @@ private void onjTxtGuiType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             this.guiType = guiType;
             this.valueList = valueList;
             this.valueType = valueType;
-            this.keyType = keyType;
+            this.sensitive = sensitive;
+            this.inputMask = inputMask;
+            this.valueMask = valueMask;
             
         }
 
@@ -587,12 +653,28 @@ private void onjTxtGuiType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             this.valueType = valueType;
         }
 
-        public boolean isKeyType() {
-            return keyType;
+        public boolean isSensitive() {
+            return sensitive;
         }
 
-        public void setKeyType(boolean keyType) {
-            this.keyType = keyType;
+        public void setSensitive(boolean sensitive) {
+            this.sensitive = sensitive;
+        }
+
+        public String getInputMask() {
+            return inputMask;
+        }
+
+        public void setInputMask(String inputMask) {
+            this.inputMask = inputMask;
+        }
+
+        public String getValueMask() {
+            return valueMask;
+        }
+
+        public void setValueMask(String valueMask) {
+            this.valueMask = valueMask;
         }
 
     }
@@ -717,15 +799,19 @@ class TableModelRelationshipField extends AbstractTableModel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelInputMask;
     private javax.swing.JLabel jLabelRelTypes;
+    private javax.swing.JLabel jLabelValueMask;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JRadioButton jRBKeyValue;
+    private javax.swing.JRadioButton jRBSensitive;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldLinkType;
+    private javax.swing.JTextField jTxtDataType;
     private javax.swing.JTextField jTxtDisplayName;
     private javax.swing.JTextField jTxtDisplayOrder;
-    private javax.swing.JTextField jTxtGuiType;
+    private javax.swing.JTextField jTxtInputMask;
     private javax.swing.JTextField jTxtMaxLength;
+    private javax.swing.JTextField jTxtValueMask;
     private javax.swing.JButton onCancel;
     private javax.swing.JButton onOK;
     // End of variables declaration//GEN-END:variables

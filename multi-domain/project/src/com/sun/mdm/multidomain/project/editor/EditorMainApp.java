@@ -141,13 +141,13 @@ public class EditorMainApp {
             int displayOrder = 1;
             for (Attribute al : linkType.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
-                        displayOrder++, 1, "TextBox", null, null, false);
+                        displayOrder++, 1, "TextBox", null, al.getType(), false);                        
                 ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
             }
 
             for (Attribute al : linkType.getExtendedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
-                        displayOrder++, 1, "TextBox", null, null, false);
+                        displayOrder++, 1, "TextBox", null, al.getType(), false);
                 ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
             }
 
@@ -196,13 +196,13 @@ public class EditorMainApp {
                 for (Attribute al : linkType.getPredefinedAttributes()) {
                     
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
-                            displayOrder++, 1, "TextBox", null, null, false);
+                            displayOrder++, 1, "TextBox", null, al.getDataType(), false);
                     ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
                 }
 
                 for (Attribute al : linkType.getExtendedAttributes()) {
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
-                            displayOrder++, 1, "TextBox", null, null, false);
+                            displayOrder++, 1, "TextBox", null,  al.getDataType(), false);
                     ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
                 }
                 

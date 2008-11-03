@@ -189,6 +189,20 @@ public class MultiDomainWebManager {
             eKeyType.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.getKeyType())));
             Element eDisplayOrder = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_DISPLAY_ORDER);
             eDisplayOrder.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getDisplayOrder())));
+            Element eInputMask = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_INPUT_MASK);
+            if (fieldRef.getInputMask() != null) {
+                eInputMask.appendChild(xmlDoc.createTextNode(fieldRef.getInputMask()));
+            }
+
+            Element eValueMask = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_VALUE_MASK);
+
+            if (fieldRef.getOutputMask() != null) {
+                eValueMask.appendChild(xmlDoc.createTextNode(fieldRef.getOutputMask()));
+            }
+
+            Element eSensitive = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_IS_SENSITIVE);
+            eSensitive.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.isSensitive())));
+            
             relTypeFieldElm.appendChild(eFieldName);
             relTypeFieldElm.appendChild(eDisplayName);
             relTypeFieldElm.appendChild(eDisplayOrder);
@@ -196,6 +210,9 @@ public class MultiDomainWebManager {
             relTypeFieldElm.appendChild(eGuiType);
             relTypeFieldElm.appendChild(eValueList);
             relTypeFieldElm.appendChild(eValueType);
+            relTypeFieldElm.appendChild(eInputMask);            
+            relTypeFieldElm.appendChild(eValueMask);            
+            relTypeFieldElm.appendChild(eSensitive);            
             relTypeFieldElm.appendChild(eKeyType);            
         }
 
@@ -567,6 +584,9 @@ public class MultiDomainWebManager {
         String valueList = null;
         String valueType = null;
         String fieldName = null;
+        String inputMask = null;
+        String outputMask = null;
+        boolean sensitive = false;
 
         NodeList children = node.getChildNodes();
 
@@ -591,14 +611,20 @@ public class MultiDomainWebManager {
                     valueList = RelationshipUtil.getStrElementValue(elm);
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_TYPE)) {
                     valueType = RelationshipUtil.getStrElementValue(elm);
-                }
-
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_INPUT_MASK)) {
+                    inputMask = RelationshipUtil.getStrElementValue(elm);
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_VALUE_MASK)) {
+                    outputMask = RelationshipUtil.getStrElementValue(elm);
+                } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_IS_SENSITIVE)) {
+                    sensitive = Boolean.valueOf(RelationshipUtil.getStrElementValue(elm)).booleanValue();
+                } 
             }
 
         }
 
         RelationFieldReference fieldRef = new RelationFieldReference(fieldName, displayName,
-                displayOrder, maxLen, guiType, valueList, valueType, keyType);
+                displayOrder, maxLen, guiType, valueList, valueType, 
+                inputMask, outputMask, sensitive);
 
         return fieldRef;
 
