@@ -38,7 +38,6 @@ import javax.naming.NamingException;
 
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.util.Localizer;
-import com.sun.mdm.index.util.ConnectionUtilForSequence;
 import com.sun.mdm.index.ejb.sequence.SequenceEJB;
 import com.sun.mdm.index.ejb.sequence.SequenceEJBLocal;
 import com.sun.mdm.index.util.JNDINames;
