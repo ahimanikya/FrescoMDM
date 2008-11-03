@@ -137,4 +137,20 @@ public class DomainScreenConfig extends ObjectScreenConfig {
         mHierarchyScreenConfigs.put(hierarchyName, hSC);
     }
     
+    // Remove a Hierarchy screen config object
+    public void removeHierarchyScreenConfig(String hierarchyName) 
+            throws Exception {
+
+        if (hierarchyName == null || hierarchyName.length() == 0) {
+            throw new Exception(mLocalizer.t("CFG549: Hierarchy name cannot be null " +
+                                             "or an empty string."));
+        }
+        try {
+            mHierarchyScreenConfigs.remove(hierarchyName);
+        } catch (Exception e) {
+            throw new Exception(mLocalizer.t("CFG550: Could not remove the hierarchy " +
+                                             "named: {0}.", hierarchyName));
+        }
+    }
+    
 }

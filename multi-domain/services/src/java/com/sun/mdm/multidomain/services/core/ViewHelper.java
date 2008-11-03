@@ -67,7 +67,7 @@ public class ViewHelper {
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
     private static Operations operations = new Operations();
     
-    public static DomainRelationshipObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) {
+    public static DomainRelationshipObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
         DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
         domainRelationshipObject.setDomain(primaryDomain);                
@@ -105,7 +105,7 @@ public class ViewHelper {
         return domainRelationshipObject;
     }
 
-    public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages, String sourceDomain, String targetDomain, String relationshipName) {      
+    public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages, String sourceDomain, String targetDomain, String relationshipName) throws ConfigException {      
         List<RelationshipView> relationships = new ArrayList<RelationshipView>();
         // base on Record-Id configuration
         while(pages.hasNext()) {
@@ -134,7 +134,7 @@ public class ViewHelper {
         return relationships;
     }
     
-    public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) {
+    public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
         String highLight = null;
         //TBD: configManager.getDateFormat(domain);
@@ -315,7 +315,7 @@ public class ViewHelper {
         return relationshipRecord;
     }
     
-    public static ObjectRecord buildObjectRecord(String EUID, ObjectNode objectNode) {
+    public static ObjectRecord buildObjectRecord(String EUID, ObjectNode objectNode) throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
         //TBD: configManager.getDateFormat(domain);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();

@@ -35,67 +35,59 @@ public class SummaryID {
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SummaryID");
     private static transient final Localizer mLocalizer = Localizer.get();
     
-	String mPrefix;			// user-supplied prefix.
-	String mSuffix;			// user-supplied suffix
-	ArrayList<FieldConfig> mFieldConfigs;	// FieldConfig objects from which record-specific values are retrieved
-	ArrayList<String> mDelimiters;		// ArrayList of Strings
+    ArrayList<FieldConfig> mFieldConfigs;   // FieldConfig objects from which record-specific values are retrieved
+    ArrayList<String> mDelimiters;          // ArrayList of Strings
 
     public SummaryID() {
     }
     
-	String getPrefix() {			// retrieves the prefix for the ID label
-	    return mPrefix;
-	}
+    // retrieves an ArrayList of FieldConfig objects
+    
+    ArrayList<FieldConfig> getFieldConfigs() {      
+        return mFieldConfigs;
+    }
 
-	void setPrefix(String prefix) {		// sets the prefix for the ID label
-	    mPrefix = prefix;
-	}
+    // sets the fieldConfigs 
+    
+    void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) { 
+        mFieldConfigs = fieldConfigs;
+    }
 
-	String getSuffix() {			// retrieves the suffix for the ID label
-	    return mSuffix;
-	}
+    // retrieves an ArrayList of String objects
+    ArrayList<String> getDelimiters() {     
+        return mDelimiters;
+    }
 
-	void setSuffix(String suffix) {		// sets the suffix for the ID label
-	    mSuffix = suffix;
-	}
-
-	ArrayList<FieldConfig> getFieldConfigs() {		// retrieves an ArrayList of FieldConfig objects
-	    return mFieldConfigs;
-	}
-
-	void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) {	// sets the fieldConfigs 
-	    mFieldConfigs = fieldConfigs;
-	}
-
-	ArrayList<String> getDelimiters() {		// retrieves an ArrayList of String objects
-	    return mDelimiters;
-	}
-
-	void setDelimiters(ArrayList<String> delimiters) throws Exception {	// sets the delimiter 
-	    if (delimiters.size() != mFieldConfigs.size()) {
+    // sets the delimiters
+     
+    void setDelimiters(ArrayList<String> delimiters) throws Exception { 
+        if (delimiters.size() != mFieldConfigs.size() + 1) {
             throw new Exception(mLocalizer.t("CFG501: The number of delimiters ({0}) " +
-                                             "does not match the number of fields({1}).", 
+                                             "must be one greater than number of fields({1}).", 
                                              delimiters.size(), mFieldConfigs.size()));
-	    }
-	    mDelimiters = delimiters;
-	}
+        }
+        mDelimiters = delimiters;
+    }
 
+    // retrieves the ID label
     // ID label has the following format:
-    // mPrefix + mFieldConfigs[i] + mDelimiters[i] + mSuffix
-	String getIDLabel() throws Exception {			// retrieves the ID label
-	    if (mDelimiters.size() != mFieldConfigs.size()) {
+    // mFieldConfigs[0] + mDelimiters[0] + ...  + mFieldConfigs[i] + mDelimiters[i+1] 
+    
+    String getIDLabel() throws Exception {          
+        if (mDelimiters.size() != mFieldConfigs.size()) {
             throw new Exception(mLocalizer.t("CFG502: The number of delimiters ({0}) " +
                                              "does not match the number of fields({1}).", 
                                              mDelimiters.size(), mFieldConfigs.size()));
-	    }
-	    StringBuffer str = new StringBuffer();
-	    str.append(mPrefix);
-	    for (int i = 0; i < mDelimiters.size(); i++ ) {
-	        str.append(mFieldConfigs.get(i));
-	        str.append(mDelimiters.get(i));
-	    }
-	    str.append(mSuffix);
-	    return str.toString();
-	}
+        }
+        StringBuffer str = new StringBuffer();
+        int maxSize = 0;
+        for (int i = 0; i < mFieldConfigs.size(); i++ ) {
+            str.append(mDelimiters.get(i));
+            str.append(mFieldConfigs.get(i));
+            maxSize++;
+        }
+        str.append(mDelimiters.get(maxSize + 1));
+        return str.toString();
+    }
 
 }
