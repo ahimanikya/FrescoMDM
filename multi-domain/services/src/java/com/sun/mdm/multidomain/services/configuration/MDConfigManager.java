@@ -320,8 +320,10 @@ public class MDConfigManager {
     private static FieldConfig convertRelationFieldReference(RelationFieldReference relFieldRef) 
             throws ConfigException {
 
-        String objRef = relFieldRef.getObjectName();
-        boolean isSensitive = relFieldRef.getIsSensitive();
+// RESUME HERE
+//        String objRef = relFieldRef.getObjectName();
+        String objRef = null;
+        boolean isSensitive = relFieldRef.isSensitive();
         String inputMask = relFieldRef.getInputMask();
         String name = relFieldRef.getFieldName();
         String displayName = relFieldRef.getFieldDisplayName();

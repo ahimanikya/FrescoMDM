@@ -29,7 +29,7 @@
 package com.sun.mdm.multidomain.services.security;
 
 import com.sun.mdm.index.master.UserException;
-import com.sun.mdm.index.objects.metadata.ObjectFactory;
+//import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.multidomain.services.security.util.ChildElementIterator;
 import com.sun.mdm.multidomain.services.security.util.NodeUtil;
 import com.sun.mdm.multidomain.services.security.UserProfile;
@@ -108,7 +108,7 @@ public class SecurityManager {
             }
             instance = new SecurityManager();
           
-            ObjectFactory.init();
+//            ObjectFactory.init();
             
             try {
                 instance.read();
