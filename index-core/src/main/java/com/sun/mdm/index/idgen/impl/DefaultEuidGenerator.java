@@ -63,6 +63,7 @@ public class DefaultEuidGenerator implements EuidGenerator {
     private String mChecksumClassname = "com.sun.mdm.index.idgen.impl.DefaultChecksumCalculator";
     private ChecksumCalculator mChecksumCalculator = null;
     private static boolean sequeneceDatabaseAvailable = false;
+    private static boolean isInitialized = false;
     private static String DatabaseType = ObjectFactory.getDatabase();
     private static SequenceEJBLocal mseqLocal = null;
 
@@ -71,26 +72,29 @@ public class DefaultEuidGenerator implements EuidGenerator {
      */
     public DefaultEuidGenerator() throws SEQException {
         
-        try {
-            Context init = new InitialContext();
-            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
-        } catch (NamingException ex) {
-                throw new SEQException("Could not Find Sequence EJB " + ex.getMessage());            
-        } catch (Exception ex) {
-            System.out.println("Failed to get Sequence EJB " + ex.getMessage());
-        }
-    	
-    	if ((mseqLocal.pingDatabase()).equals("Up")) {
-               sequeneceDatabaseAvailable = true;
-	        if (mLogger.isLoggable(Level.FINE)) {
-	                mLogger.fine("Sequence Connection Pool is Available");
-	        } 
+        if (!isInitialized) {
+	        try {
+	            Context init = new InitialContext();
+	            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
+	        } catch (NamingException ex) {
+	                throw new SEQException("Could not Find Sequence EJB " + ex.getMessage());            
+	        } catch (Exception ex) {
+	            System.out.println("Failed to get Sequence EJB " + ex.getMessage());
+	        }
+	    	
+	    	if ((mseqLocal.pingDatabase()).equals("Up")) {
+	               sequeneceDatabaseAvailable = true;
+		        if (mLogger.isLoggable(Level.FINE)) {
+		                mLogger.fine("Sequence Connection Pool is Available");
+		        } 
+		}
+	        else if (!DatabaseType.equalsIgnoreCase("Oracle")) { 
+	        //Database is not Oracle and the Sequence Generator Pool is not available. Throw SQLException.
+	            throw new SEQException(mLocalizer.t("IDG502A: A Sequence Generator Connection Pool required for " + DatabaseType +
+	                                                " database was not found or not reachable"));	
+	        }
+	        isInitialized = true; 
 	}
-        else if (!DatabaseType.equalsIgnoreCase("Oracle")) { 
-        //Database is not Oracle and the Sequence Generator Pool is not available. Throw SQLException.
-            throw new SEQException(mLocalizer.t("IDG502A: A Sequence Generator Connection Pool required for " + DatabaseType +
-                                                " database was not found or not reachable"));	
-        } 
     }
 
     /** Parameters of the euid generator represented in the configuration XML
