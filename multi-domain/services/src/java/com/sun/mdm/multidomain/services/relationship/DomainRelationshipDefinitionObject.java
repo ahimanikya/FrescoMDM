@@ -27,15 +27,15 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
         
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 
 /**
  * DomainRelationshipDefinitionObject class.
  * @author cye
  */
-public class DomainRelationshipDefinitionObject implements Iterator<RelationshipType> {
+public class DomainRelationshipDefinitionObject implements Iterator<RelationshipDef> {
 
-    private List<RelationshipType> relationshipDefinitions;
+    private List<RelationshipDef> relationshipDefinitions;
     private int position = 0;
     private int size;
     private String domain;
@@ -47,7 +47,7 @@ public class DomainRelationshipDefinitionObject implements Iterator<Relationship
         this.domain = domain;        
     }
     
-    public DomainRelationshipDefinitionObject(String domain, List<RelationshipType> relationshipDefinitions) {
+    public DomainRelationshipDefinitionObject(String domain, List<RelationshipDef> relationshipDefinitions) {
         this.domain = domain;
         this.relationshipDefinitions = relationshipDefinitions;
     }
@@ -58,19 +58,19 @@ public class DomainRelationshipDefinitionObject implements Iterator<Relationship
     public void setDomain(String domain){
         this.domain = domain;
     }
-    public List<RelationshipType> getRelationshipDefinitions(){
+    public List<RelationshipDef> getRelationshipDefinitions(){
         if (relationshipDefinitions == null) {
-            relationshipDefinitions = new ArrayList<RelationshipType>();
+            relationshipDefinitions = new ArrayList<RelationshipDef>();
         }
         return relationshipDefinitions;
     }
-    public void setRelationshipDefinitions(List<RelationshipType> relationshipDefinitions){
+    public void setRelationshipDefinitions(List<RelationshipDef> relationshipDefinitions){
         this.relationshipDefinitions = relationshipDefinitions;
     }
     
-    public void add(RelationshipType relationship) {
+    public void add(RelationshipDef relationship) {
         if (relationshipDefinitions == null) {
-            relationshipDefinitions = new ArrayList<RelationshipType>();
+            relationshipDefinitions = new ArrayList<RelationshipDef>();
         }        
         relationshipDefinitions.add(relationship);
     }
@@ -93,12 +93,12 @@ public class DomainRelationshipDefinitionObject implements Iterator<Relationship
         return has;
     }
     
-    public RelationshipType next() 
+    public RelationshipDef next() 
         throws NoSuchElementException {
         if(relationshipDefinitions != null && 
            !relationshipDefinitions.isEmpty() && 
            relationshipDefinitions.size() > position) { 
-           RelationshipType e = relationshipDefinitions.get(position);
+           RelationshipDef e = relationshipDefinitions.get(position);
            position++;
            return e;
         } else {

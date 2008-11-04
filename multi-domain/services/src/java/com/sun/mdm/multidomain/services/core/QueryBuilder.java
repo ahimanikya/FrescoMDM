@@ -242,7 +242,7 @@ public class QueryBuilder {
         relationship.setPurgeDate(relationshipSearch.getPurgeDate());        
         while(relationshipSearch.hasNext()) {
             Attribute field = relationshipSearch.next();
-            com.sun.mdm.multidomain.association.Attribute attribute = new com.sun.mdm.multidomain.association.Attribute();
+            com.sun.mdm.multidomain.attributes.Attribute attribute = new com.sun.mdm.multidomain.attributes.Attribute();
             attribute.setName(attribute.getName());
             relationship.setAttributeValue(attribute, field.getValue());
         }
@@ -321,7 +321,7 @@ public class QueryBuilder {
     
     public static Relationship buildRelationship(RelationshipRecord relastionshipRecord){
         Relationship relationship = new Relationship(); 
-        relationship.setRelationshipID(relastionshipRecord.getId());
+        relationship.setRelationshipId(Integer.parseInt(relastionshipRecord.getId()));
         relationship.setSourceEUID(relastionshipRecord.getSourceEUID());
         relationship.setTargetEUID(relastionshipRecord.getTargetEUID());
         relationship.setEffectiveFromDate(relastionshipRecord.getStartDate());
@@ -337,7 +337,7 @@ public class QueryBuilder {
         com.sun.mdm.multidomain.services.relationship.Attribute attribute1 = null;
         while(relastionshipRecord.hasNext()) {
             attribute1 = relastionshipRecord.next();
-            com.sun.mdm.multidomain.association.Attribute attribute2 = new com.sun.mdm.multidomain.association.Attribute();
+            com.sun.mdm.multidomain.attributes.Attribute attribute2 = new com.sun.mdm.multidomain.attributes.Attribute();
             attribute2.setName(attribute1.getName());
             relationship.setAttributeValue(attribute2, attribute1.getValue());
         }

@@ -38,7 +38,7 @@ import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
         
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
@@ -86,7 +86,7 @@ public class ViewHelper {
         primaryObject.setHighLight(sourceHighLight);
         domainRelationshipObject.setPrimaryObject(primaryObject);
                 
-        RelationshipObject[] relationshipObjects = multiObject.getRelationshipObjects();
+        RelationshipObject[] relationshipObjects = multiObject.getRelationshipDomains()[0].getRelationshipObjects();
         for(RelationshipObject relationshipObject : relationshipObjects) {
             ObjectNode targetObject = relationshipObject.getTargetObject();
             Relationship relationship = relationshipObject.getRelationship();
@@ -119,7 +119,7 @@ public class ViewHelper {
             String sourceHighLight = buildHighLight(sourceDomain, sourceRecordIdConfigFields, sourceRecordIdEPathFields, sourceObject);
            
             //TBD: should go through each one
-            ObjectNode targetObject =  multiObject.getRelationshipObjects()[0].getTargetObject();
+            ObjectNode targetObject =  multiObject.getRelationshipDomains()[0].getRelationshipObjects()[0].getTargetObject();
             //TBD: configManager.getrecordIdEPathFields(targetDomain);
             EPathArrayList targetRecordIdEPathFields = new EPathArrayList();
             //TBD: configManager.getrecordIdConfigFields(targetDomain);
@@ -127,7 +127,7 @@ public class ViewHelper {
             
             String targetHighLight = buildHighLight(targetDomain, targetRecordIdConfigFields, targetRecordIdEPathFields, targetObject); 
             
-            Relationship relationship = multiObject.getRelationshipObjects()[0].getRelationship();     
+            Relationship relationship = multiObject.getRelationshipDomains()[0].getRelationshipObjects()[0].getRelationship();     
             RelationshipView relationshipView =  buildRelationshipView(relationship, sourceHighLight, targetHighLight);
             relationships.add(relationshipView);
         }        
@@ -184,18 +184,18 @@ public class ViewHelper {
 
     public static RelationshipDefinitionView buildRelationshipDefinitionView(Relationship relationship) {   
         RelationshipDefinitionView relationshipDefinitionView = new RelationshipDefinitionView();        
-        RelationshipType type = (RelationshipType)relationship.getAssociationType();
+        RelationshipDef type = relationship.getRelationshipDef();
         relationshipDefinitionView.setName(type.getName());
-        relationshipDefinitionView.setId(type.getId());
+        relationshipDefinitionView.setId(Integer.toString(type.getId()));
         relationshipDefinitionView.setSourceDomain(type.getSourceDomain());
         relationshipDefinitionView.setTargetDomain(type.getTargetDomain());
-        relationshipDefinitionView.setBiDirection(type.getDirection()== RelationshipType.DirectionMode.BIDIRECTIONAL? true : false);        
+        relationshipDefinitionView.setBiDirection(type.getDirection()== RelationshipDef.DirectionMode.BIDIRECTIONAL? true : false);        
         return relationshipDefinitionView;
     }
     
     public static RelationshipView buildRelationshipView(Relationship relationship, String sourceHighLight, String targetHighLight) {   
         RelationshipView relationshipView = new RelationshipView();        
-        relationshipView.setId(relationship.getRelationshipID());
+        relationshipView.setId(Integer.toString(relationship.getRelationshipId()));
         relationshipView.setSourceEUID(relationship.getSourceEUID());
         relationshipView.setTargetEUID(relationship.getTargetEUID());
         relationshipView.setSourceHighLight(sourceHighLight);
@@ -207,8 +207,8 @@ public class ViewHelper {
         RelationshipComposite relationshipComposite = new RelationshipComposite();
         
         ObjectNode sourceObject = multiObject.getSourceDomainObject();
-        ObjectNode targetObject =  multiObject.getRelationshipObjects()[0].getTargetObject();
-        Relationship relationship = multiObject.getRelationshipObjects()[0].getRelationship();
+        ObjectNode targetObject =  multiObject.getRelationshipDomains()[0].getRelationshipObjects()[0].getTargetObject();
+        Relationship relationship = multiObject.getRelationshipDomains()[0].getRelationshipObjects()[0].getRelationship();
         
         ObjectRecord sourceRecord = new ObjectRecord();
         relationshipComposite.setSourceRecord(sourceRecord);
@@ -298,8 +298,8 @@ public class ViewHelper {
     public static RelationshipRecord buildRelationshipRecord(Relationship relationship) {
         RelationshipRecord relationshipRecord = new RelationshipRecord();
         
-        RelationshipType type = (RelationshipType)relationship.getAssociationType();
-        relationshipRecord.setId(relationship.getRelationshipID());
+        RelationshipDef type = (RelationshipDef)relationship.getRelationshipDef();
+        relationshipRecord.setId(Integer.toString(relationship.getRelationshipId()));
         relationshipRecord.setSourceEUID(relationship.getSourceEUID());
         relationshipRecord.setTargetEUID(relationship.getTargetEUID());
         relationshipRecord.setName(type.getName());

@@ -33,13 +33,9 @@ import net.java.hulp.i18n.Logger;
 
 
 import com.sun.mdm.index.master.SystemDefinition;
-import com.sun.mdm.index.master.ProcessingException;
 
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
-import com.sun.mdm.multidomain.association.Attribute;
-import com.sun.mdm.multidomain.association.AttributeType;
-import com.sun.mdm.multidomain.association.Domain;
+import com.sun.mdm.multidomain.services.model.Domain;
 
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;

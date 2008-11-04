@@ -33,9 +33,10 @@ import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
-import com.sun.mdm.multidomain.hierarchy.HierarchyType;
-import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
+import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
@@ -72,45 +73,45 @@ public class HierarchyManager {
     /**
      * Get a list of hierarchy types for the given domain name.
      * @param domain Domain name.
-     * @return List<HierarchyType> Lst of hierarchy types.
+     * @return List<HierarchyDef> Lst of hierarchy types.
      * @throws ServiceException Thrown if an error occurs during processing.
      */    
-    public List<HierarchyType> getHierarchyTypes(String domain) throws ServiceException {
+    public List<HierarchyDef> getHierarchyDefs(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");                
     }
     
     /**
-     * Add a new HierarchyType.
-     * @param hierarchyType HierarchyType.
-     * @return String HierarchyType identifier which is newly added.
+     * Add a new HierarchyDef.
+     * @param HierarchyDef HierarchyDef.
+     * @return String HierarchyDef identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addType(HierarchyType hierarchyType) throws ServiceException {
+    public String addType(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
-     * Update an existing HierarchyType.
-     * @param hierarchyType HierarchyType.
+     * Update an existing HierarchyDef.
+     * @param HierarchyDef HierarchyDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(HierarchyType hierarchyType) throws ServiceException {
+    public void updateType(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
-     * Delete an existing HierarchyType.
-     * @param hierarchyType HierarchyType.
+     * Delete an existing HierarchyDef.
+     * @param HierarchyDef HierarchyDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(HierarchyType hierarchyType) throws ServiceException {
+    public void deleteType(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }   
     
     /**
-     * Get a total count of hierarchy relationship types for the given domain.
+     * Get a total count of hierarchy HierarchyObject types for the given domain.
      * @param domain Domain name.
-     * @return In Count of hierarchy relationship type
+     * @return In Count of hierarchy HierarchyObject type
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public int getTypeCount(String domain) throws ServiceException {
@@ -120,14 +121,14 @@ public class HierarchyManager {
     /**
      * Get a list of hierarchy types for the given domain.
      * @param domain Domain name.
-     * @return List<HierarchyType> List of relationship type
+     * @return List<HierarchyDef> List of HierarchyObject type
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<HierarchyType> getTypes(String domain) throws ServiceException {
-    	List<HierarchyType> hierarchys = null;      
+    public List<HierarchyDef> getTypes(String domain) throws ServiceException {
+    	List<HierarchyDef> hierarchys = null;      
         try {
-            HierarchyType[] hierarchyTypes = multiDomainMetaService.getHierarchyTypes(domain);
-            hierarchys = Arrays.asList(hierarchyTypes);
+            HierarchyDef[] HierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);
+            hierarchys = Arrays.asList(HierarchyDefs);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -137,23 +138,23 @@ public class HierarchyManager {
     }
     
     /**
-     * Get a total count of hierarchy relationship instances for the given relationship type.
-     * @param hierarchyType HierarchyType.
-     * @return int Count of hierarchy relationship instances.
+     * Get a total count of hierarchy HierarchyObject instances for the given HierarchyObject type.
+     * @param HierarchyDef HierarchyDef.
+     * @return int Count of hierarchy HierarchyObject instances.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipCount(HierarchyType hierarchyType) throws ServiceException {
+    public int getHierarchyObjectCount(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");  
     }
     
     /**
-     * Get a list of hierarchy relationship instances for the given relationship type.
-     * @param hierarchyType HierarchyType.
-     * @return List<Relationship> List of hierarchy relationship instances
+     * Get a list of hierarchy HierarchyObject instances for the given HierarchyObject type.
+     * @param HierarchyDef HierarchyDef.
+     * @return List<HierarchyObject> List of hierarchy HierarchyObject instances
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<Relationship> getRelationships(HierarchyType hierarchyType) throws ServiceException {
-    	List<Relationship> hierarchys = null;
+    public List<HierarchyObject> getHierarchyObjects(HierarchyDef HierarchyDef) throws ServiceException {
+    	List<HierarchyObject> hierarchys = null;
     	return hierarchys;
     }
        
@@ -162,11 +163,11 @@ public class HierarchyManager {
      * @param domain Domain name.
      * @param parentEUID Parent entity EUID.
      * @param childEUID Child entity EUID.
-     * @param hierarchy Relationship.
+     * @param hierarchy HierarchyObject.
      * @return String Hierarchy identifier of a newly added hierarchy instance.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addHierarchy(String domain, String parentEUID, String childEUID, Relationship hierarchy) throws ServiceException {
+    public String addHierarchy(String domain, String parentEUID, String childEUID, HierarchyObject hierarchy) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }
     
@@ -175,11 +176,11 @@ public class HierarchyManager {
      * @param domain Domain name.
      * @param parentEUID Parent entity EUID.
      * @param childEUIDs Children entities EUIDs.
-     * @param hierarchy Relationship.
+     * @param hierarchy HierarchyObject.
      * @return String Hierarchy identifier of a newly added hierarchy instance.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addHierarchy(String domain, String parentEUID, List<String> childEUIDs, Relationship hierarchy) throws ServiceException {
+    public String addHierarchy(String domain, String parentEUID, List<String> childEUIDs, HierarchyObject hierarchy) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }    
     
@@ -188,10 +189,10 @@ public class HierarchyManager {
      * @param domain Domain name.
      * @param parentEUID Parent entity EUID.
      * @param childEUID Child entity EUID.
-     * @param hierarchy Relationship.
+     * @param hierarchy HierarchyObject.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateHierarchy(String domain, String parentEUID, String childEUID, Relationship hierarchy) throws ServiceException {
+    public void updateHierarchy(String domain, String parentEUID, String childEUID, HierarchyObject hierarchy) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }
     
@@ -200,10 +201,10 @@ public class HierarchyManager {
      * @param domain Domain name.
      * @param parentEUID Parent entity EUID.
      * @param childEUIDs Children entities EUIDs.
-     * @param hierarchy Relationship.
+     * @param hierarchy HierarchyObject.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateHierarchy(String domain, String parentEUID, List<String> childEUIDs, Relationship hierarchy) throws ServiceException {
+    public void updateHierarchy(String domain, String parentEUID, List<String> childEUIDs, HierarchyObject hierarchy) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     } 
     

@@ -36,9 +36,9 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
-import com.sun.mdm.multidomain.association.Attribute;
-import com.sun.mdm.multidomain.association.AttributeType;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.attributes.Attribute;
+import com.sun.mdm.multidomain.attributes.AttributeType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.Relationship;    
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
@@ -73,7 +73,7 @@ public class RelationshipManager {
     private MultiDomainMetaService multiDomainMetaService;
 
     // demo data
-    private ArrayList<RelationshipType> rts = new ArrayList<RelationshipType>();    	
+    private ArrayList<RelationshipDef> rts = new ArrayList<RelationshipDef>();    	
 
     /**
      * Create a instance of RelationshipManager.
@@ -96,17 +96,17 @@ public class RelationshipManager {
     }
     
     /**
-     * Add a new relationshipType.
-     * @param relationshType RelationshipType.
-     * @return String RelationshipType identifier which is newly added.
+     * Add a new RelationshipDef.
+     * @param relationshType RelationshipDef.
+     * @return String RelationshipDef identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addType(RelationshipType relationshipType) 
+    public String addType(RelationshipDef RelationshipDef) 
         throws ServiceException {
         /* TBD
         String relationshId = null;
         try {
-            relationshId = multiDomainMetaService.createRelationshipType(relationshipType);
+            relationshId = multiDomainMetaService.createRelationshipDef(RelationshipDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -114,31 +114,31 @@ public class RelationshipManager {
         }          
         */   
         // demo data
-        for (RelationshipType rt:rts) {
-            if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
-                rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
-                rt.getName().equals(relationshipType.getName())) {  
-                throw new ServiceException("Invalid RelationshipType:"  + 
-                                           " source:" + relationshipType.getSourceDomain() +
-                                           " target:" + relationshipType.getTargetDomain() +
-                                           " name:" + relationshipType.getName());
+        for (RelationshipDef rt:rts) {
+            if (rt.getSourceDomain().equals(RelationshipDef.getSourceDomain()) &&
+                rt.getTargetDomain().equals(RelationshipDef.getTargetDomain()) &&
+                rt.getName().equals(RelationshipDef.getName())) {  
+                throw new ServiceException("Invalid RelationshipDef:"  + 
+                                           " source:" + RelationshipDef.getSourceDomain() +
+                                           " target:" + RelationshipDef.getTargetDomain() +
+                                           " name:" + RelationshipDef.getName());
             }
     	}       
-        relationshipType.setId(Long.toString(System.currentTimeMillis()));
-        rts.add(relationshipType);     
-        return relationshipType.getId();
+        RelationshipDef.setId((int)System.currentTimeMillis());
+        rts.add(RelationshipDef);     
+        return Integer.toString(RelationshipDef.getId());
     }
     
     /**
-     * Update an existing relationshipType.
-     * @param relationshipType RelationshipType.
+     * Update an existing RelationshipDef.
+     * @param RelationshipDef RelationshipDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(RelationshipType relationshipType) 
+    public void updateType(RelationshipDef RelationshipDef) 
         throws ServiceException {
         /* TBD
         try {
-            multiDomainMetaService.updateRelationshipType(relationshipType);
+            multiDomainMetaService.updateRelationshipDef(RelationshipDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -147,32 +147,32 @@ public class RelationshipManager {
         */         
         // demo data
         boolean updated = false;
-        for (RelationshipType rt:rts) {
-            if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
-                rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
-                rt.getName().equals(relationshipType.getName())) {                      
-                rt.copy(relationshipType);
+        for (RelationshipDef rt:rts) {
+            if (rt.getSourceDomain().equals(RelationshipDef.getSourceDomain()) &&
+                rt.getTargetDomain().equals(RelationshipDef.getTargetDomain()) &&
+                rt.getName().equals(RelationshipDef.getName())) {                      
+                rt.copy(RelationshipDef);
                 updated = true;
              }
     	}
         if (!updated) {
-        throw new ServiceException("Invalid RelationshipType:"  + 
-                                   " source:" + relationshipType.getSourceDomain() +
-                                   " target:" + relationshipType.getTargetDomain() +
-                                   " name:" + relationshipType.getName());
+        throw new ServiceException("Invalid RelationshipDef:"  + 
+                                   " source:" + RelationshipDef.getSourceDomain() +
+                                   " target:" + RelationshipDef.getTargetDomain() +
+                                   " name:" + RelationshipDef.getName());
         }
     }
     
     /**
-     * Delete an existing  relationshipType.
-     * @param relationshType RelationshipType.
+     * Delete an existing  RelationshipDef.
+     * @param relationshType RelationshipDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(RelationshipType relationshipType) 
+    public void deleteType(RelationshipDef RelationshipDef) 
         throws ServiceException {
         /* TBD
         try {
-            multiDomainMetaService.deleteRelationshipType(relationshipType);
+            multiDomainMetaService.deleteRelationshipDef(RelationshipDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -181,21 +181,21 @@ public class RelationshipManager {
         */
         // demo data
         boolean deleted = false;
-        ArrayList<RelationshipType> temp = new ArrayList<RelationshipType>();
-        for (RelationshipType rt:rts) {
-            if (rt.getSourceDomain().equals(relationshipType.getSourceDomain()) &&
-                rt.getTargetDomain().equals(relationshipType.getTargetDomain()) &&
-                rt.getName().equals(relationshipType.getName())) {                      
+        ArrayList<RelationshipDef> temp = new ArrayList<RelationshipDef>();
+        for (RelationshipDef rt:rts) {
+            if (rt.getSourceDomain().equals(RelationshipDef.getSourceDomain()) &&
+                rt.getTargetDomain().equals(RelationshipDef.getTargetDomain()) &&
+                rt.getName().equals(RelationshipDef.getName())) {                      
                 deleted = true;
              } else {
                 temp.add(rt);
              }
     	}
         if (!deleted) {
-        throw new ServiceException("Invalid RelationshipType:"  + 
-                                   " source:" + relationshipType.getSourceDomain() +
-                                   " target:" + relationshipType.getTargetDomain() +
-                                   " name:" + relationshipType.getName());
+        throw new ServiceException("Invalid RelationshipDef:"  + 
+                                   " source:" + RelationshipDef.getSourceDomain() +
+                                   " target:" + RelationshipDef.getTargetDomain() +
+                                   " name:" + RelationshipDef.getName());
         }   
         rts = temp;
     }
@@ -213,19 +213,19 @@ public class RelationshipManager {
     /**
      * Get a list of relationship types for the given domain.
      * @param domain Domain name.
-     * @return List<RelationshipType> List of relationship type.
+     * @return List<RelationshipDef> List of relationship type.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipType> getTypes(String domain) throws ServiceException {
+    public List<RelationshipDef> getTypes(String domain) throws ServiceException {
         
-        List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+        List<RelationshipDef> RelationshipDefs = new ArrayList<RelationshipDef>();
         /* TBD
         try {
-            RelationshipType[] relationships = multiDomainMetaService.getRelationshipTypes();
-            for (RelationshipType relationship : relationships) {
+            RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs();
+            for (RelationshipDef relationship : relationships) {
                 if(domain.equals(relationship.getSourceDomain()) ||
                    domain.equals(relationship.getTargetDomain())) {
-                   relationshipTypes.add(relationship); 
+                   RelationshipDefs.add(relationship); 
                 }
             }
         } catch(ProcessingException pex) {
@@ -233,32 +233,32 @@ public class RelationshipManager {
         }          
         */
     	// demo data	
-    	for (RelationshipType rt:rts) {
+    	for (RelationshipDef rt:rts) {
     		if (rt.getSourceDomain().equals(domain) || 
     			rt.getTargetDomain().equals(domain)) {
-    			relationshipTypes.add(rt);	
+    			RelationshipDefs.add(rt);	
     		}
     	}
-    	return relationshipTypes;
+    	return RelationshipDefs;
     }
     
     /**
-     * Get a list of RelationshipTypes by the given source domain and target domain.
+     * Get a list of RelationshipDefs by the given source domain and target domain.
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
-     * @return List<RelationshipType> List of RelationshipType.
+     * @return List<RelationshipDef> List of RelationshipDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) throws ServiceException {
+    public List<RelationshipDef> getRelationshipDefs(String sourceDomain, String targetDomain) throws ServiceException {
  
-        List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+        List<RelationshipDef> RelationshipDefs = new ArrayList<RelationshipDef>();
         /* TBD
         try {
-            RelationshipType[] relationships = multiDomainMetaService.getRelationshipTypes(sourceDomain, targetDomain);
-            for (RelationshipType relationship : relationships) {
+            RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs(sourceDomain, targetDomain);
+            for (RelationshipDef relationship : relationships) {
                 if(sourceDomain.equals(relationship.getSourceDomain()) ||
                    targetDomain.equals(relationship.getTargetDomain())) {
-                   relationshipTypes.add(relationship); 
+                   RelationshipDefs.add(relationship); 
                 }
             }
          } catch(UserException uex) {
@@ -268,60 +268,60 @@ public class RelationshipManager {
         }
         */             
         // demo data  	
-    	for (RelationshipType rt:rts) {
+    	for (RelationshipDef rt:rts) {
     		if (rt.getSourceDomain().equals(sourceDomain) && 
                     rt.getTargetDomain().equals(targetDomain)) {
-    		    relationshipTypes.add(rt);	
+    		    RelationshipDefs.add(rt);	
     		}
     	}
-    	return relationshipTypes;
+    	return RelationshipDefs;
     }
         
     private void init(){
     // demo data
-    	RelationshipType rt1 = new RelationshipType();
+    	RelationshipDef rt1 = new RelationshipDef();
     	rt1.setName("worksfor");
-        rt1.setId("1");
+        rt1.setId(1);
         rt1.setSourceDomain("Person");
     	rt1.setTargetDomain("Company");    	
     	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
     	rt1.setAttribute(a1);
     	
-    	RelationshipType rt2 = new RelationshipType();
+    	RelationshipDef rt2 = new RelationshipDef();
     	rt2.setName("employedby");
-        rt2.setId("1");
+        rt2.setId(1);
         rt2.setSourceDomain("Person");
     	rt2.setTargetDomain("Company");    	
     	Attribute a2 = new Attribute("hiredDate", "hired date", new AttributeType(AttributeType.DATE), "09/10/2008");
     	rt2.setAttribute(a2);
 
-    	RelationshipType rt3 = new RelationshipType();
+    	RelationshipDef rt3 = new RelationshipDef();
         rt3.setName("contractwith");
-        rt3.setId("1");
+        rt3.setId(1);
     	rt3.setSourceDomain("Person");
     	rt3.setTargetDomain("Company");    	
     	Attribute a3 = new Attribute("startDate", "date started", new AttributeType(AttributeType.DATE), "09/10/2008");
     	rt3.setAttribute(a3);
         
-    	RelationshipType rt4 = new RelationshipType();
+    	RelationshipDef rt4 = new RelationshipDef();
     	rt4.setName("investon");
-        rt4.setId("2");
+        rt4.setId(2);
         rt4.setSourceDomain("Company");
     	rt4.setTargetDomain("Product");
     	Attribute a4 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
     	rt4.setAttribute(a4);
     	
-    	RelationshipType rt5 = new RelationshipType();
+    	RelationshipDef rt5 = new RelationshipDef();
     	rt5.setName("designon");
-        rt5.setId("3");
+        rt5.setId(3);
         rt5.setSourceDomain("Person");
     	rt5.setTargetDomain("Product");
     	Attribute a5 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
     	rt5.setAttribute(a5);
     	
-        RelationshipType rt6 = new RelationshipType();
+        RelationshipDef rt6 = new RelationshipDef();
         rt6.setName("workon");
-        rt6.setId("3");
+        rt6.setId(3);
     	rt6.setSourceDomain("Person");
     	rt6.setTargetDomain("Product");
     	Attribute a6 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
@@ -338,8 +338,8 @@ public class RelationshipManager {
         throws ServiceException {
         List<DomainRelationshipDefinitionObject> types = new ArrayList<DomainRelationshipDefinitionObject>();
         try {
-            List<RelationshipType> typeList = getTypes(domain);
-            for(RelationshipType type : typeList) {
+            List<RelationshipDef> typeList = getTypes(domain);
+            for(RelationshipDef type : typeList) {
                 String key = null;
                 if (domain.equals(type.getSourceDomain())) {
                     key = type.getTargetDomain();
@@ -552,7 +552,7 @@ public class RelationshipManager {
     public void deleteRelationship(RelationshipView relationshipView)
         throws ServiceException {
          try {
-            multiDomainService.deleteRelationship(relationshipView.getId());
+            multiDomainService.deleteRelationship(Integer.parseInt(relationshipView.getId()));
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
