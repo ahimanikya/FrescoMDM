@@ -108,7 +108,7 @@ public class LinkType {
             if (name.equals(attr.getName())) {
                 found = true;
                 //attr.setName(newAttr.getName());
-                attr.setUsed(newAttr.getUsed());
+                attr.setIncluded(newAttr.getIncluded());
                 attr.setRequired(newAttr.getRequired());
                 break;
             }

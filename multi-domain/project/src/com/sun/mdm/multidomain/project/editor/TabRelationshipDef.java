@@ -81,7 +81,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         ArrayList <Attribute> al = linkType.getPredefinedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
-            PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getUsed(), attr.getRequired());
+            PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getIncluded(), attr.getRequired());
             modelPredefinedAttribute.addRow(j, row);
         }
         // Extended attributes
@@ -353,19 +353,19 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
         int idx = this.jTablePredefinedAttibutes.getSelectedRow();
         PredefinedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
-        final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getUsed(),
+        final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getIncluded(),
                 row.getRequired());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();
-            String used = dialog.getUsed() == true ? "true" : "false";
+            String included = dialog.getIncluded() == true ? "true" : "false";
             String required = dialog.getRequired() == true ? "true" : "false";
             // Replace Attribute
-            Attribute attr = new Attribute(attrName, used, required);
+            Attribute attr = new Attribute(attrName, included, required);
             mLinkType.updatePredefinedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
-            row.setUsed(used);
+            row.setIncluded(included);
             row.setRequired(required);
             model.fireTableDataChanged();
             jTablePredefinedAttibutes.setRowSelectionInterval(idx, idx);
@@ -407,12 +407,12 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
     
     class PredefinedAttributeRow {
         private String name;
-        private String used = "true";
+        private String included = "true";
         private String required = "true";
 
-        public PredefinedAttributeRow(String name, String used, String required) {
+        public PredefinedAttributeRow(String name, String included, String required) {
             this.name = name;
-            this.used = used;
+            this.included = included;
             this.required = required;
         }
 
@@ -424,12 +424,12 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
             this.name = name;
         }
 
-        public String getUsed() {
-            return used;
+        public String getIncluded() {
+            return included;
         }
 
-        public void setUsed(String used) {
-            this.used = used;
+        public void setIncluded(String included) {
+            this.included = included;
         }
 
         public String getRequired() {
@@ -444,12 +444,12 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
     // Table model for Relationship Type
     class TableModelPredefinedAttribute extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Name"),
-                                         NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Used"), 
+                                         NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Included"), 
                                          NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Required"), 
                                         };
         ArrayList <PredefinedAttributeRow> rows;
         final static int iColName = 0;
-        final static int iColUsed = 1;
+        final static int iColIncluded = 1;
         final static int iColRequired = 2;
         
         TableModelPredefinedAttribute(ArrayList rows) {
@@ -478,8 +478,8 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
                     switch (col) {
                         case iColName:
                             return singleRow.getName();
-                        case iColUsed:
-                            return singleRow.getUsed();
+                        case iColIncluded:
+                            return singleRow.getIncluded();
                         case iColRequired:
                             return singleRow.getRequired();
                         default:
@@ -512,8 +512,8 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
                         case iColName:
                             singleRow.setName((String) value);                            
                             break;
-                        case iColUsed:
-                            singleRow.setUsed((String) value);                            
+                        case iColIncluded:
+                            singleRow.setIncluded((String) value);                            
                             break;
                         case iColRequired:
                             singleRow.setRequired((String) value);    

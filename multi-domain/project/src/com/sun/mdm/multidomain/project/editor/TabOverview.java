@@ -274,10 +274,10 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jTableDefinitions = new javax.swing.JTable();
         jLabelDefinition = new javax.swing.JLabel();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Participating_Domains"))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Overview"))); // NOI18N
         setLayout(null);
 
-        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
+        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domains")); // NOI18N
         add(jLabelDomainName);
         jLabelDomainName.setBounds(20, 20, 170, 20);
         jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
@@ -350,7 +350,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         add(jScrollPane2);
         jScrollPane2.setBounds(20, 190, 360, 110);
 
-        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Definition")); // NOI18N
+        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Definitions")); // NOI18N
         add(jLabelDefinition);
         jLabelDefinition.setBounds(20, 170, 150, 20);
     }// </editor-fold>//GEN-END:initComponents

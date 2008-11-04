@@ -40,7 +40,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTextAttributeName" pref="183" max="32767" attributes="1"/>
                   </Group>
-                  <Component id="jCheckBoxUsed" alignment="0" pref="264" max="32767" attributes="1"/>
+                  <Component id="jCheckBoxIncluded" alignment="0" pref="264" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -55,7 +55,7 @@
                   <Component id="jLabelName" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jCheckBoxUsed" min="-2" max="-2" attributes="0"/>
+              <Component id="jCheckBoxIncluded" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jCheckBoxRequired" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="5" max="32767" attributes="0"/>
@@ -104,10 +104,10 @@
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onNameKeyReleased"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBoxUsed">
+    <Component class="javax.swing.JCheckBox" name="jCheckBoxIncluded">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Used" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Included" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

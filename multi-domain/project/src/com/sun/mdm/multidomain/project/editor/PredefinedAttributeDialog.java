@@ -35,11 +35,19 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
     boolean bModified = false;
 
     /** Creates new form AddLinkTypelDialog */
-    public PredefinedAttributeDialog(String name, String used, String required) {
+    public PredefinedAttributeDialog(String name, String included, String required) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
         this.jTextAttributeName.setText(name);
-        this.jCheckBoxUsed.setSelected(used.equals("true"));
+        jCheckBoxIncluded.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                if (!jCheckBoxIncluded.isSelected()) {
+                    jCheckBoxRequired.setSelected(false);
+                }
+                jCheckBoxRequired.setEnabled(jCheckBoxIncluded.isSelected());
+            }
+        });
+        this.jCheckBoxIncluded.setSelected(included.equals("true"));
         this.jCheckBoxRequired.setSelected(required.equals("true"));
         enableBtnOK();
     }
@@ -48,8 +56,8 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
         return jTextAttributeName.getText();
     }
         
-    public boolean getUsed() {
-        return jCheckBoxUsed.isSelected();
+    public boolean getIncluded() {
+        return jCheckBoxIncluded.isSelected();
     }
 
     public boolean getRequired() {
@@ -74,7 +82,7 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         jLabelName = new javax.swing.JLabel();
         jTextAttributeName = new javax.swing.JTextField();
-        jCheckBoxUsed = new javax.swing.JCheckBox();
+        jCheckBoxIncluded = new javax.swing.JCheckBox();
         jCheckBoxRequired = new javax.swing.JCheckBox();
 
         setTitle(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "TITLE_Predefined_Attribute")); // NOI18N
@@ -102,7 +110,7 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
             }
         });
 
-        jCheckBoxUsed.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Used")); // NOI18N
+        jCheckBoxIncluded.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Included")); // NOI18N
 
         jCheckBoxRequired.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Required")); // NOI18N
 
@@ -122,7 +130,7 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
                         .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jTextAttributeName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jCheckBoxUsed, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jCheckBoxIncluded, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -133,7 +141,7 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
                     .add(jTextAttributeName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jCheckBoxUsed)
+                .add(jCheckBoxIncluded)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jCheckBoxRequired)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 5, Short.MAX_VALUE)
@@ -179,8 +187,8 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JCheckBox jCheckBoxIncluded;
     private javax.swing.JCheckBox jCheckBoxRequired;
-    private javax.swing.JCheckBox jCheckBoxUsed;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JTextField jTextAttributeName;
     private javax.swing.JButton okButton;

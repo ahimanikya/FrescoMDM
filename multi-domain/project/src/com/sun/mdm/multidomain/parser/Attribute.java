@@ -22,15 +22,15 @@ public class Attribute {
         String attributeID = "";
         String startdate = "";
         String enddate = "";
-        String used = "true";
+        String included = "true";
         
     public Attribute() {
         
     }
     
-    public Attribute(String name, String used, String required) {
+    public Attribute(String name, String included, String required) {
         this.name = name;
-        this.used = used;
+        this.included = included;
         this.required = required;
     }
     
@@ -70,8 +70,8 @@ public class Attribute {
             this.required = required;
         }
         
-        public void setUsed(String used) {
-            this.used = used;
+        public void setIncluded(String included) {
+            this.included = included;
         }
 
         public void setName(String name) {
@@ -126,8 +126,8 @@ public class Attribute {
             return required;
         }
 
-        public String getUsed() {
-            return used;
+        public String getIncluded() {
+            return included;
         }
 
         public String getSearchable() {

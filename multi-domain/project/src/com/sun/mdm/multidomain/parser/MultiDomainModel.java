@@ -273,7 +273,7 @@ public class MultiDomainModel {
                     } else if (mTagAttributeID.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setAttributeID(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagUsed.equals(((Element) nl.item(i)).getTagName())) {
-                        attr.setUsed(Utils.getStrElementValue(nl.item(i)));
+                        attr.setIncluded(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagStartDate.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setStartDate(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagEndDate.equals(((Element) nl.item(i)).getTagName())) {

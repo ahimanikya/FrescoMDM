@@ -170,7 +170,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jPanel1.border.title"))); // NOI18N
 
-        jBtnAddSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnAddSearchPage.text")); // NOI18N
+        jBtnAddSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Add")); // NOI18N
         jBtnAddSearchPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddSearchPage(evt);
@@ -249,7 +249,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
 
         jPanelSearchResult.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jPanelSearchResult.border.title"))); // NOI18N
 
-        jBtnAddSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnAddSearchResult.text")); // NOI18N
+        jBtnAddSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Add")); // NOI18N
         jBtnAddSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddSearchResult(evt);
