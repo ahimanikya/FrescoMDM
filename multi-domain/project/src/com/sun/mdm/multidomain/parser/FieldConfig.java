@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author wee
  */
-public class FieldConfig {
+public class FieldConfig implements Comparable{
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.parser.FieldConfig");
     //private static transient final Localizer mLocalizer = Localizer.get();
     /** constant
@@ -566,11 +566,15 @@ public class FieldConfig {
          return this.rootObj;
      }
  
+     
+     
     /**
      * @todo compare the obj to another instance 
      * @param obj the other obj
      * @return the result: greater than 0, equal to 0, or less than 0
      */
+     
+   
     public int compareTo(Object obj) {
         int ret = getDisplayOrder() - ((FieldConfig) obj).getDisplayOrder();
 
@@ -583,7 +587,7 @@ public class FieldConfig {
 
         return ret;
     }
-
+   
     /**
      * Description of the Method
      *

@@ -46,6 +46,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
     private ArrayList<SimpleSearchType> mSearchTypes;
     private JComboBox mJComboSearchResult = new JComboBox();
     private JComboBox mJComboRecordDetail = new JComboBox();
+    private DomainNode mDomainNode = null;
     
            
 
@@ -56,6 +57,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
         initComponents();
         this.jTxtDomain.setEditable(false);
         getDomain(domain.getDomainName());
+        mDomainNode = mEditorMainApp.getDomainNode(mDomain.getDomainName());
 
         //ArrayList<DomainNode> domainNodes = mEditorMainApp.getDomainNodes();
         mTableSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -344,7 +346,7 @@ private void onAddSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     int searchDetailID = mDomain.generateSearchResultID();
 
     SearchDetail searchDetail = new SearchDetail(searchDetailID, 1, 1, 1, "", new ArrayList<FieldGroup>());
-    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, true);
+    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, true, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         TableModelSearchResult searchResultModel = (TableModelSearchResult) this.mTableSearchResult.getModel();
@@ -408,7 +410,7 @@ private void onAddSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 // TODO add your handling code here:
     SimpleSearchType searchType = new SimpleSearchType("", -1, "", mTableSearchType.getRowCount(), new ArrayList<FieldGroup>());
     MIQueryBuilder queryBuilder = mEditorMainApp.getDomainNode(this.jTxtDomain.getText()).getMiQueryBuilder();
-    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, true);
+    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, true, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         TableModelSearchPage searchModel = (TableModelSearchPage) this.mTableSearchType.getModel();
@@ -461,7 +463,7 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
     TableModelSearchPage searchPageModel = (TableModelSearchPage) mTableSearchType.getModel();
     SimpleSearchType searchType = searchPageModel.getRow(selectedRow);
     MIQueryBuilder queryBuilder = mEditorMainApp.getDomainNode(jTxtDomain.getText()).getMiQueryBuilder();
-    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, false);
+    DomainSearchTypePanel dlg = new DomainSearchTypePanel(searchType, mSearchResult, queryBuilder, false, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         if (dlg.isRefreshSearchResult()) {
@@ -477,7 +479,7 @@ private void onEditSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     int selectedRow = this.mTableSearchResult.getSelectedRow();
     TableModelSearchResult searchResult = (TableModelSearchResult) mTableSearchResult.getModel();
     SearchDetail searchDetail = searchResult.getRow(selectedRow);
-    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, false);
+    DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, false, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         //this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());

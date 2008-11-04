@@ -28,48 +28,20 @@ public class TabDomainView extends javax.swing.JPanel {
     private DomainsForWebManager mDomains = null;
     private ArrayList<RecordDetail> mRecordDetail;
     private DomainForWebManager mDomain = null;
+    private DomainNode mDomainNode = null;
 
     /** Creates new form TabDomainView */
     public TabDomainView(EditorMainApp editorMainApp, DomainForWebManager domain) {
         mEditorMainApp = editorMainApp;
-
         mDomain = domain;
         initComponents();
-        //this.jTxtDomain.setEditable(false);
-        
-        //ArrayList<DomainNode> domainNodes = mEditorMainApp.getDomainNodes();
-        
         getDomain(domain.getDomainName());
+        mDomainNode = mEditorMainApp.getDomainNode(domain.getDomainName());
         
-        /**
-        if (domainNodes.size() > 0) {
-            for (DomainNode node : domainNodes) {
-                this.jCBDomainList.addItem(node.getName());
-            }
-            this.jCBDomainList.setSelectedIndex(0);       
-            getDomain((String) jCBDomainList.getSelectedItem());
-        }
-         */ 
-        
-        /**
-        this.jCBDomainList.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent e) {
-                String selectDomain = (String) jCBDomainList.getSelectedItem();
-                getDomain(selectDomain);
-            }
-        });
-         */ 
     }
 
     private void getDomain(String domainName) {
         jCBIncludeEUID.setSelected(false);
-        //DomainForWebManager domain = mDomains.getDomain(domainName);
-        /**
-        if (domain == null) {
-            domain = new DomainForWebManager(domainName);
-            mDomains.addDomain(domain);
-        }
-         */ 
         this.jTxtDomain.setText(domainName);
         
         ArrayList<FieldGroup.FieldRef> fieldList = null;
@@ -399,7 +371,7 @@ private void onRemoveHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST
 private void onAddSummayGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSummayGroup
 // TODO add your handling code here:
     FieldGroup newGroup = new FieldGroup();
-    FieldGroupDialog dlg = new FieldGroupDialog(newGroup);
+    FieldGroupDialog dlg = new FieldGroupDialog(newGroup, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
@@ -426,7 +398,7 @@ private void onEditSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     if (selectedGroup.getDescription() == null || selectedGroup.getDescription().length() == 0) {
         selectedGroup.setDescription("FieldGroup-" + selectedRow);
     }
-    FieldGroupDialog dlg = new FieldGroupDialog(selectedGroup);
+    FieldGroupDialog dlg = new FieldGroupDialog(selectedGroup, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
         enableSave();

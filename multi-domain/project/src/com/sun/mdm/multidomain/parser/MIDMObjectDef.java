@@ -77,6 +77,8 @@ public class MIDMObjectDef {
     
     private HashMap objNodeConfigMap = new HashMap();
     
+    private String rootObjectName = null;
+    
     //private ObjectNode objNode = null;
     
     public DomainForWebManager parseMIDMNode(InputSource input) throws Exception {
@@ -100,6 +102,7 @@ public class MIDMObjectDef {
                     ObjectNode objNodeConfig = buildObjectNode(element);
                     if (!isRootNode) {
                         mDomain = new DomainForWebManager(objNodeConfig.getName());
+                        rootObjectName = objNodeConfig.getName();
                         isRootNode = true;
                     }
 
@@ -233,7 +236,7 @@ public class MIDMObjectDef {
                     }
 
                     int valueType = getMetaType(valueTypeStr);
-                    /**
+
                     FieldConfig fieldConfig = new FieldConfig(null, objName, fieldName,
                             displayName, guiType, imaxLength, valueType);
                     fieldConfig.setDisplayOrder(idisplayOrder);
@@ -241,7 +244,6 @@ public class MIDMObjectDef {
                     fieldConfig.setSensitive(isSensitive);
                     fieldConfig.setValueList(valueList);
                     fieldConfig.setInputMask(inputMask);
-                     */ 
 
                     if (valueMask != null) {
                       if (inputMask == null || valueMask.length() != inputMask.length()) {
@@ -251,7 +253,7 @@ public class MIDMObjectDef {
                       //fieldConfig.setValueMask(valueMask);
                     }
 
-                    //objNodeConfig.addFieldConfig(fieldConfig);
+                    objNodeConfig.addFieldConfig(fieldConfig);
 
                 } catch (Exception ex) {
                     //throw new Exception(mLocalizer.t("SRC513: Error occurred while building object node config for field name = {0}", fieldName));
@@ -443,12 +445,26 @@ public class MIDMObjectDef {
         }        
         
         //create Record Detail from Node.
+        ObjectNode objNode = (ObjectNode) objNodeConfigMap.get(rootObjectName);
+        
+        FieldConfig[] fieldconfig = objNode.getFieldConfigs();
+        RecordDetail recDetail = new RecordDetail(1, rootObjectName);
+        FieldGroup newRecGroup = new FieldGroup();
+        recDetail.addFieldGroup(newRecGroup);
+        ArrayList<FieldGroup.FieldRef> recordDetailRefs = newRecGroup.getFieldRefs();
+        for (int i = 0; i < fieldconfig.length; i++) {
+            FieldConfig field = fieldconfig[i];
+            String epath = FieldConfig.toEpathStyleString(field.getName());
+            newRecGroup.addFieldRef(newRecGroup.createFieldRef(epath));
+        }
+        mDomain.addRecordDetail(recDetail);
+        
+
         
         //since there is no record summary in MIDM, just default to the first search result.
 
         if (searchResultsConfig.size() > 0 )  {
             SearchDetail searchDetail = searchResultsConfig.get(0);
-            RecordDetail recDetail = new RecordDetail(searchDetail.getRecordDetailID(), searchDetail.getDisplayName());
             for (FieldGroup group : searchDetail.getFieldGroups()) {
                 FieldGroup newGroup = new FieldGroup();
                 newGroup.setDescription(group.getDescription());
@@ -459,6 +475,8 @@ public class MIDMObjectDef {
                 mDomain.addRecordSummary(newGroup);
             }
         }
+        
+        
 
     }
  

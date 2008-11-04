@@ -9,6 +9,7 @@ package com.sun.mdm.multidomain.project.editor;
 import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.SearchDetail;
+import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import java.util.ArrayList;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
@@ -36,19 +37,14 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
     
     private NumbericVerifier verifier = new NumbericVerifier();
     
+    private DomainNode mDomainNode = null;
+    
     /** Creates new form DomainSearchResultDialog */
-    public DomainSearchResultDialog(SearchDetail searchDetail, boolean isNew) {
+    public DomainSearchResultDialog(SearchDetail searchDetail, boolean isNew, DomainNode domainNode) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mSearchDetail = searchDetail;
-        //mRecordDetailList = recordDetailList;
-        //super(parent, modal);
+        mDomainNode = domainNode;
         initComponents();
-        /**
-         for (RecordDetail recDet : mRecordDetailList) {
-            this.jCBRecordDetail.insertItemAt(recDet.getDisplayName(), recDet.getRecordDetailId() - 1);
-        }
-
-         */ 
         jSpinnerItemPerPage.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
         jSpinnerMaxItems.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
         jSpinnerItemPerPage.setInputVerifier(verifier);
@@ -434,7 +430,22 @@ private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 }//GEN-LAST:event_onRemoveField
 
 private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddField
-// TODO add your handling code here:
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+    entityDlg.setVisible(true);
+    if (entityDlg.isSelected()) {
+        if (entityDlg.getFieldList().size() > 0) {
+            TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
+            TableModelField fieldModel = (TableModelField) jTableField.getModel();
+            int selectedRow = jTableFieldGroup.getSelectedRow();
+            FieldGroup group = fieldGroupModel.getRow(selectedRow);
+            for (String fieldName : entityDlg.getFieldList()) {
+                FieldGroup.FieldRef fieldRef = group.createFieldRef(fieldName);
+                fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
+            }
+            jTableField.setModel(fieldModel);
+        }
+    }
+
 }//GEN-LAST:event_onAddField
 
     class TableModelFieldGroup extends AbstractTableModel {

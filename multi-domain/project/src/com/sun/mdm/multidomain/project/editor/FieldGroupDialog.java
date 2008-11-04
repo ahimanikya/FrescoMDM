@@ -7,11 +7,11 @@
 package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.FieldGroup;
-import com.sun.mdm.multidomain.parser.RecordDetail;
+import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import org.openide.util.NbBundle;
-import javax.swing.JTable;
+
 
 /**
  *
@@ -20,16 +20,24 @@ import javax.swing.JTable;
 public class FieldGroupDialog extends javax.swing.JDialog {
 
     private boolean bModified = false;
+    private DomainNode mDomainNode = null;
     private FieldGroup mGroup =  null;
     /** Creates new form FieldGroupDialog */
-    public FieldGroupDialog(FieldGroup group) {
-        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
+    public FieldGroupDialog(FieldGroup group, DomainNode domainNode) {
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), false);
         mGroup = group;
+        mDomainNode = domainNode;
         //super(parent, modal);
         initComponents();
         this.jTxtGroupDescription.setText(group.getDescription());
         TableModelField model = new TableModelField(group);
         jTableField.setModel(model);
+        
+        jTableField.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jBtnRemove.setEnabled(true);
+                }
+            });
 
     }
 
@@ -53,6 +61,7 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         jBtnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_FIELD_GROUP_DEFINITION")); // NOI18N
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_Description")); // NOI18N
 
@@ -83,6 +92,7 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         });
 
         jBtnRemove.setText(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_Remove")); // NOI18N
+        jBtnRemove.setEnabled(false);
         jBtnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onBtnRemove(evt);
@@ -169,14 +179,26 @@ public class FieldGroupDialog extends javax.swing.JDialog {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-489)/2, (screenSize.height-343)/2, 489, 343);
     }// </editor-fold>//GEN-END:initComponents
 
     public boolean isModified() {
         return bModified;
     }
 private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnAddField
-// TODO add your handling code here:
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+    entityDlg.setVisible(true);
+    if (entityDlg.isSelected()) {
+        if (entityDlg.getFieldList().size() > 0) {
+            TableModelField fieldModel = (TableModelField) jTableField.getModel();
+            for (String fieldName : entityDlg.getFieldList()) {
+                FieldGroup.FieldRef fieldRef = mGroup.createFieldRef(fieldName);
+                fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
+            }
+            jTableField.setModel(fieldModel);
+        }
+    }
 }//GEN-LAST:event_onBtnAddField
 
 private void onBtnRemove(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnRemove
@@ -320,6 +342,7 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
         }
     }
     
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAdd;
     private javax.swing.JButton jBtnCancel;
