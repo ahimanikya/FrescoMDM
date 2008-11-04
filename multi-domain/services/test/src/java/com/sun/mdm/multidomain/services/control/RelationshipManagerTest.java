@@ -36,7 +36,7 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
@@ -60,12 +60,12 @@ public class RelationshipManagerTest extends TestCase {
 	    //rt2: Company -> Product
 	    //rt3: Person -> Product    
     	try {
-    		List<RelationshipType> types = relationshipManager.getRelationshipTypes("Person", "Product");
+    		List<RelationshipDef> types = relationshipManager.getRelationshipDefs("Person", "Product");
     		assertTrue(types.size() == 2);
     		assertTrue("Person".equals(types.get(0).getSourceDomain()));
     		assertTrue("Product".equals(types.get(0).getTargetDomain()));
 
-    		types = relationshipManager.getRelationshipTypes("Foo", "Foo");
+    		types = relationshipManager.getRelationshipDefs("Foo", "Foo");
     		assertTrue(types.size() == 0);
     		
     	} catch(ServiceException sx) {

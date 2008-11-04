@@ -26,7 +26,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.sun.mdm.multidomain.association.Domain;
+import com.sun.mdm.multidomain.services.model.Domain;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
 /**
