@@ -382,6 +382,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onR
                     mEditorMainPanel.loadLinkProperties(null);
                     this.jButtonDeleteLink.setEnabled(false);
                 }
+                mEditorMainApp.enableSaveAction(true);
             }
 }//GEN-LAST:event_onRemoveLink
 
@@ -409,7 +410,7 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
                                 DefinitionRow r = new DefinitionRow(linkType.getType(), linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
                                 model.addRow(model.getRowCount(), r);
                                 model.fireTableDataChanged();
-
+                                mEditorMainApp.enableSaveAction(true);
                             }
                         }
                     }
@@ -447,6 +448,7 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         } else {
             this.jButtonDeleteDomain.setEnabled(false);       
         }
+        mEditorMainApp.enableSaveAction(true);
     }
 }//GEN-LAST:event_onRemoveDomain
 
@@ -779,6 +781,7 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
             int idx = model.getRowCount();
             model.addRow(idx, r);
             model.fireTableDataChanged();
+            mEditorMainApp.enableSaveAction(true);
             jTableDomains.setRowSelectionInterval(idx, idx);
             jTableDomains.setEditingRow(idx);
             onDomainSelected();

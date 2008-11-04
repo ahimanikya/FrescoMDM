@@ -35,30 +35,21 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
     boolean bModified = false;
 
     /** Creates new form AddLinkTypelDialog */
-    public PredefinedAttributeDialog() {
+    public PredefinedAttributeDialog(String name, String used, String required) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
+        this.jTextAttributeName.setText(name);
+        this.jCheckBoxUsed.setSelected(used.equals("true"));
+        this.jCheckBoxRequired.setSelected(required.equals("true"));
         enableBtnOK();
     }
     
     public String getAttributeName() {
-        return jTextFieldName.getText();
+        return jTextAttributeName.getText();
     }
-    
-    public String getDataType() {
-        return (String) jComboBoxDataType.getSelectedItem();
-    }
-    
-    public String getColumnName() {
-        return jTextFieldColumnName.getText();
-    }
-    
-    public String getDefaultValue() {
-        return jTextFieldDefaultValue.getText();
-    }
-    
-    public boolean getSearchable() {
-        return jCheckBoxSearchable.isSelected();
+        
+    public boolean getUsed() {
+        return jCheckBoxUsed.isSelected();
     }
 
     public boolean getRequired() {
@@ -81,16 +72,12 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        jLabelColumnName = new javax.swing.JLabel();
         jLabelName = new javax.swing.JLabel();
-        jTextFieldName = new javax.swing.JTextField();
-        jLabelDataType = new javax.swing.JLabel();
-        jComboBoxDataType = new javax.swing.JComboBox();
-        jLabelDefaultValue = new javax.swing.JLabel();
-        jTextFieldColumnName = new javax.swing.JTextField();
-        jTextFieldDefaultValue = new javax.swing.JTextField();
-        jCheckBoxSearchable = new javax.swing.JCheckBox();
+        jTextAttributeName = new javax.swing.JTextField();
+        jCheckBoxUsed = new javax.swing.JCheckBox();
         jCheckBoxRequired = new javax.swing.JCheckBox();
+
+        setTitle(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "TITLE_Predefined_Attribute")); // NOI18N
 
         okButton.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_OK")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -106,35 +93,16 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabelColumnName.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Column_Name_Colon")); // NOI18N
-
         jLabelName.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Name")); // NOI18N
 
-        jTextFieldName.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextAttributeName.setEnabled(false);
+        jTextAttributeName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 onNameKeyReleased(evt);
             }
         });
 
-        jLabelDataType.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Data_Type_Colon")); // NOI18N
-
-        jComboBoxDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "date", "int", "boolean" }));
-
-        jLabelDefaultValue.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Default_Value_Colon")); // NOI18N
-
-        jTextFieldColumnName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                onColumnNameKeyReleased(evt);
-            }
-        });
-
-        jTextFieldDefaultValue.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                onDefaultValueKeyReleased(evt);
-            }
-        });
-
-        jCheckBoxSearchable.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Searchable")); // NOI18N
+        jCheckBoxUsed.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Used")); // NOI18N
 
         jCheckBoxRequired.setText(org.openide.util.NbBundle.getMessage(PredefinedAttributeDialog.class, "LBL_Required")); // NOI18N
 
@@ -142,53 +110,33 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                        .add(jLabelDefaultValue, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jLabelName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jLabelColumnName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jLabelDataType, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))
-                    .add(jCheckBoxSearchable))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jCheckBoxRequired)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldDefaultValue)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldColumnName)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldName)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxDataType, 0, 144, Short.MAX_VALUE)
-                        .add(layout.createSequentialGroup()
-                            .add(okButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(cancelButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jCheckBoxRequired, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
+                        .add(okButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(cancelButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                        .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jTextAttributeName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jCheckBoxUsed, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextFieldName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelColumnName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextFieldColumnName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(8, 8, 8)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jComboBoxDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelDefaultValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextFieldDefaultValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jTextAttributeName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jCheckBoxSearchable)
-                    .add(jCheckBoxRequired))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 46, Short.MAX_VALUE)
+                .add(jCheckBoxUsed)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jCheckBoxRequired)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 5, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(okButton)
                     .add(cancelButton))
@@ -196,7 +144,7 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-292)/2, (screenSize.height-262)/2, 292, 262);
+        setBounds((screenSize.width-292)/2, (screenSize.height-158)/2, 292, 158);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -213,14 +161,6 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
     enableBtnOK();
 }//GEN-LAST:event_onNameKeyReleased
 
-private void onColumnNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onColumnNameKeyReleased
-    enableBtnOK();
-}//GEN-LAST:event_onColumnNameKeyReleased
-
-private void onDefaultValueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onDefaultValueKeyReleased
-    enableBtnOK();
-}//GEN-LAST:event_onDefaultValueKeyReleased
-
     /** Closes the dialog */
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -233,24 +173,16 @@ private void onDefaultValueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
     }
     
     private void enableBtnOK() {
-        boolean flag = (this.jTextFieldColumnName.getText().length() == 0 || 
-                        this.jTextFieldDefaultValue.getText().length() == 0 || 
-                        this.jTextFieldName.getText().length() == 0);
-        this.okButton.setEnabled(!flag);
+        boolean flag = true;
+        this.okButton.setEnabled(flag);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JCheckBox jCheckBoxRequired;
-    private javax.swing.JCheckBox jCheckBoxSearchable;
-    private javax.swing.JComboBox jComboBoxDataType;
-    private javax.swing.JLabel jLabelColumnName;
-    private javax.swing.JLabel jLabelDataType;
-    private javax.swing.JLabel jLabelDefaultValue;
+    private javax.swing.JCheckBox jCheckBoxUsed;
     private javax.swing.JLabel jLabelName;
-    private javax.swing.JTextField jTextFieldColumnName;
-    private javax.swing.JTextField jTextFieldDefaultValue;
-    private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JTextField jTextAttributeName;
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
 

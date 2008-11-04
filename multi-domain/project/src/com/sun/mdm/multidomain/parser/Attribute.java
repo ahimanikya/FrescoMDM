@@ -28,11 +28,8 @@ public class Attribute {
         
     }
     
-    public Attribute(String name, String startdate, String enddate, String used,
-            String required) {
+    public Attribute(String name, String used, String required) {
         this.name = name;
-        this.startdate = startdate;
-        this.enddate = enddate;
         this.used = used;
         this.required = required;
     }

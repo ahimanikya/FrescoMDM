@@ -277,7 +277,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                         "MSG_ToolTip_Save")));
         mButtonSave.setBorder(null);
         mButtonSave.setMnemonic('S');
-        mButtonSave.setEnabled(true);   // ToDo to false
+        mButtonSave.setEnabled(false);   // ToDo to false
         toolBar.add(mButtonSave);
 
         return toolBar;

@@ -133,7 +133,7 @@ public class LinkBaseNode extends AbstractNode {
     public JPanel getLinkDefTab(boolean bRefresh) {
         if (bRefresh || mTabLinkDef == null) {
             if (getType().equals(LinkType.TYPE_RELATIONSHIP)) {
-                mTabLinkDef = new TabRelationshipDef(getLinkType());
+                mTabLinkDef = new TabRelationshipDef(mEditorMainApp, getLinkType());
             } else if (getType().equals(LinkType.TYPE_HIERARCHY)) {
                 mTabLinkDef = new TabHierarchyDef(getLinkType());
             }

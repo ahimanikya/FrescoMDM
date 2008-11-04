@@ -96,6 +96,28 @@ public class LinkType {
         this.extendedAttributes = attributes;
     }
     
+    /** Update a predefined attribute
+     * 
+     * @param name if found - replace;
+     * @param attribute
+     */
+    public void updatePredefinedAttribute(String name, Attribute newAttr) {
+        boolean found = false;
+        for (int i=0; i < predefinedAttributes.size(); i++) {
+            Attribute attr = predefinedAttributes.get(i);
+            if (name.equals(attr.getName())) {
+                found = true;
+                //attr.setName(newAttr.getName());
+                attr.setUsed(newAttr.getUsed());
+                attr.setRequired(newAttr.getRequired());
+                break;
+            }
+        }
+        if (!found) {
+            //addPredefinedAttribute(newAttr);
+        }
+    }
+    
     /** Delete a predefined attribute
      * 
      * @param attrName
@@ -128,7 +150,7 @@ public class LinkType {
         }
     }
 
-    /** Update a predefined attribute
+    /** Update an extended attribute
      * 
      * @param oldName if found - replace;  if not - add
      * @param attribute

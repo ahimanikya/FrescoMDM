@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import javax.swing.table.TableColumn;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+
 //import javax.swing.table.TableRowSorter;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
@@ -44,11 +45,12 @@ import com.sun.mdm.multidomain.parser.Attribute;
  * @author  kkao
  */
 public class TabRelationshipDef extends javax.swing.JPanel {
+    EditorMainApp mEditorMainApp;
     LinkType mLinkType;
-    
     /** Creates new form TabAttributes */
-    public TabRelationshipDef(LinkType linkType) {
+    public TabRelationshipDef(EditorMainApp editorMainApp, LinkType linkType) {
         initComponents();
+        mEditorMainApp = editorMainApp;
         mLinkType = linkType;
         this.jTextName.setText(linkType.getName());
         // Get plugin list
@@ -69,7 +71,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         }
         ArrayList <PredefinedAttributeRow> rowsPredefinedAttribute = new ArrayList();
         TableModelPredefinedAttribute modelPredefinedAttribute = new TableModelPredefinedAttribute(rowsPredefinedAttribute);
-        this.jTableFixedAttibutes.setModel(modelPredefinedAttribute);
+        this.jTablePredefinedAttibutes.setModel(modelPredefinedAttribute);
         
         ArrayList <ExtendedAttributeRow> rowsExtendedAttribute = new ArrayList();
         TableModelExtendedAttribute modelExtendedAttribute = new TableModelExtendedAttribute(rowsExtendedAttribute);
@@ -93,6 +95,16 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             modelExtendedAttribute.addRow(j, row);
         }
         
+        jTablePredefinedAttibutes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    onEditPredefinedAttribute(null);
+                } else {
+                    onPredefinedAttributesSelected();
+                }
+            }
+        });
+        
         jTableExtendedAttributes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
@@ -115,7 +127,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPaneAttributes = new javax.swing.JScrollPane();
-        jTableFixedAttibutes = new javax.swing.JTable();
+        jTablePredefinedAttibutes = new javax.swing.JTable();
         jScrollPaneExtendedAttibutes = new javax.swing.JScrollPane();
         jTableExtendedAttributes = new javax.swing.JTable();
         jButtonAddExtendedAttribute = new javax.swing.JButton();
@@ -132,13 +144,14 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jTextDomain1 = new javax.swing.JTextField();
         jTextDomain2 = new javax.swing.JTextField();
         jButtonEditExtendedAttribute = new javax.swing.JButton();
+        jButtonEditPredefinedAttribute = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
         setLayout(null);
 
         jScrollPaneAttributes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Predefined_Attributes"))); // NOI18N
 
-        jTableFixedAttibutes.setModel(new javax.swing.table.DefaultTableModel(
+        jTablePredefinedAttibutes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null}
             },
@@ -154,10 +167,10 @@ public class TabRelationshipDef extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPaneAttributes.setViewportView(jTableFixedAttibutes);
+        jScrollPaneAttributes.setViewportView(jTablePredefinedAttibutes);
 
         add(jScrollPaneAttributes);
-        jScrollPaneAttributes.setBounds(10, 180, 466, 180);
+        jScrollPaneAttributes.setBounds(10, 180, 466, 150);
 
         jScrollPaneExtendedAttibutes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Extended_Attributes"))); // NOI18N
 
@@ -240,6 +253,16 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         });
         add(jButtonEditExtendedAttribute);
         jButtonEditExtendedAttribute.setBounds(390, 570, 80, 23);
+
+        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Edit")); // NOI18N
+        jButtonEditPredefinedAttribute.setEnabled(false);
+        jButtonEditPredefinedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onEditPredefinedAttribute(evt);
+            }
+        });
+        add(jButtonEditPredefinedAttribute);
+        jButtonEditPredefinedAttribute.setBounds(390, 330, 80, 23);
     }// </editor-fold>//GEN-END:initComponents
 
 private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
@@ -264,6 +287,7 @@ private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST
                                                             attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
                 model.addRow(model.getRowCount(), row);
                 model.fireTableDataChanged();
+                mEditorMainApp.enableSaveAction(true);
             }
 }//GEN-LAST:event_onAddExtendedAttribute
 
@@ -286,6 +310,7 @@ private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
                 model.removeRow(idx);
             }
             model.fireTableDataChanged();
+            mEditorMainApp.enableSaveAction(true);
         }
 
 }//GEN-LAST:event_onRemoveExtendedAttribute
@@ -319,8 +344,38 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
             row.setRequired(required);
             model.fireTableDataChanged();
             jTableExtendedAttributes.setRowSelectionInterval(idx, idx);
+            mEditorMainApp.enableSaveAction(true);
         }
 }//GEN-LAST:event_onEditExtendedAttribute
+
+private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditPredefinedAttribute
+        TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttibutes.getModel();
+        int idx = this.jTablePredefinedAttibutes.getSelectedRow();
+        PredefinedAttributeRow row = model.getRow(idx);
+        String oldName = row.getName();
+        final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getUsed(),
+                row.getRequired());
+        dialog.setVisible(true);
+        if (dialog.isModified()) {
+            String attrName = dialog.getAttributeName();
+            String used = dialog.getUsed() == true ? "true" : "false";
+            String required = dialog.getRequired() == true ? "true" : "false";
+            // Replace Attribute
+            Attribute attr = new Attribute(attrName, used, required);
+            mLinkType.updatePredefinedAttribute(oldName, attr);
+            // update row
+            row.setName(attrName);
+            row.setUsed(used);
+            row.setRequired(required);
+            model.fireTableDataChanged();
+            jTablePredefinedAttibutes.setRowSelectionInterval(idx, idx);
+            mEditorMainApp.enableSaveAction(true);
+        }
+}//GEN-LAST:event_onEditPredefinedAttribute
+    private void onPredefinedAttributesSelected() {
+        int cnt = jTablePredefinedAttibutes.getSelectedRowCount();
+        jButtonEditPredefinedAttribute.setEnabled(cnt==1);
+    }
 
     private void onExtendedAttributesSelected() {
         int cnt = jTableExtendedAttributes.getSelectedRowCount();
@@ -331,6 +386,7 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButtonAddExtendedAttribute;
     private javax.swing.JButton jButtonDeleteExtendedAttribute;
     private javax.swing.JButton jButtonEditExtendedAttribute;
+    private javax.swing.JButton jButtonEditPredefinedAttribute;
     private javax.swing.JComboBox jComboBoxDirection;
     private javax.swing.JComboBox jComboBoxPlugin;
     private javax.swing.JLabel jLabelDescription;
@@ -341,7 +397,7 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JScrollPane jScrollPaneAttributes;
     private javax.swing.JScrollPane jScrollPaneExtendedAttibutes;
     private javax.swing.JTable jTableExtendedAttributes;
-    private javax.swing.JTable jTableFixedAttibutes;
+    private javax.swing.JTable jTablePredefinedAttibutes;
     private javax.swing.JTextArea jTextAreaDescription;
     private javax.swing.JTextField jTextDomain1;
     private javax.swing.JTextField jTextDomain2;
@@ -459,6 +515,8 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         case iColUsed:
                             singleRow.setUsed((String) value);                            
                             break;
+                        case iColRequired:
+                            singleRow.setRequired((String) value);    
                         default:
                             return;
                     }
