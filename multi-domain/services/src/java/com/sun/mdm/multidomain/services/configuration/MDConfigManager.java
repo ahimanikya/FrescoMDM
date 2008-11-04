@@ -36,7 +36,7 @@ import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
-import com.sun.mdm.multidomain.attributes.Domain;
+import com.sun.mdm.multidomain.services.model.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
