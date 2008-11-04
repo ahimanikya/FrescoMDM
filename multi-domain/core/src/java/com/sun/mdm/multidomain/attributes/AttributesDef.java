@@ -37,7 +37,6 @@ public abstract class AttributesDef {
     //public enum DirectionMode {UNIDIRECTIONAL,BIDIRECTIONAL};
     
     private String name;
-   // private String id;    
     private boolean effectiveFromRequired;
     private boolean effectiveToRequired;
     private boolean purgeDateRequired; 
