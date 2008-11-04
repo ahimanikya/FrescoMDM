@@ -99,6 +99,8 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         //jComboBoxAssociatedDomains.removeAllItems();
         //jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
         // load domain nodes
+        this.jButtonDeleteDomain.setEnabled(false);
+        this.jButtonDeleteLink.setEnabled(false);
         loadDomains();
         // load link types
         ArrayList rows = loadLinks(false);
@@ -425,6 +427,7 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
 }//GEN-LAST:event_onAddDomain
 
     private void onSelectedDomainItemStateChanged(java.awt.event.ItemEvent evt) {
+        this.jButtonDeleteDomain.setEnabled(true);
         String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         
@@ -508,6 +511,7 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
      */
     
     private void onLinkTypeSelected() {
+        this.jButtonDeleteLink.setEnabled(true);
         int iSelectedRow = jTableLinkTypes.getSelectedRow();
         TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
         String linkType = (String) model.getValueAt(iSelectedRow,  model.iColLinkType);

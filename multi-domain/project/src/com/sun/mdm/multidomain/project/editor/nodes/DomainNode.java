@@ -53,7 +53,6 @@ import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabDomainSearch;
 import com.sun.mdm.multidomain.project.editor.TabDomainView;
-import com.sun.mdm.multidomain.project.editor.EntityTreePane;
 import com.sun.mdm.multidomain.project.editor.EntityTree;
 
 /**
@@ -71,7 +70,6 @@ public class DomainNode extends AbstractNode {
     private ArrayList <LinkType> alLinkTypes = new ArrayList();
     //TabDomainProperties mTabDomainProperties = null;
     EditorMainApp mEditorMainApp;
-    EntityTreePane mEntityTreePane = null;
     EntityTree mEntityTree = null;
     TabDomainSearch mTabDomainSearch;
     TabDomainView mTabDomainView;

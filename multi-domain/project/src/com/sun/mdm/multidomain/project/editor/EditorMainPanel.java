@@ -125,7 +125,6 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
     private TabOverview mTabOverview = null;
-    private EntityTreePane mEntityTreePane = null;
     private EntityTree mEntityTree = null;
     
     /**
