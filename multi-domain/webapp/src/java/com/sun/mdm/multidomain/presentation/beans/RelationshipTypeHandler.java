@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.sun.mdm.multidomain.relationship.RelationshipType;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
@@ -57,16 +57,16 @@ public class RelationshipTypeHandler {
      * @return List<RelationshipType> List of RelationshipType.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipType> getRelationshipTypes(String sourceDomain, String targetDomain) 
+    public List<RelationshipDef> getRelationshipTypes(String sourceDomain, String targetDomain) 
         throws ServiceException {                
-        List<RelationshipType> types = null;
+        List<RelationshipDef> types = null;
         try {
-            types = relationshipManager.getRelationshipTypes(sourceDomain, targetDomain);
+            types = relationshipManager.getRelationshipDefs(sourceDomain, targetDomain);
         } catch(ServiceException sex) {
             throw sex;
         }
         if(types == null) {
-            types = new ArrayList<RelationshipType>();
+            types = new ArrayList<RelationshipDef>();
         }
         return types;
     }
@@ -88,16 +88,16 @@ public class RelationshipTypeHandler {
      * @return List<RelationshipType> List of RelationshipType.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipType> getTypes(String domain) 
+    public List<RelationshipDef> getTypes(String domain) 
         throws ServiceException {                
-        List<RelationshipType> types = null;
+        List<RelationshipDef> types = null;
         try {
             types = relationshipManager.getTypes(domain);
         } catch(ServiceException sex) {
             throw sex;
         }
         if(types == null) {
-            types = new ArrayList<RelationshipType>();
+            types = new ArrayList<RelationshipDef>();
         }
         return types;
     }
@@ -108,11 +108,11 @@ public class RelationshipTypeHandler {
      * @return String Relationship Identifier which is newly added.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public String addRelationshipType(RelationshipType relationshipType) 
+    public String addRelationshipType(RelationshipDef relationshipDef) 
         throws ServiceException {        
         String relationshipTypeId = null;
         try {
-            relationshipTypeId = relationshipManager.addType(relationshipType);
+            relationshipTypeId = relationshipManager.addType(relationshipDef);
         } catch(ServiceException sex) {
             throw sex;
         }
@@ -124,10 +124,10 @@ public class RelationshipTypeHandler {
      * @param relationshipType RelationshipType.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public void deleteRelationshipType(RelationshipType relationshipType) 
+    public void deleteRelationshipType(RelationshipDef relationshipDef) 
         throws ServiceException {        
         try {
-            relationshipManager.deleteType(relationshipType);
+            relationshipManager.deleteType(relationshipDef);
         } catch(ServiceException sex) {
             throw sex;
         }        

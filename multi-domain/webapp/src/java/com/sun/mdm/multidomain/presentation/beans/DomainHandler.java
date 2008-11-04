@@ -24,7 +24,7 @@ package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
 
-import com.sun.mdm.multidomain.association.Domain;
+import com.sun.mdm.multidomain.services.model.Domain;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.MetaDataManager;
