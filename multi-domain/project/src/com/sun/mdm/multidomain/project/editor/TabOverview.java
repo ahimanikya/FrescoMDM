@@ -96,37 +96,26 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         mEditorMainPanel = editorMainPanel;
         mEditorMainApp = editorMainApp;
         jLabelDomainName.setIcon(DOMAINIMAGEICON);
-        //jComboBoxAssociatedDomains.removeAllItems();
-        //jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
         // load domain nodes
         this.jButtonDeleteDomain.setEnabled(false);
         this.jButtonDeleteLink.setEnabled(false);
-        loadDomains();
+        ArrayList rows = loadDomains();
+        TableModelDomains modelDomains = new TableModelDomains(rows);
+        jTableDomains.setModel(modelDomains);
+        if (rows.size() > 0) {
+            jTableDomains.setRowSelectionInterval(0, 0);
+        }
         // load link types
-        ArrayList rows = loadLinks(false);
-        //jComboBoxAssociatedDomains.setSelectedIndex(0);
-        TableModelLinkType model = new TableModelLinkType(rows);
-        jTableLinkTypes.setModel(model);
+        rows = loadLinks(false);
+        TableModelLinkType modelLinks = new TableModelLinkType(rows);
+        jTableLinkTypes.setModel(modelLinks);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         //jTableLinkTypes.setRowSorter(sorter);
-        
-        jComboBoxSelectedDomain.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                onSelectedDomainItemStateChanged(evt);
-            }
-        });
-        jComboBoxSelectedDomain.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableDomains.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    onSelectedDomainItemStateChanged(null);
+                    onDomainSelected();
                 }
             });
-        /*
-        jComboBoxAssociatedDomains.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                onAssociatedDomainsItemStateChanged(evt);
-            }
-        });
-        */
         jTableLinkTypes.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     onLinkTypeSelected();
@@ -214,21 +203,23 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         }));          
     }
 
-    private void loadDomains() {
+    private ArrayList loadDomains() {
         mAlDomainNames.clear();
         mMapDomainNodes.clear();
-        jComboBoxSelectedDomain.removeAllItems();
         mAlDomainNodes = mEditorMainApp.getDomainNodes();
+        ArrayList rows = new ArrayList();
         if ( mAlDomainNodes != null && mAlDomainNodes.size() > 0) {
             for (int i=0; i < mAlDomainNodes.size(); i++) {
                 DomainNode domainNode = mAlDomainNodes.get(i);
                 String domainName = domainNode.getName();
                 mAlDomainNames.add(domainName);
                 mMapDomainNodes.put(domainName, domainNode);
-                jComboBoxSelectedDomain.addItem(domainName);
+                DomainRow r = new DomainRow(domainName);
+                rows.add(r);
             }
-            jComboBoxSelectedDomain.setSelectedIndex(0);
+            jTableDomains.setRowSelectionInterval(0, 0);
         }
+        return rows;
     }
     
     private ArrayList loadLinks(boolean refresh) {
@@ -272,18 +263,19 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jLabelDomainName = new javax.swing.JLabel();
         jScrollPaneLinkTypes = new javax.swing.JScrollPane();
         jTableLinkTypes = new javax.swing.JTable();
-        jComboBoxSelectedDomain = new javax.swing.JComboBox();
         jButtonAddLink = new javax.swing.JButton();
         jButtonDeleteLink = new javax.swing.JButton();
         jButtonDeleteDomain = new javax.swing.JButton();
         jButtonAddDomain = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableDomains = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Participating_Domains"))); // NOI18N
         setLayout(null);
 
         jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
         add(jLabelDomainName);
-        jLabelDomainName.setBounds(20, 30, 170, 20);
+        jLabelDomainName.setBounds(20, 20, 170, 20);
         jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
 
         jScrollPaneLinkTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Links_Defined"))); // NOI18N
@@ -299,10 +291,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jScrollPaneLinkTypes.setViewportView(jTableLinkTypes);
 
         add(jScrollPaneLinkTypes);
-        jScrollPaneLinkTypes.setBounds(10, 90, 370, 180);
-
-        add(jComboBoxSelectedDomain);
-        jComboBoxSelectedDomain.setBounds(200, 30, 180, 22);
+        jScrollPaneLinkTypes.setBounds(10, 180, 370, 130);
 
         jButtonAddLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddLink.addActionListener(new java.awt.event.ActionListener() {
@@ -311,7 +300,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         });
         add(jButtonAddLink);
-        jButtonAddLink.setBounds(200, 280, 90, 23);
+        jButtonAddLink.setBounds(200, 310, 90, 23);
 
         jButtonDeleteLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         jButtonDeleteLink.addActionListener(new java.awt.event.ActionListener() {
@@ -320,7 +309,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         });
         add(jButtonDeleteLink);
-        jButtonDeleteLink.setBounds(290, 280, 90, 23);
+        jButtonDeleteLink.setBounds(290, 310, 90, 23);
 
         jButtonDeleteDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         jButtonDeleteDomain.addActionListener(new java.awt.event.ActionListener() {
@@ -329,7 +318,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         });
         add(jButtonDeleteDomain);
-        jButtonDeleteDomain.setBounds(290, 60, 90, 23);
+        jButtonDeleteDomain.setBounds(290, 140, 90, 23);
 
         jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
@@ -338,7 +327,23 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         });
         add(jButtonAddDomain);
-        jButtonAddDomain.setBounds(200, 60, 90, 23);
+        jButtonAddDomain.setBounds(200, 140, 90, 23);
+
+        jTableDomains.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableDomains);
+
+        add(jScrollPane1);
+        jScrollPane1.setBounds(20, 50, 360, 90);
     }// </editor-fold>//GEN-END:initComponents
 
 private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLink
@@ -366,6 +371,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onR
                     onLinkTypeSelected();
                 } else {
                     mEditorMainPanel.loadLinkProperties(null);
+                    this.jButtonDeleteLink.setEnabled(false);
                 }
             }
 }//GEN-LAST:event_onRemoveLink
@@ -405,18 +411,34 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
 }//GEN-LAST:event_onAddLink
 
 private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveDomain
-    String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
-    mEditorMainApp.deleteDomain(domainName);
-    mAlDomainNodes = mEditorMainApp.getDomainNodes();
-    loadDomains();
-    loadLinks(true);
-    //this.mAlDomainNodes.remove(domainName);
-    //this.mAlDomainNames.remove(domainName);
-    //this.mMapDomainNodes.remove(domainName);
-    //int idx = jComboBoxSelectedDomain.getSelectedIndex();
-    //jComboBoxSelectedDomain.remove(idx);    
+    TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
+    int rs[] = jTableDomains.getSelectedRows();
+    int length = rs.length;
+    String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
+                                    : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
 
-
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                             prompt, 
+                             NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
+                             NotifyDescriptor.YES_NO_OPTION);
+    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+        for (int i=length - 1; i>=0 && i < length; i--) {
+            int idx = rs[i];
+            DomainRow row = model.getRow(idx);
+            String domainName = row.getDomainName();
+            mEditorMainApp.deleteDomain(domainName);
+            model.removeRow(idx);
+        }
+        mAlDomainNodes = mEditorMainApp.getDomainNodes();
+        loadDomains();
+        loadLinks(true);
+        if (model.getRowCount() > 0) {
+            jTableDomains.setRowSelectionInterval(0, 0);
+            onDomainSelected();
+        } else {
+            this.jButtonDeleteDomain.setEnabled(false);       
+        }
+    }
 }//GEN-LAST:event_onRemoveDomain
 
 private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDomain
@@ -426,9 +448,14 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
 
 }//GEN-LAST:event_onAddDomain
 
-    private void onSelectedDomainItemStateChanged(java.awt.event.ItemEvent evt) {
-        this.jButtonDeleteDomain.setEnabled(true);
-        String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
+    private void onDomainSelected() {
+        this.jTableLinkTypes.clearSelection();
+        this.jButtonDeleteLink.setEnabled(false);
+        this.jButtonDeleteDomain.setEnabled(true);       
+        int iSelectedRow = jTableDomains.getSelectedRow();
+        TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
+        String domainName = (String) model.getValueAt(iSelectedRow,  model.iColDomainName);
+        
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         
         mEditorMainPanel.loadDomainEntityTree(domainNode);
@@ -437,80 +464,20 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
         mEditorMainPanel.loadDomainProperties(domainNode);
         
         mAlLinkTypes = domainNode.getLinkTypes();
-        // ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
-        // if (jComboBoxAssociatedDomains.getItemCount() > 0) {
-        //     jComboBoxAssociatedDomains.removeAllItems();
-        // }
-        // jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
         if (mAlLinkTypes == null ||  mAlLinkTypes.size() == 0) {
-            /*
-            for (int i=0; alAssociatedDomains != null && i < alAssociatedDomains.size(); i++) {
-                String domainWithLinks = alAssociatedDomains.get(i);
-                boolean bAdd = true;
-                for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
-                    String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
-                    if (associatedDomainName.equals(domainWithLinks)) {
-                        bAdd = false;
-                        break;
-                    }
-                }
-                if (bAdd) {
-                    jComboBoxAssociatedDomains.addItem(domainWithLinks);
-                }
-            }
-             */
         } else {
             for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
                 LinkType type = mAlLinkTypes.get(i);
                 String sourceDomain = type.getSourceDomain();
                 String targetDomain = type.getTargetDomain();
                 String domainWithLinks = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
-                /*
-                boolean bAdd = true;
-                for (int j=0; j < jComboBoxAssociatedDomains.getItemCount(); j++) {
-                    String associatedDomainName = (String) jComboBoxAssociatedDomains.getItemAt(j);
-                    if (associatedDomainName.equals(domainWithLinks)) {
-                        bAdd = false;
-                        break;
-                    }
-                }
-                if (bAdd) {
-                    jComboBoxAssociatedDomains.addItem(domainWithLinks);
-                }
-                 */
-            }
+           }
         }
-        //jComboBoxAssociatedDomains.setSelectedIndex(0);
     }
-
-    /*
-    private void onAssociatedDomainsItemStateChanged(java.awt.event.ItemEvent evt) {
-        String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
-        DomainNode domainNode = mMapDomainNodes.get(domainName);
-        mAlLinkTypes = domainNode.getLinkTypes();
-
-        //String associatedDomain = (String) jComboBoxAssociatedDomains.getSelectedItem();
-        TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
-        model.rows.clear();
-        int index = 0;
-
-        for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
-            LinkType type = mAlLinkTypes.get(i);
-            String sourceDomain = type.getSourceDomain();
-            String targetDomain = type.getTargetDomain();
-            boolean associated = false;
-            if (associatedDomain != null) {
-                associated = (associatedDomain.equals(sourceDomain)) | (associatedDomain.equals(targetDomain));            }
-            if (jComboBoxAssociatedDomains.getSelectedIndex() == 0 || associated) {
-                LinkTypeRow r = new LinkTypeRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
-                model.addRow(index++, r);
-            }
-        }
-        model.fireTableDataChanged();
-    }
-     */
     
     private void onLinkTypeSelected() {
+        this.jTableDomains.clearSelection();
+        this.jButtonDeleteDomain.setEnabled(false);
         this.jButtonDeleteLink.setEnabled(true);
         int iSelectedRow = jTableLinkTypes.getSelectedRow();
         TableModelLinkType model = (TableModelLinkType) jTableLinkTypes.getModel();
@@ -527,11 +494,115 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
     private javax.swing.JButton jButtonAddLink;
     private javax.swing.JButton jButtonDeleteDomain;
     private javax.swing.JButton jButtonDeleteLink;
-    private javax.swing.JComboBox jComboBoxSelectedDomain;
     private javax.swing.JLabel jLabelDomainName;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneLinkTypes;
+    private javax.swing.JTable jTableDomains;
     private javax.swing.JTable jTableLinkTypes;
     // End of variables declaration//GEN-END:variables
+
+    class DomainRow {
+        private String domainName;
+
+        public DomainRow(String domainName) {
+            this.domainName = domainName;
+        }
+
+        public String getDomainName() {
+            return domainName;
+        }
+
+        public void setDomainName(String domainName) {
+            this.domainName = domainName;
+        }
+    }
+    
+    // Table model for link definitions
+    class TableModelDomains extends AbstractTableModel {
+        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Domain_Name"), 
+                                        };
+        ArrayList <DomainRow> rows;
+        final static int iColDomainName = 0;
+        
+        TableModelDomains(ArrayList rows) {
+            this.rows = rows;
+        }
+        
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        public int getRowCount() {
+            if (rows != null) {
+                return rows.size();
+            }
+            return 0;
+        }
+
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        public Object getValueAt(int row, int col) {
+            if (rows != null) {
+                DomainRow singleRow = rows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iColDomainName:
+                            return singleRow.getDomainName();
+                        default:
+                            return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * editable.
+         */
+        public boolean isCellEditable(int row, int col) {
+            //Note that the data/cell address is constant,
+            //no matter where the cell appears onscreen.
+            return false;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * data can change.
+         */
+        public void setValueAt(Object value, int row, int col) {
+            if (rows != null && row >=0 && row < rows.size()) {
+                DomainRow singleRow = (DomainRow) rows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iColDomainName:
+                            singleRow.setDomainName((String) value);                            
+                            break;
+                        default:
+                            return;
+                    }
+                }
+                fireTableCellUpdated(row, col);
+            }
+        }
+        
+        public void removeRow(int index) {
+            rows.remove(index);
+            this.fireTableRowsDeleted(index, index);
+        }
+        
+        public void addRow(int index, DomainRow row) {
+            rows.add(row);
+            this.fireTableRowsInserted(index, index);
+        }
+
+        public DomainRow getRow(int index) {
+            DomainRow row = (DomainRow) rows.get(index);
+            return row;
+        }
+    }
     
     class LinkTypeRow {
         private String linkName;
@@ -579,7 +650,7 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
         }
     }
 
-    // Table model for Relationship Type
+    // Table model for link definitions
     class TableModelLinkType extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Link_Type"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Link_Name"),
@@ -690,12 +761,17 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
     public void setCurrentDomainNode(DomainNode node, boolean bNew) {
         String domainName = node.getName();
         if (bNew) {
-            jComboBoxSelectedDomain.requestFocus();
             this.mAlDomainNodes.add(node);
             this.mMapDomainNodes.put(domainName, node);
-            int idx = jComboBoxSelectedDomain.getItemCount();
-            jComboBoxSelectedDomain.insertItemAt(domainName, idx);
-            jComboBoxSelectedDomain.setSelectedItem(domainName);
+            // add a new row
+            TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
+            DomainRow r = new DomainRow(domainName);
+            int idx = model.getRowCount();
+            model.addRow(idx, r);
+            model.fireTableDataChanged();
+            jTableDomains.setRowSelectionInterval(idx, idx);
+            jTableDomains.setEditingRow(idx);
+            onDomainSelected();
         } else {
             //jComboBoxAllDomains.setSelectedItem(domainName);
         }
