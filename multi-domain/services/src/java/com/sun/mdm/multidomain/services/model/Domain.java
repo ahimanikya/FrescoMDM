@@ -28,6 +28,7 @@ package com.sun.mdm.multidomain.services.model;
  */
 public class Domain {
     private String name; 
+    private String displayName;
     
     /**
      * Create an instance of domain.
@@ -41,6 +42,7 @@ public class Domain {
      */
     public Domain(String name) {
         this.name = name;
+        this.displayName = name;
     }
     
     /**
@@ -58,4 +60,21 @@ public class Domain {
     public void setName(String name) {        
         this.name = name;
     }     
+    
+    /**
+     * Get domain display name.
+     * @return String Domain display name.
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+    
+    /**
+     * Set domain display name,
+     * @param name Domain display name.
+     */
+    public void setDisplayName(String displayName) {        
+        this.displayName = displayName;
+    }     
+    
 }
