@@ -36,7 +36,7 @@ import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
-import com.sun.mdm.multidomain.association.Domain;
+import com.sun.mdm.multidomain.attributes.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
@@ -489,7 +489,7 @@ public class MDConfigManager {
                  addRelationshipScreenConfig(relationshipScreenConfig);
             } else {
                 relationshipScreenConfig = 
-                        getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+                        getRelationshipScreenConfig(sourceDomainName, targetDomainName);
             }
             String displayName = relationshipType.getDisplayName();
             String relationshipName = relationshipType.getName();
@@ -592,6 +592,15 @@ public class MDConfigManager {
     	return mInstance;
 	}
 
+    /**
+     * Retrieve all domain screen configurations from the DomainScreenConfig hashmap.
+     *
+     * @return  all the domain screen configurations;
+     */
+    public static HashMap<String, DomainScreenConfig> getDomainScreenConfigs() {
+        return mDomainScreenConfigs;
+    } 
+    
     /**
      * Add a domain screen configuration into the DomainScreenConfig hashmap.
      *
@@ -730,7 +739,7 @@ public class MDConfigManager {
                         throws ConfigException {  
         if (mRelationshipScreenConfigs.containsKey(sourceDomainName + targetDomainName)) {
             RelationshipScreenConfig rSCObj =
-                        getRelationshipScreenConfigs(sourceDomainName, 
+                        getRelationshipScreenConfig(sourceDomainName, 
                                                        targetDomainName);
             try {
                 RelationshipScreenConfigInstance rSCI = 
@@ -761,7 +770,7 @@ public class MDConfigManager {
      * RelationshipScreenConfigInstance objects that represent the replationships.
      * @throws ConfigException if an error is encountered
      */    
-    public static RelationshipScreenConfig getRelationshipScreenConfigs(String sourceDomainName, String targetDomainName) 
+    public static RelationshipScreenConfig getRelationshipScreenConfig(String sourceDomainName, String targetDomainName) 
                         throws ConfigException {  
                             
         if (sourceDomainName == null || targetDomainName == null) {
@@ -790,7 +799,7 @@ public class MDConfigManager {
         String sourceDomainName = rel.getSourceDomain();
         String targetDomainName = rel.getTargetDomain();
 	    RelationshipScreenConfig rSC = 
-	            getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+	            getRelationshipScreenConfig(sourceDomainName, targetDomainName);
         try {	            
             if (rSC != null) {
                 rSC.addRelScreenConfigInstance(rSCI);
@@ -825,7 +834,7 @@ public class MDConfigManager {
                                              "Destination Domain Name and " + 
                                              "Relationship Name may not be null."));
         }
-	    RelationshipScreenConfig rSC = getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+	    RelationshipScreenConfig rSC = getRelationshipScreenConfig(sourceDomainName, targetDomainName);
 	    try {
     	    if (rSC != null) {
     	        rSC.removeRelScreenConfigInstance(relationshipName);
@@ -851,7 +860,7 @@ public class MDConfigManager {
      * @return a hashmap of all RelationshipScreenConfig objects.
      * @throws ConfigException if an error is encountered
      */    
-	public static HashMap<String, RelationshipScreenConfig> getRelationships() {  
+	public static HashMap<String, RelationshipScreenConfig> getRelationshipScreenConfigs() {  
 	    return mRelationshipScreenConfigs;
 	}
 
@@ -867,7 +876,7 @@ public class MDConfigManager {
 	public static RelationshipScreenConfigInstance
 	        getRelationshipScreenConfig(String sourceDomainName, String targetDomainName, 
 	                                     String relationshipName)  throws ConfigException {  
-	    RelationshipScreenConfig rSC = getRelationshipScreenConfigs(sourceDomainName, targetDomainName);
+	    RelationshipScreenConfig rSC = getRelationshipScreenConfig(sourceDomainName, targetDomainName);
 	    try {
     	    if (rSC != null) {
     	        return rSC.getRelScreenConfigInstance(relationshipName);

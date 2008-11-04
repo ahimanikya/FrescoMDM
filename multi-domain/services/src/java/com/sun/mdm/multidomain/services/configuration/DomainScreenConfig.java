@@ -22,7 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.multidomain.association.Domain;
+import com.sun.mdm.multidomain.attributes.Domain;
 
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;

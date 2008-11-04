@@ -26,7 +26,7 @@ import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 
 public class HierarchyScreenConfig extends ObjectScreenConfig {
 
-    private HierarchyType mHierarchyDef = null;
+    private HierarchyDef mHierarchyDef = null;
     private String mChildRoleDisplayName = null;
     private String mParentRoleDisplayName = null;
     
