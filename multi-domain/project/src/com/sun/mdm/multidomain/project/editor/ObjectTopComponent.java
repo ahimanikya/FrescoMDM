@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.openide.nodes.Node;
 import org.openide.nodes.NodeAdapter;
 import org.openide.util.NbBundle;
+import org.openide.ErrorManager;
 import org.openide.windows.TopComponent;
 import org.openide.cookies.SaveCookie;
 
@@ -208,6 +209,7 @@ public class ObjectTopComponent
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             return false;
         }
     }

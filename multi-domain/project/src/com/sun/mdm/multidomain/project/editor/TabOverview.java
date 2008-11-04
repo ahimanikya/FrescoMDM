@@ -28,34 +28,74 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import java.awt.event.MouseEvent;
 //import javax.swing.table.TableColumn;
 //import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.dnd.DnDConstants;
+import java.awt.Rectangle;
+import javax.swing.Action;
+import org.openide.util.actions.SystemAction;
+
+import org.openide.nodes.Node;
+import org.netbeans.api.project.Project;
+import java.io.File;
+import org.openide.filesystems.FileUtil;
+import org.openide.filesystems.FileObject;
+import org.openide.util.Utilities;
+import javax.swing.ImageIcon;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Point;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
+
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
 import com.sun.mdm.multidomain.parser.LinkType;
-//import com.sun.mdm.multidomain.parser.Attribute;
+import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
+
 /**
  *
  * @author  kkao
  */
-public class TabOverview extends javax.swing.JPanel {
+public class TabOverview extends javax.swing.JPanel implements MouseListener, MouseMotionListener  {
     private final String ALL_DOMAINS = org.openide.util.NbBundle.getMessage(TabOverview.class, "All_Domains");
+    TabOverview mTabOverview;
     EditorMainPanel mEditorMainPanel;
     EditorMainApp mEditorMainApp;
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <String> mAlDomainNames = new ArrayList();;
     private ArrayList <LinkType> mAlLinkTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
-    /** Creates new form TabOverview */
+    static final Image DOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
+    static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
+    private BufferedImage backingImage;
+    private Point last;
     public TabOverview(EditorMainPanel editorMainPanel, EditorMainApp editorMainApp) {
         initComponents();
+        mTabOverview = this;
         mEditorMainPanel = editorMainPanel;
         mEditorMainApp = editorMainApp;
+        jLabelDomainName.setIcon(DOMAINIMAGEICON);
         //jComboBoxAssociatedDomains.removeAllItems();
         //jComboBoxAssociatedDomains.addItem(ALL_DOMAINS);
         // load domain nodes
@@ -90,6 +130,86 @@ public class TabOverview extends javax.swing.JPanel {
                     onLinkTypeSelected();
                 }
             });
+            
+        //Drag and drop
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        this.setDropTarget(new DropTarget(this, new DropTargetListener() { 
+            String dragTargetName = "";
+            public void dragEnter(DropTargetDragEvent dtde) {
+            }
+
+            public void dragExit(DropTargetEvent dte) {
+
+            }
+
+            public void dragOver(DropTargetDragEvent dtde) {
+                if (isMasterIndexProject(dtde)) {
+                    dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                } else {
+                    dtde.rejectDrag();
+                }
+            }
+
+            public void drop(DropTargetDropEvent dtde) {
+                // Add DomainNode to the canvas
+                Transferable trans = dtde.getTransferable();
+                DataFlavor[] dfs = trans.getTransferDataFlavors();
+                if (dfs.length > 0) {
+                    try {
+                        Object obj = trans.getTransferData(dfs[0]);
+                        if (obj instanceof Node) {
+                            Node node = (Node) obj;
+                            Project p = node.getLookup().lookup(Project.class);
+                            if (p != null) {
+                                FileObject pfobj = p.getProjectDirectory();
+                                File selectedDomain = FileUtil.toFile(pfobj);
+                                String domainName = selectedDomain.getName();
+                                mEditorMainApp.addDomain(selectedDomain);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
+            public void dropActionChanged(DropTargetDragEvent dtde) {
+
+            }
+            
+            public boolean isMasterIndexProject(DropTargetDragEvent dtde) {
+                dragTargetName = "";
+                boolean bRet = false;
+                Transferable trans = dtde.getTransferable();
+
+                DataFlavor[] dfs = trans.getTransferDataFlavors();
+                if (dfs.length > 0) {
+                    try {
+                        Object obj = trans.getTransferData(dfs[0]);
+                        if (obj instanceof Node) {
+                            Node node = (Node) obj;
+                            dragTargetName = node.getName();
+
+                            Project p = node.getLookup().lookup(Project.class);
+                            if (p != null) {
+                                String clsName = p.getClass().getName();
+                                if (clsName.equals("com.sun.mdm.index.project.EviewApplication")) {
+                                    bRet = true;
+                                    Graphics2D g2D = (Graphics2D) mTabOverview.getGraphics();
+                                    Rectangle visRect = mTabOverview.getVisibleRect();
+                                    mTabOverview.paintImmediately(visRect.x, visRect.y, visRect.width, visRect.height);
+                                    g2D.drawImage(DOMAINIMAGE, AffineTransform.getTranslateInstance(dtde.getLocation().getX(), dtde.getLocation().getY()), null);
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                return bRet;
+            }
+        }));          
     }
 
     private void loadDomains() {
@@ -154,13 +274,14 @@ public class TabOverview extends javax.swing.JPanel {
         jButtonAddLink = new javax.swing.JButton();
         jButtonDeleteLink = new javax.swing.JButton();
         jButtonDeleteDomain = new javax.swing.JButton();
+        jButtonAddDomain = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Participating_Domains"))); // NOI18N
         setLayout(null);
 
         jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domain")); // NOI18N
         add(jLabelDomainName);
-        jLabelDomainName.setBounds(20, 30, 100, 20);
+        jLabelDomainName.setBounds(20, 30, 170, 20);
         jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
 
         jScrollPaneLinkTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Links_Defined"))); // NOI18N
@@ -176,10 +297,10 @@ public class TabOverview extends javax.swing.JPanel {
         jScrollPaneLinkTypes.setViewportView(jTableLinkTypes);
 
         add(jScrollPaneLinkTypes);
-        jScrollPaneLinkTypes.setBounds(10, 60, 370, 230);
+        jScrollPaneLinkTypes.setBounds(10, 90, 370, 180);
 
         add(jComboBoxSelectedDomain);
-        jComboBoxSelectedDomain.setBounds(120, 30, 180, 22);
+        jComboBoxSelectedDomain.setBounds(200, 30, 180, 22);
 
         jButtonAddLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddLink.addActionListener(new java.awt.event.ActionListener() {
@@ -188,7 +309,7 @@ public class TabOverview extends javax.swing.JPanel {
             }
         });
         add(jButtonAddLink);
-        jButtonAddLink.setBounds(240, 290, 70, 23);
+        jButtonAddLink.setBounds(200, 280, 90, 23);
 
         jButtonDeleteLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         jButtonDeleteLink.addActionListener(new java.awt.event.ActionListener() {
@@ -197,7 +318,7 @@ public class TabOverview extends javax.swing.JPanel {
             }
         });
         add(jButtonDeleteLink);
-        jButtonDeleteLink.setBounds(310, 290, 71, 23);
+        jButtonDeleteLink.setBounds(290, 280, 90, 23);
 
         jButtonDeleteDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         jButtonDeleteDomain.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +327,16 @@ public class TabOverview extends javax.swing.JPanel {
             }
         });
         add(jButtonDeleteDomain);
-        jButtonDeleteDomain.setBounds(300, 30, 80, 23);
+        jButtonDeleteDomain.setBounds(290, 60, 90, 23);
+
+        jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
+        jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddDomain(evt);
+            }
+        });
+        add(jButtonAddDomain);
+        jButtonAddDomain.setBounds(200, 60, 90, 23);
     }// </editor-fold>//GEN-END:initComponents
 
 private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLink
@@ -287,9 +417,18 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
 
 }//GEN-LAST:event_onRemoveDomain
 
+private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDomain
+// TODO add your handling code here:
+    Action action = SystemAction.get(ImportDomainAction.class);
+    ((ImportDomainAction) action).perform(mEditorMainApp);
+
+}//GEN-LAST:event_onAddDomain
+
     private void onSelectedDomainItemStateChanged(java.awt.event.ItemEvent evt) {
         String domainName = (String) jComboBoxSelectedDomain.getSelectedItem();
         DomainNode domainNode = mMapDomainNodes.get(domainName);
+        
+        mEditorMainPanel.loadDomainEntityTree(domainNode);
         
         //get properties panel from domainNode and present it
         mEditorMainPanel.loadDomainProperties(domainNode);
@@ -380,6 +519,7 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
      }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddDomain;
     private javax.swing.JButton jButtonAddLink;
     private javax.swing.JButton jButtonDeleteDomain;
     private javax.swing.JButton jButtonDeleteLink;
@@ -557,4 +697,67 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         }
         
     }
+    
+    
+    
+    // For drag/drop
+    public BufferedImage getImage() {
+        int width = Math.min(getWidth(), 1600);
+        int height = Math.min(getHeight(),1200);
+        if (backingImage == null || backingImage.getWidth() != width || backingImage.getHeight() != height) {
+            BufferedImage old = backingImage;
+            backingImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+            Graphics g = backingImage.getGraphics();
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, width, height);
+            if (old != null) {
+                ((Graphics2D) backingImage.getGraphics()).drawRenderedImage(old,
+                        AffineTransform.getTranslateInstance(0, 0));
+            }
+        }
+        return backingImage;
+    }
+    
+    public Paint getPaint() {
+        return Color.BLUE;
+    }
+    
+    public void mouseClicked(MouseEvent e) {
+        Point p = e.getPoint();
+        Graphics2D g = getImage().createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setPaint(getPaint());
+        g.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        if (last == null) {
+            last = p;
+        }
+        g.drawLine(last.x, last.y, p.x, p.y);
+        repaint(Math.min(last.x, p.x) - 10 / 2 - 1,
+                Math.min(last.y, p.y) - 10 / 2 - 1,
+                Math.abs(last.x - p.x) + 10 + 2,
+                Math.abs(last.y - p.y) + 10 + 2);
+        last = p;
+    }
+    
+    public void mousePressed(MouseEvent e) {
+    }
+    
+    public void mouseReleased(MouseEvent e) {
+    }
+    
+    public void mouseEntered(MouseEvent e) {
+    }
+    
+    public void mouseExited(MouseEvent e) {
+    }
+    
+    public void mouseDragged(MouseEvent e) {
+        mouseClicked(e);
+    }
+    
+    public void mouseMoved(MouseEvent e) {
+        //last = null;
+    }
+    
+    
 }

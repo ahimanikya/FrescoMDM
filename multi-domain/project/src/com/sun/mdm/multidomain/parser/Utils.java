@@ -32,6 +32,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
+import org.openide.ErrorManager;
 
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -145,9 +146,10 @@ public class Utils {
             MultiDomainModel ret = new MultiDomainModel();
             ret.parse(mDoc);
             return ret;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR502: Failed to parse: " + 
-                                                    xmlPath + ":" + e.getMessage());
+                                                    xmlPath + ":" + ex.getMessage());
         }
     }
     
@@ -164,15 +166,16 @@ public class Utils {
             MultiDomainModel ret = new MultiDomainModel();
             ret.parse(mDoc);
             return ret;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse MultiDomainModel: " + 
-                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+                                                    xmlSource.getPublicId() + ":" + ex.getMessage());
         }
     }
 
 
         /**
-     * @param xmlSource object definition
+     * @param xmlSource object definitionx
      * @return ret RelationshipType
      * @throws ParserException exception
      */
@@ -184,9 +187,10 @@ public class Utils {
             MultiDomainWebManager ret = new MultiDomainWebManager();
             ret.parseNode(mDoc);
             return ret;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse MultiDomainWebManager: " + 
-                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+                                                    xmlSource.getPublicId() + ":" + ex.getMessage());
         }
     }
 
@@ -203,9 +207,10 @@ public class Utils {
             MiObject ret = new MiObject();
             ret.parse(mDoc);
             return ret;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
-                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+                                                    xmlSource.getPublicId() + ":" + ex.getMessage());
         }
     }
     
@@ -223,9 +228,10 @@ public class Utils {
              */ 
             MIDMObjectDef ret = new MIDMObjectDef();
             return ret.parseMIDMNode(xmlSource);
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
-                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+                                                    xmlSource.getPublicId() + ":" + ex.getMessage());
         }
     }    
 /**
@@ -241,9 +247,10 @@ public class Utils {
             MIQueryBuilder ret = new MIQueryBuilder();
             ret.parse(mDoc);
             return ret;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
-                                                    xmlSource.getPublicId() + ":" + e.getMessage());
+                                                    xmlSource.getPublicId() + ":" + ex.getMessage());
         }
     }    
 
@@ -263,9 +270,10 @@ public class Utils {
             foutput.setLength(0);
             foutput.write(data.getBytes("UTF-8"));
             foutput.close();
-        } catch (IOException e) {
+        } catch (IOException ex) {
+            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR509: Failed to write " +
-                                                "file: " + path + ":" + e.getMessage());
+                                                "file: " + path + ":" + ex.getMessage());
         }
     }
     

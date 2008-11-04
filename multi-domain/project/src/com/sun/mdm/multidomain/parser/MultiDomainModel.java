@@ -59,6 +59,9 @@ public class MultiDomainModel {
     private final String mTagDataType = "data-type";
     private final String mTagSearchable = "searchable";
     private final String mTagRequired = "required";
+    private final String mTagUsed = "used";
+    private final String mTagStartDate = "start-date";
+    private final String mTagEndDate = "end-date";
     private final String mTagAttributeID = "attributeID";
     private final String mTagColumnName = "column-name";
     private final String mTagDefaultValue = "default-value";
@@ -269,7 +272,13 @@ public class MultiDomainModel {
                         attr.setRequired(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagAttributeID.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setAttributeID(Utils.getStrElementValue(nl.item(i)));
-                    }
+                    } else if (mTagUsed.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setUsed(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagStartDate.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setStartDate(Utils.getStrElementValue(nl.item(i)));
+                    } else if (mTagEndDate.equals(((Element) nl.item(i)).getTagName())) {
+                        attr.setEndDate(Utils.getStrElementValue(nl.item(i)));
+                    }                
                 }
             }
         }

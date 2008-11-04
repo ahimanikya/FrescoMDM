@@ -81,9 +81,10 @@ public class ApplicationEditAction extends NodeAction {
             if (editorMainApp == null) {
                 editorMainApp = EditorMainApp.createInstance(path);
                 editorMainApp.startEditorApp(multiDomainApplication);
+            } else {
+                // request focus
+                editorMainApp.requestFocus();
             }
-            // request focus
-            editorMainApp.requestFocus();
         } catch (Exception e) {
             mLog.severe(NbBundle.getMessage (ApplicationEditAction.class, "MSG_FAILED_To_OPEN_CONFIG_EDITOR")); // NOI18N
             ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());

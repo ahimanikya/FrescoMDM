@@ -316,7 +316,7 @@ public class EditorMainApp {
                 mMapDomainMidmXmls.put(domainName, midmXml);
                 DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
-                mEditorMainPanel.addDomainNodeToCanvas(domainNode, -1, true);
+                mEditorMainPanel.addDomainNodeToCanvas(domainNode, true);
                 mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
@@ -500,10 +500,11 @@ public class EditorMainApp {
                 mObjectTopComponent.open();
             }
             mObjectTopComponent.setCursor(Cursor.getDefaultCursor());
-
+            this.requestFocus();
         } catch (Exception ex) {
             mMapInstances.remove(projName);
             mLog.severe(ex.getMessage());
+            displayError(ex);
         }
     }
     

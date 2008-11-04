@@ -79,7 +79,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         ArrayList <Attribute> al = linkType.getPredefinedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
-            PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getValue());
+            PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getUsed(), attr.getRequired());
             modelPredefinedAttribute.addRow(j, row);
         }
         // Extended attributes
@@ -351,11 +351,13 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
     
     class PredefinedAttributeRow {
         private String name;
-        private String defaultValue;
+        private String used = "true";
+        private String required = "true";
 
-        public PredefinedAttributeRow(String name, String defaultValue) {
+        public PredefinedAttributeRow(String name, String used, String required) {
             this.name = name;
-            this.defaultValue = defaultValue;
+            this.used = used;
+            this.required = required;
         }
 
         public String getName() {
@@ -366,23 +368,33 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
             this.name = name;
         }
 
-        public String getDefaultValue() {
-            return defaultValue;
+        public String getUsed() {
+            return used;
         }
 
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
+        public void setUsed(String used) {
+            this.used = used;
+        }
+
+        public String getRequired() {
+            return required;
+        }
+
+        public void setRequired(String required) {
+            this.required = required;
         }
     }
 
     // Table model for Relationship Type
     class TableModelPredefinedAttribute extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Name"),
-                                         NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Default_Value"), 
+                                         NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Used"), 
+                                         NbBundle.getMessage(TabRelationshipDef.class, "LBL_Attribute_Required"), 
                                         };
         ArrayList <PredefinedAttributeRow> rows;
         final static int iColName = 0;
-        final static int iColDefaultValue = 1;
+        final static int iColUsed = 1;
+        final static int iColRequired = 2;
         
         TableModelPredefinedAttribute(ArrayList rows) {
             this.rows = rows;
@@ -410,8 +422,10 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     switch (col) {
                         case iColName:
                             return singleRow.getName();
-                        case iColDefaultValue:
-                            return singleRow.getDefaultValue();
+                        case iColUsed:
+                            return singleRow.getUsed();
+                        case iColRequired:
+                            return singleRow.getRequired();
                         default:
                             return null;
                     }
@@ -442,8 +456,8 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         case iColName:
                             singleRow.setName((String) value);                            
                             break;
-                        case iColDefaultValue:
-                            singleRow.setDefaultValue((String) value);                            
+                        case iColUsed:
+                            singleRow.setUsed((String) value);                            
                             break;
                         default:
                             return;

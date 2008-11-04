@@ -53,7 +53,8 @@ import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabDomainSearch;
 import com.sun.mdm.multidomain.project.editor.TabDomainView;
-//import com.sun.mdm.multidomain.project.editor.TabDomainProperties;
+import com.sun.mdm.multidomain.project.editor.EntityTreePane;
+import com.sun.mdm.multidomain.project.editor.EntityTree;
 
 /**
  *
@@ -70,10 +71,13 @@ public class DomainNode extends AbstractNode {
     private ArrayList <LinkType> alLinkTypes = new ArrayList();
     //TabDomainProperties mTabDomainProperties = null;
     EditorMainApp mEditorMainApp;
+    EntityTreePane mEntityTreePane = null;
+    EntityTree mEntityTree = null;
     TabDomainSearch mTabDomainSearch;
     TabDomainView mTabDomainView;
     File mSelectedDomain = null;
     MIQueryBuilder mMIQueryBuilder = null;
+    MiObject mMiObject;
     
     /**
      * 
@@ -127,10 +131,10 @@ public class DomainNode extends AbstractNode {
      * Build graphical representation of domain object
      */
     private void loadMiObjectNodes() {       
-        MiObject miObject = getMiObject();
-        ArrayList alMiNodes = miObject.getNodes();
+        mMiObject = parseMiObject();
+        ArrayList alMiNodes = mMiObject.getNodes();
         if ((alMiNodes != null) && (alMiNodes.size() > 0)) {
-            String miObjectName = miObject.getObjectName();
+            String miObjectName = mMiObject.getObjectName();
 
             Iterator it = alMiNodes.iterator();
             while (it.hasNext()) {
@@ -168,19 +172,23 @@ public class DomainNode extends AbstractNode {
         return this.mMIQueryBuilder;
     }
     
-    private MiObject getMiObject() {
-        MiObject miObject = null;
+    public MiObject getMiObject() {
+        return mMiObject;
+    }
+    
+    private MiObject parseMiObject() {
+        mMiObject = null;
         try {
             FileObject objectXml = EditorMainApp.getSavedDomainObjectXml(mSelectedDomain);
             if (objectXml != null) {
                 InputStream objectdef = objectXml.getInputStream();
                 InputSource source = new InputSource(objectdef);
-                miObject = Utils.parseMiObject(source);
+                mMiObject = Utils.parseMiObject(source);
             }
         } catch (Exception ex) {
                 mLog.severe(ex.getMessage());
         }
-        return miObject;
+        return mMiObject;
     }
 
     public DomainForWebManager getMidmObject() {
@@ -264,6 +272,13 @@ public class DomainNode extends AbstractNode {
      */
     public void loadLinkTypes(String domainName, ArrayList <LinkType> alLinkTypes) {
         this.alLinkTypes = alLinkTypes;
+    }
+    
+    public EntityTree getEntityTree() {
+        if (mEntityTree == null) {
+            mEntityTree = new EntityTree(this.getMiObject());
+        }
+        return mEntityTree;
     }
     
     public TabDomainSearch getDoaminsTab(boolean bRefresh) {

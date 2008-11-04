@@ -34,13 +34,15 @@ public class AddLinkDialog extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
+    public static final String RELATIONSHIP = "relationship";
+    public static final String HIERARCHY = "hierarchy";
 
     /** Creates new form AddLinkTypelDialog */
     public AddLinkDialog(ArrayList alDomains) {
         super();
         initComponents();
-        jComboBoxLinkTypes.insertItemAt("relationship", 0);
-        jComboBoxLinkTypes.insertItemAt("hierarchy", 1);
+        jComboBoxLinkTypes.insertItemAt(RELATIONSHIP, 0);
+        jComboBoxLinkTypes.insertItemAt(HIERARCHY, 1);
         //jComboBoxLinkTypes.insertItemAt("group", 2);
         //jComboBoxLinkTypes.insertItemAt("category", 3);
         jComboBoxLinkTypes.setSelectedIndex(0);
@@ -123,6 +125,12 @@ public class AddLinkDialog extends javax.swing.JDialog {
 
         jLabelType.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Link_Type_Colon")); // NOI18N
 
+        jComboBoxLinkTypes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                onLinkTypeSelected(evt);
+            }
+        });
+
         jLabelName.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Name")); // NOI18N
 
         jTextFieldName.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -133,7 +141,19 @@ public class AddLinkDialog extends javax.swing.JDialog {
 
         jLabelSourceDomain.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Source_Domain_Colon")); // NOI18N
 
+        jComboBoxSourceDomains.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                onSourceDomainSelected(evt);
+            }
+        });
+
         jLabelTargetDomain.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Target_Domain_Colon")); // NOI18N
+
+        jComboBoxTargetDomains.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                onTargetDomainSelected(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -207,6 +227,21 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
     enableBtnOK();
 }//GEN-LAST:event_onNameKeyReleased
 
+private void onLinkTypeSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onLinkTypeSelected
+    enableBtnOK();
+
+}//GEN-LAST:event_onLinkTypeSelected
+
+private void onSourceDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onSourceDomainSelected
+    enableBtnOK();
+
+}//GEN-LAST:event_onSourceDomainSelected
+
+private void onTargetDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onTargetDomainSelected
+    enableBtnOK();
+
+}//GEN-LAST:event_onTargetDomainSelected
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -214,8 +249,17 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
     }
     
     private void enableBtnOK() {
-        boolean flag = (this.jTextFieldName.getText().length() == 0);
-        this.okButton.setEnabled(!flag);
+        boolean flagDomains = false;
+        String type = getLinkType();
+        String sourceDomain = getSourceDomain();
+        String targetDomain = getTargetDomain();
+        if ((type != null && sourceDomain != null && targetDomain != null) &&
+            ((type.equals(RELATIONSHIP) && !sourceDomain.equals(targetDomain)) || 
+            (type.equals(HIERARCHY) && sourceDomain.equals(targetDomain))) ) {
+            flagDomains = true;            
+        }
+        boolean flag = flagDomains & (this.jTextFieldName.getText().length() > 0);
+        this.okButton.setEnabled(flag);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

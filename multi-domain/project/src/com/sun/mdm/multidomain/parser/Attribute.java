@@ -10,15 +10,6 @@ package com.sun.mdm.multidomain.parser;
  * @author kkao
  */
 public class Attribute {
-    public Attribute() {
-        
-    }
-    /*
-     * MultiDomainModel.xml
-     * <relationships>
-     *   <relationshp-type>
-     *     <attributes>
-     */
         String name = "";
         String type = "";       // Fixed 0, Extended 1
         String columnName = "";  // which column name in the table does it bind to
@@ -29,6 +20,23 @@ public class Attribute {
         String defaultValue = "";
         String dataType = "";
         String attributeID = "";
+        String startdate = "";
+        String enddate = "";
+        String used = "true";
+        
+    public Attribute() {
+        
+    }
+    
+    public Attribute(String name, String startdate, String enddate, String used,
+            String required) {
+        this.name = name;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.used = used;
+        this.required = required;
+    }
+    
     public Attribute(String name, String columnName, String dataType, String defaultValue,
             String searchable, String required, String attributeID) {
         this.name = name;
@@ -63,6 +71,10 @@ public class Attribute {
 
         public void setRequired(String required) {
             this.required = required;
+        }
+        
+        public void setUsed(String used) {
+            this.used = used;
         }
 
         public void setName(String name) {
@@ -117,6 +129,10 @@ public class Attribute {
             return required;
         }
 
+        public String getUsed() {
+            return used;
+        }
+
         public String getSearchable() {
             return searchable;
         }
@@ -129,4 +145,19 @@ public class Attribute {
             return type;
         }
 
+        public String getEndDate() {
+            return enddate;
+        }
+
+        public void setEndDate(String enddate) {
+            this.enddate = enddate;
+        }
+
+        public String getStartDate() {
+            return startdate;
+        }
+
+        public void setStartDate(String startdate) {
+            this.startdate = startdate;
+        }
 }

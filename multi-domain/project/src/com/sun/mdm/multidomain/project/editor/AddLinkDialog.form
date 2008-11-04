@@ -124,6 +124,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="onLinkTypeSelected"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelName">
       <Properties>
@@ -150,6 +153,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="onSourceDomainSelected"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelTargetDomain">
       <Properties>
@@ -164,6 +170,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="onTargetDomainSelected"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

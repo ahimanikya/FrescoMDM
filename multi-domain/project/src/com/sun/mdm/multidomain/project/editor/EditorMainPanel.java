@@ -24,15 +24,12 @@ package com.sun.mdm.multidomain.project.editor;
 
 import org.openide.util.NbBundle;
 import org.openide.util.Utilities;
+import org.openide.util.actions.SystemAction;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
 
 import java.util.Enumeration;
 import java.util.ArrayList;
@@ -40,25 +37,17 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.JTextField;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JTabbedPane;
 import javax.swing.Action;
 import javax.swing.JPanel;
-
-import org.openide.util.actions.SystemAction;
-import org.openide.filesystems.FileObject;
-import java.io.File;
-import java.io.IOException;
 
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
@@ -129,10 +118,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JScrollPane mMultiViewPane;
     private JTabbedPane mPropertiesTabbedPane = new JTabbedPane();
     private JScrollPane mPropertiesScrollPane = new JScrollPane();
+    private JSplitPane mLeftSplitPane;
+    private JScrollPane mEntityTreeScrollPane  = new JScrollPane();
+    private JScrollPane mOverviewScrollPane  = new JScrollPane();
     private RelationshipCanvas canvas = null; //The component the user draws on
     private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
     private TabOverview mTabOverview = null;
+    private EntityTreePane mEntityTreePane = null;
+    private EntityTree mEntityTree = null;
     
     /**
      * Create the panel and set up some basic properties.
@@ -159,6 +153,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     }
     
     private void addListeners() {
+    }
+    
+    public void loadDomainEntityTree(DomainNode currentDomainNode) {
+        mLeftSplitPane.setBottomComponent(currentDomainNode.getEntityTree());
+        mLeftSplitPane.setDividerLocation(350);
+        //Provide minimum sizes for the two components in the split pane
+        Dimension minimumSize = new Dimension(400, 350);
+        //mMultiViewPane.setMinimumSize(minimumSize);
+        mLeftSplitPane.setMinimumSize(minimumSize);
     }
     
     public void loadDomainProperties(DomainNode currentDomainNode) {
@@ -193,17 +196,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mMultiViewPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "LBL_MultiDomain_Model")));
-        mMultiViewPane.setViewportView(canvas);
-        
-        
-        //ToDo
-        //setCurrentDomainNode
-        //this.mEditorMainApp.getDomainNode(null).getTabListRelationshipTypes();
-        //DomainNode node = this.mEditorMainApp.getDomainNode(null);
-        //TabListRelationshipTypes tab = new TabListRelationshipTypes(node.getName(), null);
-        //if (node != null) {
-        //    tab = node.getTabListRelationshipTypes();
-        //}
+               
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
@@ -212,23 +205,27 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         DomainNode currentDomainNode = null; // use this to load web tabs for domain
         if (alDomainNodes != null && alDomainNodes.size() > 0) {
             currentDomainNode = alDomainNodes.get(0);
+            mEntityTree = currentDomainNode.getEntityTree();
+            mEntityTreeScrollPane.setViewportView(mEntityTree);
             loadDomainProperties(currentDomainNode);
         }
+
         mTabOverview = new TabOverview(this, mEditorMainApp);
-        JSplitPane lefSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                this.mTabOverview, this.canvas);
-        lefSplitPane.setOneTouchExpandable(true);
-        lefSplitPane.setDividerLocation(400);
-                
+        mOverviewScrollPane.setViewportView(mTabOverview);
+        mLeftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                mOverviewScrollPane, mEntityTreeScrollPane);
+        mLeftSplitPane.setOneTouchExpandable(true);
+        mLeftSplitPane.setDividerLocation(350);
+        //Provide minimum sizes for the two components in the split pane
+        Dimension minimumSize = new Dimension(400, 350);
+        //mMultiViewPane.setMinimumSize(minimumSize);
+        mLeftSplitPane.setMinimumSize(minimumSize);
+        mMultiViewPane.setViewportView(mLeftSplitPane);
+
         JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                lefSplitPane, mPropertiesScrollPane);
+                mLeftSplitPane, mPropertiesScrollPane);
         mainSplitPane.setOneTouchExpandable(true);
         mainSplitPane.setDividerLocation(400);
-
-        //Provide minimum sizes for the two components in the split pane
-        Dimension minimumSize = new Dimension(400, 400);
-        //mMultiViewPane.setMinimumSize(minimumSize);
-        lefSplitPane.setMinimumSize(minimumSize);
         
         return mainSplitPane;
     }
@@ -368,26 +365,16 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     public void loadDomainNodesToCanvas() {
         ArrayList <DomainNode> al = mEditorMainApp.getDomainNodes();
         for (int i=0; i<al.size(); i++) {
-            addDomainNodeToCanvas(al.get(i), i, false);
+            addDomainNodeToCanvas(al.get(i), false);
         }
     }
     
     /** Add a Domain Node to the canvas
      *
      */
-    public boolean addDomainNodeToCanvas(DomainNode node, int index, boolean bNew) {
-        boolean added = false;
-        int cnt = index;
-        if (cnt < 0) {
-            cnt = this.getComponentCount() + 1;
-        }
-        JLabel label = new JLabel(node.getName());
-        canvas.add(label);
-        label.setBounds(10, cnt * 30, 80, 20);
+    public void addDomainNodeToCanvas(DomainNode node, boolean bNew) {
         //mMultiViewPane.setViewportView(canvas);
-        //populate properties
         mTabOverview.setCurrentDomainNode(node, bNew);
-        return added;
     }
      
     /** Add a Domain action
