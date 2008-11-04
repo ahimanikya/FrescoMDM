@@ -40,7 +40,7 @@ public class RelationshipDef extends AttributesDef implements Serializable {
     private String sourceDomain;
     private String targetDomain;  
     private DirectionMode direction; 
-    private int reldefID;    
+    private int id;    
         
     /**
      * Create an instance of RelationshipType. 
@@ -55,7 +55,7 @@ public class RelationshipDef extends AttributesDef implements Serializable {
      */
     public RelationshipDef(String name, int id) {
         super(name);
-    	this.reldefID = id;
+    	this.id = id;
     	    	
     }
     
@@ -119,8 +119,22 @@ public class RelationshipDef extends AttributesDef implements Serializable {
         this.sourceDomain = type.getSourceDomain();
         this.targetDomain = type.getTargetDomain();
 
-        this.direction = type.getDirection();    
-        
-        
+        this.direction = type.getDirection();                    
     }    
+    
+    /**
+     * Get relationship definition identifier.
+     * @return RelationshipDef Id.
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Set relationship definition identifier.
+     * @param id Relationship definition identifier.
+     */    
+    public void setId(int id) {
+        this.id = id;
+    }
 }

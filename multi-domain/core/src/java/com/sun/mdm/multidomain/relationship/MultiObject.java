@@ -32,8 +32,8 @@ import com.sun.mdm.index.objects.ObjectNode;
  * @author SwaranjitDua
  */
 public class MultiObject {
-	private ObjectNode sourceDomainObject;	
-	private RelationshipDomain[] relationshipDomains;
+    private ObjectNode sourceDomainObject;	
+    private RelationshipDomain[] relationshipDomains;
 	
     
     /**
@@ -57,8 +57,24 @@ public class MultiObject {
     public void setSourceDomainObject(ObjectNode object) {
     	this.sourceDomainObject = object;
     }
+
+    /**
+     * Get an array of RelationshipDomain objects.
+     * @return RelationshipDomain[] An array of RelationshipDomain objects.
+     */
+    public RelationshipDomain[] getRelationshipDomains() {        
+        return relationshipDomains;
+    }
     
-  /*  
+    /**
+     * Set an array of RelationshipDomain objects.
+     * @param relationshipDomains An array of RelationshipDomain objects.
+     */
+    public void setRelationshipDomains(RelationshipDomain[] relationshipDomains) {        
+        this.relationshipDomains = relationshipDomains;
+    }
+    
+    /*  
     public int getRelationshipTypeCount() {
     	
     }
@@ -125,11 +141,10 @@ public class MultiObject {
         public int getRelationshipCount(RelationshipType type) {
         	
         }
-          */
+        */
                   
     }
-        
-    
+            
     /**
      * RelationshipObject class. 
      * This represents a relationship between source object in MultiObject to targetObject
@@ -176,6 +191,5 @@ public class MultiObject {
         public Relationship getRelationship() {
             return relationship;
         }     
-    }
- 
+    } 
 }

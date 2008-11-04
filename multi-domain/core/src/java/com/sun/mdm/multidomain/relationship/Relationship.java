@@ -38,7 +38,7 @@ import java.io.Serializable;
 
  */
 public class Relationship implements Serializable  {
-    private int relationshipID;
+    private int relationshipId;
     private String sourceEUID;
     private String targetEUID;
     private Date effectiveFromDate;
@@ -58,16 +58,16 @@ public class Relationship implements Serializable  {
      * Get relationship Id.
      * @return int Relationship Id.
      */
-    public int getRelationshipID() {
-    	return relationshipID;
+    public int getRelationshipId() {
+    	return relationshipId;
     }
     
     /**
      * Set relationship Id.
      * @param relationshipID Relationship Id.
      */
-    public void setRelationshipID(int relationshipID){
-    	this.relationshipID = relationshipID;
+    public void setRelationshipId(int relationshipId){
+    	this.relationshipId = relationshipId;
     }
     
     /** 
