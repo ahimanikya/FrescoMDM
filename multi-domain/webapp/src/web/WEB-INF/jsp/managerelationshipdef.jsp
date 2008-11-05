@@ -12,7 +12,7 @@
         <link rel="stylesheet" type="text/css" href=".../../css/styles.css" media="screen"/>
                   
         <script type='text/javascript' src='dwr/interface/DomainHandler.js'></script>    
-        <script type='text/javascript' src='dwr/interface/RelationshipTypeHandler.js'></script>    
+        <script type='text/javascript' src='dwr/interface/RelationshipDefHandler.js'></script>    
         <script type='text/javascript' src='dwr/engine.js'></script>    
         <script type='text/javascript' src='dwr/util.js'></script>    
                
@@ -44,7 +44,7 @@
             function loadRelationshipTypes() {
                 var sourceDomain=document.getElementById("selectSourceDomain").value;
                 var targetDomain=document.getElementById("selectTargetDomain").value;
-                RelationshipTypeHandler.getRelationshipTypes(sourceDomain, targetDomain, updateRelationshipTypes);
+                RelationshipDefHandler.getRelationshipDefs(sourceDomain, targetDomain, updateRelationshipTypes);
             }                         
             function updateRelationshipTypes(data) {
                 dwr.util.removeAllRows("types");
@@ -53,7 +53,7 @@
             function clickAdd() {
                 relationshiptype = {name:"foo", sourceDomain:"Person", targetDomain:"Product", attributes:[{name:"foo"}]};
                 alert("add new relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
-                RelationshipTypeHandler.addRelationshipType(relationshiptype, clickAddCB);
+                RelationshipDefHandler.addRelationshipDef(relationshiptype, clickAddCB);
             }
             function clickAddCB(data) {
                  alert("added relationshiptype id=" + data);
@@ -62,7 +62,7 @@
             function clickDelete() {
                relationshiptype = {name:"foo", sourceDomain:"Person", targetDomain:"Product"};
                alert("delete a relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
-               RelationshipTypeHandler.deleteRelationshipType(relationshiptype, clickDeleteCB);
+               RelationshipDefHandler.deleteRelationshipDef(relationshiptype, clickDeleteCB);
             }           
             function clickDeleteCB() {
                 loadRelationshipTypes();
@@ -76,7 +76,7 @@
             function clickThrow(){
                 alert("throw an exception now!");
                 var domain = "foo";
-                RelationshipTypeHandler.getRelationshipTypeCount(domain, clickThrowCB);
+                RelationshipDefHandler.getRelationshipDefCount(domain, clickThrowCB);
             }
             function clickThrowCB(data){
             }
