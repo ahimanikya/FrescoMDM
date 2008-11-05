@@ -29,22 +29,17 @@ public abstract class ScreenObject {
 	private Integer mId;                    // screen ID
   	private String mDisplayTitle;           // title to be displayed 
 	private int mDisplayOrder;		        // order in which the screen is displayed
-	private ArrayList<DomainScreenConfig> mDomainScreenConfigs; // ArrayList of DomainScreenConfig objects
-	private ArrayList<RelationshipScreenConfig> mRelationshipScreenConfigs;	// ArrayList of RelationshipScreenConfig objects
-	private ArrayList<ScreenObject> mSubscreens;                // ArrayList of ScreenObjects
-
-    public ScreenObject() { 
+    private ArrayList<ScreenObject> mSubscreens;
+    
+    public ScreenObject() {
+        mSubscreens = new ArrayList<ScreenObject> ();
     }
     
     public ScreenObject(Integer id, String displayTitle, int displayOrder,
-                             ArrayList<DomainScreenConfig> domainScreenConfigs,
-                             ArrayList<RelationshipScreenConfig> relationshipScreenConfigs,
                              ArrayList<ScreenObject> subscreens) {
         mId = id;
         mDisplayTitle = displayTitle;
         mDisplayOrder = displayOrder;
-        mDomainScreenConfigs = domainScreenConfigs;
-        mRelationshipScreenConfigs = relationshipScreenConfigs;
         mSubscreens = subscreens;
     }
     
@@ -100,173 +95,6 @@ public abstract class ScreenObject {
      */    
 	public void setDisplayOrder(Integer displayOrder) {
 	    mDisplayOrder = displayOrder;
-	}
-
-    /**
-     * Retrieves all the domain screen configurations for this screen object.
-     *
-     * @return all the domain screen configurations for this screen object.
-     */	
-	public ArrayList<DomainScreenConfig> getDomainScreenConfigs() {  
-	    return mDomainScreenConfigs;
-	}
-
-    /**
-     * Sets the domain screen configurations for this screen object.
-     *
-     * @param domainScreenConfigs  Domain screen configurations to add to this screen object.
-     */	
-	public void setDomainScreenConfigs(ArrayList<DomainScreenConfig> domainScreenConfigs) {
-	    mDomainScreenConfigs = domainScreenConfigs;
-	}
-	
-    /**
-     * Add a domain screen configuration for this screen object.
-     *
-     * @param domainScreenConfig  Configuration information for a domain.
-     * @throws Exception if an error is encountered.
-     */	
-	public void addDomainScreenConfig(DomainScreenConfig domainScreenConfig) throws Exception {
-	    mDomainScreenConfigs.add(domainScreenConfig);
-	}
-	
-    /**
-     * Remove a domain screen configuration for this screen object.
-     *
-     * @param domainID  ID of the domain for which the configuration information is to be removed.
-     * @throws Exception if an error is encountered.
-     */	
-	public void removeDomainScreenConfig(String domainID) throws Exception {  
-	    for (int i = 0; i < mDomainScreenConfigs.size(); i++) {
-	        DomainScreenConfig dsc = mDomainScreenConfigs.get(i);
-	        if (domainID.equalsIgnoreCase(dsc.getID()) == true) {
-	            mDomainScreenConfigs.remove(i);
-	        }
-	    }
-	}
-	
-    /**
-     * Retrieves the screen configuration for a domain.  There can be only one such 
-     * object per domain in a screen.
-     *
-     * @param domainID  ID of the domain for which the configuration information is requested.
-     * @return screen configuration information for the domain.
-     * @throws Exception if an error is encountered.
-     */    
-	public DomainScreenConfig getDomainScreenConfig(String domainID) throws Exception {  
-	    for (int i = 0; i < mDomainScreenConfigs.size(); i++) {
-	        DomainScreenConfig dsc = mDomainScreenConfigs.get(i);
-	        if (domainID.equalsIgnoreCase(dsc.getID()) == true) {
-	            return dsc;
-	        }
-	    }
-	    return null;
-	}
-
-    /**
-     * Retrieves all the relationship screen configurations for this screen object.
-     *
-     * @return all the relationship screen configurations for this screen object.
-     */	
-	public ArrayList<RelationshipScreenConfig> getRelationshipScreenConfig() {  
-	    return mRelationshipScreenConfigs;
-	}
-
-    /**
-     * Sets the relationship screen configurations for this screen object.
-     *
-     * @param relationshipScreenConfigs  Relationship screen configurations to add to 
-     * this screen object.
-     */	
-	public void setRelationshipScreenConfig(ArrayList<RelationshipScreenConfig> relationshipScreenConfigs) {
-	    mRelationshipScreenConfigs = relationshipScreenConfigs;
-	}
-
-    /**
-     * Retrieves all the search screen configurations for a domain.
-     *
-     * @param domainID  ID of the domain for which the configuration information is requested.
-     * @return search screen configuration information for the domain.
-     * @throws Exception if an error is encountered.
-     */	
-	public ArrayList<SearchScreenConfig> getSearchScreenConfig(String domainID) throws Exception {  
-	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
-	    if (dsc != null) {
-	        return dsc.getSearchScreenConfigs();
-	    }
-	    return null;
-	}
-
-    /**
-     * Retrieves all the search results screen configurations for a domain.
-     *
-     * @param domainID  ID of the domain for which the configuration information is requested.
-     * @return search result screen configuration information for the domain.
-     * @throws Exception if an error is encountered.
-     */	
-	public ArrayList<SearchResultDetailsConfig> getSearchResultsConfig(String domainID) 
-	        throws Exception {  
-	            
-	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
-	    if (dsc != null) {
-	        return dsc.getSearchResultDetailsConfigs();
-	    }
-	    return null;
-	}
-
-    /**
-     * Retrieves all the search result details screen configurations for a domain.
-     *
-     * @param domainID  ID of the domain for which the configuration information is requested.
-     * @return search result details screen configuration information for the domain.
-     * @throws Exception if an error is encountered.
-     */	
-	public ArrayList<SearchResultDetailsConfig> getSearchResultDetailsConfig(String domainID) 
-	        throws Exception {  
-	            
-	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
-	    if (dsc != null) {
-	        return dsc.getSearchResultDetailsConfigs();
-	    }
-	    return null;
-	}
-
-    /**
-     * Retrieves the search result screen configuration for a domain and a search screen .
-     *
-     * @param domainID  ID of the domain for which the configuration information is requested.
-     * @param searchScreenConfigId  search screen configuration ID
-     * @return search results screen configuration information for the domain.
-     * @throws Exception if an error is encountered.
-     */	
-	public SearchResultsConfig getSearchResultsConfig(String domainID, 
-	                                                  Integer searchScreenConfigId) 
-            throws Exception {  
-                
-	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
-	    if (dsc != null) {
-	        return dsc.getSearchResultsConfig(searchScreenConfigId);
-	    }
-	    return null;
-	}
-
-    /**
-     * Retrieves the search result details screen configuration for a domain and a search result screen.
-     *
-     * @param domainID  ID of the domain for which the configuration information is requested.
-     * @param searchResultsConfigId  search screen results configuration ID
-     * @return search result details screen configuration information for the domain.
-     * @throws Exception if an error is encountered.
-     */	
-	public SearchResultDetailsConfig getSearchResultsDetailsConfig(String domainID, 
-	                                                               Integer searchResultsConfigId) 
-            throws Exception {  
-                
-	    DomainScreenConfig dsc = getDomainScreenConfig(domainID);
-	    if (dsc != null) {
-	        return dsc.getSearchResultsDetailsConfig(searchResultsConfigId);
-	    }
-	    return null;
 	}
 
     /**
