@@ -66,13 +66,14 @@ public class DefaultEuidGenerator implements EuidGenerator {
     private static boolean isInitialized = false;
     private static String DatabaseType = ObjectFactory.getDatabase();
     private static SequenceEJBLocal mseqLocal = null;
+    private static boolean insideContainer = true;
 
     /** Default constructor for DefaultEuidGenerator
      * @throws SEQException An exception occurred
      */
     public DefaultEuidGenerator() throws SEQException {
         
-        if (!isInitialized) {
+        if (!isInitialized && insideContainer) {
 	        try {
 	            Context init = new InitialContext();
 	            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
@@ -95,6 +96,18 @@ public class DefaultEuidGenerator implements EuidGenerator {
 	        }
 	        isInitialized = true; 
 	}
+    }
+    
+    public static void setinsideLoader() {
+    	
+    	insideContainer = false;
+    	
+    }
+    
+    public static void setinsideContainer() {
+    	
+    	insideContainer = true;
+    	
     }
 
     /** Parameters of the euid generator represented in the configuration XML
@@ -141,8 +154,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
         int trialCount = 0;
         while (!validEUID && trialCount < mTrialCount) {
             try {
-                if (DatabaseType.equalsIgnoreCase("Oracle") &&
-                         !sequeneceDatabaseAvailable) {
+                if (((DatabaseType.equalsIgnoreCase("Oracle") &&
+                         !sequeneceDatabaseAvailable)) || (!insideContainer)) { //If not inside container always use one connection
                     synchronized(mNextEUID) {
                             long val = mNextEUID.longValue();
                             if (val != -1) {
