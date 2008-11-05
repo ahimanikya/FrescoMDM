@@ -20,19 +20,17 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.services.relationship;
+package com.sun.mdm.multidomain.services.model;
 
-import java.util.List;
-import java.util.ArrayList;
 import junit.framework.TestCase;
 
 /**
- * AttributeListTest class.
+ * AttributeDefinitionTest class.
  * @author cye
  */
-public class AttributeListTest extends TestCase {
-    
-    public AttributeListTest (String name) {
+public class AttributeDefTest extends TestCase {
+
+    public AttributeDefTest (String name) {
         super(name);
     }
     
@@ -40,28 +38,14 @@ public class AttributeListTest extends TestCase {
     }
     
     public void test001() {
-        
-        List<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Attribute("FOO1", "FOO1"));
-        attributes.add(new Attribute("FOO2", "FOO2"));
-        attributes.add(new Attribute("FOO3", "FOO3"));
-        AttributeList aList = new AttributeList();
-        aList.setAttributes(attributes);
-        assertTrue(aList.getSize() == 3);
-        
-        assertTrue(aList.hasNext());
-        Attribute a = aList.next();
-        assertTrue(a.getName().equals("FOO1"));
-        assertTrue(a.getValue().equals("FOO1"));
-        
-        assertTrue(aList.hasNext());
-        a = aList.next();
-        assertTrue(a.getName().equals("FOO2"));
-        assertTrue(a.getValue().equals("FOO2"));
-        
-        assertTrue(aList.hasNext());
-        a = aList.next();
-        assertTrue(a.getName().equals("FOO3"));
-        assertTrue(a.getValue().equals("FOO3"));
+        AttributeDef ad = new AttributeDef();
+        assertTrue(ad.size() == 0);
+        assertTrue(ad.getName() == null);
+        ad.setName("FOO");
+        assertTrue(ad.getName().equals("FOO"));
+        assertTrue(ad.size() == 1);
+        ad.setId("FOO");
+        assertTrue(ad.getId().equals("FOO"));
+        assertTrue(ad.size() == 2);        
     }
 }

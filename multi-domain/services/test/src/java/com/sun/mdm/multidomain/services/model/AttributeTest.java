@@ -20,17 +20,17 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.multidomain.services.relationship;
+package com.sun.mdm.multidomain.services.model;
 
 import junit.framework.TestCase;
 
 /**
- * AttributeDefinitionTest class.
+ * AttributeTest class.
  * @author cye
  */
-public class AttributeDefinitionTest extends TestCase {
+public class AttributeTest extends TestCase {
 
-    public AttributeDefinitionTest (String name) {
+    public AttributeTest (String name) {
         super(name);
     }
     
@@ -38,11 +38,10 @@ public class AttributeDefinitionTest extends TestCase {
     }
     
     public void test001() {
-        AttributeDefinition ad = new AttributeDefinition();
-        assertTrue(ad.size() == 0);
-        assertTrue(ad.getName() == null);
-        ad.setName("FOO");
-        assertTrue(ad.getName().equals("FOO"));
-        assertTrue(ad.size() == 1);
+        Attribute a1 = new Attribute("FOO", "FOO");
+        Attribute a2 = new Attribute("FOO", "FOO");
+        assertTrue("FOO".equals(a1.getName()));
+        assertTrue("FOO".equals(a1.getValue()));        
+        assertTrue(a1.equals(a2));
     }
 }
