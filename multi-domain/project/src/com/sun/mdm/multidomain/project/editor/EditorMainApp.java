@@ -130,30 +130,30 @@ public class EditorMainApp {
         
     /** Add a Definition 
      * 
-     * @param linkType
+     * @param definition
      * @return
      */
-    public DefinitionNode addDefinition(Definition linkType) {
-        mMultiDomainModel.addDefinition(linkType);
-        Definition webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
+    public DefinitionNode addDefinition(Definition definition) {
+        mMultiDomainModel.addDefinition(definition);
+        Definition webLinkType = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
         if (webLinkType == null) {
-            webLinkType = mMultiDomainWebManager.createLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
+            webLinkType = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
             int displayOrder = 1;
-            for (Attribute al : linkType.getPredefinedAttributes()) {
+            for (Attribute al : definition.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getType(), false);                        
                 ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
             }
 
-            for (Attribute al : linkType.getExtendedAttributes()) {
+            for (Attribute al : definition.getExtendedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getType(), false);
                 ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
             }
 
-            //linkType.getExtendedAttributes().get(0).
+            //definition.getExtendedAttributes().get(0).
         }
-        DefinitionNode node = new DefinitionNode(this, linkType, webLinkType);
+        DefinitionNode node = new DefinitionNode(this, definition, webLinkType);
         this.mAlDefinitionNodes.add(node);
         return node;
     }
@@ -187,27 +187,27 @@ public class EditorMainApp {
         //ArrayList <LinkType> allWebLinkTypes = this.mMultiDomainWebManager.getRelationshipTypes();
         
         for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
-            Definition linkType = (Definition) alLinkTypes.get(i);
-            Definition webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
+            Definition definition = (Definition) alLinkTypes.get(i);
+            Definition webLinkType = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
             if (webLinkType == null) {
-                webLinkType = mMultiDomainWebManager.createLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());       
+                webLinkType = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());       
                 //ArrayList
                 int displayOrder = 1;
-                for (Attribute al : linkType.getPredefinedAttributes()) {
+                for (Attribute al : definition.getPredefinedAttributes()) {
                     
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null, al.getDataType(), false);
                     ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
                 }
 
-                for (Attribute al : linkType.getExtendedAttributes()) {
+                for (Attribute al : definition.getExtendedAttributes()) {
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null,  al.getDataType(), false);
                     ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
                 }
                 
             }
-            DefinitionNode node = new DefinitionNode(this, linkType, webLinkType);
+            DefinitionNode node = new DefinitionNode(this, definition, webLinkType);
             this.mAlDefinitionNodes.add(node);
         }
         

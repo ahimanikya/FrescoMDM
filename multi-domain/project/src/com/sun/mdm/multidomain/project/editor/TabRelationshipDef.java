@@ -46,26 +46,26 @@ import com.sun.mdm.multidomain.parser.Attribute;
  */
 public class TabRelationshipDef extends javax.swing.JPanel {
     EditorMainApp mEditorMainApp;
-    Definition mLinkType;
+    Definition mDefinition;
     /** Creates new form TabAttributes */
-    public TabRelationshipDef(EditorMainApp editorMainApp, Definition linkType) {
+    public TabRelationshipDef(EditorMainApp editorMainApp, Definition definition) {
         initComponents();
         mEditorMainApp = editorMainApp;
-        mLinkType = linkType;
-        this.jTextName.setText(linkType.getName());
+        mDefinition = definition;
+        this.jTextName.setText(definition.getName());
         // Get plugin list
-        if (linkType.getPlugin() != null) {
-            this.jComboBoxPlugin.insertItemAt(linkType.getPlugin(), 0);
+        if (definition.getPlugin() != null) {
+            this.jComboBoxPlugin.insertItemAt(definition.getPlugin(), 0);
             this.jComboBoxPlugin.setSelectedIndex(0);
         }
-        //this.jComboBoxPlugin.setSelectedItem(linkType.getPlugin());
-        this.jTextDomain1.setText(linkType.getSourceDomain());
-        this.jTextDomain2.setText(linkType.getTargetDomain());
-        String direction = linkType.getDirection();
+        //this.jComboBoxPlugin.setSelectedItem(definition.getPlugin());
+        this.jTextDomain1.setText(definition.getSourceDomain());
+        this.jTextDomain2.setText(definition.getTargetDomain());
+        String direction = definition.getDirection();
         if (direction == null || direction.equals("1")) {
             this.jComboBoxDirection.setSelectedIndex(0);
         }
-        String description = linkType.getDescription();
+        String description = definition.getDescription();
         if (description != null) {
             this.jTextAreaDescription.setText(description);
         }
@@ -78,7 +78,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         this.jTableExtendedAttr.setModel(modelExtendedAttribute);
         // Predefined attributes
         modelPredefinedAttribute.rows.clear();
-        ArrayList <Attribute> al = linkType.getPredefinedAttributes();
+        ArrayList <Attribute> al = definition.getPredefinedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
             PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getIncluded(), attr.getRequired());
@@ -86,7 +86,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         }
         // Extended attributes
         modelExtendedAttribute.rows.clear();
-        al = linkType.getExtendedAttributes();
+        al = definition.getExtendedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
             ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
@@ -340,7 +340,7 @@ TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTabl
             String required = dialog.getRequired() == true ? "true" : "false";
             // Replace Attribute
             Attribute attr = new Attribute(attrName, included, required);
-            mLinkType.updatePredefinedAttribute(oldName, attr);
+            mDefinition.updatePredefinedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setIncluded(included);
@@ -365,7 +365,7 @@ final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
                 // add new Attribute
                 Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                                searchable, required, attributeID);
-                mLinkType.addExtendedAttribute(attr);
+                mDefinition.addExtendedAttribute(attr);
                 // add a new row
                 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
                 ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
@@ -392,7 +392,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             for (int i=length - 1; i>=0 && i < length; i--) {
                 int idx = rs[i];
                 ExtendedAttributeRow row = model.getRow(idx);
-                mLinkType.deleteExtendedAttribute(row.getName());
+                mDefinition.deleteExtendedAttribute(row.getName());
                 model.removeRow(idx);
             }
             model.fireTableDataChanged();
@@ -419,7 +419,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                            searchable, required, attributeID);
-            mLinkType.updateExtendedAttribute(oldName, attr);
+            mDefinition.updateExtendedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setColumnName(columnName);
@@ -452,7 +452,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                            searchable, required, attributeID);
-            mLinkType.updateExtendedAttribute(oldName, attr);
+            mDefinition.updateExtendedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setColumnName(columnName);
@@ -480,7 +480,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             String required = dialog.getRequired() == true ? "true" : "false";
             // Replace Attribute
             Attribute attr = new Attribute(attrName, included, required);
-            mLinkType.updatePredefinedAttribute(oldName, attr);
+            mDefinition.updatePredefinedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setIncluded(included);

@@ -34,7 +34,7 @@ public class PredefinedAttributeDialog extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     boolean bModified = false;
 
-    /** Creates new form AddLinkTypelDialog */
+    /** Creates new form PredefinedAttributeDialog */
     public PredefinedAttributeDialog(String name, String included, String required) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();

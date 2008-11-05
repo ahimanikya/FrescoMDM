@@ -54,7 +54,7 @@
                   <Component id="jComboBoxTargetDomains" alignment="0" max="32767" attributes="1"/>
                   <Component id="jComboBoxSourceDomains" alignment="0" max="32767" attributes="1"/>
                   <Component id="jTextFieldName" alignment="0" pref="166" max="32767" attributes="1"/>
-                  <Component id="jComboBoxLinkTypes" alignment="0" max="32767" attributes="1"/>
+                  <Component id="jComboBoxDefinitions" alignment="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -66,7 +66,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelType" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="jComboBoxLinkTypes" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBoxDefinitions" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -121,14 +121,14 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBoxLinkTypes">
+    <Component class="javax.swing.JComboBox" name="jComboBoxDefinitions">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="onLinkTypeSelected"/>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="onDefinitionSelected"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelName">

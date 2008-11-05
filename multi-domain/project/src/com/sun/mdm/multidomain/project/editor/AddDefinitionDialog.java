@@ -37,15 +37,15 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
     public static final String RELATIONSHIP = "relationship";
     public static final String HIERARCHY = "hierarchy";
 
-    /** Creates new form AddLinkTypelDialog */
+    /** Creates new form AddDefinitionDialog */
     public AddDefinitionDialog(ArrayList alDomains) {
         super();
         initComponents();
-        jComboBoxLinkTypes.insertItemAt(RELATIONSHIP, 0);
-        jComboBoxLinkTypes.insertItemAt(HIERARCHY, 1);
-        //jComboBoxLinkTypes.insertItemAt("group", 2);
-        //jComboBoxLinkTypes.insertItemAt("category", 3);
-        jComboBoxLinkTypes.setSelectedIndex(0);
+        jComboBoxDefinitions.insertItemAt(RELATIONSHIP, 0);
+        jComboBoxDefinitions.insertItemAt(HIERARCHY, 1);
+        //jComboBoxDefinitions.insertItemAt("group", 2);
+        //jComboBoxDefinitions.insertItemAt("category", 3);
+        jComboBoxDefinitions.setSelectedIndex(0);
         setDomains(alDomains);
         enableBtnOK();
     }
@@ -61,12 +61,12 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
         }
     }
     
-    public String getLinkName() {
+    public String getDefinitionName() {
         return jTextFieldName.getText();
     }
     
-    public String getLinkType() {
-        return (String) jComboBoxLinkTypes.getSelectedItem();
+    public String getDefinitionType() {
+        return (String) jComboBoxDefinitions.getSelectedItem();
     }
     
     public String getSourceDomain() {
@@ -94,7 +94,7 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabelType = new javax.swing.JLabel();
-        jComboBoxLinkTypes = new javax.swing.JComboBox();
+        jComboBoxDefinitions = new javax.swing.JComboBox();
         jLabelName = new javax.swing.JLabel();
         jTextFieldName = new javax.swing.JTextField();
         jLabelSourceDomain = new javax.swing.JLabel();
@@ -125,9 +125,9 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
 
         jLabelType.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_Type_Colon")); // NOI18N
 
-        jComboBoxLinkTypes.addItemListener(new java.awt.event.ItemListener() {
+        jComboBoxDefinitions.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                onLinkTypeSelected(evt);
+                onDefinitionSelected(evt);
             }
         });
 
@@ -179,7 +179,7 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxTargetDomains, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxSourceDomains, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxLinkTypes, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxDefinitions, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -188,7 +188,7 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jComboBoxLinkTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxDefinitions, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jTextFieldName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -229,10 +229,10 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
     enableBtnOK();
 }//GEN-LAST:event_onNameKeyReleased
 
-private void onLinkTypeSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onLinkTypeSelected
+private void onDefinitionSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onDefinitionSelected
     enableBtnOK();
 
-}//GEN-LAST:event_onLinkTypeSelected
+}//GEN-LAST:event_onDefinitionSelected
 
 private void onSourceDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onSourceDomainSelected
     enableBtnOK();
@@ -252,7 +252,7 @@ private void onTargetDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:e
     
     private void enableBtnOK() {
         boolean flagDomains = false;
-        String type = getLinkType();
+        String type = getDefinitionType();
         String sourceDomain = getSourceDomain();
         String targetDomain = getTargetDomain();
         if ((type != null && sourceDomain != null && targetDomain != null) &&
@@ -266,7 +266,7 @@ private void onTargetDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:e
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JComboBox jComboBoxLinkTypes;
+    private javax.swing.JComboBox jComboBoxDefinitions;
     private javax.swing.JComboBox jComboBoxSourceDomains;
     private javax.swing.JComboBox jComboBoxTargetDomains;
     private javax.swing.JLabel jLabelName;

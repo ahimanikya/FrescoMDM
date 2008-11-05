@@ -171,21 +171,21 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
     
-    public void loadLinkProperties(DefinitionNode currentLinkNode) {
+    public void loadDefinitionProperties(DefinitionNode currentDefinitionNode) {
         mPropertiesTabbedPane.removeAll();
-        if (currentLinkNode != null) {
+        if (currentDefinitionNode != null) {
             String title = "Unknown";
-            if (currentLinkNode.getType().equals(Definition.TYPE_RELATIONSHIP)) {
+            if (currentDefinitionNode.getType().equals(Definition.TYPE_RELATIONSHIP)) {
                 title = TAB_RELATIONSHIP;
-            } else if (currentLinkNode.getType().equals(Definition.TYPE_HIERARCHY)) {
+            } else if (currentDefinitionNode.getType().equals(Definition.TYPE_HIERARCHY)) {
                 title = TAB_HIERARCHY;
-            } else if (currentLinkNode.getType().equals(Definition.TYPE_GROUP)) {
+            } else if (currentDefinitionNode.getType().equals(Definition.TYPE_GROUP)) {
                 title = TAB_GROUP;
-            } else if (currentLinkNode.getType().equals(Definition.TYPE_CATEGORY)) {
+            } else if (currentDefinitionNode.getType().equals(Definition.TYPE_CATEGORY)) {
                 title = TAB_CATEGORY;
             }
-            mPropertiesTabbedPane.add(title, currentLinkNode.getLinkDefTab(true));
-            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentLinkNode.getRelationshipTypesTab(true));
+            mPropertiesTabbedPane.add(title, currentDefinitionNode.getLinkDefTab(true));
+            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentDefinitionNode.getRelationshipTypesTab(true));
         }
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }

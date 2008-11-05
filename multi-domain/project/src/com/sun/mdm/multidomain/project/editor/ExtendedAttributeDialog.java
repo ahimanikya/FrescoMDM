@@ -34,7 +34,7 @@ public class ExtendedAttributeDialog extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     boolean bModified = false;
 
-    /** Creates new form AddLinkTypelDialog */
+    /** Creates new form ExtendedAttributeDialog */
     public ExtendedAttributeDialog() {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
