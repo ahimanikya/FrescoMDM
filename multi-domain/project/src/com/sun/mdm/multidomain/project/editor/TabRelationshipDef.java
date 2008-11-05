@@ -95,6 +95,31 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             modelExtendedAttribute.addRow(j, row);
         }
         
+        // Listeners
+        jTextName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+            }
+        });
+        
+        this.jTextAreaDescription.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+            }
+        });
+        
+        this.jComboBoxPlugin.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+            }
+        });
+        
+        jComboBoxDirection.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+            }
+        });
+        
         jTablePredefinedAttibutes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {

@@ -165,8 +165,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     
     public void loadDomainProperties(DomainNode currentDomainNode) {
         mPropertiesTabbedPane.removeAll();
-        mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_VIEW, currentDomainNode.getDomainViewTab(true));
-        mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_SEARCH, currentDomainNode.getDoaminsTab(true));
+        if (currentDomainNode != null) {
+            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_VIEW, currentDomainNode.getDomainViewTab(true));
+            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_SEARCH, currentDomainNode.getDoaminsTab(true));
+        }
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
     

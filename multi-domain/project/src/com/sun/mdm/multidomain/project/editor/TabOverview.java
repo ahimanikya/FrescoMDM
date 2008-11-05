@@ -106,6 +106,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jTableDomains.setModel(modelDomains);
         if (rows.size() > 0) {
             jTableDomains.setRowSelectionInterval(0, 0);
+            jButtonDeleteDomain.setEnabled(true);
         }
         jTableDomains.getTableHeader();
         // load link types
@@ -221,6 +222,9 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                 rows.add(r);
             }
             jTableDomains.setRowSelectionInterval(0, 0);
+        } else {
+            // make sure the properties tab is empty
+            mEditorMainPanel.loadDomainProperties(null);
         }
         return rows;
     }
