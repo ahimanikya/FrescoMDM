@@ -299,7 +299,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtDisplayOrder.setEditable(false);
-        jTxtDisplayOrder.setBounds(130, 80, 107, 19);
+        jTxtDisplayOrder.setBounds(130, 80, 120, 19);
         jLayeredPane1.add(jTxtDisplayOrder, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
@@ -311,7 +311,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onMaxLengthActionPerformed(evt);
             }
         });
-        jTxtMaxLength.setBounds(130, 110, 107, 19);
+        jTxtMaxLength.setBounds(130, 110, 120, 19);
         jLayeredPane1.add(jTxtMaxLength, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_TYPE")); // NOI18N
@@ -324,7 +324,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onjTxtDataType(evt);
             }
         });
-        jTxtDataType.setBounds(130, 140, 100, 19);
+        jTxtDataType.setBounds(130, 140, 120, 19);
         jLayeredPane1.add(jTxtDataType, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jRBSensitive.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_IS_SENSITIVE")); // NOI18N
