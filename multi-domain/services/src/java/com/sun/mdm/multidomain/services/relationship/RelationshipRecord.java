@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.relationship;
 
+import com.sun.mdm.multidomain.services.model.AttributeList;
 import java.util.Date;
 
 /**
