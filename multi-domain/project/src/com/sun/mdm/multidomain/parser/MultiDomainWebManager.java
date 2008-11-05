@@ -395,12 +395,18 @@ public class MultiDomainWebManager {
             elmDomain.appendChild(elmRecordDetailPages);
             
             Element elmRecordID = xmlDoc.createElement(WebManagerProperties.mTAG_RECORD_ID);
-            if (domain.getRecordIDFields().size() > 0) {
-                FieldGroup group = domain.getRecordIDFields().get(0);
+            DomainRecordID recordID = domain.getRecordID();
+            if (recordID != null) {
+                Element elmShowEUID = xmlDoc.createElement(WebManagerProperties.mTAG_SHOW_EUID);
+                elmShowEUID.appendChild(xmlDoc.createTextNode(Boolean.toString(recordID.isMShowEUID())));
+                elmRecordID.appendChild(elmShowEUID);
+                Element elmGroup = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_GROUP);
+                elmRecordID.appendChild(elmGroup);
+                FieldGroup group = recordID.getFieldGroup();
                 for (FieldGroup.FieldRef field : group.getFieldRefs()) {
                     Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
                     elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
-                    elmRecordID.appendChild(elmField);
+                    elmGroup.appendChild(elmField);
                 }
             }
             elmDomain.appendChild(elmRecordID);
@@ -780,22 +786,27 @@ public class MultiDomainWebManager {
         String elementName = null;
 
         NodeList children = node.getChildNodes();
+        
+        DomainRecordID recordID = new DomainRecordID();
 
         // testing--raymond tam
-        FieldGroup fieldGroup = new FieldGroup();
+        //FieldGroup fieldGroup = null;
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
-                if (elementName.equals(WebManagerProperties.mTAG_FIELD_REF)) {
-                    String value = RelationshipUtil.getStrElementValue(elm);                    
-                    fieldGroup.addFieldRef(fieldGroup.createFieldRef(value));
+                if (elementName.equals(WebManagerProperties.mTAG_SHOW_EUID)) {
+                    boolean value = RelationshipUtil.getBooleanElementValue(elm); 
+                    recordID.setMShowEUID(value);
+                 } else  if (elementName.equals(WebManagerProperties.mTAG_FIELD_GROUP)) {
+                    parseFieldGroup(elm, recordID.getFieldGroup());
+                    //recordID.setFieldGroup(fieldGroup);
                 }                
 
             }
         }
         
-        domain.addRecordIDField(fieldGroup);
+        domain.setRecordID(recordID);
 
         
     }

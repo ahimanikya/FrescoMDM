@@ -110,6 +110,8 @@ public class WebManagerProperties {
     
     public static String mTAG_FIELD_REF = "field-ref";
     
+    public static String mTAG_SHOW_EUID = "show-euid";
+    
     // testing--raymond tam    
     public static String mTAG_SEARCH_SCREEN_ORDER = "search-screen-order";
 

@@ -37,21 +37,38 @@ public class TabDomainView extends javax.swing.JPanel {
         initComponents();
         getDomain(domain.getDomainName());
         mDomainNode = mEditorMainApp.getDomainNode(domain.getDomainName());
+        jTableRecordID.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRmvHighLightField.setEnabled(true);
+            }
+        });
         
+        jTableRecordSummay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRmvSummaryGroup.setEnabled(true);
+                jBtnEditSummaryGroup.setEnabled(true);
+            }
+        });
+        
+        jTableRecordDetail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveDetail.setEnabled(true);
+                jBtnEditDetail.setEnabled(true);
+            }
+        });
+         
     }
 
     private void getDomain(String domainName) {
         jCBIncludeEUID.setSelected(false);
         this.jTxtDomain.setText(domainName);
         
-        ArrayList<FieldGroup.FieldRef> fieldList = null;
-        if (mDomain.getRecordIDFields().size() == 0) {
-            fieldList = new ArrayList<FieldGroup.FieldRef>();
-        } else {
-            fieldList = mDomain.getRecordIDFields().get(0).getFieldRefs();
-        }
+        FieldGroup fieldList = null;
+        fieldList = mDomain.getRecordID().getFieldGroup();
         
-        TableModelRecordId recordIdModel = new TableModelRecordId(fieldList);
+        jCBIncludeEUID.setSelected(mDomain.getRecordID().isMShowEUID());
+        
+        TableModelRecordId recordIdModel = new TableModelRecordId(fieldList.getFieldRefs());
         jTableRecordID.setModel(recordIdModel);
         jPanelRecordHighLight.setVisible(true);
 
@@ -110,6 +127,11 @@ private void enableSave() {
         jPanelRecordHighLight.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_DOMAIN_RECORD_HIGHLIGHT_PROPERTIES"))); // NOI18N
 
         jCBIncludeEUID.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_DOMAIN_INCLUDE_EUID")); // NOI18N
+        jCBIncludeEUID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onCBIncludeEUID(evt);
+            }
+        });
 
         jTableRecordID.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -130,6 +152,7 @@ private void enableSave() {
         });
 
         jBtnRmvHighLightField.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_Remove")); // NOI18N
+        jBtnRmvHighLightField.setEnabled(false);
         jBtnRmvHighLightField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveHighLightField(evt);
@@ -190,6 +213,7 @@ private void enableSave() {
         });
 
         jBtnRmvSummaryGroup.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_Remove")); // NOI18N
+        jBtnRmvSummaryGroup.setEnabled(false);
         jBtnRmvSummaryGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveSummaryGroup(evt);
@@ -197,6 +221,7 @@ private void enableSave() {
         });
 
         jBtnEditSummaryGroup.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_Edit")); // NOI18N
+        jBtnEditSummaryGroup.setEnabled(false);
         jBtnEditSummaryGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onEditSummaryGroup(evt);
@@ -257,6 +282,7 @@ private void enableSave() {
         });
 
         jBtnRemoveDetail.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveDetail.setEnabled(false);
         jBtnRemoveDetail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveDetail(evt);
@@ -264,6 +290,7 @@ private void enableSave() {
         });
 
         jBtnEditDetail.setText(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_Edit")); // NOI18N
+        jBtnEditDetail.setEnabled(false);
         jBtnEditDetail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onEditDetail(evt);
@@ -347,13 +374,27 @@ private void enableSave() {
 
 private void onAddHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddHighLightField
 // TODO add your handling code here:
+   EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+    entityDlg.setVisible(true);
+    if (entityDlg.isSelected()) {
+        if (entityDlg.getFieldList().size() > 0) {
+            TableModelRecordId fieldModel = (TableModelRecordId) jTableRecordID.getModel();
+            for (String fieldName : entityDlg.getFieldList()) {
+                FieldGroup.FieldRef fieldRef = mDomain.getRecordID().getFieldGroup().createFieldRef(fieldName);
+                //mDomain.getRecordID().getFieldGroup().addFieldRef(fieldRef);
+                fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
+            }
+            jTableRecordID.setModel(fieldModel);
+        }
+    }
+
 }//GEN-LAST:event_onAddHighLightField
 
 private void onRemoveHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveHighLightField
 // TODO add your handling code here:
-    int selectedRow = this.jTableRecordSummay.getSelectedRow();
-    TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
-    FieldGroup selectedGroup = model.getRow(selectedRow);   
+    int selectedRow = this.jTableRecordID.getSelectedRow();
+    TableModelRecordId model = (TableModelRecordId) jTableRecordID.getModel();
+    FieldGroup.FieldRef selectedGroup = model.getRow(selectedRow);   
     NotifyDescriptor d = new NotifyDescriptor.Confirmation(
             NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Prompt"),
             NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Title"),
@@ -361,11 +402,11 @@ private void onRemoveHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST
     if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
         Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordDetailName);
         model.removeRow(selectedRow);
-        if (jTableRecordDetail.getRowCount() > 0) {
-            jTableRecordDetail.setRowSelectionInterval(0, 0);
+        if (jTableRecordID.getRowCount() > 0) {
+            jTableRecordID.setRowSelectionInterval(0, 0);
+            this.jBtnRmvHighLightField.setEnabled(true);
         } else {
-            this.jBtnRmvSummaryGroup.setEnabled(false);
-            this.jBtnEditSummaryGroup.setEnabled(false);
+            this.jBtnRmvHighLightField.setEnabled(false);
         }
 
         this.enableSave();
@@ -476,6 +517,10 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
     }
 
 }//GEN-LAST:event_onEditDetail
+
+private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCBIncludeEUID
+  mDomain.getRecordID().setMShowEUID(this.jCBIncludeEUID.isSelected());
+}//GEN-LAST:event_onCBIncludeEUID
 
 
     class TableModelRecordSummary extends AbstractTableModel {
@@ -610,14 +655,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
         final static int iColRecordDetailName = 0;
 
         TableModelRecordId(ArrayList<FieldGroup.FieldRef> rows) {
-            for (FieldGroup.FieldRef field : rows) {
-                if (field.getFieldName().indexOf("EUID") < 0) { 
-                    fieldRows.add(field);
-                } else {
-                    jCBIncludeEUID.setSelected(true);
-                }         
-            } 
-            //fieldRows = rows;
+            fieldRows = rows;
         }
 
         public int getColumnCount() {
@@ -650,9 +688,9 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
             return null;
         }
 
-        public RecordDetail getRow(int row) {
+        public FieldGroup.FieldRef getRow(int row) {
             if (fieldRows != null) {
-                RecordDetail singleRow = (RecordDetail) fieldRows.get(row);
+                FieldGroup.FieldRef singleRow = (FieldGroup.FieldRef) fieldRows.get(row);
                 return singleRow;
             }
             return null;
@@ -699,7 +737,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, RecordDetail row) {
+        public void addRow(int index, FieldGroup.FieldRef row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);

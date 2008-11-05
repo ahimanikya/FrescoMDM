@@ -22,7 +22,7 @@ public class DomainForWebManager {
     
     private ArrayList<RecordDetail> mRecordDetailList = new ArrayList<RecordDetail>();
     
-    private ArrayList<FieldGroup> mRecordIDFields = new ArrayList<FieldGroup>();
+    private DomainRecordID mRecordID = new DomainRecordID();
     
     private ArrayList<FieldGroup> mRecordSummaryFields = new ArrayList<FieldGroup>();
     
@@ -50,16 +50,9 @@ public class DomainForWebManager {
         return this.mRecordDetailList;
     }
     
-    public ArrayList<FieldGroup> getRecordIDFields() {
-        return this.mRecordIDFields;
-    }
     
     public ArrayList<FieldGroup> getRecordSummaryFields() {
         return this.mRecordSummaryFields;
-    }
-    
-    public void setRecordIDFields(ArrayList<FieldGroup> fieldGroups) {
-        mRecordIDFields = fieldGroups;
     }
     
     public void setRecordSummaryFields(ArrayList<FieldGroup> fieldGroups) {
@@ -88,11 +81,7 @@ public class DomainForWebManager {
         }
         mRecordDetailList.add(recordDetail);
     }
-    
-    public void addRecordIDField(FieldGroup fieldGroup) {
-        mRecordIDFields.add(fieldGroup);
-    }
-    
+        
     public void addRecordSummary(FieldGroup fieldGroup) {
         this.mRecordSummaryFields.add(fieldGroup);
     }
@@ -154,6 +143,14 @@ public class DomainForWebManager {
         }
         
         return false;
+    }
+
+    public DomainRecordID getRecordID() {
+        return mRecordID;
+    }
+
+    public void setRecordID(DomainRecordID mRecordID) {
+        this.mRecordID = mRecordID;
     }
     
 }

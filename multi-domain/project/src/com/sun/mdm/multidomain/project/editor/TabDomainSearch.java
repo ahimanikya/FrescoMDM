@@ -71,6 +71,20 @@ public class TabDomainSearch extends javax.swing.JPanel {
             this.jBtnRemoveSearchPage.setEnabled(false);
         }
         
+        mTableSearchType.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveSearchPage.setEnabled(true);
+                jBtnEditSearchType.setEnabled(true);
+            }
+        });
+        
+        mTableSearchResult.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveSearchResult.setEnabled(true);
+                jBtnEditSearchResult.setEnabled(true);
+            }
+        });
+        
         
     }
     
@@ -82,20 +96,6 @@ public class TabDomainSearch extends javax.swing.JPanel {
         mSearchResult = mDomain.getSearchDetail();
         TableModelSearchResult mTableSearchResultModel = new TableModelSearchResult(mSearchResult);
         mTableSearchResult = new JTable(mTableSearchResultModel);
-        /**
-        mJComboRecordDetail.removeAllItems();
-        for (RecordDetail recDetail : mRecordDetail) {
-            mJComboRecordDetail.addItem(recDetail.getDisplayName());
-        }
-        mJComboRecordDetail.addItemListener(new java.awt.event.ItemListener() {
-
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                enableSave();
-            }
-        });
-        TableColumn column = mTableSearchResult.getColumnModel().getColumn(1);
-        column.setCellEditor(new DefaultCellEditor(mJComboRecordDetail));
-         */ 
 
 
         //comboBoxRecDetail.setMaximumRowCount(25);
@@ -178,6 +178,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
         });
 
         jBtnRemoveSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnRemoveSearchPage.text")); // NOI18N
+        jBtnRemoveSearchPage.setEnabled(false);
         jBtnRemoveSearchPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveSearchPage(evt);
@@ -185,6 +186,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
         });
 
         jBtnEditSearchType.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Edit")); // NOI18N
+        jBtnEditSearchType.setEnabled(false);
         jBtnEditSearchType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onEditSearchType(evt);
@@ -257,6 +259,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
         });
 
         jBtnRemoveSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnRemoveSearchResult.text")); // NOI18N
+        jBtnRemoveSearchResult.setEnabled(false);
         jBtnRemoveSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveSearchResult(evt);
@@ -264,6 +267,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
         });
 
         jBtnEditSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Edit")); // NOI18N
+        jBtnEditSearchResult.setEnabled(false);
         jBtnEditSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onEditSearchResult(evt);
