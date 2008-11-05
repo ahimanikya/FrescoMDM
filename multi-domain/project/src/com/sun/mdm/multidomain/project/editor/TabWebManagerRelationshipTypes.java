@@ -287,23 +287,23 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onDisplayNameActionPerformed(evt);
             }
         });
-        jTxtDisplayName.setBounds(110, 50, 120, 19);
+        jTxtDisplayName.setBounds(130, 50, 120, 19);
         jLayeredPane1.add(jTxtDisplayName, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
-        jLabel1.setBounds(10, 50, 90, 14);
+        jLabel1.setBounds(10, 50, 110, 14);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
-        jLabel2.setBounds(10, 80, 87, 14);
+        jLabel2.setBounds(10, 80, 100, 14);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtDisplayOrder.setEditable(false);
-        jTxtDisplayOrder.setBounds(110, 80, 107, 19);
+        jTxtDisplayOrder.setBounds(130, 80, 107, 19);
         jLayeredPane1.add(jTxtDisplayOrder, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
-        jLabel3.setBounds(10, 110, 87, 14);
+        jLabel3.setBounds(10, 110, 100, 14);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtMaxLength.addActionListener(new java.awt.event.ActionListener() {
@@ -311,11 +311,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onMaxLengthActionPerformed(evt);
             }
         });
-        jTxtMaxLength.setBounds(110, 110, 107, 19);
+        jTxtMaxLength.setBounds(130, 110, 107, 19);
         jLayeredPane1.add(jTxtMaxLength, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_TYPE")); // NOI18N
-        jLabel4.setBounds(10, 140, 87, 14);
+        jLabel4.setBounds(10, 140, 100, 14);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtDataType.setEditable(false);
@@ -324,7 +324,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onjTxtDataType(evt);
             }
         });
-        jTxtDataType.setBounds(110, 140, 100, 19);
+        jTxtDataType.setBounds(130, 140, 100, 19);
         jLayeredPane1.add(jTxtDataType, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jRBSensitive.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_IS_SENSITIVE")); // NOI18N
@@ -337,7 +337,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         jLayeredPane1.add(jRBSensitive, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabelInputMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_INPUT_MASK")); // NOI18N
-        jLabelInputMask.setBounds(10, 170, 70, 20);
+        jLabelInputMask.setBounds(10, 170, 110, 20);
         jLayeredPane1.add(jLabelInputMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtInputMask.addActionListener(new java.awt.event.ActionListener() {
@@ -345,11 +345,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onInputMask(evt);
             }
         });
-        jTxtInputMask.setBounds(110, 170, 120, 19);
+        jTxtInputMask.setBounds(130, 170, 120, 19);
         jLayeredPane1.add(jTxtInputMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_VALUE_MASK")); // NOI18N
-        jLabelValueMask.setBounds(10, 210, 70, 14);
+        jLabelValueMask.setBounds(10, 200, 110, 20);
         jLayeredPane1.add(jLabelValueMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtValueMask.addActionListener(new java.awt.event.ActionListener() {
@@ -357,7 +357,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onValueMask(evt);
             }
         });
-        jTxtValueMask.setBounds(110, 200, 120, 19);
+        jTxtValueMask.setBounds(130, 200, 120, 19);
         jLayeredPane1.add(jTxtValueMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_OK")); // NOI18N
@@ -369,16 +369,14 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
         onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_Cancel")); // NOI18N
 
-        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/arrowup.gif"))); // NOI18N
-        jBtnUp.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jBtnUp.text")); // NOI18N
+        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/UpArrow.jpg"))); // NOI18N
         jBtnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onUpBtn(evt);
             }
         });
 
-        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/arrowdown.gif"))); // NOI18N
-        jBtnDown.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jBtnDown.text")); // NOI18N
+        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/DownArrow.JPG"))); // NOI18N
         jBtnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onDownBtn(evt);
@@ -394,10 +392,10 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(22, 22, 22)
-                .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 107, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
                 .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -405,34 +403,34 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                         .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(onCancel))
-                    .add(layout.createSequentialGroup()
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jBtnUp, 0, 0, Short.MAX_VALUE)
-                            .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE))
-                        .add(28, 28, 28)
-                        .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
-                .add(18, 18, 18))
+                            .add(jBtnDown, 0, 0, Short.MAX_VALUE)
+                            .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, Short.MAX_VALUE))
+                        .add(18, 18, 18)
+                        .add(jLayeredPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)))
+                .add(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabelRelTypes)
                     .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
+                        .add(92, 92, 92)
+                        .add(jBtnUp)
+                        .add(20, 20, 20)
+                        .add(jBtnDown))
+                    .add(layout.createSequentialGroup()
                         .add(18, 18, 18)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLayeredPane1)))
-                    .add(layout.createSequentialGroup()
-                        .add(92, 92, 92)
-                        .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 37, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(jBtnDown)))
+                            .add(jLayeredPane1)
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))))
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(onCancel)
