@@ -107,7 +107,7 @@ public class ApplicationHandler {
             //TBD session.setAttribute("userProfile", userProfile);
             session.setAttribute("user", request.getRemoteUser());
              
-            logger.info(localizer.x("001: application handler initialization completed."));
+            logger.info(localizer.x("WEB001: application handler initialization completed."));
         } catch(ServiceException sex) {
             throw new ConfigException(sex);
         } catch(Exception ex) {
@@ -122,7 +122,7 @@ public class ApplicationHandler {
         if(request != null && session != null) {
             request.setAttribute("logout", "LoggedOut");
             session.invalidate();
-            logger.info(localizer.x("002: application logged out."));            
+            logger.info(localizer.x("WEB002: application logged out."));            
         }
     }
 

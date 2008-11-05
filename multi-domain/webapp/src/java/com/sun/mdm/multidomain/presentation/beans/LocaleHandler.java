@@ -59,7 +59,7 @@ public class LocaleHandler {
             locales.add(new UserLocale(language));
         }
         userLocale = new UserLocale();
-        logger.info(localizer.x("003: locale handler initialization completed."));        
+        logger.info(localizer.x("WEB003: locale handler initialization completed."));        
     }
  
     /**
