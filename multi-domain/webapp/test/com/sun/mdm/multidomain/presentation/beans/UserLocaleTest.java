@@ -22,17 +22,17 @@
  */
 package com.sun.mdm.multidomain.presentation.beans;
 
-import junit.framework.TestCase;
-
 import java.util.Locale;
 
+import junit.framework.TestCase;
+
 /**
- * LocaleHandlerTest class.
+ * UserLocaleTest class.
  * @author cye
  */
-public class LocaleHandlerTest extends TestCase {
+public class UserLocaleTest extends TestCase {
 
-    public LocaleHandlerTest(String name) {
+    public UserLocaleTest(String name) {
         super(name);
     }
     
@@ -40,9 +40,17 @@ public class LocaleHandlerTest extends TestCase {
     }
     
     public void test001() {
-        LocaleHandler  localeHandler =  new LocaleHandler();
-        localeHandler.setSelectedLang(UserLocale.ENGLISH);
-        assertTrue(UserLocale.ENGLISH.equals(localeHandler.getSelectedLang()));
-        assertTrue(Locale.US.toString().equals(localeHandler.getSelectedLocale()));       
+        UserLocale userLocale = new UserLocale(UserLocale.ENGLISH);
+        assertTrue(userLocale.getLocale().equals(Locale.US));
     }
+
+    public void test002() {
+        UserLocale userLocale = new UserLocale(UserLocale.CHINESE);
+        assertTrue(userLocale.getLocale().equals(Locale.SIMPLIFIED_CHINESE));
+    }
+    
+    public void test003() {
+        UserLocale userLocale = new UserLocale(UserLocale.FRANCE);
+        assertTrue(userLocale.getLocale().equals(Locale.FRANCE));
+    }    
 }

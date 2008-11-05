@@ -24,15 +24,17 @@ package com.sun.mdm.multidomain.presentation.beans;
 
 import junit.framework.TestCase;
 
-import java.util.Locale;
+import org.springframework.mock.web.MockHttpServletRequest;
+
+import com.sun.mdm.multidomain.services.core.ConfigException;
 
 /**
- * LocaleHandlerTest class.
+ * ApplicationHandlerTest class.
  * @author cye
  */
-public class LocaleHandlerTest extends TestCase {
+public class ApplicationHandlerTest extends TestCase {
 
-    public LocaleHandlerTest(String name) {
+    public ApplicationHandlerTest(String name) {
         super(name);
     }
     
@@ -40,9 +42,28 @@ public class LocaleHandlerTest extends TestCase {
     }
     
     public void test001() {
-        LocaleHandler  localeHandler =  new LocaleHandler();
-        localeHandler.setSelectedLang(UserLocale.ENGLISH);
-        assertTrue(UserLocale.ENGLISH.equals(localeHandler.getSelectedLang()));
-        assertTrue(Locale.US.toString().equals(localeHandler.getSelectedLocale()));       
+       try {
+        ApplicationHandler handler = new ApplicationHandler(); 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addUserRole("MultiDomain.Admin");
+        handler.initialize(request);
+        handler.logout();
+        assertTrue(true);
+       } catch(ConfigException cex) {
+           fail(cex.getMessage());
+       }
     }
+
+    public void test002() {
+       try {
+        ApplicationHandler handler = new ApplicationHandler(); 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addUserRole("MultiDomain.Unknown");
+        handler.initialize(request);
+        handler.logout();
+        fail("unexpected!");
+       } catch(ConfigException cex) {
+        assertTrue(true);  
+       }
+    }    
 }
