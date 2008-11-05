@@ -161,8 +161,8 @@ public class MDConfigManager {
             
             // testing--raymond tam
             // RESUME HERE
-            SummaryID summaryID = convertSummaryID();
-            domainScreenConfig.setSummaryID(summaryID);
+            SummaryLabel summaryLabel = convertSummaryLabel();
+            domainScreenConfig.setSummaryLabel(summaryLabel);
 
             ArrayList<SearchScreenConfig> sSC = 
                     convertSearchType(domain.getSearchType());
@@ -193,12 +193,12 @@ public class MDConfigManager {
 
 
     /**
-     * Converts the Summary ID information retrieved from the information from the parser.
+     * Converts the Summary Label information retrieved from the information from the parser.
      *
      * @throws ConfigException if an error is encountered
      */
      
-    private static SummaryID convertSummaryID() throws ConfigException {
+    private static SummaryLabel convertSummaryLabel() throws ConfigException {
         // testing--raymond tam
         // RESUME HERE
         return null;

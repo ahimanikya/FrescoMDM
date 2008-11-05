@@ -30,15 +30,15 @@ import net.java.hulp.i18n.Logger;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SummaryID {
+public class SummaryLabel {
     
-    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SummaryID");
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SummaryLabel");
     private static transient final Localizer mLocalizer = Localizer.get();
     
     ArrayList<FieldConfig> mFieldConfigs;   // FieldConfig objects from which record-specific values are retrieved
     ArrayList<String> mDelimiters;          // ArrayList of Strings
 
-    public SummaryID() {
+    public SummaryLabel() {
     }
     
     // retrieves an ArrayList of FieldConfig objects

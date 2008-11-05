@@ -33,7 +33,6 @@ import java.util.Iterator;
 public abstract class ObjectScreenConfig {
     private String mId;          // domain ID 
     private String mDisplayName;         // name to display
-    private SummaryID mSummaryID;        // summary ID for a domain
 	private ArrayList<FieldConfig> mFieldConfigs;		// ArrayList of FieldConfig objects for the relationshipAttributes in the RelationshipObject.
 	private ArrayList<SearchScreenConfig> mSearchScreenConfigs;	// ArrayList of SearchScreenConfig objects
 	private ArrayList<SearchResultsConfig> mSearchResultsConfigs;	// ArrayList of SearchResultsConfig objects

@@ -38,7 +38,7 @@ public class DomainScreenConfig extends ObjectScreenConfig {
     private static transient final Localizer mLocalizer = Localizer.get();
     
     private Domain mDomain = null;             // domain associated with this Domain Screen Configuration
-    private SummaryID mSummaryID;        // summary ID for a domain
+    private SummaryLabel mSummaryLabel;        // summary label for a domain
     private ArrayList<GroupScreenConfig> mGroupScreenConfigs;   // ArrayList of GroupScreenConfig objects
     private HashMap <String, HierarchyScreenConfig> mHierarchyScreenConfigs;   // key is the name of the hierarchyType
 
@@ -65,16 +65,16 @@ public class DomainScreenConfig extends ObjectScreenConfig {
         mDomain = domain;
     }
 
-    // retrieves the SummaryID for this domain
+    // retrieves the SummaryLabel for this domain
     
-    public SummaryID getSummaryID() {   
-        return mSummaryID;
+    public SummaryLabel getSummaryLabel() {   
+        return mSummaryLabel;
     }
 
-    // sets the SummaryID for this domain
+    // sets the SummaryLabel for this domain
     
-    public void setSummaryID(SummaryID summaryID) { 
-        mSummaryID = summaryID;
+    public void setSummaryLabel(SummaryLabel summaryLabel) { 
+        mSummaryLabel = summaryLabel;
     }
 
     // retrieves the GroupScreenConfig instances    
