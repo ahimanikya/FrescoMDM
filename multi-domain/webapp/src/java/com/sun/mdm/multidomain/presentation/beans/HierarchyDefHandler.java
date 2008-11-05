@@ -35,21 +35,21 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
  * HierarchyTypeHandler class.
  * @author cye
  */
-public class HierarchyTypeHandler {
+public class HierarchyDefHandler {
     private HierarchyManager hierarchyManager;
   
     /**
      * Create an instance of HierarchyTypeHandler.
      */
-    public HierarchyTypeHandler() 
+    public HierarchyDefHandler() 
         throws ServiceException { 
         hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager();
     }
-    public List<HierarchyDef> getTypes(String domain) 
+    public List<HierarchyDef> getHierarchyDefs(String domain) 
         throws ServiceException { 
         List<HierarchyDef> types = null;
         try {
-            types = hierarchyManager.getTypes(domain);
+            types = hierarchyManager.getHierarchyDefs(domain);
         } catch(ServiceException sex) {
             throw sex;
         }

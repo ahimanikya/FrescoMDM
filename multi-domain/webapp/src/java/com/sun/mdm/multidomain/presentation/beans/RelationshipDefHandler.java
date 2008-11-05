@@ -24,8 +24,6 @@ package com.sun.mdm.multidomain.presentation.beans;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 
@@ -35,29 +33,29 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject;
 
 /**
- * RelationshipTypeHandler class.
+ * RelationshipDefHandler class.
  * @author cye
  */
-public class RelationshipTypeHandler {
+public class RelationshipDefHandler {
 
     private RelationshipManager relationshipManager;
     
     /**
-     * Create an instance of RelationshipTypeHandler.
+     * Create an instance of RelationshipDefHandler.
      */
-    public RelationshipTypeHandler() 
+    public RelationshipDefHandler() 
         throws ServiceException { 
         relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
     }
     
     /**
-     * Get all relationshiptypes for the given source domain and target domain name.
+     * Get all RelationshipDefs for the given source domain and target domain name.
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
-     * @return List<RelationshipType> List of RelationshipType.
+     * @return List<RelationshipDef> List of RelationshipDef.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipDef> getRelationshipTypes(String sourceDomain, String targetDomain) 
+    public List<RelationshipDef> getRelationshipDefs(String sourceDomain, String targetDomain) 
         throws ServiceException {                
         List<RelationshipDef> types = null;
         try {
@@ -83,16 +81,16 @@ public class RelationshipTypeHandler {
     }
     
         /**
-     * Get all relationshiptypes for the given domain name.
+     * Get all RelationshipDefs for the given domain name.
      * @param domain Domain name.
-     * @return List<RelationshipType> List of RelationshipType.
+     * @return List<RelationshipDef> List of RelationshipDef.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipDef> getTypes(String domain) 
+    public List<RelationshipDef> getDefs(String domain) 
         throws ServiceException {                
         List<RelationshipDef> types = null;
         try {
-            types = relationshipManager.getTypes(domain);
+            types = relationshipManager.getRelationshipDefs(domain);
         } catch(ServiceException sex) {
             throw sex;
         }
@@ -104,46 +102,46 @@ public class RelationshipTypeHandler {
     
     /**
      * Create a new relationship type.
-     * @param relationshipType RelationshipType.
+     * @param RelationshipDef RelationshipDef.
      * @return String Relationship Identifier which is newly added.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public String addRelationshipType(RelationshipDef relationshipDef) 
+    public String addRelationshipDef(RelationshipDef relationshipDef) 
         throws ServiceException {        
-        String relationshipTypeId = null;
+        String RelationshipDefId = null;
         try {
-            relationshipTypeId = relationshipManager.addType(relationshipDef);
+            RelationshipDefId = relationshipManager.addRelationshipDef(relationshipDef);
         } catch(ServiceException sex) {
             throw sex;
         }
-        return relationshipTypeId;        
+        return RelationshipDefId;        
     }
     
     /**
-     * Delete an existing RelationshipType.
-     * @param relationshipType RelationshipType.
+     * Delete an existing RelationshipDef.
+     * @param RelationshipDef RelationshipDef.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public void deleteRelationshipType(RelationshipDef relationshipDef) 
+    public void deleteRelationshipDef(RelationshipDef relationshipDef) 
         throws ServiceException {        
         try {
-            relationshipManager.deleteType(relationshipDef);
+            relationshipManager.deleteRelationshipDef(relationshipDef);
         } catch(ServiceException sex) {
             throw sex;
         }        
     }
     
     /**
-     * Get total number of RelationshipType for the given domain.
+     * Get total number of RelationshipDef for the given domain.
      * @param domain Domain name.
-     * @return int Number of total relationshiptypes.
+     * @return int Number of total RelationshipDefs.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getRelationshipTypeCount(String domain)
+    public int getRelationshipDefCount(String domain)
         throws ServiceException { 
         int count = 0;
         try {
-            count = relationshipManager.getTypeCount(domain);
+            count = relationshipManager.getRelationshipDefCount(domain);
         } catch(ServiceException sex) {
             throw sex;
         }   

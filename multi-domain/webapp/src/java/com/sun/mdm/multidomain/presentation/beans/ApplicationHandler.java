@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.multidomain.presentation.beans;
 
+import java.util.List;
 import java.util.ResourceBundle; 
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +34,11 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
+import com.sun.mdm.multidomain.services.core.ObjectFactoryRegistry;
 import com.sun.mdm.multidomain.services.security.util.DateUtil;
 import com.sun.mdm.multidomain.services.security.SecurityManager;
 import com.sun.mdm.multidomain.services.security.UserProfile;
+import com.sun.mdm.multidomain.services.model.Domain;
         
 import com.sun.mdm.multidomain.presentation.util.Localizer;
 
@@ -49,9 +52,18 @@ public class ApplicationHandler {
 
     private HttpServletRequest request;
     private HttpSession session;
-    
+
+    /**
+     * Create an instance of ApplicationHandler.
+     */
     public ApplicationHandler(){        
     }
+    
+    /**
+     * Initialize application after login succeeds.
+     * @param request HttpServletRequest.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public void initialize(HttpServletRequest request) throws ConfigException {
         
         this.request = request;
@@ -60,10 +72,11 @@ public class ApplicationHandler {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.presentation.util.messages", request.getLocale());
         
         try {
-            if (!request.isUserInRole("MultiDomain.Admin")) {
+            if (!request.isUserInRole("MultiDomain.Admin") &&
+                !request.isUserInRole("MultiDomain.User") &&
+                !request.isUserInRole("MultiDomain.View") ) {
                 throw new ConfigException("logged-on user is not in the specified roles.");
             }
-
             /* initialize MultiDomain configuration API */
             MDConfigManager.getInstance();
         
@@ -73,6 +86,15 @@ public class ApplicationHandler {
             /* initialize the date format */
             DateUtil.init();
         
+            /* initialize ServiceManagerFactory */            
+            ServiceManagerFactory.Instance().initialize();
+            
+            /* register objectFactory */
+            //TBD List<Domain> domains = MDConfigManager.getInstance().getDomains();
+            //for(Domain domain: domains) {
+            //    ObjectFactoryRegistry.register(domain.getName());
+            //}
+            
             /* initialize validation service */
             //TBD ValidationService.init();
             
@@ -82,9 +104,10 @@ public class ApplicationHandler {
             /* initialize user profile */
             //TBD UserProfile userProfile = new UserProfile(request.getRemoteUser(), request);
             
-            //TBD session.setAttribute("userProfile",userProfile);
-            session.setAttribute("user",request.getRemoteUser());
+            //TBD session.setAttribute("userProfile", userProfile);
+            session.setAttribute("user", request.getRemoteUser());
              
+            logger.info(localizer.x("001: application handler initialization completed."));
         } catch(ServiceException sex) {
             throw new ConfigException(sex);
         } catch(Exception ex) {
@@ -92,13 +115,22 @@ public class ApplicationHandler {
         }               
     }
     
+    /**
+     * Logout. 
+     */
     public void logout() {
         if(request != null && session != null) {
             request.setAttribute("logout", "LoggedOut");
             session.invalidate();
+            logger.info(localizer.x("002: application logged out."));            
         }
     }
 
+    /**
+     * Get the cofigured initial web page. 
+     * @return String InitialPage.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public String getInitialPage() throws ConfigException {        
         //TBD MDConfigManager.getInstance().getInitialPage();
         //request.setAttribute("screenObject", screenObject);
