@@ -30,16 +30,19 @@ import javax.servlet.ServletException;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
-        
+   
+import com.sun.mdm.multidomain.services.core.ServiceException;
+
 /**
- * ManageRelationshipTypeController class.
+ * RelationshipController class.
  * @author cye
  */
-public class ManageRelationshipTypeController implements Controller {
+public class RelationshipController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {    
-        String tab = "Relationship Definition Management";
-        return new ModelAndView("managerelationshiptype", "tab", tab);
+        throws ServletException, IOException, ServiceException {
+        //TBD more objects will be passed from the configuration API.
+        String tab = "Relationship Management";
+        return new ModelAndView("managerelationship", "tab", tab);
     }    
 }

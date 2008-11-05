@@ -30,18 +30,23 @@ import javax.servlet.ServletException;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
-   
+        
 import com.sun.mdm.multidomain.services.core.ServiceException;
 
 /**
- * ManageRelationshipController class.
+ * HierarchyController class.
  * @author cye
  */
-public class ManageRelationshipController implements Controller {
+public class HierarchyController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException, ServiceException {
-        String tab = "Relationship Management";
-        return new ModelAndView("managerelationship", "tab", tab);
+        //TBD
+        if(request != null) {
+            throw new ServiceException("This is a demo of Spring exception handling!");
+        }    
+        //TBD more objects will be passed from the configuration API.
+        String tab = "Hierarchy Management";
+        return new ModelAndView("managehierarchy", "tab", tab);
     }    
 }

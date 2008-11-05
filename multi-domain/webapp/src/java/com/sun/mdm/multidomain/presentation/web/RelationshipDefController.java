@@ -32,14 +32,15 @@ import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
         
 /**
- * ManageHierarchyTypeController class.
+ * RelationshipDefController class.
  * @author cye
  */
-public class ManageHierarchyTypeController implements Controller {
+public class RelationshipDefController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {    
-        String tab = "Hierarchy Definition Management";
-        return new ModelAndView("managehierarchytype", "tab", tab);
+        //TBD more objects will be passed from the configuration API.        
+        String tab = "Relationship Definition Management";
+        return new ModelAndView("managerelationshipdef", "tab", tab);
     }    
 }

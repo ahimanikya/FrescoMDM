@@ -31,20 +31,16 @@ import javax.servlet.ServletException;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
         
-import com.sun.mdm.multidomain.services.core.ServiceException;
-
 /**
- * ManageHierarchyController class.
+ * HierarchyDefController class.
  * @author cye
  */
-public class ManageHierarchyController implements Controller {
+public class HierarchyDefController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException, ServiceException {  
-        if(request != null) {
-            throw new ServiceException("This is a demo of Spring exception handling!");
-        }        
-        String tab = "Hierarchy Management";
-        return new ModelAndView("managehierarchy", "tab", tab);
+        throws ServletException, IOException {  
+        //TBD more objects will be passed from the configuration API.
+        String tab = "Hierarchy Definition Management";
+        return new ModelAndView("managehierarchydef", "tab", tab);
     }    
 }
