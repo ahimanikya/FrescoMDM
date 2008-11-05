@@ -289,14 +289,14 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddDomain.text")); // NOI18N
         jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddDomainonAddDomain(evt);
+                onAddDomain(evt);
             }
         });
 
         jButtonRemoveDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonRemoveDomain.text")); // NOI18N
         jButtonRemoveDomain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRemoveDomainonRemoveDomain(evt);
+                onRemoveDomain(evt);
             }
         });
 
@@ -318,14 +318,14 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddDefinition.text")); // NOI18N
         jButtonAddDefinition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddDefinitiononAddDefinition(evt);
+                onAddDefinition(evt);
             }
         });
 
         jButtonRemoveDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonRemoveDefinition.text")); // NOI18N
         jButtonRemoveDefinition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRemoveDefinitiononRemoveLink(evt);
+                onRemoveDefinition(evt);
             }
         });
 
@@ -371,13 +371,13 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         );
     }// </editor-fold>//GEN-END:initComponents
 
-private void jButtonAddDomainonAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddDomainonAddDomain
+private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDomain
 // TODO add your handling code here:
     Action action = SystemAction.get(ImportDomainAction.class);
     ((ImportDomainAction) action).perform(mEditorMainApp);
-}//GEN-LAST:event_jButtonAddDomainonAddDomain
+}//GEN-LAST:event_onAddDomain
 
-private void jButtonRemoveDomainonRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveDomainonRemoveDomain
+private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveDomain
 TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
     int rs[] = jTableDomains.getSelectedRows();
     int length = rs.length;
@@ -407,43 +407,9 @@ TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
         }
         mEditorMainApp.enableSaveAction(true);
     }
-}//GEN-LAST:event_jButtonRemoveDomainonRemoveDomain
+}//GEN-LAST:event_onRemoveDomain
 
-private void jButtonAddDefinitiononAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddDefinitiononAddDefinition
-java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
-                            String type = dialog.getLinkType();
-                            String linkName = dialog.getLinkName();
-                            String sourceDomain = dialog.getSourceDomain();
-                            String targetDomain = dialog.getTargetDomain();
-                            LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
-                            if (linkNode != null) {
-                            //Already exists
-                            } else {
-                                // add new LinkNode
-                                LinkType linkType = new LinkType(linkName, type, sourceDomain, targetDomain, null);
-                                linkNode = mEditorMainApp.addLink(linkType);
-                                mEditorMainPanel.loadLinkProperties(linkNode);
-                                // add a new row
-                                TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
-                                DefinitionRow r = new DefinitionRow(linkType.getType(), linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
-                                model.addRow(model.getRowCount(), r);
-                                model.fireTableDataChanged();
-                                mEditorMainApp.enableSaveAction(true);
-                            }
-                        }
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-}//GEN-LAST:event_jButtonAddDefinitiononAddDefinition
-
-private void jButtonRemoveDefinitiononRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveDefinitiononRemoveLink
+private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveDefinition
 TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
         int rs[] = jTableDefinitions.getSelectedRows();
         int length = rs.length;
@@ -472,7 +438,42 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                 }
                 mEditorMainApp.enableSaveAction(true);
             }
-}//GEN-LAST:event_jButtonRemoveDefinitiononRemoveLink
+}//GEN-LAST:event_onRemoveDefinition
+
+private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+                            String type = dialog.getLinkType();
+                            String linkName = dialog.getLinkName();
+                            String sourceDomain = dialog.getSourceDomain();
+                            String targetDomain = dialog.getTargetDomain();
+                            LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
+                            if (linkNode != null) {
+                            //Already exists
+                            } else {
+                                // add new LinkNode
+                                LinkType linkType = new LinkType(linkName, type, sourceDomain, targetDomain, null, null);
+                                linkNode = mEditorMainApp.addLink(linkType);
+                                mEditorMainPanel.loadLinkProperties(linkNode);
+                                // add a new row
+                                TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+                                DefinitionRow r = new DefinitionRow(linkType.getType(), linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
+                                model.addRow(model.getRowCount(), r);
+                                model.fireTableDataChanged();
+                                mEditorMainApp.enableSaveAction(true);
+                            }
+                        }
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+
+}//GEN-LAST:event_onAddDefinition
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -518,79 +519,6 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
             }
 }                             
-
-private void onAddDefinition(java.awt.event.ActionEvent evt) {                                 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
-                            String type = dialog.getLinkType();
-                            String linkName = dialog.getLinkName();
-                            String sourceDomain = dialog.getSourceDomain();
-                            String targetDomain = dialog.getTargetDomain();
-                            LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
-                            if (linkNode != null) {
-                            //Already exists
-                            } else {
-                                // add new LinkNode
-                                LinkType linkType = new LinkType(linkName, type, sourceDomain, targetDomain, null);
-                                linkNode = mEditorMainApp.addLink(linkType);
-                                mEditorMainPanel.loadLinkProperties(linkNode);
-                                // add a new row
-                                TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
-                                DefinitionRow r = new DefinitionRow(linkType.getType(), linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
-                                model.addRow(model.getRowCount(), r);
-                                model.fireTableDataChanged();
-                                mEditorMainApp.enableSaveAction(true);
-                            }
-                        }
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-}                                
-
-private void onRemoveDomain(java.awt.event.ActionEvent evt) {                                
-    TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
-    int rs[] = jTableDomains.getSelectedRows();
-    int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
-                                    : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
-
-    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-                             prompt, 
-                             NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
-                             NotifyDescriptor.YES_NO_OPTION);
-    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
-        for (int i=length - 1; i>=0 && i < length; i--) {
-            int idx = rs[i];
-            DomainRow row = model.getRow(idx);
-            String domainName = row.getDomainName();
-            mEditorMainApp.deleteDomain(domainName);
-            model.removeRow(idx);
-        }
-        mAlDomainNodes = mEditorMainApp.getDomainNodes();
-        loadDomains();
-        loadDefinitions(true);
-        if (model.getRowCount() > 0) {
-            jTableDomains.setRowSelectionInterval(0, 0);
-            onDomainSelected();
-        } else {
-            this.jButtonRemoveDomain.setEnabled(false);       
-        }
-        mEditorMainApp.enableSaveAction(true);
-    }
-}                               
-
-private void onAddDomain(java.awt.event.ActionEvent evt) {                             
-// TODO add your handling code here:
-    Action action = SystemAction.get(ImportDomainAction.class);
-    ((ImportDomainAction) action).perform(mEditorMainApp);
-
-}                            
 
     private void onDomainSelected() {
         this.jTableDefinitions.clearSelection();

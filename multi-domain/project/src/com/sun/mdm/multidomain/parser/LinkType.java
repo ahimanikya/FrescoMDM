@@ -43,9 +43,11 @@ public class LinkType {
     boolean effectiveFromRequired;
     boolean effectiveToRequired;
     boolean purgeDateRequired;
+    Attribute attrStartDate = new Attribute("start-date", "true", "true");
+    Attribute attrEndDate = new Attribute("end-date", "true", "true");
+    Attribute attrPurgeDate = new Attribute("purge-date", "true", "true");
     ArrayList <Attribute> predefinedAttributes = new ArrayList <Attribute>();
     ArrayList <Attribute> extendedAttributes = new ArrayList <Attribute>();
-    
     private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
 
     
@@ -58,12 +60,17 @@ public class LinkType {
     }
 
     public LinkType(String name, String type, String sourceDomain, String targetDomain,
+                            ArrayList <Attribute> predefinedAttributes,
                             ArrayList <RelationFieldReference> fieldRefs) {
-        
         this.name = name;
         this.type = type;
         this.sourceDomain = sourceDomain;
         this.targetDomain = targetDomain;
+        if (predefinedAttributes != null) {
+            setPredefinedAttributes(predefinedAttributes);
+        } else {
+            setDefaultPredefinedAttributes();
+        }
         this.mRelFieldRefs = fieldRefs;
     }
 
@@ -86,6 +93,13 @@ public class LinkType {
                 break;
             }
         }
+    }
+    //[attrStartDate, attrEndDate, attrPurgeDate]
+    public void setDefaultPredefinedAttributes() {
+        this.predefinedAttributes.clear();
+        this.predefinedAttributes.add(attrStartDate);
+        this.predefinedAttributes.add(attrEndDate);
+        this.predefinedAttributes.add(attrPurgeDate);
     }
     
     public void setPredefinedAttributes(ArrayList<Attribute> attributes) {

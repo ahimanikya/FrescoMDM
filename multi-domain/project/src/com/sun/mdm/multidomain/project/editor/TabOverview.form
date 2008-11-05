@@ -108,7 +108,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddDomainonAddDomain"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddDomain"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonRemoveDomain">
@@ -118,7 +118,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRemoveDomainonRemoveDomain"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveDomain"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDefinition">
@@ -156,7 +156,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddDefinitiononAddDefinition"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddDefinition"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonRemoveDefinition">
@@ -166,7 +166,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRemoveDefinitiononRemoveLink"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveDefinition"/>
       </Events>
     </Component>
   </SubComponents>
