@@ -78,7 +78,7 @@
         <param name="include" value="name, attributes" />
     </convert>	
         
-    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.Attribute">
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.Attribute">
         <param name="include" value="name, value" />
     </convert>	
     
@@ -129,7 +129,7 @@
         ]]>
         <![CDATA[
             import java.util.List;
-            import com.sun.mdm.multidomain.services.relationship.Attribute;
+            import com.sun.mdm.multidomain.services.model.Attribute;
             import com.sun.mdm.multidomain.services.model.DomainSearch;
             import com.sun.mdm.multidomain.services.model.RelationshipSearch;
             DomainSearch.setAttributes(List<Attribute> attributes);            
@@ -140,7 +140,7 @@
         <![CDATA[
             import java.util.List;
             import com.sun.mdm.multidomain.services.model.ObjectRecord;
-            import com.sun.mdm.multidomain.services.relationship.Attribute;
+            import com.sun.mdm.multidomain.services.model.Attribute;
             import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
             ObjectRecord.setAttributes(List<Attribute> attributes);            
             List<Attribute> ObjectRecord.getAttributes();
