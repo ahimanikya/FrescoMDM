@@ -45,6 +45,19 @@
             <file>${basedir}/lib/dwr.jar</file>
           </configuration>
         </execution>
+        <execution>
+        	<id>install-test</id>
+          <phase>process-resources</phase>
+          <goals><goal>install-file</goal></goals>
+          <configuration>
+          	<generatePom>true</generatePom>
+            <packaging>jar</packaging>
+            <groupId>multidomain.webapp.test</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${mural.currentVersion}</version>
+            <file>${basedir}/lib/spring-test.jar</file>
+          </configuration>
+        </execution>        
         </executions>
       </plugin>
       <plugin>
@@ -150,6 +163,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
 		</dependency>
+    <dependency>
+    	<groupId>multidomain.webapp.test</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${mural.currentVersion}</version>
+      <scope>test</scope>        
+    </dependency>          		
     <dependency>
 			<groupId>mural</groupId>
       <artifactId>index-core</artifactId>
