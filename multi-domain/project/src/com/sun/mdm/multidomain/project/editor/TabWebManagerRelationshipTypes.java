@@ -509,12 +509,10 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
     FieldAttributeRow movedDownow = model.getRow(iSelectedRow - 1);
     movedUpRow.setDisplayOrder(iSelectedRow);
     model.removeRow(iSelectedRow);
-    //if (iSelectedRow ==
     iSelectedRow--;
     model.addRow(iSelectedRow, movedUpRow);
     mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
     movedDownow.setDisplayOrder(iSelectedRow + 1);
-    //mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
     jTxtDisplayOrder.setText(String.valueOf(movedUpRow.getDisplayOrder()));
     
 
@@ -529,8 +527,6 @@ private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDown
     model.removeRow(iSelectedRow);
     FieldAttributeRow previousRow = model.getRow(iSelectedRow);
     previousRow.setDisplayOrder(iSelectedRow + 1);
-    //jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1))
-    //if (iSelectedRow ==
     iSelectedRow++;
     movedRow.setDisplayOrder(iSelectedRow + 1);
     model.addRow(iSelectedRow, movedRow);
