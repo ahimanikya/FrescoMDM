@@ -24,7 +24,6 @@ package com.sun.mdm.multidomain.services.control;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 import net.java.hulp.i18n.Logger;
 
@@ -101,7 +100,7 @@ public class RelationshipManager {
      * @return String RelationshipDef identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addType(RelationshipDef RelationshipDef) 
+    public String addRelationshipDef(RelationshipDef RelationshipDef) 
         throws ServiceException {
         /* TBD
         String relationshId = null;
@@ -134,7 +133,7 @@ public class RelationshipManager {
      * @param RelationshipDef RelationshipDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(RelationshipDef RelationshipDef) 
+    public void updateRelationshipDef(RelationshipDef RelationshipDef) 
         throws ServiceException {
         /* TBD
         try {
@@ -168,7 +167,7 @@ public class RelationshipManager {
      * @param relationshType RelationshipDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(RelationshipDef RelationshipDef) 
+    public void deleteRelationshipDef(RelationshipDef RelationshipDef) 
         throws ServiceException {
         /* TBD
         try {
@@ -206,7 +205,7 @@ public class RelationshipManager {
      * @return int Count of relationship type.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getTypeCount(String domain) throws ServiceException {
+    public int getRelationshipDefCount(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");
     }
     
@@ -216,7 +215,7 @@ public class RelationshipManager {
      * @return List<RelationshipDef> List of relationship type.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipDef> getTypes(String domain) throws ServiceException {
+    public List<RelationshipDef> getRelationshipDefs(String domain) throws ServiceException {
         
         List<RelationshipDef> RelationshipDefs = new ArrayList<RelationshipDef>();
         /* TBD
@@ -338,7 +337,7 @@ public class RelationshipManager {
         throws ServiceException {
         List<DomainRelationshipDefinitionObject> types = new ArrayList<DomainRelationshipDefinitionObject>();
         try {
-            List<RelationshipDef> typeList = getTypes(domain);
+            List<RelationshipDef> typeList = getRelationshipDefs(domain);
             for(RelationshipDef type : typeList) {
                 String key = null;
                 if (domain.equals(type.getSourceDomain())) {

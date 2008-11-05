@@ -69,24 +69,14 @@ public class HierarchyManager {
     	this.multiDomainService = multiDomainService;
     	this.multiDomainMetaService = multiDomainMetaService;        
     }
-    
-    /**
-     * Get a list of hierarchy types for the given domain name.
-     * @param domain Domain name.
-     * @return List<HierarchyDef> Lst of hierarchy types.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */    
-    public List<HierarchyDef> getHierarchyDefs(String domain) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");                
-    }
-    
+        
     /**
      * Add a new HierarchyDef.
      * @param HierarchyDef HierarchyDef.
      * @return String HierarchyDef identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addType(HierarchyDef HierarchyDef) throws ServiceException {
+    public String addHierarchyDef(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
@@ -95,7 +85,7 @@ public class HierarchyManager {
      * @param HierarchyDef HierarchyDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(HierarchyDef HierarchyDef) throws ServiceException {
+    public void updateHierarchyDef(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
@@ -104,7 +94,7 @@ public class HierarchyManager {
      * @param HierarchyDef HierarchyDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(HierarchyDef HierarchyDef) throws ServiceException {
+    public void deleteHierarchyDef(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }   
     
@@ -114,7 +104,7 @@ public class HierarchyManager {
      * @return In Count of hierarchy HierarchyObject type
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getTypeCount(String domain) throws ServiceException {
+    public int getHierarchyDefCount(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");             
     }
     
@@ -124,7 +114,7 @@ public class HierarchyManager {
      * @return List<HierarchyDef> List of HierarchyObject type
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<HierarchyDef> getTypes(String domain) throws ServiceException {
+    public List<HierarchyDef> getHierarchyDefs(String domain) throws ServiceException {
     	List<HierarchyDef> hierarchys = null;      
         try {
             HierarchyDef[] HierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);

@@ -72,7 +72,7 @@ public class GroupManager {
      * @return a list of group types.
      * @throws ServiceException Thrown if an error occurs during processing.
      */    
-    public List<GroupDef> getGroupTypes(String domain) throws ServiceException {
+    public List<GroupDef> getGroupDefs(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");                
     }
     
@@ -82,7 +82,7 @@ public class GroupManager {
      * @return String GroupType identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addType(GroupDef groupType) throws ServiceException {
+    public String addGroupDef(GroupDef groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
@@ -91,7 +91,7 @@ public class GroupManager {
      * @param groupType GroupType.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateType(GroupDef groupType) throws ServiceException {
+    public void updateGroupDef(GroupDef groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
@@ -100,7 +100,7 @@ public class GroupManager {
      * @param groupType GroupType.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteType(GroupDef groupType) throws ServiceException {
+    public void deleteGroupDef(GroupDef groupType) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }   
     
@@ -110,21 +110,10 @@ public class GroupManager {
      * @return int Count of group Group type.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getTypeCount(String domain) throws ServiceException {
+    public int getGroupDefCount(String domain) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
-    
-    /**
-     * Get a list of group Group types for the given domain.
-     * @param domain Domain name.
-     * @return List<GroupType> List of group Group type.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public List<GroupDef> getTypes(String domain) throws ServiceException {
-    	List<GroupDef> groups = null;
-    	return groups;
-    }
-    
+      
     /**
      * Get a total count of group instances for the given group type.
      * @param groupType GroupType.
