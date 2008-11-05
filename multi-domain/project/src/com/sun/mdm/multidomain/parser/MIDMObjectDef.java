@@ -447,15 +447,34 @@ public class MIDMObjectDef {
         //create Record Detail from Node.
         ObjectNode objNode = (ObjectNode) objNodeConfigMap.get(rootObjectName);
         
+        //ObjectNode[] childNodes = objNode.getChildConfigs();
+        
         FieldConfig[] fieldconfig = objNode.getFieldConfigs();
         RecordDetail recDetail = new RecordDetail(1, rootObjectName);
         FieldGroup newRecGroup = new FieldGroup();
+        newRecGroup.setDescription(objNode.getName());
         recDetail.addFieldGroup(newRecGroup);
         ArrayList<FieldGroup.FieldRef> recordDetailRefs = newRecGroup.getFieldRefs();
         for (int i = 0; i < fieldconfig.length; i++) {
             FieldConfig field = fieldconfig[i];
-            String epath = FieldConfig.toEpathStyleString(field.getName());
+            String epath = FieldConfig.toEpathStyleString(field.getFullFieldName());
             newRecGroup.addFieldRef(newRecGroup.createFieldRef(epath));
+        }
+        
+        ObjectNode[] childrenNode = objNode.getChildConfigs();
+        for (ObjectNode childNode : childrenNode) {
+            FieldConfig[] childfieldconfig = childNode.getFieldConfigs();
+            FieldGroup newChildGroup = new FieldGroup();
+            recDetail.addFieldGroup(newChildGroup);
+            newChildGroup.setDescription(childNode.getName());
+            ArrayList<FieldGroup.FieldRef> childDetailRefs = newChildGroup.getFieldRefs();
+            for (int i = 0; i < childfieldconfig.length; i++) {
+                FieldConfig field = childfieldconfig[i];
+                String epath = FieldConfig.toEpathStyleString(field.getFullName());
+                newChildGroup.addFieldRef(newChildGroup.createFieldRef(epath));
+            }
+        
+            
         }
         mDomain.addRecordDetail(recDetail);
         
@@ -517,31 +536,10 @@ public class MIDMObjectDef {
             
             // get required and updateable attributes from object definition
             fieldconfig = childConfig.getFieldConfigs();
-            /**
+
             for (int i = 0; i < fieldconfig.length; i++) {
                 fieldconfig[i].setRootObject(objName);
-                fieldconfig[i].setRequired(MetaDataService.isFieldRequired(
-                    PATH_HEAD + objName + "." + childName + "." + fieldconfig[i].getName()));
-                // for child objects, don't allow updating key fields
-                if (fieldconfig[i].isKeyType()) {
-                    fieldconfig[i].setUpdateable(false);
-                                                                } else {
-                    fieldconfig[i].setUpdateable(MetaDataService.isFieldUpdateable(
-                        PATH_HEAD + objName + "." + childName + "." + fieldconfig[i].getName()));
-                                                                }
-                
-                String userCode = MetaDataService.getUserCode(
-                    PATH_HEAD + objName + "." + childName + "." + fieldconfig[i].getName());
-                if (userCode != null && userCode.length() > 0) {
-                    fieldconfig[i].setUserCode(userCode);
-                }
-                String constraintBy = MetaDataService.getConstraintBy(
-                    PATH_HEAD + objName + "." + childName + "." + fieldconfig[i].getName());
-                if (constraintBy != null && constraintBy.length() > 0) {
-                    fieldconfig[i].setConstraintBy(constraintBy);
-                }
             }
-             */ 
             
             childConfig.setRootNode(false);
             childConfig.setParentNode(objNode);
@@ -727,6 +725,7 @@ public class MIDMObjectDef {
             //EosFieldGroupConfig fgconfig = new EosFieldGroupConfig(description,rootNodeConfig);
             
             group = new FieldGroup();
+            group.setDescription(description);
             
             ChildElementIterator itr2 = new ChildElementIterator(fgrpElement, FIELD_REF);
             while ( itr2.hasNext() ) {
@@ -742,9 +741,9 @@ public class MIDMObjectDef {
                 String choiceAttribute = fieldRefElement.getAttribute("choice");
                 if (choiceAttribute != null && !choiceAttribute.equals("") ) {
                     String choice = choiceAttribute;                
-                    group.createFieldRef(frefName);
+                    group.addFieldRef(group.createFieldRef(frefName));
                 } else {
-                    group.createFieldRef(frefName);
+                    group.addFieldRef(group.createFieldRef(frefName));
                 }
             }
             

@@ -30,7 +30,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTxtDomain" min="-2" pref="302" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="1" pref="643" max="32767" attributes="0"/>
                   <Component id="jPanelSearchResult" alignment="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -82,9 +82,9 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="jBtnAddSearchPage" linkSize="2" min="-2" pref="68" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jBtnEditSearchType" linkSize="2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jBtnRemoveSearchPage" linkSize="2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jBtnEditSearchType" linkSize="2" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPaneSearchPage" alignment="1" min="-2" pref="519" max="-2" attributes="0"/>
                   </Group>
@@ -103,9 +103,9 @@
                   <Component id="jScrollPaneSearchPage" min="-2" pref="105" max="-2" attributes="0"/>
                   <EmptySpace pref="18" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jBtnAddSearchPage" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnEditSearchType" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnRemoveSearchPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jBtnAddSearchPage" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="102" alignment="0" attributes="0">
@@ -192,19 +192,20 @@
               <Group type="102" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jBtnAddSearchResult" linkSize="1" min="-2" pref="78" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jBtnEditSearchResult" linkSize="1" min="-2" pref="71" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jBtnRemoveSearchResult" min="-2" pref="80" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="277" max="-2" attributes="0"/>
+                          <Component id="jBtnAddSearchResult" pref="78" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                          <Component id="jBtnRemoveSearchResult" pref="80" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Component id="jBtnEditSearchResult" pref="78" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPaneSearchResult" min="-2" pref="519" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="93" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -214,9 +215,9 @@
                   <Component id="jScrollPaneSearchResult" min="-2" pref="89" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jBtnEditSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jBtnRemoveSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnAddSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jBtnRemoveSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jBtnEditSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>

@@ -14,7 +14,7 @@ import java.util.Iterator;
  *
  * @author wee
  */
-public class ObjectNode {
+public class ObjectNode implements Comparable{
         // key= child object name; value = corresponding ObjectNode object
     private HashMap childConfigMap;
 

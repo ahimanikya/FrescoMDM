@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author wee
  */
-public class FieldConfig implements Comparable{
+public class FieldConfig implements Comparable {
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.parser.FieldConfig");
     //private static transient final Localizer mLocalizer = Localizer.get();
     /** constant
