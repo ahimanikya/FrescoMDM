@@ -68,29 +68,32 @@ public class CUIDManager {
     private static boolean sequeneceDatabaseAvailable = false;
     private static String DatabaseType = ObjectFactory.getDatabase();
     private static SequenceEJBLocal mseqLocal = null;
+    private static boolean insideContainer = true;
 
     private static void init() throws SEQException {
         mSeqCache = new HashMap();	
         
-        try {
-            Context init = new InitialContext();
-            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
-        } catch (NamingException ex) {
-                throw new SEQException("Could not Find Sequence EJB " + ex.getMessage());            
-        } catch (Exception ex) {
-            System.out.println("Failed to get Sequence EJB " + ex.getMessage());
-        }
-        
-        if ((mseqLocal.pingDatabase()).equals("Up")) {
-               sequeneceDatabaseAvailable = true;
-	        if (mLogger.isLoggable(Level.FINE)) {
-	                mLogger.fine("Sequence Connection Pool is Available");
-	        } 
-	}
-        else if (!DatabaseType.equalsIgnoreCase("Oracle")) { 
-        //Database is not Oracle and the Sequence Generator Pool is not available. Throw SQLException.
-            throw new SEQException(mLocalizer.t("IDG502A: A Sequence Generator Connection Pool required for " + DatabaseType +
-                                                " database was not found or not reachable"));	
+        if (insideContainer) {
+	        try {
+	            Context init = new InitialContext();
+	            mseqLocal = (SequenceEJBLocal) init.lookup(JNDINames.EJB_SEQUENCE);
+	        } catch (NamingException ex) {
+	                throw new SEQException("Could not Find Sequence EJB " + ex.getMessage());            
+	        } catch (Exception ex) {
+	            System.out.println("Failed to get Sequence EJB " + ex.getMessage());
+	        }
+	        
+	        if ((mseqLocal.pingDatabase()).equals("Up")) {
+	               sequeneceDatabaseAvailable = true;
+		        if (mLogger.isLoggable(Level.FINE)) {
+		                mLogger.fine("Sequence Connection Pool is Available");
+		        } 
+		}
+	        else if (!DatabaseType.equalsIgnoreCase("Oracle")) { 
+	        //Database is not Oracle and the Sequence Generator Pool is not available. Throw SQLException.
+	            throw new SEQException(mLocalizer.t("IDG502A: A Sequence Generator Connection Pool required for " + DatabaseType +
+	                                                " database was not found or not reachable"));	
+	        }
         }         
             
         
@@ -115,6 +118,18 @@ public class CUIDManager {
 
     private CUIDManager() {
     }
+    
+    public static void setinsideLoader() {
+    	
+    	insideContainer = false;
+    	
+    }
+    
+    public static void setinsideContainer() {
+    	
+    	insideContainer = true;
+    	
+    }
 
     /**
      * get next id
@@ -137,8 +152,8 @@ public class CUIDManager {
             if (seqName.equals("EUID")) {
                 uid = mEuidGenerator.getNextEUID(con);
             } else {
-                if (DatabaseType.equalsIgnoreCase("Oracle") &&
-                                 !sequeneceDatabaseAvailable) {
+                if (((DatabaseType.equalsIgnoreCase("Oracle") &&
+                                 !sequeneceDatabaseAvailable)) || (!insideContainer)) { //If not inside container always use one connection
                     if (mSeqCache.containsKey(seqName)) {
                         synchronized (mSeqCache) {
                             Integer seq = (Integer) mSeqCache.get(seqName);
