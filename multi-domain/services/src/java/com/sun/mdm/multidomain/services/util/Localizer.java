@@ -47,7 +47,6 @@ public class Localizer extends LocalizationSupport {
     
     /**  
      * Get an instance of Localizer.
-     * 
      * @return a Localizer instance.
      */
     public static Localizer getInstance() {

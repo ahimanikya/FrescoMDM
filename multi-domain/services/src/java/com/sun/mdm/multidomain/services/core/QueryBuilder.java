@@ -52,7 +52,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 
-import com.sun.mdm.multidomain.services.relationship.Attribute;
+import com.sun.mdm.multidomain.services.model.Attribute;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.model.RelationshipSearch;
 import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
@@ -91,9 +91,9 @@ public class QueryBuilder {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
         MultiDomainSearchOption mdSearchOption = new MultiDomainSearchOption();
         try {
-            String EUID = domainSearch.getFieldValue(EUID_NAME);
-            String localId = domainSearch.getFieldValue(LOCAL_ID_NAME);
-            String systemCode = domainSearch.getFieldValue(SYSTEM_CODE_NAME);    
+            String EUID = domainSearch.getAttributeValue(EUID_NAME);
+            String localId = domainSearch.getAttributeValue(LOCAL_ID_NAME);
+            String systemCode = domainSearch.getAttributeValue(SYSTEM_CODE_NAME);    
             if (EUID != null) {
                 // TBD: do EUID search. how to pass it back-end.
             } else if (systemCode != null && localId != null) {
@@ -205,9 +205,9 @@ public class QueryBuilder {
             String fieldValue = null;                
             //Get the field value for each field config range type.
             if (fieldConfig.isRange()) {
-                fieldValue = domainSearch.getFieldValue(fieldConfig.getDisplayName());
+                fieldValue = domainSearch.getAttributeValue(fieldConfig.getDisplayName());
             } else {
-                fieldValue = domainSearch.getFieldValue(fieldConfig.getFullFieldName());                    
+                fieldValue = domainSearch.getAttributeValue(fieldConfig.getFullFieldName());                    
             }                
             if (fieldValue != null && fieldValue.trim().length() > 0) {
                 //Remove all masking fields from the field valued if any like SSN,LID...etc
@@ -334,7 +334,7 @@ public class QueryBuilder {
         relastionshipRecord.getTargetDomain()
         */
         
-        com.sun.mdm.multidomain.services.relationship.Attribute attribute1 = null;
+        com.sun.mdm.multidomain.services.model.Attribute attribute1 = null;
         while(relastionshipRecord.hasNext()) {
             attribute1 = relastionshipRecord.next();
             com.sun.mdm.multidomain.attributes.Attribute attribute2 = new com.sun.mdm.multidomain.attributes.Attribute();

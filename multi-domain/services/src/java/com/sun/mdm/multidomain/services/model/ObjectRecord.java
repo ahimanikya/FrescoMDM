@@ -24,8 +24,8 @@ package com.sun.mdm.multidomain.services.model;
 
 import java.util.List;
 
-import com.sun.mdm.multidomain.services.relationship.AttributeList;
-import com.sun.mdm.multidomain.services.relationship.Attribute;
+import com.sun.mdm.multidomain.services.model.AttributeList;
+import com.sun.mdm.multidomain.services.model.Attribute;
 
 /**
  * ObjectRecord class.

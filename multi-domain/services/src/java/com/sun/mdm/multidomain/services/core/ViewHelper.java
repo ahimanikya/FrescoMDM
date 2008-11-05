@@ -247,7 +247,7 @@ public class ViewHelper {
                 //private String mEUID
                 //private ObjectNode mResultRow
                 //eo status?
-                record.setFieldValue("Weight", "0");
+                record.setAttributeValue("Weight", "0");
             }         
             for (int i = 0; i < searchResultsFieldEPaths.size(); i++) {
                 FieldConfig fieldConfig  = searchResultsConfigFields.get(i);
@@ -258,28 +258,28 @@ public class ViewHelper {
                     if(objectValue instanceof java.util.Date) {
                         String dateField = simpleDateFormat.format(objectValue);          
                         if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
-                            record.setFieldValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
+                            record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
-                            record.setFieldValue(fieldConfig.getFullFieldName(), dateField);
+                            record.setAttributeValue(fieldConfig.getFullFieldName(), dateField);
                         }        
                     } else {
                         if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
-                            record.setFieldValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
+                            record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
                             if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && objectValue != null) {
                                 //value for the fields with VALUE LIST
                                 stringValue = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), objectValue.toString());
-                                record.setFieldValue(fieldConfig.getFullFieldName(), stringValue);
+                                record.setAttributeValue(fieldConfig.getFullFieldName(), stringValue);
                              } else if ((fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) && objectValue != null) {
                                 //Mask the field values accordingly
                                 stringValue = fieldConfig.mask(objectValue.toString());
-                                record.setFieldValue(fieldConfig.getFullFieldName(), stringValue);
+                                record.setAttributeValue(fieldConfig.getFullFieldName(), stringValue);
                              } else if ((fieldConfig.getUserCode() != null && fieldConfig.getUserCode().length() > 0) && objectValue != null) {
                                 //Get the value if the user code is present for the fields
                                 stringValue = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), objectValue.toString());
-                                record.setFieldValue(fieldConfig.getFullFieldName(), stringValue);             
+                                record.setAttributeValue(fieldConfig.getFullFieldName(), stringValue);             
                              } else {
-                                record.setFieldValue(fieldConfig.getFullFieldName(), objectValue.toString());
+                                record.setAttributeValue(fieldConfig.getFullFieldName(), objectValue.toString());
                              }
                          }                                         
                       }
@@ -341,8 +341,8 @@ public class ViewHelper {
             try {
                 Object objectValue = EPathAPI.getFieldValue(ePath, objectNode);
                 String stringValue = null;
-                com.sun.mdm.multidomain.services.relationship.Attribute attribute = 
-                            new com.sun.mdm.multidomain.services.relationship.Attribute(); 
+                com.sun.mdm.multidomain.services.model.Attribute attribute = 
+                            new com.sun.mdm.multidomain.services.model.Attribute(); 
                 if(objectValue instanceof java.util.Date) {
                     String dateField = simpleDateFormat.format(objectValue);          
                     if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
