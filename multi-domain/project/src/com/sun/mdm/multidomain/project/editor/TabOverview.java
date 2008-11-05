@@ -234,27 +234,21 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             model = (TableModelDefinition) jTableDefinitions.getModel();
             jTableDefinitions.removeAll();
         }
+        ArrayList <LinkBaseNode> alLinkNodes = mEditorMainApp.getLinkNodes();
         ArrayList rows = new ArrayList();
-        if (mAlDomainNodes != null && mAlDomainNodes.size() > 0) {
-            DomainNode domainNode = mAlDomainNodes.get(0);
-            String domainName = domainNode.getName();
-            ArrayList <LinkType> alDefinitions = domainNode.getLinkTypes();
-            if (alDefinitions != null &&  alDefinitions.size() > 0) {
-                for (int i=0; alDefinitions != null && i < alDefinitions.size(); i++) {
-                    LinkType type = alDefinitions.get(i);
-                    String sourceDomain = type.getSourceDomain();
-                    String targetDomain = type.getTargetDomain();
-                    DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
-                    rows.add(r);
-                }
-            }
+        for (int i=0; alLinkNodes != null && i<alLinkNodes.size(); i++) {
+            LinkBaseNode linkNode = alLinkNodes.get(i);
+            LinkType type = linkNode.getLinkType();
+            String sourceDomain = type.getSourceDomain();
+            String targetDomain = type.getTargetDomain();
+            DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
+            rows.add(r);
         }
         if (refresh) {
             model.fireTableDataChanged();
         }
         return rows;
     }
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -265,59 +259,19 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     private void initComponents() {
 
         jLabelDomainName = new javax.swing.JLabel();
-        jButtonAddDefinition = new javax.swing.JButton();
-        jButtonRemoveDefinition = new javax.swing.JButton();
-        jButtonRemoveDomain = new javax.swing.JButton();
-        jButtonAddDomain = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableDomains = new javax.swing.JTable();
+        jButtonAddDomain = new javax.swing.JButton();
+        jButtonRemoveDomain = new javax.swing.JButton();
+        jLabelDefinition = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableDefinitions = new javax.swing.JTable();
-        jLabelDefinition = new javax.swing.JLabel();
+        jButtonAddDefinition = new javax.swing.JButton();
+        jButtonRemoveDefinition = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Overview"))); // NOI18N
-        setLayout(null);
+        setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Overview"))); // NOI18N
 
-        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domains")); // NOI18N
-        add(jLabelDomainName);
-        jLabelDomainName.setBounds(20, 20, 170, 20);
-        jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
-
-        jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
-        jButtonAddDefinition.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddDefinition(evt);
-            }
-        });
-        add(jButtonAddDefinition);
-        jButtonAddDefinition.setBounds(200, 310, 90, 23);
-
-        jButtonRemoveDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
-        jButtonRemoveDefinition.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onRemoveLink(evt);
-            }
-        });
-        add(jButtonRemoveDefinition);
-        jButtonRemoveDefinition.setBounds(290, 310, 90, 23);
-
-        jButtonRemoveDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
-        jButtonRemoveDomain.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onRemoveDomain(evt);
-            }
-        });
-        add(jButtonRemoveDomain);
-        jButtonRemoveDomain.setBounds(290, 160, 90, 23);
-
-        jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
-        jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddDomain(evt);
-            }
-        });
-        add(jButtonAddDomain);
-        jButtonAddDomain.setBounds(200, 160, 90, 23);
+        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jLabelDomainName.text")); // NOI18N
 
         jTableDomains.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -332,8 +286,21 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ));
         jScrollPane1.setViewportView(jTableDomains);
 
-        add(jScrollPane1);
-        jScrollPane1.setBounds(20, 40, 360, 110);
+        jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddDomain.text")); // NOI18N
+        jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddDomainonAddDomain(evt);
+            }
+        });
+
+        jButtonRemoveDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonRemoveDomain.text")); // NOI18N
+        jButtonRemoveDomain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveDomainonRemoveDomain(evt);
+            }
+        });
+
+        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jLabelDefinition.text")); // NOI18N
 
         jTableDefinitions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -348,15 +315,180 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ));
         jScrollPane2.setViewportView(jTableDefinitions);
 
-        add(jScrollPane2);
-        jScrollPane2.setBounds(20, 190, 360, 110);
+        jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddDefinition.text")); // NOI18N
+        jButtonAddDefinition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddDefinitiononAddDefinition(evt);
+            }
+        });
 
-        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Definitions")); // NOI18N
-        add(jLabelDefinition);
-        jLabelDefinition.setBounds(20, 170, 150, 20);
+        jButtonRemoveDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonRemoveDefinition.text")); // NOI18N
+        jButtonRemoveDefinition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveDefinitiononRemoveLink(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+            .add(layout.createSequentialGroup()
+                .add(180, 180, 180)
+                .add(jButtonAddDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jButtonRemoveDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                .add(layout.createSequentialGroup()
+                    .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jButtonAddDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jButtonRemoveDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(jLabelDomainName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .add(jLabelDomainName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jButtonAddDomain)
+                            .add(jButtonRemoveDomain))
+                        .add(25, 25, 25))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jButtonAddDefinition)
+                    .add(jButtonRemoveDefinition)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
-private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLink
+private void jButtonAddDomainonAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddDomainonAddDomain
+// TODO add your handling code here:
+    Action action = SystemAction.get(ImportDomainAction.class);
+    ((ImportDomainAction) action).perform(mEditorMainApp);
+}//GEN-LAST:event_jButtonAddDomainonAddDomain
+
+private void jButtonRemoveDomainonRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveDomainonRemoveDomain
+TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
+    int rs[] = jTableDomains.getSelectedRows();
+    int length = rs.length;
+    String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
+                                    : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
+
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                             prompt, 
+                             NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
+                             NotifyDescriptor.YES_NO_OPTION);
+    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+        for (int i=length - 1; i>=0 && i < length; i--) {
+            int idx = rs[i];
+            DomainRow row = model.getRow(idx);
+            String domainName = row.getDomainName();
+            mEditorMainApp.deleteDomain(domainName);
+            model.removeRow(idx);
+        }
+        mAlDomainNodes = mEditorMainApp.getDomainNodes();
+        loadDomains();
+        loadDefinitions(true);
+        if (model.getRowCount() > 0) {
+            jTableDomains.setRowSelectionInterval(0, 0);
+            onDomainSelected();
+        } else {
+            this.jButtonRemoveDomain.setEnabled(false);       
+        }
+        mEditorMainApp.enableSaveAction(true);
+    }
+}//GEN-LAST:event_jButtonRemoveDomainonRemoveDomain
+
+private void jButtonAddDefinitiononAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddDefinitiononAddDefinition
+java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+                            String type = dialog.getLinkType();
+                            String linkName = dialog.getLinkName();
+                            String sourceDomain = dialog.getSourceDomain();
+                            String targetDomain = dialog.getTargetDomain();
+                            LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
+                            if (linkNode != null) {
+                            //Already exists
+                            } else {
+                                // add new LinkNode
+                                LinkType linkType = new LinkType(linkName, type, sourceDomain, targetDomain, null);
+                                linkNode = mEditorMainApp.addLink(linkType);
+                                mEditorMainPanel.loadLinkProperties(linkNode);
+                                // add a new row
+                                TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+                                DefinitionRow r = new DefinitionRow(linkType.getType(), linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
+                                model.addRow(model.getRowCount(), r);
+                                model.fireTableDataChanged();
+                                mEditorMainApp.enableSaveAction(true);
+                            }
+                        }
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+}//GEN-LAST:event_jButtonAddDefinitiononAddDefinition
+
+private void jButtonRemoveDefinitiononRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveDefinitiononRemoveLink
+TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+        int rs[] = jTableDefinitions.getSelectedRows();
+        int length = rs.length;
+        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
+                                        : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
+
+        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                                 prompt, 
+                                 NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 NotifyDescriptor.YES_NO_OPTION);
+            if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+                for (int i=length - 1; i>=0 && i < length; i--) {
+                    int idx = rs[i];
+                    DefinitionRow row = model.getRow(idx);
+                    mEditorMainApp.deleteLink(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
+                    model.removeRow(idx);
+                }
+                model.fireTableDataChanged();
+                // update properties tab
+                if (model.getRowCount() > 0) {
+                    jTableDefinitions.setRowSelectionInterval(0, 0);
+                    onDefinitionSelected();
+                } else {
+                    mEditorMainPanel.loadLinkProperties(null);
+                    this.jButtonRemoveDefinition.setEnabled(false);
+                }
+                mEditorMainApp.enableSaveAction(true);
+            }
+}//GEN-LAST:event_jButtonRemoveDefinitiononRemoveLink
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddDefinition;
+    private javax.swing.JButton jButtonAddDomain;
+    private javax.swing.JButton jButtonRemoveDefinition;
+    private javax.swing.JButton jButtonRemoveDomain;
+    private javax.swing.JLabel jLabelDefinition;
+    private javax.swing.JLabel jLabelDomainName;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTableDefinitions;
+    private javax.swing.JTable jTableDomains;
+    // End of variables declaration//GEN-END:variables
+
+private void onRemoveLink(java.awt.event.ActionEvent evt) {                              
         TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
         int rs[] = jTableDefinitions.getSelectedRows();
         int length = rs.length;
@@ -385,9 +517,9 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onR
                 }
                 mEditorMainApp.enableSaveAction(true);
             }
-}//GEN-LAST:event_onRemoveLink
+}                             
 
-private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
+private void onAddDefinition(java.awt.event.ActionEvent evt) {                                 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
@@ -419,9 +551,9 @@ private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 dialog.setVisible(true);
             }
         });
-}//GEN-LAST:event_onAddDefinition
+}                                
 
-private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveDomain
+private void onRemoveDomain(java.awt.event.ActionEvent evt) {                                
     TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
     int rs[] = jTableDomains.getSelectedRows();
     int length = rs.length;
@@ -451,14 +583,14 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         }
         mEditorMainApp.enableSaveAction(true);
     }
-}//GEN-LAST:event_onRemoveDomain
+}                               
 
-private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDomain
+private void onAddDomain(java.awt.event.ActionEvent evt) {                             
 // TODO add your handling code here:
     Action action = SystemAction.get(ImportDomainAction.class);
     ((ImportDomainAction) action).perform(mEditorMainApp);
 
-}//GEN-LAST:event_onAddDomain
+}                            
 
     private void onDomainSelected() {
         this.jTableDefinitions.clearSelection();
@@ -489,19 +621,6 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
         LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
         mEditorMainPanel.loadLinkProperties(linkNode);
      }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAddDefinition;
-    private javax.swing.JButton jButtonAddDomain;
-    private javax.swing.JButton jButtonRemoveDefinition;
-    private javax.swing.JButton jButtonRemoveDomain;
-    private javax.swing.JLabel jLabelDefinition;
-    private javax.swing.JLabel jLabelDomainName;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTableDefinitions;
-    private javax.swing.JTable jTableDomains;
-    // End of variables declaration//GEN-END:variables
 
     class DomainRow {
         private String domainName;

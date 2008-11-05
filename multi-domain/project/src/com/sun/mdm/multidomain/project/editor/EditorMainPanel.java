@@ -215,9 +215,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mLeftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 mOverviewScrollPane, mEntityTreeScrollPane);
         mLeftSplitPane.setOneTouchExpandable(true);
-        mLeftSplitPane.setDividerLocation(350);
+        mLeftSplitPane.setDividerLocation(380);
         //Provide minimum sizes for the two components in the split pane
-        Dimension minimumSize = new Dimension(400, 350);
+        Dimension minimumSize = new Dimension(400, 380);
         //mMultiViewPane.setMinimumSize(minimumSize);
         mLeftSplitPane.setMinimumSize(minimumSize);
         mMultiViewPane.setViewportView(mLeftSplitPane);

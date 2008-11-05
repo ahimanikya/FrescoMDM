@@ -141,7 +141,6 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         });
 
     }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -151,123 +150,45 @@ public class TabRelationshipDef extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonAddExtendedAttribute = new javax.swing.JButton();
-        jButtonDeleteExtendedAttribute = new javax.swing.JButton();
         jLabelName = new javax.swing.JLabel();
         jTextName = new javax.swing.JTextField();
-        jComboBoxDirection = new javax.swing.JComboBox();
         jLabelPlugin = new javax.swing.JLabel();
         jComboBoxPlugin = new javax.swing.JComboBox();
+        jTextDomain2 = new javax.swing.JTextField();
+        jComboBoxDirection = new javax.swing.JComboBox();
+        jTextDomain1 = new javax.swing.JTextField();
+        jLabelDomains = new javax.swing.JLabel();
         jLabelDescription = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
-        jLabelDomains = new javax.swing.JLabel();
-        jTextDomain1 = new javax.swing.JTextField();
-        jTextDomain2 = new javax.swing.JTextField();
-        jButtonEditExtendedAttribute = new javax.swing.JButton();
-        jButtonEditPredefinedAttribute = new javax.swing.JButton();
-        jScrollPaneExtendedAttr = new javax.swing.JScrollPane();
-        jTableExtendedAttr = new javax.swing.JTable();
+        jLabelPredefinedAttributes = new javax.swing.JLabel();
         jScrollPanePredefinedAttr = new javax.swing.JScrollPane();
         jTablePredefinedAttr = new javax.swing.JTable();
-        jLabelPredefinedAttributes = new javax.swing.JLabel();
+        jButtonEditPredefinedAttribute = new javax.swing.JButton();
         jLabelExtendedAttributes = new javax.swing.JLabel();
+        jScrollPaneExtendedAttr = new javax.swing.JScrollPane();
+        jTableExtendedAttr = new javax.swing.JTable();
+        jButtonAddExtendedAttribute = new javax.swing.JButton();
+        jButtonDeleteExtendedAttribute = new javax.swing.JButton();
+        jButtonEditExtendedAttribute = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
-        setLayout(null);
+        jLabelName.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelName.text")); // NOI18N
 
-        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Add")); // NOI18N
-        jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddExtendedAttribute(evt);
-            }
-        });
-        add(jButtonAddExtendedAttribute);
-        jButtonAddExtendedAttribute.setBounds(260, 570, 80, 23);
-
-        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Remove")); // NOI18N
-        jButtonDeleteExtendedAttribute.setEnabled(false);
-        jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onRemoveExtendedAttribute(evt);
-            }
-        });
-        add(jButtonDeleteExtendedAttribute);
-        jButtonDeleteExtendedAttribute.setBounds(340, 570, 80, 23);
-
-        jLabelName.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Name")); // NOI18N
-        add(jLabelName);
-        jLabelName.setBounds(10, 10, 100, 20);
-        add(jTextName);
-        jTextName.setBounds(110, 10, 150, 20);
+        jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelPlugin.text")); // NOI18N
 
         jComboBoxDirection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "---->", "<----", "<--->" }));
         jComboBoxDirection.setPreferredSize(new java.awt.Dimension(55, 22));
         jComboBoxDirection.setVerifyInputWhenFocusTarget(false);
-        add(jComboBoxDirection);
-        jComboBoxDirection.setBounds(270, 40, 70, 20);
 
-        jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Plugin")); // NOI18N
-        add(jLabelPlugin);
-        jLabelPlugin.setBounds(280, 10, 70, 20);
+        jLabelDomains.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelDomains.text")); // NOI18N
 
-        add(jComboBoxPlugin);
-        jComboBoxPlugin.setBounds(350, 10, 150, 22);
-
-        jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Description")); // NOI18N
-        add(jLabelDescription);
-        jLabelDescription.setBounds(10, 80, 100, 20);
+        jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelDescription.text")); // NOI18N
 
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
-        add(jScrollPane1);
-        jScrollPane1.setBounds(110, 80, 390, 92);
-
-        jLabelDomains.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Domains_Colon")); // NOI18N
-        add(jLabelDomains);
-        jLabelDomains.setBounds(10, 40, 100, 20);
-        add(jTextDomain1);
-        jTextDomain1.setBounds(110, 40, 150, 20);
-        add(jTextDomain2);
-        jTextDomain2.setBounds(350, 40, 150, 20);
-
-        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Edit")); // NOI18N
-        jButtonEditExtendedAttribute.setEnabled(false);
-        jButtonEditExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onEditExtendedAttribute(evt);
-            }
-        });
-        add(jButtonEditExtendedAttribute);
-        jButtonEditExtendedAttribute.setBounds(420, 570, 80, 23);
-
-        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Edit")); // NOI18N
-        jButtonEditPredefinedAttribute.setEnabled(false);
-        jButtonEditPredefinedAttribute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onEditPredefinedAttribute(evt);
-            }
-        });
-        add(jButtonEditPredefinedAttribute);
-        jButtonEditPredefinedAttribute.setBounds(420, 330, 80, 23);
-
-        jTableExtendedAttr.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPaneExtendedAttr.setViewportView(jTableExtendedAttr);
-
-        add(jScrollPaneExtendedAttr);
-        jScrollPaneExtendedAttr.setBounds(10, 370, 490, 190);
+        jLabelPredefinedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelPredefinedAttributes.text")); // NOI18N
 
         jTablePredefinedAttr.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -282,20 +203,156 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         ));
         jScrollPanePredefinedAttr.setViewportView(jTablePredefinedAttr);
 
-        add(jScrollPanePredefinedAttr);
-        jScrollPanePredefinedAttr.setBounds(10, 210, 490, 110);
+        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonEditPredefinedAttribute.text")); // NOI18N
+        jButtonEditPredefinedAttribute.setEnabled(false);
+        jButtonEditPredefinedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditPredefinedAttributeonEditPredefinedAttribute(evt);
+            }
+        });
 
-        jLabelPredefinedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Predefined_Attributes")); // NOI18N
-        add(jLabelPredefinedAttributes);
-        jLabelPredefinedAttributes.setBounds(10, 184, 180, 20);
+        jLabelExtendedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelExtendedAttributes.text")); // NOI18N
 
-        jLabelExtendedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Extended_Attributes")); // NOI18N
-        add(jLabelExtendedAttributes);
-        jLabelExtendedAttributes.setBounds(10, 344, 190, 20);
+        jTableExtendedAttr.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPaneExtendedAttr.setViewportView(jTableExtendedAttr);
+
+        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonAddExtendedAttribute.text")); // NOI18N
+        jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddExtendedAttributeonAddExtendedAttribute(evt);
+            }
+        });
+
+        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonDeleteExtendedAttribute.text")); // NOI18N
+        jButtonDeleteExtendedAttribute.setEnabled(false);
+        jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteExtendedAttributeonRemoveExtendedAttribute(evt);
+            }
+        });
+
+        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonEditExtendedAttribute.text")); // NOI18N
+        jButtonEditExtendedAttribute.setEnabled(false);
+        jButtonEditExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditExtendedAttributeonEditExtendedAttribute(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jTextName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(20, 20, 20)
+                        .add(jLabelPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 80, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jComboBoxPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelDomains, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jTextDomain1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(10, 10, 10)
+                        .add(jComboBoxDirection, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 80, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(10, 10, 10)
+                        .add(jTextDomain2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 440, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelPredefinedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 180, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPanePredefinedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelExtendedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(260, 260, 260)
+                        .add(jButtonEditPredefinedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jScrollPaneExtendedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(layout.createSequentialGroup()
+                        .add(270, 270, 270)
+                        .add(jButtonAddExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jButtonDeleteExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jButtonEditExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(8, 8, 8)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelDomains, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextDomain1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxDirection, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextDomain2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(20, 20, 20)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(12, 12, 12)
+                .add(jLabelPredefinedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(jScrollPanePredefinedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(14, 14, 14)
+                        .add(jLabelExtendedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jButtonEditPredefinedAttribute))
+                .add(6, 6, 6)
+                .add(jScrollPaneExtendedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jButtonAddExtendedAttribute)
+                    .add(jButtonDeleteExtendedAttribute)
+                    .add(jButtonEditExtendedAttribute))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
-private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
-            final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
+private void jButtonEditPredefinedAttributeonEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditPredefinedAttributeonEditPredefinedAttribute
+TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttr.getModel();
+        int idx = this.jTablePredefinedAttr.getSelectedRow();
+        PredefinedAttributeRow row = model.getRow(idx);
+        String oldName = row.getName();
+        final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getIncluded(),
+                row.getRequired());
+        dialog.setVisible(true);
+        if (dialog.isModified()) {
+            String attrName = dialog.getAttributeName();
+            String included = dialog.getIncluded() == true ? "true" : "false";
+            String required = dialog.getRequired() == true ? "true" : "false";
+            // Replace Attribute
+            Attribute attr = new Attribute(attrName, included, required);
+            mLinkType.updatePredefinedAttribute(oldName, attr);
+            // update row
+            row.setName(attrName);
+            row.setIncluded(included);
+            row.setRequired(required);
+            model.fireTableDataChanged();
+            jTablePredefinedAttr.setRowSelectionInterval(idx, idx);
+            mEditorMainApp.enableSaveAction(true);
+        }
+}//GEN-LAST:event_jButtonEditPredefinedAttributeonEditPredefinedAttribute
+
+private void jButtonAddExtendedAttributeonAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddExtendedAttributeonAddExtendedAttribute
+final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
             dialog.setVisible(true);
             if (dialog.isModified()) {
                 String attrName = dialog.getAttributeName();
@@ -318,10 +375,10 @@ private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 model.fireTableDataChanged();
                 mEditorMainApp.enableSaveAction(true);
             }
-}//GEN-LAST:event_onAddExtendedAttribute
+}//GEN-LAST:event_jButtonAddExtendedAttributeonAddExtendedAttribute
 
-private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveExtendedAttribute
-        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
+private void jButtonDeleteExtendedAttributeonRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteExtendedAttributeonRemoveExtendedAttribute
+TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
         int rs[] = jTableExtendedAttr.getSelectedRows();
         int length = rs.length;
         String prompt = (length == 1) ? NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Row_Prompt")
@@ -341,10 +398,42 @@ private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
             model.fireTableDataChanged();
             mEditorMainApp.enableSaveAction(true);
         }
+}//GEN-LAST:event_jButtonDeleteExtendedAttributeonRemoveExtendedAttribute
 
-}//GEN-LAST:event_onRemoveExtendedAttribute
+private void jButtonEditExtendedAttributeonEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditExtendedAttributeonEditExtendedAttribute
+TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
+        int idx = this.jTableExtendedAttr.getSelectedRow();
+        ExtendedAttributeRow row = model.getRow(idx);
+        String oldName = row.getName();
+        final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
+        dialog.setVisible(true);
+        if (dialog.isModified()) {
+            String attrName = dialog.getAttributeName();
+            String dataType = dialog.getDataType();
+            String columnName = dialog.getColumnName();
+            String defaultValue = dialog.getDefaultValue();
+            String searchable = dialog.getSearchable() == true ? "true" : "false";
+            String required = dialog.getRequired() == true ? "true" : "false";
+            String attributeID = ""; //dialog.getAttributeID();
+            // Replace Attribute
+            Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
+                                           searchable, required, attributeID);
+            mLinkType.updateExtendedAttribute(oldName, attr);
+            // update row
+            row.setName(attrName);
+            row.setColumnName(columnName);
+            row.setDataType(dataType);
+            row.setDefaultValue(defaultValue);
+            row.setSearchable(searchable);
+            row.setRequired(required);
+            model.fireTableDataChanged();
+            jTableExtendedAttr.setRowSelectionInterval(idx, idx);
+            mEditorMainApp.enableSaveAction(true);
+        }
+}//GEN-LAST:event_jButtonEditExtendedAttributeonEditExtendedAttribute
 
-private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditExtendedAttribute
+    private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {                                         
         TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
         int idx = this.jTableExtendedAttr.getSelectedRow();
         ExtendedAttributeRow row = model.getRow(idx);
@@ -375,9 +464,9 @@ private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRS
             jTableExtendedAttr.setRowSelectionInterval(idx, idx);
             mEditorMainApp.enableSaveAction(true);
         }
-}//GEN-LAST:event_onEditExtendedAttribute
+    }                                        
 
-private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditPredefinedAttribute
+    private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {                                           
         TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttr.getModel();
         int idx = this.jTablePredefinedAttr.getSelectedRow();
         PredefinedAttributeRow row = model.getRow(idx);
@@ -400,7 +489,8 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
             jTablePredefinedAttr.setRowSelectionInterval(idx, idx);
             mEditorMainApp.enableSaveAction(true);
         }
-}//GEN-LAST:event_onEditPredefinedAttribute
+    }                                          
+
     private void onPredefinedAttributesSelected() {
         int cnt = jTablePredefinedAttr.getSelectedRowCount();
         jButtonEditPredefinedAttribute.setEnabled(cnt==1);
@@ -411,6 +501,8 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
         jButtonDeleteExtendedAttribute.setEnabled(true);
         jButtonEditExtendedAttribute.setEnabled(cnt==1);
     }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddExtendedAttribute;
     private javax.swing.JButton jButtonDeleteExtendedAttribute;
@@ -434,8 +526,7 @@ private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JTextField jTextDomain2;
     private javax.swing.JTextField jTextName;
     // End of variables declaration//GEN-END:variables
-    
-    
+
     class PredefinedAttributeRow {
         private String name;
         private String included = "true";
