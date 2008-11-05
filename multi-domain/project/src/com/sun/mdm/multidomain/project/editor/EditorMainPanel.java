@@ -184,7 +184,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             } else if (currentDefinitionNode.getType().equals(Definition.TYPE_CATEGORY)) {
                 title = TAB_CATEGORY;
             }
-            mPropertiesTabbedPane.add(title, currentDefinitionNode.getLinkDefTab(true));
+            mPropertiesTabbedPane.add(title, currentDefinitionNode.getDefinitionTab(true));
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentDefinitionNode.getRelationshipTypesTab(true));
         }
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);

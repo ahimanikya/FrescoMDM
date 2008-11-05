@@ -93,7 +93,7 @@ public class DefinitionNode extends AbstractNode {
      * 
      * @return mLinkType
      */
-    public Definition getLinkType() {
+    public Definition getDefinition() {
         return mLinkType;
     }
 
@@ -129,12 +129,12 @@ public class DefinitionNode extends AbstractNode {
         return mLinkType.getTargetDomain();
     }
 
-    public JPanel getLinkDefTab(boolean bRefresh) {
+    public JPanel getDefinitionTab(boolean bRefresh) {
         if (bRefresh || mTabLinkDef == null) {
             if (getType().equals(Definition.TYPE_RELATIONSHIP)) {
-                mTabLinkDef = new TabRelationshipDef(mEditorMainApp, getLinkType());
+                mTabLinkDef = new TabRelationshipDef(mEditorMainApp, getDefinition());
             } else if (getType().equals(Definition.TYPE_HIERARCHY)) {
-                mTabLinkDef = new TabHierarchyDef(getLinkType());
+                mTabLinkDef = new TabHierarchyDef(mEditorMainApp, getDefinition());
             }
         }
         return mTabLinkDef;

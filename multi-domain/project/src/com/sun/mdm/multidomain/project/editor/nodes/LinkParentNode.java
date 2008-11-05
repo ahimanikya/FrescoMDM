@@ -107,8 +107,8 @@ public class LinkParentNode extends AbstractNode {
         for (int i=0; alLinkBaseNodes != null && i<alLinkBaseNodes.size(); i++) {
             DefinitionNode linkTypeNode = (DefinitionNode) alLinkBaseNodes.get(i);
             if (linkTypeNode.getName().equals(linkName) &&
-                linkTypeNode.getLinkType().getSourceDomain().equals(sourceDomain) &&
-                linkTypeNode.getLinkType().getTargetDomain().equals(targetDomain)) {
+                linkTypeNode.getDefinition().getSourceDomain().equals(sourceDomain) &&
+                linkTypeNode.getDefinition().getTargetDomain().equals(targetDomain)) {
                 alLinkBaseNodes.remove(i);
                 break;
             }

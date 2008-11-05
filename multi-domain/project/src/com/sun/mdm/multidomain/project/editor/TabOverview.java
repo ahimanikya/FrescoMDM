@@ -238,7 +238,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ArrayList rows = new ArrayList();
         for (int i=0; alDefinitionNodes != null && i<alDefinitionNodes.size(); i++) {
             DefinitionNode definitionNode = alDefinitionNodes.get(i);
-            Definition type = definitionNode.getLinkType();
+            Definition type = definitionNode.getDefinition();
             String sourceDomain = type.getSourceDomain();
             String targetDomain = type.getTargetDomain();
             DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
