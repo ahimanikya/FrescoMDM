@@ -33,11 +33,16 @@ import org.springframework.validation.BindException;
 import com.sun.mdm.multidomain.presentation.beans.ApplicationHandler;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 
+import net.java.hulp.i18n.Logger;
+import com.sun.mdm.multidomain.presentation.util.Localizer;
+
 /**
  * Loginontroller class.
  * @author cye
  */
 public class LoginController extends BaseCommandController {
+  private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.presentation.web.LoginController");
+  private static Localizer localizer = Localizer.getInstance();
     
   private ApplicationHandler applicationHandler;
   
@@ -56,6 +61,8 @@ public class LoginController extends BaseCommandController {
         errorMessage = cex.getLocalizedMessage();
     }
     
+    logger.info(localizer.x("WEB004: login controller delivered the request to the page {0}.", pageId));
+    
     if (errorMessage != null) {
         modelAndView = new ModelAndView("loginerror", "errorMessage", errorMessage);
     } else if (pageId.equalsIgnoreCase("landingpage")) {
@@ -64,7 +71,8 @@ public class LoginController extends BaseCommandController {
     } else {
         //TBD: error page
         modelAndView = new ModelAndView("");        
-    }   
+    }
     return modelAndView;
-  }      
+  } 
+  
 }
