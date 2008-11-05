@@ -41,6 +41,8 @@ import com.sun.mdm.index.loader.masterindex.MasterIndex;
 import com.sun.mdm.index.loader.masterindex.PotDupGenerator;
 import com.sun.mdm.index.loader.sqlloader.BulkLoader;
 import com.sun.mdm.index.configurator.ConfigurationService;
+import com.sun.mdm.index.idgen.CUIDManager;
+import com.sun.mdm.index.idgen.impl.DefaultEuidGenerator;
 import com.sun.mdm.index.loader.util.Localizer;
 import net.java.hulp.i18n.Logger;
 import com.sun.mdm.index.loader.common.LoaderException;
@@ -107,6 +109,11 @@ public class BulkMatcherLoader {
 
 		ObjectNodeUtil.initDataObjectAdapter();	
 		dateFormatString_ = ObjectNodeUtil.getDateFormatString();
+		
+		CUIDManager.setinsideLoader();
+		
+		DefaultEuidGenerator.setinsideLoader();
+		
 	}
 
 	public void bulkMatchLoad() throws Exception {
