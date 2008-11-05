@@ -10,13 +10,13 @@
       <include method="getDomains" />
     </create>
 
-    <create creator="spring" javascript="RelationshipTypeHandler" scope="session">
-      <param name="beanName" value="RelationshipTypeHandler"/>
-      <include method="getTypes" /> 
-      <include method="getRelationshipTypes" />
-      <include method="addRelationshipType" />            
-      <include method="deleteRelationshipType" /> 
-      <include method="getRelationshipTypeCount" />
+    <create creator="spring" javascript="RelationshipDefHandler" scope="session">
+      <param name="beanName" value="RelationshipDefHandler"/>
+      <include method="getDefs" /> 
+      <include method="getRelationshipDefs" />
+      <include method="addRelationshipDef" />            
+      <include method="deleteRelationshipDef" /> 
+      <include method="getRelationshipDefCount" />
       <include method="getDomainRelationshipDefinitionObjects" />            
     </create>
 
@@ -32,9 +32,9 @@
       <include method="searchDomainRelationshipObjects" />      
     </create>
 
-    <create creator="spring" javascript="HierarchyTypeHandler" scope="session">
-      <param name="beanName" value="HierarchyTypeHandler"/>
-      <include method="getTypes" />
+    <create creator="spring" javascript="HierarchyDefHandler" scope="session">
+      <param name="beanName" value="HierarchyDefHandler"/>
+      <include method="getHierarchyDefs" />
     </create>
 
     <create creator="spring" javascript="HierarchyHandler" scope="session">
@@ -117,15 +117,15 @@
             import java.util.List;
             import com.sun.mdm.multidomain.relationship.RelationshipDef;
             import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject;
-            DomainRelationshipDefinitionObject.setRelationshipDefinitions(List<RelationshipType> relationshipDefinitions);
-            List<RelationshipType> DomainRelationshipDefinitionObject.getRelationshipDefinitions();  
+            DomainRelationshipDefinitionObject.setRelationshipDefinitions(List<RelationshipDef> relationshipDefinitions);
+            List<RelationshipDef> DomainRelationshipDefinitionObject.getRelationshipDefinitions();  
         ]]>        
         <![CDATA[
             import java.util.List;
             import com.sun.mdm.multidomain.attributes.Attribute;
             import com.sun.mdm.multidomain.relationship.RelationshipDef;
-            RelationshipType.setAttributes(List<Attribute> attributes);            
-            List<Attribute> RelationshipType.getAttributes();  
+            RelationshipDef.setAttributes(List<Attribute> attributes);            
+            List<Attribute> RelationshipDef.getAttributes();  
         ]]>
         <![CDATA[
             import java.util.List;

@@ -25,9 +25,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             <props>
                 <prop key="/index.htm">indexController</prop>
                 <prop key="/login.htm">loginController</prop>
-                <prop key="/managerelationshiptype.htm">manageRelationshipType</prop>                
+                <prop key="/managerelationshipdef.htm">manageRelationshipDef</prop>                
                 <prop key="/managerelationship.htm">manageRelationship</prop>                
-                <prop key="/managehierarchytype.htm">manageHierarchyType</prop>                
+                <prop key="/managehierarchydef.htm">manageHierarchyDef</prop>                
                 <prop key="/managehierarchy.htm">manageHierarchy</prop>                                
             </props>
         </property>
@@ -46,16 +46,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
     
-    <bean name="manageRelationshipType" 
-          class="com.sun.mdm.multidomain.presentation.web.ManageRelationshipTypeController" />
+    <bean name="manageRelationshipDef" 
+          class="com.sun.mdm.multidomain.presentation.web.RelationshipDefController" />
 
     <bean name="manageRelationship" 
-          class="com.sun.mdm.multidomain.presentation.web.ManageRelationshipController" />
+          class="com.sun.mdm.multidomain.presentation.web.RelationshipController" />
 
-    <bean name="manageHierarchyType" 
-          class="com.sun.mdm.multidomain.presentation.web.ManageHierarchyTypeController" />
+    <bean name="manageHierarchyDef" 
+          class="com.sun.mdm.multidomain.presentation.web.HierarchyDefController" />
 
     <bean name="manageHierarchy" 
-          class="com.sun.mdm.multidomain.presentation.web.ManageHierarchyController" />
+          class="com.sun.mdm.multidomain.presentation.web.HierarchyController" />
     
 </beans>

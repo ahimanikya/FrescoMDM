@@ -50,13 +50,13 @@
     <bean id="DomainHandler" class="com.sun.mdm.multidomain.presentation.beans.DomainHandler">
     </bean>
     
-    <bean id="RelationshipTypeHandler" class="com.sun.mdm.multidomain.presentation.beans.RelationshipTypeHandler">
+    <bean id="RelationshipDefHandler" class="com.sun.mdm.multidomain.presentation.beans.RelationshipDefHandler">
     </bean>
     
     <bean id="RelationshipHandler" class="com.sun.mdm.multidomain.presentation.beans.RelationshipHandler">
     </bean>
     
-    <bean id="HierarchyTypeHandler" class="com.sun.mdm.multidomain.presentation.beans.HierarchyTypeHandler">
+    <bean id="HierarchyDefHandler" class="com.sun.mdm.multidomain.presentation.beans.HierarchyDefHandler">
     </bean>
     
     <bean id="HierarchyHandler" class="com.sun.mdm.multidomain.presentation.beans.HierarchyHandler">
