@@ -38,7 +38,7 @@ import com.sun.mdm.multidomain.parser.LinkType;
  *
  * @author kkao
  */
-public class RelationshipDefNode extends LinkBaseNode {
+public class RelationshipDefNode extends DefinitionNode {
     String sourceDomain;
     String targetDomain;
     

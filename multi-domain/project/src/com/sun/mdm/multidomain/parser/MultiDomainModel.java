@@ -69,7 +69,7 @@ public class MultiDomainModel {
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
     private Relationships mRelationships = new Relationships();
-    private ArrayList <LinkType> mAlLinkTypes = new ArrayList();
+    private ArrayList <LinkType> mAlDefinitions = new ArrayList();
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
     private boolean mModified = false;
@@ -116,14 +116,14 @@ public class MultiDomainModel {
         return strDatabase;
     }
 
-    public ArrayList <LinkType> getAllLinks() {
-        return this.mAlLinkTypes;
+    public ArrayList <LinkType> getAllDefinitions() {
+        return this.mAlDefinitions;
     }
     
     public ArrayList <String> getAssociatedDomains(String domainName) {
         ArrayList <String> al = new ArrayList();
-        for (int i=0; i< this.mAlLinkTypes.size(); i++) {
-            LinkType linkType = (LinkType) mAlLinkTypes.get(i);
+        for (int i=0; i< this.mAlDefinitions.size(); i++) {
+            LinkType linkType = (LinkType) mAlDefinitions.get(i);
             String sourceDomain = linkType.getSourceDomain();
             String targetDomain = linkType.getTargetDomain();
             String associatedDomain = null;
@@ -136,12 +136,12 @@ public class MultiDomainModel {
     }
     
     /**
-     * @param String name of Link
+     * @param String name of definition
      * @param String sourceDomain
      * @param String targetDomain
      * @return LinkType
      */
-    public LinkType getLinkType(String name, String sourceDomain, String targetDomain) {
+    public LinkType getDefinition(String name, String sourceDomain, String targetDomain) {
         LinkType linkType = null;
         return linkType;
     }
@@ -149,10 +149,10 @@ public class MultiDomainModel {
     /**
      * @return ArrayList of LinkType
      */
-    public ArrayList <LinkType> getLinkTypesByDomain(String domainName) {
+    public ArrayList <LinkType> getDefinitionsByDomain(String domainName) {
         ArrayList <LinkType> al = new ArrayList();
-        for (int i=0; i< this.mAlLinkTypes.size(); i++) {
-            LinkType linkType = (LinkType) mAlLinkTypes.get(i);
+        for (int i=0; i< this.mAlDefinitions.size(); i++) {
+            LinkType linkType = (LinkType) mAlDefinitions.get(i);
             String sourceDomain = linkType.getSourceDomain();
             String targetDomain = linkType.getTargetDomain();
             if (domainName.equals(sourceDomain) || domainName.equals(targetDomain)) {
@@ -168,13 +168,13 @@ public class MultiDomainModel {
      * @param sourceDomain
      * @param targetDomain
      */
-    public void deleteLink(String defName, String sourceDomain, String targetDomain) {
-        for (int i=0; i< this.mAlLinkTypes.size(); i++) {
-            LinkType linkType = (LinkType) mAlLinkTypes.get(i);
+    public void deleteDefinition(String defName, String sourceDomain, String targetDomain) {
+        for (int i=0; i< this.mAlDefinitions.size(); i++) {
+            LinkType linkType = (LinkType) mAlDefinitions.get(i);
             if (linkType.getName().equals(defName) &&
                 linkType.getSourceDomain().equals(sourceDomain) &&
                 linkType.getTargetDomain().equals(targetDomain)) {
-                mAlLinkTypes.remove(i);
+                mAlDefinitions.remove(i);
                 break;
             }
         }
@@ -184,8 +184,8 @@ public class MultiDomainModel {
      * 
      * @param linkType
      */
-    public void addLink(LinkType linkType) {
-        mAlLinkTypes.add(linkType);
+    public void addDefinition(LinkType linkType) {
+        mAlDefinitions.add(linkType);
     }
     
     /**
@@ -304,7 +304,7 @@ public class MultiDomainModel {
     /**
      * @param node node
      */
-    public void parseLink(Node node, String type) {
+    public void parseDefinition(Node node, String type) {
         LinkType linkType = new LinkType(type);
         String val = null;
         NamedNodeMap nnm = node.getAttributes();
@@ -344,7 +344,7 @@ public class MultiDomainModel {
                 }
             }
         }
-        mAlLinkTypes.add(linkType);
+        mAlDefinitions.add(linkType);
     }
 
     /**
@@ -374,13 +374,13 @@ public class MultiDomainModel {
                         } else if (mTagDomains.equals(((Element) nl.item(i)).getTagName())) {
                             parseDomains(nl.item(i));
                         } else if (mTagRelationship.equals(((Element) nl.item(i)).getTagName())) {
-                            parseLink(nl.item(i), LinkType.TYPE_RELATIONSHIP);
+                            parseDefinition(nl.item(i), LinkType.TYPE_RELATIONSHIP);
                         } else if (mTagHierarchy.equals(((Element) nl.item(i)).getTagName())) {
-                            parseLink(nl.item(i), LinkType.TYPE_HIERARCHY);
+                            parseDefinition(nl.item(i), LinkType.TYPE_HIERARCHY);
                         } else if (mTagGroup.equals(((Element) nl.item(i)).getTagName())) {
-                            parseLink(nl.item(i), LinkType.TYPE_GROUP);
+                            parseDefinition(nl.item(i), LinkType.TYPE_GROUP);
                         } else if (mTagCategory.equals(((Element) nl.item(i)).getTagName())) {
-                            parseLink(nl.item(i), LinkType.TYPE_CATEGORY);
+                            parseDefinition(nl.item(i), LinkType.TYPE_CATEGORY);
                         }
                     }
                 }

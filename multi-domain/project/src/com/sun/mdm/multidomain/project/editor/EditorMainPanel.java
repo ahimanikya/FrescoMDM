@@ -56,7 +56,7 @@ import com.sun.mdm.multidomain.project.actions.CreateHierarchyAction;
 import com.sun.mdm.multidomain.project.actions.CreateGroupAction;
 import com.sun.mdm.multidomain.project.actions.CreateCategoryAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
-import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
+import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.parser.LinkType;
 
@@ -171,7 +171,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
     
-    public void loadLinkProperties(LinkBaseNode currentLinkNode) {
+    public void loadLinkProperties(DefinitionNode currentLinkNode) {
         mPropertiesTabbedPane.removeAll();
         if (currentLinkNode != null) {
             String title = "Unknown";

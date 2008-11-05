@@ -69,7 +69,7 @@ import java.awt.image.BufferedImage;
 
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
-import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
+import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.parser.LinkType;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
 
@@ -234,10 +234,10 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             model = (TableModelDefinition) jTableDefinitions.getModel();
             jTableDefinitions.removeAll();
         }
-        ArrayList <LinkBaseNode> alLinkNodes = mEditorMainApp.getLinkNodes();
+        ArrayList <DefinitionNode> alLinkNodes = mEditorMainApp.getDefinitionNodes();
         ArrayList rows = new ArrayList();
         for (int i=0; alLinkNodes != null && i<alLinkNodes.size(); i++) {
-            LinkBaseNode linkNode = alLinkNodes.get(i);
+            DefinitionNode linkNode = alLinkNodes.get(i);
             LinkType type = linkNode.getLinkType();
             String sourceDomain = type.getSourceDomain();
             String targetDomain = type.getTargetDomain();
@@ -424,7 +424,7 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                 for (int i=length - 1; i>=0 && i < length; i--) {
                     int idx = rs[i];
                     DefinitionRow row = model.getRow(idx);
-                    mEditorMainApp.deleteLink(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
+                    mEditorMainApp.deleteDefinition(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
                     model.removeRow(idx);
                 }
                 model.fireTableDataChanged();
@@ -451,13 +451,13 @@ private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                             String linkName = dialog.getLinkName();
                             String sourceDomain = dialog.getSourceDomain();
                             String targetDomain = dialog.getTargetDomain();
-                            LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
+                            DefinitionNode linkNode = mEditorMainApp.getDefinitionNode(linkName, sourceDomain, targetDomain);
                             if (linkNode != null) {
                             //Already exists
                             } else {
                                 // add new LinkNode
                                 LinkType linkType = new LinkType(linkName, type, sourceDomain, targetDomain, null, null);
-                                linkNode = mEditorMainApp.addLink(linkType);
+                                linkNode = mEditorMainApp.addDefinition(linkType);
                                 mEditorMainPanel.loadLinkProperties(linkNode);
                                 // add a new row
                                 TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
@@ -504,7 +504,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                 for (int i=length - 1; i>=0 && i < length; i--) {
                     int idx = rs[i];
                     DefinitionRow row = model.getRow(idx);
-                    mEditorMainApp.deleteLink(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
+                    mEditorMainApp.deleteDefinition(row.getLinkName(), row.getSourceDomain(), row.getTargetDomain());
                     model.removeRow(idx);
                 }
                 model.fireTableDataChanged();
@@ -546,7 +546,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         String linkName = (String) model.getValueAt(iSelectedRow,  model.iColLinkName);
         String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
         String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
-        LinkBaseNode linkNode = mEditorMainApp.getLinkNode(linkName, sourceDomain, targetDomain);
+        DefinitionNode linkNode = mEditorMainApp.getDefinitionNode(linkName, sourceDomain, targetDomain);
         mEditorMainPanel.loadLinkProperties(linkNode);
      }
 

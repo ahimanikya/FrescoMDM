@@ -50,7 +50,7 @@ import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
-import com.sun.mdm.multidomain.project.editor.nodes.LinkBaseNode;
+import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import org.openide.filesystems.FileObject;
 
 /**
@@ -77,7 +77,7 @@ public class EditorMainApp {
     private Map mMapDomainMidmXmls = new HashMap();  // domainName, FileObject of midm.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
     private ArrayList mAlDomainNodes = new ArrayList();   // DomainNode
-    private ArrayList <LinkBaseNode> mAlLinkNodes = new ArrayList <LinkBaseNode>();   // RelationshipNode
+    private ArrayList <DefinitionNode> mAlDefinitionNodes = new ArrayList <DefinitionNode>();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
     private MultiDomainModel mMultiDomainModel;
@@ -128,13 +128,13 @@ public class EditorMainApp {
         return mInstance;
     }
         
-    /** Add a Link 
+    /** Add a Definition 
      * 
      * @param linkType
      * @return
      */
-    public LinkBaseNode addLink(LinkType linkType) {
-        mMultiDomainModel.addLink(linkType);
+    public DefinitionNode addDefinition(LinkType linkType) {
+        mMultiDomainModel.addDefinition(linkType);
         LinkType webLinkType = mMultiDomainWebManager.getLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());        
         if (webLinkType == null) {
             webLinkType = mMultiDomainWebManager.createLinkType(linkType.getName(), linkType.getSourceDomain(), linkType.getTargetDomain());
@@ -153,37 +153,37 @@ public class EditorMainApp {
 
             //linkType.getExtendedAttributes().get(0).
         }
-        LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
-        this.mAlLinkNodes.add(node);
+        DefinitionNode node = new DefinitionNode(this, linkType, webLinkType);
+        this.mAlDefinitionNodes.add(node);
         return node;
     }
     
-    /** Delete a link from MultiDomainModel, MultiDomainWebManager and mAlLinkNodes
+    /** Delete a definition from MultiDomainModel, MultiDomainWebManager and mAlDefinitionNodes
      * 
      * @param defName
      * @param sourceDomain
      * @param targetDomain
      */
-    public void deleteLink(String defName, String sourceDomain, String targetDomain) {      
-        mMultiDomainModel.deleteLink(defName, sourceDomain, targetDomain);
+    public void deleteDefinition(String defName, String sourceDomain, String targetDomain) {      
+        mMultiDomainModel.deleteDefinition(defName, sourceDomain, targetDomain);
         // delete webLinkType here
         LinkType webLinkType = mMultiDomainWebManager.getLinkType(defName, sourceDomain, targetDomain);        
         if (webLinkType != null) {
             //ToDo - wee
             mMultiDomainWebManager.deleteLinkType(webLinkType);
         }
-        for (int i=0; mAlLinkNodes!=null && i<mAlLinkNodes.size(); i++) {
-            LinkBaseNode node = (LinkBaseNode) mAlLinkNodes.get(i);
+        for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
+            DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
             if (node.getName().equals(defName) && node.getSourceDomain().equals(sourceDomain) && node.getTargetDomain().equals(targetDomain)) {
-                mAlLinkNodes.remove(i);
+                mAlDefinitionNodes.remove(i);
                 break;
             }
         }
     }
     
-    private void loadLinks() {
-        // build mAlLinkNodes
-        ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllLinks();
+    private void loadDefinitions() {
+        // build mAlDefinitionNodes
+        ArrayList <LinkType> alLinkTypes = mMultiDomainModel.getAllDefinitions();
         //ArrayList <LinkType> allWebLinkTypes = this.mMultiDomainWebManager.getRelationshipTypes();
         
         for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
@@ -207,20 +207,20 @@ public class EditorMainApp {
                 }
                 
             }
-            LinkBaseNode node = new LinkBaseNode(this, linkType, webLinkType);
-            this.mAlLinkNodes.add(node);
+            DefinitionNode node = new DefinitionNode(this, linkType, webLinkType);
+            this.mAlDefinitionNodes.add(node);
         }
         
     }
     
-    public ArrayList <LinkBaseNode> getLinkNodes() {
-        return mAlLinkNodes;
+    public ArrayList <DefinitionNode> getDefinitionNodes() {
+        return mAlDefinitionNodes;
     }
     
-    public LinkBaseNode getLinkNode(String defName, String sourceDomain, String targetDomain) {
-        LinkBaseNode nodeFound = null;
-        for (int i=0; mAlLinkNodes!=null && i<mAlLinkNodes.size(); i++) {
-            LinkBaseNode node = (LinkBaseNode) mAlLinkNodes.get(i);
+    public DefinitionNode getDefinitionNode(String defName, String sourceDomain, String targetDomain) {
+        DefinitionNode nodeFound = null;
+        for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
+            DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
             if (node.getName().equals(defName) && node.getSourceDomain().equals(sourceDomain) && node.getTargetDomain().equals(targetDomain)) {
                 nodeFound = node;
                 break;
@@ -252,7 +252,7 @@ public class EditorMainApp {
                         mMapDomainQueryXmls.put(domainName, queryXml);
                         mMapDomainMidmXmls.put(domainName, midmXml);
                         ArrayList <String> alAssociatedDomains = this.mMultiDomainModel.getAssociatedDomains(domainName);
-                        ArrayList <LinkType> alLinkTypes = this.mMultiDomainModel.getLinkTypesByDomain(domainName);
+                        ArrayList <LinkType> alLinkTypes = this.mMultiDomainModel.getDefinitionsByDomain(domainName);
                         DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(domain), alAssociatedDomains, alLinkTypes);
                         mMapDomainNodes.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
@@ -349,7 +349,7 @@ public class EditorMainApp {
                     removed = true;
                 }
                 
-                //ToDo remove all link types too
+                //ToDo remove all definitions too
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }
@@ -484,13 +484,8 @@ public class EditorMainApp {
 
             mMultiDomainModel = getMultiDomainModel(true);
             mMultiDomainWebManager = getMultiDomainWebManager(true);
-            loadLinks();
-
-            // Load mMapDomainObjectXmls
+            loadDefinitions();
             loadDomains();
-            // Let TopObjectComponent/EditorMainPanel to do DomainNodes loading
-            //loadLinkTypeNodes();
-
             mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
             mEditorMainPanel.loadDomainNodesToCanvas();
             mObjectTopComponent = new ObjectTopComponent();

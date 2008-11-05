@@ -49,7 +49,7 @@ public class LinkParentNode extends AbstractNode {
     LinkParentNode mLinkParentNode;
     String domain1;
     String domain2;
-    ArrayList <LinkBaseNode> alLinkBaseNodes = new ArrayList();
+    ArrayList <DefinitionNode> alLinkBaseNodes = new ArrayList();
     
     public LinkParentNode() {
         super(Children.LEAF);
@@ -92,7 +92,7 @@ public class LinkParentNode extends AbstractNode {
      * 
      * @param linkTypeNode
      */
-    public void addLinkBaseNode(LinkBaseNode linkTypeNode ) {
+    public void addLinkBaseNode(DefinitionNode linkTypeNode ) {
         alLinkBaseNodes.add(linkTypeNode);
     }
     
@@ -105,7 +105,7 @@ public class LinkParentNode extends AbstractNode {
     public void deleteLinkBaseNode(String linkName, String sourceDomain, String targetDomain ) {
         // 
         for (int i=0; alLinkBaseNodes != null && i<alLinkBaseNodes.size(); i++) {
-            LinkBaseNode linkTypeNode = (LinkBaseNode) alLinkBaseNodes.get(i);
+            DefinitionNode linkTypeNode = (DefinitionNode) alLinkBaseNodes.get(i);
             if (linkTypeNode.getName().equals(linkName) &&
                 linkTypeNode.getLinkType().getSourceDomain().equals(sourceDomain) &&
                 linkTypeNode.getLinkType().getTargetDomain().equals(targetDomain)) {
@@ -135,7 +135,7 @@ public class LinkParentNode extends AbstractNode {
      * 
      * @return ArrayList <LinkBaseNode>
      */
-    public ArrayList <LinkBaseNode> getAllLinkBaseNodes() {
+    public ArrayList <DefinitionNode> getAllLinkBaseNodes() {
         return alLinkBaseNodes;
     }
 
