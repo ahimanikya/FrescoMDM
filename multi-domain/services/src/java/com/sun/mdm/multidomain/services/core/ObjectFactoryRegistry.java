@@ -32,9 +32,20 @@ import java.util.HashMap;
 public class ObjectFactoryRegistry {
     
     private static Map<String, ObjectFactory> entries = new HashMap<String, ObjectFactory>();    
+    
     public static void register(String name, ObjectFactory objectFactory) {  
         entries.put(name, objectFactory);
     }
+
+    public static void register(String name) 
+        throws ConfigException {  
+        ObjectFactory entry = entries.get(name);
+        if (entry == null) {
+            entry = new ObjectNodeFactoryImpl(name);
+            register(name, entry);
+        }        
+    }
+    
     public static ObjectFactory lookup(String name) 
         throws ConfigException {
         ObjectFactory entry = entries.get(name);
