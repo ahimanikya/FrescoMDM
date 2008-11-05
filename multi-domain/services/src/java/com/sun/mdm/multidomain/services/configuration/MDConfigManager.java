@@ -45,6 +45,8 @@ import net.java.hulp.i18n.Logger;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Collection;
 import java.util.Properties;
 
 
@@ -102,6 +104,38 @@ public class MDConfigManager {
             throw new ConfigException(e);
         }
 	}  
+
+    /**
+     * Forces a re-initialization of the the MDConfigManager.  
+     *
+     * @return the initialized instance of the MDConfigManager
+     * @throws ConfigException if an error is encountered
+     */
+	public static MDConfigManager reinitialize() throws ConfigException {  
+	    try {
+            synchronized (MDConfigManager.class) {
+                if (mInstance != null) {
+                    return mInstance;
+                }
+        	    mScreens = new HashMap<Integer, ScreenObject>();
+        	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
+        	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+        	    
+        	    mDWMInstance = new MultiDomainWebManager();
+        	    
+        	    configureDomains();
+        	    configureRelationships();
+        	    configureHierarchies();
+        	    configureGroups();
+        	    configureScreens();
+        	    
+        	    return mInstance;
+        	}
+        } catch (Exception e) {
+            throw new ConfigException(e);
+        }
+	}
+
 
     /**
      * Returns the instance of the MDConfigManager
@@ -576,30 +610,29 @@ public class MDConfigManager {
     }
 
     /**
-     * Forces a re-initialization of the the MDConfigManager.  
-     *
-     * @return the initialized instance of the MDConfigManager
-     * @throws ConfigException if an error is encountered
-     */
-	public static MDConfigManager reinitialize() throws ConfigException {  
-        synchronized (MDConfigManager.class) {
-    	    mScreens = new HashMap<Integer, ScreenObject>();
-    	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
-    	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
-    	    // RESUME HERE
-    	    // Initialize the MDConfigManager
-    	}
-    	return mInstance;
-	}
-
-    /**
      * Retrieve all domain screen configurations from the DomainScreenConfig hashmap.
      *
-     * @return  all the domain screen configurations;
+     * @return  all the domain screen configurations
      */
     public static HashMap<String, DomainScreenConfig> getDomainScreenConfigs() {
         return mDomainScreenConfigs;
     } 
+    
+    /**
+     * Retrieve all domain configurations from the DomainScreenConfig hashmap.
+     *
+     * @return  all the domain configurations
+     */
+    public static List<Domain> getDomains() {
+        ArrayList<Domain> domains = new ArrayList<Domain>();
+        Collection<DomainScreenConfig> domainScreenConfigs = mDomainScreenConfigs.values();
+        for(DomainScreenConfig dsc : domainScreenConfigs) {
+            Domain domain = dsc.getDomain();
+            domains.add(domain);
+        }
+        return domains;
+    } 
+    
     
     /**
      * Add a domain screen configuration into the DomainScreenConfig hashmap.

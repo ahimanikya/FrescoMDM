@@ -56,7 +56,7 @@ public class DomainScreenConfig extends ObjectScreenConfig {
     // retrieves the Domain object for this domain
     
     public Domain getDomain() {     
-        return null;
+        return mDomain;
     }
 
     // sets the Domain object for this domain
