@@ -227,11 +227,11 @@ public class CUIDManager {
             } else {
                 nextValue = getSeqNoByProcedure(seqName, con);
             }
-            if (!DatabaseType.equalsIgnoreCase("Oracle")) //Oracle will be automatically committed by the PL/SQL Function PRAGMA AUTONOMOUS
-            	con.commit();
+            /*if (!DatabaseType.equalsIgnoreCase("Oracle")) //Oracle will be automatically committed by the PL/SQL Function PRAGMA AUTONOMOUS
+            	con.commit();*/
         } catch (SQLException exp) {
-            throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " +
-                    "ID from the EUID generator: (0}", exp.getMessage()));
+            throw new SEQException(mLocalizer.t("IDG503A: Could not retrieve the next " + seqName +
+                    " ID from the CUID generator: (0}", exp.getMessage()));
         }
 
 
