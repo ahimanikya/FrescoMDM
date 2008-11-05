@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.relationship;
 
+import com.sun.mdm.multidomain.services.model.AttributeDef;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class RelationshipDefinition {
     private String displayName; */
     
     private Map<String, String> fixedAttributes;  
-    private List<AttributeDefinition> extendedAttributes;
+    private List<AttributeDef> extendedAttributes;
 
     public  RelationshipDefinition(){
         fixedAttributes = new HashMap<String, String>();
@@ -62,10 +63,10 @@ public class RelationshipDefinition {
     public Map<String, String> gettFixedAttributes(){
         return fixedAttributes;
     }
-    public void setExtendedAttributes(List<AttributeDefinition> extendedAttributes){
+    public void setExtendedAttributes(List<AttributeDef> extendedAttributes){
         this.extendedAttributes = extendedAttributes;
     }
-    public List<AttributeDefinition> getExtendedAttributes(){
+    public List<AttributeDef> getExtendedAttributes(){
         return extendedAttributes;
     }
     public String getName(){
