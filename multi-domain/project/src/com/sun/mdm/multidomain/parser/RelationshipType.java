@@ -36,7 +36,7 @@ import java.util.ArrayList;
  *
  * @author wee
  */
-public class RelationshipType extends LinkType {
+public class RelationshipType extends Definition {
     
     private String mDisplayName = null;
     
@@ -45,7 +45,7 @@ public class RelationshipType extends LinkType {
     private ArrayList<RelationFieldReference> mRelExtendedAttrs = new ArrayList<RelationFieldReference>();
 
     RelationshipType () {
-        super(LinkType.TYPE_RELATIONSHIP);
+        super(Definition.TYPE_RELATIONSHIP);
     }
 
     public RelationshipType(String relationshipName, String source, String destination, String displayName,
@@ -65,7 +65,7 @@ public class RelationshipType extends LinkType {
     }
 
     public String getType() {
-        return LinkType.TYPE_RELATIONSHIP;
+        return Definition.TYPE_RELATIONSHIP;
     }
     
     public ArrayList<RelationFieldReference> getFixedRelFieldRefs() {

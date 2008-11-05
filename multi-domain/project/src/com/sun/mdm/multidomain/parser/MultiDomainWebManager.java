@@ -62,8 +62,8 @@ public class MultiDomainWebManager {
         return this.mJndiResources;
     }
     
-    public LinkType getLinkType(String name, String source, String target) {
-        for (LinkType type : mRelationshipTypes) {
+    public Definition getLinkType(String name, String source, String target) {
+        for (Definition type : mRelationshipTypes) {
             if (type.getName().equals(name) && type.getSourceDomain().equals(source) && type.getTargetDomain().equals(target)) {
                 return type;
             }
@@ -71,8 +71,8 @@ public class MultiDomainWebManager {
         return null;
     }
     
-    public LinkType createLinkType(String name, String source, String target) {
-        LinkType linkType = new RelationshipType();
+    public Definition createLinkType(String name, String source, String target) {
+        Definition linkType = new RelationshipType();
         linkType.setName(name);
         linkType.setSourceDomain(source);
         linkType.setTargetDomain(target);
@@ -82,7 +82,7 @@ public class MultiDomainWebManager {
     }   
     
     public void deleteLinkType(String name, String source, String target) {
-        for (LinkType type : mRelationshipTypes) {
+        for (Definition type : mRelationshipTypes) {
             if (type.getName().equals(name) && type.getSourceDomain().equals(source) && type.getTargetDomain().equals(target)) {
                 mRelationshipTypes.remove(type);
                 return;
@@ -91,7 +91,7 @@ public class MultiDomainWebManager {
         
     }
     
-    public void deleteLinkType(LinkType linkType) {
+    public void deleteLinkType(Definition linkType) {
         mRelationshipTypes.remove(linkType);
       
     }    

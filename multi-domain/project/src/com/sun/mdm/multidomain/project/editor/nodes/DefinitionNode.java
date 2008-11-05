@@ -38,7 +38,7 @@ import org.openide.nodes.NodeEvent;
 import org.openide.util.Lookup;
 import javax.swing.JPanel;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabRelationshipDef;
 import com.sun.mdm.multidomain.project.editor.TabHierarchyDef;
@@ -49,8 +49,8 @@ import com.sun.mdm.multidomain.project.editor.TabWebManagerRelationshipTypes;
  * @author kkao
  */
 public class DefinitionNode extends AbstractNode {
-    LinkType mLinkType;
-    LinkType mWebLinkType;
+    Definition mLinkType;
+    Definition mWebLinkType;
     DefinitionNode mLinkTypeNode;
     String mLinkName;
     EditorMainApp mEditorMainApp;
@@ -75,7 +75,7 @@ public class DefinitionNode extends AbstractNode {
      * @param LinkParentNode
      * @param linkType
      */
-    public DefinitionNode(EditorMainApp editorMainApp, LinkType linkType, LinkType webLinkType) {
+    public DefinitionNode(EditorMainApp editorMainApp, Definition linkType, Definition webLinkType) {
         super(Children.LEAF);
         mEditorMainApp = editorMainApp;
         mLinkType = linkType;
@@ -93,7 +93,7 @@ public class DefinitionNode extends AbstractNode {
      * 
      * @return mLinkType
      */
-    public LinkType getLinkType() {
+    public Definition getLinkType() {
         return mLinkType;
     }
 
@@ -131,9 +131,9 @@ public class DefinitionNode extends AbstractNode {
 
     public JPanel getLinkDefTab(boolean bRefresh) {
         if (bRefresh || mTabLinkDef == null) {
-            if (getType().equals(LinkType.TYPE_RELATIONSHIP)) {
+            if (getType().equals(Definition.TYPE_RELATIONSHIP)) {
                 mTabLinkDef = new TabRelationshipDef(mEditorMainApp, getLinkType());
-            } else if (getType().equals(LinkType.TYPE_HIERARCHY)) {
+            } else if (getType().equals(Definition.TYPE_HIERARCHY)) {
                 mTabLinkDef = new TabHierarchyDef(getLinkType());
             }
         }

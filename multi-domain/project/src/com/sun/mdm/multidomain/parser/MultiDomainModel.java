@@ -69,7 +69,7 @@ public class MultiDomainModel {
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
     private Relationships mRelationships = new Relationships();
-    private ArrayList <LinkType> mAlDefinitions = new ArrayList();
+    private ArrayList <Definition> mAlDefinitions = new ArrayList();
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
     private boolean mModified = false;
@@ -116,16 +116,16 @@ public class MultiDomainModel {
         return strDatabase;
     }
 
-    public ArrayList <LinkType> getAllDefinitions() {
+    public ArrayList <Definition> getAllDefinitions() {
         return this.mAlDefinitions;
     }
     
     public ArrayList <String> getAssociatedDomains(String domainName) {
         ArrayList <String> al = new ArrayList();
         for (int i=0; i< this.mAlDefinitions.size(); i++) {
-            LinkType linkType = (LinkType) mAlDefinitions.get(i);
-            String sourceDomain = linkType.getSourceDomain();
-            String targetDomain = linkType.getTargetDomain();
+            Definition definition = (Definition) mAlDefinitions.get(i);
+            String sourceDomain = definition.getSourceDomain();
+            String targetDomain = definition.getTargetDomain();
             String associatedDomain = null;
             if (domainName.equals(sourceDomain) || domainName.equals(targetDomain)) {
                 associatedDomain = domainName.equals(sourceDomain) ? targetDomain : sourceDomain;
@@ -139,24 +139,24 @@ public class MultiDomainModel {
      * @param String name of definition
      * @param String sourceDomain
      * @param String targetDomain
-     * @return LinkType
+     * @return definition
      */
-    public LinkType getDefinition(String name, String sourceDomain, String targetDomain) {
-        LinkType linkType = null;
-        return linkType;
+    public Definition getDefinition(String name, String sourceDomain, String targetDomain) {
+        Definition definition = null;
+        return definition;
     }
 
     /**
-     * @return ArrayList of LinkType
+     * @return ArrayList of definition
      */
-    public ArrayList <LinkType> getDefinitionsByDomain(String domainName) {
-        ArrayList <LinkType> al = new ArrayList();
+    public ArrayList <Definition> getDefinitionsByDomain(String domainName) {
+        ArrayList <Definition> al = new ArrayList();
         for (int i=0; i< this.mAlDefinitions.size(); i++) {
-            LinkType linkType = (LinkType) mAlDefinitions.get(i);
-            String sourceDomain = linkType.getSourceDomain();
-            String targetDomain = linkType.getTargetDomain();
+            Definition definition = (Definition) mAlDefinitions.get(i);
+            String sourceDomain = definition.getSourceDomain();
+            String targetDomain = definition.getTargetDomain();
             if (domainName.equals(sourceDomain) || domainName.equals(targetDomain)) {
-                al.add(linkType);
+                al.add(definition);
             }
         }
         return al;
@@ -170,22 +170,22 @@ public class MultiDomainModel {
      */
     public void deleteDefinition(String defName, String sourceDomain, String targetDomain) {
         for (int i=0; i< this.mAlDefinitions.size(); i++) {
-            LinkType linkType = (LinkType) mAlDefinitions.get(i);
-            if (linkType.getName().equals(defName) &&
-                linkType.getSourceDomain().equals(sourceDomain) &&
-                linkType.getTargetDomain().equals(targetDomain)) {
+            Definition definition = (Definition) mAlDefinitions.get(i);
+            if (definition.getName().equals(defName) &&
+                definition.getSourceDomain().equals(sourceDomain) &&
+                definition.getTargetDomain().equals(targetDomain)) {
                 mAlDefinitions.remove(i);
                 break;
             }
         }
     }
     
-    /** Add a link to the array mAlLinkTypes
+    /** Add a definition to the array mAlDefinitions
      * 
-     * @param linkType
+     * @param definition
      */
-    public void addDefinition(LinkType linkType) {
-        mAlDefinitions.add(linkType);
+    public void addDefinition(Definition definition) {
+        mAlDefinitions.add(definition);
     }
     
     /**
@@ -305,14 +305,14 @@ public class MultiDomainModel {
      * @param node node
      */
     public void parseDefinition(Node node, String type) {
-        LinkType linkType = new LinkType(type);
+        Definition definition = new Definition(type);
         String val = null;
         NamedNodeMap nnm = node.getAttributes();
         if (nnm != null) {
             Node attrName = nnm.getNamedItem(mTagName);
             if (attrName != null) {
                 try {
-                    linkType.name = attrName.getNodeValue();
+                    definition.name = attrName.getNodeValue();
                 } catch (DOMException ex) {
                 }
             }
@@ -323,28 +323,28 @@ public class MultiDomainModel {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagSourceDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setSourceDomain(getAttributeName(nl.item(i)));
+                        definition.setSourceDomain(getAttributeName(nl.item(i)));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setTargetDomain(getAttributeName(nl.item(i)));
+                        definition.setTargetDomain(getAttributeName(nl.item(i)));
                     } else if (mTagPlugin.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setPlugin(getAttributeName(nl.item(i)));
+                        definition.setPlugin(getAttributeName(nl.item(i)));
                     } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setDirection(Utils.getStrElementValue(nl.item(i)));
+                        definition.setDirection(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagDescription.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setDescription(Utils.getStrElementValue(nl.item(i)));
+                        definition.setDescription(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagEffectiveFrom.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setEffectiveFrom(Utils.getStrElementValue(nl.item(i)));
+                        definition.setEffectiveFrom(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagEffectiveTo.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setEffectiveTo(Utils.getStrElementValue(nl.item(i)));
+                        definition.setEffectiveTo(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagPredefinedAttributes.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setPredefinedAttributes(parseAttributes(nl.item(i)));
+                        definition.setPredefinedAttributes(parseAttributes(nl.item(i)));
                     } else if (mTagExtendedAttributes.equals(((Element) nl.item(i)).getTagName())) {
-                        linkType.setExtendedAttributes(parseAttributes(nl.item(i)));
+                        definition.setExtendedAttributes(parseAttributes(nl.item(i)));
                     }
                 }
             }
         }
-        mAlDefinitions.add(linkType);
+        mAlDefinitions.add(definition);
     }
 
     /**
@@ -374,13 +374,13 @@ public class MultiDomainModel {
                         } else if (mTagDomains.equals(((Element) nl.item(i)).getTagName())) {
                             parseDomains(nl.item(i));
                         } else if (mTagRelationship.equals(((Element) nl.item(i)).getTagName())) {
-                            parseDefinition(nl.item(i), LinkType.TYPE_RELATIONSHIP);
+                            parseDefinition(nl.item(i), Definition.TYPE_RELATIONSHIP);
                         } else if (mTagHierarchy.equals(((Element) nl.item(i)).getTagName())) {
-                            parseDefinition(nl.item(i), LinkType.TYPE_HIERARCHY);
+                            parseDefinition(nl.item(i), Definition.TYPE_HIERARCHY);
                         } else if (mTagGroup.equals(((Element) nl.item(i)).getTagName())) {
-                            parseDefinition(nl.item(i), LinkType.TYPE_GROUP);
+                            parseDefinition(nl.item(i), Definition.TYPE_GROUP);
                         } else if (mTagCategory.equals(((Element) nl.item(i)).getTagName())) {
-                            parseDefinition(nl.item(i), LinkType.TYPE_CATEGORY);
+                            parseDefinition(nl.item(i), Definition.TYPE_CATEGORY);
                         }
                     }
                 }

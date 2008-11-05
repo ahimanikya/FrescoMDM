@@ -38,7 +38,7 @@ import org.openide.util.Lookup;
 
 import java.util.ArrayList;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 /**
  *

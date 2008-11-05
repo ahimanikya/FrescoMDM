@@ -33,7 +33,7 @@ package com.sun.mdm.multidomain.project.editor.nodes;
 import org.openide.nodes.Children;
 import org.openide.util.Lookup;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 /**
  *
  * @author kkao
@@ -54,7 +54,7 @@ public class RelationshipDefNode extends DefinitionNode {
         super(arg0);
     }
     
-    public RelationshipDefNode(LinkType linkType) {
+    public RelationshipDefNode(Definition linkType) {
         super(Children.LEAF);
     }
 

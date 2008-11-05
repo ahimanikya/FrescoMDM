@@ -70,7 +70,7 @@ import java.awt.image.BufferedImage;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
 
 /**
@@ -238,7 +238,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ArrayList rows = new ArrayList();
         for (int i=0; alLinkNodes != null && i<alLinkNodes.size(); i++) {
             DefinitionNode linkNode = alLinkNodes.get(i);
-            LinkType type = linkNode.getLinkType();
+            Definition type = linkNode.getLinkType();
             String sourceDomain = type.getSourceDomain();
             String targetDomain = type.getTargetDomain();
             DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
@@ -456,7 +456,7 @@ private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                             //Already exists
                             } else {
                                 // add new LinkNode
-                                LinkType linkType = new LinkType(linkName, type, sourceDomain, targetDomain, null, null);
+                                Definition linkType = new Definition(linkName, type, sourceDomain, targetDomain, null, null);
                                 linkNode = mEditorMainApp.addDefinition(linkType);
                                 mEditorMainPanel.loadLinkProperties(linkNode);
                                 // add a new row

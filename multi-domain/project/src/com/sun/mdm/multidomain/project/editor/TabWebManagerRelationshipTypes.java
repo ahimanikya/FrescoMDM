@@ -7,7 +7,7 @@
 package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.Attribute;
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;
@@ -24,15 +24,15 @@ import org.openide.util.NbBundle;
  */
 public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     
-    private ArrayList<LinkType> mRelationshipTypes = null;
+    private ArrayList<Definition> mRelationshipTypes = null;
     private JTable mTableFields;
     private boolean mModified = false;
     private EditorMainApp mEditorMainApp = null;
-    private LinkType mLinkType = null;
+    private Definition mLinkType = null;
     //private 
 
     /** Creates new form TabWebManagerRelationshipTypes */
-    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, LinkType linkType) {
+    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, Definition linkType) {
         
         mEditorMainApp = editorMainApp;
         //mRelationshipTypes = relationshipTypes;

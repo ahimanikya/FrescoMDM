@@ -6,7 +6,7 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.RelationshipType;
 import java.util.ArrayList;

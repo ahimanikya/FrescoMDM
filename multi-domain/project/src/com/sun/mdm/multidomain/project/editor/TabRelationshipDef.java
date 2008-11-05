@@ -38,7 +38,7 @@ import javax.swing.table.TableModel;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.Attribute;
 /**
  *
@@ -46,9 +46,9 @@ import com.sun.mdm.multidomain.parser.Attribute;
  */
 public class TabRelationshipDef extends javax.swing.JPanel {
     EditorMainApp mEditorMainApp;
-    LinkType mLinkType;
+    Definition mLinkType;
     /** Creates new form TabAttributes */
-    public TabRelationshipDef(EditorMainApp editorMainApp, LinkType linkType) {
+    public TabRelationshipDef(EditorMainApp editorMainApp, Definition linkType) {
         initComponents();
         mEditorMainApp = editorMainApp;
         mLinkType = linkType;

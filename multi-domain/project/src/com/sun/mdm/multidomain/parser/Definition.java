@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author wee
  */
-public class LinkType {
+public class Definition {
     public static final String TYPE_RELATIONSHIP = "relationship";
     public static final String TYPE_HIERARCHY = "hierarchy";
     public static final String TYPE_GROUP = "group";
@@ -51,15 +51,15 @@ public class LinkType {
     private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
 
     
-    public LinkType() {
+    public Definition() {
         
     }
     
-    public LinkType(String type) {
+    public Definition(String type) {
         this.type = type;
     }
 
-    public LinkType(String name, String type, String sourceDomain, String targetDomain,
+    public Definition(String name, String type, String sourceDomain, String targetDomain,
                             ArrayList <Attribute> predefinedAttributes,
                             ArrayList <RelationFieldReference> fieldRefs) {
         this.name = name;

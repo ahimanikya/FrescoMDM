@@ -44,7 +44,7 @@ import java.io.InputStream;
 import org.xml.sax.InputSource;
 import java.util.Iterator;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.MiNodeDef;
 import com.sun.mdm.multidomain.parser.MiFieldDef;
 import com.sun.mdm.multidomain.parser.MiObject;
@@ -67,7 +67,7 @@ public class DomainNode extends AbstractNode {
         );
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
     private ArrayList <String> alAssociatedDomains = new ArrayList();
-    private ArrayList <LinkType> alLinkTypes = new ArrayList();
+    private ArrayList <Definition> alLinkTypes = new ArrayList();
     //TabDomainProperties mTabDomainProperties = null;
     EditorMainApp mEditorMainApp;
     EntityTree mEntityTree = null;
@@ -107,7 +107,7 @@ public class DomainNode extends AbstractNode {
      * @param selectedDomain
      * @param ArrayList <LinkType> alLinkTypes
      */
-    public DomainNode(EditorMainApp editorMainApp, String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <LinkType> alLinkTypes) {
+    public DomainNode(EditorMainApp editorMainApp, String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <Definition> alLinkTypes) {
         super(Children.LEAF);
         setName(domainName);
         mEditorMainApp = editorMainApp;
@@ -268,7 +268,7 @@ public class DomainNode extends AbstractNode {
     /** Update alLinkTypes and mTabRelationshipsPerDomain
      * 
      */
-    public void loadLinkTypes(String domainName, ArrayList <LinkType> alLinkTypes) {
+    public void loadLinkTypes(String domainName, ArrayList <Definition> alLinkTypes) {
         this.alLinkTypes = alLinkTypes;
     }
     

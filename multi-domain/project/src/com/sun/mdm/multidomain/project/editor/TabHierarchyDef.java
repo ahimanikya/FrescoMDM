@@ -32,17 +32,17 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
 
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.Attribute;
 /**
  *
  * @author  kkao
  */
 public class TabHierarchyDef extends javax.swing.JPanel {
-    LinkType mLinkType;
+    Definition mLinkType;
     
     /** Creates new form TabAttributes */
-    public TabHierarchyDef(LinkType linkType) {
+    public TabHierarchyDef(Definition linkType) {
         initComponents();
         mLinkType = linkType;
         this.jTextName.setText(linkType.getName());

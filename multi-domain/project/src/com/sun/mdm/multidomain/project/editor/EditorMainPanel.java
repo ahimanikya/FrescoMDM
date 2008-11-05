@@ -58,7 +58,7 @@ import com.sun.mdm.multidomain.project.actions.CreateCategoryAction;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.util.Logger;
-import com.sun.mdm.multidomain.parser.LinkType;
+import com.sun.mdm.multidomain.parser.Definition;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
@@ -175,13 +175,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mPropertiesTabbedPane.removeAll();
         if (currentLinkNode != null) {
             String title = "Unknown";
-            if (currentLinkNode.getType().equals(LinkType.TYPE_RELATIONSHIP)) {
+            if (currentLinkNode.getType().equals(Definition.TYPE_RELATIONSHIP)) {
                 title = TAB_RELATIONSHIP;
-            } else if (currentLinkNode.getType().equals(LinkType.TYPE_HIERARCHY)) {
+            } else if (currentLinkNode.getType().equals(Definition.TYPE_HIERARCHY)) {
                 title = TAB_HIERARCHY;
-            } else if (currentLinkNode.getType().equals(LinkType.TYPE_GROUP)) {
+            } else if (currentLinkNode.getType().equals(Definition.TYPE_GROUP)) {
                 title = TAB_GROUP;
-            } else if (currentLinkNode.getType().equals(LinkType.TYPE_CATEGORY)) {
+            } else if (currentLinkNode.getType().equals(Definition.TYPE_CATEGORY)) {
                 title = TAB_CATEGORY;
             }
             mPropertiesTabbedPane.add(title, currentLinkNode.getLinkDefTab(true));
