@@ -122,7 +122,6 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JScrollPane mEntityTreeScrollPane  = new JScrollPane();
     private JScrollPane mOverviewScrollPane  = new JScrollPane();
     private RelationshipCanvas canvas = null; //The component the user draws on
-    private final PropertiesModelPanel propertiesModelPanel = new PropertiesModelPanel(true);
     private TabRelationshipWebManager webManagerPanel = null;
     private TabOverview mTabOverview = null;
     private EntityTree mEntityTree = null;

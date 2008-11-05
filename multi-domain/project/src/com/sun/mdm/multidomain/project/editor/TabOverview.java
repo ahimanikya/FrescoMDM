@@ -84,7 +84,6 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     EditorMainApp mEditorMainApp;
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <String> mAlDomainNames = new ArrayList();;
-    private ArrayList <LinkType> mAlLinkTypes;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
     static final Image DOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
@@ -99,20 +98,20 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jLabelDomainName.setIcon(DOMAINIMAGEICON);
         jLabelDefinition.setIcon(DEFINITIONIMAGEICON);
         // load domain nodes
-        jButtonDeleteDomain.setEnabled(false);
-        jButtonDeleteLink.setEnabled(false);
+        jButtonRemoveDomain.setEnabled(false);
+        jButtonRemoveDefinition.setEnabled(false);
         ArrayList rows = loadDomains();
         TableModelDomains modelDomains = new TableModelDomains(rows);
         jTableDomains.setModel(modelDomains);
         if (rows.size() > 0) {
             jTableDomains.setRowSelectionInterval(0, 0);
-            jButtonDeleteDomain.setEnabled(true);
+            jButtonRemoveDomain.setEnabled(true);
         }
         jTableDomains.getTableHeader();
-        // load link types
-        rows = loadLinks(false);
-        TableModelDefinition modelLinks = new TableModelDefinition(rows);
-        jTableDefinitions.setModel(modelLinks);
+        // load definitions
+        rows = loadDefinitions(false);
+        TableModelDefinition modelDefinitions = new TableModelDefinition(rows);
+        jTableDefinitions.setModel(modelDefinitions);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         //jTableDefinitions.setRowSorter(sorter);
         jTableDomains.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -229,7 +228,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         return rows;
     }
     
-    private ArrayList loadLinks(boolean refresh) {
+    private ArrayList loadDefinitions(boolean refresh) {
         TableModelDefinition model = null;
         if (refresh) {
             model = (TableModelDefinition) jTableDefinitions.getModel();
@@ -239,14 +238,12 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         if (mAlDomainNodes != null && mAlDomainNodes.size() > 0) {
             DomainNode domainNode = mAlDomainNodes.get(0);
             String domainName = domainNode.getName();
-            ArrayList <LinkType> alLinkTypes = domainNode.getLinkTypes();
-            ArrayList <String> alAssociatedDomains = domainNode.getAssociatedDomains();
-            if (alLinkTypes != null &&  alLinkTypes.size() > 0) {
-                for (int i=0; alLinkTypes != null && i < alLinkTypes.size(); i++) {
-                    LinkType type = alLinkTypes.get(i);
+            ArrayList <LinkType> alDefinitions = domainNode.getLinkTypes();
+            if (alDefinitions != null &&  alDefinitions.size() > 0) {
+                for (int i=0; alDefinitions != null && i < alDefinitions.size(); i++) {
+                    LinkType type = alDefinitions.get(i);
                     String sourceDomain = type.getSourceDomain();
                     String targetDomain = type.getTargetDomain();
-                    String domainWithLinks = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
                     DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
                     rows.add(r);
                 }
@@ -268,9 +265,9 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     private void initComponents() {
 
         jLabelDomainName = new javax.swing.JLabel();
-        jButtonAddLink = new javax.swing.JButton();
-        jButtonDeleteLink = new javax.swing.JButton();
-        jButtonDeleteDomain = new javax.swing.JButton();
+        jButtonAddDefinition = new javax.swing.JButton();
+        jButtonRemoveDefinition = new javax.swing.JButton();
+        jButtonRemoveDomain = new javax.swing.JButton();
         jButtonAddDomain = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableDomains = new javax.swing.JTable();
@@ -286,32 +283,32 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jLabelDomainName.setBounds(20, 20, 170, 20);
         jLabelDomainName.getAccessibleContext().setAccessibleName("jLabelDomainName");
 
-        jButtonAddLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
-        jButtonAddLink.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
+        jButtonAddDefinition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddLink(evt);
+                onAddDefinition(evt);
             }
         });
-        add(jButtonAddLink);
-        jButtonAddLink.setBounds(200, 310, 90, 23);
+        add(jButtonAddDefinition);
+        jButtonAddDefinition.setBounds(200, 310, 90, 23);
 
-        jButtonDeleteLink.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
-        jButtonDeleteLink.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRemoveDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
+        jButtonRemoveDefinition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveLink(evt);
             }
         });
-        add(jButtonDeleteLink);
-        jButtonDeleteLink.setBounds(290, 310, 90, 23);
+        add(jButtonRemoveDefinition);
+        jButtonRemoveDefinition.setBounds(290, 310, 90, 23);
 
-        jButtonDeleteDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
-        jButtonDeleteDomain.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRemoveDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
+        jButtonRemoveDomain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveDomain(evt);
             }
         });
-        add(jButtonDeleteDomain);
-        jButtonDeleteDomain.setBounds(290, 160, 90, 23);
+        add(jButtonRemoveDomain);
+        jButtonRemoveDomain.setBounds(290, 160, 90, 23);
 
         jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
@@ -384,19 +381,19 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onR
                     onDefinitionSelected();
                 } else {
                     mEditorMainPanel.loadLinkProperties(null);
-                    this.jButtonDeleteLink.setEnabled(false);
+                    this.jButtonRemoveDefinition.setEnabled(false);
                 }
                 mEditorMainApp.enableSaveAction(true);
             }
 }//GEN-LAST:event_onRemoveLink
 
-private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddLink
+private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                final AddLinkDialog dialog = new AddLinkDialog(mAlDomainNames);
+                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosed(java.awt.event.WindowEvent e) {
-                        if (dialog.getReturnStatus() == AddLinkDialog.RET_OK) {
+                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
                             String type = dialog.getLinkType();
                             String linkName = dialog.getLinkName();
                             String sourceDomain = dialog.getSourceDomain();
@@ -422,7 +419,7 @@ private void onAddLink(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddL
                 dialog.setVisible(true);
             }
         });
-}//GEN-LAST:event_onAddLink
+}//GEN-LAST:event_onAddDefinition
 
 private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveDomain
     TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
@@ -445,12 +442,12 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         }
         mAlDomainNodes = mEditorMainApp.getDomainNodes();
         loadDomains();
-        loadLinks(true);
+        loadDefinitions(true);
         if (model.getRowCount() > 0) {
             jTableDomains.setRowSelectionInterval(0, 0);
             onDomainSelected();
         } else {
-            this.jButtonDeleteDomain.setEnabled(false);       
+            this.jButtonRemoveDomain.setEnabled(false);       
         }
         mEditorMainApp.enableSaveAction(true);
     }
@@ -465,8 +462,8 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
 
     private void onDomainSelected() {
         this.jTableDefinitions.clearSelection();
-        this.jButtonDeleteLink.setEnabled(false);
-        this.jButtonDeleteDomain.setEnabled(true);       
+        this.jButtonRemoveDefinition.setEnabled(false);
+        this.jButtonRemoveDomain.setEnabled(true);       
         int iSelectedRow = jTableDomains.getSelectedRow();
         TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
         String domainName = (String) model.getValueAt(iSelectedRow,  model.iColDomainName);
@@ -477,23 +474,12 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
         
         //get properties panel from domainNode and present it
         mEditorMainPanel.loadDomainProperties(domainNode);
-        
-        mAlLinkTypes = domainNode.getLinkTypes();
-        if (mAlLinkTypes == null ||  mAlLinkTypes.size() == 0) {
-        } else {
-            for (int i=0; mAlLinkTypes != null && i < mAlLinkTypes.size(); i++) {
-                LinkType type = mAlLinkTypes.get(i);
-                String sourceDomain = type.getSourceDomain();
-                String targetDomain = type.getTargetDomain();
-                String domainWithLinks = (domainName.equals(sourceDomain)) ? targetDomain : sourceDomain;
-           }
-        }
     }
     
     private void onDefinitionSelected() {
         this.jTableDomains.clearSelection();
-        this.jButtonDeleteDomain.setEnabled(false);
-        this.jButtonDeleteLink.setEnabled(true);
+        this.jButtonRemoveDomain.setEnabled(false);
+        this.jButtonRemoveDefinition.setEnabled(true);
         int iSelectedRow = jTableDefinitions.getSelectedRow();
         TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
         String linkType = (String) model.getValueAt(iSelectedRow,  model.iColLinkType);
@@ -505,10 +491,10 @@ private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
      }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddDefinition;
     private javax.swing.JButton jButtonAddDomain;
-    private javax.swing.JButton jButtonAddLink;
-    private javax.swing.JButton jButtonDeleteDomain;
-    private javax.swing.JButton jButtonDeleteLink;
+    private javax.swing.JButton jButtonRemoveDefinition;
+    private javax.swing.JButton jButtonRemoveDomain;
     private javax.swing.JLabel jLabelDefinition;
     private javax.swing.JLabel jLabelDomainName;
     private javax.swing.JScrollPane jScrollPane1;

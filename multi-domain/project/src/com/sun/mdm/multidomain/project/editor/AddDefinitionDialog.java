@@ -29,7 +29,7 @@ import java.util.ArrayList;
  *
  * @author  kkao
  */
-public class AddLinkDialog extends javax.swing.JDialog {
+public class AddDefinitionDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
@@ -38,7 +38,7 @@ public class AddLinkDialog extends javax.swing.JDialog {
     public static final String HIERARCHY = "hierarchy";
 
     /** Creates new form AddLinkTypelDialog */
-    public AddLinkDialog(ArrayList alDomains) {
+    public AddDefinitionDialog(ArrayList alDomains) {
         super();
         initComponents();
         jComboBoxLinkTypes.insertItemAt(RELATIONSHIP, 0);
@@ -102,28 +102,28 @@ public class AddLinkDialog extends javax.swing.JDialog {
         jLabelTargetDomain = new javax.swing.JLabel();
         jComboBoxTargetDomains = new javax.swing.JComboBox();
 
-        setTitle(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "TITLE_Add_Link")); // NOI18N
+        setTitle(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "TITLE_Add_Definition")); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
-        okButton.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_OK")); // NOI18N
+        okButton.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_OK")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
-        cancelButton.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Cancel")); // NOI18N
+        cancelButton.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_Cancel")); // NOI18N
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
-        jLabelType.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Link_Type_Colon")); // NOI18N
+        jLabelType.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_Type_Colon")); // NOI18N
 
         jComboBoxLinkTypes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -131,7 +131,7 @@ public class AddLinkDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabelName.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Name")); // NOI18N
+        jLabelName.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_Name")); // NOI18N
 
         jTextFieldName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -139,7 +139,7 @@ public class AddLinkDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabelSourceDomain.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Source_Domain_Colon")); // NOI18N
+        jLabelSourceDomain.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_Source_Domain_Colon")); // NOI18N
 
         jComboBoxSourceDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -147,7 +147,7 @@ public class AddLinkDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabelTargetDomain.setText(org.openide.util.NbBundle.getMessage(AddLinkDialog.class, "LBL_Target_Domain_Colon")); // NOI18N
+        jLabelTargetDomain.setText(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "LBL_Target_Domain_Colon")); // NOI18N
 
         jComboBoxTargetDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -161,32 +161,34 @@ public class AddLinkDialog extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(layout.createSequentialGroup()
-                        .add(okButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(cancelButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(jLabelTargetDomain, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(jLabelSourceDomain, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(jLabelName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(jLabelType, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxTargetDomains, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxSourceDomains, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxLinkTypes, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(layout.createSequentialGroup()
+                        .add(okButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(cancelButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxTargetDomains, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxSourceDomains, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jTextFieldName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jComboBoxLinkTypes, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jComboBoxLinkTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxLinkTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jTextFieldName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -201,13 +203,13 @@ public class AddLinkDialog extends javax.swing.JDialog {
                     .add(jLabelTargetDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(okButton)
-                    .add(cancelButton))
+                    .add(cancelButton)
+                    .add(okButton))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-280)/2, (screenSize.height-205)/2, 280, 205);
+        setBounds((screenSize.width-295)/2, (screenSize.height-205)/2, 295, 205);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
