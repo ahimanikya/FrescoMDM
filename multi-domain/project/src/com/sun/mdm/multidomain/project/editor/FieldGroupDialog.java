@@ -24,7 +24,7 @@ public class FieldGroupDialog extends javax.swing.JDialog {
     private FieldGroup mGroup =  null;
     /** Creates new form FieldGroupDialog */
     public FieldGroupDialog(FieldGroup group, DomainNode domainNode) {
-        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), false);
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mGroup = group;
         mDomainNode = domainNode;
         //super(parent, modal);
