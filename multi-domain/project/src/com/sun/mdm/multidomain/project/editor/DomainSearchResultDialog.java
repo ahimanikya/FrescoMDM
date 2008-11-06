@@ -11,6 +11,7 @@ import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -60,14 +61,15 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                 int selectedRow = jTableFieldGroup.getSelectedRow();
                 FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
                 TableModelField fieldModel = new TableModelField(fieldGroup);
-                 jTableField.setModel(fieldModel);
+                jTableField.setModel(fieldModel);
+                jBtnAddField.setEnabled(true);
+                jBtnRemoveGroup.setEnabled(true);
 
             }
         });
         
         ListSelectionModel rowSM = jTableFieldGroup.getSelectionModel();
         rowSM.addListSelectionListener(new ListSelectionListener() {
-
             public void valueChanged(ListSelectionEvent e) {
                 //retreiveFieldProperties();
                 TableModelFieldGroup FieldGropModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
@@ -82,7 +84,13 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
             }
         });
 
-        
+        this.jTableField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveField.setEnabled(true);
+
+            }
+        });
+        jTxtResultName.requestFocus();
     }
     
 
@@ -185,6 +193,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         });
 
         jBtnRemoveGroup.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveGroup.setEnabled(false);
         jBtnRemoveGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveGroup(evt);
@@ -198,13 +207,13 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(65, 65, 65)
+                        .add(28, 28, 28)
                         .add(jBtnAddGroup)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 14, Short.MAX_VALUE)
-                        .add(jBtnRemoveGroup)))
+                        .add(18, 18, 18)
+                        .add(jBtnRemoveGroup))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 180, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -232,6 +241,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jTableField.columnModel.title0")); // NOI18N
 
         jBtnRemoveField.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveField.setEnabled(false);
         jBtnRemoveField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveField(evt);
@@ -239,6 +249,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         });
 
         jBtnAddField.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_Add")); // NOI18N
+        jBtnAddField.setEnabled(false);
         jBtnAddField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddField(evt);
@@ -250,24 +261,27 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .add(jBtnAddField)
+                .addContainerGap(42, Short.MAX_VALUE)
+                .add(jBtnAddField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jBtnRemoveField)
-                .add(18, 18, 18))
+                .add(jBtnRemoveField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 159, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(13, Short.MAX_VALUE)))
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
+
+        jPanel2Layout.linkSize(new java.awt.Component[] {jBtnAddField, jBtnRemoveField}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(128, Short.MAX_VALUE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnRemoveField)
-                    .add(jBtnAddField))
+                    .add(jBtnAddField)
+                    .add(jBtnRemoveField))
                 .addContainerGap())
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel2Layout.createSequentialGroup()
@@ -304,24 +318,26 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelMaxItems))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jTxtResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jTxtResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 199, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                                 .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerMaxItems)
                                 .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))))
                     .add(layout.createSequentialGroup()
                         .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 313, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(jBtnOK)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jBtnCancel)))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(315, Short.MAX_VALUE)
+                .add(jBtnOK)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jBtnCancel)
+                .add(31, 31, 31))
         );
+
+        layout.linkSize(new java.awt.Component[] {jBtnCancel, jBtnOK}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
@@ -339,8 +355,8 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                     .add(jSpinnerMaxItems, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jBtnOK)
@@ -349,7 +365,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-477)/2, (screenSize.height-400)/2, 477, 400);
+        setBounds((screenSize.width-490)/2, (screenSize.height-400)/2, 490, 400);
     }// </editor-fold>//GEN-END:initComponents
 
 private void jTxtResultNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtResultNameActionPerformed
@@ -430,14 +446,14 @@ private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 }//GEN-LAST:event_onRemoveField
 
 private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddField
-    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+    TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
+    TableModelField fieldModel = (TableModelField) jTableField.getModel();
+    int selectedRow = jTableFieldGroup.getSelectedRow();
+    FieldGroup group = fieldGroupModel.getRow(selectedRow);
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), group);
     entityDlg.setVisible(true);
     if (entityDlg.isSelected()) {
         if (entityDlg.getFieldList().size() > 0) {
-            TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
-            TableModelField fieldModel = (TableModelField) jTableField.getModel();
-            int selectedRow = jTableFieldGroup.getSelectedRow();
-            FieldGroup group = fieldGroupModel.getRow(selectedRow);
             for (String fieldName : entityDlg.getFieldList()) {
                 FieldGroup.FieldRef fieldRef = group.createFieldRef(fieldName);
                 fieldModel.addRow(fieldModel.getRowCount(), fieldRef);

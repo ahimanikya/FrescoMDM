@@ -39,10 +39,21 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
                 int selectedRow = jTableFieldGroup.getSelectedRow();
                 FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
                 TableModelField fieldModel = new TableModelField(fieldGroup);
-                 jTableField.setModel(fieldModel);
+                jTableField.setModel(fieldModel);
+                jBtnAddField.setEnabled(true);
+                jBtnRemoveGroup.setEnabled(true);
 
             }
         });
+        
+        jTableField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveField.setEnabled(true);
+
+            }
+        });
+        
+        jTxtRecordDetail.requestFocus();
         
     }
     
@@ -63,7 +74,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(mRecordDetail.getFieldGroups());
         jTableFieldGroup.setModel(fieldGroupModel);
         
-        jTableFieldGroup.setRowSelectionInterval(0, 0);
+        //jTableFieldGroup.setRowSelectionInterval(0, 0);
         TableModelField fieldModel = new TableModelField(mRecordDetail.getFieldGroups().get(0));
         this.jTableField.setModel(fieldModel);
         
@@ -98,6 +109,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         jBtnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_DOMAIN_RECORD_DETAIL_PROPERTIES")); // NOI18N
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD")); // NOI18N
 
@@ -122,6 +134,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         });
 
         jBtnRemoveGroup.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveGroup.setEnabled(false);
         jBtnRemoveGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveGroup(evt);
@@ -175,6 +188,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "DomainRecordDetailDialog.jTableField.columnModel.title0")); // NOI18N
 
         jBtnAddField.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_Add")); // NOI18N
+        jBtnAddField.setEnabled(false);
         jBtnAddField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddField(evt);
@@ -182,6 +196,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         });
 
         jBtnRemoveField.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveField.setEnabled(false);
         jBtnRemoveField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveField(evt);

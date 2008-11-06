@@ -374,7 +374,7 @@ private void enableSave() {
 
 private void onAddHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddHighLightField
 // TODO add your handling code here:
-   EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+   EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), mDomain.getRecordID().getFieldGroup());
     entityDlg.setVisible(true);
     if (entityDlg.isSelected()) {
         if (entityDlg.getFieldList().size() > 0) {

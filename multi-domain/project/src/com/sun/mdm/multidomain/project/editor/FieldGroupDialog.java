@@ -187,7 +187,7 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         return bModified;
     }
 private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnAddField
-    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), mGroup);
     entityDlg.setVisible(true);
     if (entityDlg.isSelected()) {
         if (entityDlg.getFieldList().size() > 0) {

@@ -6,9 +6,13 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
+import com.sun.mdm.multidomain.parser.FieldGroup;
 import java.util.ArrayList;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -23,11 +27,14 @@ public class EntityTreeDialog extends javax.swing.JDialog {
     private boolean mSelected = false;
     
     private ArrayList<String> fieldList = new ArrayList<String>();
+    
+    private FieldGroup mFieldGroup = null;
             
     /** Creates new form EntityTreeDialog */
-    public EntityTreeDialog( EntityTree entityTree) {
+    public EntityTreeDialog( EntityTree entityTree, FieldGroup fieldGroup) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mEntityTree = entityTree;
+        mFieldGroup = fieldGroup;
         initComponents();
         jSPEntityTree.setViewportView(mEntityTree);
         this.jTextFieldDomain.setText(mEntityTree.getRootNode().getName());
@@ -42,8 +49,16 @@ public class EntityTreeDialog extends javax.swing.JDialog {
                             EntityNode selectedNode = (EntityNode) hitPath.getLastPathComponent();
                             if (selectedNode != null) {
                                 String ePath = setTargetFieldName(selectedNode);
-                                fieldList.add(ePath);
-                                mSelected = true;
+                                if (mFieldGroup.isFieldAdded(ePath)) {
+                                    String warningMsg = NbBundle.getMessage(TabDomainSearch.class, "MSG_ERROR_DELETING_SEARCH_DETAIL");
+                                    NotifyDescriptor errorNotify = new NotifyDescriptor.Message(
+                                            warningMsg,
+                                            NotifyDescriptor.ERROR_MESSAGE);
+                                    DialogDisplayer.getDefault().notify(errorNotify);
+                                } else {
+                                    fieldList.add(ePath);
+                                    mSelected = true;
+                                }
                                 //onBtnOK(null);
                             } 
                         }

@@ -34,6 +34,15 @@ public class FieldGroup {
         }
     }
     
+    public boolean isFieldAdded(String fieldName) {
+        for (FieldRef field : mFieldRefs) {
+            if (field.getFieldName().equalsIgnoreCase(fieldName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public FieldRef createFieldRef(String fieldName) {
         return new FieldRef(fieldName);
         

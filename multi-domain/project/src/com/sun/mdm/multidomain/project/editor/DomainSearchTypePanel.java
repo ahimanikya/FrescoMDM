@@ -66,10 +66,19 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                 int selectedRow = jTableFieldGroup.getSelectedRow();
                 FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
                 TableModelField fieldModel = new TableModelField(fieldGroup);
-                 jTableFields.setModel(fieldModel);
+                jTableFields.setModel(fieldModel);
+                jBtnAddField.setEnabled(true);
+                jBtnRemoveFieldGroup.setEnabled(true);
 
             }
         });
+        
+        this.jTableFields.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveField.setEnabled(true);
+
+            }
+        });        
         
         ListSelectionModel rowSM = jTableFieldGroup.getSelectionModel();
         rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -90,16 +99,6 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
             
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 bRefreshSearchResult = true;
-                /**
-                for (SearchDetail detail : mSearchResultList) {
-                        if (jCBSearchResultList.getSelectedItem().equals(detail.getDisplayName())) {
-                            mSearchType.setScreenResultID(detail.getSearchResultID());
-                            
-                            break;
-                        }
-                    }
-                 */ 
-
 
             }
         });
@@ -107,10 +106,19 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         this.jCBQueryBuilder.addItemListener(new java.awt.event.ItemListener() {           
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 bRefreshQueryBuilder = true;
- 
+           }
+        });
+        
+        
+        jTableQueryParameter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemoveParameter.setEnabled(true);
 
             }
-        });
+        });        
+        
+        jTxtScreenTitle.requestFocus();
+        
     }
 
     
@@ -136,6 +144,8 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         TableModelParameter paramModel = new TableModelParameter(new ArrayList<Parameter>());
         this.jTableQueryParameter.setModel(paramModel);
         bRefreshSearchResult = true;
+        jBtnAddField.setEnabled(false);
+        
 
     }
 
@@ -162,10 +172,9 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(mSearchType.getFieldGroups());
         jTableFieldGroup.setModel(fieldGroupModel);
         
-        jTableFieldGroup.setRowSelectionInterval(0, 0);
+        //jTableFieldGroup.setRowSelectionInterval(0, 0);
         TableModelField fieldModel = new TableModelField(mSearchType.getFieldGroups().get(0));
         this.jTableFields.setModel(fieldModel);
-        //jTableFields.setDropEnabled(true);
                 
                 
  
@@ -234,6 +243,8 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         jBtnAddParameter = new javax.swing.JButton();
         jBtnRemoveParameter = new javax.swing.JButton();
 
+        setTitle(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_PAGE_PROPERTIES")); // NOI18N
+
         jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jLabel1.text")); // NOI18N
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD")); // NOI18N
@@ -272,6 +283,8 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jTableFieldGroup.columnModel.title0")); // NOI18N
 
         jBtnAddFieldGroup.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Add")); // NOI18N
+        jBtnAddFieldGroup.setMaximumSize(new java.awt.Dimension(71, 23));
+        jBtnAddFieldGroup.setPreferredSize(new java.awt.Dimension(71, 23));
         jBtnAddFieldGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddFieldGroup(evt);
@@ -279,6 +292,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         });
 
         jBtnRemoveFieldGroup.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveFieldGroup.setEnabled(false);
         jBtnRemoveFieldGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveFieldGroup(evt);
@@ -289,13 +303,12 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(52, 52, 52)
-                .add(jBtnAddFieldGroup)
-                .add(18, 18, 18)
-                .add(jBtnRemoveFieldGroup)
-                .addContainerGap(12, Short.MAX_VALUE))
+            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(88, Short.MAX_VALUE)
+                .add(jBtnAddFieldGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jBtnRemoveFieldGroup))
         );
 
         jPanel1Layout.linkSize(new java.awt.Component[] {jBtnAddFieldGroup, jBtnRemoveFieldGroup}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -306,8 +319,8 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnAddFieldGroup)
-                    .add(jBtnRemoveFieldGroup)))
+                    .add(jBtnRemoveFieldGroup)
+                    .add(jBtnAddFieldGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jPanel2.border.title"))); // NOI18N
@@ -324,6 +337,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         jTableFields.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jTableFields.columnModel.title0")); // NOI18N
 
         jBtnRemoveField.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveField.setEnabled(false);
         jBtnRemoveField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveField(evt);
@@ -331,6 +345,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         });
 
         jBtnAddField.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Add")); // NOI18N
+        jBtnAddField.setEnabled(false);
         jBtnAddField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onBtnAddField(evt);
@@ -394,6 +409,8 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         });
 
         jBtnRemoveParameter.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveParameter.setEnabled(false);
+        jBtnRemoveParameter.setPreferredSize(new java.awt.Dimension(63, 23));
         jBtnRemoveParameter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveParameter(evt);
@@ -405,11 +422,11 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(259, Short.MAX_VALUE)
-                .add(jBtnAddParameter)
-                .add(48, 48, 48)
-                .add(jBtnRemoveParameter)
-                .add(43, 43, 43))
+                .addContainerGap(274, Short.MAX_VALUE)
+                .add(jBtnAddParameter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(jBtnRemoveParameter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -422,6 +439,9 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                         .add(jCheckBoxWeighted)))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel3Layout.linkSize(new java.awt.Component[] {jBtnAddParameter, jBtnRemoveParameter}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
@@ -435,7 +455,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnAddParameter)
-                    .add(jBtnRemoveParameter)))
+                    .add(jBtnRemoveParameter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -447,14 +467,9 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(jBtnOK)
-                        .add(44, 44, 44)
+                        .add(18, 18, 18)
                         .add(jBtnCancel)
-                        .add(19, 19, 19))
-                    .add(layout.createSequentialGroup()
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 28, Short.MAX_VALUE)
-                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(2, 2, 2))
+                        .addContainerGap())
                     .add(layout.createSequentialGroup()
                         .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(3, 3, 3))
@@ -474,8 +489,16 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                         .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 74, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(21, 21, 21)
                         .add(jCBSearchResultList, 0, 250, Short.MAX_VALUE)
-                        .add(146, 146, 146))))
+                        .add(146, 146, 146))
+                    .add(layout.createSequentialGroup()
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 12, Short.MAX_VALUE)
+                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(2, 2, 2))))
         );
+
+        layout.linkSize(new java.awt.Component[] {jBtnCancel, jBtnOK}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
@@ -495,14 +518,15 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                     .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(33, 33, 33)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, 0, 202, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 202, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jBtnOK)
-                    .add(jBtnCancel)))
+                    .add(jBtnCancel))
+                .addContainerGap())
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -659,14 +683,14 @@ private void onRemoveParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
 
 private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnAddField
 // TODO add your handling code here:
-    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree());
+    TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
+    TableModelField fieldModel = (TableModelField) jTableFields.getModel();
+    int selectedRow = jTableFieldGroup.getSelectedRow();
+    FieldGroup group = fieldGroupModel.getRow(selectedRow);
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), group);
     entityDlg.setVisible(true);
     if (entityDlg.isSelected()) {
         if (entityDlg.getFieldList().size() > 0) {
-            TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
-            TableModelField fieldModel = (TableModelField) jTableFields.getModel();
-            int selectedRow = jTableFieldGroup.getSelectedRow();
-            FieldGroup group = fieldGroupModel.getRow(selectedRow);
             for (String fieldName : entityDlg.getFieldList()) {
                 FieldGroup.FieldRef fieldRef = group.createFieldRef(fieldName);
                 fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
