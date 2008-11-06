@@ -356,6 +356,16 @@ public class EditorMainApp {
         }
         return removed;
     }
+    
+    /**
+     * 
+     * @return ArrayList <String> PluginList
+     */
+    public ArrayList <String> getPluginList() {
+        ArrayList <String> al = new ArrayList();
+        al.add("DefaultPlugin");
+        return al;
+    }
 
     /**
      * Get saved object.xml for the domain

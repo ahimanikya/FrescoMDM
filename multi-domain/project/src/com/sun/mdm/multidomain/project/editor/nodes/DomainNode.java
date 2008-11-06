@@ -67,7 +67,7 @@ public class DomainNode extends AbstractNode {
         );
     ArrayList <MiNodeDef> alMiNodeDefs = new ArrayList();
     private ArrayList <String> alAssociatedDomains = new ArrayList();
-    private ArrayList <Definition> alLinkTypes = new ArrayList();
+    private ArrayList <Definition> alDefinitions = new ArrayList();
     //TabDomainProperties mTabDomainProperties = null;
     EditorMainApp mEditorMainApp;
     EntityTree mEntityTree = null;
@@ -105,9 +105,9 @@ public class DomainNode extends AbstractNode {
      * 
      * @param domainName
      * @param selectedDomain
-     * @param ArrayList <LinkType> alLinkTypes
+     * @param ArrayList <Definition> alDefinitions
      */
-    public DomainNode(EditorMainApp editorMainApp, String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <Definition> alLinkTypes) {
+    public DomainNode(EditorMainApp editorMainApp, String domainName, File selectedDomain, ArrayList <String> alAssociatedDomains, ArrayList <Definition> alDefinitions) {
         super(Children.LEAF);
         setName(domainName);
         mEditorMainApp = editorMainApp;
@@ -116,7 +116,7 @@ public class DomainNode extends AbstractNode {
         
         loadMiObjectNodes();
         loadMiQueryBuilder();
-        loadLinkTypes(domainName, alLinkTypes);
+        loadDefinitionss(domainName, alDefinitions);
         addNodeListener(new NodeAdapter() {
             @Override
             public void nodeDestroyed(NodeEvent ev) {
@@ -249,27 +249,27 @@ public class DomainNode extends AbstractNode {
         return node.getFields();
     }
     
-    public void addLinkType(String LinkTypeName, String sourceDomainName, String targetDomainName) {
-        //updateLinkTypes
+    public void addDefinition(String definitionName, String sourceDomainName, String targetDomainName) {
+        //updateDefinitions
     }
     
-    public void removeLinkType(String LinkTypeName, String sourceDomainName, String targetDomainName) {
-        //updateLinkTypes
+    public void removeDefinition(String definitionName, String sourceDomainName, String targetDomainName) {
+        //updateDefinitions
     }
     
     public ArrayList getAssociatedDomains() {
         return alAssociatedDomains;
     }
     
-    public ArrayList getLinkTypes() {
-        return alLinkTypes;
+    public ArrayList getDefinitions() {
+        return alDefinitions;
     }
     
-    /** Update alLinkTypes and mTabRelationshipsPerDomain
+    /** Update alDefinitions and mTabRelationshipsPerDomain
      * 
      */
-    public void loadLinkTypes(String domainName, ArrayList <Definition> alLinkTypes) {
-        this.alLinkTypes = alLinkTypes;
+    public void loadDefinitionss(String domainName, ArrayList <Definition> alDefinitions) {
+        this.alDefinitions = alDefinitions;
     }
     
     public EntityTree getEntityTree() {

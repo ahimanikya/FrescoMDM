@@ -38,7 +38,7 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
     public static final String HIERARCHY = "hierarchy";
 
     /** Creates new form AddDefinitionDialog */
-    public AddDefinitionDialog(ArrayList alDomains) {
+    public AddDefinitionDialog(ArrayList <String> alDomains) {
         super();
         initComponents();
         jComboBoxDefinitions.insertItemAt(RELATIONSHIP, 0);
@@ -50,7 +50,7 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
         enableBtnOK();
     }
 
-    public void setDomains(ArrayList alDomains) {
+    public void setDomains(ArrayList <String> alDomains) {
         if (alDomains != null && alDomains.size() > 0) {
             for (int i=0; alDomains != null && i < alDomains.size(); i++) {
                 jComboBoxSourceDomains.insertItemAt(alDomains.get(i), i);

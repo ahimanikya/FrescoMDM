@@ -100,16 +100,23 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         // load domain nodes
         jButtonRemoveDomain.setEnabled(false);
         jButtonRemoveDefinition.setEnabled(false);
+        
+        // load domains
         ArrayList rows = loadDomains();
         TableModelDomains modelDomains = new TableModelDomains(rows);
         jTableDomains.setModel(modelDomains);
+        DomainNode domainNode = null;
         if (rows.size() > 0) {
             jTableDomains.setRowSelectionInterval(0, 0);
             jButtonRemoveDomain.setEnabled(true);
+            domainNode = mAlDomainNodes.get(0);
         }
         jTableDomains.getTableHeader();
-        // load definitions
+        
+        // load all definitions
         rows = loadDefinitions(false);
+        // load definitions per domain
+        //rows = loadDefinitionsByDomain(domainNode, false);
         TableModelDefinition modelDefinitions = new TableModelDefinition(rows);
         jTableDefinitions.setModel(modelDefinitions);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
@@ -228,14 +235,14 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         return rows;
     }
     
-    private ArrayList loadDefinitions(boolean refresh) {
+    private ArrayList <DefinitionRow> loadDefinitions(boolean refresh) {
         TableModelDefinition model = null;
         if (refresh) {
             model = (TableModelDefinition) jTableDefinitions.getModel();
             jTableDefinitions.removeAll();
         }
         ArrayList <DefinitionNode> alDefinitionNodes = mEditorMainApp.getDefinitionNodes();
-        ArrayList rows = new ArrayList();
+        ArrayList <DefinitionRow> rows = new ArrayList();
         for (int i=0; alDefinitionNodes != null && i<alDefinitionNodes.size(); i++) {
             DefinitionNode definitionNode = alDefinitionNodes.get(i);
             Definition type = definitionNode.getDefinition();
@@ -249,6 +256,34 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         }
         return rows;
     }
+    
+    private ArrayList <DefinitionRow> loadDefinitionsByDomain(DomainNode domainNode, boolean refresh) {
+        TableModelDefinition model = null;
+        if (refresh) {
+            model = (TableModelDefinition) jTableDefinitions.getModel();
+            model.removeAll();
+            jTableDefinitions.removeAll();
+        }
+        ArrayList <DefinitionRow> rows = new ArrayList();
+        if (domainNode != null) {
+            ArrayList <Definition> alDefinitions = domainNode.getDefinitions();
+            for (int i=0; alDefinitions != null && i<alDefinitions.size(); i++) {
+                Definition type = alDefinitions.get(i);
+                String sourceDomain = type.getSourceDomain();
+                String targetDomain = type.getTargetDomain();
+                DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
+                rows.add(r);
+                if (model != null) {
+                    model.addRow(i, r);
+                }
+            }
+        }
+        if (refresh) {
+            model.fireTableDataChanged();
+        }
+        return rows;
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -396,8 +431,8 @@ TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
             mEditorMainApp.deleteDomain(domainName);
             model.removeRow(idx);
         }
-        mAlDomainNodes = mEditorMainApp.getDomainNodes();
         loadDomains();
+        // load all definitions
         loadDefinitions(true);
         if (model.getRowCount() > 0) {
             jTableDomains.setRowSelectionInterval(0, 0);
@@ -462,8 +497,11 @@ private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                                 // add a new row
                                 TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
                                 DefinitionRow r = new DefinitionRow(definitionType.getType(), definitionType.getName(), definitionType.getSourceDomain(), definitionType.getTargetDomain());
-                                model.addRow(model.getRowCount(), r);
+                                int idx = model.getRowCount();
+                                model.addRow(idx, r);
                                 model.fireTableDataChanged();
+                                jTableDefinitions.setRowSelectionInterval(idx, idx);
+                                onDefinitionSelected();
                                 mEditorMainApp.enableSaveAction(true);
                             }
                         }
@@ -529,6 +567,9 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         String domainName = (String) model.getValueAt(iSelectedRow,  model.iColDomainName);
         
         DomainNode domainNode = mMapDomainNodes.get(domainName);
+        
+        // load definitions per domain
+        //loadDefinitionsByDomain(domainNode, true);
         
         mEditorMainPanel.loadDomainEntityTree(domainNode);
         
@@ -791,6 +832,10 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
             }
         }
         
+        public void removeAll() {
+            rows.clear();
+        }
+        
         public void removeRow(int index) {
             rows.remove(index);
             this.fireTableRowsDeleted(index, index);
@@ -812,6 +857,8 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         if (bNew) {
             this.mAlDomainNodes.add(node);
             this.mMapDomainNodes.put(domainName, node);
+            this.mAlDomainNames.add(domainName);
+
             // add a new row
             TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
             DomainRow r = new DomainRow(domainName);
