@@ -40,10 +40,18 @@ public class MultiDomainSearchOption {
     public MultiDomainSearchOption(){        
     }
     
+    /**
+     * Get ePathArrayList.
+     * @return ePathArrayList
+     */
     public EPathArrayList getEPathArrayList(){
         return ePathArrayList;
     }
     
+    /**
+     * Set ePathArrayList.
+     * @param ePathArrayList ePathArrayList.
+     */
     public void setEPathArrayList(EPathArrayList ePathArrayList){
         this.ePathArrayList = ePathArrayList;
     }

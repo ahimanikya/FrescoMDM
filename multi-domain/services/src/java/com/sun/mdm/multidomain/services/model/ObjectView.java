@@ -32,9 +32,18 @@ public class ObjectView {
     private String EUID;
     private String highLight;
    
+    /**
+     * Create an instance of ObjectView.
+     */
     public ObjectView(){
     }
     
+    /**
+     * Create an instance of ObjectView.
+     * @param name Object name.
+     * @param euid Object EUID.
+     * @param highLight Summary of Object attributes.
+     */
     public ObjectView(String name, String euid, String highLight) {
         this.name = name;
         this.EUID = euid;

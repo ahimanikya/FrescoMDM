@@ -36,14 +36,28 @@ public class ObjectRecord extends AttributeList {
     private String name;
     private String EUID;
               
+    /**
+     * Create an instance of ObjectRecord.
+     */
     public ObjectRecord(){
     } 
     
+    /**
+     * Create an instance of ObjectRecord.
+     * @param name Object name.
+     * @param euid Object EUID.
+     */
     public ObjectRecord(String name, String euid){
         this.name = name;
         this.EUID = euid;
     }
     
+    /**
+     * Create an instance of ObjectRecord.
+     * @param name Object name.
+     * @param euid Object EUID.
+     * @param attributes List of Attribute.
+     */
     public ObjectRecord(String name, String euid, List<Attribute> attributes){
         super(attributes);
         this.name = name;

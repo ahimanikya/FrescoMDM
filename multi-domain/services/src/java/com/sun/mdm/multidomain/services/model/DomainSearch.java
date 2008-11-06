@@ -44,28 +44,53 @@ public class DomainSearch extends AttributeList {
      * For simple serach on local Id and syetem code, systemCode = "SystemA", localId="000-000-00001"
      */
     
+    /**
+     * Create an instance of DomainSearch.
+     */
     public DomainSearch() {
         super();
     }
     
+    /**
+     * Create an instance of DomainSearch.
+     * @param name Domain name.
+     * @param type Search type.
+     * @param attributes List of Attribute.
+     */
     public DomainSearch(String name, String type, List<Attribute> attributes) {
         super(attributes);
         this.name = name;
         this.type = type;
     }
     
+    /**
+     * Set domain name.
+     * @param name Domain name.
+     */
     public void setName(String name) {
         this.name = name;
     }
     
+    /**
+     * Get domain name.
+     * @return String Domain name.
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     * Set domain search type.
+     * @param type Search type.
+     */
     public void setType(String type) {
         this.type = type;
     }
     
+    /**
+     * Get domain search type.
+     * @return String Search type.
+     */
     public String getType() {
         return type;
     }            
