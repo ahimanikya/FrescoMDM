@@ -63,7 +63,8 @@ public class GroupManager {
     public GroupManager(MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) 
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
-    	this.multiDomainMetaService = multiDomainMetaService;        
+    	this.multiDomainMetaService = multiDomainMetaService;  
+        logger.info(localizer.x("SVC006: GroupManager initialization completed."));                
     }
     
     /**

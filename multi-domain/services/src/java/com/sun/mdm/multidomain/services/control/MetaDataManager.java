@@ -31,8 +31,8 @@ import java.util.Date;
 
 import net.java.hulp.i18n.Logger;
 
-
 import com.sun.mdm.index.master.SystemDefinition;
+import com.sun.mdm.index.master.ProcessingException;
 
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.services.model.Domain;
@@ -62,20 +62,22 @@ public class MetaDataManager {
      */
     public MetaDataManager (MultiDomainMetaService multiDomainMetaService) {
         this.multiDomainMetaService = multiDomainMetaService;
+        logger.info(localizer.x("SVC004: MetaDataManager initialization completed."));
     }
     
     /**
      * Get a list of domains in name.
      * @return List<Domain> List of Domain.
-     * @exception ServiceException
+     * @exception ServiceException Thrown if an error occurs during processing.
      */
     public List<Domain> getDomains() throws ServiceException {
         
         List<Domain> domains = new ArrayList<Domain>();
-        /* TBD
+        //TBD
+        /*
         try {
-            String[] domainStrs = multiDomainMetaService.getDomains();
-            for(String domain : domainStrs) {
+            String[] domainNames = multiDomainMetaService.getDomains();
+            for(String domain : domainNames) {
                 domains.add(new Domain(domain));
             }
         } catch(ProcessingException pex) {
@@ -98,8 +100,8 @@ public class MetaDataManager {
          
     /**
      * Get system information in string.
-     * @return system info
-     * @throws ServiceException
+     * @return String System info
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
      public String getMuliDomainSystemInfo() throws ServiceException {
     	// demo data    	
@@ -108,9 +110,9 @@ public class MetaDataManager {
         
     /**
      * Get a list of source system definition for the given domain.
-     * @param domain
-     * @return a list of SystemDefinition
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return List<SystemDefinition> List of SystemDefinition
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<SystemDefinition> getDomainSystemDefinition(String domain) throws ServiceException {
     	// demo data
@@ -142,12 +144,13 @@ public class MetaDataManager {
     
     /**
      * Get a list of codes for the given domain.
-     * @param domain
-     * @param module
-     * @return a list of codes
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @param module Module name.
+     * @return List<String> List of codes
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<String> getCodes(String domain, String module) throws ServiceException {
+        //TBD multidomain service API needs to provide.        
     	// SUFFIX,TITLE,GENDER,MSTATUS,RACE,ETHNIC,RELIGION,
         // LANGUAGE,NATIONAL,CITIZEN,ADDRTYPE,PHONETYPE    	
     	// demo data    	
@@ -157,11 +160,12 @@ public class MetaDataManager {
     
     /**
      * Get a map of codes for the given domain.
-     * @param domain
-     * @return a map of codes
-     * @throws ServiceException
+     * @param domain Domain name.
+     * @return Map<String, List<String>> Map of codes
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
     public Map<String, List<String>> getCodeMap(String domain) throws ServiceException {
+        //TBD multidomain service API needs to provide.        
         Map<String, List<String>> codeMap = new HashMap<String, List<String>>();
     	// SUFFIX,TITLE,GENDER,MSTATUS,RACE,ETHNIC,RELIGION,
         // LANGUAGE,NATIONAL,CITIZEN,ADDRTYPE,PHONETYPE    	
@@ -173,23 +177,24 @@ public class MetaDataManager {
     
     /**
      * Get a list of user codes for the given domain.
-     * @param domain.
-     * @param module.
-     * @return a list of user codes.
-     * @throws ServiceException.
+     * @param domain Domain name.
+     * @param module Module name.
+     * @return List<String> List of user codes.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<String> getUserCodes(String domain, String module) throws ServiceException {	
-    	throw new ServiceException("Not Implemented Yet!");
+    public List<String> getUserCodes(String domain, String module) throws ServiceException {
+        //TBD multidomain service API needs to provide.
+        throw new ServiceException("Not Implemented Yet!");
     }
  
     /**
      * Get a map of user codes for the given domain.
-     * @param domain.
-     * @param module.
-     * @return a list of user codes.
-     * @throws ServiceException.
+     * @param domain Domain name.
+     * @return Map<String, List<String>> List of user codes.
+     * @throws ServiceException Thrown if an error occurs during processing.
      */   
     public Map<String, List<String>> getUserCodeMap(String domain) throws ServiceException {
+        //TBD multidomain service API needs to provide.
     	throw new ServiceException("Not Implemented Yet!");
     }
 }

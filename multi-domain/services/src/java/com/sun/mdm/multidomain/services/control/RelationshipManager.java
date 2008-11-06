@@ -48,7 +48,7 @@ import com.sun.mdm.multidomain.services.core.ViewHelper;
 import com.sun.mdm.multidomain.services.core.QueryBuilder;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.model.MultiDomainSearchOption;
-import com.sun.mdm.multidomain.services.model.RelationshipSearch;
+import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
@@ -92,6 +92,7 @@ public class RelationshipManager {
     	this.multiDomainService = multiDomainService;
         this.multiDomainMetaService = multiDomainMetaService; 
         init();
+        logger.info(localizer.x("SVC007: RelationshipManager initialization completed."));                
     }
     
     /**
@@ -102,7 +103,8 @@ public class RelationshipManager {
      */
     public String addRelationshipDef(RelationshipDef RelationshipDef) 
         throws ServiceException {
-        /* TBD
+        // TBD
+        /*
         String relationshId = null;
         try {
             relationshId = multiDomainMetaService.createRelationshipDef(RelationshipDef);
@@ -110,8 +112,8 @@ public class RelationshipManager {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
-        }          
-        */   
+        } 
+        */         
         // demo data
         for (RelationshipDef rt:rts) {
             if (rt.getSourceDomain().equals(RelationshipDef.getSourceDomain()) &&
@@ -135,7 +137,8 @@ public class RelationshipManager {
      */
     public void updateRelationshipDef(RelationshipDef RelationshipDef) 
         throws ServiceException {
-        /* TBD
+        // TBD
+        /*
         try {
             multiDomainMetaService.updateRelationshipDef(RelationshipDef);
         } catch (UserException uex) {
@@ -143,7 +146,7 @@ public class RelationshipManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }
-        */         
+        */
         // demo data
         boolean updated = false;
         for (RelationshipDef rt:rts) {
@@ -169,7 +172,8 @@ public class RelationshipManager {
      */
     public void deleteRelationshipDef(RelationshipDef RelationshipDef) 
         throws ServiceException {
-        /* TBD
+        // TBD
+        /*
         try {
             multiDomainMetaService.deleteRelationshipDef(RelationshipDef);
         } catch (UserException uex) {
@@ -218,7 +222,8 @@ public class RelationshipManager {
     public List<RelationshipDef> getRelationshipDefs(String domain) throws ServiceException {
         
         List<RelationshipDef> RelationshipDefs = new ArrayList<RelationshipDef>();
-        /* TBD
+        // TBD
+        /*
         try {
             RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs();
             for (RelationshipDef relationship : relationships) {
@@ -251,7 +256,8 @@ public class RelationshipManager {
     public List<RelationshipDef> getRelationshipDefs(String sourceDomain, String targetDomain) throws ServiceException {
  
         List<RelationshipDef> RelationshipDefs = new ArrayList<RelationshipDef>();
-        /* TBD
+        // TBD
+        /*
         try {
             RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs(sourceDomain, targetDomain);
             for (RelationshipDef relationship : relationships) {
@@ -277,7 +283,7 @@ public class RelationshipManager {
     }
         
     private void init(){
-    // demo data
+        // demo data
     	RelationshipDef rt1 = new RelationshipDef();
     	rt1.setName("worksfor");
         rt1.setId(1);
@@ -333,6 +339,12 @@ public class RelationshipManager {
         rts.add(rt6);                           
     }
     
+    /**
+     *  Get a list of DomainRelationshipDefObject for the given domain.
+     * @param domain Domain name.
+     * @return List<DomainRelationshipDefObject> List of DomainRelationshipDefObject.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public List<DomainRelationshipDefObject> getDomainRelationshipDefObjects(String domain) 
         throws ServiceException {
         List<DomainRelationshipDefObject> types = new ArrayList<DomainRelationshipDefObject>();
@@ -360,6 +372,12 @@ public class RelationshipManager {
         return types;
     }
     
+    /**
+     * Search DomainRelationshipObject for the given domain search.
+     * @param domainSearch Domain search.
+     * @return DomainRelationshipObject DomainRelationshipObject.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public DomainRelationshipObject searchDomainRelationshipObjects(DomainSearch domainSearch)
         throws ServiceException {
         DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
@@ -380,13 +398,22 @@ public class RelationshipManager {
         return domainRelationshipObject;
     }    
     
+    /**
+     * Search a list of RelationshipView for the given domain and relationship search options and criteria.
+     * @param sourceDomainSearch Source domain search options and criteria.
+     * @param targetDomainSearch Target domain search options and criteria.
+     * @param relationshipSearch Relationship search options and criteria.
+     * @return List<RelationshipView> List of RelationshipView.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public List<RelationshipView> searchRelationships(DomainSearch sourceDomainSearch, 
                                                       DomainSearch targetDomainSearch, 
                                                       RelationshipSearch relationshipSearch) 
         throws ServiceException {
         
         List<RelationshipView> relationships = new ArrayList<RelationshipView>(); 
-        /* TBD
+        // TBD
+        /*
         try {
              // build search options and criteria for source and target
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
@@ -443,15 +470,23 @@ public class RelationshipManager {
         
         return relationships; 
     }
+    
+    /**
+     * Get a detailed relationship object for the given RelationshipView.
+     * @param relationshipView RelationshipView.
+     * @return RelationshipComposite RelationshipComposite.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public RelationshipComposite getRelationship(RelationshipView relationshipView)
         throws ServiceException {
       
         RelationshipComposite relationshipComposite = new RelationshipComposite();
-        /* TBD
+        // TBD
+        /*
         try {
              // build search options and criteria for source and target
             Relationship relationship = new Relationship();
-            relationship.setRelationshipID(relationshipView.getId());
+            relationship.setRelationshipId(Integer.parseInt(relationshipView.getId()));
             relationship.setSourceEUID(relationshipView.getSourceEUID());
             relationship.setTargetEUID(relationshipView.getTargetEUID());
             // need to add a new method in multiDomainService to getRelationship
@@ -463,8 +498,7 @@ public class RelationshipManager {
             throw new ServiceException(uex);
         }
         return relationshipComposite;        
-        */
-        
+        */        
         //demo
         System.out.println(relationshipView.getSourceDomain() + ":" + relationshipView.getTargetDomain());
         
@@ -487,11 +521,17 @@ public class RelationshipManager {
         rsc.setRelationshipRecord(rs);
         return rsc;
     }
+    
+    /**
+     * Get a list of Enterprise objects for the give domain search.
+     * @param domainSearch DomainSearch.
+     * @return List<ObjectView> List of ObjectView.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public List<ObjectView> searchEnterprises(DomainSearch domainSearch)
-        throws ServiceException {
-           
-        List<ObjectView> objects = new ArrayList<ObjectView>();
-        
+        throws ServiceException {           
+        List<ObjectView> objects = new ArrayList<ObjectView>();  
+        //TBD
         try {
              // build search options and criteria for source and target
             EOSearchOptions eoSearchOptions = QueryBuilder.buildEOSearchOptions(domainSearch);
@@ -511,14 +551,22 @@ public class RelationshipManager {
         objects.add(new ObjectView("foo","000-000-0000", "I am foo"));
         objects.add(new ObjectView("foo","000-000-0001", "I am foo too"));
         return objects;
-    } 
+    }
+    
+    /**
+     * Get a detailed object.
+     * @param object ObjectView
+     * @return ObjectRecord ObjectRecord.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public ObjectRecord getEnterprise(ObjectView object)
         throws ServiceException {
-        /* TBD
+        // TBD
+        /*
         ObjectRecord objectRecord = null;
         try {           
             // need to add a new method in multiDomainService to getObject
-            ObjectNode objectNoe = multiDomainService.getObject(object.getName(), object.getEUID());
+            ObjectNode objectNoe = multiDomainService.getEnterprise(object.getName(), object.getEUID());
             objectRecord = ViewHelper.buildObjectRecord(objectNoe);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
@@ -531,23 +579,38 @@ public class RelationshipManager {
         ObjectRecord record = new ObjectRecord(object.getName(), object.getEUID());
         record.add(new com.sun.mdm.multidomain.services.model.Attribute("foo","foo"));
         return record;
-    }  
+    } 
+    
+    /**
+     * Add a new relationship.
+     * @param relationshipRecord RelationshipRecord.
+     * @return int Relationship Identifier. 
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public String addRelationship(RelationshipRecord relationshipRecord)
-        throws ServiceException { 
-        /* TBD
-        String id = null;
+        throws ServiceException {
+        //TBD
+        /*
+        int id = 0;
         try {
-            Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord); 
+            Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
             id = multiDomainService.createRelationship(relationship);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
             throw new ServiceException(uex);
-        }  
+        }
+        //return Integer.toString(id);
         */
         //demo
         return relationshipRecord.toString();  
     }
+    
+    /**
+     * Delete an existing relationship.
+     * @param relationshipView RelationshipView.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public void deleteRelationship(RelationshipView relationshipView)
         throws ServiceException {
          try {
@@ -558,6 +621,12 @@ public class RelationshipManager {
             throw new ServiceException(uex);
         }            
     }
+    
+    /**
+     * Update an existing relationship. 
+     * @param relationshipRecord RelationshipRecord.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
     public void updateRelationship(RelationshipRecord relationshipRecord)
         throws ServiceException {
         try {

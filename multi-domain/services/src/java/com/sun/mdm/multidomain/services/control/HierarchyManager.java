@@ -67,7 +67,8 @@ public class HierarchyManager {
     public HierarchyManager (MultiDomainMetaService multiDomainMetaService, MultiDomainService multiDomainService) 
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
-    	this.multiDomainMetaService = multiDomainMetaService;        
+    	this.multiDomainMetaService = multiDomainMetaService;  
+        logger.info(localizer.x("SVC005: HierarchyManager initialization completed."));        
     }
         
     /**
