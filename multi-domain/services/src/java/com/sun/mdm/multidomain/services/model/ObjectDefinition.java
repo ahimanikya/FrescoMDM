@@ -22,82 +22,84 @@
  */
 package com.sun.mdm.multidomain.services.model;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
- * This represent the ObjectDefinition or metaData for a given object.
- * @author MDM team.
+ * This represent the ObjectDefinition or metaData for a given object and refered to midm.
+ * @author cye
  */
 public class ObjectDefinition {
 
     private String name;
     private String dateFormat;
     private String database;
+    
     /**
      * list of fields
      */
-    ArrayList<Field> fields = new ArrayList<Field>();
+    List<Field> fields = new ArrayList<Field>();
     /**
      * list of children
      */
-    ArrayList<ObjectDefinition> children = new ArrayList<ObjectDefinition>();
+    List<ObjectDefinition> children = new ArrayList<ObjectDefinition>();
 
     /**
-     * @param name
+     * Create an instance of ObjectDefinition.
+     * @param name Object name.
      */
     public ObjectDefinition(String name) {
-        super();
         this.name = name;
     }
     
     /**
-     * @param name
-     * @param fields
-     * @param children
+     * Create an instance of ObjectDefinition.
+     * @param name Object tag.
+     * @param fields List of Field.
+     * @param children List of ObjectDefinition.
      */
-    public ObjectDefinition(String name, ArrayList<Field> fields,
-            ArrayList<ObjectDefinition> children) {
-        super();
+    public ObjectDefinition(String name, List<Field> fields, List<ObjectDefinition> children) {
         this.name = name;
         this.fields = fields;
         this.children = children;
     }
 
     /**
-     * add field
-     * 
-     * @param o
-     * @return
+     * Add field into the object.
+     * @param f Field.
+     * @return boolean True if add successfully.
      */
-    public boolean addField(Field o) {
-        return fields.add(o);
+    public boolean addField(Field f) {
+        return fields.add(f);
     }
 
     /**
      * Add field at a specified location, shift the elements from the current
      * position to the right.
-     * @param index
-     * @param element
+     * @param index Index.
+     * @param element Field.
      */
     public void addField(int index, Field element) {
         fields.add(index, element);
     }
 
+    /**
+     * Ensure minimium capacity.
+     * @param minCapacity Minimium Capacity.
+     */
     private void ensureFieldCapacity(int minCapacity) {
         int size = minCapacity + 1;
-
         if (fields.size() < size) {
             for (int i = fields.size(); i < size; i++) {
                 fields.add(i, null);
             }
         }
-
     }
 
     /**
      * Get field for the given index.
-     * @param index
-     * @return
+     * @param index Field index.
+     * @return Field.
      */
     public Field getField(int index) {
         return fields.get(index);
@@ -116,8 +118,8 @@ public class ObjectDefinition {
 
     /**
      * Add child at the given index.
-     * @param index
-     * @param element
+     * @param index index.
+     * @param element Object definition.
      */
     public void addchild(int index, ObjectDefinition element) {
         children.add(index, element);
@@ -125,8 +127,8 @@ public class ObjectDefinition {
 
     /**
      * Add child.
-     * @param o
-     * @return boolean
+     * @param o ObjectDefinition.
+     * @return boolean True if add successfully.
      */
     public boolean addchild(ObjectDefinition o) {
         return children.add(o);
@@ -134,8 +136,8 @@ public class ObjectDefinition {
 
     /**
      * Get child at the given index.
-     * @param index
-     * @return ObjectDefinition.
+     * @param index Index.
+     * @return ObjectDefinition CHild object definition.
      */
     public ObjectDefinition getchild(int index) {
         return children.get(index);
@@ -145,8 +147,8 @@ public class ObjectDefinition {
      * Return the child ObjectDefinition, if the child with a given name exist,
      * return null otherwise. Note this access is much slower that the indexed
      * approach, the performance can degrade if the number of children is high.
-     * @param childName
-     * @return
+     * @param childName Child name.
+     * @return 
      */
     public ObjectDefinition getchild(String childName) {
         for (ObjectDefinition child : children) {
@@ -159,8 +161,8 @@ public class ObjectDefinition {
 
     /**
      * Set child at the given index.
-     * @param index.
-     * @param element.
+     * @param index Index.
+     * @param element Object definition.
      * @return ObjectDefinition.
      */
     public ObjectDefinition setchild(int index, ObjectDefinition element) {
@@ -168,6 +170,10 @@ public class ObjectDefinition {
         return children.set(index, element);
     }
 
+   /**
+     * Ensure minimium capacity.
+     * @param minCapacity Minimium Capacity.
+     */    
     private void ensureChildCapacity(int minCapacity) {
         int size = minCapacity + 1;
 
@@ -179,48 +185,48 @@ public class ObjectDefinition {
     }
 
     /**
-     * Return children.
-     * @return the children
+     * Get children.
+     * @return List<ObjectDefinition> Children.
      */
-    public ArrayList<ObjectDefinition> getChildren() {
+    public List<ObjectDefinition> getChildren() {
         return children;
     }
 
     /**
      * Set children.
-     * @param children the children to set
+     * @param List<ObjectDefinition> Children.
      */
-    public void setChildren(ArrayList<ObjectDefinition> children) {
+    public void setChildren(List<ObjectDefinition> children) {
         this.children = children;
     }
 
     /**
      * Get fields.
-     * @return the fields
+     * @return List<Field> List of Field.
      */
-    public ArrayList<Field> getFields() {
+    public List<Field> getFields() {
         return fields;
     }
 
     /**
      * Set fields.
-     * @param fields the fields to set
+     * @param fields List of Field.
      */
-    public void setFields(ArrayList<Field> fields) {
+    public void setFields(List<Field> fields) {
         this.fields = fields;
     }
 
     /**
-     * Get name.
-     * @return the name
+     * Get object name.
+     * @return name Object name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Set name.
-     * @param name the name to set
+     * Set object name.
+     * @param name  Object name to set.
      */
     public void setName(String name) {
         this.name = name;
@@ -249,18 +255,34 @@ public class ObjectDefinition {
         return sb.toString();
     }
 
+    /**
+     * Get date format.
+     * @return String Date format.
+     */
     public String getDateFormat() {
         return dateFormat;
     }
 
+    /**
+     * Set date format.
+     * @param dateFormat Date format.
+     */
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
     }
 
+    /**
+     * Get database name.
+     * @return String Database name.
+     */
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * Set database name.
+     * @param database Database name.
+     */
     public void setDatabase(String database) {
         this.database = database;
     }

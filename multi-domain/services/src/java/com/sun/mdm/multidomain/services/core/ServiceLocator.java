@@ -66,7 +66,7 @@ public class ServiceLocator {
     static public ServiceLocator getInstance() 
     	throws ServiceException {
     	if (serviceLocator == null) {
-    		serviceLocator = new ServiceLocator();
+            serviceLocator = new ServiceLocator();
     	}
         return serviceLocator;
     }
@@ -96,7 +96,7 @@ public class ServiceLocator {
                     // internal resources
                     initialContext = new InitialContext();		    		    		
     		}
-    		logger.info(localizer.x("WTS001: Initialcontext({0}) is successfully initialized"));
+    		logger.info(localizer.x("SVC001: Initialcontext initialization completed."));
             } catch(NamingException nex) {
                 throw new ServiceException(nex);
             }

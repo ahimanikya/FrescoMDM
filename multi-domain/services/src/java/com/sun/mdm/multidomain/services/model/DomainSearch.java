@@ -36,6 +36,7 @@ public class DomainSearch extends AttributeList {
     private String name;
     /* search type */
     private String type;
+    
     /* attributes 
      * Each attribute is defined a name with full qualified epath, e.g.,
      * Person.FirstName = "Foo", Person.Address.City = "Foo", etc.
@@ -46,20 +47,25 @@ public class DomainSearch extends AttributeList {
     public DomainSearch() {
         super();
     }
+    
     public DomainSearch(String name, String type, List<Attribute> attributes) {
         super(attributes);
         this.name = name;
         this.type = type;
     }
+    
     public void setName(String name) {
         this.name = name;
     }
+    
     public String getName() {
         return name;
     }
+    
     public void setType(String type) {
         this.type = type;
     }
+    
     public String getType() {
         return type;
     }            

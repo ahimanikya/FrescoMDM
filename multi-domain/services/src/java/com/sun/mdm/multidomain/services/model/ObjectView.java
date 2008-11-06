@@ -34,26 +34,33 @@ public class ObjectView {
    
     public ObjectView(){
     }
+    
     public ObjectView(String name, String euid, String highLight) {
         this.name = name;
         this.EUID = euid;
         this.highLight = highLight;
-    }        
+    }
+    
     public String getName() {
         return name;
     }
+    
     public void setName(String name){
         this.name = name;
     }
-   public String getEUID() {
+    
+    public String getEUID() {
         return EUID;
     }
+    
     public void setEUID(String euid){
         this.EUID = euid;
     }
+    
     public String getHighLight() {
         return highLight;
     }
+    
     public void setHighLight(String highLight){
         this.highLight = highLight;
     }    

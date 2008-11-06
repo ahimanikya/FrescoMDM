@@ -52,4 +52,13 @@ public class ServiceException extends Exception {
         super(throwable);
     }
     
+    /**
+     * Create an instance of ServiceException.
+     * @param message Message.
+     * @param throwable Throwable.
+     */
+    public ServiceException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+    
 }

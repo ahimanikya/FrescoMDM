@@ -28,14 +28,34 @@ package com.sun.mdm.multidomain.services.core;
  */
 public class ConfigException extends Exception {
     private static final long serialVersionUID = 2L;
+    
+    /**
+     * Create an instance of ConfigException.
+     */
     public ConfigException(){        
     }
+
+    /**
+     * Create an instance of ConfigException.
+     * @param message Message.
+     */
     public ConfigException(String message){        
         super(message);
     }
+    
+    /**
+     * Create an instance of ConfigException.
+     * @param cause Throwable.
+     */
     public ConfigException(Throwable cause){        
         super(cause);
     }    
+    
+    /**
+     * Create an instance of ConfigException.
+     * @param message Message.
+     * @param cause Throwable.
+     */
     public ConfigException(String message, Throwable cause){        
         super(message, cause);
     }    

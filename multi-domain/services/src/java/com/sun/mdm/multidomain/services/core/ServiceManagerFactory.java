@@ -79,6 +79,7 @@ public class ServiceManagerFactory {
                     multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
                 }
                 isInitialized = true;
+    		logger.info(localizer.x("SVC003: ServiceManagerFactory initialization completed."));                
            }
 	}
 	
@@ -88,8 +89,8 @@ public class ServiceManagerFactory {
 	 * @throws ServiceException Thrown if an error occurs during processing.
 	 */
 	public GroupManager createGroupManager() throws ServiceException {
-                initialize();
-		return new GroupManager(multiDomainMetaService, multiDomainService); 
+            initialize();
+            return new GroupManager(multiDomainMetaService, multiDomainService); 
 	}
 
 	/**

@@ -33,21 +33,21 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
  * DomainRelationshipDefinitionObject class.
  * @author cye
  */
-public class DomainRelationshipDefinitionObject implements Iterator<RelationshipDef> {
+public class DomainRelationshipDefObject implements Iterator<RelationshipDef> {
 
     private List<RelationshipDef> relationshipDefinitions;
     private int position = 0;
     private int size;
     private String domain;
 
-    public DomainRelationshipDefinitionObject() {
+    public DomainRelationshipDefObject() {
     }
     
-    public DomainRelationshipDefinitionObject(String domain) {
+    public DomainRelationshipDefObject(String domain) {
         this.domain = domain;        
     }
     
-    public DomainRelationshipDefinitionObject(String domain, List<RelationshipDef> relationshipDefinitions) {
+    public DomainRelationshipDefObject(String domain, List<RelationshipDef> relationshipDefinitions) {
         this.domain = domain;
         this.relationshipDefinitions = relationshipDefinitions;
     }
@@ -113,9 +113,9 @@ public class DomainRelationshipDefinitionObject implements Iterator<Relationship
     @Override 
     public boolean equals(Object object) {
         if(object != null &&
-           object instanceof DomainRelationshipDefinitionObject) {            
+           object instanceof DomainRelationshipDefObject) {            
            if (this.domain != null &&
-               this.domain.equals(((DomainRelationshipDefinitionObject)object).getDomain())) {
+               this.domain.equals(((DomainRelationshipDefObject)object).getDomain())) {
                return true;
            } else {
                return false;

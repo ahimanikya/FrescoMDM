@@ -38,24 +38,30 @@ public class ObjectRecord extends AttributeList {
               
     public ObjectRecord(){
     } 
+    
     public ObjectRecord(String name, String euid){
         this.name = name;
         this.EUID = euid;
     }
+    
     public ObjectRecord(String name, String euid, List<Attribute> attributes){
         super(attributes);
         this.name = name;
         this.EUID = euid;
     }
+    
     public void setName(String name) {
         this.name = name;
     }
+    
     public String getName() {
         return name;
     }
+    
     public void setEUID(String euid) {
         this.EUID = euid;
     }
+    
     public String getEUID() {
         return EUID;
     }         

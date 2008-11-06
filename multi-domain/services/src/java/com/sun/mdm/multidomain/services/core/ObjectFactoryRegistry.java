@@ -25,33 +25,56 @@ package com.sun.mdm.multidomain.services.core;
 import java.util.Map;
 import java.util.HashMap;
         
+import net.java.hulp.i18n.Logger;
+import com.sun.mdm.multidomain.services.util.Localizer;
+
 /**
  * ObjectFactoryRegistry class.
  * @author cye
  */
 public class ObjectFactoryRegistry {
-    
+    private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.ServiceLocator");
+    private static Localizer localizer = Localizer.getInstance();
+
     private static Map<String, ObjectFactory> entries = new HashMap<String, ObjectFactory>();    
     
-    public static void register(String name, ObjectFactory objectFactory) {  
-        entries.put(name, objectFactory);
+    /**
+     * Register ObjectFactory for the given object name and ObjectFactory.
+     * @param objectName Object name.
+     * @param objectFactory ObjectFactory.
+     */
+    public static void register(String objectName, ObjectFactory objectFactory) {  
+        entries.put(objectName, objectFactory);
+        logger.info(localizer.x("SVC002: ObjectFactoryRegistry registered {0} for object {1}", 
+                                 objectFactory.getClass().getName(), objectName));        
     }
 
-    public static void register(String name) 
+    /**
+     * Register ObjectFactory for the given object name.
+     * @param objectName Object name.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
+    public static void register(String objectName) 
         throws ConfigException {  
-        ObjectFactory entry = entries.get(name);
+        ObjectFactory entry = entries.get(objectName);
         if (entry == null) {
-            entry = new ObjectNodeFactoryImpl(name);
-            register(name, entry);
+            entry = new ObjectNodeFactoryImpl(objectName);
+            register(objectName, entry);       
         }        
     }
     
-    public static ObjectFactory lookup(String name) 
+    /**
+     * Lookup ObjectFactory for the given object name.
+     * @param objectName Object name.
+     * @return ObjectFactory.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
+    public static ObjectFactory lookup(String objectName) 
         throws ConfigException {
-        ObjectFactory entry = entries.get(name);
+        ObjectFactory entry = entries.get(objectName);
         if (entry == null) {
-            entry = new ObjectNodeFactoryImpl(name);
-            register(name, entry);
+            entry = new ObjectNodeFactoryImpl(objectName);
+            register(objectName, entry);
         }
         return entry;
     }

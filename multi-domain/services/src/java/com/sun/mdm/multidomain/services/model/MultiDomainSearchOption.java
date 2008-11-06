@@ -39,33 +39,43 @@ public class MultiDomainSearchOption {
     /* This class should be defined in multidomain core service.*/
     public MultiDomainSearchOption(){        
     }
+    
     public EPathArrayList getEPathArrayList(){
         return ePathArrayList;
     }
+    
     public void setEPathArrayList(EPathArrayList ePathArrayList){
         this.ePathArrayList = ePathArrayList;
     }
+    
     public boolean getIsWeighted(){
         return isWeighted;
     }
+    
     public void setIsWeighted(boolean isWeighted){
         this.isWeighted = isWeighted;
     }
+    
     public String getSearchId(){
         return searchId;
     }
+    
     public void setSearchId(String searchId){
         this.searchId = searchId;
     }
+    
     public int getPageSize(){
         return pageSize;
-    }    
+    }
+    
     public void setPageSize(int pageSize){
         this.pageSize = pageSize;
-    }    
+    }
+    
     public int getMaxElements(){
         return maxElements;
-    }    
+    }  
+    
     public void setMaxElements(int maxElements){
         this.maxElements = maxElements;
     }        

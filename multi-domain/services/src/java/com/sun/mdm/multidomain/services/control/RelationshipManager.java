@@ -55,7 +55,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
-import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.util.Localizer;
@@ -333,9 +333,9 @@ public class RelationshipManager {
         rts.add(rt6);                           
     }
     
-    public List<DomainRelationshipDefinitionObject> getDomainRelationshipDefinitionObjects(String domain) 
+    public List<DomainRelationshipDefObject> getDomainRelationshipDefObjects(String domain) 
         throws ServiceException {
-        List<DomainRelationshipDefinitionObject> types = new ArrayList<DomainRelationshipDefinitionObject>();
+        List<DomainRelationshipDefObject> types = new ArrayList<DomainRelationshipDefObject>();
         try {
             List<RelationshipDef> typeList = getRelationshipDefs(domain);
             for(RelationshipDef type : typeList) {
@@ -345,13 +345,13 @@ public class RelationshipManager {
                 } else if (domain.equals(type.getTargetDomain())) {
                     key = type.getSourceDomain();                        
                 } 
-                int index = types.indexOf(new DomainRelationshipDefinitionObject(key));
+                int index = types.indexOf(new DomainRelationshipDefObject(key));
                 if(index == - 1) {
-                  DomainRelationshipDefinitionObject value = new DomainRelationshipDefinitionObject(key);
+                  DomainRelationshipDefObject value = new DomainRelationshipDefObject(key);
                   types.add(value);  
                   index = types.indexOf(value);
                 } 
-                DomainRelationshipDefinitionObject value = types.get(index);
+                DomainRelationshipDefObject value = types.get(index);
                 value.add(type);                
             }
         } catch(ServiceException sex) {

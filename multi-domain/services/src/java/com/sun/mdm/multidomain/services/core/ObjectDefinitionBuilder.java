@@ -223,7 +223,7 @@ public class ObjectDefinitionBuilder {
     private void updateFields(ObjectDefinition child, Element root) {
         Element e = getNode(child.getName(), root);
 
-        ArrayList<Field> fields = getFields(e);
+        List<Field> fields = getFields(e);
 
         child.setFields(fields);
 
@@ -234,9 +234,9 @@ public class ObjectDefinitionBuilder {
      * @param e
      * @return the list if fields for a given object node
      */
-    private ArrayList<Field> getFields(Element e) {
+    private List<Field> getFields(Element e) {
 
-        ArrayList<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<Field>();
         NodeList nl = e.getElementsByTagName(FIELDS);
 
         for (int i = 0; i < nl.getLength(); i++) {

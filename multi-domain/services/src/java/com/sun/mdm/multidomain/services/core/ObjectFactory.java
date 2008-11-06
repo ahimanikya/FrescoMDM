@@ -31,6 +31,12 @@ import com.sun.mdm.index.objects.exception.ObjectException;
  */
 public interface ObjectFactory {
       
+    /**
+     * Create ObjectNode.
+     * @param objectTag Object tag.
+     * @return ObjectNode.
+     * @throws ObjectException Thrown if an error occurs during processing.
+     */
     public ObjectNode create(String objectTag) 
         throws ObjectException;
 }

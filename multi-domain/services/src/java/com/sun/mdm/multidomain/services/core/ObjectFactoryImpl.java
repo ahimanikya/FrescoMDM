@@ -114,7 +114,11 @@ public class ObjectFactoryImpl implements ObjectFactory {
     private InputStream objectDefStream;
     private boolean isInit = false;
     private boolean isInitCreate = false;
-        
+
+    /**
+     * Create instance of ObjectFactoryImpl.
+     * @param name ObjectFactory name.
+     */
     public ObjectFactoryImpl(String name){
         objectName = name;
     }    
@@ -272,6 +276,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
     
     /**
+     * Get child type paths.
      * @param path object path path.
      * @exception ObjectException object exception object exception.
      * @return String[] string array of child types.
@@ -303,6 +308,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Gte object keys.
      * @param path object path object path.
      * @exception ObjectException object exception object exception.
      * @return String[] string array of object keys.
@@ -323,6 +329,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get child types.
      * @param path object path. 
      * @exception ObjectException object exception.
      * @return String[] string array of child types.
@@ -339,6 +346,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get column name.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String column name.
@@ -358,6 +366,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get column name and types.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String[][] 2D array of column names and types.
@@ -389,6 +398,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get field type.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String field type.
@@ -408,6 +418,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get field name.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String field name.
@@ -428,6 +439,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
 
 
     /**
+     * Get field size.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return int field size.
@@ -447,6 +459,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
     
     /**
+     * Check if field required.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return boolean field required.
@@ -466,6 +479,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
     
     /**
+     * Check if field updateable.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return boolean field updateable.
@@ -484,6 +498,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
     
     /**
+     * Get user code.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String user code for AUXID pull down.
@@ -503,6 +518,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
     
     /**
+     * Get constrainBy.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String constraint by for AUXID pull down.
@@ -523,6 +539,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
 
 
     /**
+     * Get colummn type.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String column type.
@@ -542,6 +559,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get DBAttribute.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return DBMetaAttribute database metadata attributes.
@@ -567,6 +585,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     /**
+     * Get DBParentTableNames.
      * @param path object path.
      * @exception ObjectException object exception.
      * @return String[] parent table names.

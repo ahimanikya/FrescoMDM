@@ -29,8 +29,7 @@ package com.sun.mdm.multidomain.services.model;
 public class Field {
     
     private String name;
-    private String value;
-    
+    private String value;   
     private String type;
     private int size;
     private boolean updateable;
@@ -40,10 +39,12 @@ public class Field {
     
     public Field() {
     } 
+    
     public Field(String name, String value) {
         this.name = name;
         this.value = value;
-    }  
+    }
+    
     public Field(String name, String type, int size, boolean updateable, boolean required, boolean keyType, String codeModule) {
         this.name = name;
 	this.type = type;
@@ -52,55 +53,72 @@ public class Field {
 	this.required = required;
 	this.keyType = keyType;
 	this.codeModule = codeModule;
-    }    
+    } 
+    
     public String getName() {
         return name;
     }
+    
     public void setName(String name) {
         this.name = name;
     }
-     public String getValue() {
+    
+    public String getValue() {
         return value;
     }
+    
     public void setValue(String value) {
         this.value = value;
-    }   
+    }
+    
     public String getType() {
         return type;
     }
+    
     public void setType(String type) {
 	this.type = type;
     }
+    
     public boolean isKeyType() {
 	return keyType;
     }
+    
     public void setKeyType(boolean keyType) {
 	this.keyType = keyType;
     }
+    
     public boolean isRequired() {
 	return required;
     }
+    
     public void setRequired(boolean required) {
 	this.required = required;
     }
+    
     public int getSize() {
     	return size;
     }
+    
     public void setSize(int size) {
 	this.size = size;
     }
+    
     public boolean isUpdateable() {
 	return updateable;
     }
+    
     public void setUpdateable(boolean updateable) {
 	this.updateable = updateable;
     }
+    
     public String getCodeModule() {
 	return codeModule;
     }
+    
     public void setCodeModule(String codeModule) {
 	this.codeModule = codeModule;
     }
+    
     @Override
     public String toString() {
         String s = "name=" + name + ",type=" + type + ",size=" + size
@@ -108,6 +126,7 @@ public class Field {
                     + ",updateable=" + updateable +",value=" + value;
 	return s;
     }    
+    
     @Override 
     public boolean equals(Object object) {
         boolean isEqual = false;

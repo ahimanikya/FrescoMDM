@@ -41,17 +41,17 @@ import com.sun.mdm.multidomain.services.model.Field;
 public class ObjectNodeFactoryImpl implements ObjectFactory {
 
     private static final String[] FIELD_TYPE_STRINGS = new String[] { 
-        ObjectField.OBJECTMETA_UNDEFINED_STRING,
-        ObjectField.OBJECTMETA_INT_STRING, 
-        ObjectField.OBJECTMETA_BOOL_STRING,
-        ObjectField.OBJECTMETA_STRING_STRING, 
-        ObjectField.OBJECTMETA_BYTE_STRING,
-        ObjectField.OBJECTMETA_LONG_STRING, 
-        ObjectField.OBJECTMETA_BLOB_STRING,
-        ObjectField.OBJECTMETA_DATE_STRING, 
-        ObjectField.OBJECTMETA_FLOAT_STRING,        
-        ObjectField.OBJECTMETA_TIMESTAMP_STRING,
-        ObjectField.OBJECTMETA_CHAR_STRING};
+                                    ObjectField.OBJECTMETA_UNDEFINED_STRING,
+                                    ObjectField.OBJECTMETA_INT_STRING, 
+                                    ObjectField.OBJECTMETA_BOOL_STRING,
+                                    ObjectField.OBJECTMETA_STRING_STRING, 
+                                    ObjectField.OBJECTMETA_BYTE_STRING,
+                                    ObjectField.OBJECTMETA_LONG_STRING, 
+                                    ObjectField.OBJECTMETA_BLOB_STRING,
+                                    ObjectField.OBJECTMETA_DATE_STRING, 
+                                    ObjectField.OBJECTMETA_FLOAT_STRING,        
+                                    ObjectField.OBJECTMETA_TIMESTAMP_STRING,
+                                    ObjectField.OBJECTMETA_CHAR_STRING};
     
     private SimpleDateFormat dateFormat;
     private ObjectDefinition objectDef;
@@ -60,11 +60,18 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
     private List<Field> fields; 
             
     private boolean initialized = false;
-            
+
+    /**
+     * Create instance of ObjectNodeFactoryImpl.
+     * @param name Object name.
+     */
     public ObjectNodeFactoryImpl(String name){
         objectName = name;
     }   
-        
+
+    /**
+     * Initailzation.
+     */
     private void initialize() {
         if(!initialized) {
             synchronized(ObjectNodeFactoryImpl.class) {
@@ -79,7 +86,14 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
         }
     }
         
-    private ObjectNode createObjectNode(String nodeTag,List<Field> fields) 
+    /**
+     * Create Object node.
+     * @param nodeTag Object node tag.
+     * @param fields List of Field.
+     * @return ObjectNode.
+     * @throws ObjectException Thrown if an error occurs during processing.
+     */
+    private ObjectNode createObjectNode(String nodeTag, List<Field> fields) 
         throws ObjectException {        
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Integer> types = new ArrayList<Integer>();                
@@ -98,7 +112,11 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
         */
         return node;
     }
-            
+    
+    /**
+     * Add Object id into object definition.
+     * @param objdef Object Definition.
+     */
     private void addObjectId(ObjectDefinition objdef) {
         String name = objdef.getName();
         String idName = name + "Id";
@@ -113,6 +131,11 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
 	}        
     }	
     
+    /**
+     * Convert field type into int value.
+     * @param fieldType Field type.
+     * @return int Field type.
+     */
     private static int toFieldTypeInt(String fieldType) {    	 
         int type = -1;
         if( fieldType == null || "".equalsIgnoreCase(fieldType) ) {
@@ -131,6 +154,12 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
         return type;
      }    
      
+    /**
+     * Create ObjectNode for the given tag.
+     * @param objectTag Object tag.
+     * @return ObjectNode.
+     * @throws ObjectException Thrown if an error occurs during processing.
+     */
     public ObjectNode create(String objectTag) 
         throws ObjectException {        
         initialize();                
