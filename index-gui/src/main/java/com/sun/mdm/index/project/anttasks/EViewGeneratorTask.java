@@ -915,6 +915,8 @@ public class EViewGeneratorTask extends Task {
         files.add(path);
         path = ejbFilePath + "/report/BatchReportGeneratorEJB.java";
         files.add(path);
+        path = ejbFilePath + "/sequence/SequenceEJB.java";
+        files.add(path);
 
         for (int i = 0; i < files.size(); i++) {
             String ejbFile = files.get(i).toString();
