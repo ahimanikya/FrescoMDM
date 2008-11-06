@@ -25,6 +25,8 @@ package com.sun.mdm.multidomain.project.editor;
 
 import java.util.ArrayList;
 
+import com.sun.mdm.multidomain.parser.Definition;
+
 /**
  *
  * @author  kkao
@@ -34,18 +36,20 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
-    public static final String RELATIONSHIP = "relationship";
-    public static final String HIERARCHY = "hierarchy";
+    public static final String RELATIONSHIP = Definition.TYPE_RELATIONSHIP;
+    public static final String HIERARCHY = Definition.TYPE_HIERARCHY;
+    public static final String GROUP = Definition.TYPE_GROUP;
+    public static final String CATEGORY = Definition.TYPE_CATEGORY;
 
     /** Creates new form AddDefinitionDialog */
-    public AddDefinitionDialog(ArrayList <String> alDomains) {
+    public AddDefinitionDialog(ArrayList <String> alDomains, String targetType) {
         super();
         initComponents();
         jComboBoxDefinitions.insertItemAt(RELATIONSHIP, 0);
         jComboBoxDefinitions.insertItemAt(HIERARCHY, 1);
-        //jComboBoxDefinitions.insertItemAt("group", 2);
-        //jComboBoxDefinitions.insertItemAt("category", 3);
-        jComboBoxDefinitions.setSelectedIndex(0);
+        //jComboBoxDefinitions.insertItemAt(GROUP, 2);
+        //jComboBoxDefinitions.insertItemAt(CATEGORY, 3);
+        jComboBoxDefinitions.setSelectedItem(targetType);
         setDomains(alDomains);
         enableBtnOK();
     }

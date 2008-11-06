@@ -181,9 +181,13 @@ public class TabRelationshipDef extends javax.swing.JPanel {
 
         jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelPlugin.text")); // NOI18N
 
+        jTextDomain2.setEditable(false);
+
         jComboBoxDirection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "---->", "<----", "<--->" }));
         jComboBoxDirection.setPreferredSize(new java.awt.Dimension(55, 22));
         jComboBoxDirection.setVerifyInputWhenFocusTarget(false);
+
+        jTextDomain1.setEditable(false);
 
         jLabelDomains.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelDomains.text")); // NOI18N
 

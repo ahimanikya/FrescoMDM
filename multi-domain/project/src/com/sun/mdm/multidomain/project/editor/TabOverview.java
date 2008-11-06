@@ -224,7 +224,9 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                 String domainName = domainNode.getName();
                 mAlDomainNames.add(domainName);
                 mMapDomainNodes.put(domainName, domainNode);
-                DomainRow r = new DomainRow(domainName);
+                ArrayList al = domainNode.getDefinitions();
+                int size = (al == null) ? 0 : al.size();
+                DomainRow r = new DomainRow(domainName, Integer.toString(size));
                 rows.add(r);
             }
             jTableDomains.setRowSelectionInterval(0, 0);
@@ -417,8 +419,7 @@ TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
     int rs[] = jTableDomains.getSelectedRows();
     int length = rs.length;
     String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
-                                    : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
-
+                                  : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
     NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                              prompt, 
                              NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
@@ -438,7 +439,8 @@ TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
             jTableDomains.setRowSelectionInterval(0, 0);
             onDomainSelected();
         } else {
-            this.jButtonRemoveDomain.setEnabled(false);       
+            this.jButtonRemoveDomain.setEnabled(false);
+            mEditorMainPanel.loadDomainEntityTree(null);
         }
         mEditorMainApp.enableSaveAction(true);
     }
@@ -475,10 +477,11 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
             }
 }//GEN-LAST:event_onRemoveDefinition
 
-private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
+private void performAddDefinition(String type) {
+    final String targetType = type;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames);
+                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames, targetType);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosed(java.awt.event.WindowEvent e) {
                         if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
@@ -510,8 +513,22 @@ private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 dialog.setVisible(true);
             }
         });
+}
 
+private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
+    performAddDefinition(Definition.TYPE_RELATIONSHIP);
 }//GEN-LAST:event_onAddDefinition
+
+public void onAddRelationship() {
+    //Definition.TYPE_RELATIONSHIP
+    performAddDefinition(Definition.TYPE_RELATIONSHIP);
+}
+
+public void onAddHierarchy() {
+    // Definition.TYPE_HIERARCHY
+    performAddDefinition(Definition.TYPE_HIERARCHY);
+}
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -589,13 +606,16 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
         DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(linkName, sourceDomain, targetDomain);
         mEditorMainPanel.loadDefinitionProperties(definitionNode);
+        mEditorMainPanel.loadDomainEntityTree(null);
      }
 
     class DomainRow {
         private String domainName;
+        private String definitions;
 
-        public DomainRow(String domainName) {
+        public DomainRow(String domainName, String definitions) {
             this.domainName = domainName;
+            this.definitions = definitions;
         }
 
         public String getDomainName() {
@@ -605,14 +625,24 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         public void setDomainName(String domainName) {
             this.domainName = domainName;
         }
+
+        public String getDefinitions() {
+            return definitions;
+        }
+
+        public void setDefinitions(String definitions) {
+            this.definitions = definitions;
+        }
     }
     
     // Table model for link definitions
     class TableModelDomains extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Domain_Name"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Number_Of_Definitions"), 
                                         };
         ArrayList <DomainRow> rows;
         final static int iColDomainName = 0;
+        final static int iColDefinitions = 1;
         
         TableModelDomains(ArrayList rows) {
             this.rows = rows;
@@ -640,6 +670,8 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                     switch (col) {
                         case iColDomainName:
                             return singleRow.getDomainName();
+                        case iColDefinitions:
+                            return singleRow.getDefinitions();
                         default:
                             return null;
                     }
@@ -669,6 +701,9 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                     switch (col) {
                         case iColDomainName:
                             singleRow.setDomainName((String) value);                            
+                            break;
+                        case iColDefinitions:
+                            singleRow.setDefinitions((String) value);                            
                             break;
                         default:
                             return;
@@ -854,23 +889,26 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
 
     public void setCurrentDomainNode(DomainNode node, boolean bNew) {
         String domainName = node.getName();
-        if (bNew) {
+        if (bNew || !this.mAlDomainNames.contains(domainName)) {
             this.mAlDomainNodes.add(node);
             this.mMapDomainNodes.put(domainName, node);
             this.mAlDomainNames.add(domainName);
 
             // add a new row
             TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
-            DomainRow r = new DomainRow(domainName);
+            ArrayList al = node.getDefinitions();
+            int size = (al == null) ? 0 : al.size();
+            DomainRow r = new DomainRow(domainName, Integer.toString(size));
             int idx = model.getRowCount();
             model.addRow(idx, r);
             model.fireTableDataChanged();
             mEditorMainApp.enableSaveAction(true);
             jTableDomains.setRowSelectionInterval(idx, idx);
-            jTableDomains.setEditingRow(idx);
+            //jTableDomains.setEditingRow(idx);
             onDomainSelected();
         } else {
-            //jComboBoxAllDomains.setSelectedItem(domainName);
+            // find it and set it
+            //jTableDomains.setRowSelectionInterval(idx, idx);
         }
         
     }

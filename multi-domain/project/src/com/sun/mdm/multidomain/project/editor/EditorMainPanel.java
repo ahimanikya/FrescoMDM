@@ -108,8 +108,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JButton mButtonAddDomain;
     private JButton mButtonAddRelationship;
     private JButton mButtonAddHierarchy;
-    private JButton mButtonAddGroup;
-    private JButton mButtonAddCategory;
+    //private JButton mButtonAddGroup;
+    //private JButton mButtonAddCategory;
     private JButton mButtonDelete;
     private JButton mButtonSave;
     private EditorMainApp mEditorMainApp;
@@ -154,7 +154,11 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     }
     
     public void loadDomainEntityTree(DomainNode currentDomainNode) {
-        mLeftSplitPane.setBottomComponent(currentDomainNode.getEntityTree());
+        if (currentDomainNode != null) {
+            mLeftSplitPane.setBottomComponent(currentDomainNode.getEntityTree());
+        } else {
+            mLeftSplitPane.setBottomComponent(null);
+        }
         mLeftSplitPane.setDividerLocation(380);
         //Provide minimum sizes for the two components in the split pane
         Dimension minimumSize = new Dimension(400, 380);
@@ -257,7 +261,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonAddHierarchy.setBorder(null);
         mButtonAddHierarchy.setMnemonic('H');
         toolBar.add(mButtonAddHierarchy);
-        
+        /*
         mButtonAddGroup = new JButton(new AddGroupAction(
                     this.GROUPNODEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
@@ -272,6 +276,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonAddCategory.setBorder(null);
         mButtonAddCategory.setMnemonic('H');
         toolBar.add(mButtonAddCategory);
+         */
         toolBar.addSeparator();
         mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
@@ -420,6 +425,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             Action action = SystemAction.get(CreateRelationshipAction.class);
             ((CreateRelationshipAction) action).perform(mEditorMainApp);
             action = null;
+            mTabOverview.onAddRelationship();
         }
     }
      
@@ -443,6 +449,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             Action action = SystemAction.get(CreateHierarchyAction.class);
             ((CreateHierarchyAction) action).perform(mEditorMainApp);
             action = null;
+            mTabOverview.onAddHierarchy();
         }
     }
     
