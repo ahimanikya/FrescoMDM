@@ -23,9 +23,9 @@
 package com.sun.mdm.multidomain.services.relationship;
 
 import com.sun.mdm.multidomain.services.model.AttributeDef;
+
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * RelationshipDefinition class.
@@ -51,138 +51,269 @@ public class RelationshipDefinition {
      /* display model 
     private String displayName; */
     
-    private Map<String, String> fixedAttributes;  
+    private List<AttributeDef> fixedAttributes;  
     private List<AttributeDef> extendedAttributes;
 
     public  RelationshipDefinition(){
-        fixedAttributes = new HashMap<String, String>();
+        fixedAttributes = new ArrayList<AttributeDef>();
     }
-    public void setFixedAttributes(Map<String, String> fixedAttributes) {
+    
+    public void setFixedAttributes(ArrayList<AttributeDef> fixedAttributes) {
         this.fixedAttributes = fixedAttributes;
     }
-    public Map<String, String> gettFixedAttributes(){
+    
+    public List<AttributeDef> gettFixedAttributes(){
         return fixedAttributes;
     }
+    
     public void setExtendedAttributes(List<AttributeDef> extendedAttributes){
         this.extendedAttributes = extendedAttributes;
     }
+    
     public List<AttributeDef> getExtendedAttributes(){
         return extendedAttributes;
     }
+    
     public String getName(){
-        return fixedAttributes.get("name");
+        AttributeDef aDef = getFixedAttribute("name");
+        return aDef != null ? aDef.getDefaultValue() : null;
     }
+    
     public void setName(String name){
-        fixedAttributes.put("name", name);
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("name");
+        aDef.setDefaultValue(name);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);
     }
+    
     public String getId(){
-        return fixedAttributes.get("id"); 
+        AttributeDef aDef = getFixedAttribute("id");
+        return aDef != null ? aDef.getDefaultValue() : null;        
     }
+    
     public void setId(String id){
-        fixedAttributes.put("id",id);
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("id");
+        aDef.setDefaultValue(id);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);
     }
+    
     public String getSourceDomain(){
-        return fixedAttributes.get("sourceDomain");
+        AttributeDef aDef = getFixedAttribute("sourceDomain");
+        return aDef != null ? aDef.getDefaultValue() : null;                
     }
+    
     public void setSourceDomain(String sourceDomain){
-        fixedAttributes.put("sourceDomain",sourceDomain);
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("sourceDomain");
+        aDef.setDefaultValue(sourceDomain);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);        
     }
+    
     public String getTargetDomain(){
-        return fixedAttributes.get("targetDomain");
+        AttributeDef aDef = getFixedAttribute("targetDomain");
+        return aDef != null ? aDef.getDefaultValue() : null;                
     }
+    
     public void setTargetDomain(String targetDomain){
-        fixedAttributes.put("targetDomain",targetDomain);
-    }    
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("targetDomain");
+        aDef.setDefaultValue(targetDomain);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                
+    }
+    
     public String getPlugin(){
-        return fixedAttributes.get("plugin");
+        AttributeDef aDef = getFixedAttribute("plugin");
+        return aDef != null ? aDef.getDefaultValue() : null;                
     }
+    
     public void setPlugin(String plugin){
-        fixedAttributes.put("plugin",plugin);
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("plugin");
+        aDef.setDefaultValue(plugin);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                        
     }
+    
     public boolean getBiDirection(){
-        String value = fixedAttributes.get("biDirection");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("biDirection");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
+        }
     }
+    
     public void setBiDirection(boolean biDirection){ 
-        fixedAttributes.put("biDirection", biDirection ? "true" : "false");  
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("biDirection");
+        aDef.setDefaultValue(biDirection ? "true" : "false");
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                
     }
+    
     public String getDateFormat(){
-        return fixedAttributes.get("dateFormat");
+        AttributeDef aDef = getFixedAttribute("dateFormat");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
+    
     public void setDateFormat(String dateFormat){
-        fixedAttributes.put("dateFormat", dateFormat);
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("biDirection");
+        aDef.setDefaultValue(dateFormat);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);        
     }
+    
     public boolean getStartDate(){
-        String value = fixedAttributes.get("startDate");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("startDate");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
+        }        
     }
+    
     public void setStartDate(boolean startDate){ 
-        fixedAttributes.put("startDate", startDate ? "true" : "false");  
-    }   
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("startDate");
+        aDef.setDefaultValue(startDate ? "true" : "false");
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                    
+    }
+    
     public boolean getEndDate(){
-        String value = fixedAttributes.get("endDate");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("endDate");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
+        }        
     }
+    
     public void setEndDate(boolean endDate){ 
-        fixedAttributes.put("endDate", endDate ? "true" : "false");  
-    }      
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("endDate");
+        aDef.setDefaultValue(endDate ? "true" : "false");
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                    
+    }
+    
     public boolean getPurgeDate(){
-        String value = fixedAttributes.get("purgeDate");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("purgeDate");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
+        }        
     }
+    
     public void setPurgeDate(boolean purgeDate){ 
-        fixedAttributes.put("purgeDate", purgeDate ? "true" : "false");  
-    }         
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("purgeDate");
+        aDef.setDefaultValue(purgeDate ? "true" : "false");
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                    
+    }
+    
     public boolean getStartDateRequired(){
-        String value = fixedAttributes.get("startDateRequired");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("startDateRequired");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
+        } 
     }
-    public void setStartDateRequired(boolean startDateRequired){ 
-        fixedAttributes.put("startDateRequired", startDateRequired ? "true" : "false");  
-    }     
+    
+    public void setStartDateRequired(boolean startDateRequired){
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("startDateRequired");
+        aDef.setDefaultValue(startDateRequired ? "true" : "false");
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                            
+    }
+    
     public boolean getEndDateRequired(){
-        String value = fixedAttributes.get("endDateRequired");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("endDateRequired");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
+        } 
     }
+    
     public void setEndDateRequired(boolean endDateRequired){ 
-        fixedAttributes.put("endDateRequired", endDateRequired ? "true" : "false");  
-    }      
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("endDateRequired");
+        aDef.setDefaultValue(endDateRequired ? "true" : "false");
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                                    
+    }
+    
     public boolean getPurgeDateRequired(){
-        String value = fixedAttributes.get("purgeDateRequired");
-        if(value != null && value.equals("true")){
-            return true;
+        AttributeDef aDef = getFixedAttribute("purgeDateRequired");
+        if (aDef != null ) {
+            return "true".equalsIgnoreCase(aDef.getDefaultValue());
         } else {
             return false;
-        }     
-    }    
+        }         
+    }
+        
     public String getDisplayName(){
-        return fixedAttributes.get("displayName");
+        AttributeDef aDef = getFixedAttribute("displayName");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
+    
     public void setDisplayName(String displayName){
-         fixedAttributes.put("displayName", displayName);
+        AttributeDef aDef = new AttributeDef();
+        aDef.setName("displayName");
+        aDef.setDefaultValue(displayName);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);        
     }
+    
+    public AttributeDef getFixedAttribute(String name) {
+        AttributeDef attributeDef = null;
+        if (fixedAttributes != null && name != null) {
+            for (AttributeDef aDef : fixedAttributes) {
+                if (name.equals(aDef.getName())) {
+                    attributeDef = aDef;
+                    break;
+                }
+            }
+        }
+        return attributeDef;
+    }
+
+    public void setFixedAttribute(AttributeDef aDef) {        
+        if (fixedAttributes == null ) {
+            fixedAttributes = new ArrayList<AttributeDef>();
+        }            
+        fixedAttributes.add(aDef);
+    }
+    
+    public AttributeDef getExtendeddAttribute(String name) {
+        AttributeDef attributeDef = null;
+        if (extendedAttributes != null && name != null) {
+            for (AttributeDef aDef : extendedAttributes) {
+                if (name.equals(aDef.getName())) {
+                    attributeDef = aDef;
+                    break;
+                }
+            }
+        }
+        return attributeDef;
+    }    
+    
+    public void setExtendedAttribute(AttributeDef aDef) {        
+        if (extendedAttributes == null ) {
+            extendedAttributes = new ArrayList<AttributeDef>();
+        }            
+        extendedAttributes.add(aDef);
+    }
+    
 }

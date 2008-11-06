@@ -36,21 +36,35 @@ public class RelationshipComposite {
     
     public RelationshipComposite () {
     }
+    
+    public RelationshipComposite (ObjectRecord sourceRecord, 
+                                  ObjectRecord targetRecord, 
+                                  RelationshipRecord relationshipRecord) {
+        this.sourceRecord = sourceRecord;
+        this.targetRecord = targetRecord;
+        this.relationshipRecord = relationshipRecord;
+    }
+     
     public void setSourceRecord(ObjectRecord sourceRecord) {
         this.sourceRecord = sourceRecord;
     }
+    
     public ObjectRecord getSourceRecord() {
         return sourceRecord;
-    } 
+    }
+    
     public void setTargetRecord(ObjectRecord targetRecord) {
         this.targetRecord = targetRecord;
     }
+    
     public ObjectRecord getTargetRecord() {
         return targetRecord;
-    }    
-   public void setRelationshipRecord(RelationshipRecord relationshipRecord) {
+    }
+    
+    public void setRelationshipRecord(RelationshipRecord relationshipRecord) {
         this.relationshipRecord = relationshipRecord;
     }
+    
     public RelationshipRecord getRelationshipRecord() {
         return relationshipRecord;
     }        

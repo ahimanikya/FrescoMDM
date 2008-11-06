@@ -33,42 +33,56 @@ public class RelationshipDefinitionView {
     private String targetDomain;
     private boolean biDirection;  
     
+    /**
+     * Create instance of RelationshipDefinitionView.
+     */
     public RelationshipDefinitionView(){        
     }
+    
     public RelationshipDefinitionView(String name, String id, String sourceDomain, String targetDomain, boolean biDirection){        
         this.name = name;
         this.id = id; 
         this.sourceDomain = sourceDomain;
         this.targetDomain = targetDomain;
         this.biDirection = biDirection;          
-    }    
+    }
+    
     public String getName(){
         return name;
     }
+    
     public void setName(String name){
         this.name = name;;
     }
+    
     public String getId(){
         return id;
     }
+    
     public void setId(String id){
         this.id = id;
     }
+    
     public String getSourceDomain(){
         return sourceDomain;
     }
+    
     public void setSourceDomain(String sourceDomain){
         this.sourceDomain = sourceDomain;
     }
+    
     public String getTargetDomain(){
         return targetDomain;
     }
+    
     public void setTargetDomain(String targetDomain){
         this.targetDomain = targetDomain;
     }
+    
     public boolean getBiDirection(){
         return biDirection;
     }
+    
     public void setBiDirection(boolean biDirection){
         this.biDirection = biDirection;
     }        

@@ -22,37 +22,39 @@
  */
 package com.sun.mdm.multidomain.services.relationship;
 
-import com.sun.mdm.multidomain.services.model.AttributeList;
+import com.sun.mdm.multidomain.services.model.*;
+import java.util.List;
 import java.util.Date;
 
+import com.sun.mdm.multidomain.services.model.AttributeList;
+import com.sun.mdm.multidomain.services.model.Attribute;
+
 /**
- * RelationshipRecord class.
+ * RelationshipSearch class.
  * @author cye
  */
-public class RelationshipRecord extends AttributeList {
-    
-    private String id;
-    private String name;
+public class RelationshipSearch extends AttributeList {
+
+    private String name;    
     private String sourceDomain;
     private String targetDomain;
-    private String sourceEUID;
-    private String targetEUID;
     private Date startDate;
     private Date endDate;
     private Date purgeDate;
     
     /**
-     * Create an instance of Relationship.
+     * Create an instance of RelationshipSearch.
      */
-    public RelationshipRecord() {    	
+    public RelationshipSearch() {
+        super();
     }
     
     /**
-     * Create an instance of Relationship.
-     * @param name Relationship name.
+     * Create an instance of RelationshipSearch.
+     * @param attributes List of Attribute.
      */
-    public RelationshipRecord(String name) {
-        this.name = name;
+    public RelationshipSearch(List<Attribute> attributes) {
+        super(attributes);
     }
     
     /**
@@ -71,75 +73,43 @@ public class RelationshipRecord extends AttributeList {
         this.name = name;
     }
     
-    /**
-     * Get relationship Id.
-     * @return String Relationship Id.
-     */
-    public String getId() {
-    	return id;
+    public String getSourceDomain() {
+        return sourceDomain;
     }
     
-    /**
-     * Set relationship Id.
-     * @param relationshipID Relationship Id.
-     */
-    public void setId(String id){
-    	this.id = id;
+    public void setSourceDomain(String sourceDomain) {
+        this.sourceDomain = sourceDomain;
     }
     
-    /** 
-     * Get source domain EUID
-     * @return sourceEUID
-     */
-    public String getSourceEUID() {
-    	return sourceEUID;
+    public String getTargetDomain() {
+        return targetDomain;
     }
     
-    /**
-     *  Set source domain EUID
-     * @param sourceEUID
-     */
-    public void setSourceEUID(String sourceEUID) {
-    	this.sourceEUID = sourceEUID;
+    public void setTargetDomain(String targetDomain) {
+        this.targetDomain = targetDomain;
     }
     
-    /** 
-     * Get target domain EUID
-     * @return targetEUID
-     */
-    public String getTargetEUID() {
-    	return targetEUID;
-    }
-    
-    /**
-     * Set target domain EUID
-     * @param targetEUID
-     */
-    public void setTargetEUID(String targetEUID) {
-    	this.targetEUID = targetEUID;
+    public Date getStartDate() {
+        return startDate;
     }
     
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
     
-    public Date getStartDate() {
-        return startDate;
-    } 
-    
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-    
     public Date getEndDate() {
         return endDate;
     }
     
-    public void setPurgeDate(Date purgeDate) {
-        this.purgeDate = purgeDate;
-    }
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    } 
     
     public Date getPurgeDate() {
         return purgeDate;
-    }        
+    }
+    
+    public void setPurgeDate(Date purgeDate) {
+        this.purgeDate = purgeDate;
+    }            
 }

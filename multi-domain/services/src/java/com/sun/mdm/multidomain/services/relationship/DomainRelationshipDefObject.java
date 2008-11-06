@@ -55,15 +55,18 @@ public class DomainRelationshipDefObject implements Iterator<RelationshipDef> {
     public String getDomain(){
         return domain;
     }
+    
     public void setDomain(String domain){
         this.domain = domain;
     }
+    
     public List<RelationshipDef> getRelationshipDefinitions(){
         if (relationshipDefinitions == null) {
             relationshipDefinitions = new ArrayList<RelationshipDef>();
         }
         return relationshipDefinitions;
     }
+    
     public void setRelationshipDefinitions(List<RelationshipDef> relationshipDefinitions){
         this.relationshipDefinitions = relationshipDefinitions;
     }

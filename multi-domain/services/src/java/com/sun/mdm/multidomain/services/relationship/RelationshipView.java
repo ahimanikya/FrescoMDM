@@ -28,69 +28,97 @@ package com.sun.mdm.multidomain.services.relationship;
  */
 public class RelationshipView {
     
+    private String name;
+     
+    private String id;
+     
     private String sourceDomain;
     
     private String targetDomain;
-    
-    private String name;
      
     private String sourceEUID;
     
     private String targetEUID;
-    
-    private String id;
+      
     /* source record highLight */
     private String sourceHighLight;
+    
     /* target record highLight */
     private String targetHighLight;
     
+    /**
+     * Create instance of RelationshipView.
+     */
     public RelationshipView(){
     }
+    
+    /**
+     * Create instance of RelationshipView.
+     * @param name Relationship name.
+     */
+    public RelationshipView(String name){
+        this.name = name;
+    }
+    
     public String getSourceDomain() {
         return sourceDomain;
     }
+    
     public void setSourceDomain(String sourceDomain){
         this.sourceDomain = sourceDomain;
     }
+    
     public String getTargetDomain() {
         return targetDomain;
     }
+    
     public void setTargetDomain(String targetDomain){
         this.targetDomain = targetDomain;
-    }   
+    }  
+    
     public String getName() {
         return name;
     }
     public void setName(String name){
         this.name = name;
-    }      
+    }  
+    
     public String getTargetEUID() {
         return targetEUID;
     }
+    
     public void setTargetEUID(String targetEUID){
         this.targetEUID = targetEUID;
-    }   
-   public String getSourceEUID() {
+    }  
+    
+    public String getSourceEUID() {
         return sourceEUID;
     }
+    
     public void setSourceEUID(String sourceEUID){
         this.sourceEUID = sourceEUID;
-    }       
+    }
+    
     public String getId() {
         return id;
     }
+    
     public void setId(String id){
         this.id = id;
-    }      
+    }  
+    
     public String getSourceHighLight() {
         return sourceHighLight;
     }
+    
     public void setSourceHighLight(String sourceHighLight){
         this.sourceHighLight = sourceHighLight;
-    }           
+    }
+    
     public String getTargetHighLight() {
         return targetHighLight;
     }
+    
     public void setTargetHighLight(String targetHighLight){
         this.targetHighLight = targetHighLight;
     }        

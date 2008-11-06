@@ -40,24 +40,31 @@ public class DomainRelationshipObject {
     
     public DomainRelationshipObject(){        
     }
+    
     public String getDomain(){        
         return domain;
     }
+    
     public void setDomain(String domain){
         this.domain = domain;
     }
+    
     public ObjectView getPrimaryObject() {
         return primaryObject;
     }
+    
     public void setPrimaryObject(ObjectView primaryObject){        
         this.primaryObject = primaryObject;
     }
+    
     public Map<RelationshipDefinitionView, List<RelationshipView>> getRelationshipViews(){        
         return relationshipViews;
     }
+    
     public void setRelationshipViews(Map<RelationshipDefinitionView, List<RelationshipView>> relationshipViews){        
         this.relationshipViews = relationshipViews;
     }
+    
     public void addRelationshipView(RelationshipDefinitionView relationshipDef, RelationshipView relationship) {
         if (relationshipViews == null) {
             relationshipViews = new HashMap<RelationshipDefinitionView, List<RelationshipView>>();            
@@ -70,6 +77,7 @@ public class DomainRelationshipObject {
         }
         value.add(relationship);
     }
+    
     public List<RelationshipView> getRelationshipView(RelationshipDefinitionView relationshipDef) {
         List<RelationshipView> relationshipView = null;
          if (relationshipViews != null) {
