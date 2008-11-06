@@ -12,6 +12,20 @@
   <name>Multi-Domain Core Services</name>
   <version>${mural.currentVersion}</version>
   <url>http://mural.dev.java.net</url>
+
+  <reporting>
+  	<plugins>
+    	<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.4.2</version>
+        <configuration>
+        	<aggregate>true</aggregate>
+        </configuration>
+    	</plugin>        
+  	</plugins>
+	</reporting> 
+  
   <build>
 		<finalName>multidomain-core</finalName>
     <sourceDirectory>src</sourceDirectory>
