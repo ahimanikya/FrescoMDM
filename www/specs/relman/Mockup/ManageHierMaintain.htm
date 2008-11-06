@@ -45,8 +45,7 @@ a field of the domain. <br />
 <br />
 </span><br />
 <br /><div style="margin-left: 40px;"><img style="width: 813px; height: 725px;" alt="" src="../attach/SelectHierRecord.png" /><br /></div>
-<br /><br />If the user selects a node that is not on the hierarchy the code should handle this as follows.<br /><br /><ul><li>Nodes exist in the hierarchy<br /><br /><br />Show a dialog informing the user that the record is not in the hiearchy</li><li>The hierarchy is empty<br /><br />Show a dialog asking the user if they want to add this node as the root node </li></ul>
-<br />
+<br /><br /><br />
 <h2>1. Initial screen </h2>
 First time the screen is shown in a session. <br />
 <br />
@@ -89,7 +88,7 @@ hidden and the title on the left hand side should be shown.</span></p>
 <h2> 3. View Initial record</h2>
 <p>Displays information about a record selected from the
 search screen. &nbsp;</p>
-<p>In this case "Suhanto Wihardja" was selected. &nbsp;&nbsp;</p>
+<p>In this case "James Mason" was selected. &nbsp;&nbsp;</p>
 <p></p>
 <p><span class="note-highlight" style="font-weight: bold;">Note: </span><span class="note-highlight">If the root node option was selected
 the the first node in the hierarchy (if any) is shown. </span></p>
@@ -101,7 +100,7 @@ by the currently selected access control for the user. <span style="color: green
 In other words a hierarchy is associated with an access control and not
 a specific user. </p>
 <h3><span style="color: green;">Notes</span></h3>
-<br />
+
 <ul>
 <li> An actual hierarchy tree would show all the
 records at the same level. However the only branches to be expanded
@@ -125,7 +124,9 @@ record detail area. </p>
 <p></p>
 <img style="width: 989px; height: 768px;" alt="" src="../attach/RecordHierarchyViewS4.png" /><br />
 <br />
-<h2>Misc. Overlays</h2><br />
+<h2>Drag / Drop support</h2>The hierarchy tree can support drag / drop
+even if the second tree is not shown (as long as the user has the
+correct permissions of course). <h2>Misc. Overlays</h2>
 <br />
 <h3>Add Overlay</h3>
 <br />
@@ -135,9 +136,10 @@ Note: The example does not show the expected search screen nor
 attributes for this example. <br />
 <br />
 <img style="width: 999px; height: 544px;" alt="" src="../attach/HierAddRecord.PNG" /><br />
-<br />If the Add Overlay is shown and there are no records in the
-hierarchy then only allow a single record to be selected. &nbsp;This
-will become the root node for the hierarchy. &nbsp;<br /><br /><h3>Find Overlay</h3>
+<br />If the hierarchy node is selected then the above daialog should
+only support a single select (as there can only be one root node).
+&nbsp;The selected node becomes the new root and any existing root node
+is made its child. . &nbsp;<br /><br /><h3>Find Overlay</h3>
 <br />
 Find a record in the tree. <br />
 <br />This is exactly like the original Select Dialog except that the hierarchy is already selected. <br /><br /><img style="width: 766px; height: 570px;" alt="" src="../attach/FindHierRecord.png" /><br /><span class="note-highlight"><br /></span><h3>Filter Records Overaly &nbsp;</h3><br />Filter both by search and hiearchy node attributes. &nbsp;<br /><br /><img style="width: 729px; height: 322px;" alt="" src="../attach/FilterHierRecord.png" /><br /><br />Resulting tree shows all nodes that fit the criteria. &nbsp; A filter icon should appear by&nbsp;the top org chart node. <br />
