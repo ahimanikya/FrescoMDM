@@ -17,7 +17,7 @@
       <include method="addRelationshipDef" />            
       <include method="deleteRelationshipDef" /> 
       <include method="getRelationshipDefCount" />
-      <include method="getDomainRelationshipDefinitionObjects" />            
+      <include method="getDomainRelationshipDefObjects" />            
     </create>
 
     <create creator="spring" javascript="RelationshipHandler" scope="session">
