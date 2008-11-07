@@ -71,14 +71,14 @@ public class RelationshipHandler {
     }
     
     /**
-     * Search all relationships  for the given domain search options and criteria.
+     * Search all relationships by record for the given domain search options and criteria.
      * @param domainSearch Domain search options and criteria.
      * @return DomainRelationshipObject A list of all relationship views for the given domain record.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public DomainRelationshipObject searchDomainRelationshipObjects(DomainSearch domainSearch)
+    public DomainRelationshipObject searchDomainRelationshipsByRecord(DomainSearch domainSearch)
         throws ServiceException {
-        return relationshipManager.searchDomainRelationshipObjects(domainSearch);        
+        return relationshipManager.searchRelationshipsByRecord(domainSearch);        
     }
 
     /**
@@ -95,10 +95,10 @@ public class RelationshipHandler {
     /**
      * Search master index enterprise objects for the given domain search options and criteria.
      * @param domainSearch Domain search options and criteria.
-     * @return List<ObjectView> A list of object view which is a summary of object node.
+     * @return List<ObjectRecord> A list of object view which is a summary of object node.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<ObjectView> searchEnterprises(DomainSearch domainSearch)
+    public List<ObjectRecord> searchEnterprises(DomainSearch domainSearch)
         throws ServiceException {
          return relationshipManager.searchEnterprises(domainSearch);    
     }
