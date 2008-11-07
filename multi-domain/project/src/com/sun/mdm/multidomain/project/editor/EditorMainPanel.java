@@ -155,7 +155,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     
     public void loadDomainEntityTree(DomainNode currentDomainNode) {
         if (currentDomainNode != null) {
-            mLeftSplitPane.setBottomComponent(currentDomainNode.getMainEntityTree());
+            mEntityTree = currentDomainNode.getMainEntityTree();
+            mEntityTreeScrollPane.setViewportView(mEntityTree);
+            mLeftSplitPane.setBottomComponent(mEntityTreeScrollPane);
         } else {
             mLeftSplitPane.setBottomComponent(null);
         }
