@@ -70,6 +70,7 @@ public class DomainNode extends AbstractNode {
     private ArrayList <Definition> alDefinitions = new ArrayList();
     //TabDomainProperties mTabDomainProperties = null;
     EditorMainApp mEditorMainApp;
+    EntityTree mMainEntityTree = null;
     EntityTree mEntityTree = null;
     TabDomainSearch mTabDomainSearch;
     TabDomainView mTabDomainView;
@@ -272,11 +273,26 @@ public class DomainNode extends AbstractNode {
         this.alDefinitions = alDefinitions;
     }
     
+    /** to be used by dialog other than main panel
+     * 
+     * @return EntityTree mEntityTree
+     */
     public EntityTree getEntityTree() {
         if (mEntityTree == null) {
             mEntityTree = new EntityTree(this.getMiObject());
         }
         return mEntityTree;
+    }
+    
+    /** to be used main panel
+     * 
+     * @return EntityTree mMainEntityTree
+     */
+    public EntityTree getMainEntityTree() {
+        if (mMainEntityTree == null) {
+            mMainEntityTree = new EntityTree(this.getMiObject());
+        }
+        return mMainEntityTree;
     }
     
     public TabDomainSearch getDoaminsTab(boolean bRefresh) {

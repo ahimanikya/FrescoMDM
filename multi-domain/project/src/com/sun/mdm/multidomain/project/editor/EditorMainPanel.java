@@ -155,7 +155,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     
     public void loadDomainEntityTree(DomainNode currentDomainNode) {
         if (currentDomainNode != null) {
-            mLeftSplitPane.setBottomComponent(currentDomainNode.getEntityTree());
+            mLeftSplitPane.setBottomComponent(currentDomainNode.getMainEntityTree());
         } else {
             mLeftSplitPane.setBottomComponent(null);
         }
@@ -209,7 +209,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         DomainNode currentDomainNode = null; // use this to load web tabs for domain
         if (alDomainNodes != null && alDomainNodes.size() > 0) {
             currentDomainNode = alDomainNodes.get(0);
-            mEntityTree = currentDomainNode.getEntityTree();
+            mEntityTree = currentDomainNode.getMainEntityTree();
             mEntityTreeScrollPane.setViewportView(mEntityTree);
             loadDomainProperties(currentDomainNode);
         }
