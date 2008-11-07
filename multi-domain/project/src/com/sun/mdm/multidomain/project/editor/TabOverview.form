@@ -24,12 +24,6 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane2" min="-2" pref="360" max="-2" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="180" pref="180" max="180" attributes="0"/>
-              <Component id="jButtonAddDefinition" min="-2" pref="90" max="-2" attributes="0"/>
-              <Component id="jButtonRemoveDefinition" min="-2" pref="90" max="-2" attributes="0"/>
-          </Group>
           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
               <Group type="102" alignment="1" attributes="1">
                   <Component id="jLabelDefinition" min="-2" pref="150" max="-2" attributes="0"/>
@@ -38,6 +32,15 @@
                   <Component id="jButtonRemoveDomain" min="-2" pref="90" max="-2" attributes="0"/>
               </Group>
               <Component id="jScrollPane1" alignment="1" min="-2" pref="360" max="-2" attributes="0"/>
+          </Group>
+          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+              <Group type="102" alignment="1" attributes="1">
+                  <Component id="jRadioButtonShowAll" min="-2" pref="121" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jButtonAddDefinition" min="-2" pref="90" max="-2" attributes="0"/>
+                  <Component id="jButtonRemoveDefinition" min="-2" pref="90" max="-2" attributes="0"/>
+              </Group>
+              <Component id="jScrollPane2" alignment="1" min="-2" pref="360" max="-2" attributes="0"/>
           </Group>
           <Component id="jLabelDomainName" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
       </Group>
@@ -50,7 +53,7 @@
               <Component id="jScrollPane1" min="-2" pref="110" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jButtonAddDomain" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonRemoveDomain" min="-2" max="-2" attributes="0"/>
@@ -58,14 +61,17 @@
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jLabelDefinition" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jLabelDefinition" min="-2" pref="22" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Component id="jScrollPane2" min="-2" pref="110" max="-2" attributes="0"/>
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButtonAddDefinition" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="jButtonAddDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jRadioButtonShowAll" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Component id="jButtonRemoveDefinition" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -76,7 +82,7 @@
     <Component class="javax.swing.JLabel" name="jLabelDomainName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabOverview.jLabelDomainName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Domains" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -104,7 +110,7 @@
     <Component class="javax.swing.JButton" name="jButtonAddDomain">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabOverview.jButtonAddDomain.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Add" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -114,7 +120,7 @@
     <Component class="javax.swing.JButton" name="jButtonRemoveDomain">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabOverview.jButtonRemoveDomain.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Remove" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -124,7 +130,7 @@
     <Component class="javax.swing.JLabel" name="jLabelDefinition">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabOverview.jLabelDefinition.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Definitions" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -152,7 +158,7 @@
     <Component class="javax.swing.JButton" name="jButtonAddDefinition">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabOverview.jButtonAddDefinition.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Add" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -162,11 +168,21 @@
     <Component class="javax.swing.JButton" name="jButtonRemoveDefinition">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabOverview.jButtonRemoveDefinition.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Remove" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveDefinition"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="jRadioButtonShowAll">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Show_All_Definitions" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="onShowAllStateChanged"/>
       </Events>
     </Component>
   </SubComponents>

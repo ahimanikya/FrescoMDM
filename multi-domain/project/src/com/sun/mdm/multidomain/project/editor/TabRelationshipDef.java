@@ -177,9 +177,9 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jButtonDeleteExtendedAttribute = new javax.swing.JButton();
         jButtonEditExtendedAttribute = new javax.swing.JButton();
 
-        jLabelName.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelName.text")); // NOI18N
+        jLabelName.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Name_Colon")); // NOI18N
 
-        jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelPlugin.text")); // NOI18N
+        jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Plugin_Colon")); // NOI18N
 
         jTextDomain2.setEditable(false);
 
@@ -189,15 +189,15 @@ public class TabRelationshipDef extends javax.swing.JPanel {
 
         jTextDomain1.setEditable(false);
 
-        jLabelDomains.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelDomains.text")); // NOI18N
+        jLabelDomains.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Domains_Colon")); // NOI18N
 
-        jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelDescription.text")); // NOI18N
+        jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Description")); // NOI18N
 
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
-        jLabelPredefinedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelPredefinedAttributes.text")); // NOI18N
+        jLabelPredefinedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Predefined_Attributes")); // NOI18N
 
         jTablePredefinedAttr.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -212,7 +212,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         ));
         jScrollPanePredefinedAttr.setViewportView(jTablePredefinedAttr);
 
-        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonEditPredefinedAttribute.text")); // NOI18N
+        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Edit")); // NOI18N
         jButtonEditPredefinedAttribute.setEnabled(false);
         jButtonEditPredefinedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -220,7 +220,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             }
         });
 
-        jLabelExtendedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jLabelExtendedAttributes.text")); // NOI18N
+        jLabelExtendedAttributes.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Extended_Attributes")); // NOI18N
 
         jTableExtendedAttr.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,14 +235,14 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         ));
         jScrollPaneExtendedAttr.setViewportView(jTableExtendedAttr);
 
-        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonAddExtendedAttribute.text")); // NOI18N
+        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Add")); // NOI18N
         jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddExtendedAttributeonAddExtendedAttribute(evt);
             }
         });
 
-        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonDeleteExtendedAttribute.text")); // NOI18N
+        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Remove")); // NOI18N
         jButtonDeleteExtendedAttribute.setEnabled(false);
         jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,7 +250,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             }
         });
 
-        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "TabRelationshipDef.jButtonEditExtendedAttribute.text")); // NOI18N
+        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabRelationshipDef.class, "LBL_Edit")); // NOI18N
         jButtonEditExtendedAttribute.setEnabled(false);
         jButtonEditExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

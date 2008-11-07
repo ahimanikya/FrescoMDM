@@ -131,7 +131,8 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                     onDefinitionSelected();
                 }
             });
-            
+        this.jRadioButtonShowAll.setSelected(true);
+        
         //Drag and drop
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -241,6 +242,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         TableModelDefinition model = null;
         if (refresh) {
             model = (TableModelDefinition) jTableDefinitions.getModel();
+            model.removeAll();
             jTableDefinitions.removeAll();
         }
         ArrayList <DefinitionNode> alDefinitionNodes = mEditorMainApp.getDefinitionNodes();
@@ -252,6 +254,9 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             String targetDomain = type.getTargetDomain();
             DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
             rows.add(r);
+            if (model != null) {
+                model.addRow(i, r);
+            }
         }
         if (refresh) {
             model.fireTableDataChanged();
@@ -305,10 +310,11 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jTableDefinitions = new javax.swing.JTable();
         jButtonAddDefinition = new javax.swing.JButton();
         jButtonRemoveDefinition = new javax.swing.JButton();
+        jRadioButtonShowAll = new javax.swing.JRadioButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Overview"))); // NOI18N
 
-        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jLabelDomainName.text")); // NOI18N
+        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domains")); // NOI18N
 
         jTableDomains.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -323,21 +329,21 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ));
         jScrollPane1.setViewportView(jTableDomains);
 
-        jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddDomain.text")); // NOI18N
+        jButtonAddDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddDomain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddDomain(evt);
             }
         });
 
-        jButtonRemoveDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonRemoveDomain.text")); // NOI18N
+        jButtonRemoveDomain.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         jButtonRemoveDomain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveDomain(evt);
             }
         });
 
-        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jLabelDefinition.text")); // NOI18N
+        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Definitions")); // NOI18N
 
         jTableDefinitions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -352,17 +358,24 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ));
         jScrollPane2.setViewportView(jTableDefinitions);
 
-        jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonAddDefinition.text")); // NOI18N
+        jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
         jButtonAddDefinition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onAddDefinition(evt);
             }
         });
 
-        jButtonRemoveDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "TabOverview.jButtonRemoveDefinition.text")); // NOI18N
+        jButtonRemoveDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Remove")); // NOI18N
         jButtonRemoveDefinition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRemoveDefinition(evt);
+            }
+        });
+
+        jRadioButtonShowAll.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Show_All_Definitions")); // NOI18N
+        jRadioButtonShowAll.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                onShowAllStateChanged(evt);
             }
         });
 
@@ -370,11 +383,6 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-            .add(layout.createSequentialGroup()
-                .add(180, 180, 180)
-                .add(jButtonAddDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(jButtonRemoveDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                 .add(layout.createSequentialGroup()
                     .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -382,6 +390,13 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                     .add(jButtonAddDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jButtonRemoveDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                .add(layout.createSequentialGroup()
+                    .add(jRadioButtonShowAll, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 121, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jButtonAddDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jButtonRemoveDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(jLabelDomainName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
@@ -398,12 +413,14 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                             .add(jButtonRemoveDomain))
                         .add(25, 25, 25))
                     .add(layout.createSequentialGroup()
-                        .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(10, 10, 10)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jButtonAddDefinition)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jButtonAddDefinition)
+                        .add(jRadioButtonShowAll))
                     .add(jButtonRemoveDefinition)))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -434,11 +451,16 @@ TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
         }
         loadDomains();
         // load all definitions
-        loadDefinitions(true);
+        if (this.jRadioButtonShowAll.isSelected()) {
+            //loadDefinitions(true);
+        } else {
+            
+        }
         if (model.getRowCount() > 0) {
             jTableDomains.setRowSelectionInterval(0, 0);
             onDomainSelected();
         } else {
+            loadDefinitions(true);
             this.jButtonRemoveDomain.setEnabled(false);
             mEditorMainPanel.loadDomainEntityTree(null);
         }
@@ -519,6 +541,16 @@ private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
     performAddDefinition(Definition.TYPE_RELATIONSHIP);
 }//GEN-LAST:event_onAddDefinition
 
+private void onShowAllStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onShowAllStateChanged
+    if (this.jRadioButtonShowAll.isSelected()) {
+        loadDefinitions(true);
+    } else {
+        if (this.jTableDomains.getSelectedRow() >= 0) {
+            onDomainSelected();
+        }
+    }
+}//GEN-LAST:event_onShowAllStateChanged
+
 public void onAddRelationship() {
     //Definition.TYPE_RELATIONSHIP
     performAddDefinition(Definition.TYPE_RELATIONSHIP);
@@ -538,6 +570,7 @@ public void onAddHierarchy() {
     private javax.swing.JButton jButtonRemoveDomain;
     private javax.swing.JLabel jLabelDefinition;
     private javax.swing.JLabel jLabelDomainName;
+    private javax.swing.JRadioButton jRadioButtonShowAll;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableDefinitions;
@@ -586,8 +619,11 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         DomainNode domainNode = mMapDomainNodes.get(domainName);
         
         // load definitions per domain
-        //loadDefinitionsByDomain(domainNode, true);
-        
+        if (this.jRadioButtonShowAll.isSelected()) {
+            loadDefinitions(true);
+        } else {
+            loadDefinitionsByDomain(domainNode, true);
+        }
         mEditorMainPanel.loadDomainEntityTree(domainNode);
         
         //get properties panel from domainNode and present it

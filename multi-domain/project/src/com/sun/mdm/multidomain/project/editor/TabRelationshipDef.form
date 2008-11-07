@@ -107,7 +107,7 @@
     <Component class="javax.swing.JLabel" name="jLabelName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Name_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -116,7 +116,7 @@
     <Component class="javax.swing.JLabel" name="jLabelPlugin">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelPlugin.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Plugin_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -155,14 +155,14 @@
     <Component class="javax.swing.JLabel" name="jLabelDomains">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelDomains.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Domains_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDescription">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelDescription.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Description" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -184,7 +184,7 @@
     <Component class="javax.swing.JLabel" name="jLabelPredefinedAttributes">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelPredefinedAttributes.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Predefined_Attributes" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -212,7 +212,7 @@
     <Component class="javax.swing.JButton" name="jButtonEditPredefinedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonEditPredefinedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Edit" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -223,7 +223,7 @@
     <Component class="javax.swing.JLabel" name="jLabelExtendedAttributes">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelExtendedAttributes.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Extended_Attributes" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -251,7 +251,7 @@
     <Component class="javax.swing.JButton" name="jButtonAddExtendedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonAddExtendedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Add" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -261,7 +261,7 @@
     <Component class="javax.swing.JButton" name="jButtonDeleteExtendedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonDeleteExtendedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Remove" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -272,7 +272,7 @@
     <Component class="javax.swing.JButton" name="jButtonEditExtendedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonEditExtendedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Edit" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>

@@ -19,19 +19,6 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabelPredefinedAttributes" min="-2" pref="180" max="-2" attributes="0"/>
-                  <Component id="jScrollPanePredefinedAttr" min="-2" pref="540" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelExtendedAttributes" min="-2" pref="190" max="-2" attributes="0"/>
-                      <EmptySpace min="260" pref="260" max="260" attributes="0"/>
-                      <Component id="jButtonEditPredefinedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="jScrollPaneExtendedAttr" min="-2" pref="540" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="270" pref="270" max="270" attributes="0"/>
-                      <Component id="jButtonAddExtendedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="jButtonDeleteExtendedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="jButtonEditExtendedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabelDescription" alignment="0" pref="100" max="32767" attributes="1"/>
@@ -62,8 +49,26 @@
                           </Group>
                       </Group>
                   </Group>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" alignment="0" attributes="1">
+                          <Component id="jLabelExtendedAttributes" min="-2" pref="190" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jButtonEditPredefinedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jScrollPanePredefinedAttr" alignment="0" min="-2" pref="540" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jButtonAddExtendedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonDeleteExtendedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <Component id="jButtonEditExtendedAttribute" min="-2" pref="90" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jScrollPaneExtendedAttr" alignment="0" min="-2" pref="540" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -103,23 +108,27 @@
               <Component id="jLabelPredefinedAttributes" min="-2" pref="20" max="-2" attributes="0"/>
               <EmptySpace min="6" pref="6" max="6" attributes="0"/>
               <Component id="jScrollPanePredefinedAttr" min="-2" pref="110" max="-2" attributes="0"/>
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="14" pref="14" max="14" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="jLabelExtendedAttributes" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jButtonEditPredefinedAttribute" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonEditPredefinedAttribute" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="6" pref="6" max="6" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Component id="jScrollPaneExtendedAttr" min="-2" pref="190" max="-2" attributes="0"/>
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButtonAddExtendedAttribute" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonDeleteExtendedAttribute" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonEditExtendedAttribute" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="jButtonAddExtendedAttribute" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonDeleteExtendedAttribute" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -128,7 +137,7 @@
     <Component class="javax.swing.JLabel" name="jLabelName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Name_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -137,7 +146,7 @@
     <Component class="javax.swing.JLabel" name="jLabelPlugin">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelPlugin.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Plugin_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -151,7 +160,7 @@
     <Component class="javax.swing.JLabel" name="jLabelDescription">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelDescription.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Description" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -173,7 +182,7 @@
     <Component class="javax.swing.JLabel" name="jLabelPredefinedAttributes">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelPredefinedAttributes.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Predefined_Attributes" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -201,7 +210,7 @@
     <Component class="javax.swing.JButton" name="jButtonEditPredefinedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonEditPredefinedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Edit" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -212,7 +221,7 @@
     <Component class="javax.swing.JLabel" name="jLabelExtendedAttributes">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jLabelExtendedAttributes.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Extended_Attributes" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -240,7 +249,7 @@
     <Component class="javax.swing.JButton" name="jButtonAddExtendedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonAddExtendedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Add" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -250,7 +259,7 @@
     <Component class="javax.swing.JButton" name="jButtonDeleteExtendedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonDeleteExtendedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Remove" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -261,7 +270,7 @@
     <Component class="javax.swing.JButton" name="jButtonEditExtendedAttribute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabRelationshipDef.jButtonEditExtendedAttribute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Edit" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -272,7 +281,7 @@
     <Component class="javax.swing.JLabel" name="jLabelEffectiveFrom">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabHierarchyDef.jLabelEffectiveFrom.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Effective_From_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -281,7 +290,7 @@
     <Component class="javax.swing.JLabel" name="jLabelEffectiveTo">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabHierarchyDef.jLabelEffectiveTo.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Effective_To" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

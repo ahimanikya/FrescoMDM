@@ -166,17 +166,17 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jLabelEffectiveTo = new javax.swing.JLabel();
         jTextEffectiveTo = new javax.swing.JTextField();
 
-        jLabelName.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jLabelName.text")); // NOI18N
+        jLabelName.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Name_Colon")); // NOI18N
 
-        jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jLabelPlugin.text")); // NOI18N
+        jLabelPlugin.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Plugin_Colon")); // NOI18N
 
-        jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jLabelDescription.text")); // NOI18N
+        jLabelDescription.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Description")); // NOI18N
 
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
-        jLabelPredefinedAttributes.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jLabelPredefinedAttributes.text")); // NOI18N
+        jLabelPredefinedAttributes.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Predefined_Attributes")); // NOI18N
 
         jTablePredefinedAttr.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -191,7 +191,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         ));
         jScrollPanePredefinedAttr.setViewportView(jTablePredefinedAttr);
 
-        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jButtonEditPredefinedAttribute.text")); // NOI18N
+        jButtonEditPredefinedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Edit")); // NOI18N
         jButtonEditPredefinedAttribute.setEnabled(false);
         jButtonEditPredefinedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,7 +199,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             }
         });
 
-        jLabelExtendedAttributes.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jLabelExtendedAttributes.text")); // NOI18N
+        jLabelExtendedAttributes.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Extended_Attributes")); // NOI18N
 
         jTableExtendedAttr.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -214,14 +214,14 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         ));
         jScrollPaneExtendedAttr.setViewportView(jTableExtendedAttr);
 
-        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jButtonAddExtendedAttribute.text")); // NOI18N
+        jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Add")); // NOI18N
         jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddExtendedAttributeonAddExtendedAttribute(evt);
             }
         });
 
-        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jButtonDeleteExtendedAttribute.text")); // NOI18N
+        jButtonDeleteExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Remove")); // NOI18N
         jButtonDeleteExtendedAttribute.setEnabled(false);
         jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,7 +229,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             }
         });
 
-        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabRelationshipDef.jButtonEditExtendedAttribute.text")); // NOI18N
+        jButtonEditExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Edit")); // NOI18N
         jButtonEditExtendedAttribute.setEnabled(false);
         jButtonEditExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,9 +237,9 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             }
         });
 
-        jLabelEffectiveFrom.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabHierarchyDef.jLabelEffectiveFrom.text")); // NOI18N
+        jLabelEffectiveFrom.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Effective_From_Colon")); // NOI18N
 
-        jLabelEffectiveTo.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "TabHierarchyDef.jLabelEffectiveTo.text")); // NOI18N
+        jLabelEffectiveTo.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Effective_To")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -249,17 +249,6 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabelPredefinedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 180, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jScrollPanePredefinedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createSequentialGroup()
-                        .add(jLabelExtendedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(260, 260, 260)
-                        .add(jButtonEditPredefinedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jScrollPaneExtendedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createSequentialGroup()
-                        .add(270, 270, 270)
-                        .add(jButtonAddExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jButtonDeleteExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jButtonEditExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(jLabelDescription, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
@@ -281,8 +270,22 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                                     .add(layout.createSequentialGroup()
                                         .add(jLabelEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(jTextEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 156, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))))
-                .add(25, 25, 25))
+                                        .add(jTextEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 156, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                            .add(jLabelExtendedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jButtonEditPredefinedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPanePredefinedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                        .add(layout.createSequentialGroup()
+                            .add(jButtonAddExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(jButtonDeleteExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(4, 4, 4)
+                            .add(jButtonEditExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPaneExtendedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -313,20 +316,22 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                 .add(jLabelPredefinedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(6, 6, 6)
                 .add(jScrollPanePredefinedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(10, 10, 10)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(14, 14, 14)
+                        .add(24, 24, 24)
                         .add(jLabelExtendedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jButtonEditPredefinedAttribute))
+                    .add(layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jButtonEditPredefinedAttribute)))
                 .add(6, 6, 6)
                 .add(jScrollPaneExtendedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(10, 10, 10)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jButtonAddExtendedAttribute)
-                    .add(jButtonDeleteExtendedAttribute)
-                    .add(jButtonEditExtendedAttribute))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .add(jButtonEditExtendedAttribute)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jButtonAddExtendedAttribute)
+                        .add(jButtonDeleteExtendedAttribute)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
