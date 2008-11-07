@@ -30,7 +30,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTxtDomain" min="-2" pref="302" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jPanel1" alignment="1" pref="643" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
                   <Component id="jPanelSearchResult" alignment="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -49,7 +49,7 @@
               <Component id="jPanelSearchResult" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -67,7 +67,7 @@
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Search Page Properties">
-              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jPanel1.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_SEARCH_PAGE_PROPERTIES" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -89,11 +89,11 @@
                       <Component id="jScrollPaneSearchPage" alignment="1" min="-2" pref="519" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jBtnUp" linkSize="3" min="-2" pref="67" max="-2" attributes="1"/>
-                      <Component id="jBtnDown" linkSize="3" min="-2" pref="77" max="-2" attributes="1"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jBtnDown" min="0" pref="0" max="32767" attributes="1"/>
+                      <Component id="jBtnUp" alignment="0" pref="35" max="32767" attributes="1"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -101,7 +101,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jScrollPaneSearchPage" min="-2" pref="105" max="-2" attributes="0"/>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace pref="42" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jBtnEditSearchType" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnRemoveSearchPage" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -136,7 +136,7 @@
         <Component class="javax.swing.JButton" name="jBtnRemoveSearchPage">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jBtnRemoveSearchPage.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_REMOVE" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -157,8 +157,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="jBtnUp">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jBtnUp.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/com/sun/mdm/multidomain/project/editor/UpArrow.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -167,8 +167,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="jBtnDown">
           <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jBtnDown.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/com/sun/mdm/multidomain/project/editor/DownArrow.JPG"/>
             </Property>
           </Properties>
           <Events>
@@ -182,7 +182,7 @@
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Search Result Properties">
-              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jPanelSearchResult.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_DOMAIN_SEARCH_RESULT_PROPERTIES" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -243,7 +243,7 @@
         <Component class="javax.swing.JButton" name="jBtnRemoveSearchResult">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="TabDomainSearch.jBtnRemoveSearchResult.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_REMOVE" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>

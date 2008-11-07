@@ -161,7 +161,6 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
 
         jLabelSearchResultName.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_DOMAIN_SEARCH_RESULT_NAME")); // NOI18N
 
-        jTxtResultName.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jTxtResultName.text")); // NOI18N
         jTxtResultName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTxtResultNameActionPerformed(evt);
@@ -172,7 +171,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
 
         jLabelMaxItems.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_DOMAIN_SEARCH_RESULT_MAX_ITEMS")); // NOI18N
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jPanel1.border.title"))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELD_GROUPS"))); // NOI18N
 
         jTableFieldGroup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -227,7 +226,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jPanel2.border.title"))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELDS"))); // NOI18N
 
         jTableField.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

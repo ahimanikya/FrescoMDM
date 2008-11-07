@@ -278,7 +278,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jScrollPane1.border.title"))); // NOI18N
 
-        jLabelRelTypes.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLabelRelTypes.text")); // NOI18N
+        jLabelRelTypes.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_RELATIONSHIP")); // NOI18N
 
         jLayeredPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jLayeredPane1.border.title"))); // NOI18N
 
@@ -287,23 +287,23 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onDisplayNameActionPerformed(evt);
             }
         });
-        jTxtDisplayName.setBounds(130, 50, 120, 19);
+        jTxtDisplayName.setBounds(130, 50, 120, -1);
         jLayeredPane1.add(jTxtDisplayName, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
-        jLabel1.setBounds(10, 50, 110, 14);
+        jLabel1.setBounds(10, 50, 110, -1);
         jLayeredPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
-        jLabel2.setBounds(10, 80, 100, 14);
+        jLabel2.setBounds(10, 80, 100, -1);
         jLayeredPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtDisplayOrder.setEditable(false);
-        jTxtDisplayOrder.setBounds(130, 80, 120, 19);
+        jTxtDisplayOrder.setBounds(130, 80, 120, -1);
         jLayeredPane1.add(jTxtDisplayOrder, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
-        jLabel3.setBounds(10, 110, 100, 14);
+        jLabel3.setBounds(10, 110, 100, -1);
         jLayeredPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtMaxLength.addActionListener(new java.awt.event.ActionListener() {
@@ -311,11 +311,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onMaxLengthActionPerformed(evt);
             }
         });
-        jTxtMaxLength.setBounds(130, 110, 120, 19);
+        jTxtMaxLength.setBounds(130, 110, 120, -1);
         jLayeredPane1.add(jTxtMaxLength, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_TYPE")); // NOI18N
-        jLabel4.setBounds(10, 140, 100, 14);
+        jLabel4.setBounds(10, 140, 100, -1);
         jLayeredPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jTxtDataType.setEditable(false);
@@ -324,7 +324,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onjTxtDataType(evt);
             }
         });
-        jTxtDataType.setBounds(130, 140, 120, 19);
+        jTxtDataType.setBounds(130, 140, 120, -1);
         jLayeredPane1.add(jTxtDataType, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jRBSensitive.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_IS_SENSITIVE")); // NOI18N
@@ -333,7 +333,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onRBSensitive(evt);
             }
         });
-        jRBSensitive.setBounds(120, 230, 73, 23);
+        jRBSensitive.setBounds(120, 230, 73, -1);
         jLayeredPane1.add(jRBSensitive, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabelInputMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_INPUT_MASK")); // NOI18N
@@ -345,7 +345,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onInputMask(evt);
             }
         });
-        jTxtInputMask.setBounds(130, 170, 120, 19);
+        jTxtInputMask.setBounds(130, 170, 120, -1);
         jLayeredPane1.add(jTxtInputMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_VALUE_MASK")); // NOI18N
@@ -357,7 +357,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                 onValueMask(evt);
             }
         });
-        jTxtValueMask.setBounds(130, 200, 120, 19);
+        jTxtValueMask.setBounds(130, 200, 120, -1);
         jLayeredPane1.add(jTxtValueMask, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_OK")); // NOI18N
@@ -384,7 +384,6 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         });
 
         jTextFieldLinkType.setEditable(false);
-        jTextFieldLinkType.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jTextFieldLinkType.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

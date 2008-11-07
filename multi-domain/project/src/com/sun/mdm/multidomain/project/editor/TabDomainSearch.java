@@ -168,7 +168,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "MSG_Name")); // NOI18N
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jPanel1.border.title"))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_SEARCH_PAGE_PROPERTIES"))); // NOI18N
 
         jBtnAddSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Add")); // NOI18N
         jBtnAddSearchPage.addActionListener(new java.awt.event.ActionListener() {
@@ -177,7 +177,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
             }
         });
 
-        jBtnRemoveSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnRemoveSearchPage.text")); // NOI18N
+        jBtnRemoveSearchPage.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_REMOVE")); // NOI18N
         jBtnRemoveSearchPage.setEnabled(false);
         jBtnRemoveSearchPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,14 +193,14 @@ public class TabDomainSearch extends javax.swing.JPanel {
             }
         });
 
-        jBtnUp.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnUp.text")); // NOI18N
+        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/UpArrow.jpg"))); // NOI18N
         jBtnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onUp(evt);
             }
         });
 
-        jBtnDown.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnDown.text")); // NOI18N
+        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/DownArrow.JPG"))); // NOI18N
         jBtnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onDown(evt);
@@ -222,21 +222,19 @@ public class TabDomainSearch extends javax.swing.JPanel {
                         .add(jBtnEditSearchType))
                     .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 519, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jBtnDown, 0, 0, Short.MAX_VALUE)
+                    .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE))
+                .add(57, 57, 57))
         );
 
         jPanel1Layout.linkSize(new java.awt.Component[] {jBtnAddSearchPage, jBtnEditSearchType, jBtnRemoveSearchPage}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
-
-        jPanel1Layout.linkSize(new java.awt.Component[] {jBtnDown, jBtnUp}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 42, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnEditSearchType)
                     .add(jBtnRemoveSearchPage)
@@ -249,7 +247,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
                 .add(83, 83, 83))
         );
 
-        jPanelSearchResult.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jPanelSearchResult.border.title"))); // NOI18N
+        jPanelSearchResult.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_SEARCH_RESULT_PROPERTIES"))); // NOI18N
 
         jBtnAddSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Add")); // NOI18N
         jBtnAddSearchResult.addActionListener(new java.awt.event.ActionListener() {
@@ -258,7 +256,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
             }
         });
 
-        jBtnRemoveSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "TabDomainSearch.jBtnRemoveSearchResult.text")); // NOI18N
+        jBtnRemoveSearchResult.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_REMOVE")); // NOI18N
         jBtnRemoveSearchResult.setEnabled(false);
         jBtnRemoveSearchResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -322,7 +320,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
                         .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 61, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 302, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jPanelSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -337,7 +335,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
                 .add(jPanelSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

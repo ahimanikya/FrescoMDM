@@ -245,7 +245,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
 
         setTitle(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_PAGE_PROPERTIES")); // NOI18N
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jLabel1.text")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_SEARCH_SCREEN_TITLE")); // NOI18N
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD")); // NOI18N
 
@@ -269,7 +269,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jPanel1.border.title"))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELD_GROUPS"))); // NOI18N
 
         jTableFieldGroup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -280,7 +280,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
             }
         ));
         jScrollPane2.setViewportView(jTableFieldGroup);
-        jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jTableFieldGroup.columnModel.title0")); // NOI18N
+        jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELD_GROUP")); // NOI18N
 
         jBtnAddFieldGroup.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Add")); // NOI18N
         jBtnAddFieldGroup.setMaximumSize(new java.awt.Dimension(71, 23));
@@ -323,7 +323,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                     .add(jBtnAddFieldGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jPanel2.border.title"))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELDS"))); // NOI18N
 
         jTableFields.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -334,7 +334,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
             }
         ));
         jScrollPaneFields.setViewportView(jTableFields);
-        jTableFields.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jTableFields.columnModel.title0")); // NOI18N
+        jTableFields.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELDS")); // NOI18N
 
         jBtnRemoveField.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Remove")); // NOI18N
         jBtnRemoveField.setEnabled(false);
@@ -376,14 +376,13 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                     .add(jBtnAddField)))
         );
 
-        jTxtScreenTitle.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jTxtScreenTitle.text")); // NOI18N
         jTxtScreenTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTxtScreenTitleActionPerformed(evt);
             }
         });
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "DomainSearchTypePanel.jPanel3.border.title"))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_SCREEN_OPTIONS"))); // NOI18N
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_QUERY_BUILDER")); // NOI18N
 

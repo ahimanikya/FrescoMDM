@@ -113,7 +113,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD")); // NOI18N
 
-        jPanelFieldGroup.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "DomainRecordDetailDialog.jPanelFieldGroup.border.title"))); // NOI18N
+        jPanelFieldGroup.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD_GROUP_PROPERTIES"))); // NOI18N
 
         jTableFieldGroup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -124,7 +124,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
             }
         ));
         jScrollPane1.setViewportView(jTableFieldGroup);
-        jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "DomainRecordDetailDialog.jTableFieldGroup.columnModel.title0")); // NOI18N
+        jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD_GROUP")); // NOI18N
 
         jBtnAddGroup.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_Add")); // NOI18N
         jBtnAddGroup.addActionListener(new java.awt.event.ActionListener() {
@@ -174,7 +174,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
                     .addContainerGap(31, Short.MAX_VALUE)))
         );
 
-        jPanelField.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "DomainRecordDetailDialog.jPanelField.border.title"))); // NOI18N
+        jPanelField.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD_PROPERTIES"))); // NOI18N
 
         jTableField.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -185,7 +185,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
             }
         ));
         jScrollPane2.setViewportView(jTableField);
-        jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "DomainRecordDetailDialog.jTableField.columnModel.title0")); // NOI18N
+        jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD")); // NOI18N
 
         jBtnAddField.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_Add")); // NOI18N
         jBtnAddField.setEnabled(false);
