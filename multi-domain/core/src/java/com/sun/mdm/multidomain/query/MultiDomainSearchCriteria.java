@@ -125,5 +125,34 @@ public class MultiDomainSearchCriteria {
      */
     public void setSystemObject(String domain, SystemObject systemObject) {
         systemObjects.put(domain,systemObject);
-    }     
+    }   
+    
+    /**
+     * RangeSystemObecjt supports range search.
+     */
+    public static class RangeSystemObject {
+        
+        SystemObject systemObject;
+        SystemObject systemObjectFrom;
+        SystemObject systemObjectTo;
+        
+        public void setSystemObject(SystemObject systemObject) {
+            this.systemObject = systemObject;
+        }
+        public SystemObject getSystemObject() {
+            return systemObject;
+        }
+        public void setSystemObjectFrom(SystemObject systemObjectFrom) {
+            this.systemObjectFrom = systemObjectFrom;
+        }
+        public SystemObject getSystemObjectFrom() {
+            return systemObjectFrom;
+        } 
+        public void setSystemObjectTo(SystemObject systemObjectTo) {
+            this.systemObjectTo = systemObjectTo;
+        }
+        public SystemObject getSystemObjectTo() {
+            return systemObjectTo;
+        }          
+    }
 }
