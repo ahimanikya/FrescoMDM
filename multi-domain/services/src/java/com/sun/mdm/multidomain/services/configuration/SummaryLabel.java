@@ -83,6 +83,8 @@ public class SummaryLabel {
         int maxSize = 0;
         for (int i = 0; i < mFieldConfigs.size(); i++ ) {
             str.append(mDelimiters.get(i));
+            // RESUME HERE
+            // Retrieve the value from the FieldConfig instance.
             str.append(mFieldConfigs.get(i));
             maxSize++;
         }

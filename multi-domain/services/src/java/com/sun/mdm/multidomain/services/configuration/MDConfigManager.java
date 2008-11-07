@@ -59,19 +59,18 @@ public class MDConfigManager {
     public static final int DEFAULT_RECORD_SUMMARY_ID = 1;
     public static final int DEFAULT_RECORD_DETAILS_ID = 1;
     
-	private static HashMap<Integer, ScreenObject> mScreens;
-	private static HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
-	private static HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
+    private static HashMap<Integer, ScreenObject> mScreens;
+    private static HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
+    private static HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
     private static String DATEFORMAT;
-	private static MDConfigManager mInstance = null;	// instance
-	private static Integer mInitialScreenID;	                // ID of the initial screen
-	private static ObjectSensitivePlugIn mObjectSensitivePlugIn;
-	private static MultiDomainWebManager mDWMInstance = null;
-	
-	
-	public MDConfigManager() throws ConfigException {
-	    init();
-	}
+    private static MDConfigManager mInstance = null;	// instance
+    private static Integer mInitialScreenID;	                // ID of the initial screen
+    private static ObjectSensitivePlugIn mObjectSensitivePlugIn;
+    private static MultiDomainWebManager mDWMInstance = null;
+
+
+    private MDConfigManager() throws ConfigException {
+    }
 
     /**
      * Initializes the MDConfigManager.  If it has already been initialized, it returns
@@ -86,20 +85,21 @@ public class MDConfigManager {
                 if (mInstance != null) {
                     return mInstance;
                 }
-        	    mScreens = new HashMap<Integer, ScreenObject>();
-        	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
-        	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
-        	    
-        	    mDWMInstance = new MultiDomainWebManager();
-        	    
-        	    configureDomains();
-        	    configureRelationships();
-        	    configureHierarchies();
-        	    configureGroups();
-        	    configureScreens();
-        	    
-        	    return mInstance;
-        	}
+                mInstance = new MDConfigManager();
+                mScreens = new HashMap<Integer, ScreenObject>();
+                mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
+                mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+
+                mDWMInstance = new MultiDomainWebManager();
+
+                configureDomains();
+                configureRelationships();
+                configureHierarchies();
+                configureGroups();
+                configureScreens();
+
+                return mInstance;
+            }
         } catch (Exception e) {
             throw new ConfigException(e);
         }

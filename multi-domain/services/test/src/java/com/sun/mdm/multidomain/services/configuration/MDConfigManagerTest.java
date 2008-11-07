@@ -42,8 +42,12 @@ public class MDConfigManagerTest extends TestCase {
     
     public MDConfigManagerTest (String name) throws ConfigException {
         super(name);
-        configManager = MDConfigManager.getInstance().init();        
-        assert (configManager != null);
+        configManager = MDConfigManager.init();        
+        if (configManager == null) { 
+            System.out.println("Error: could not initialize the MDConfigmanager.");
+            assert (false);
+        }
+
     }
     
     public void setUp() {

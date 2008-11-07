@@ -41,8 +41,8 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
 
 // testing--raymond tam
 //import com.sun.mdm.index.edm.services.configuration.ValidationService;
-import com.sun.mdm.index.edm.util.DateUtil;
-import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.multidomain.services.security.util.DateUtil;
+import com.sun.mdm.multidomain.services.security.util.QwsUtil;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.util.Localizer;
