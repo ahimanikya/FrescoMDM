@@ -120,7 +120,7 @@ public class MultiDomainSearchOptions {
   }
   
   
-  public class DomainSearchOption {
+  public static class DomainSearchOption {
       private String domain;
     /**
      * Whether to use weighted option.
@@ -132,6 +132,7 @@ public class MultiDomainSearchOptions {
     private String searchId;
     
     private EPathArrayList ePathArrayList;
+   
        /**
    * Get isWeighted.
    * @return isWeighted
