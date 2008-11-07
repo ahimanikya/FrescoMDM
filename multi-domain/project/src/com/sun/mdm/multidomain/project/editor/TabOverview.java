@@ -231,9 +231,11 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                 rows.add(r);
             }
             jTableDomains.setRowSelectionInterval(0, 0);
+            jButtonAddDefinition.setEnabled(true);
         } else {
             // make sure the properties tab is empty
             mEditorMainPanel.loadDomainProperties(null);
+            jButtonAddDefinition.setEnabled(false);
         }
         return rows;
     }
@@ -426,13 +428,12 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     }// </editor-fold>//GEN-END:initComponents
 
 private void onAddDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDomain
-// TODO add your handling code here:
     Action action = SystemAction.get(ImportDomainAction.class);
     ((ImportDomainAction) action).perform(mEditorMainApp);
 }//GEN-LAST:event_onAddDomain
 
 private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveDomain
-TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
+    TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
     int rs[] = jTableDomains.getSelectedRows();
     int length = rs.length;
     String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
@@ -485,6 +486,8 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                     DefinitionRow row = model.getRow(idx);
                     mEditorMainApp.deleteDefinition(row.getDefinitionName(), row.getSourceDomain(), row.getTargetDomain());
                     model.removeRow(idx);
+                    //update jTableDomains's # of definitions
+                    updateDomainDefinitionCount(row.getSourceDomain(), row.getTargetDomain(), -1);
                 }
                 model.fireTableDataChanged();
                 // update properties tab
@@ -499,43 +502,60 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
             }
 }//GEN-LAST:event_onRemoveDefinition
 
-private void performAddDefinition(String type) {
-    final String targetType = type;
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames, targetType);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
-                            String type = dialog.getDefinitionType();
-                            String linkName = dialog.getDefinitionName();
-                            String sourceDomain = dialog.getSourceDomain();
-                            String targetDomain = dialog.getTargetDomain();
-                            DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(linkName, sourceDomain, targetDomain);
-                            if (definitionNode != null) {
-                            //Already exists
-                            } else {
-                                // add new LinkNode
-                                Definition definitionType = new Definition(linkName, type, sourceDomain, targetDomain, null, null);
-                                definitionNode = mEditorMainApp.addDefinition(definitionType);
-                                mEditorMainPanel.loadDefinitionProperties(definitionNode);
-                                // add a new row
-                                TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
-                                DefinitionRow r = new DefinitionRow(definitionType.getType(), definitionType.getName(), definitionType.getSourceDomain(), definitionType.getTargetDomain());
-                                int idx = model.getRowCount();
-                                model.addRow(idx, r);
-                                model.fireTableDataChanged();
-                                jTableDefinitions.setRowSelectionInterval(idx, idx);
-                                onDefinitionSelected();
-                                mEditorMainApp.enableSaveAction(true);
+    private void performAddDefinition(String type) {
+        final String targetType = type;
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames, targetType);
+                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                        public void windowClosed(java.awt.event.WindowEvent e) {
+                            if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+                                String type = dialog.getDefinitionType();
+                                String definitionName = dialog.getDefinitionName();
+                                String sourceDomain = dialog.getSourceDomain();
+                                String targetDomain = dialog.getTargetDomain();
+                                DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain);
+                                if (definitionNode != null) {
+                                //Already exists
+                                } else {
+                                    // add new LinkNode
+                                    Definition definitionType = new Definition(definitionName, type, sourceDomain, targetDomain, null, null);
+                                    definitionNode = mEditorMainApp.addDefinition(definitionType);
+                                    mEditorMainPanel.loadDefinitionProperties(definitionNode);
+                                    // add a new row
+                                    TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+                                    DefinitionRow r = new DefinitionRow(definitionType.getType(), definitionType.getName(), definitionType.getSourceDomain(), definitionType.getTargetDomain());
+                                    int idx = model.getRowCount();
+                                    model.addRow(idx, r);
+                                    model.fireTableDataChanged();
+                                    jTableDefinitions.setRowSelectionInterval(idx, idx);
+                                    onDefinitionSelected();
+                                    mEditorMainApp.enableSaveAction(true);
+                                    //update jTableDomains's # of definitions
+                                    updateDomainDefinitionCount(sourceDomain, targetDomain, 1);
+                                }
                             }
                         }
-                    }
-                });
-                dialog.setVisible(true);
+                    });
+                    dialog.setVisible(true);
+                }
+            });
+    }
+    
+    //ToDo update jTableDomains's # of definitions
+    private void updateDomainDefinitionCount(String sourceDomain, String targetDomain, int diff) {
+        TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
+        int length = model.getRowCount();
+        for (int i=0; i < length; i++) {
+            DomainRow row = model.getRow(i);
+            if (row.getDomainName().equals(sourceDomain) || row.getDomainName().equals(targetDomain)) {
+                String definitionCnt = row.getDefinitionCnt();
+                int cnt = Integer.parseInt(definitionCnt) + diff;
+                row.setDefinitionCnt(Integer.toString(cnt));
             }
-        });
-}
+        }
+        model.fireTableDataChanged();
+    }
 
 private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
     performAddDefinition(Definition.TYPE_RELATIONSHIP);
@@ -577,37 +597,6 @@ public void onAddHierarchy() {
     private javax.swing.JTable jTableDomains;
     // End of variables declaration//GEN-END:variables
 
-private void onRemoveLink(java.awt.event.ActionEvent evt) {                              
-        TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
-        int rs[] = jTableDefinitions.getSelectedRows();
-        int length = rs.length;
-        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
-                                        : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
-
-        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-                                 prompt, 
-                                 NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
-                                 NotifyDescriptor.YES_NO_OPTION);
-            if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
-                for (int i=length - 1; i>=0 && i < length; i--) {
-                    int idx = rs[i];
-                    DefinitionRow row = model.getRow(idx);
-                    mEditorMainApp.deleteDefinition(row.getDefinitionName(), row.getSourceDomain(), row.getTargetDomain());
-                    model.removeRow(idx);
-                }
-                model.fireTableDataChanged();
-                // update properties tab
-                if (model.getRowCount() > 0) {
-                    jTableDefinitions.setRowSelectionInterval(0, 0);
-                    onDefinitionSelected();
-                } else {
-                    mEditorMainPanel.loadDefinitionProperties(null);
-                    this.jButtonRemoveDefinition.setEnabled(false);
-                }
-                mEditorMainApp.enableSaveAction(true);
-            }
-}                             
-
     private void onDomainSelected() {
         this.jTableDefinitions.clearSelection();
         this.jButtonRemoveDefinition.setEnabled(false);
@@ -637,21 +626,21 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
         int iSelectedRow = jTableDefinitions.getSelectedRow();
         TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
         String definitionType = (String) model.getValueAt(iSelectedRow,  model.iColDefinitionType);
-        String linkName = (String) model.getValueAt(iSelectedRow,  model.iColLinkName);
+        String definitionName = (String) model.getValueAt(iSelectedRow,  model.iColDefinitionName);
         String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
         String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
-        DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(linkName, sourceDomain, targetDomain);
+        DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain);
         mEditorMainPanel.loadDefinitionProperties(definitionNode);
         mEditorMainPanel.loadDomainEntityTree(null);
      }
 
     class DomainRow {
         private String domainName;
-        private String definitions;
+        private String definitionCnt;
 
-        public DomainRow(String domainName, String definitions) {
+        public DomainRow(String domainName, String definitionCnt) {
             this.domainName = domainName;
-            this.definitions = definitions;
+            this.definitionCnt = definitionCnt;
         }
 
         public String getDomainName() {
@@ -662,12 +651,12 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
             this.domainName = domainName;
         }
 
-        public String getDefinitions() {
-            return definitions;
+        public String getDefinitionCnt() {
+            return definitionCnt;
         }
 
-        public void setDefinitions(String definitions) {
-            this.definitions = definitions;
+        public void setDefinitionCnt(String definitionCnt) {
+            this.definitionCnt = definitionCnt;
         }
     }
     
@@ -678,7 +667,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                                         };
         ArrayList <DomainRow> rows;
         final static int iColDomainName = 0;
-        final static int iColDefinitions = 1;
+        final static int iColDefinitionCnt = 1;
         
         TableModelDomains(ArrayList rows) {
             this.rows = rows;
@@ -706,8 +695,8 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                     switch (col) {
                         case iColDomainName:
                             return singleRow.getDomainName();
-                        case iColDefinitions:
-                            return singleRow.getDefinitions();
+                        case iColDefinitionCnt:
+                            return singleRow.getDefinitionCnt();
                         default:
                             return null;
                     }
@@ -738,8 +727,8 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                         case iColDomainName:
                             singleRow.setDomainName((String) value);                            
                             break;
-                        case iColDefinitions:
-                            singleRow.setDefinitions((String) value);                            
+                        case iColDefinitionCnt:
+                            singleRow.setDefinitionCnt((String) value);                            
                             break;
                         default:
                             return;
@@ -766,24 +755,24 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
     }
     
     class DefinitionRow {
-        private String linkName;
+        private String definitionName;
         private String type;
         private String sourceDomain;
         private String targetDomain;
 
-        public DefinitionRow(String type, String linkName, String sourceDomain, String targetDomain) {
-            this.linkName = linkName;
+        public DefinitionRow(String type, String definitionName, String sourceDomain, String targetDomain) {
+            this.definitionName = definitionName;
             this.type = type;
             this.sourceDomain = sourceDomain;
             this.targetDomain = targetDomain;
         }
 
         public String getDefinitionName() {
-            return linkName;
+            return definitionName;
         }
 
-        public void setDefinitionName(String linkName) {
-            this.linkName = linkName;
+        public void setDefinitionName(String definitionName) {
+            this.definitionName = definitionName;
         }
         
         public String getDefinitionType() {
@@ -820,7 +809,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                                         };
         ArrayList <DefinitionRow> rows;
         final static int iColDefinitionType = 0;
-        final static int iColLinkName = 1;
+        final static int iColDefinitionName = 1;
         final static int iColSourceDomain = 2;
         final static int iColTargetDomain = 3;
         
@@ -848,7 +837,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                 DefinitionRow singleRow = rows.get(row);
                 if (singleRow != null) {
                     switch (col) {
-                        case iColLinkName:
+                        case iColDefinitionName:
                             return singleRow.getDefinitionName();
                         case iColDefinitionType:
                             return singleRow.getDefinitionType();
@@ -883,7 +872,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
                 DefinitionRow singleRow = (DefinitionRow) rows.get(row);
                 if (singleRow != null) {
                     switch (col) {
-                        case iColLinkName:
+                        case iColDefinitionName:
                             singleRow.setDefinitionName((String) value);                            
                             break;
                         case iColDefinitionType:
@@ -942,6 +931,7 @@ private void onRemoveLink(java.awt.event.ActionEvent evt) {
             jTableDomains.setRowSelectionInterval(idx, idx);
             //jTableDomains.setEditingRow(idx);
             onDomainSelected();
+            jButtonAddDefinition.setEnabled(true);
         } else {
             // find it and set it
             //jTableDomains.setRowSelectionInterval(idx, idx);

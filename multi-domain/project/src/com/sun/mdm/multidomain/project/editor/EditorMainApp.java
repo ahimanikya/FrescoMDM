@@ -154,7 +154,7 @@ public class EditorMainApp {
             //definition.getExtendedAttributes().get(0).
         }
         DefinitionNode node = new DefinitionNode(this, definition, webLinkType);
-        this.mAlDefinitionNodes.add(node);
+        mAlDefinitionNodes.add(node);
         return node;
     }
     
@@ -349,7 +349,13 @@ public class EditorMainApp {
                     removed = true;
                 }
                 
-                //ToDo remove all definitions too
+                //Remove all domain's definitions too
+                for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
+                    DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
+                    if (node.getSourceDomain().equals(domainName) || node.getTargetDomain().equals(domainName)) {
+                        mAlDefinitionNodes.remove(i);
+                    }
+                }
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }
