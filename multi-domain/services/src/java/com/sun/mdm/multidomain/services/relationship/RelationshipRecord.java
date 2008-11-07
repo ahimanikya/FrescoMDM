@@ -72,6 +72,38 @@ public class RelationshipRecord extends AttributeList {
     }
     
     /**
+     * Get source domain name.
+     * @return String Source domain name.
+     */
+    public String getSourceDomain() {
+        return sourceDomain;
+    }
+    
+    /**
+     * Set source domain name.
+     * @param name Source domain name.
+     */
+    public void setSourceDomain(String sourceDomain) {
+        this.sourceDomain = sourceDomain;
+    } 
+    
+    /**
+     * Get target domain name.
+     * @return String target domain name.
+     */
+    public String getTargetDomain() {
+        return targetDomain;
+    }
+    
+    /**
+     * Set target domain name.
+     * @param name Target domain name.
+     */
+    public void setTargetDomain(String targetDomain) {
+        this.targetDomain = targetDomain;
+    }    
+    
+    /**
      * Get relationship Id.
      * @return String Relationship Id.
      */
