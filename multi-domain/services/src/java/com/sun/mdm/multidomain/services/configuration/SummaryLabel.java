@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -35,32 +36,32 @@ public class SummaryLabel {
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SummaryLabel");
     private static transient final Localizer mLocalizer = Localizer.get();
     
-    ArrayList<FieldConfig> mFieldConfigs;   // FieldConfig objects from which record-specific values are retrieved
-    ArrayList<String> mDelimiters;          // ArrayList of Strings
+    private ArrayList<FieldConfig> mFieldConfigs;   // FieldConfig objects from which record-specific values are retrieved
+    private ArrayList<String> mDelimiters;          // ArrayList of Strings
 
     public SummaryLabel() {
     }
     
-    // retrieves an ArrayList of FieldConfig objects
+    // retrieves a List of FieldConfig objects
     
-    ArrayList<FieldConfig> getFieldConfigs() {      
+    public List<FieldConfig> getFieldConfigs() {      
         return mFieldConfigs;
     }
 
     // sets the fieldConfigs 
     
-    void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) { 
+    public void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) { 
         mFieldConfigs = fieldConfigs;
     }
 
-    // retrieves an ArrayList of String objects
-    ArrayList<String> getDelimiters() {     
+    // retrieves a List of String objects
+    public List<String> getDelimiters() {     
         return mDelimiters;
     }
 
     // sets the delimiters
      
-    void setDelimiters(ArrayList<String> delimiters) throws Exception { 
+    public void setDelimiters(ArrayList<String> delimiters) throws Exception { 
         if (delimiters.size() != mFieldConfigs.size() + 1) {
             throw new Exception(mLocalizer.t("CFG501: The number of delimiters ({0}) " +
                                              "must be one greater than number of fields({1}).", 
@@ -73,7 +74,7 @@ public class SummaryLabel {
     // ID label has the following format:
     // mFieldConfigs[0] + mDelimiters[0] + ...  + mFieldConfigs[i] + mDelimiters[i+1] 
     
-    String getIDLabel() throws Exception {          
+    public String getIDLabel() throws Exception {          
         if (mDelimiters.size() != mFieldConfigs.size()) {
             throw new Exception(mLocalizer.t("CFG502: The number of delimiters ({0}) " +
                                              "does not match the number of fields({1}).", 
@@ -85,7 +86,8 @@ public class SummaryLabel {
             str.append(mDelimiters.get(i));
             // RESUME HERE
             // Retrieve the value from the FieldConfig instance.
-            str.append(mFieldConfigs.get(i));
+//            str.append(mFieldConfigs.get(i));
+            str.append(" ");
             maxSize++;
         }
         str.append(mDelimiters.get(maxSize + 1));
