@@ -141,6 +141,16 @@ public interface MultiDomainService {
         throws ProcessingException, UserException;
     
     /**
+     * Get detailed relations object for the given relationship id defined in Relationship.
+     * @param relationship Relationship
+     * @return MultiObject Detailed relationship object.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid searchOptions or searchCriteria is passed as a parameter.
+     */
+    public MultiObject getRelationship(Relationship relationship)
+        throws ProcessingException, UserException;
+    
+    /**
      * Search relationship tables to retrieve relationship records that qualifies search criteria 
      * and search source domain and target domain that qualifies search options to retrieve 
      * master index records which have specified relationships. 
@@ -155,6 +165,17 @@ public interface MultiDomainService {
      */
     public PageIterator<MultiObject> searchRelationships(String sourceDomain, EPathArrayList[] sourceEPathList, 
                                                          String targetDomain, EPathArrayList[] targetEPathList, MultiDomainSearchCriteria searchCriteria) 
+        throws ProcessingException, UserException;
+    
+    /**
+     * Get ObjectNode for the given domain and EUID.
+     * @param domain Domain name.
+     * @param euid EUID.
+     * @return ObjectNode ObjectNode.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid searchOptions or searchCriteria is passed as a parameter.
+     */
+    public ObjectNode getEnterprise(String domain, String euid)
         throws ProcessingException, UserException;
     
     /**

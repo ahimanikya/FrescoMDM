@@ -160,6 +160,14 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     }
 
     /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getRelationship()
+     */              
+    public MultiObject getRelationship(Relationship relationship)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }
+     
+    /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchRelationships()
      */                
     public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
@@ -178,6 +186,14 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         throw new ProcessingException("Not Implemented Yet.");
     }
     
+   /**
+    * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getEnterprise()
+    */       
+    public ObjectNode getEnterprise(String domain, String euid)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }
+     
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchEnterprises()
      */                    
