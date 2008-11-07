@@ -38,7 +38,8 @@ public class MultiDomainWebManager {
     //private ArrayList<LinkType> mLinkTypes = new ArrayList<LinkType>();
     private ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
     private JNDIResources mJndiResources = null;
-    private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
+    private PageDefinition mPageDefinition = new PageDefinition();
+    //private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
     private static String RELATIONSHIP_WEB_MANAGER = "MultiDomainWebManager";
 
     /**
@@ -185,8 +186,6 @@ public class MultiDomainWebManager {
             if (fieldRef.getValueType() != null) {
                 eValueType.appendChild(xmlDoc.createTextNode(fieldRef.getValueType()));
             }
-            Element eKeyType = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_KEY_TYPE);
-            eKeyType.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.getKeyType())));
             Element eDisplayOrder = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_DISPLAY_ORDER);
             eDisplayOrder.appendChild(xmlDoc.createTextNode(Integer.toString(fieldRef.getDisplayOrder())));
             Element eInputMask = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_INPUT_MASK);
@@ -213,7 +212,6 @@ public class MultiDomainWebManager {
             relTypeFieldElm.appendChild(eInputMask);            
             relTypeFieldElm.appendChild(eValueMask);            
             relTypeFieldElm.appendChild(eSensitive);            
-            relTypeFieldElm.appendChild(eKeyType);            
         }
 
         
@@ -221,20 +219,40 @@ public class MultiDomainWebManager {
 
     private Element getPageDefinitionTypeToStr(Document xmlDoc) {
         Element elmPageDefs = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_DEFINITION);
-        
-        for (PageDefinition page : mPageDefinitions) {
+        Element elmInitialScreenId = xmlDoc.createElement(WebManagerProperties.mTAG_INITIAL_SCREEN_ID);
+        elmInitialScreenId.appendChild(xmlDoc.createTextNode(String.valueOf(mPageDefinition.getInitialScreenId())));
+        elmPageDefs.appendChild(elmInitialScreenId);
+        //ArrayList<ScrrpageDefinition.get
+        for (ScreenPageDefintion page : mPageDefinition.getScreenDefs()) {
             Element elmPage = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE);
             
             Element elmIdentifier = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_IDENTIFIER);
             elmIdentifier.appendChild(xmlDoc.createTextNode(page.getPageIdentifier()));
             elmPage.appendChild(elmIdentifier);
             
+            Element elmScreenTitle = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_TITLE);
+            elmScreenTitle.appendChild(xmlDoc.createTextNode(page.getScreenTitle()));
+            elmPage.appendChild(elmScreenTitle);
             
+            Element elmScreenId = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_ID);
+            elmScreenId.appendChild(xmlDoc.createTextNode(String.valueOf(page.getScreenId())));
+            elmPage.appendChild(elmScreenId);
+
+            Element elmDisplayOrder = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_DISPLAY_ORDER);
+            elmDisplayOrder.appendChild(xmlDoc.createTextNode(String.valueOf(page.getDisplayOrder())));
+            elmPage.appendChild(elmDisplayOrder);
+
+            Element elmInitialTab = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_INITIAL_TAB_ID);
+            elmInitialTab.appendChild(xmlDoc.createTextNode(String.valueOf(page.getIntitalTab())));
+            elmPage.appendChild(elmInitialTab);
+
             ArrayList<RelationshipPageTabDefination> pageTabs = page.getPageTabs();
             
             for (RelationshipPageTabDefination tab : pageTabs) {
                 Element elmTab = xmlDoc.createElement(WebManagerProperties.mTAG_PAGE_TAB);
                 elmTab.setAttribute(WebManagerProperties.mTAG_NAME, tab.getTabName());
+                elmTab.setAttribute(WebManagerProperties.mTAG_TAB_ID, String.valueOf(tab.getTabId()));
+                elmTab.setAttribute(WebManagerProperties.mTAG_TAB_DISPLAY_NAME, tab.getTabDisplayName());
                 
                 ArrayList<PageRelationType> relTypes = tab.getPageRelationType();
                 for (PageRelationType tabRelType : relTypes) {
@@ -400,13 +418,16 @@ public class MultiDomainWebManager {
                 Element elmShowEUID = xmlDoc.createElement(WebManagerProperties.mTAG_SHOW_EUID);
                 elmShowEUID.appendChild(xmlDoc.createTextNode(Boolean.toString(recordID.isMShowEUID())));
                 elmRecordID.appendChild(elmShowEUID);
-                Element elmGroup = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_GROUP);
-                elmRecordID.appendChild(elmGroup);
-                FieldGroup group = recordID.getFieldGroup();
-                for (FieldGroup.FieldRef field : group.getFieldRefs()) {
-                    Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
-                    elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
-                    elmGroup.appendChild(elmField);
+   
+                FieldGroup group = recordID.getFieldGroup();                
+                if (group.getFieldRefs().size() > 0) {               
+                    Element elmGroup = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_GROUP);
+                    elmRecordID.appendChild(elmGroup);
+                    for (FieldGroup.FieldRef field : group.getFieldRefs()) {
+                        Element elmField = xmlDoc.createElement(WebManagerProperties.mTAG_FIELD_REF);
+                        elmField.appendChild(xmlDoc.createTextNode(field.getFieldName()));
+                        elmGroup.appendChild(elmField);
+                }
                 }
             }
             elmDomain.appendChild(elmRecordID);
@@ -645,11 +666,18 @@ public class MultiDomainWebManager {
         String elementName = null;
 
         NodeList children = node.getChildNodes();
+        //PageDefinition pageDef = new PageDefinition();
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
-                parsePage(elm);
+                if (elementName.equals(WebManagerProperties.mTAG_INITIAL_SCREEN_ID)) {
+                    int initialScreenId = RelationshipUtil.getIntElementValue(elm);
+                    mPageDefinition.setInitialScreenId(initialScreenId);
+                } else if (elementName.equals(WebManagerProperties.mTAG_PAGE)) {
+                    mPageDefinition.addScreenDefition(parsePage(elm));
+                } 
+                
             }
         }
 
@@ -659,29 +687,57 @@ public class MultiDomainWebManager {
      * Parse page element
      * @param node - page element node
      */
-    private void parsePage(Node node) {
+    private ScreenPageDefintion parsePage(Node node) {
         String elementName = null;
 
         NodeList children = node.getChildNodes();
         String pageIdentifier = null;
-        String tabName = null;
+        String screenTitle = null;
+        int screenId = -1;
+        int screenDisplayOrder = -1;
+        int intitalTabId = -1;
         RelationshipPageTabDefination pageTab = null;
-        PageDefinition pageDef = null;
+        ScreenPageDefintion screenDef = null;
+        int tabId = -1;
+        String tabName = null;
+        String tabDisplayName = null;
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
                 elementName = elm.getTagName();
                 if (elementName.equals(WebManagerProperties.mTAG_PAGE_IDENTIFIER)) {
                     pageIdentifier = RelationshipUtil.getStrElementValue(elm);
-                    pageDef = new PageDefinition(pageIdentifier);
+                    screenDef = new ScreenPageDefintion(pageIdentifier);
+                } else if (elementName.equals(WebManagerProperties.mTAG_SCREEN_TITLE)) {
+                    screenTitle = RelationshipUtil.getStrElementValue(elm);
+                    screenDef.setScreenTitle(screenTitle);
+                } else if (elementName.equals(WebManagerProperties.mTAG_SCREEN_ID)) {
+                    screenId = RelationshipUtil.getIntElementValue(elm);
+                    screenDef.setScreenId(screenId);
+                } else if (elementName.equals(WebManagerProperties.mTAG_SCREEN_DISPLAY_ORDER)) {
+                    screenDisplayOrder = RelationshipUtil.getIntElementValue(elm);
+                    screenDef.setDisplayOrder(screenDisplayOrder);
+                } else if (elementName.equals(WebManagerProperties.mTAG_SCREEN_INITIAL_TAB_ID)) {
+                    intitalTabId = RelationshipUtil.getIntElementValue(elm);
+                    screenDef.setIntitalTab(intitalTabId);
                 } else if (elementName.equals(WebManagerProperties.mTAG_PAGE_TAB)) {
+                    
 
                     if (elm.hasAttribute(WebManagerProperties.mTAG_NAME)) {
                         tabName = elm.getAttribute(WebManagerProperties.mTAG_NAME);
                     }
-                    pageTab = new RelationshipPageTabDefination(tabName);
+                    
+                    if (elm.hasAttribute(WebManagerProperties.mTAG_TAB_ID)) {
+                        tabId = Integer.parseInt(elm.getAttribute(WebManagerProperties.mTAG_TAB_ID));
+                    }
+
+                    if (elm.hasAttribute(WebManagerProperties.mTAG_TAB_DISPLAY_NAME)) {
+                        tabDisplayName = elm.getAttribute(WebManagerProperties.mTAG_TAB_DISPLAY_NAME);
+                    }
+
+                    pageTab = new RelationshipPageTabDefination(tabName, tabId, tabDisplayName);
                     pageTab.addPageRelationType(parsePageRelationship(elm.getChildNodes()));
-                    pageDef.addPageTab(pageTab);
+                    screenDef.addPageTab(pageTab);
 
                 }
 
@@ -689,9 +745,7 @@ public class MultiDomainWebManager {
 
         }
         
-        if (pageDef != null) {
-            mPageDefinitions.add(pageDef);
-        }
+        return screenDef;
     }
 
     private PageRelationType parsePageRelationship(NodeList children) {

@@ -13,35 +13,37 @@ import java.util.ArrayList;
  */
 public class PageDefinition {
     
-    private String mPageIdentifier = null;
+    private int mInitialScreenId = -1;
     
-    private ArrayList<RelationshipPageTabDefination> mPageTabs = new ArrayList<RelationshipPageTabDefination>();
+    private ArrayList<ScreenPageDefintion> mScreenDefintions = new ArrayList<ScreenPageDefintion>();
     
-    public PageDefinition(String identifier) {
-        this.mPageIdentifier = identifier;
+    public PageDefinition() {
+        
     }
 
-    public String getPageIdentifier() {
-        return mPageIdentifier;
+    public int getInitialScreenId() {
+        return mInitialScreenId;
     }
 
-    public ArrayList<RelationshipPageTabDefination> getPageTabs() {
-        return mPageTabs;
+    public void setInitialScreenId(int initialScreenId) {
+        this.mInitialScreenId = initialScreenId;
     }
-    
-    public void addPageTab(RelationshipPageTabDefination pageTab) {
-        mPageTabs.add(pageTab);
-    }
-    
-    public void deletePageTab(RelationshipPageTabDefination pageTab) {
-        for (RelationshipPageTabDefination tab : mPageTabs) {
-            if (tab.getTabName().equals(pageTab.getTabName())) {
-                mPageTabs.remove(tab);
-                break;
-            }
-        }
-    }
-     
-    
 
+    public ArrayList<ScreenPageDefintion> getScreenDefs() {
+        return mScreenDefintions;
+    }
+
+    public void setScreenDefs(ArrayList<ScreenPageDefintion> pageDefs) {
+        this.mScreenDefintions = pageDefs;
+    }
+    
+    public void addScreenDefition(ScreenPageDefintion screenDef) {
+        mScreenDefintions.add(screenDef);       
+    }
+    
+    public void deleteScreenDefition(ScreenPageDefintion screenDef) {
+        mScreenDefintions.remove(screenDef);
+    }
 }
+
+

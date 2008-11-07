@@ -15,10 +15,16 @@ public class RelationshipPageTabDefination {
     
     private String mTabName = null;
     
+    private int mTabId = -1;
+    
+    private String mTabDisplayName = null;
+    
     private ArrayList<PageRelationType> mPageRelationType = new ArrayList<PageRelationType>();
     
-    public RelationshipPageTabDefination(String tabName) {
+    public RelationshipPageTabDefination(String tabName, int tabId, String tabDisplayName) {
         this.mTabName = tabName;
+        this.mTabId = tabId;
+        this.mTabDisplayName = tabDisplayName;
     }
 
     public String getTabName() {
@@ -44,6 +50,22 @@ public class RelationshipPageTabDefination {
                 break;
             }
         }
+    }
+
+    public int getTabId() {
+        return mTabId;
+    }
+
+    public void setTabId(int tabId) {
+        this.mTabId = tabId;
+    }
+
+    public String getTabDisplayName() {
+        return mTabDisplayName;
+    }
+
+    public void setTabDisplayName(String tabDisplayName) {
+        this.mTabDisplayName = tabDisplayName;
     }
 
 }

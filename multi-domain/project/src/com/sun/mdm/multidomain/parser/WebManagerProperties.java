@@ -31,6 +31,16 @@ public class WebManagerProperties {
     
     public static String mTAG_PAGE_DEFINITION = "page-definition";
     
+    public static String mTAG_INITIAL_SCREEN_ID = "initial-screen-id";
+    
+    public static String mTAG_SCREEN_DISPLAY_ORDER = "display-order";
+    
+    public static String mTAG_SCREEN_INITIAL_TAB_ID = "initial-tab-id";
+    
+    public static String mTAG_TAB_ID = "tab-id";
+    
+    public static String mTAG_TAB_DISPLAY_NAME = "display-name";
+
     public static String mTAG_PAGE = "page";
     
     public static String mTAG_DOMAINS = "domains";
@@ -119,6 +129,8 @@ public class WebManagerProperties {
     public static String mTAG_FIELD_GROUP_DESCRIPTION = "description";
     
     public static String mTAG_SCREEN_TITLE = "screen-title";
+    
+    public static String mTAG_SCREEN_ID = "screen-id";
     
     // testing--raymond tam    
     public static String mTAG_SEARCH_SUMMARY_ID = "search-summary-id";

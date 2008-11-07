@@ -34,6 +34,7 @@ public class EntityTreeDialog extends javax.swing.JDialog {
     public EntityTreeDialog( EntityTree entityTree, FieldGroup fieldGroup) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mEntityTree = entityTree;
+        mEntityTree.setEditable(false);
         mFieldGroup = fieldGroup;
         initComponents();
         jSPEntityTree.setViewportView(mEntityTree);
