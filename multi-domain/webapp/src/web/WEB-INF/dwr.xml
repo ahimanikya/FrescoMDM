@@ -16,6 +16,7 @@
       <include method="getRelationshipDefs" />
       <include method="addRelationshipDef" />            
       <include method="deleteRelationshipDef" /> 
+      <include method="updateRelationshipDef" />
       <include method="getRelationshipDefCount" />
       <include method="getDomainRelationshipDefObjects" />            
     </create>
@@ -29,7 +30,7 @@
       <include method="addRelationship" />
       <include method="updateRelationship" />
       <include method="deleteRelationship" />
-      <include method="searchDomainRelationshipObjects" />      
+      <include method="searchRelationshipsByRecord" />      
     </create>
 
     <create creator="spring" javascript="HierarchyDefHandler" scope="session">
