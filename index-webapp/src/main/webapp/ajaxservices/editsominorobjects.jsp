@@ -185,6 +185,9 @@ boolean isdeactivateSO = (null == deactivateSO?false:true);
 String  activateSO = request.getParameter("activateSO");
 boolean isactivateSO = (null == activateSO?false:true);
 
+String removeSO = request.getParameter("removeSO");
+boolean isremoveSO = (null == removeSO?false:true);
+
 
 //HashMap for the root node fields
 HashMap rootNodesHashMap = (HashMap) editMainEuidHandler.getEditSingleEOHashMap().get("ENTERPRISE_OBJECT");
@@ -222,7 +225,7 @@ if(isSave) {
 	isSaveEditedValues = false;
 %>
           <script> 
-            setEditIndex('-1')
+            setEOEditIndex('-1');
           </script>
 
 <%
@@ -411,9 +414,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	  }
    </script>
  <!-- Get the minor Objects to display -->
-  <%  
-	  ArrayList thisMinorObjectListCodes = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
-	  ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SO"+request.getParameter("MOT")+"ArrayList");
+  <%  //fix 140
+	  ArrayList thisMinorObjectListCodes = (thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList") != null)?(ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList"):new ArrayList();
+ 	  ArrayList thisMinorObjectList = (thisEoSystemObjectMap.get("SO"+request.getParameter("MOT")+"ArrayList") != null)?(ArrayList) thisEoSystemObjectMap.get("SO"+request.getParameter("MOT")+"ArrayList"):new ArrayList();
   %>	
  <!-- Regenerate the table -->
 		  <% 
@@ -452,7 +455,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								      <% 
 									     String minorObjType = request.getParameter("MOT");
 									  %>	
-                                      <%if("active".equalsIgnoreCase(soStatus)) {%>
+                                      <%if("active".equalsIgnoreCase(soStatus)|| "New".equalsIgnoreCase(soStatus)) {%>
 										<!-- modified  on 15-10-08 for adding view button -->
 										<td valign="center" width="14px">
  											  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -504,7 +507,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								   <%}%>
 								
  							   <!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
-                               <%if("active".equalsIgnoreCase(soStatus)) {%>
+                               <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 							    <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='if(editMinorObjectType.length<1){
@@ -598,12 +601,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	  document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'hidden';
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'none'; 
    </script>
-		  <% 
-		  ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
-              thisMinorObject = (HashMap)thisMinorObjectList.get(new Integer(deleteIndex).intValue());
+		  <% //modified here on 04-11-08 while fixing 140
+		  ArrayList thisMinorObjectList = (thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList")!=null)?(ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList"):new ArrayList();
+          thisMinorObject = (thisMinorObjectList.get(new Integer(deleteIndex).intValue())!=null)?(HashMap)thisMinorObjectList.get(new Integer(deleteIndex).intValue()):new HashMap();
 	          String thisminorObjectType = (String)thisMinorObject.get(MasterControllerService.HASH_MAP_TYPE);
 	       %>
-		   <%  if (thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) { 
+		   <%  if (thisminorObjectType!=null && thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) { 
 		          thisMinorObjectList.remove(new Integer(deleteIndex).intValue());
 			   }  else {
                   thisMinorObject.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_REMOVE);
@@ -662,7 +665,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>								 
 			                    <td valign="center" width="14px">
-                                  <%if("active".equalsIgnoreCase(soStatus)) {%>
+                                  <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
  									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
 											if(sbrInEdit.length<1 &&  newSoInEdit.length<1){
@@ -689,7 +692,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 
 							   <td valign="center" width="14px">							   
-							     <%if("active".equalsIgnoreCase(soStatus)) {%>
+							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 					             	  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -781,10 +784,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
  <% } else if (!isValidationErrorOccured && isSaveEditedValues) { %>   <!-- this condition has to be before isminorObjectSave  -->
 
-	  <% 
-		  ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
+	  <%  //modified on 04-11-08 while fixing 140
+		  ArrayList thisMinorObjectList = (thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList")!=null)?(ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList"):new ArrayList();
 
-		   thisMinorObject = (HashMap)thisMinorObjectList.get(new Integer(saveEditedValues).intValue());
+		   thisMinorObject = (thisMinorObjectList.get(new Integer(saveEditedValues).intValue())!=null)?(HashMap)thisMinorObjectList.get(new Integer(saveEditedValues).intValue()):new HashMap();
 		  HashMap tempMinorObjectMap = new HashMap();
 
 	  %>
@@ -991,7 +994,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>
 			                    <td valign="center" width="14px">								
-							     <%if("active".equalsIgnoreCase(soStatus)) {%>
+							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 
  									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
@@ -1019,7 +1022,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								 <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
-							     <%if("active".equalsIgnoreCase(soStatus)) {%>
+							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -1238,7 +1241,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>
 			                    <td valign="center" width="14px">								
-							     <%if("active".equalsIgnoreCase(soStatus)) {%>
+							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 
  									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:
@@ -1266,7 +1269,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								 <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
-							     <%if("active".equalsIgnoreCase(soStatus)) {%>
+							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -1746,7 +1749,33 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	  document.getElementById("successDiv").style.display="block";
   </script>
 
-<% } %>
+<% }else if(isremoveSO){%> <!-- //fix for 140 -->
+<%
+	   ArrayList eosystemobjects = (ArrayList)session.getAttribute("eoBrandNewSystemObjects"); //fix for 140
+	   String sysCode = (request.getParameter("SOSYS")!=null)?request.getParameter("SOSYS"):new String();
+	   String lid = (request.getParameter("SOLID")!=null)?request.getParameter("SOLID"):new String();
+	   HashMap mapToRemove = null;
+	   if(eosystemobjects!=null && eosystemobjects.size()>0){
+		   for(Object obj:eosystemobjects){
+			HashMap tempMap = (HashMap)obj;
+			if(tempMap.get("SYSTEM_CODE")!=null && tempMap.get("LID")!=null && 
+				tempMap.get("SYSTEM_CODE").toString().equalsIgnoreCase(sysCode) && 
+				tempMap.get("LID").toString().equalsIgnoreCase(lid)){
+				mapToRemove = tempMap;
+			}
+		   }
+		eosystemobjects.remove(mapToRemove);
+	   }
+	   session.setAttribute("eoBrandNewSystemObjects",eosystemobjects);
+   %>
+
+  <script>
+	  window.location = "#top";
+	  document.getElementById("successMessageDiv").innerHTML = "<%=sourceHandler.getSystemCodeDescription(sysCode)%>/<%=lid%>   <%=bundle.getString("source_record_remove_text")%>";
+	  document.getElementById("successDiv").style.visibility="visible";
+	  document.getElementById("successDiv").style.display="block";
+  </script>
+ <% } %>
 
  </body>
  <script>

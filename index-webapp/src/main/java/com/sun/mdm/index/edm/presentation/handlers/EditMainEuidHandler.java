@@ -129,7 +129,8 @@ public class EditMainEuidHandler {
     private String enteredFieldValues = new String();
     private String minorFieldsEO = new String();
     private String removeEOMinorObjectsValues = new String();
-
+    private ArrayList eoBrandNewSystemObjects;
+    
     /** Creates a new instance of EditMainEuidHandler */
     public EditMainEuidHandler() {
     }
@@ -985,6 +986,16 @@ public class EditMainEuidHandler {
                 eoSOobjectsOld.add(systemObjectHashMapOld);
 
             }
+            //If Newly added 
+            ArrayList eoBrandNewSystemObjectsTemp = (ArrayList)session.getAttribute("eoBrandNewSystemObjects");
+            if (eoBrandNewSystemObjectsTemp != null && eoBrandNewSystemObjectsTemp.size() > 0) {
+                for (int i = 0; i < eoBrandNewSystemObjectsTemp.size(); i++) {
+                    HashMap soHashMapBrandNew = (HashMap) eoBrandNewSystemObjectsTemp.get(i);
+                    eoSOobjects.add(soHashMapBrandNew);
+                }
+            }
+            
+            
             //Add new select item for systemcode/lid drop down
             setEoSystemObjectCodesWithLids(newSelectItemArrayList);
 
@@ -1327,7 +1338,7 @@ public class EditMainEuidHandler {
             for (int i = 0; i < childNodeConfigs.length; i++) {
                 //get the child object node configs and build an array of minor objects here
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
-                ArrayList thisMinorObjectList = (ArrayList) systemObjectsMap.get("SOEDIT" + objectNodeConfig.getName() + "ArrayList");
+                ArrayList thisMinorObjectList = (systemObjectsMap.get("SOEDIT" + objectNodeConfig.getName() + "ArrayList")!=null)?(ArrayList) systemObjectsMap.get("SOEDIT" + objectNodeConfig.getName() + "ArrayList"):new ArrayList();
                 for (int j = 0; j < thisMinorObjectList.size(); j++) {
                     HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
                     HashMap minorObjectMapNew = new HashMap();
@@ -1361,6 +1372,19 @@ public class EditMainEuidHandler {
             } else if (systemObject == null) {
                 validated = true;
             }
+            //check for the newly added so available in memory
+           ArrayList eosystemobjects = (ArrayList)session.getAttribute("eoBrandNewSystemObjects"); //fix for 140
+ 	   if(eosystemobjects!=null && eosystemobjects.size()>0){
+		   for(Object obj:eosystemobjects){
+			HashMap tempMap = (HashMap)obj;
+			if(tempMap.get("SYSTEM_CODE")!=null && tempMap.get("LID")!=null && 
+				tempMap.get("SYSTEM_CODE").toString().equalsIgnoreCase(systemCode) && 
+				tempMap.get("LID").toString().equalsIgnoreCase(LID)){
+                            validated = false;
+ 			}
+		   }
+ 	   }
+ 
         }catch (Exception ex) {
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("EME051: Exception has occurred :{0}", ex.getMessage()), ex);
@@ -1510,7 +1534,15 @@ public class EditMainEuidHandler {
         } else {
             return returnHashMap;
         }
-    } 
+    }
+
+    public ArrayList getEoBrandNewSystemObjects() {
+         return eoBrandNewSystemObjects;
+    }
+
+    public void setEoBrandNewSystemObjects(ArrayList eoBrandNewSystemObjects) {
+        this.eoBrandNewSystemObjects = eoBrandNewSystemObjects;
+    }
     
 }
  

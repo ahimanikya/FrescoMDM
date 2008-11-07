@@ -788,15 +788,17 @@ if(session!=null){
 											     <%} else if("merged".equalsIgnoreCase(soStatus)){
 													   colorCode = "#fdeddf";
 													 %>
+												 <%}else if("New".equalsIgnoreCase(soStatus)){
+														colorCode = "#c4c8e1";
+												 %>
 											     <%} else{
 													   colorCode = "#cddcb1";
 												 %>
 											     <%} %>
                                                         <td valign="top" style="background-color:<%=colorCode%>;border-top:1px solid #efefef;border-left:1px 
 														solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;">
-												
-
-                                                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;background-color:<%=colorCode%>;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
+<div id='so<%=valueMap.get("SYSTEM_CODE")%><%=valueMap.get("LID")%>div' style="visibility:visible; display:block" >
+                                                         <table border="0" cellspacing="0" cellpadding="0" style="width:100%;background-color:<%=colorCode%>;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
                                                                  <tr>
                                                                         <td class="tablehead" colspan="2">
                                                                                 <%=valueMap.get("SYSTEM_CODE_DESC")%> (<%=valueMap.get("Status")%>)
@@ -822,7 +824,7 @@ if(session!=null){
 																<h:column>
 																	<!-- SYSTEM OBJECT ROOT NODE FIELDS FORM START HERE-->
                                                    			    <form id="<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm" >
-                                                 <%if("active".equalsIgnoreCase(soStatus)) {%>
+                                                 <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 
                                                                     <h:dataTable  headerClass="tablehead"                                        
                                                                                   width="100%"
@@ -845,15 +847,16 @@ if(session!=null){
 													 </nobr>
                                                  </h:column>                                                        
                              
-                                                                        <h:column>
+                                                                        <h:column><!-- fix 140 -->
                                                                             <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/>:<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
                                                                                  style="visibility:hidden;display:none;">
                                                                                 <h:outputLink  value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:if(editMinorObjectType.length<1){showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                                                                     <h:graphicImage  alt="#{msgs.unlink_text}" styleClass="imgClass" url="./images/unlink.PNG"/>               
                                                                                 </h:outputLink>
                                                                             </div> 
-                                                                            <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
-                                                                                           value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:if(editMinorObjectType.length<1){showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}"><h:graphicImage  alt="#{msgs.unlink_text}" styleClass="imgClass"
+                                                                            <h:outputLink  rendered="#{eoSystemObjectMap['Status'] ne 'New' &&
+																			EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
+                                                                                           value="javascript:void(0)" title="#{msgs.unlink_text}" onclick="javascript:if(editMinorObjectType.length<1){showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}');} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">???<h:graphicImage  alt="#{msgs.unlink_text}" styleClass="imgClass"
                                                                                                  url="./images/unlink.PNG" rendered="#{!(fieldConfigPer.sensitive && !Operations.field_VIP)}"/></h:outputLink>
                                                                         </h:column>                                                        
                                                                         
@@ -1247,7 +1250,7 @@ if(session!=null){
 														 <table>
                     <tr>
 					  <td><nobr>
-                       <%if("active".equalsIgnoreCase(soStatus)) {%>
+                       <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
                            <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){getFormValues('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&save=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>RootEditMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                 <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>
@@ -1285,8 +1288,7 @@ if(session!=null){
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2">
-                                                      
-                                                      <!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
+                                                       <!-- modified  on 22-09-08 for editMinorObjectType.length validation -->
 																	<a href="javascript:void(0)" title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  onclick="javascript:if(editMinorObjectType.length<1){
 																	showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)
 																	}else{showUnSavedAlert(event,editMinorObjectType,editObjectType)}" class="button">
@@ -1331,7 +1333,7 @@ if(session!=null){
                                                        <h:outputText value=":"/>
                                 					 </nobr>
                                                  </h:column>                                                        
-                                          <%if("active".equalsIgnoreCase(soStatus)) {%>
+                                          <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
 
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'MenuList'}" >
@@ -1475,7 +1477,7 @@ if(session!=null){
                     <tr>
 					  <td>
 					  <nobr>
-					  <%if("active".equalsIgnoreCase(soStatus)) {%> <!-- modified  on 15-10-08 as fix of 15 -->				    
+					  <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%> <!-- modified  on 15-10-08 as fix of 15 -->				    
 					    <div style="visibility:visible;display:block;" id="<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>editSOButtons">
 						 <table cellpadding="0" cellspacing="0" border="0">
 						   <tr>
@@ -1560,6 +1562,14 @@ if(session!=null){
 					      <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                <span><h:outputText value="#{msgs.source_rec_deactivate_but}"/></span>
                             </a>
+						<%} else if("New".equalsIgnoreCase(soStatus)){%>
+							<a title="<h:outputText value="#{msgs.source_record_remove_button}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){
+ 							document.getElementById('so<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}"/>div').style.visibility='hidden';
+							document.getElementById('so<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}"/>div').style.display='none';							
+							ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&removeSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event);
+							} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+                               <span><h:outputText value="#{msgs.source_record_remove_button}"/></span>
+                            </a>
 						<%} else if("inactive".equalsIgnoreCase(soStatus)){%>
 							<a title="<h:outputText value="#{msgs.source_rec_activate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&activateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                <span><h:outputText value="#{msgs.source_rec_activate_but}"/></span>
@@ -1572,7 +1582,8 @@ if(session!=null){
 		  </table>
 			<!-- START EUID SO  MINOR OBJECTS END HERE -->
                                                                 </h:column>
-                                                            </h:dataTable> 
+                                                            </h:dataTable>
+															</div><!-- end of so<syscode><lid>div -->							
                                                         </td>
                                                         <%}%>
                                                 </tr>

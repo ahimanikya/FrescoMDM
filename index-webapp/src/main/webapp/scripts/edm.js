@@ -2333,3 +2333,22 @@ function enableallfields(thisForm)  {
 }
 
 
+//Added this method as a part of FIX 140. This method will enable all the fields in the form.
+function enableFormFields(thisForm) {
+thisFrm = document.forms[thisForm];
+ for(i=0; i< thisFrm.elements.length; i++)   {        
+    var fieldName = thisFrm.elements[i].name;
+    if(thisFrm.elements[i].name != 'lidmask') {
+        if(thisFrm.elements[i].name !=  'javax.faces.ViewState' && 
+           thisFrm.elements[i].name !=  'reportName' && 
+           thisFrm.elements[i].id !=  'selectedSearchType' &&
+           thisFrm.elements[i].name !=  'layer')   {
+             var elemType = thisFrm.elements[i].type.toUpperCase();
+             thisFrm.elements[i].readOnly = false;
+             thisFrm.elements[i].disabled = false;
+             thisFrm.elements[i].style.backgroundColor  = '#ffffff';
+        }
+    }
+ }
+ return;
+}

@@ -33,6 +33,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig"  %>
+
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
@@ -581,19 +583,25 @@ if (isCancel){
 
 <%  if (!isValidationErrorOccured && isSave) { %>  <!-- Save System Object and ignore all other conditions  -->
 
-	 
+	 <!-- bug 140 modifications -->
 	 <% 
 		// removefield masking here
-		if(rootNodesHashMap.keySet().size() > 0 ) sourceHandler.removeFieldInputMasking(rootNodesHashMap, rootNodeName);
+		//if(rootNodesHashMap.keySet().size() > 0 ) sourceHandler.removeFieldInputMasking(rootNodesHashMap, rootNodeName);
 		ArrayList newFinalMinorArrayList  = new ArrayList();
+		ArrayList newFinalMinorArrayListCodes  = new ArrayList();
 		
 		//remove masking for lid if any
 		validateLID = validateLID.replaceAll("-","");
-		
+
+		//Build a  new Hash map for the newly added system object 
+		HashMap brandNewSOHashMap = new HashMap();
+
+		//System.out.println("editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList()--> " + editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList());
         //getNewSOHashMapArrayList(), editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList()
 		for(int i = 0; i< editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().size() ;i ++) {
 			HashMap oldHashMap  = (HashMap) editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().get(i);
             HashMap newHashMap  = new HashMap();
+		    HashMap newHashMapCodes  = new HashMap();
 			Object[] keysSet  = oldHashMap.keySet().toArray();
 			for(int j = 0 ;j <keysSet.length;j++) {
 			   String key = (String) keysSet[j];
@@ -603,16 +611,103 @@ if (isCancel){
 				   !"minorObjSave".equalsIgnoreCase(key)
 				   ) {
                    newHashMap.put(key,oldHashMap.get(key));
+                   newHashMapCodes.put(key,oldHashMap.get(key));
 			   }
 			}
 			//Add system code and lid to the map
 		    newHashMap.put(MasterControllerService.SYSTEM_CODE,validateSystemCode);
 		    newHashMap.put(MasterControllerService.LID,validateLID);
+            
+			//Add system code and lid to the map
+		    newHashMapCodes.put(MasterControllerService.SYSTEM_CODE,validateSystemCode);
+		    newHashMapCodes.put(MasterControllerService.LID,validateLID);
 
+ 		   //Add the minor objects of newly added system object here
+            //editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().add(newHashMapCodes);
 			newFinalMinorArrayList.add(newHashMap);
+			newFinalMinorArrayListCodes.add(newHashMapCodes);
 
-	    }
-		if(newFinalMinorArrayList.size() > 0 ) editMainEuidHandler.setNewSOMinorObjectsHashMapArrayList(newFinalMinorArrayList);
+ 	    }
+		//System.out.println("newFinalMinorArrayList-> " + newFinalMinorArrayList);
+		//System.out.println("newFinalMinorArrayListCodes-> " + newFinalMinorArrayListCodes	);
+
+		if(newFinalMinorArrayList.size() > 0 ) { 
+ 			
+			editMainEuidHandler.setNewSOMinorObjectsHashMapArrayList(newFinalMinorArrayListCodes);
+ 			
+			ObjectNodeConfig[] childNodeConfigs = objScreenObject.getRootObj().getChildConfigs();
+
+            //Build and array of minotr object values from the screen object child object nodes
+            String strVal = new String();
+            for (int j = 0; j < childNodeConfigs.length; j++) {
+			   ArrayList soMinorObjectsMapArrayListCodes  = new ArrayList();
+               
+			   //get the child object node configs
+               ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
+
+               for(int i = 0; i< newFinalMinorArrayListCodes.size(); i++) {
+ 					HashMap minorObjectHashMapCodes  = (HashMap) newFinalMinorArrayListCodes.get(i); 
+					//System.out.println("minorObjectHashMapCodes---> " + minorObjectHashMapCodes);
+                     if(minorObjectHashMapCodes.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equalsIgnoreCase(objectNodeConfig.getName())) {
+					 //minorObjectHashMapCodes
+					 soMinorObjectsMapArrayListCodes.add(minorObjectHashMapCodes);
+					}
+ 			   }
+ 			   	//System.out.println("soMinorObjectsMapArrayListCodes---> " + soMinorObjectsMapArrayListCodes);
+               
+			   brandNewSOHashMap.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListCodes); // set SO addresses as arraylist here
+			  }
+
+ 			   	//System.out.println("brandNewSOHashMap.put(SOEDIT + objectNodeConfig.getName()---> " + brandNewSOHashMap.get("SOEDIT" + objectNodeConfig.getName() + "ArrayList"));
+            for (int j = 0; j < childNodeConfigs.length; j++) {
+			   ArrayList soMinorObjectsMapArrayListEdit  = new ArrayList();
+			   //get the child object node configs
+               ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
+ 
+               for(int i = 0; i< newFinalMinorArrayList.size() ;i ++) {
+			        HashMap minorObjectHashMap  = (HashMap) newFinalMinorArrayList.get(i); 
+					//added now
+			        FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
+                    for (int m = 0; m < minorFiledConfigs.length; m++) {
+                            FieldConfig fieldConfig = minorFiledConfigs[m];
+                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                            //set the menu list values here
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                if (value != null) {
+                                    //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                    if (fieldConfig.getUserCode() != null) {
+                                        strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                    } else {
+                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    }
+                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+                            } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                if (value != null) { 
+                                    //Mask the value as per the masking 
+                                    value = fieldConfig.mask(value.toString());                                    
+                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                }
+                     }
+					}
+ 				   if(minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equalsIgnoreCase(objectNodeConfig.getName())) {
+                     soMinorObjectsMapArrayListEdit.add(minorObjectHashMap);
+ 				   }
+			   }
+              brandNewSOHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListEdit); // set SO addresses as arraylist here
+ 			}
+ 		}
+
+						
+
+
+ //	System.out.println("^^^^^^^^^^^^^^^^^ 111 brandNewSOHashMap---> " + brandNewSOHashMap);
+
+
+
+
+
+
 		//set the hash map type as SYSTEM_OBJECT_BRAND_NEW
 		rootNodesHashMap.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.SYSTEM_OBJECT_BRAND_NEW);
 
@@ -620,9 +715,39 @@ if (isCancel){
 		rootNodesHashMap.put(MasterControllerService.LID,validateLID);
 
             //createdSystemObject = createSystemObject((String) hm.get(MasterControllerService.SYSTEM_CODE), (String) hm.get(MasterControllerService.LID), hm);
-		editMainEuidHandler.getNewSOHashMapArrayList().add(rootNodesHashMap);
-		
-		String isSuccess = editMainEuidHandler.addNewSO();
+		//Add the root node fields of the brand new system object here -- Fix for bug 140
+		//editMainEuidHandler.getEditSOHashMapArrayList().add(rootNodesHashMap);
+
+        //this.editSOHashMapArrayList, 
+        //this.editSOMinorObjectsHashMapArrayList);
+
+		brandNewSOHashMap.put("brandNewSOHashMap","brandNewSOHashMap");
+		brandNewSOHashMap.put(MasterControllerService.SYSTEM_CODE,validateSystemCode);
+		brandNewSOHashMap.put(MasterControllerService.LID,validateLID);
+		brandNewSOHashMap.put("Status","New");
+		brandNewSOHashMap.put("SYSTEM_CODE_DESC",masterControllerService.getSystemDescription(validateSystemCode));
+		//SYSTEM_CODE_DESC
+		//Add root node fields here
+        brandNewSOHashMap.put("SYSTEM_OBJECT", rootNodesHashMap);// Set the edit SystemObject here
+
+ 
+        //add this brand new so hashmp to the array list of system objects
+		ArrayList eoBrandNewSystemObjects = null;
+		if(session.getAttribute("eoBrandNewSystemObjects")!=null) {
+		    eoBrandNewSystemObjects = (ArrayList)session.getAttribute("eoBrandNewSystemObjects");
+ 		}  else {
+			eoBrandNewSystemObjects = new ArrayList();
+ 		}
+ 		
+		eoBrandNewSystemObjects.add(brandNewSOHashMap);
+
+        editMainEuidHandler.setEoBrandNewSystemObjects(eoBrandNewSystemObjects);
+		//System.out.println("\n%%%%%%%%%%%%%%%%%%% Setting to Session ::eoBrandNewSystemObjects :::  "+eoBrandNewSystemObjects);
+ 		session.setAttribute("eoBrandNewSystemObjects",eoBrandNewSystemObjects); // bug fix #140
+		 //editMainEuidHandler.getEoSystemObjects());
+
+		//String isSuccess = editMainEuidHandler.addNewSO();  //bug #140
+		String isSuccess = "EO_EDIT_SUCCESS";
         String editEuid = (String) session.getAttribute("editEuid");
 
 		Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
@@ -697,8 +822,8 @@ if (isCancel){
 
      <%	   
 		 //reset all the fields here for root node and minor objects
-		    editMainEuidHandler.getNewSOHashMapArrayList().clear();
-            editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().clear();%>
+		    //editMainEuidHandler.getNewSOHashMapArrayList().clear();
+            //editMainEuidHandler.getNewSOMinorObjectsHashMapArrayList().clear();%>
 		<script>
 		 window.location = "#top";
 		 document.getElementById("successMessageDiv").innerHTML = "<%=sourceHandler.getSystemCodeDescription(request.getParameter("SystemCode"))%>/<%=request.getParameter("LID")%> <%=bundle.getString("lid_system_added_succes_text")%>";

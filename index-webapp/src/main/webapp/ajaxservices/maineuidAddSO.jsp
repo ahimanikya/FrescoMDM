@@ -450,7 +450,7 @@ boolean isSessionActive = true;
 								   <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/> </span>
                                    </a>
 								  </td>
-								  <td>
+								  <td><!-- modified on 04-11-08  while fixing #140-->
 								   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');">
 								   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 							       </a>
@@ -505,7 +505,7 @@ boolean isSessionActive = true;
     <a href="javascript:void(0);" title="<h:outputText value="#{msgs.source_submenu_add}"/>" class="button" onclick="javascript:if(editMinorObjectType.length<1){getFormValues('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','AddNewSODivMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
 	  <span id="buttonspan"><h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;</span>
     </a>     
-     <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm')">
+     <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:enableFormFields('RootNodeInnerForm');ClearContents('RootNodeInnerForm');">
         <span><h:outputText value="#{msgs.clear_button_label}"/></span>
      </h:outputLink>    
 	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">

@@ -327,6 +327,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						  )  {
                            thisMinorObject.put(attributeName, attributeValue);  //Add minorObject to the HashMap
 					  }
+					  session.removeAttribute("eoBrandNewSystemObjects"); //fix for 140
                  }  else if (isSaveSbr) {   //Final Save hence add Root fields to the Hashmap
 					  //validate all the mandatory fields before adding to the hashmap
 				      FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(rootNodeName);
@@ -517,7 +518,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
           editMainEuidHandler.getChangedSBRArrayList().clear();//Changed SBR hashmap array 
           editMainEuidHandler.getEditSOHashMapArrayList().clear();//Changed/New System objects hashmap array
           editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().clear();// ChangedNew Minor Objects hashmap Array
-		 %>
+		  session.removeAttribute("eoBrandNewSystemObjects"); //fix for 140
+%>
 			   <!-- // close the Minor objects 
 			   // Close the Root node fields
 			   // Hide the Save button -->
@@ -2314,7 +2316,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
    editMainEuidHandler.getChangedSBRArrayList().clear();//Changed SBR hashmap array 
    editMainEuidHandler.getEditSOHashMapArrayList().clear();//Changed/New System objects hashmap array
    editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().clear();// ChangedNew Minor Objects hashmap Array
- 
+  session.removeAttribute("eoBrandNewSystemObjects"); //fix for 140
+
  %>
 
 <% } %>
