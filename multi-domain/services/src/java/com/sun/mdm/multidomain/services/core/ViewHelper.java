@@ -48,6 +48,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
 import com.sun.mdm.multidomain.services.security.Operations;
+import com.sun.mdm.multidomain.services.util.Helper;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -55,7 +56,13 @@ import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
+import com.sun.mdm.multidomain.services.configuration.FieldConfig;
+import com.sun.mdm.multidomain.services.configuration.SummaryLabel;
+import com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfig;
+import com.sun.mdm.multidomain.services.configuration.SearchResultsConfig;
+import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
+import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
+import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 
 /**
@@ -105,26 +112,30 @@ public class ViewHelper {
         return domainRelationshipObject;
     }
 
-    public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages, String sourceDomain, String targetDomain, String relationshipName) throws ConfigException {      
+    public static List<RelationshipView> buildRelationshipView(PageIterator<MultiObject> pages, String sourceDomain, String targetDomain, String relationshipName) 
+        throws ConfigException {
+        MDConfigManager configManager =  MDConfigManager.getInstance(); 
+        
+        DomainScreenConfig sourceDomainConfig = configManager.getDomainScreenConfig(sourceDomain);
+        DomainScreenConfig targetDomainConfig = configManager.getDomainScreenConfig(targetDomain); 
+        SummaryLabel sourceDomainSummaryLabel = sourceDomainConfig.getSummaryLabel();
+        SummaryLabel targetDomainSummaryLabel = targetDomainConfig.getSummaryLabel();
+         
+        List<FieldConfig> sourceRecordIdConfigFields = sourceDomainSummaryLabel.getFieldConfigs();
+        EPathArrayList sourceRecordIdEPathFields = Helper.toEPathArrayList(sourceRecordIdConfigFields);
+   
+        List<FieldConfig> targetRecordIdConfigFields = targetDomainSummaryLabel.getFieldConfigs();
+        EPathArrayList targetRecordIdEPathFields = Helper.toEPathArrayList(targetRecordIdConfigFields);
+            
         List<RelationshipView> relationships = new ArrayList<RelationshipView>();
         // base on Record-Id configuration
         while(pages.hasNext()) {
             MultiObject multiObject =  pages.next();
-            ObjectNode sourceObject = multiObject.getSourceDomainObject();
-            //TBD: configManager.getrecordIdEPathFields(sourceDomain);
-            EPathArrayList sourceRecordIdEPathFields = new EPathArrayList();
-             //TBD: configManager.getrecordIdConfigFields(sourceDomain);
-            List<FieldConfig> sourceRecordIdConfigFields = new ArrayList<FieldConfig>();
-            
+            ObjectNode sourceObject = multiObject.getSourceDomainObject();                       
             String sourceHighLight = buildHighLight(sourceDomain, sourceRecordIdConfigFields, sourceRecordIdEPathFields, sourceObject);
            
             //TBD: should go through each one
             ObjectNode targetObject =  multiObject.getRelationshipDomains()[0].getRelationshipObjects()[0].getTargetObject();
-            //TBD: configManager.getrecordIdEPathFields(targetDomain);
-            EPathArrayList targetRecordIdEPathFields = new EPathArrayList();
-            //TBD: configManager.getrecordIdConfigFields(targetDomain);
-            List<FieldConfig> targetRecordIdConfigFields = new ArrayList<FieldConfig>();
-            
             String targetHighLight = buildHighLight(targetDomain, targetRecordIdConfigFields, targetRecordIdEPathFields, targetObject); 
             
             Relationship relationship = multiObject.getRelationshipDomains()[0].getRelationshipObjects()[0].getRelationship();     
@@ -134,11 +145,11 @@ public class ViewHelper {
         return relationships;
     }
     
-    public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) throws ConfigException {
+    public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) 
+        throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
         String highLight = null;
-        //TBD: configManager.getDateFormat(domain);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
         boolean hasSensitiveData = false;
         try {
             hasSensitiveData = configManager.getObjectSensitivePlugIn() != null ? 
@@ -176,8 +187,10 @@ public class ViewHelper {
                     }
                 }     
             }
-        } catch(EPathException eex) {         
+        } catch(EPathException eex) { 
+            throw new ConfigException(eex);
         } catch(ObjectException oex) {
+            throw new ConfigException(oex);
         }
         return highLight;
     }
@@ -222,31 +235,29 @@ public class ViewHelper {
         return relationshipComposite;
     }
     
-    public static List<ObjectView> buildObjectView(PageIterator<ObjectNode> pages, boolean isWeighted){
-        List<ObjectView> objects = new ArrayList<ObjectView>();
+    public static List<ObjectRecord> buildObjectRecords(String domain, PageIterator<ObjectNode> pages, boolean isWeighted)
+        throws ConfigException {
+        MDConfigManager configManager =  MDConfigManager.getInstance(); 
         
         List<ObjectRecord> records = new ArrayList<ObjectRecord>();
-        //TBD: MDConfigManager.getDateFormat()
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        //TBD: get from configuration API.
-        //RelationshipScreenConfig screenConfig = new RelationshipScreenConfig();
-        //TBD:should get from screenConfig.getSearchResultsConfig();
-        //EPathArrayList searchResultsEPathField = screenConfig.getSearchResultsEPathFields   
-        EPathArrayList searchResultsFieldEPaths = new EPathArrayList();
-        List<FieldConfig> searchResultsConfigFields = new ArrayList<FieldConfig>();
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
+        DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domain);
+        List<SearchResultsConfig> searchResultsConfigs = domainConfig.getSearchResultsConfigs();
+          
+        EPathArrayList searchResultsFieldEPaths = Helper.toSearchResultsFieldEPaths(searchResultsConfigs);
+        List<FieldConfig> searchResultsConfigFields = Helper.toSearchResultsFieldConfigs(searchResultsConfigs);
         
         while(pages.hasNext()) {
             ObjectNode objectNode = pages.next();
-            ObjectSensitivePlugIn plugin = null; //TBD: MDConfigManager.getInstance().getObjectSensitivePlugIn();
-            boolean hasSensitiveData = plugin != null ? plugin.equals(objectNode) : true;
+            ObjectSensitivePlugIn plugin = configManager.getObjectSensitivePlugIn();
+            boolean isSensitiveData = plugin != null ? plugin.equals(objectNode) : true;
             ObjectRecord record = new ObjectRecord();
             //Set the comparision score
             if (isWeighted) {
                 //TBD: EOSearchResultRecord.getComparisonScore()
-                //private float mComparisonScore
-                //private String mEUID
-                //private ObjectNode mResultRow
-                //eo status?
+                //     EOSearchResultRecord.getEUID();
+                //     EOSearchResultRecord.getObjectNode(); 
                 record.setAttributeValue("Weight", "0");
             }         
             for (int i = 0; i < searchResultsFieldEPaths.size(); i++) {
@@ -257,13 +268,13 @@ public class ViewHelper {
                     String stringValue = null;
                     if(objectValue instanceof java.util.Date) {
                         String dateField = simpleDateFormat.format(objectValue);          
-                        if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
                             record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
                             record.setAttributeValue(fieldConfig.getFullFieldName(), dateField);
                         }        
                     } else {
-                        if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
                             record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
                             if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && objectValue != null) {
@@ -291,8 +302,7 @@ public class ViewHelper {
             record.setEUID("EUID"); 
             records.add(record);
         }
-        
-        return objects;
+        return records;
     } 
     
     public static RelationshipRecord buildRelationshipRecord(Relationship relationship) {
@@ -315,22 +325,22 @@ public class ViewHelper {
         return relationshipRecord;
     }
     
-    public static ObjectRecord buildObjectRecord(String EUID, ObjectNode objectNode) throws ConfigException {
+    public static ObjectRecord buildObjectRecord(String domain, String EUID, ObjectNode objectNode) 
+        throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
-        //TBD: configManager.getDateFormat(domain);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
         boolean hasSensitiveData = false;
         try {
             hasSensitiveData = configManager.getObjectSensitivePlugIn() != null ? 
                                configManager.getObjectSensitivePlugIn().isDataSensitive(objectNode) : true;
         } catch (Exception ignore) {
         }
-        
-        //TBD: configManager.getSearchResultsFieldEPaths();
-        EPathArrayList searchResultsFieldEPaths = new EPathArrayList();
-        //TBD: configManager.getSearchResultsConfigFields();
-        List<FieldConfig> searchResultsConfigFields = new ArrayList<FieldConfig>();
-      
+        DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domain);
+        List<SearchResultsConfig> searchResultsConfigs = domainConfig.getSearchResultsConfigs();
+          
+        EPathArrayList searchResultsFieldEPaths = Helper.toSearchResultsFieldEPaths(searchResultsConfigs);
+        List<FieldConfig> searchResultsConfigFields = Helper.toSearchResultsFieldConfigs(searchResultsConfigs);
+              
         ObjectRecord objectRecord = new ObjectRecord();
         objectRecord.setEUID(EUID);
         objectRecord.setName(objectNode.pGetTag());
@@ -380,7 +390,9 @@ public class ViewHelper {
                  }
                  objectRecord.add(attribute);
             } catch (EPathException eex) {
+                throw new ConfigException(eex);
             } catch(ObjectException oex) {
+               throw new ConfigException(oex); 
             }
        }
        return objectRecord;
