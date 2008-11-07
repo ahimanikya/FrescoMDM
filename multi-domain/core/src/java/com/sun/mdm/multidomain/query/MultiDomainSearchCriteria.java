@@ -136,21 +136,50 @@ public class MultiDomainSearchCriteria {
         SystemObject systemObjectFrom;
         SystemObject systemObjectTo;
         
+        /**
+         * Set primary system object.
+         * @param systemObject system object.
+         */
         public void setSystemObject(SystemObject systemObject) {
             this.systemObject = systemObject;
         }
+        
+        /**
+         * Get primary system object.
+         * @return SystemObject Primary system object.
+         */
         public SystemObject getSystemObject() {
             return systemObject;
         }
+        
+        /**
+         * Set system object for the upper bound of range search.
+         * @param systemObjectFrom SystemObject.
+         */
         public void setSystemObjectFrom(SystemObject systemObjectFrom) {
             this.systemObjectFrom = systemObjectFrom;
         }
+        
+        /**
+         * Get system object for the upper bound of range search.
+         * @return systemObjectFrom SystemObject.
+         */
         public SystemObject getSystemObjectFrom() {
             return systemObjectFrom;
         } 
+        
+        /**
+         * Set system object for the lower bound of range search.
+         * @param systemObjectTo SystemObject.
+         */
         public void setSystemObjectTo(SystemObject systemObjectTo) {
             this.systemObjectTo = systemObjectTo;
         }
+        
+        /**
+         * Get system object for the lower bound of range search.
+         * @return systemObjectTo SystemObject.
+         */
         public SystemObject getSystemObjectTo() {
             return systemObjectTo;
         }          
