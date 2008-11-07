@@ -875,22 +875,44 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         }
     }
 
+    /**
+     * 
+     * @return int direction 0 ----> 1 <---- 2 <--->
+
+     */
     public int getDirectionCode() {
         int dir = jComboBoxDirection.getSelectedIndex();
-        // 0 ---->
-        // 1 <----
-        // 2 <--->
         return dir;
     }
+    
+    /**
+     * 
+     * @return String DefinitionName
+     */
+    public String getDefinitionName() {
+        return this.jTextName.getText();
+    }
 
+    /**
+     * 
+     * @return String Plugin
+     */
     public String getPlugin() {
         return (String) jComboBoxPlugin.getSelectedItem();
     }
 
+    /**
+     * 
+     * @return String Description
+     */
     public String getDescription() {
         return jTextAreaDescription.getText();
     }
 
+    /**
+     * 
+     * @return String source Domain
+     */
     public String getSourceDomain() {
         if (getDirectionCode() == 1) { // <----
             return jTextDomain2.getText();
@@ -898,7 +920,11 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             return jTextDomain1.getText();
         }
     }
-
+    
+    /**
+     * 
+     * @return String target Domain
+     */
     public String getTargetDomain() {
         if (getDirectionCode() == 1) {
             return jTextDomain1.getText();
@@ -906,9 +932,38 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             return jTextDomain2.getText();
         }
     }
-
-    public String getRelationshipDefName() {
-        return jTextName.getText();
+    
+    /**
+     * 
+     * @return ArrayList <Attribute> PredefinedAttributes
+     */
+    public ArrayList <Attribute> getPredefinedAttributes() {
+        ArrayList <Attribute> al = new ArrayList();
+        TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) jTablePredefinedAttr.getModel();
+        for (int i=0; i < model.getRowCount(); i++) {
+            PredefinedAttributeRow row = model.getRow(i);
+            Attribute attr = new Attribute(row.getName(), row.getIncluded(), row.getRequired());
+            al.add(attr);
+        }
+        return al;
+    }
+    
+    /**
+     * 
+     * @return ArrayList <Attribute> ExtendedAttributes
+     */
+    public ArrayList <Attribute> getExtendedAttributes() {
+        ArrayList <Attribute> al = new ArrayList();
+        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
+        for (int i=0; i < model.getRowCount(); i++) {
+            ExtendedAttributeRow row = model.getRow(i);
+            Attribute attr = new Attribute(row.getName(), row.getColumnName(), 
+                                           row.getDataType(), row.getDefaultValue(),
+                                           row.getSearchable(), row.getRequired(), 
+                                           row.getAttributeID());
+            al.add(attr);
+        }
+        return al;
     }
 
 }

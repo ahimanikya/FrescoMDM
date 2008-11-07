@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import javax.swing.table.TableColumn;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //import javax.swing.table.TableRowSorter;
 import org.openide.NotifyDescriptor;
@@ -64,7 +66,12 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             this.jComboBoxPlugin.setSelectedIndex(0);
         }
         //this.jComboBoxPlugin.setSelectedItem(definition.getPlugin());
-        String direction = definition.getDirection();
+        
+        String effectiveFrom = definition.getEffectiveFrom();
+        String effectiveTo = definition.getEffectiveTo();
+        this.jTextEffectiveFrom.setText(effectiveFrom);
+        this.jTextEffectiveTo.setText(effectiveTo);
+        
         String description = definition.getDescription();
         if (description != null) {
             this.jTextAreaDescription.setText(description);
@@ -875,16 +882,76 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         }
     }
 
+    /**
+     * 
+     * @return String DefinitionName
+     */
+    public String getDefinitionName() {
+        return this.jTextName.getText();
+    }
+    
+    /**
+     * 
+     * @return String Plugin
+     */
     public String getPlugin() {
         return (String) jComboBoxPlugin.getSelectedItem();
     }
 
+    /**
+     * 
+     * @return String EffectiveFrom
+     */
+    public String getEffectiveFrom() {
+        return this.jTextEffectiveFrom.getText();
+    }
+    
+    /**
+     * 
+     * @return String EffectiveTo
+     */
+    public String getEffectiveTo() {
+        return this.jTextEffectiveTo.getText();
+    }
+    
+    /**
+     * 
+     * @return String Description
+     */
     public String getDescription() {
         return jTextAreaDescription.getText();
     }
-
-    public String getRelationshipDefName() {
-        return jTextName.getText();
+    
+    /**
+     * 
+     * @return ArrayList <Attribute> PredefinedAttributes
+     */
+    public ArrayList <Attribute> getPredefinedAttributes() {
+        ArrayList <Attribute> al = new ArrayList();
+        TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) jTablePredefinedAttr.getModel();
+        for (int i=0; i < model.getRowCount(); i++) {
+            PredefinedAttributeRow row = model.getRow(i);
+            Attribute attr = new Attribute(row.getName(), row.getIncluded(), row.getRequired());
+            al.add(attr);
+        }
+        return al;
     }
-
+    
+    /**
+     * 
+     * @return ArrayList <Attribute> ExtendedAttributes
+     */
+    public ArrayList <Attribute> getExtendedAttributes() {
+        ArrayList <Attribute> al = new ArrayList();
+        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
+        for (int i=0; i < model.getRowCount(); i++) {
+            ExtendedAttributeRow row = model.getRow(i);
+            Attribute attr = new Attribute(row.getName(), row.getColumnName(), 
+                                           row.getDataType(), row.getDefaultValue(),
+                                           row.getSearchable(), row.getRequired(), 
+                                           row.getAttributeID());
+            al.add(attr);
+        }
+        return al;
+    }
 }
