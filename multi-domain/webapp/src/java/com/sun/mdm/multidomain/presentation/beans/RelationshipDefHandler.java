@@ -118,6 +118,20 @@ public class RelationshipDefHandler {
     }
     
     /**
+     * Update an existing relationship type.
+     * @param RelationshipDef RelationshipDef.
+     * @exception ServiceException Thrown if an error occurs during processing. 
+     */
+    public void updateRelationshipDef(RelationshipDef relationshipDef) 
+        throws ServiceException {        
+        try {
+            relationshipManager.updateRelationshipDef(relationshipDef);
+        } catch(ServiceException sex) {
+            throw sex;
+        }    
+    }
+    
+    /**
      * Delete an existing RelationshipDef.
      * @param RelationshipDef RelationshipDef.
      * @exception ServiceException Thrown if an error occurs during processing. 
