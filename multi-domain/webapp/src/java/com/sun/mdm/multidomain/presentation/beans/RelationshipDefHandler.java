@@ -30,7 +30,7 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;     
-import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefObject;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
 
 /**
  * RelationshipDefHandler class.
@@ -69,11 +69,11 @@ public class RelationshipDefHandler {
         return types;
     }
 
-    public List<DomainRelationshipDefObject> getDomainRelationshipDefObjects(String domain)             
+    public List<DomainRelationshipDefsObject> getDomainRelationshipDefsObjects(String domain)             
         throws ServiceException {
-        List<DomainRelationshipDefObject> relationshipDefs = null;
+        List<DomainRelationshipDefsObject> relationshipDefs = null;
         try {
-            relationshipDefs = relationshipManager.getDomainRelationshipDefObjects(domain);
+            relationshipDefs = relationshipManager.getDomainRelationshipDefsObjects(domain);
         } catch(ServiceException sex) {
             throw sex;
         }

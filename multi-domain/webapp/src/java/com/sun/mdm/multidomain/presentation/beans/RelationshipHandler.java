@@ -31,7 +31,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
-import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
@@ -76,7 +76,7 @@ public class RelationshipHandler {
      * @return DomainRelationshipObject A list of all relationship views for the given domain record.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public DomainRelationshipObject searchDomainRelationshipsByRecord(DomainSearch domainSearch)
+    public DomainRelationshipsObject searchDomainRelationshipsByRecord(DomainSearch domainSearch)
         throws ServiceException {
         return relationshipManager.searchRelationshipsByRecord(domainSearch);        
     }
