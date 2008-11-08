@@ -26,7 +26,7 @@ package com.sun.mdm.multidomain.services.relationship;
  * RelationshipDefinitionView class.
  * @author cye
  */
-public class RelationshipDefinitionView {
+public class RelationshipDefView {
     private String name;
     private String id; 
     private String sourceDomain;
@@ -36,10 +36,10 @@ public class RelationshipDefinitionView {
     /**
      * Create instance of RelationshipDefinitionView.
      */
-    public RelationshipDefinitionView(){        
+    public RelationshipDefView(){        
     }
     
-    public RelationshipDefinitionView(String name, String id, String sourceDomain, String targetDomain, boolean biDirection){        
+    public RelationshipDefView(String name, String id, String sourceDomain, String targetDomain, boolean biDirection){        
         this.name = name;
         this.id = id; 
         this.sourceDomain = sourceDomain;
@@ -85,5 +85,19 @@ public class RelationshipDefinitionView {
     
     public void setBiDirection(boolean biDirection){
         this.biDirection = biDirection;
-    }        
+    }  
+    
+    @Override 
+    public boolean equals(Object object) {
+        if (object != null && 
+            object instanceof RelationshipDefView) {
+            RelationshipDefView rdView = (RelationshipDefView)object;
+            if (name.equals(rdView.getName()) &&
+                sourceDomain.equals(rdView.getSourceDomain()) &&
+                targetDomain.equals(rdView.getTargetDomain())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

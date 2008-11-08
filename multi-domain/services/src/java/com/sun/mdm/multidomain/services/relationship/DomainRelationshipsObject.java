@@ -33,12 +33,12 @@ import com.sun.mdm.multidomain.services.model.ObjectView;
  * DomainRelationshipObject class.
  * @author cye
  */
-public class DomainRelationshipObject {
+public class DomainRelationshipsObject {
     private String domain;
     private ObjectView primaryObject;
-    private Map<RelationshipDefinitionView, List<RelationshipView>> relationshipViews;    
+    private List<RelationshipsObject> relationshipsObjects;    
     
-    public DomainRelationshipObject(){        
+    public DomainRelationshipsObject(){        
     }
     
     public String getDomain(){        
@@ -57,35 +57,37 @@ public class DomainRelationshipObject {
         this.primaryObject = primaryObject;
     }
     
-    public Map<RelationshipDefinitionView, List<RelationshipView>> getRelationshipViews(){        
-        return relationshipViews;
+    public List<RelationshipsObject> getRelationshipsObjects(){        
+        return relationshipsObjects;
     }
     
-    public void setRelationshipViews(Map<RelationshipDefinitionView, List<RelationshipView>> relationshipViews){        
-        this.relationshipViews = relationshipViews;
+    public void setRelationshipsObject(List<RelationshipsObject> relationshipsObjects){        
+        this.relationshipsObjects = relationshipsObjects;
     }
     
-    public void addRelationshipView(RelationshipDefinitionView relationshipDef, RelationshipView relationship) {
-        if (relationshipViews == null) {
-            relationshipViews = new HashMap<RelationshipDefinitionView, List<RelationshipView>>();            
-        }
-        List<RelationshipView> value = relationshipViews.get(relationshipDef);
-        if(value == null) {
-            value = new ArrayList<RelationshipView>();
-            relationshipViews.put(relationshipDef, value);
-            value = relationshipViews.get(relationshipDef);
-        }
-        value.add(relationship);
+    public void addRelationshipView(RelationshipDefView relationshipDef, RelationshipView relationship) {
+       RelationshipsObject relationshipsObject = null;
+       for (RelationshipsObject rObject : relationshipsObjects) {
+            if (relationshipDef.equals(rObject.getRelationshipDefView())) {
+                relationshipsObject = rObject;
+                break;
+            }
+       }
+       if (relationshipsObject == null) {
+           relationshipsObject = new RelationshipsObject(relationshipDef);
+       }
+       relationshipsObject.setRelationshipView(relationship);
     }
     
-    public List<RelationshipView> getRelationshipView(RelationshipDefinitionView relationshipDef) {
-        List<RelationshipView> relationshipView = null;
-         if (relationshipViews != null) {
-            relationshipView = relationshipViews.get(relationshipDef);
-         } else {
-            relationshipView = new ArrayList<RelationshipView>();
-         }
-        return relationshipView;
+    public List<RelationshipView> getRelationshipView(RelationshipDefView relationshipDef) {
+        RelationshipsObject relationshipsObject = null;
+        for (RelationshipsObject rObject : relationshipsObjects) {
+            if (relationshipDef.equals(rObject.getRelationshipDefView())) {
+                relationshipsObject = rObject;
+                break;
+            }
+        }   
+        return relationshipsObject != null ? relationshipsObject.getRelationshipViews() : null;
     }
     
 }

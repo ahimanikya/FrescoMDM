@@ -33,23 +33,23 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
  * DomainRelationshipDefinitionObject class.
  * @author cye
  */
-public class DomainRelationshipDefObject implements Iterator<RelationshipDef> {
+public class DomainRelationshipDefsObject implements Iterator<RelationshipDef> {
 
-    private List<RelationshipDef> relationshipDefinitions;
+    private List<RelationshipDef> relationshipDefs;
     private int position = 0;
     private int size;
     private String domain;
 
-    public DomainRelationshipDefObject() {
+    public DomainRelationshipDefsObject() {
     }
     
-    public DomainRelationshipDefObject(String domain) {
+    public DomainRelationshipDefsObject(String domain) {
         this.domain = domain;        
     }
     
-    public DomainRelationshipDefObject(String domain, List<RelationshipDef> relationshipDefinitions) {
+    public DomainRelationshipDefsObject(String domain, List<RelationshipDef> relationshipDefs) {
         this.domain = domain;
-        this.relationshipDefinitions = relationshipDefinitions;
+        this.relationshipDefs = relationshipDefs;
     }
     
     public String getDomain(){
@@ -60,37 +60,37 @@ public class DomainRelationshipDefObject implements Iterator<RelationshipDef> {
         this.domain = domain;
     }
     
-    public List<RelationshipDef> getRelationshipDefinitions(){
-        if (relationshipDefinitions == null) {
-            relationshipDefinitions = new ArrayList<RelationshipDef>();
+    public List<RelationshipDef> getRelationshipDefss(){
+        if (relationshipDefs == null) {
+            relationshipDefs = new ArrayList<RelationshipDef>();
         }
-        return relationshipDefinitions;
+        return relationshipDefs;
     }
     
-    public void setRelationshipDefinitions(List<RelationshipDef> relationshipDefinitions){
-        this.relationshipDefinitions = relationshipDefinitions;
+    public void setRelationshipDefinitions(List<RelationshipDef> relationshipDefs){
+        this.relationshipDefs = relationshipDefs;
     }
     
     public void add(RelationshipDef relationship) {
-        if (relationshipDefinitions == null) {
-            relationshipDefinitions = new ArrayList<RelationshipDef>();
+        if (relationshipDefs == null) {
+            relationshipDefs = new ArrayList<RelationshipDef>();
         }        
-        relationshipDefinitions.add(relationship);
+        relationshipDefs.add(relationship);
     }
     
     public int getSize() {
         size = 0;
-        if (relationshipDefinitions != null) {
-            size  = relationshipDefinitions.size();
+        if (relationshipDefs != null) {
+            size  = relationshipDefs.size();
         }
         return size;
     }
     
     public boolean hasNext() {
         boolean has = false;
-        if(relationshipDefinitions != null && 
-           !relationshipDefinitions.isEmpty() && 
-           relationshipDefinitions.size() > position) { 
+        if(relationshipDefs != null && 
+           !relationshipDefs.isEmpty() && 
+           relationshipDefs.size() > position) { 
            has = true;
         }  
         return has;
@@ -98,10 +98,10 @@ public class DomainRelationshipDefObject implements Iterator<RelationshipDef> {
     
     public RelationshipDef next() 
         throws NoSuchElementException {
-        if(relationshipDefinitions != null && 
-           !relationshipDefinitions.isEmpty() && 
-           relationshipDefinitions.size() > position) { 
-           RelationshipDef e = relationshipDefinitions.get(position);
+        if(relationshipDefs != null && 
+           !relationshipDefs.isEmpty() && 
+           relationshipDefs.size() > position) { 
+           RelationshipDef e = relationshipDefs.get(position);
            position++;
            return e;
         } else {
@@ -116,9 +116,9 @@ public class DomainRelationshipDefObject implements Iterator<RelationshipDef> {
     @Override 
     public boolean equals(Object object) {
         if(object != null &&
-           object instanceof DomainRelationshipDefObject) {            
+           object instanceof DomainRelationshipDefsObject) {            
            if (this.domain != null &&
-               this.domain.equals(((DomainRelationshipDefObject)object).getDomain())) {
+               this.domain.equals(((DomainRelationshipDefsObject)object).getDomain())) {
                return true;
            } else {
                return false;
