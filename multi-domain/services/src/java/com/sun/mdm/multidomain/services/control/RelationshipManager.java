@@ -55,8 +55,8 @@ import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
-import com.sun.mdm.multidomain.services.relationship.DomainRelationshipObject;
-import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefObject;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
+import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.util.Localizer;
@@ -344,9 +344,9 @@ public class RelationshipManager {
      * @return List<DomainRelationshipDefObject> List of DomainRelationshipDefObject.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<DomainRelationshipDefObject> getDomainRelationshipDefObjects(String domain) 
+    public List<DomainRelationshipDefsObject> getDomainRelationshipDefsObjects(String domain) 
         throws ServiceException {
-        List<DomainRelationshipDefObject> types = new ArrayList<DomainRelationshipDefObject>();
+        List<DomainRelationshipDefsObject> types = new ArrayList<DomainRelationshipDefsObject>();
         try {
             List<RelationshipDef> typeList = getRelationshipDefs(domain);
             for(RelationshipDef type : typeList) {
@@ -356,13 +356,13 @@ public class RelationshipManager {
                 } else if (domain.equals(type.getTargetDomain())) {
                     key = type.getSourceDomain();                        
                 } 
-                int index = types.indexOf(new DomainRelationshipDefObject(key));
+                int index = types.indexOf(new DomainRelationshipDefsObject(key));
                 if(index == - 1) {
-                  DomainRelationshipDefObject value = new DomainRelationshipDefObject(key);
+                  DomainRelationshipDefsObject value = new DomainRelationshipDefsObject(key);
                   types.add(value);  
                   index = types.indexOf(value);
                 } 
-                DomainRelationshipDefObject value = types.get(index);
+                DomainRelationshipDefsObject value = types.get(index);
                 value.add(type);                
             }
         } catch(ServiceException sex) {
@@ -377,16 +377,16 @@ public class RelationshipManager {
      * @return DomainRelationshipObject DomainRelationshipObject.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public DomainRelationshipObject searchRelationshipsByRecord(DomainSearch domainSearch)
+    public DomainRelationshipsObject searchRelationshipsByRecord(DomainSearch domainSearch)
         throws ServiceException {
-        DomainRelationshipObject domainRelationshipObject  = new DomainRelationshipObject();
+        DomainRelationshipsObject domainRelationshipsObject  = new DomainRelationshipsObject();
         try {
             DomainSearchOption mdSearchOption = QueryBuilder.buildMultiDomainSearchOption(domainSearch);            
             MultiDomainSearchOptions mdSearchOptions = new MultiDomainSearchOptions();            
             mdSearchOptions.setOptions(domainSearch.getName(),mdSearchOption);
             MultiDomainSearchCriteria mdSearchCriteria = new MultiDomainSearchCriteria();
             PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);            
-            domainRelationshipObject = ViewHelper.buildRelationshipView(pages, domainSearch.getName());
+            domainRelationshipsObject = ViewHelper.buildRelationshipView(pages, domainSearch.getName());
         } catch (ConfigException cex) {
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
@@ -394,7 +394,7 @@ public class RelationshipManager {
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }        
-        return domainRelationshipObject;
+        return domainRelationshipsObject;
     }    
     
     /**
