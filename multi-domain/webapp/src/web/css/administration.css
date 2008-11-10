@@ -103,6 +103,15 @@
 }
 
 
+.AttributesListing {
+    border-collapse: collapse;
+}
+.AttributesListing .header{
+    background-color: #EEE;
+}
+.AttributesListing .dataItem{
+    padding: 4px; border: 1px solid #CCC;
+}
 
 .RelationshipsListing {
     position: relative;
