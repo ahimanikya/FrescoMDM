@@ -8,6 +8,7 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.parser.RecordDetail;
+import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import org.openide.DialogDisplayer;
@@ -22,12 +23,15 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
 
     private RecordDetail mRecordDetail = null;
     
+    private DomainNode mDomainNode = null;
+    
     private boolean bModified = false;
     /** Creates new form DomainRecordDetailDialog */
-    public DomainRecordDetailDialog(RecordDetail recDet, boolean isNew) {
+    public DomainRecordDetailDialog(RecordDetail recDet, boolean isNew, DomainNode domainNode) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mRecordDetail = recDet;
         initComponents();
+        mDomainNode = domainNode;
         if (isNew) {
             loadNewRecordDetail();
         } else {
@@ -147,16 +151,16 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         jPanelFieldGroupLayout.setHorizontalGroup(
             jPanelFieldGroupLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelFieldGroupLayout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .add(jBtnAddGroup)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jBtnRemoveGroup)
+                .add(30, 30, 30)
+                .add(jBtnRemoveGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .add(jPanelFieldGroupLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanelFieldGroupLayout.createSequentialGroup()
                     .addContainerGap()
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 187, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 231, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(11, Short.MAX_VALUE)))
         );
 
         jPanelFieldGroupLayout.linkSize(new java.awt.Component[] {jBtnAddGroup, jBtnRemoveGroup}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -166,8 +170,8 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelFieldGroupLayout.createSequentialGroup()
                 .addContainerGap(148, Short.MAX_VALUE)
                 .add(jPanelFieldGroupLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnRemoveGroup)
-                    .add(jBtnAddGroup)))
+                    .add(jBtnAddGroup)
+                    .add(jBtnRemoveGroup)))
             .add(jPanelFieldGroupLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanelFieldGroupLayout.createSequentialGroup()
                     .addContainerGap()
@@ -208,17 +212,15 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         jPanelField.setLayout(jPanelFieldLayout);
         jPanelFieldLayout.setHorizontalGroup(
             jPanelFieldLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanelFieldLayout.createSequentialGroup()
+                .add(47, 47, 47)
+                .add(jBtnAddField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jBtnRemoveField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelFieldLayout.createSequentialGroup()
-                .addContainerGap(140, Short.MAX_VALUE)
-                .add(jBtnAddField)
-                .add(18, 18, 18)
-                .add(jBtnRemoveField)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .add(jPanelFieldLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(jPanelFieldLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 290, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jPanelFieldLayout.linkSize(new java.awt.Component[] {jBtnAddField, jBtnRemoveField}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -226,15 +228,12 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         jPanelFieldLayout.setVerticalGroup(
             jPanelFieldLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelFieldLayout.createSequentialGroup()
-                .addContainerGap(148, Short.MAX_VALUE)
+                .addContainerGap()
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 7, Short.MAX_VALUE)
                 .add(jPanelFieldLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnRemoveField)
-                    .add(jBtnAddField)))
-            .add(jPanelFieldLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(jPanelFieldLayout.createSequentialGroup()
-                    .add(7, 7, 7)
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(34, Short.MAX_VALUE)))
+                    .add(jBtnAddField)
+                    .add(jBtnRemoveField)))
         );
 
         jBtnOK.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_OK")); // NOI18N
@@ -256,24 +255,24 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(21, 21, 21)
-                .add(jLabel1)
-                .add(18, 18, 18)
-                .add(jTxtRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 179, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(298, 298, 298))
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(jPanelFieldGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 219, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanelField, 0, 319, Short.MAX_VALUE))
+                        .add(21, 21, 21)
+                        .add(jLabel1)
+                        .add(18, 18, 18)
+                        .add(jTxtRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 327, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 392, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jBtnOK)
+                        .addContainerGap()
+                        .add(jBtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(8, 8, 8))
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanelFieldGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 73, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .add(jPanelField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(61, 61, 61))
         );
 
         layout.linkSize(new java.awt.Component[] {jBtnCancel, jBtnOK}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -287,17 +286,15 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
                     .add(jTxtRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(jPanelField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jBtnOK)
-                            .add(jBtnCancel)))
+                            .add(jBtnCancel)
+                            .add(jBtnOK)))
                     .add(jPanelFieldGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        jPanelField.getAccessibleContext().setAccessibleParent(null);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-572)/2, (screenSize.height-320)/2, 572, 320);
@@ -347,6 +344,22 @@ private void onRemoveGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 
 private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddField
 // TODO add your handling code here:
+    TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
+    TableModelField fieldModel = (TableModelField) jTableField.getModel();
+    int selectedRow = jTableFieldGroup.getSelectedRow();
+    FieldGroup group = fieldGroupModel.getRow(selectedRow);
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), group);
+    entityDlg.setVisible(true);
+    if (entityDlg.isSelected()) {
+        if (entityDlg.getFieldList().size() > 0) {
+            for (String fieldName : entityDlg.getFieldList()) {
+                FieldGroup.FieldRef fieldRef = group.createFieldRef(fieldName);
+                fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
+            }
+            jTableField.setModel(fieldModel);
+        }
+    }
+    
 }//GEN-LAST:event_onAddField
 
 private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveField

@@ -430,6 +430,21 @@ private void onAddSummayGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
 
 private void onRemoveSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSummaryGroup
 // TODO add your handling code here:
+    int selectedRow = jTableRecordSummay.getSelectedRow();
+    TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
+    FieldGroup selectedGroup = model.getRow(selectedRow);   
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Prompt"),
+            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Title"),
+            NotifyDescriptor.YES_NO_OPTION);
+    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+        Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordSummary);
+        model.removeRow(selectedRow);
+        this.jBtnRemoveDetail.setEnabled(false);
+        this.jBtnEditDetail.setEnabled(false);
+        this.enableSave();
+    }
+    
 }//GEN-LAST:event_onRemoveSummaryGroup
 
 private void onEditSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditSummaryGroup
@@ -452,7 +467,7 @@ private void onAddDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAd
     //DomainForWebManager domain = mDomains.getDomain((String) jCBDomainList.getSelectedItem());
     int recordDetailID = mDomain.generateRecordDetailID();
     RecordDetail newRecordDetail = new RecordDetail(recordDetailID);
-    DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(newRecordDetail, true);
+    DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(newRecordDetail, true, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModifed()) {
         //mRecordDetail.add(newRecordDetail);
@@ -505,7 +520,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
     int selectedRow = this.jTableRecordDetail.getSelectedRow();
     TableModelRecordDetail recordDetailModel = (TableModelRecordDetail) jTableRecordDetail.getModel();
     RecordDetail recordDetail = recordDetailModel.getRow(selectedRow);
-    DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(recordDetail, false);
+    DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(recordDetail, false, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModifed()) {
         this.enableSave();        
@@ -522,7 +537,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainView.class, "LBL_FIELD"),};
         ArrayList fieldRows;
-        final static int iColRecordDetailName = 0;
+        final static int iColRecordSummary = 0;
 
         TableModelRecordSummary(ArrayList rows) {
             fieldRows = rows;
@@ -548,7 +563,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
-                        case iColRecordDetailName:
+                        case iColRecordSummary:
                             if (singleRow.getDescription() != null && singleRow.getDescription().length() > 0) {
                                 return singleRow.getDescription();
                             }
@@ -625,7 +640,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
          */
         public int findRowByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
-                if (getValueAt(i, iColRecordDetailName).equals(fieldName)) {
+                if (getValueAt(i, iColRecordSummary).equals(fieldName)) {
                     return i;
                 }
             }
@@ -634,7 +649,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 
         public FieldGroup.FieldRef findRelTypeByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
-                if (getValueAt(i, iColRecordDetailName).equals(fieldName)) {
+                if (getValueAt(i, iColRecordSummary).equals(fieldName)) {
                     return (FieldGroup.FieldRef) fieldRows.get(i);
                 }
             }
