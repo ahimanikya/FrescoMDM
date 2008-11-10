@@ -37,10 +37,10 @@
     <br>
     <p>Click following links to access different functional pages:</p>    
     <ul>    
-        <li><a href="<c:url value="managerelationshipdef.htm" />">Relationship Definition Management Page</a></li>
-        <li><a href="<c:url value="managerelationship.htm" />">Relationship Management Page</a></li>
-        <li><a href="<c:url value="managehierarchydef.htm" />">Hierarchy Definition Management Page</a></li>
-        <li><a href="<c:url value="managehierarchy.htm" />">Hierarchy Management Page</a></li>
+        <li><a href="<c:url value="relationshipdef.htm" />">Relationship Definition Management Page</a></li>
+        <li><a href="<c:url value="relationship.htm" />">Relationship Management Page</a></li>
+        <li><a href="<c:url value="hierarchydef.htm" />">Hierarchy Definition Management Page</a></li>
+        <li><a href="<c:url value="hierarchy.htm" />">Hierarchy Management Page</a></li>
     </ul>    
     <p>Click following links to access the DOJO Examples:</p>    
     <ul>    
