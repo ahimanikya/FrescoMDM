@@ -11,9 +11,9 @@
         <link rel="stylesheet" type="text/css" href="/css/administration.css" media="screen"/>
 
         <style type="text/css">
-            @import "scripts/dojo-release-1.2.0/dijit/themes/mdwm/mdwm.css";
+            @import "scripts/dijit/themes/mdwm/mdwm.css";
         </style>
-        <script type="text/javascript" src="scripts/dojo-release-1.2.0/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>
+        <script type="text/javascript" src="scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>
         <script type="text/javascript">
             dojo.require("dojo.parser");
             dojo.require("dijit.layout.ContentPane");
