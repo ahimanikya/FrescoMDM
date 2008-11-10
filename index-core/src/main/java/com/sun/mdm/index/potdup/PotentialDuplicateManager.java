@@ -40,6 +40,7 @@ import com.sun.mdm.index.idgen.CUIDManager;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary;
+import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.objects.PotentialDuplicate;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.DBAdapter;
@@ -64,8 +65,9 @@ public class PotentialDuplicateManager {
     public static final String RESOLVED = "R";
     public static final String AUTO_RESOLVED = "A";
     public static final String UNRESOLVED = "U";
+    private static String DatabaseType = ObjectFactory.getDatabase();
     
-	private static String mNumberConversion = null;
+    private static String mNumberConversion = null;
         
     /**  retrieval for potential duplicates without LIDs */
     private static final String NO_LID_BASE_SELECT_CLAUSE = 
@@ -413,8 +415,27 @@ public class PotentialDuplicateManager {
         throws PotentialDuplicateException, UserException {
         try {
             char statusChar = autoResolve ? 'A' : 'R';
-            String sql = "UPDATE SBYN_POTENTIALDUPLICATES set STATUS='" 
-            + statusChar + "' where POTENTIALDUPLICATEID = ?";
+            String sql = null;
+            if (DatabaseType.equalsIgnoreCase("Oracle")) {
+             sql = "UPDATE SBYN_POTENTIALDUPLICATES set status='" + 
+             		statusChar + "'," + 
+            		" resolveddate = sysdate" + 
+            		" where POTENTIALDUPLICATEID = ?";
+            } else if (DatabaseType.equalsIgnoreCase("SQLServer")){
+            	sql = "UPDATE SBYN_POTENTIALDUPLICATES set status='" + 
+            		statusChar + "'," + 
+            		" resolveddate = getdate()" + 
+            		" where POTENTIALDUPLICATEID = ?";
+            } else if (DatabaseType.equalsIgnoreCase("MySQL")){
+            	sql = "UPDATE SBYN_POTENTIALDUPLICATES set status='" + 
+            		statusChar + "'," + 
+            		" resolveddate = sysdate()" + 
+            		" where POTENTIALDUPLICATEID = ?";
+            } else {	
+            	sql = "UPDATE SBYN_POTENTIALDUPLICATES set STATUS='"  + 
+            		statusChar + 
+            		"' where POTENTIALDUPLICATEID = ?";
+            }
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, potDupId);
             ps.executeUpdate();
@@ -438,7 +459,7 @@ public class PotentialDuplicateManager {
         throws PotentialDuplicateException, UserException {
         try {
             String sql = "UPDATE SBYN_POTENTIALDUPLICATES " 
-                    + "set STATUS='U' where POTENTIALDUPLICATEID = ?";
+                    + "set STATUS='U', resolveddate = null where POTENTIALDUPLICATEID = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, potDupId);
             ps.executeUpdate();
