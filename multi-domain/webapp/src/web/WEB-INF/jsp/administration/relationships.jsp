@@ -13,7 +13,7 @@
 <script type='text/javascript' src='dwr/local.js'></script>
 
 <script type='text/javascript' src='scripts/mdwm.js'></script>
-
+<script type='text/javascript' src='scripts/attributes.js'></script>
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>                
 <script type="text/javascript">
     dojo.require("dojo.dnd.Moveable");
