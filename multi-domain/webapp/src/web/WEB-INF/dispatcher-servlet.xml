@@ -57,5 +57,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
     <bean name="manageHierarchy" 
           class="com.sun.mdm.multidomain.presentation.web.HierarchyController" />
-    
+          
+    <bean name="administration" 
+          class="com.sun.mdm.multidomain.presentation.web.AdministrationController" />
+    <bean name="manage" 
+          class="com.sun.mdm.multidomain.presentation.web.ManageController" />
+     
 </beans>
