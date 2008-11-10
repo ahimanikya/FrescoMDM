@@ -15,7 +15,7 @@ public class PageDefinition {
     
     private int mInitialScreenId = -1;
     
-    private ArrayList<ScreenPageDefintion> mScreenDefintions = new ArrayList<ScreenPageDefintion>();
+    private ArrayList<ScreenDefinition> mScreenDefintions = new ArrayList<ScreenDefinition>();
     
     public PageDefinition() {
         
@@ -29,19 +29,19 @@ public class PageDefinition {
         this.mInitialScreenId = initialScreenId;
     }
 
-    public ArrayList<ScreenPageDefintion> getScreenDefs() {
+    public ArrayList<ScreenDefinition> getScreenDefs() {
         return mScreenDefintions;
     }
 
-    public void setScreenDefs(ArrayList<ScreenPageDefintion> pageDefs) {
+    public void setScreenDefs(ArrayList<ScreenDefinition> pageDefs) {
         this.mScreenDefintions = pageDefs;
     }
     
-    public void addScreenDefition(ScreenPageDefintion screenDef) {
+    public void addScreenDefition(ScreenDefinition screenDef) {
         mScreenDefintions.add(screenDef);       
     }
     
-    public void deleteScreenDefition(ScreenPageDefintion screenDef) {
+    public void deleteScreenDefinition(ScreenDefinition screenDef) {
         mScreenDefintions.remove(screenDef);
     }
 }

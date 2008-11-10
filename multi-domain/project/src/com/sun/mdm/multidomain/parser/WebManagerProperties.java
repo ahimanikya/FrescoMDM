@@ -43,6 +43,8 @@ public class WebManagerProperties {
 
     public static String mTAG_PAGE = "page";
     
+    public static String mTAG_SCREEN = "screen";
+    
     public static String mTAG_DOMAINS = "domains";
     
     public static String mTAG_DOMAIN = "domain";
@@ -79,6 +81,8 @@ public class WebManagerProperties {
     public static String mTAG_PAGE_IDENTIFIER = "identifier";
     
     public static String mTAG_PAGE_TAB = "tab";
+    
+    public static String mTAG_SUB_SCREENS = "subscreens";
     
     public static String mTAG_SEARCH_PAGES = "search-pages";
     

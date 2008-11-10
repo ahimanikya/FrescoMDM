@@ -20,8 +20,6 @@ public class ScreenPageDefintion {
     
     private int mDisplayOrder = -1;
     
-    private int mIntitalTab = -1;
-    
     private ArrayList<RelationshipPageTabDefination> mPageTabs = new ArrayList<RelationshipPageTabDefination>();
     
     public ScreenPageDefintion(String identifier) {
@@ -73,14 +71,6 @@ public class ScreenPageDefintion {
         this.mDisplayOrder = displayOrder;
     }
 
-    public int getIntitalTab() {
-        return mIntitalTab;
-    }
 
-    public void setIntitalTab(int intitalTab) {
-        this.mIntitalTab = intitalTab;
-    }
-     
-    
 
 }
