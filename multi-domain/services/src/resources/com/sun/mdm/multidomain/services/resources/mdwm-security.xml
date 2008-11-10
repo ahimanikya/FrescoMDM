@@ -28,7 +28,7 @@
         <role>
             <role-name>MultiDomain.Relationship.Admin</role-name>
             <operations>
-                <name>RelationshipDefinition_ReadWrite</name>          
+                <name>RelationshipDef_ReadWrite</name>          
                 <name>Relationship_ReadWrite</name>
                 <name>Relationship_History_Read</name>
             </operations>
@@ -37,7 +37,7 @@
         <role>
             <role-name>MultiDomain.Relationship.User</role-name>
             <operations>
-            		<name>RelationshipDefinition_Read</name>          
+            		<name>RelationshipDef_Read</name>          
                 <name>Relationship_ReadWrite</name>
                 <name>Relationship_History_Read</name>
             </operations>
@@ -55,7 +55,7 @@
         <role>
             <role-name>MultiDomain.Hierarchy.Admin</role-name>
             <operations>
-                <name>HierarchyDefinition_ReadWrite</name>          
+                <name>HierarchyDef_ReadWrite</name>          
                 <name>Hierarchy_ReadWrite</name>
                 <name>Hierarchy_History_Read</name>
             </operations>
@@ -64,7 +64,7 @@
         <role>
             <role-name>MultiDomain.Hierarchy.User</role-name>
             <operations>
-                <name>HierarchyDefinition_Read</name>          
+                <name>HierarchyDefRead</name>          
                 <name>Hierarchy_ReadWrite</name>
                 <name>Hierarchy_History_Read</name>
             </operations>
@@ -82,7 +82,7 @@
         <role>
             <role-name>MultiDomain.Group.Admin</role-name>
             <operations>
-                <name>GroupDefinition_ReadWrite</name>                                   
+                <name>GroupDef_ReadWrite</name>                                   
                 <name>Group_ReadWrite</name>                                
                 <name>Group_History_Read</name>                                                
             </operations>
@@ -91,7 +91,7 @@
         <role>
             <role-name>MultiDomain.Group.User</role-name>
             <operations>
-                <name>GroupDefinition_Read</name>                                   
+                <name>GroupDef_Read</name>                                   
                 <name>Group_ReadWrite</name>                            
                 <name>Group_History_Read</name>                                                                
             </operations>
