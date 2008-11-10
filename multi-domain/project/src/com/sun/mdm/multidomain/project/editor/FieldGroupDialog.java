@@ -62,6 +62,7 @@ public class FieldGroupDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_FIELD_GROUP_DEFINITION")); // NOI18N
+        setResizable(false);
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_Description")); // NOI18N
 
@@ -85,6 +86,9 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_FIELD")); // NOI18N
 
         jBtnAdd.setText(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_Add")); // NOI18N
+        jBtnAdd.setMaximumSize(new java.awt.Dimension(71, 23));
+        jBtnAdd.setMinimumSize(new java.awt.Dimension(71, 23));
+        jBtnAdd.setPreferredSize(new java.awt.Dimension(71, 23));
         jBtnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onBtnAddField(evt);
@@ -106,11 +110,11 @@ public class FieldGroupDialog extends javax.swing.JDialog {
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 433, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .add(jBtnAdd)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jBtnRemove)))
+                        .add(jBtnAdd, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jBtnRemove, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,8 +124,8 @@ public class FieldGroupDialog extends javax.swing.JDialog {
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 137, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnAdd)
-                    .add(jBtnRemove)))
+                    .add(jBtnRemove)
+                    .add(jBtnAdd, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
         );
 
         jBtnOK.setText(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_OK")); // NOI18N
@@ -143,25 +147,23 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 66, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(layout.createSequentialGroup()
-                        .add(18, 18, 18)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 66, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(layout.createSequentialGroup()
-                                .add(115, 115, 115)
-                                .add(jTxtGroupDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 163, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .add(175, 175, 175))
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .add(115, 115, 115)
+                        .add(jTxtGroupDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 163, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(193, 193, 193))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(350, Short.MAX_VALUE)
-                .add(jBtnOK)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jBtnCancel)
-                .add(13, 13, 13))
+                .addContainerGap(275, Short.MAX_VALUE)
+                .add(jBtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18))
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -174,13 +176,13 @@ public class FieldGroupDialog extends javax.swing.JDialog {
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnOK)
-                    .add(jBtnCancel))
+                    .add(jBtnCancel)
+                    .add(jBtnOK))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-489)/2, (screenSize.height-343)/2, 489, 343);
+        setBounds((screenSize.width-497)/2, (screenSize.height-343)/2, 497, 343);
     }// </editor-fold>//GEN-END:initComponents
 
     public boolean isModified() {
