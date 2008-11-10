@@ -1,0 +1,61 @@
+/* CSS for Manage section of MDWM */
+
+.Box {
+    position: relative;
+    border-right: 2px solid #949494;
+    border-left: 2px solid #949494;
+    border-top: 2px solid #949494;
+    border-bottom: 2px solid #949494;
+    background-color: #f4f3ee;
+    padding-left: 10px; 
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top:15px;
+  }
+  
+  .MainBox {
+    position: relative;
+    border: 1px solid #59707b;
+    background-color: #f4f3ee;
+    padding-left: 5px; 
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-top:5px;
+  }
+.MainBox .TitleBar{
+    height:24px;
+    background-color: #6E828C;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    padding-left:5px;
+    padding-top:3px;
+    vertical-align:bottom;
+}
+
+.MainBox .Content{
+    background-color:#fff7de;
+    padding-left:10px;
+    padding-top:6px;
+    padding-right:10px;
+    padding-bottom:5px;
+}
+  
+.xyz{
+    
+    background-color: #ddeeff;
+    color:#000000;
+    border-right: 2px solid #9f9f9f;
+    border-left: 2px solid #9f9f9f;
+    border-top: 2px solid #9f9f9f;
+    border-bottom: 2px solid #9f9f9f;
+}
+
+.formLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:13px;
+    color:#343535;
+    font-weight:bold;
+}
+		

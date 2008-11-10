@@ -1,0 +1,396 @@
+/* CSS for Adminster section of MDWM */
+
+.button_spacing {
+    padding-left:6px;
+}
+
+.mainLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:13px;
+    color:#343535;
+    font-weight:bold;
+}
+
+.formLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:13px;
+    color:#343535;
+    font-weight:bold;
+}
+
+
+.Box {
+    position: relative;
+    border: 1px solid #59707b;
+    background-color: #F9F9F0;
+    padding-left: 10px; 
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top:15px;
+  }
+  .Box .TitleBar{
+    height:24px;
+    background-color: #6E828C;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    padding-left:5px;
+    padding-top:3px;
+    vertical-align:bottom;
+}
+.Box .Content{
+
+    padding-left:5px;
+    padding-top:5px;
+    padding-right:5px;
+}
+  
+/* Styles used in Overlay windows */
+.MainBox {
+    position: relative;
+    border: 1px solid #59707b;
+    background-color: #FFFFFF;
+    padding-left: 10px; 
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top:15px;
+  }
+.MainBox .TitleBar{
+    height:24px;
+    background-color: #6E828C;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    padding-left:5px;
+    padding-top:3px;
+    vertical-align:bottom;
+}
+.MainBox .Content{
+    padding-left:10px;
+    padding-top:6px;
+    padding-right:10px;
+    padding-bottom:5px;
+}
+
+.InnerBox {
+    position: relative;
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
+    padding-left: 10px; 
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top:15px;
+  }
+.InnerBox .TitleBar{
+    height:24px;
+    background-color: #A4936E;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    padding-left:5px;
+    padding-top:3px;
+    vertical-align:bottom;
+    
+}
+
+.InnerBox .Content{
+    background-color: #f9f7de;
+    padding-left:5px;
+    padding-top:5px;
+}
+
+
+
+.RelationshipsListing {
+    position: relative;
+    background-color: #F9F9F0;
+    border: 1px solid #6E828C;
+}
+.RelationshipsListing .header {
+    background-color: #DDDDDD;
+}
+.RelationshipsListing .header .label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:normal;
+    padding-left:2px;
+}
+.RelationshipsListing .dataRow {
+    background-color: #FFFFFF;
+    height:24px;
+}
+.RelationshipsListing .dataRow .textdata {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:11px;
+    color:#343535;
+    font-weight:normal;
+}
+.RelationshipsListing .dataRow .editButton {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:normal;
+    height:20px;
+}
+.RelationshipsListing .vSpacing {
+    background-color: #CCCCCC;
+}
+.RelationshipsListing .hSpacing {
+    background-color: #FFFFFF;
+}
+
+/*
+table.relationshiptypetable {
+table-layout: auto;
+caption-side: left;
+border-collapse: collapse;
+}
+
+div#head {
+position:absolute; 
+top: 0px;
+left: 0px; 
+background-color: #D9D9FF;
+background-image: url(../images/sun-logo.png);
+background-position: 100px 1px;
+background-repeat: no-repeat; 
+height: 50px; width:100%; 
+padding:0px; 
+border: none;
+margin: 0;
+}
+.loginForm {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:15px;
+           color:#837F74;
+           background-color: #D9D9FF;
+           text-align:left;
+           text-align:center;
+           vertical-align:middle;       
+           width:330px;
+           height:370px;
+           background-image:url(../images/login-box.png);
+           background-repeat:no-repeat;                       
+           font-weight:bold;
+           vertical-align:middle;
+           position:relative;           
+}
+.blueline 
+{
+    background-image:url(../images/bgline.gif);
+    background-repeat: repeat-x; 
+    position:relative;
+    width:100%;
+    padding-left:0px; 
+    padding-top:0px; 
+    padding-right:0px;
+    padding-bottom:0px; 
+}
+.confirmPreview {
+   position:absolute;
+   font-family: Arial, Helvetica, sans-serif;
+   color:#ffffff;
+   z-index:1000000;
+   width:550px;
+   background-color:#EBEBEB;
+   border-right: 1px solid #2564c0;
+   border-left: 1px solid #2564c0;
+   border-bottom: 1px solid #2564c0;
+   top:200px;
+   left:200px;
+   
+}
+
+.confirmPreview td {
+   background-color:#EBEBEB;
+   color:#000000;
+   font-family: verdana,sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   font-size: 14px;
+   padding-top:5px;
+   padding-bottom:10px;
+   padding-left:10px;
+   padding-right:10px;
+}
+
+.confirmPreview th {
+   font-family: verdana,sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   height:24px;
+   cursor:move;
+   font-size: 12px;
+   padding-top:0px;
+   padding-left:3px; 
+   padding-right:3px; 
+   text-align:left;
+   white-space:nowrap;
+   background:url('../images/layerhead.gif') repeat-x;
+   color:#ffffff ;
+} 
+
+
+.confirmPreview  #close {
+   font-family: sans-serif,Arial, Helvetica ;
+   font-size: 12px;
+   white-space:nowrap;
+   text-align:right;
+}
+.confirmPreview  a {
+   text-decoration:none;
+   color:#ffffff;   
+}
+
+.confirmPreview #actions td {
+   font-family: sans-serif,Arial, Helvetica ;
+   font-size: 12px;
+   text-align:center;
+   background-color:#EBEBEB;
+   color:#000000;
+}
+
+.confirmPreview table td select {
+     font-family: Arial, Helvetica, sans-serif;
+     font-size:10px;
+     color:#837F74;
+     text-align:left;
+     vertical-align:middle;	      
+     font-weight:bold;
+     padding-left:1px; 
+     padding-right:1px;
+     padding-top:1px; 
+     padding-bottom:1px;   
+}
+.loginFailDiv td{
+   font-family: sans-serif,Arial, Helvetica ;
+   font-size: 12px;   
+   color:red
+}
+
+.administration   {
+   background-color:#F9F9F0; 
+   width:95%;
+   padding-top:5px;
+   padding-bottom:10px;
+   padding-left:10px;
+   padding-right:10px;
+}
+
+.administration #middlepane td{
+   font-family: verdana,sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   font-size: 14px;
+   padding-top:0px;
+   padding-bottom:10px;
+   padding-left:5px;
+   padding-right:0px;
+}
+.administration #middlepane table {
+   width:50%;
+            
+}
+#leftcorner {
+    width:7px;
+    height:24px;
+    background-image: url(../images/leftround.gif);
+    background-repeat: no-repeat;
+}
+
+#rightcorner {
+    width:7px;
+    height:24px;
+    background-image: url(../images/rightround.gif);
+    background-repeat: no-repeat;
+}
+
+.administration #detailspane {
+   vertical-align:top;  
+   padding-top:0px;
+   text-align:left;
+   width:100%;
+   overflow:auto;
+   height:380px;
+   background-color:#F9F9F0;
+}
+.administration #detailspane td {
+   vertical-align:top;  
+   padding-top:0px;
+   padding-bottom:0px;
+   padding-left:0px;
+   padding-right:0px;
+   border-right: 1px solid #59707B;
+   border-left: 1px solid #59707B;
+   border-top: 1px solid #59707B;
+   border-bottom: 1px solid #59707B;   
+}
+.administration #detailspane table {
+    width:100%;         
+}
+#detailsContent {
+    height:380px;
+}
+.administration #toppane td {
+   font-family: verdana,sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   font-size: 14px;
+   padding-left:10px;
+   padding-right:10px;
+   padding-top:5px;
+   padding-bottom:10px; 
+   width:20%;
+   text-align:right;
+   overflow:auto;
+}
+
+.administration th {
+   font-family: verdana,sans-serif,Arial, Helvetica ;
+   font-weight: bold;
+   font-size: 14px;
+   padding-left:0px;
+   padding-right:0px;
+   background-color:#586c76;
+   color:#ffffff;
+   text-align:left;
+   white-space:nowrap;
+   height:24px;
+}
+.administration #leftRoundCorner{
+    vertical-align:top;  
+    height:24px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    padding-top:0px;
+}
+.administration #middleTitle{
+    height:24px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    padding-top:0px;
+    text-align:left;
+    width:100%;
+}
+.administration #rightRoundCorner{
+    vertical-align:top;
+    text-align:right;
+    height:24px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    padding-top:0px;
+}
+.divbgcolor {
+   background-color:#FFFFCC;
+   border-right: 1px solid #000000;
+   border-left: 1px solid #000000;
+   border-top: 1px solid #000000;
+   border-bottom: 1px solid #000000;
+}
+
+
+*/
+		
