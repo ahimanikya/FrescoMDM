@@ -25,6 +25,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             <props>
                 <prop key="/index.htm">indexController</prop>
                 <prop key="/login.htm">loginController</prop>
+                <prop key="/administration.htm">administration</prop>
+                <prop key="/manage.htm">manage</prop>            
                 <prop key="/managerelationshipdef.htm">manageRelationshipDef</prop>                
                 <prop key="/managerelationship.htm">manageRelationship</prop>                
                 <prop key="/managehierarchydef.htm">manageHierarchyDef</prop>                
