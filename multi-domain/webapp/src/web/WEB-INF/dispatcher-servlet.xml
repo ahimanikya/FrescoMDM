@@ -26,11 +26,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/index.htm">indexController</prop>
                 <prop key="/login.htm">loginController</prop>
                 <prop key="/administration.htm">administration</prop>
-                <prop key="/manage.htm">manage</prop>            
-                <prop key="/managerelationshipdef.htm">manageRelationshipDef</prop>                
-                <prop key="/managerelationship.htm">manageRelationship</prop>                
-                <prop key="/managehierarchydef.htm">manageHierarchyDef</prop>                
-                <prop key="/managehierarchy.htm">manageHierarchy</prop>                                
+                <prop key="/manage.htm">manage</prop>
+                <prop key="/relationshipdef.htm">manageRelationshipDef</prop>                
+                <prop key="/relationship.htm">manageRelationship</prop>                
+                <prop key="/hierarchydef.htm">manageHierarchyDef</prop>                
+                <prop key="/hierarchy.htm">manageHierarchy</prop>                                
             </props>
         </property>
     </bean>
@@ -62,6 +62,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           
     <bean name="administration" 
           class="com.sun.mdm.multidomain.presentation.web.AdministrationController" />
+          
     <bean name="manage" 
           class="com.sun.mdm.multidomain.presentation.web.ManageController" />
      
