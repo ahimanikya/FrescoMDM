@@ -25,21 +25,25 @@ package com.sun.mdm.multidomain.services.security;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.sun.mdm.multidomain.services.core.ConfigException;
+
 /**
  * ACL class.
  * @author cye
  */
-public class ACL {
-
-    public static final String READ = "read"; 
-    public static final String WRITE = "write";
-     
-    List<Entry> entries = new ArrayList<Entry>();
+public class ACL {    
+    private List<Entry> entries = new ArrayList<Entry>();
             
     public ACL(){
     }
     
-    public ACL(List<String> operations){
+    public ACL(List<String> operations)
+        throws ConfigException {
+        initialize(operations);
+    }
+    
+    public void initialize(List<String> operations) 
+        throws ConfigException {
         for (String operation : operations) {
             List<ACL.Entry> methods = Operations.getMethods(operation);
             for (ACL.Entry method : methods) {
@@ -47,9 +51,9 @@ public class ACL {
                     entries.add(method);
                 }
             }
-        }
+        }      
     }
-    
+            
     public boolean checkPermission(String name) {
         return entries.contains(name);
     }
