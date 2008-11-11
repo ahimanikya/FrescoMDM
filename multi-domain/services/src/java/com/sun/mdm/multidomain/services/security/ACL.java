@@ -55,7 +55,14 @@ public class ACL {
     }
             
     public boolean checkPermission(String name) {
-        return entries.contains(name);
+         boolean isPermitted = false;
+        for (Entry e : entries) {
+         if (e.getName().equals(name)) {
+                isPermitted = true;
+                break;
+            }          
+        }
+        return isPermitted;     
     }
     
     public boolean checkPermission(ACL.Entry entry) {

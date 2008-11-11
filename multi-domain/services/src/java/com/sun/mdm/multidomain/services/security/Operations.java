@@ -123,7 +123,7 @@ public class Operations {
                 
                     List<ACL.Entry> methods = new ArrayList<ACL.Entry>();
                     for (int j = 0; j < methodNodeList.getLength(); j++) {
-                        Element methodElement = (Element) methodNodeList.item(i);
+                        Element methodElement = (Element) methodNodeList.item(j);
                         String methodByName = methodElement.getAttribute(NAME_TAG);
                         String action = methodElement.getAttribute(ACTION_TAG);
                         methods.add(new ACL.Entry(methodByName, action));
