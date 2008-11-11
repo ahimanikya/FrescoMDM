@@ -441,7 +441,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             String defaultValue = dialog.getDefaultValue();
             String searchable = dialog.getSearchable() == true ? "true" : "false";
             String required = dialog.getRequired() == true ? "true" : "false";
-            String attributeID = ""; //dialog.getAttributeID();
+            String attributeID = dialog.getAttributeID();
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                            searchable, required, attributeID);
@@ -474,7 +474,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             String defaultValue = dialog.getDefaultValue();
             String searchable = dialog.getSearchable() == true ? "true" : "false";
             String required = dialog.getRequired() == true ? "true" : "false";
-            String attributeID = ""; //dialog.getAttributeID();
+            String attributeID = dialog.getAttributeID();
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                            searchable, required, attributeID);

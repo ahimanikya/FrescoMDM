@@ -51,6 +51,7 @@ public class ExtendedAttributeDialog extends javax.swing.JDialog {
         jTextFieldDefaultValue.setText(defaultValue);
         jCheckBoxSearchable.setSelected(searchable.equals("true"));
         jCheckBoxRequired.setSelected(required.equals("true"));
+        jTextFieldAttributeID.setText(attributeID);
         enableBtnOK();
     }
     
@@ -76,6 +77,10 @@ public class ExtendedAttributeDialog extends javax.swing.JDialog {
 
     public boolean getRequired() {
         return jCheckBoxRequired.isSelected();
+    }
+    
+    public String getAttributeID() {
+        return jTextFieldAttributeID.getText();
     }
     
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
