@@ -1,7 +1,7 @@
 <%-- 
-    Document   : ManageRelationshipType
+    Document   : ManageRelationshipDefinition
     Created on : Oct 6, 2008, 3:15:28 PM
-    Author     : cye
+    Author     : Harish
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <link rel="stylesheet" type="text/css" href="css/administration.css" media="screen"/>
@@ -22,7 +22,9 @@
     dojo.require("dijit.layout.ContentPane");
 </script>
 <script type='text/javascript'>
-    var relationshiptype;
+    var relationshipdef;
+    var isSourceDomainsLoaded = false;
+    var isTargetDomainsLoaded = false;
     dwr.engine.setErrorHandler(exceptionHandler);
     function exceptionHandler(message) {
         alert("Exception: " + message);
@@ -33,7 +35,10 @@
     }
     function updateSourceDomains(data) {
         dwr.util.addOptions("selectSourceDomain", data, "name");        
-        dwr.util.setValue("selectSourceDomain", data[0].name);   
+        dwr.util.setValue("selectSourceDomain", data[0].name);  
+        isSourceDomainsLoaded = true;
+        if(isSourceDomainsLoaded && isTargetDomainsLoaded)
+            selectDomain();        
     }
 
     function loadTargetDomains() {
@@ -42,36 +47,63 @@
     }
     function updateTargetDomains(data) {
         dwr.util.addOptions("selectTargetDomain", data, "name");        
-        dwr.util.setValue("selectTargetDomain", data[1].name);   
+        dwr.util.setValue("selectTargetDomain", data[1].name);  
+        isTargetDomainsLoaded = true;
+        if(isSourceDomainsLoaded && isTargetDomainsLoaded)
+            selectDomain();
     }                
     function selectDomain() {
-        loadRelationshipTypes();
+        loadRelationshipDefs();
     }
-    function loadRelationshipTypes() {
+    function loadRelationshipDefs() {
         var sourceDomain=document.getElementById("selectSourceDomain").value;
         var targetDomain=document.getElementById("selectTargetDomain").value;
-        RelationshipDefHandler.getRelationshipTypes(sourceDomain, targetDomain, updateRelationshipTypes);
-    }                         
-    function updateRelationshipTypes(data) {
-        dwr.util.removeAllRows("types");
-        dwr.util.addRows("types", data, cellfuncs, {escapeHtml:false});
+        RelationshipDefHandler.getRelationshipDefs(sourceDomain, targetDomain, updateRelationshipDefs);
+    }                          
+    function updateRelationshipDefs(data) {
+        dwr.util.removeAllRows("relListing");
+        if(data == null || data.length<=0) {
+            //alert("no relationship definitions found");
+            dwr.util.addRows("relListing", [''], [function(data){return "No Relationship definitions found.";}], {
+                  cellCreator:function(options) {
+                    var td = document.createElement("td");
+                    td.colSpan="6"; td.align="center";
+                    return td;
+                  },
+                  escapeHtml:false
+            });
+        }
+        dwr.util.addRows("relListing", data, relationListingDataFuncs, {
+              rowCreator:function(options) {
+                var row = document.createElement("tr");
+                return row;
+              },
+              cellCreator:function(options) {
+                var td = document.createElement("td");
+                if(options.cellNum==0) td.align="center";// alert(options.cellNum);
+                return td;
+              },
+              escapeHtml:false
+            });
     }
+    
+    
     function clickAdd() {
-        relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
-        alert("add new relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
-        RelationshipDefHandler.addRelationshipType(relationshiptype, clickAddCB);
+        relationshipdef = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
+        alert("add new relationshipdef: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
+        RelationshipDefHandler.addRelationshipDef(relationshipdef, clickAddCB);
     }
     function clickAddCB(data) {
-        alert("added relationshiptype id=" + data);
-        loadRelationshipTypes();
+        alert("added relationshipdef id=" + data);
+        loadRelationshipDefs();
     }
     function clickDelete() {
-        relationshiptype = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
-        alert("delete a relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
-        RelationshipDefHandler.deleteRelationshipType(relationshiptype, clickDeleteCB);
+        relationshipdef = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
+        alert("delete a relationshipdef {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
+        RelationshipDefHandler.deleteRelationshipDef(relationshipdef, clickDeleteCB);
     }           
     function clickDeleteCB() {
-        loadRelationshipTypes();
+        loadRelationshipDefs();
     }
     function clickEdit(id) {
         alert("edit this " + id + " now!");
@@ -82,23 +114,26 @@
     function clickThrow(){
         alert("throw an exception now!");
         var domain = "foo";
-        RelationshipDefHandler.getRelationshipTypeCount(domain, clickThrowCB);
+        RelationshipDefHandler.getRelationshipDefCount(domain, clickThrowCB);
     }
     function clickThrowCB(data){
     }
-    var cellfuncs = [
-        function(data) { return data.name; },
-        function(data) { return data.displayName; },
-        function(data) { return data.sourceDomain; },
-        function(data) { return data.targetDomain; },
-        function(data) { return "<input id='edit' type='button' value='Edit' onclick='clickEdit(this.id)' />"; },
-        function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
-    ];
+
     
-    function tellValue() {
-        var a = document.getElementById("textid");
-        alert(a.value);
-    }
+    var relationListingDataFuncs = [
+        function(data) { return "<input type='checkbox' align='center'>"; },
+        function(data) { return data.name; },
+        function(data) { return data.direction; },
+        function(data) { return data.plugin; },
+        function(data) { 
+            var output = " 1 Predefined | " + data.attributes.length + " Custom"; 
+            return output; //return data.attributes; 
+        },
+        function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="showRelationshipDialog(\'editrelationship\');">'; },
+        //function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
+    ];
+
+
 </script>
 
 
@@ -147,67 +182,62 @@
                     <form name="relationshipListingForm">
                     <tr>
                         <td>
-                            <input type="button" onclick="dijit.byId('addrelationship').show();" value="<f:message key="add_text" />..."  />&nbsp;
+                            <input type="button" onclick="showRelationshipDialog('addrelationship');" value="<f:message key="add_text" />..."  />&nbsp;
                             <input type="button" value="<f:message key="delete_text" />" onclick="deleteRecords(this.form);" />                                                        
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <!-- <START> List of available Relationships shown between the selected Source & Target Domains -->
-                                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="RelationshipsListing"  id="relListingTable">
-                                    <tr class="header">
-                                        <td width="5%"  valign="bottom">
-                                            <table width="100%"cellspacing="0" cellpadding="0" border="0"><tr><td width="100%" class="label">&nbsp;</td>
-                                            <td align="right" class="hSpacing"><img src="images/spacer.gif" height="1" width="1"></td></tr>
-                                            </table>
-                                        </td>
+                                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="RelationshipsListing"  >
+                                    <thead class="header">
+                                        <tr>
+                                        <th width="5%"  valign="bottom" class="label">
+                                            &nbsp;
+                                        </th>
                                         
-                                        <td width="25%" valign="bottom">
-                                            <table width="100%"cellspacing="0" cellpadding="0" border="0"><tr><td width="100%" class="label">Name</td>
-                                            <td align="right" class="hSpacing" style="cursor:e-resize;"><img src="images/spacer.gif" height="1" width="2"></td></tr>
-                                            </table>
-                                        </td>
+                                        <th width="25%" valign="bottom" class="label">
+                                            Name
+                                        </th>
                                         
-                                        <td width="10%" valign="bottom">
-                                            <table width="100%"cellspacing="0" cellpadding="0" border="0"><tr><td width="100%" class="label">Direction</td>
-                                            <td align="right" class="hSpacing"><img src="images/spacer.gif" height="1" width="1"></td></tr>
-                                            </table>
-                                        </td>
+                                        <th width="10%" valign="bottom" class="label">
+                                            Direction
+                                        </th>
                                         
-                                        <td width="25%" valign="bottom">
-                                            <table width="100%"cellspacing="0" cellpadding="0" border="0"><tr><td width="100%" class="label">Plugin</td>
-                                            <td align="right" class="hSpacing"><img src="images/spacer.gif" height="1" width="1"></td></tr>
-                                            </table>
-                                        </td>
+                                        <th width="25%" valign="bottom" class="label">
+                                            Plugin 
+                                        </th>
                                         
-                                        <td width="25%" valign="bottom">
-                                            <table width="100%"cellspacing="0" cellpadding="0" border="0"><tr><td width="100%" class="label">Attributes</td>
-                                            <td align="right" class="hSpacing"><img src="images/spacer.gif" height="1" width="1"></td></tr>
-                                            </table>
-                                        </td> 
+                                        <th width="25%" valign="bottom" class="label">
+                                            Attributes
+                                        </th> 
                                         
-                                        <td width="10%">&nbsp;</td>
+                                        <th width="10%">&nbsp;</th>
                                         
-                                    </tr>
-                                    <tr><td colspan="6" class="vSpacing"><img src="images/spacer.gif" height="1" width="1"></td></tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="relListing">
+                                     <!--
                                     <tr class="dataRow">
                                         <td align="center" ><input type="checkbox" name="relationshipId"></td>
                                         <td class="textdata">Associate</td>
-                                        <td class="textdata">--></td>
+                                        <td class="textdata">-></td>
                                         <td class="textdata">RelOtherPlugin</td>
                                         <td class="textdata">2 Predefined | 1 Custom</td> 
                                         <td><input type="button" value="Edit..." class="editButton" onclick="dijit.byId('editrelationship').show();"></td>
                                     </tr>
-                                    <tr><td colspan="6" class="vSpacing"><img src="images/spacer.gif" height="1" width="1"></td></tr>
-                                    <tr  class="dataRow">
+
+                                    <tr class="dataRow">
                                         <td align="center" ><input type="checkbox" name="relationshipId"></td>
                                         <td class="textdata">Employed By</td>
-                                        <td class="textdata"><--></td>
+                                        <td class="textdata"><-></td>
                                         <td class="textdata">RelOtherPlugin</td>
                                         <td class="textdata">2 Predefined | 1 Custom</td> 
                                         <td class="textdata"><input type="button" value="Edit..." class="editButton" onclick="dijit.byId('editrelationship').show();"></td>
                                     </tr>
-
+                                    
+                                    -->
+                                    <tr><td class="textdata" colspan="6" align="center"> Loading... </td></tr>
                                 </table>
                             <!-- <END> List of available Relationships shown between the selected Source & Target Domains -->
                         </td>
@@ -239,18 +269,20 @@
     loadTargetDomains("selectTargetDomain");
 </script>    
 <script>
-    
-function addRowToTable()
-{
-    var x=document.getElementById('relListingTable').insertRow(5);
-    var y=x.insertCell(0);
-    var z=x.insertCell(1);
-    x.insertCell(2).innerHTML="dddddddddd";
-    y.innerHTML="";
-    z.innerHTML="xyzzzz";
-}
+
 function deleteRecords (objForm) {
     alert('Not yet implemented.');
-}     
+}
 
+function showRelationshipDialog (dialogId) {
+    var relationshipDialog = dijit.byId(dialogId);
+    var strTitle = relationshipDialog.title;
+    var sourceDomain=document.getElementById("selectSourceDomain").value;
+    var targetDomain=document.getElementById("selectTargetDomain").value;
+    if(sourceDomain != null && targetDomain != null)
+        strTitle += " - " + sourceDomain + " and " + targetDomain;
+        
+    relationshipDialog.titleNode.innerHTML = strTitle;
+    relationshipDialog.show();
+}
 </script>
