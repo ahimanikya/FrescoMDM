@@ -32,7 +32,7 @@ public class Attribute {
         this.name = name;
         this.included = included;
         this.required = required;
-        this.type = "date";
+        this.dataType = "date";
     }
     
     public Attribute(String name, String columnName, String dataType, String defaultValue,
