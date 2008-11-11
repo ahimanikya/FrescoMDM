@@ -72,7 +72,6 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
-    private static Operations operations = new Operations();
     
     public static DomainRelationshipsObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
@@ -151,6 +150,7 @@ public class ViewHelper {
         String highLight = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
         boolean hasSensitiveData = false;
+        boolean getSensitiveField = true;
         try {
             hasSensitiveData = configManager.getObjectSensitivePlugIn() != null ? 
                                configManager.getObjectSensitivePlugIn().isDataSensitive(objectNode) : true;
@@ -163,13 +163,13 @@ public class ViewHelper {
                 Object value = EPathAPI.getFieldValue(ePath, objectNode);                        
                 if(value instanceof java.util.Date) {
                     String dateField = simpleDateFormat.format(value);               
-                    if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                    if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                         highLight = highLight + RECORD_ID_DELIMITER + resourceBundle.getString("SENSITIVE_FIELD_MASKING");
                     } else {
                         highLight = highLight + RECORD_ID_DELIMITER + dateField;
                     }                               
                 } else {
-                    if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                    if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                         highLight = highLight + RECORD_ID_DELIMITER + resourceBundle.getString("SENSITIVE_FIELD_MASKING");
                     } else {
                         if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
@@ -238,7 +238,7 @@ public class ViewHelper {
     public static List<ObjectRecord> buildObjectRecords(String domain, PageIterator<ObjectNode> pages, boolean isWeighted)
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance(); 
-        
+        boolean getSensitiveField = true;
         List<ObjectRecord> records = new ArrayList<ObjectRecord>();
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
@@ -268,13 +268,13 @@ public class ViewHelper {
                     String stringValue = null;
                     if(objectValue instanceof java.util.Date) {
                         String dateField = simpleDateFormat.format(objectValue);          
-                        if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                             record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
                             record.setAttributeValue(fieldConfig.getFullFieldName(), dateField);
                         }        
                     } else {
-                        if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                        if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                             record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
                             if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && objectValue != null) {
@@ -330,6 +330,7 @@ public class ViewHelper {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
         boolean hasSensitiveData = false;
+        boolean getSensitiveField = true;
         try {
             hasSensitiveData = configManager.getObjectSensitivePlugIn() != null ? 
                                configManager.getObjectSensitivePlugIn().isDataSensitive(objectNode) : true;
@@ -355,7 +356,7 @@ public class ViewHelper {
                             new com.sun.mdm.multidomain.services.model.Attribute(); 
                 if(objectValue instanceof java.util.Date) {
                     String dateField = simpleDateFormat.format(objectValue);          
-                    if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                    if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                         attribute.setName(fieldConfig.getFullFieldName());
                         attribute.setValue(resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                     } else {
@@ -363,7 +364,7 @@ public class ViewHelper {
                         attribute.setValue(dateField);
                     }        
                 } else {
-                    if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !operations.isField_VIP()) { 
+                    if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                         attribute.setName(fieldConfig.getFullFieldName());
                         attribute.setValue(resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                     } else {
