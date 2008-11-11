@@ -103,6 +103,21 @@
 }
 
 
+#addbutton { 
+    width:auto;
+    background-image: url(../images/icons/add.png);
+    background-repeat:no-repeat;
+    background-color: transparent;
+    padding-left:20px; 
+}
+#deletebutton { 
+    width:auto;
+    background-image: url(../images/icons/delete.png);
+    background-repeat:no-repeat;
+    background-color: transparent;
+    padding-left:15px; 
+}
+
 .AttributesListing {
     border-collapse: collapse;
 }
@@ -133,7 +148,7 @@
 .RelationshipsListing tbody {
     background-color: #FFFFFF;
 }
-.RelationshipsListing tbody tr{
+.RelationshipsListing tbody tr {
     height:24px;
 }
 .RelationshipsListing tbody tr td{
@@ -158,254 +173,4 @@
     background-color: #FFFFFF;
 }
 
-/*
-table.relationshiptypetable {
-table-layout: auto;
-caption-side: left;
-border-collapse: collapse;
-}
-
-div#head {
-position:absolute; 
-top: 0px;
-left: 0px; 
-background-color: #D9D9FF;
-background-image: url(../images/sun-logo.png);
-background-position: 100px 1px;
-background-repeat: no-repeat; 
-height: 50px; width:100%; 
-padding:0px; 
-border: none;
-margin: 0;
-}
-.loginForm {
-           font-family: Arial, Helvetica, sans-serif;
-           font-size:15px;
-           color:#837F74;
-           background-color: #D9D9FF;
-           text-align:left;
-           text-align:center;
-           vertical-align:middle;       
-           width:330px;
-           height:370px;
-           background-image:url(../images/login-box.png);
-           background-repeat:no-repeat;                       
-           font-weight:bold;
-           vertical-align:middle;
-           position:relative;           
-}
-.blueline 
-{
-    background-image:url(../images/bgline.gif);
-    background-repeat: repeat-x; 
-    position:relative;
-    width:100%;
-    padding-left:0px; 
-    padding-top:0px; 
-    padding-right:0px;
-    padding-bottom:0px; 
-}
-.confirmPreview {
-   position:absolute;
-   font-family: Arial, Helvetica, sans-serif;
-   color:#ffffff;
-   z-index:1000000;
-   width:550px;
-   background-color:#EBEBEB;
-   border-right: 1px solid #2564c0;
-   border-left: 1px solid #2564c0;
-   border-bottom: 1px solid #2564c0;
-   top:200px;
-   left:200px;
-   
-}
-
-.confirmPreview td {
-   background-color:#EBEBEB;
-   color:#000000;
-   font-family: verdana,sans-serif,Arial, Helvetica ;
-   font-weight: bold;
-   font-size: 14px;
-   padding-top:5px;
-   padding-bottom:10px;
-   padding-left:10px;
-   padding-right:10px;
-}
-
-.confirmPreview th {
-   font-family: verdana,sans-serif,Arial, Helvetica ;
-   font-weight: bold;
-   height:24px;
-   cursor:move;
-   font-size: 12px;
-   padding-top:0px;
-   padding-left:3px; 
-   padding-right:3px; 
-   text-align:left;
-   white-space:nowrap;
-   background:url('../images/layerhead.gif') repeat-x;
-   color:#ffffff ;
-} 
-
-
-.confirmPreview  #close {
-   font-family: sans-serif,Arial, Helvetica ;
-   font-size: 12px;
-   white-space:nowrap;
-   text-align:right;
-}
-.confirmPreview  a {
-   text-decoration:none;
-   color:#ffffff;   
-}
-
-.confirmPreview #actions td {
-   font-family: sans-serif,Arial, Helvetica ;
-   font-size: 12px;
-   text-align:center;
-   background-color:#EBEBEB;
-   color:#000000;
-}
-
-.confirmPreview table td select {
-     font-family: Arial, Helvetica, sans-serif;
-     font-size:10px;
-     color:#837F74;
-     text-align:left;
-     vertical-align:middle;	      
-     font-weight:bold;
-     padding-left:1px; 
-     padding-right:1px;
-     padding-top:1px; 
-     padding-bottom:1px;   
-}
-.loginFailDiv td{
-   font-family: sans-serif,Arial, Helvetica ;
-   font-size: 12px;   
-   color:red
-}
-
-.administration   {
-   background-color:#F9F9F0; 
-   width:95%;
-   padding-top:5px;
-   padding-bottom:10px;
-   padding-left:10px;
-   padding-right:10px;
-}
-
-.administration #middlepane td{
-   font-family: verdana,sans-serif,Arial, Helvetica ;
-   font-weight: bold;
-   font-size: 14px;
-   padding-top:0px;
-   padding-bottom:10px;
-   padding-left:5px;
-   padding-right:0px;
-}
-.administration #middlepane table {
-   width:50%;
-            
-}
-#leftcorner {
-    width:7px;
-    height:24px;
-    background-image: url(../images/leftround.gif);
-    background-repeat: no-repeat;
-}
-
-#rightcorner {
-    width:7px;
-    height:24px;
-    background-image: url(../images/rightround.gif);
-    background-repeat: no-repeat;
-}
-
-.administration #detailspane {
-   vertical-align:top;  
-   padding-top:0px;
-   text-align:left;
-   width:100%;
-   overflow:auto;
-   height:380px;
-   background-color:#F9F9F0;
-}
-.administration #detailspane td {
-   vertical-align:top;  
-   padding-top:0px;
-   padding-bottom:0px;
-   padding-left:0px;
-   padding-right:0px;
-   border-right: 1px solid #59707B;
-   border-left: 1px solid #59707B;
-   border-top: 1px solid #59707B;
-   border-bottom: 1px solid #59707B;   
-}
-.administration #detailspane table {
-    width:100%;         
-}
-#detailsContent {
-    height:380px;
-}
-.administration #toppane td {
-   font-family: verdana,sans-serif,Arial, Helvetica ;
-   font-weight: bold;
-   font-size: 14px;
-   padding-left:10px;
-   padding-right:10px;
-   padding-top:5px;
-   padding-bottom:10px; 
-   width:20%;
-   text-align:right;
-   overflow:auto;
-}
-
-.administration th {
-   font-family: verdana,sans-serif,Arial, Helvetica ;
-   font-weight: bold;
-   font-size: 14px;
-   padding-left:0px;
-   padding-right:0px;
-   background-color:#586c76;
-   color:#ffffff;
-   text-align:left;
-   white-space:nowrap;
-   height:24px;
-}
-.administration #leftRoundCorner{
-    vertical-align:top;  
-    height:24px;
-    padding-left:0px;
-    padding-right:0px;
-    padding-bottom:0px;
-    padding-top:0px;
-}
-.administration #middleTitle{
-    height:24px;
-    padding-left:0px;
-    padding-right:0px;
-    padding-bottom:0px;
-    padding-top:0px;
-    text-align:left;
-    width:100%;
-}
-.administration #rightRoundCorner{
-    vertical-align:top;
-    text-align:right;
-    height:24px;
-    padding-left:0px;
-    padding-right:0px;
-    padding-bottom:0px;
-    padding-top:0px;
-}
-.divbgcolor {
-   background-color:#FFFFCC;
-   border-right: 1px solid #000000;
-   border-left: 1px solid #000000;
-   border-top: 1px solid #000000;
-   border-bottom: 1px solid #000000;
-}
-
-
-*/
 		
