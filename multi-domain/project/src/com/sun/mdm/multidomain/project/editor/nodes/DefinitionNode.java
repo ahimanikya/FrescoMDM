@@ -49,12 +49,11 @@ import com.sun.mdm.multidomain.project.editor.TabWebManagerRelationshipTypes;
  * @author kkao
  */
 public class DefinitionNode extends AbstractNode {
-    Definition mLinkType;
+    Definition mDefinition;
     Definition mWebLinkType;
-    DefinitionNode mLinkTypeNode;
-    String mLinkName;
+    DefinitionNode mDefinitionNode;
     EditorMainApp mEditorMainApp;
-    JPanel mTabLinkDef;
+    JPanel mTabDefinitionDef;
     TabWebManagerRelationshipTypes mTabWebManagerRelationshipTypes = null;
     String type;
     
@@ -73,14 +72,14 @@ public class DefinitionNode extends AbstractNode {
     /**
      * 
      * @param LinkParentNode
-     * @param linkType
+     * @param definition
      */
-    public DefinitionNode(EditorMainApp editorMainApp, Definition linkType, Definition webLinkType) {
+    public DefinitionNode(EditorMainApp editorMainApp, Definition definition, Definition webLinkType) {
         super(Children.LEAF);
         mEditorMainApp = editorMainApp;
-        mLinkType = linkType;
+        mDefinition = definition;
         mWebLinkType = webLinkType;
-        mLinkTypeNode = this;
+        mDefinitionNode = this;
         addNodeListener(new NodeAdapter() {
             @Override
             public void nodeDestroyed(NodeEvent ev) {
@@ -91,26 +90,26 @@ public class DefinitionNode extends AbstractNode {
 
     /**
      * 
-     * @return mLinkType
+     * @return mDefinition
      */
     public Definition getDefinition() {
-        return mLinkType;
+        return mDefinition;
     }
 
     /**
      * 
-     * @return mLinkName
+     * @return Definition Name
      */
     public String getName() {
-        return mLinkType.getName();
+        return mDefinition.getName();
     }
 
     public void setType(String type) {
-        mLinkType.setType(type);
+        mDefinition.setType(type);
     }
     
     public String getType() {
-        return mLinkType.getType();
+        return mDefinition.getType();
     }
 
     /**
@@ -118,7 +117,7 @@ public class DefinitionNode extends AbstractNode {
      * @return sourceDomain
      */
     public String getSourceDomain() {
-        return mLinkType.getSourceDomain();
+        return mDefinition.getSourceDomain();
     }
 
     /**
@@ -126,18 +125,18 @@ public class DefinitionNode extends AbstractNode {
      * @return targetDomain
      */
     public String getTargetDomain() {
-        return mLinkType.getTargetDomain();
+        return mDefinition.getTargetDomain();
     }
 
     public JPanel getDefinitionTab(boolean bRefresh) {
-        if (bRefresh || mTabLinkDef == null) {
+        if (bRefresh || mTabDefinitionDef == null) {
             if (getType().equals(Definition.TYPE_RELATIONSHIP)) {
-                mTabLinkDef = new TabRelationshipDef(mEditorMainApp, getDefinition());
+                mTabDefinitionDef = new TabRelationshipDef(mEditorMainApp, this);
             } else if (getType().equals(Definition.TYPE_HIERARCHY)) {
-                mTabLinkDef = new TabHierarchyDef(mEditorMainApp, getDefinition());
+                mTabDefinitionDef = new TabHierarchyDef(mEditorMainApp, this);
             }
         }
-        return mTabLinkDef;
+        return mTabDefinitionDef;
     }
     
     public TabWebManagerRelationshipTypes getRelationshipTypesTab(boolean bRefresh) {

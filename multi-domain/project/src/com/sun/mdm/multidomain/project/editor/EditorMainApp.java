@@ -213,6 +213,10 @@ public class EditorMainApp {
         
     }
     
+    /**
+     * 
+     * @return ArrayList <DefinitionNode>
+     */
     public ArrayList <DefinitionNode> getDefinitionNodes() {
         return mAlDefinitionNodes;
     }

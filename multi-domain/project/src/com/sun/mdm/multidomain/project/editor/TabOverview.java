@@ -28,9 +28,19 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-//import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
 //import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
+import javax.swing.JLabel;
+import javax.swing.UIManager;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 
@@ -82,6 +92,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     TabOverview mTabOverview;
     EditorMainPanel mEditorMainPanel;
     EditorMainApp mEditorMainApp;
+    DefinitionNode mSelectedDefinitionNode;
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <String> mAlDomainNames = new ArrayList();;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
@@ -90,6 +101,9 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     static final ImageIcon DEFINITIONIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/Definition.png"));
     private BufferedImage backingImage;
     private Point last;
+    private DefinitionTableHeaderRenderer mDefinitionTableHeaderRenderer = new DefinitionTableHeaderRenderer();
+    private DefinitionTableColumnRenderer mDefinitionTableColumnRenderer = new DefinitionTableColumnRenderer();
+    
     public TabOverview(EditorMainPanel editorMainPanel, EditorMainApp editorMainApp) {
         initComponents();
         mTabOverview = this;
@@ -111,7 +125,12 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             jButtonRemoveDomain.setEnabled(true);
             domainNode = mAlDomainNodes.get(0);
         }
-        jTableDomains.getTableHeader();
+        jTableDomains.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    onDomainSelected();
+                }
+            });
+        //configureTableColumns(jTableDomains);
         
         // load all definitions
         rows = loadDefinitions(false);
@@ -121,16 +140,13 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jTableDefinitions.setModel(modelDefinitions);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         //jTableDefinitions.setRowSorter(sorter);
-        jTableDomains.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    onDomainSelected();
-                }
-            });
         jTableDefinitions.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     onDefinitionSelected();
                 }
             });
+        //configureTableColumns(jTableDefinitions);
+        
         this.jRadioButtonShowAll.setSelected(true);
         
         //Drag and drop
@@ -629,8 +645,8 @@ public void onAddHierarchy() {
         String definitionName = (String) model.getValueAt(iSelectedRow,  model.iColDefinitionName);
         String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
         String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
-        DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain);
-        mEditorMainPanel.loadDefinitionProperties(definitionNode);
+        mSelectedDefinitionNode = mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain);
+        mEditorMainPanel.loadDefinitionProperties(mSelectedDefinitionNode);
         mEditorMainPanel.loadDomainEntityTree(null);
      }
 
@@ -1000,5 +1016,77 @@ public void onAddHierarchy() {
         //last = null;
     }
     
+    protected void configureTableColumns(JTable table) {
+        int cnt = table.getColumnCount();
+        for (int i = 0; i < cnt; i++) {
+            TableColumn col = table.getColumnModel().getColumn(0);
+            col.setHeaderRenderer(mDefinitionTableHeaderRenderer);
+            //col.setCellRenderer(mDefinitionTableColumnRenderer);
+        }
+    }
+    class DefinitionTableHeaderRenderer extends DefaultTableCellRenderer {
+        // This method is called each time a column header
+        @Override
+        public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int rowIndex, int colIndex) {
+            if (table != null) {
+                JTableHeader header = table.getTableHeader();
+                if (header != null) {
+                    setForeground(header.getForeground());
+                    setBackground(header.getBackground());
+                    setFont(header.getFont());
+                    setBorder(header.getBorder());
+                }
+            }
+            setHorizontalAlignment(JLabel.CENTER);
+            return this;
+        }
+
+        protected int getColumnIndex(int column) {
+            return column;
+        }
+    }
     
+    class DefinitionTableColumnRenderer extends DefaultTableCellRenderer {
+        // This method is called each time a column header
+        // using this renderer needs to be rendered.
+        @Override
+        public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int rowIndex, int colIndex) {
+            if (table != null) {
+                if (table.getModel() instanceof TableModelDefinition) {
+                    TableModelDefinition model = (TableModelDefinition) table.getModel();
+                    DefinitionRow row = model.getRow(rowIndex);
+                    if (rowIndex >= 0 && colIndex == 0) {
+                        switch (colIndex) {
+                            case TableModelDefinition.iColDefinitionName:
+                                setText(row.getDefinitionName());
+                                break;
+                            case TableModelDefinition.iColDefinitionType:
+                                setText(row.getDefinitionType());
+                                if (row.getDefinitionType().equals(Definition.TYPE_RELATIONSHIP)) {
+                                    setIcon(mEditorMainPanel.RELATIONSHIPNODEICON);
+                                } else if (row.getDefinitionType().equals(Definition.TYPE_HIERARCHY)) {
+                                    setIcon(mEditorMainPanel.HIERARCHYNODEICON);
+                                }
+                                break;
+                            case TableModelDefinition.iColSourceDomain:
+                                setText(row.getSourceDomain());
+                                break;
+                            case TableModelDefinition.iColTargetDomain:
+                                setText(row.getTargetDomain());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            return this;
+        }
+
+        protected int getColumnIndex(int column) {
+            return column;
+        }
+    }
 }

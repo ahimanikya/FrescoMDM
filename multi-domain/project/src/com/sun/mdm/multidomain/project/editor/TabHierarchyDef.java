@@ -40,6 +40,7 @@ import java.util.Date;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 
+import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.Attribute;
 /**
@@ -48,31 +49,33 @@ import com.sun.mdm.multidomain.parser.Attribute;
  */
 public class TabHierarchyDef extends javax.swing.JPanel {
     EditorMainApp mEditorMainApp;
+    DefinitionNode mDefinitionNode;
     Definition mDefinition;
     /** Creates new form TabAttributes */
-    public TabHierarchyDef(EditorMainApp editorMainApp, Definition definition) {
+    public TabHierarchyDef(EditorMainApp editorMainApp, DefinitionNode definitionNode) {
         initComponents();
         mEditorMainApp = editorMainApp;
-        mDefinition = definition;
-        this.jTextName.setText(definition.getName());
+        mDefinitionNode = definitionNode;
+        mDefinition = definitionNode.getDefinition();
+        this.jTextName.setText(mDefinition.getName());
         // Get plugin list
         ArrayList <String> alPlugins = mEditorMainApp.getPluginList();
         for (int i=0; alPlugins != null && i < alPlugins.size(); i++) {
             this.jComboBoxPlugin.insertItemAt(alPlugins.get(i), i);
             
         }
-        if (definition.getPlugin() != null && !alPlugins.contains(definition.getPlugin())) {
-            this.jComboBoxPlugin.insertItemAt(definition.getPlugin(), 0);
+        if (mDefinition.getPlugin() != null && !alPlugins.contains(mDefinition.getPlugin())) {
+            this.jComboBoxPlugin.insertItemAt(mDefinition.getPlugin(), 0);
             this.jComboBoxPlugin.setSelectedIndex(0);
         }
         //this.jComboBoxPlugin.setSelectedItem(definition.getPlugin());
         
-        String effectiveFrom = definition.getEffectiveFrom();
-        String effectiveTo = definition.getEffectiveTo();
+        String effectiveFrom = mDefinition.getEffectiveFrom();
+        String effectiveTo = mDefinition.getEffectiveTo();
         this.jTextEffectiveFrom.setText(effectiveFrom);
         this.jTextEffectiveTo.setText(effectiveTo);
         
-        String description = definition.getDescription();
+        String description = mDefinition.getDescription();
         if (description != null) {
             this.jTextAreaDescription.setText(description);
         }
@@ -85,7 +88,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         this.jTableExtendedAttr.setModel(modelExtendedAttribute);
         // Predefined attributes
         modelPredefinedAttribute.rows.clear();
-        ArrayList <Attribute> al = definition.getPredefinedAttributes();
+        ArrayList <Attribute> al = mDefinition.getPredefinedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
             PredefinedAttributeRow row = new PredefinedAttributeRow(attr.getName(), attr.getIncluded(), attr.getRequired());
@@ -93,7 +96,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         }
         // Extended attributes
         modelExtendedAttribute.rows.clear();
-        al = definition.getExtendedAttributes();
+        al = mDefinition.getExtendedAttributes();
         for (int j=0; al != null && j < al.size(); j++) {
             Attribute attr = (Attribute) al.get(j);
             ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
@@ -103,11 +106,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         }
         
         // Listeners
-        jTextName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                mEditorMainApp.enableSaveAction(true);
-            }
-        });
+        jTextName.addKeyListener(new DefNameKeyAdapter());
         
         this.jTextAreaDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -118,6 +117,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         this.jComboBoxPlugin.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
+                //ToDo update TabOverView
             }
         });
         
@@ -953,5 +953,16 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             al.add(attr);
         }
         return al;
+    }
+
+    private class DefNameKeyAdapter extends java.awt.event.KeyAdapter {
+        /**
+         * key typed
+         * @param evt event
+         */
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+                //ToDo update TabOverView
+            }
     }
 }
