@@ -88,7 +88,7 @@ public class FileManager {
 		sbrInputDir = workingDir + File.separator + "sbr-input";
 		sbrInputStageDir = sbrInputDir + File.separator + "stage";
 		matchFileDir = workingDir + File.separator + "match";
-		masterImageDir = workingDir + File.separator + "masterIndex";
+		masterImageDir = workingDir + File.separator + "masterindex";
 		matchFileStageDir = workingDir + File.separator + "match" + File.separator + "stage";
 		sbrmatchFileDir = workingDir + File.separator + "sbr-match";
 		sbrmatchFileStageDir = workingDir + File.separator + "sbr-match" + File.separator + "stage";
