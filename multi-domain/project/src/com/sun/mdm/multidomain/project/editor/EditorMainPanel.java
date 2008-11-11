@@ -121,8 +121,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JSplitPane mLeftSplitPane;
     private JScrollPane mEntityTreeScrollPane  = new JScrollPane();
     private JScrollPane mOverviewScrollPane  = new JScrollPane();
-    private RelationshipCanvas canvas = null; //The component the user draws on
-    private TabRelationshipWebManager webManagerPanel = null;
+    //private RelationshipCanvas canvas = null; //The component the user draws on
     private TabOverview mTabOverview = null;
     private EntityTree mEntityTree = null;
     
@@ -134,7 +133,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mEditorMainApp = editorMainApp;
         mMultiDomainApplication = application;
 
-        canvas = new RelationshipCanvas(mEditorMainApp);
+        //canvas = new RelationshipCanvas(mEditorMainApp);
         mEditorMainPanel = this;
 
         initComponents();
@@ -369,17 +368,17 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonSave.setEnabled(flag);
     }
     
-    public void loadDomainNodesToCanvas() {
+    public void loadDomainNodesToOverview() {
         ArrayList <DomainNode> al = mEditorMainApp.getDomainNodes();
         for (int i=0; i<al.size(); i++) {
-            addDomainNodeToCanvas(al.get(i), false);
+            addDomainNodeToOverview(al.get(i), false);
         }
     }
     
-    /** Add a Domain Node to the canvas
+    /** Add a Domain Node to the overview
      *
      */
-    public void addDomainNodeToCanvas(DomainNode node, boolean bNew) {
+    public void addDomainNodeToOverview(DomainNode node, boolean bNew) {
         //mMultiViewPane.setViewportView(canvas);
         mTabOverview.setCurrentDomainNode(node, bNew);
     }

@@ -320,7 +320,7 @@ public class EditorMainApp {
                 mMapDomainMidmXmls.put(domainName, midmXml);
                 DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
-                mEditorMainPanel.addDomainNodeToCanvas(domainNode, true);
+                mEditorMainPanel.addDomainNodeToOverview(domainNode, true);
                 mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
@@ -507,7 +507,7 @@ public class EditorMainApp {
             loadDefinitions();
             loadDomains();
             mEditorMainPanel = new EditorMainPanel(this, mMultiDomainApplication);
-            mEditorMainPanel.loadDomainNodesToCanvas();
+            mEditorMainPanel.loadDomainNodesToOverview();
             mObjectTopComponent = new ObjectTopComponent();
             mObjectTopComponent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             mMultiDomainApplication.setObjectTopComponent(mObjectTopComponent);

@@ -50,6 +50,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
     DefinitionNode mDefinitionNode;
     Definition mDefinition;
     private String mOldDefName;
+    //private String mOldPlugin;
     /** Creates new form TabAttributes */
     public TabRelationshipDef(EditorMainApp editorMainApp, DefinitionNode definitionNode) {
         initComponents();
@@ -57,8 +58,9 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         mDefinitionNode = definitionNode;
         mDefinition = definitionNode.getDefinition();
         mOldDefName = mDefinition.getName();
-        this.jTextName.setText(mDefinition.getName());
+        jTextName.setText(mDefinition.getName());
         // Get plugin list
+        //mOldPlugin = mDefinition.getPlugin();
         ArrayList <String> alPlugins = mEditorMainApp.getPluginList();
         for (int i=0; alPlugins != null && i < alPlugins.size(); i++) {
             this.jComboBoxPlugin.insertItemAt(alPlugins.get(i), i);
@@ -106,8 +108,14 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         }
         
         // Listeners
-        
-        jTextName.addKeyListener(new DefNameKeyAdapter());
+        jTextName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+                mDefinition.setName(jTextName.getText());
+                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
+                mOldDefName = jTextName.getText();
+            }
+        });
         
         this.jTextAreaDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -119,8 +127,10 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         this.jComboBoxPlugin.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
-                //ToDo update TabOverView
-                mDefinition.setPlugin((String) jComboBoxPlugin.getSelectedItem());
+                String plugin = (String) jComboBoxPlugin.getSelectedItem();               
+                mDefinition.setPlugin(plugin);
+                //mEditorMainApp.getEditorMainPanel().getTabOverview().updatePlugin(mOldPlugin, mDefinition);
+                //mOldPlugin = plugin;
             }
         });
         
@@ -425,7 +435,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         ExtendedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
         final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
-                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired(), row.getAttributeID());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();
@@ -458,7 +468,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         ExtendedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
         final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
-                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired(), row.getAttributeID());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();

@@ -108,7 +108,14 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         }
         
         // Listeners
-        jTextName.addKeyListener(new DefNameKeyAdapter());
+        jTextName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+                mDefinition.setName(jTextName.getText());
+                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
+                mOldDefName = jTextName.getText();
+            }
+        });
         
         this.jTextAreaDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -120,7 +127,6 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         this.jComboBoxPlugin.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
-                //ToDo update TabOverView
                 mDefinition.setPlugin((String) jComboBoxPlugin.getSelectedItem());
             }
         });
@@ -426,7 +432,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         ExtendedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
         final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
-                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired(), row.getAttributeID());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();
@@ -459,7 +465,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         ExtendedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
         final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
-                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired(), row.getAttributeID());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();
@@ -957,18 +963,5 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             al.add(attr);
         }
         return al;
-    }
-
-    private class DefNameKeyAdapter extends java.awt.event.KeyAdapter {
-        /**
-         * key typed
-         * @param evt event
-         */
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                mEditorMainApp.enableSaveAction(true);
-                mDefinition.setName(jTextName.getText());
-                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
-                mOldDefName = jTextName.getText();
-            }
     }
 }
