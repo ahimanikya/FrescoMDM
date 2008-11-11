@@ -598,7 +598,7 @@ private void onRemoveFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
             TableModelFieldGroup model = (TableModelFieldGroup) jTableFieldGroup.getModel();
             for (int i=length - 1; i>=0 && i < length; i--) {
                 int j = rs[i];
-                Object fieldGroup = (Object) model.getValueAt(j, model.iColRecordDetailName);
+                Object fieldGroup = (Object) model.getValueAt(j, model.iFieldGroupName);
                 model.removeRow(j);
             }
             if (jTableFieldGroup.getRowCount() > 0) {
@@ -816,7 +816,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD_GROUP"),};
         ArrayList fieldRows;
-        final static int iColRecordDetailName = 0;
+        final static int iFieldGroupName = 0;
 
         TableModelFieldGroup(ArrayList rows) {
             fieldRows = rows;
@@ -842,7 +842,10 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
                 FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
-                        case iColRecordDetailName:
+                        case iFieldGroupName:
+                            if (singleRow.getDescription() != null && singleRow.getDescription().length() > 0) {
+                                return singleRow.getDescription();
+                            }
                             int rowIdx = row + 1;
                             return "FieldGroup-" + rowIdx;
                             //return singleRow.getDisplayName();
@@ -883,8 +886,8 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
          */
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
-                case iColRecordDetailName:
-                    ((RecordDetail) fieldRows.get(row)).setDisplayName((String) value);
+                case iFieldGroupName:
+                    ((FieldGroup) fieldRows.get(row)).setDescription((String) value);
                     //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
                     break;
 
@@ -914,7 +917,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
          */
         public int findRowByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
-                if (getValueAt(i, iColRecordDetailName).equals(fieldName)) {
+                if (getValueAt(i, iFieldGroupName).equals(fieldName)) {
                     return i;
                 }
             }
@@ -923,7 +926,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 
         public FieldGroup findRelTypeByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
-                if (getValueAt(i, iColRecordDetailName).equals(fieldName)) {
+                if (getValueAt(i, iFieldGroupName).equals(fieldName)) {
                     return (FieldGroup) fieldRows.get(i);
                 }
             }

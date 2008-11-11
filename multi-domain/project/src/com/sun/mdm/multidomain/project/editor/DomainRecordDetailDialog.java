@@ -483,7 +483,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iColRecordDetailName:
-                    ((RecordDetail) fieldRows.get(row)).setDisplayName((String) value);
+                    ((FieldGroup) fieldRows.get(row)).setDescription((String) value);
                     //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
                     break;
 
