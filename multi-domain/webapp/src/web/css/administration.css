@@ -120,6 +120,7 @@
 }
 .RelationshipsListing .header {
     background-color: #DDDDDD;
+    text-align:left;
 }
 .RelationshipsListing .header .label {
     font-family: Arial, Helvetica, sans-serif;
@@ -127,18 +128,23 @@
     color:#343535;
     font-weight:normal;
     padding-left:2px;
+    background-color: #DDDDDD;
 }
-.RelationshipsListing .dataRow {
+.RelationshipsListing tbody {
     background-color: #FFFFFF;
+}
+.RelationshipsListing tbody tr{
     height:24px;
 }
-.RelationshipsListing .dataRow .textdata {
+.RelationshipsListing tbody tr td{
     font-family: Arial, Helvetica, sans-serif;
     font-size:11px;
     color:#343535;
     font-weight:normal;
+    border-bottom: 1px solid #F9F9F0;
+    padding-left:2px;
 }
-.RelationshipsListing .dataRow .editButton {
+.RelationshipsListing tbody tr td input {
     font-family: Arial, Helvetica, sans-serif;
     font-size:12px;
     color:#343535;
