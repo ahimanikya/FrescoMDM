@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>                                             -->
+<mdwm-operaion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/operaions.xsd">
+ <operations>
+  <!-- Relationship -->
+ 	<operaion name="RelationshipDef_ReadWrite">
+ 		<method name="DomainHandler_getDomains" action= "read" />
+ 		<method name="RelationshipDefHandler_getSensitiveField" action="read" />
+ 		<method name="RelationshipDefHandler_getDefs" action="read" />
+ 		<method name="RelationshipDefHandler_getRelationshipDefs" action="read" />
+ 		<method name="RelationshipDefHandler_addRelationshipDef" action="write" />
+ 		<method name="RelationshipDefHandler_deleteRelationshipDef" action="write" />
+ 		<method name="RelationshipDefHandler_updateRelationshipDef" action="write" />
+ 		<method name="RelationshipDefHandler_getRelationshipDefCount" action="read" />
+ 		<method name="RelationshipDefHandler_getDomainRelationshipDefsObjects" action="read" />
+  </operation>
+  
+ 	<operaion name="RelationshipDef_Read">
+  	<method name="DomainHandler_getDomains" action= "read" />
+ 		<method name="RelationshipDefHandler_getDefs" action= "read" />
+ 		<method name="RelationshipDefHandler_getRelationshipDefs" action= "read" />
+ 		<method name="RelationshipDefHandler_getRelationshipDefCount" action= "read" />
+ 		<method name="RelationshipDefHandler_getDomainRelationshipDefsObjects" action= "read" />	
+  </operation>
+  	
+ 	<operaion name="Relationship_ReadWrite">
+ 		<method name="DomainHandler_getDomains" action= "read" />
+ 		<method name="RelationshipHandler_getSensitiveField" action= "read" />
+ 		<method name="RelationshipHandler_searchRelationships" action= "read" />
+ 		<method name="RelationshipHandler_getRelationship" action= "read" />
+ 		<method name="RelationshipHandler_searchEnterprises" action= "read" />
+ 		<method name="RelationshipHandler_getEnterprise" action= "read" />
+ 		<method name="RelationshipHandler_addRelationship" action="write" />
+ 		<method name="RelationshipHandler_updateRelationship" action="write" />
+ 		<method name="RelationshipHandler_deleteRelationship" action="write" />
+ 		<method name="RelationshipHandler_searchRelationshipsByRecord" action= "read" />
+  </operation>
+  
+  <operaion name="Relationship_Read">
+ 		<method name="DomainHandler_getDomains" action= "read" />
+ 		<method name="RelationshipHandler_viewSensitiveField" action= "read" />
+ 		<method name="RelationshipHandler_searchRelationships" action= "read" />
+ 		<method name="RelationshipHandler_getRelationship" action= "read" />
+ 		<method name="RelationshipHandler_searchEnterprises" action= "read" />
+ 		<method name="RelationshipHandler_getEnterprise" action= "read" />
+ 		<method name="RelationshipHandler_searchRelationshipsByRecord" action= "read" />
+  </operation>
+  	
+  <operaion name="Relationship_History_Read">
+  </operation>
+  	
+ 	<!-- Hierarchy --> 	
+ 	<operaion name="HierarchyDef_ReadWrite">
+  </operation>
+  
+ 	<operaion name="HierarchyDef_Read">
+  </operation>
+  	
+ 	<operaion name="Hierarchy_ReadWrite">
+  </operation>
+  
+  <operaion name="Hierarchy_Read">
+  </operation>
+  	
+   <operaion name="Hierarchy_History_Read">
+  </operation>
+    	
+  <!-- Group -->
+    	
+ </operations>
+</mdwm-operaion>
