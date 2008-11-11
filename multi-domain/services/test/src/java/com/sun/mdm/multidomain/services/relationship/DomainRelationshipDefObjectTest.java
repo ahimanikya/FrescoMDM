@@ -53,19 +53,19 @@ public class DomainRelationshipDefObjectTest extends TestCase {
         rDef2.setSourceDomain("targetDomain");
         rDef2.setTargetDomain("sourceDomain");
         
-        List<DomainRelationshipDefObject> types = new ArrayList<DomainRelationshipDefObject>();
-        int index = types.indexOf(new DomainRelationshipDefObject("sourceDomain"));
+        List<DomainRelationshipDefsObject> types = new ArrayList<DomainRelationshipDefsObject>();
+        int index = types.indexOf(new DomainRelationshipDefsObject("sourceDomain"));
         if(index == - 1) {
-            DomainRelationshipDefObject value = new DomainRelationshipDefObject("sourceDomain");
+            DomainRelationshipDefsObject value = new DomainRelationshipDefsObject("sourceDomain");
             types.add(value);  
             index = types.indexOf(value);
             assertTrue(true);
         } else {
             assertTrue(false);
         }
-        DomainRelationshipDefObject value = types.get(index);
+        DomainRelationshipDefsObject value = types.get(index);
         value.add(rDef1);
-        index = types.indexOf(new DomainRelationshipDefObject("sourceDomain"));
+        index = types.indexOf(new DomainRelationshipDefsObject("sourceDomain"));
         if(index == - 1) {
              assertTrue(false);
         } else {
