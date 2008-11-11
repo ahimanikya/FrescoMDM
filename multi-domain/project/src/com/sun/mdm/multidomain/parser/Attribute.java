@@ -1,6 +1,24 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 
 package com.sun.mdm.multidomain.parser;
@@ -10,33 +28,52 @@ package com.sun.mdm.multidomain.parser;
  * @author kkao
  */
 public class Attribute {
-        String name = "";
-        String type = "";       // Fixed 0, Extended 1
-        String columnName = "";  // which column name in the table does it bind to
-        String displayName = "";
-        String searchable = "true";
-        String required = "true";
-        String value = "";
-        String defaultValue = "";
-        String dataType = "";
-        String attributeID = "";
-        String startdate = "";
-        String enddate = "";
-        String included = "true";
+    public final String TYPE_PREDEFINED = "0";
+    public final String TYPE_EXTENDED = "1";
+    
+    String name = "";
+    String type = "";           // Predefined 0, Extended 1
+    String columnName = "";     // column name in the table the attribute bind to
+    String displayName = "";
+    String searchable = "true";
+    String required = "true";
+    String defaultValue = "";
+    String dataType = "";
+    String attributeID = "";
+    String included = "true";   // predefined attribute
+    String startdate = "";      // ?
+    String enddate = "";        // ?
         
     public Attribute() {
         
     }
     
+    /** Predefined attribute
+     * 
+     * @param name
+     * @param included
+     * @param required
+     */
     public Attribute(String name, String included, String required) {
         this.name = name;
         this.included = included;
         this.required = required;
+        this.type = TYPE_PREDEFINED;
         this.dataType = "date";
     }
     
+    /** Extended attribute
+     * 
+     * @param name
+     * @param columnName
+     * @param dataType
+     * @param defaultValue
+     * @param searchable
+     * @param required
+     * @param attributeID
+     */
     public Attribute(String name, String columnName, String dataType, String defaultValue,
-            String searchable, String required, String attributeID) {
+                     String searchable, String required, String attributeID) {
         this.name = name;
         this.columnName = columnName;
         this.dataType = dataType;
@@ -44,118 +81,110 @@ public class Attribute {
         this.searchable = searchable;
         this.required = required;
         this.attributeID = attributeID;
+        this.type = TYPE_EXTENDED;
+    }
+       
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
-       
-        public void setColumnName(String columnName) {
-            this.columnName = columnName;
-        }
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 
-        public void setDataType(String dataType) {
-            this.dataType = dataType;
-        }
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-        public void setValue(String value) {
-            this.value = value;
-        }
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
-        }
-
-        public void setDisplayName(String displayName) {
-            this.displayName = displayName;
-        }
-
-        public void setRequired(String required) {
-            this.required = required;
-        }
+    public void setRequired(String required) {
+        this.required = required;
+    }
         
-        public void setIncluded(String included) {
-            this.included = included;
+    public void setIncluded(String included) {
+        this.included = included;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSearchable(String searchable) {
+        this.searchable = searchable;
+    }
+
+    public void setType(String type) {
+        this.type = type;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public String getAttributeID() {
+        return attributeID;
+    }
 
-        public void setSearchable(String searchable) {
-            this.searchable = searchable;
-        }
+    public void setAttributeID(String attributeID) {
+        this.attributeID = attributeID;
+    }
 
-        public void setType(String type) {
-            this.type = type;
-        }
+    public String getColumnName() {
+        return columnName;
+    }
 
-        public String getAttributeID() {
-            return attributeID;
-        }
+    public String getDataType() {
+        return dataType;
+    }
 
-        public void setAttributeID(String attributeID) {
-            this.attributeID = attributeID;
-        }
+    public String getDefaultValue() {
+        return defaultValue;
+    }
 
-        public String getColumnName() {
-            return columnName;
-        }
+    public String getDisplayName() {
+        return displayName;
+    }
 
-        public String getDataType() {
-            return dataType;
-        }
+    public boolean isRequired() {
+        return required.equals("true");
+    }
 
-        public String getValue() {
-            return value;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public String getDefaultValue() {
-            return defaultValue;
-        }
+    public String getRequired() {
+        return required;
+    }
 
-        public String getDisplayName() {
-            return displayName;
-        }
+    public String getIncluded() {
+        return included;
+    }
 
-        public boolean isRequired() {
-            return required.equals("true");
-        }
+    public String getSearchable() {
+        return searchable;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public boolean isSearchable() {
+        return searchable.equals("true");
+    }
 
-        public String getRequired() {
-            return required;
-        }
+    public String getType() {
+        return type;
+    }
 
-        public String getIncluded() {
-            return included;
-        }
+    public String getEndDate() {
+        return enddate;
+    }
 
-        public String getSearchable() {
-            return searchable;
-        }
+    public void setEndDate(String enddate) {
+        this.enddate = enddate;
+    }
 
-        public boolean isSearchable() {
-            return searchable.equals("true");
-        }
+    public String getStartDate() {
+        return startdate;
+    }
 
-        public String getType() {
-            return type;
-        }
-
-        public String getEndDate() {
-            return enddate;
-        }
-
-        public void setEndDate(String enddate) {
-            this.enddate = enddate;
-        }
-
-        public String getStartDate() {
-            return startdate;
-        }
-
-        public void setStartDate(String startdate) {
-            this.startdate = startdate;
-        }
+    public void setStartDate(String startdate) {
+        this.startdate = startdate;
+    }
 }
