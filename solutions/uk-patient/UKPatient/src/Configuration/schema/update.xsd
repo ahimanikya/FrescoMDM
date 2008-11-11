@@ -89,11 +89,24 @@
 	<xs:element name="candidate-field">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element ref="system-fields" minOccurs="0"/>
 				<xs:element ref="survivor-strategy" minOccurs="0"/>
 				<xs:element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required"/>
 		</xs:complexType>
+	</xs:element>
+	<xs:element name="system-fields">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="field-name" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="field-name">
+		<xs:simpleType>
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
 	</xs:element>
 	<xs:element name="default-parameters">
 		<xs:complexType>
