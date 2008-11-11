@@ -523,6 +523,10 @@ public class EditorMainApp {
         }
     }
     
+    public EditorMainPanel getEditorMainPanel() {
+        return mEditorMainPanel;
+    }
+    
     /**
      *@return xml string for MultiDomainModel.xml
      */

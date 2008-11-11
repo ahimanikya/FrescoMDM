@@ -16,6 +16,8 @@ public class Definition {
     public static final String TYPE_HIERARCHY = "hierarchy";
     public static final String TYPE_GROUP = "group";
     public static final String TYPE_CATEGORY = "category";
+    public static final String ONEDIRECTION = "1";
+    public static final String BIDIRECTIONAL = "2";
 
     /*
      * MultiDomainModel.xml
@@ -33,7 +35,7 @@ public class Definition {
     String targetRelationshipName;
     String sourceDomain;
     String targetDomain;
-    String direction = "1"; // 1 one direction, 2 bidirectional
+    String direction = ONEDIRECTION; // 1 one direction, 2 bidirectional
     String description;
     String effectiveFrom;
     String effectiveTo;

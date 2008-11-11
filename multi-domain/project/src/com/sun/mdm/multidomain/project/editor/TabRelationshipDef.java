@@ -49,12 +49,14 @@ public class TabRelationshipDef extends javax.swing.JPanel {
     EditorMainApp mEditorMainApp;
     DefinitionNode mDefinitionNode;
     Definition mDefinition;
+    private String mOldDefName;
     /** Creates new form TabAttributes */
     public TabRelationshipDef(EditorMainApp editorMainApp, DefinitionNode definitionNode) {
         initComponents();
         mEditorMainApp = editorMainApp;
         mDefinitionNode = definitionNode;
         mDefinition = definitionNode.getDefinition();
+        mOldDefName = mDefinition.getName();
         this.jTextName.setText(mDefinition.getName());
         // Get plugin list
         ArrayList <String> alPlugins = mEditorMainApp.getPluginList();
@@ -104,11 +106,13 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         }
         
         // Listeners
+        
         jTextName.addKeyListener(new DefNameKeyAdapter());
         
         this.jTextAreaDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
+                mDefinition.setDescription(jTextAreaDescription.getText());
             }
         });
         
@@ -116,6 +120,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
                 //ToDo update TabOverView
+                mDefinition.setPlugin((String) jComboBoxPlugin.getSelectedItem());
             }
         });
         
@@ -123,6 +128,10 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
                 //ToDo update TabOverView
+                String direction = (getDirectionCode() == 2) ? Definition.BIDIRECTIONAL : Definition.ONEDIRECTION;
+                mDefinition.setDirection(direction);
+                mDefinition.setSourceDomain(getSourceDomain());
+                mDefinition.setTargetDomain(getTargetDomain());
             }
         });
         
@@ -974,7 +983,9 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
          */
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
-                //ToDo update TabOverView
+                mDefinition.setName(jTextName.getText());
+                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
+                mOldDefName = jTextName.getText();
             }
     }
 }

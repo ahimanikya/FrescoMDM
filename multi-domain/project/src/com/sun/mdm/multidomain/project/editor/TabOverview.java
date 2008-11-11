@@ -309,6 +309,28 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         return rows;
     }
     
+    public void updateDefinitionName(String oldDefName, Definition definition) {
+        String definitionName = definition.getName();
+        //String definitionType = definition.getType();
+        String sourceDomain = definition.getSourceDomain();
+        String targetDomain = definition.getTargetDomain();
+        TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+        int length = model.getRowCount();
+        for (int i=0; i < length; i++) {
+            DefinitionRow row = model.getRow(i);
+            if (row.getDefinitionName().equals(oldDefName) && 
+                row.getSourceDomain().equals(sourceDomain) &&
+                row.getTargetDomain().equals(targetDomain)) {
+                row.setDefinitionName(definitionName);
+                row.setSourceDomain(sourceDomain);
+                row.setTargetDomain(targetDomain);
+                model.fireTableDataChanged();
+                break;
+            }
+        }
+    }
+    
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

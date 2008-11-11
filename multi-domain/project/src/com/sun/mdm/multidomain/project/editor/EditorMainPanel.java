@@ -543,4 +543,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
         }
     }
+    
+    public TabOverview getTabOverview() {
+        return mTabOverview;
+    }
 }
