@@ -179,11 +179,11 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                 {null}
             },
             new String [] {
-                "Group"
+                "Field Group"
             }
         ));
         jScrollPane1.setViewportView(jTableFieldGroup);
-        jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jTableFieldGroup.columnModel.title0")); // NOI18N
+        jTableFieldGroup.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELD_GROUP")); // NOI18N
 
         jBtnAddGroup.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_Add")); // NOI18N
         jBtnAddGroup.addActionListener(new java.awt.event.ActionListener() {
@@ -238,7 +238,7 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
             }
         ));
         jScrollPane2.setViewportView(jTableField);
-        jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "DomainSearchResultDialog.jTableField.columnModel.title0")); // NOI18N
+        jTableField.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELD")); // NOI18N
 
         jBtnRemoveField.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_Remove")); // NOI18N
         jBtnRemoveField.setEnabled(false);

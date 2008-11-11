@@ -42,7 +42,7 @@ import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabRelationshipDef;
 import com.sun.mdm.multidomain.project.editor.TabHierarchyDef;
-import com.sun.mdm.multidomain.project.editor.TabWebManagerRelationshipTypes;
+import com.sun.mdm.multidomain.project.editor.TabWebManagerDefinition;
 
 /**
  *
@@ -54,7 +54,7 @@ public class DefinitionNode extends AbstractNode {
     DefinitionNode mDefinitionNode;
     EditorMainApp mEditorMainApp;
     JPanel mTabDefinitionDef;
-    TabWebManagerRelationshipTypes mTabWebManagerRelationshipTypes = null;
+    TabWebManagerDefinition mTabWebManagerRelationshipTypes = null;
     String type;
     
     public DefinitionNode() {
@@ -139,9 +139,9 @@ public class DefinitionNode extends AbstractNode {
         return mTabDefinitionDef;
     }
     
-    public TabWebManagerRelationshipTypes getRelationshipTypesTab(boolean bRefresh) {
+    public TabWebManagerDefinition getRelationshipTypesTab(boolean bRefresh) {
         if (mTabWebManagerRelationshipTypes == null) {
-            mTabWebManagerRelationshipTypes = new TabWebManagerRelationshipTypes(mEditorMainApp, mWebLinkType);
+            mTabWebManagerRelationshipTypes = new TabWebManagerDefinition(mEditorMainApp, mWebLinkType);
         }
         
         return mTabWebManagerRelationshipTypes;

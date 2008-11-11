@@ -185,14 +185,14 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="1" rowCount="1">
-                    <Column editable="true" title="Group" type="java.lang.Object"/>
+                    <Column editable="true" title="Field Group" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                        <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="DomainSearchResultDialog.jTableFieldGroup.columnModel.title0" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                        <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_FIELD_GROUP" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                       </Title>
                       <Editor/>
                       <Renderer/>
@@ -298,7 +298,7 @@
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                        <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="DomainSearchResultDialog.jTableField.columnModel.title0" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                        <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_FIELD" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                       </Title>
                       <Editor/>
                       <Renderer/>

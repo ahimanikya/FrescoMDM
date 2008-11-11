@@ -21,6 +21,10 @@ public class ScreenDefinition {
     
     private int mDisplayOrder = -1;
     
+    private int mItemPerPage = -1;
+    
+    private int mMaxItems = -1;
+    
     private ArrayList<PageRelationType> mPageRelationType = null;
     
     private PageDefinition mChildPage = null;
@@ -84,6 +88,22 @@ public class ScreenDefinition {
 
     public void setChildPage(PageDefinition childPage) {
         this.mChildPage = childPage;
+    }
+
+    public int getItemPerPage() {
+        return mItemPerPage;
+    }
+
+    public void setItemPerPage(int itemPerPage) {
+        this.mItemPerPage = itemPerPage;
+    }
+
+    public int getMaxItems() {
+        return mMaxItems;
+    }
+
+    public void setMaxItems(int maxItems) {
+        this.mMaxItems = maxItems;
     }
 
 }

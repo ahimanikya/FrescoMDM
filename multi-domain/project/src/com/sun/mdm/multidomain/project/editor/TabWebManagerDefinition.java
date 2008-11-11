@@ -1,5 +1,5 @@
 /*
- * TabWebManagerRelationshipTypes.java
+ * TabWebManagerDefinition.java
  *
  * Created on September 22, 2008, 2:27 PM
  */
@@ -22,7 +22,7 @@ import org.openide.util.NbBundle;
  *
  * @author  wee
  */
-public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
+public class TabWebManagerDefinition extends javax.swing.JPanel {
     
     private ArrayList<Definition> mRelationshipTypes = null;
     private JTable mTableFields;
@@ -31,8 +31,8 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
     private Definition mLinkType = null;
     //private 
 
-    /** Creates new form TabWebManagerRelationshipTypes */
-    public TabWebManagerRelationshipTypes(EditorMainApp editorMainApp, Definition linkType) {
+    /** Creates new form TabWebManagerDefinition */
+    public TabWebManagerDefinition(EditorMainApp editorMainApp, Definition linkType) {
         
         mEditorMainApp = editorMainApp;
         //mRelationshipTypes = relationshipTypes;
@@ -276,18 +276,18 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "TabWebManagerRelationshipTypes.jScrollPane1.border.title"))); // NOI18N
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELDS"))); // NOI18N
 
-        jLabelRelTypes.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_RELATIONSHIP")); // NOI18N
+        jLabelRelTypes.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Links_Defined")); // NOI18N
 
-        onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_OK")); // NOI18N
+        onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_OK")); // NOI18N
         onOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onOKActionPerformed(evt);
             }
         });
 
-        onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_Cancel")); // NOI18N
+        onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Cancel")); // NOI18N
 
         jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/UpArrow.jpg"))); // NOI18N
         jBtnUp.addActionListener(new java.awt.event.ActionListener() {
@@ -305,9 +305,9 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
 
         jTextFieldLinkType.setEditable(false);
 
-        jPanelFieldProperties.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_PROPERTIES"))); // NOI18N
+        jPanelFieldProperties.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_PROPERTIES"))); // NOI18N
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
 
         jTxtDisplayName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,11 +315,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
+        jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
 
         jTxtDisplayOrder.setEditable(false);
 
-        jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
+        jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
 
         jTxtMaxLength.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -327,7 +327,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_TYPE")); // NOI18N
+        jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_TYPE")); // NOI18N
 
         jTxtDataType.setEditable(false);
         jTxtDataType.addActionListener(new java.awt.event.ActionListener() {
@@ -336,7 +336,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             }
         });
 
-        jLabelInputMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_INPUT_MASK")); // NOI18N
+        jLabelInputMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_INPUT_MASK")); // NOI18N
 
         jTxtInputMask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -344,7 +344,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             }
         });
 
-        jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_VALUE_MASK")); // NOI18N
+        jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_VALUE_MASK")); // NOI18N
 
         jTxtValueMask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,7 +352,7 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
             }
         });
 
-        jRBSensitive.setText(org.openide.util.NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_FIELD_REF_IS_SENSITIVE")); // NOI18N
+        jRBSensitive.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_IS_SENSITIVE")); // NOI18N
         jRBSensitive.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRBSensitive(evt);
@@ -427,16 +427,16 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(32, 32, 32)
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 107, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                         .add(layout.createSequentialGroup()
                             .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(18, 18, 18)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(onCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 88, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(layout.createSequentialGroup()
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -444,9 +444,9 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                 .add(jBtnDown, 0, 0, Short.MAX_VALUE)
                                 .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(jPanelFieldProperties, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         layout.linkSize(new java.awt.Component[] {onCancel, onOK}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -454,13 +454,13 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabelRelTypes)
+                    .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabelRelTypes)
-                            .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 297, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jPanelFieldProperties, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -469,11 +469,11 @@ public class TabWebManagerRelationshipTypes extends javax.swing.JPanel {
                             .add(onCancel)
                             .add(onOK)))
                     .add(layout.createSequentialGroup()
-                        .add(119, 119, 119)
+                        .add(78, 78, 78)
                         .add(jBtnUp)
                         .add(20, 20, 20)
                         .add(jBtnDown)))
-                .addContainerGap(405, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -716,7 +716,7 @@ private void onValueMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onVa
     }
 
 class TableModelRelationshipField extends AbstractTableModel {
-        private	String columnNames [] = {NbBundle.getMessage(TabWebManagerRelationshipTypes.class, "LBL_RELATIONSHIP_TYPES_FILED"),                                           
+        private	String columnNames [] = {NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_RELATIONSHIP_TYPES_FILED"),                                           
                                         };
         ArrayList<FieldAttributeRow> fieldRows;
         final static int iColFieldName = 0;

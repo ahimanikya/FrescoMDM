@@ -18,7 +18,7 @@ import org.openide.util.NbBundle;
  */
 public class TabRelationshipWebManager extends javax.swing.JPanel {
     
-    private TabWebManagerRelationshipTypes mTabRelationshipTyps = null;
+    private TabWebManagerDefinition mTabRelationshipTyps = null;
     
     private TabDomainSearch mTabDomains = null;
     
@@ -66,9 +66,9 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
         jTabbedPaneRelWebManager.addTab(TAB_DOMAIN_SERCH, mTabDomains);
     }
     
-    protected TabWebManagerRelationshipTypes getRelationshipTypesTab() {
+    protected TabWebManagerDefinition getRelationshipTypesTab() {
         if (mTabRelationshipTyps == null) {
-            //mTabRelationshipTyps = new TabWebManagerRelationshipTypes(mEditorMainApp, mRelationshipTypes);
+            //mTabRelationshipTyps = new TabWebManagerDefinition(mEditorMainApp, mRelationshipTypes);
         }
         
         return mTabRelationshipTyps;

@@ -166,7 +166,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "MSG_Name")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_Domain")); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_SEARCH_PAGE_PROPERTIES"))); // NOI18N
 
@@ -234,18 +234,20 @@ public class TabDomainSearch extends javax.swing.JPanel {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnAddSearchPage)
-                    .add(jBtnRemoveSearchPage)
-                    .add(jBtnEditSearchType))
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jScrollPaneSearchPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jBtnAddSearchPage)
+                            .add(jBtnRemoveSearchPage)
+                            .add(jBtnEditSearchType)))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(6, 6, 6)
+                        .add(jBtnUp)
+                        .add(18, 18, 18)
+                        .add(jBtnDown)))
                 .addContainerGap())
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(6, 6, 6)
-                .add(jBtnUp)
-                .add(18, 18, 18)
-                .add(jBtnDown))
         );
 
         jPanelSearchResult.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainSearch.class, "LBL_DOMAIN_SEARCH_RESULT_PROPERTIES"))); // NOI18N
@@ -290,7 +292,7 @@ public class TabDomainSearch extends javax.swing.JPanel {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanelSearchResultLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(jScrollPaneSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 519, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelSearchResultLayout.setVerticalGroup(
             jPanelSearchResultLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -316,14 +318,17 @@ public class TabDomainSearch extends javax.swing.JPanel {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 61, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(18, 18, 18)
                         .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 302, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
                     .add(jPanelSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .add(318, 318, 318))
+            .add(layout.createSequentialGroup()
+                .add(10, 10, 10)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
