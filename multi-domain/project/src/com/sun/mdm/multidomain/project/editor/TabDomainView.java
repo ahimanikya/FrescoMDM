@@ -530,6 +530,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
 
 private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCBIncludeEUID
   mDomain.getRecordID().setMShowEUID(this.jCBIncludeEUID.isSelected());
+  enableSave();
 }//GEN-LAST:event_onCBIncludeEUID
 
 
