@@ -63,13 +63,22 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                 if (screenDef != null) {
                     loadSubscreenProperties(screenDef);
                 }
+                jBtnUp.setEnabled(true);
+                jBtnDown.setEnabled(true);
+                if (selectedRow == 0 ) {
+                    jBtnUp.setEnabled(false);
+                } else if (selectedRow == jTableSubscreen.getRowCount() - 1) {
+                    jBtnDown.setEnabled(false);
+                }
+                
+               
              }
         });
         
-        jSpinnerItemPerPage.addChangeListener(new javax.swing.event.ChangeListener() {
+        jSpinnerMaxItems.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 //evt.getComponent().getN
-                updateSubscreenProperties(jSpinnerItemPerPage);
+                updateSubscreenProperties(jSpinnerMaxItems);
             }
         });
         
@@ -132,6 +141,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             if (jTableSubscreen.getRowCount() > 0) {
                 jTableSubscreen.setRowSelectionInterval(0, 0);
                 loadSubscreenProperties(subscreenModel.getRow(0));
+                this.jBtnDown.setEnabled(true);
             }
         }
         
@@ -163,6 +173,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jSpinnerMaxItems = new javax.swing.JSpinner();
         jBtnOK = new javax.swing.JButton();
         jBtnCancel = new javax.swing.JButton();
+        jBtnUp = new javax.swing.JButton();
+        jBtnDown = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SCREEN_PROPERTIES")); // NOI18N
@@ -192,21 +204,9 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SUBSCREEN_TITLE")); // NOI18N
 
-        jTxtScreenTitle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onjTxtScreenTitle(evt);
-            }
-        });
-
         jLabelItemPerPage.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_ITEM_PER_PAGE")); // NOI18N
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_MAX_ITEMS")); // NOI18N
-
-        jSpinnerMaxItems.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                onMaxItems(evt);
-            }
-        });
 
         org.jdesktop.layout.GroupLayout jPanelSubScreenLayout = new org.jdesktop.layout.GroupLayout(jPanelSubScreen);
         jPanelSubScreen.setLayout(jPanelSubScreenLayout);
@@ -258,14 +258,30 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             }
         });
 
+        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/resources/UpArrow.jpg"))); // NOI18N
+        jBtnUp.setBorderPainted(false);
+        jBtnUp.setEnabled(false);
+        jBtnUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onUpBtnPerformed(evt);
+            }
+        });
+
+        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/resources/DownArrow.JPG"))); // NOI18N
+        jBtnDown.setEnabled(false);
+        jBtnDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onDownBtnPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(34, 34, 34)
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 116, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -273,23 +289,35 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                         .add(layout.createSequentialGroup()
                             .add(jBtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(18, 18, 18)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(25, 25, 25)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(27, 27, 27)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(19, 19, 19)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jLabel1)
+                            .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(22, 22, 22)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(90, 90, 90)
+                        .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(10, 10, 10)
+                        .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnCancel)
                     .add(jBtnOK))
@@ -297,7 +325,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-520)/2, (screenSize.height-479)/2, 520, 479);
+        setBounds((screenSize.width-535)/2, (screenSize.height-449)/2, 535, 449);
     }// </editor-fold>//GEN-END:initComponents
 
 private void onCBScreenList(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCBScreenList
@@ -315,13 +343,50 @@ private void onBtnCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBt
     this.dispose();
 }//GEN-LAST:event_onBtnCancel
 
-private void onjTxtScreenTitle(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onjTxtScreenTitle
+private void onUpBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtnPerformed
 // TODO add your handling code here:
-}//GEN-LAST:event_onjTxtScreenTitle
+    TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
+    int iSelectedRow = jTableSubscreen.getSelectedRow();
+    ScreenDefinition movedUpRow = model.getRow(iSelectedRow);
+    int screenOrderUpRow = movedUpRow.getDisplayOrder();
+    ScreenDefinition movedDownRow = model.getRow(iSelectedRow - 1);
+    int screenOrderDownRow = movedDownRow.getDisplayOrder();
+    movedDownRow.setDisplayOrder(screenOrderUpRow);
+    movedUpRow.setDisplayOrder(screenOrderDownRow);
+    model.removeRow(iSelectedRow);
+    //if (iSelectedRow ==
+    iSelectedRow--;
+    model.addRow(iSelectedRow, movedUpRow);
+    jTableSubscreen.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    bModified = true;
+    jBtnUp.setEnabled(true);
+    jBtnDown.setEnabled(true);
+    if (iSelectedRow == 0) {
+        jBtnUp.setEnabled(false);
+    }
+}//GEN-LAST:event_onUpBtnPerformed
 
-private void onMaxItems(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onMaxItems
+private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDownBtnPerformed
 // TODO add your handling code here:
-}//GEN-LAST:event_onMaxItems
+    TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
+    int iSelectedRow = jTableSubscreen.getSelectedRow();
+    ScreenDefinition movedRow = model.getRow(iSelectedRow);
+    int screenOrderMovedRow = movedRow.getDisplayOrder();
+    model.removeRow(iSelectedRow);
+    ScreenDefinition previousRow = model.getRow(iSelectedRow);
+    int screenOrderPrevRow = previousRow.getDisplayOrder();
+    previousRow.setDisplayOrder(screenOrderMovedRow);
+    iSelectedRow++;
+    movedRow.setDisplayOrder(screenOrderPrevRow);
+    model.addRow(iSelectedRow, movedRow);
+    jTableSubscreen.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    bModified = true;
+    jBtnUp.setEnabled(true);
+    jBtnDown.setEnabled(true);
+    if (iSelectedRow == jTableSubscreen.getRowCount() - 1) {
+        jBtnDown.setEnabled(false);
+    }    
+}//GEN-LAST:event_onDownBtnPerformed
 
 
     class NumbericVerifier extends InputVerifier {
@@ -421,7 +486,7 @@ private void onMaxItems(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_on
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, SearchDetail row) {
+        public void addRow(int index, ScreenDefinition row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
@@ -454,7 +519,9 @@ private void onMaxItems(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_on
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancel;
+    private javax.swing.JButton jBtnDown;
     private javax.swing.JButton jBtnOK;
+    private javax.swing.JButton jBtnUp;
     private javax.swing.JComboBox jCBScreenList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
