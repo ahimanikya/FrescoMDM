@@ -22,7 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.relationship;
 
-import com.sun.mdm.multidomain.services.model.AttributeDef;
+import com.sun.mdm.multidomain.services.model.AttributeDefExt;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * RelationshipDefinition class.
  * @author cye
  */
-public class RelationshipDefinition {
+public class RelationshipDefExt {
     /* data model   
     private String name;
     private String id; 
@@ -40,47 +40,48 @@ public class RelationshipDefinition {
     private String plugin;
     private String sourceRoleName;
     private String targetRoleName;    
-    private boolean biDirection;  
+    private String biDirection;  
     private String dateFormat;
-    private boolean startDate;
-    private boolean endDate;
-    private boolean purgeDate;
-    private boolean startDateRequired;
-    private boolean endDateRequired;
-    private boolean purgeDateRequired; */
+    private String startDate;
+    private String endDate;
+    private String purgeDate;
+    private String startDateRequired;
+    private String endDateRequired;
+    private String purgeDateRequired; */
      /* display model 
     private String displayName; */
     
-    private List<AttributeDef> fixedAttributes;  
-    private List<AttributeDef> extendedAttributes;
+    private List<AttributeDefExt> fixedAttributes;  
+    private List<AttributeDefExt> extendedAttributes;
 
-    public  RelationshipDefinition(){
-        fixedAttributes = new ArrayList<AttributeDef>();
+    public  RelationshipDefExt(){
+        fixedAttributes = new ArrayList<AttributeDefExt>();
+        extendedAttributes = new ArrayList<AttributeDefExt>();        
     }
     
-    public void setFixedAttributes(ArrayList<AttributeDef> fixedAttributes) {
+    public void setFixedAttributes(ArrayList<AttributeDefExt> fixedAttributes) {
         this.fixedAttributes = fixedAttributes;
     }
     
-    public List<AttributeDef> gettFixedAttributes(){
+    public List<AttributeDefExt> gettFixedAttributes(){
         return fixedAttributes;
     }
     
-    public void setExtendedAttributes(List<AttributeDef> extendedAttributes){
+    public void setExtendedAttributes(List<AttributeDefExt> extendedAttributes){
         this.extendedAttributes = extendedAttributes;
     }
     
-    public List<AttributeDef> getExtendedAttributes(){
+    public List<AttributeDefExt> getExtendedAttributes(){
         return extendedAttributes;
     }
     
     public String getName(){
-        AttributeDef aDef = getFixedAttribute("name");
+        AttributeDefExt aDef = getFixedAttribute("name");
         return aDef != null ? aDef.getDefaultValue() : null;
     }
     
     public void setName(String name){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("name");
         aDef.setDefaultValue(name);
         aDef.setDataType("String");
@@ -88,12 +89,12 @@ public class RelationshipDefinition {
     }
     
     public String getId(){
-        AttributeDef aDef = getFixedAttribute("id");
+        AttributeDefExt aDef = getFixedAttribute("id");
         return aDef != null ? aDef.getDefaultValue() : null;        
     }
     
     public void setId(String id){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("id");
         aDef.setDefaultValue(id);
         aDef.setDataType("String");
@@ -101,12 +102,12 @@ public class RelationshipDefinition {
     }
     
     public String getSourceDomain(){
-        AttributeDef aDef = getFixedAttribute("sourceDomain");
+        AttributeDefExt aDef = getFixedAttribute("sourceDomain");
         return aDef != null ? aDef.getDefaultValue() : null;                
     }
     
     public void setSourceDomain(String sourceDomain){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("sourceDomain");
         aDef.setDefaultValue(sourceDomain);
         aDef.setDataType("String");
@@ -114,12 +115,12 @@ public class RelationshipDefinition {
     }
     
     public String getTargetDomain(){
-        AttributeDef aDef = getFixedAttribute("targetDomain");
+        AttributeDefExt aDef = getFixedAttribute("targetDomain");
         return aDef != null ? aDef.getDefaultValue() : null;                
     }
     
     public void setTargetDomain(String targetDomain){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("targetDomain");
         aDef.setDefaultValue(targetDomain);
         aDef.setDataType("String");
@@ -127,159 +128,139 @@ public class RelationshipDefinition {
     }
     
     public String getPlugin(){
-        AttributeDef aDef = getFixedAttribute("plugin");
+        AttributeDefExt aDef = getFixedAttribute("plugin");
         return aDef != null ? aDef.getDefaultValue() : null;                
     }
     
     public void setPlugin(String plugin){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("plugin");
         aDef.setDefaultValue(plugin);
         aDef.setDataType("String");
         setFixedAttribute(aDef);                        
     }
     
-    public boolean getBiDirection(){
-        AttributeDef aDef = getFixedAttribute("biDirection");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        }
+    public String getBiDirection(){
+        AttributeDefExt aDef = getFixedAttribute("biDirection");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
-    public void setBiDirection(boolean biDirection){ 
-        AttributeDef aDef = new AttributeDef();
+    public void setBiDirection(String biDirection){ 
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("biDirection");
-        aDef.setDefaultValue(biDirection ? "true" : "false");
+        aDef.setDefaultValue(biDirection.toLowerCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                
     }
     
     public String getDateFormat(){
-        AttributeDef aDef = getFixedAttribute("dateFormat");
+        AttributeDefExt aDef = getFixedAttribute("dateFormat");
         return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
     public void setDateFormat(String dateFormat){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("biDirection");
         aDef.setDefaultValue(dateFormat);
         aDef.setDataType("String");
         setFixedAttribute(aDef);        
     }
     
-    public boolean getStartDate(){
-        AttributeDef aDef = getFixedAttribute("startDate");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        }        
+    public String getStartDate(){
+        AttributeDefExt aDef = getFixedAttribute("startDate");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
-    public void setStartDate(boolean startDate){ 
-        AttributeDef aDef = new AttributeDef();
+    public void setStartDate(String startDate){ 
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("startDate");
-        aDef.setDefaultValue(startDate ? "true" : "false");
+        aDef.setDefaultValue(startDate.toUpperCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                    
     }
     
-    public boolean getEndDate(){
-        AttributeDef aDef = getFixedAttribute("endDate");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        }        
+    public String getEndDate(){
+        AttributeDefExt aDef = getFixedAttribute("endDate");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
-    public void setEndDate(boolean endDate){ 
-        AttributeDef aDef = new AttributeDef();
+    public void setEndDate(String endDate){ 
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("endDate");
-        aDef.setDefaultValue(endDate ? "true" : "false");
+        aDef.setDefaultValue(endDate.toLowerCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                    
     }
     
-    public boolean getPurgeDate(){
-        AttributeDef aDef = getFixedAttribute("purgeDate");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        }        
+    public String getPurgeDate(){
+        AttributeDefExt aDef = getFixedAttribute("purgeDate");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
-    public void setPurgeDate(boolean purgeDate){ 
-        AttributeDef aDef = new AttributeDef();
+    public void setPurgeDate(String purgeDate){ 
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("purgeDate");
-        aDef.setDefaultValue(purgeDate ? "true" : "false");
+        aDef.setDefaultValue(purgeDate.toLowerCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                    
     }
     
-    public boolean getStartDateRequired(){
-        AttributeDef aDef = getFixedAttribute("startDateRequired");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        } 
+    public String getStartDateRequired(){
+        AttributeDefExt aDef = getFixedAttribute("startDateRequired");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
-    public void setStartDateRequired(boolean startDateRequired){
-        AttributeDef aDef = new AttributeDef();
+    public void setStartDateRequired(String startDateRequired){
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("startDateRequired");
-        aDef.setDefaultValue(startDateRequired ? "true" : "false");
+        aDef.setDefaultValue(startDateRequired.toUpperCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                            
     }
     
-    public boolean getEndDateRequired(){
-        AttributeDef aDef = getFixedAttribute("endDateRequired");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        } 
+    public String getEndDateRequired(){
+        AttributeDefExt aDef = getFixedAttribute("endDateRequired");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
-    public void setEndDateRequired(boolean endDateRequired){ 
-        AttributeDef aDef = new AttributeDef();
+    public void setEndDateRequired(String endDateRequired){ 
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("endDateRequired");
-        aDef.setDefaultValue(endDateRequired ? "true" : "false");
+        aDef.setDefaultValue(endDateRequired.toLowerCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                                    
     }
     
-    public boolean getPurgeDateRequired(){
-        AttributeDef aDef = getFixedAttribute("purgeDateRequired");
-        if (aDef != null ) {
-            return "true".equalsIgnoreCase(aDef.getDefaultValue());
-        } else {
-            return false;
-        }         
+    public String getPurgeDateRequired(){
+        AttributeDefExt aDef = getFixedAttribute("purgeDateRequired");
+        return aDef != null ? aDef.getDefaultValue() : null;                        
     }
         
+    public void setPurgeDateRequired(String purgeDateRequired){ 
+        AttributeDefExt aDef = new AttributeDefExt();
+        aDef.setName("endDateRequired");
+        aDef.setDefaultValue(purgeDateRequired.toLowerCase());
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                                                    
+    }
+    
     public String getDisplayName(){
-        AttributeDef aDef = getFixedAttribute("displayName");
+        AttributeDefExt aDef = getFixedAttribute("displayName");
         return aDef != null ? aDef.getDefaultValue() : null;                        
     }
     
     public void setDisplayName(String displayName){
-        AttributeDef aDef = new AttributeDef();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("displayName");
         aDef.setDefaultValue(displayName);
         aDef.setDataType("String");
         setFixedAttribute(aDef);        
     }
     
-    public AttributeDef getFixedAttribute(String name) {
-        AttributeDef attributeDef = null;
+    public AttributeDefExt getFixedAttribute(String name) {
+        AttributeDefExt attributeDef = null;
         if (fixedAttributes != null && name != null) {
-            for (AttributeDef aDef : fixedAttributes) {
+            for (AttributeDefExt aDef : fixedAttributes) {
                 if (name.equals(aDef.getName())) {
                     attributeDef = aDef;
                     break;
@@ -289,17 +270,17 @@ public class RelationshipDefinition {
         return attributeDef;
     }
 
-    public void setFixedAttribute(AttributeDef aDef) {        
+    public void setFixedAttribute(AttributeDefExt aDef) {        
         if (fixedAttributes == null ) {
-            fixedAttributes = new ArrayList<AttributeDef>();
+            fixedAttributes = new ArrayList<AttributeDefExt>();
         }            
         fixedAttributes.add(aDef);
     }
     
-    public AttributeDef getExtendeddAttribute(String name) {
-        AttributeDef attributeDef = null;
+    public AttributeDefExt getExtendeddAttribute(String name) {
+        AttributeDefExt attributeDef = null;
         if (extendedAttributes != null && name != null) {
-            for (AttributeDef aDef : extendedAttributes) {
+            for (AttributeDefExt aDef : extendedAttributes) {
                 if (name.equals(aDef.getName())) {
                     attributeDef = aDef;
                     break;
@@ -309,9 +290,9 @@ public class RelationshipDefinition {
         return attributeDef;
     }    
     
-    public void setExtendedAttribute(AttributeDef aDef) {        
+    public void setExtendedAttribute(AttributeDefExt aDef) {        
         if (extendedAttributes == null ) {
-            extendedAttributes = new ArrayList<AttributeDef>();
+            extendedAttributes = new ArrayList<AttributeDefExt>();
         }            
         extendedAttributes.add(aDef);
     }

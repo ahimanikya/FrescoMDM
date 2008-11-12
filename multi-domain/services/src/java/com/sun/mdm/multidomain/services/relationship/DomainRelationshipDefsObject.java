@@ -26,16 +26,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-        
-import com.sun.mdm.multidomain.relationship.RelationshipDef;
+   
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
+import com.sun.mdm.multidomain.services.model.AttributeDefExt;
 
+        
 /**
  * DomainRelationshipDefinitionObject class.
  * @author cye
  */
-public class DomainRelationshipDefsObject implements Iterator<RelationshipDef> {
+public class DomainRelationshipDefsObject implements Iterator<RelationshipDefExt> {
 
-    private List<RelationshipDef> relationshipDefs;
+    private List<RelationshipDefExt> relationshipDefs;
     private int position = 0;
     private int size;
     private String domain;
@@ -47,7 +49,7 @@ public class DomainRelationshipDefsObject implements Iterator<RelationshipDef> {
         this.domain = domain;        
     }
     
-    public DomainRelationshipDefsObject(String domain, List<RelationshipDef> relationshipDefs) {
+    public DomainRelationshipDefsObject(String domain, List<RelationshipDefExt> relationshipDefs) {
         this.domain = domain;
         this.relationshipDefs = relationshipDefs;
     }
@@ -60,20 +62,20 @@ public class DomainRelationshipDefsObject implements Iterator<RelationshipDef> {
         this.domain = domain;
     }
     
-    public List<RelationshipDef> getRelationshipDefss(){
+    public List<RelationshipDefExt> getRelationshipDefss(){
         if (relationshipDefs == null) {
-            relationshipDefs = new ArrayList<RelationshipDef>();
+            relationshipDefs = new ArrayList<RelationshipDefExt>();
         }
         return relationshipDefs;
     }
     
-    public void setRelationshipDefinitions(List<RelationshipDef> relationshipDefs){
+    public void setRelationshipDefinitions(List<RelationshipDefExt> relationshipDefs){
         this.relationshipDefs = relationshipDefs;
     }
     
-    public void add(RelationshipDef relationship) {
+    public void add(RelationshipDefExt relationship) {
         if (relationshipDefs == null) {
-            relationshipDefs = new ArrayList<RelationshipDef>();
+            relationshipDefs = new ArrayList<RelationshipDefExt>();
         }        
         relationshipDefs.add(relationship);
     }
@@ -96,12 +98,12 @@ public class DomainRelationshipDefsObject implements Iterator<RelationshipDef> {
         return has;
     }
     
-    public RelationshipDef next() 
+    public RelationshipDefExt next() 
         throws NoSuchElementException {
         if(relationshipDefs != null && 
            !relationshipDefs.isEmpty() && 
            relationshipDefs.size() > position) { 
-           RelationshipDef e = relationshipDefs.get(position);
+           RelationshipDefExt e = relationshipDefs.get(position);
            position++;
            return e;
         } else {

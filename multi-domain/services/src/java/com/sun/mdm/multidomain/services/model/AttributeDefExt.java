@@ -29,15 +29,15 @@ import java.util.HashMap;
  * AttributeDef class.
  * @author cye
  */
-public class AttributeDef {
+public class AttributeDefExt {
     
     private Map<String, String> fields;         
     /* data object model
     private String id;
     private String name;
     private String columnName;
-    private boolean searchable;
-    private boolean isRequired;
+    private String searchable;
+    private String isRequired;
     private String dataType; 
     private String dataSize;
     private String pattern;
@@ -53,7 +53,7 @@ public class AttributeDef {
     /**
      * Create an instance of AttributeDef.
      */
-    public AttributeDef() {
+    public AttributeDefExt() {
         fields = new HashMap<String, String>();
     }   
     
@@ -81,30 +81,20 @@ public class AttributeDef {
         fields.put("columnName", columnName);
     }  
     
-    public boolean getSearchable(){
-        String value = fields.get("searchable");
-        if(value != null && value.equals("true")){
-            return true;
-        } else {
-            return false;
-        }
+    public String getSearchable(){
+        return fields.get("searchable");
     }
     
-    public void setSearchable(boolean searchable) {
-        fields.put("searchable", searchable ? "true" : "false");
+    public void setSearchable(String searchable) {
+        fields.put("searchable", searchable != null ? searchable.toLowerCase() : "false");
     }
     
-    public boolean getIsRequired(){
-        String value = fields.get("isRequired");
-        if(value != null && value.equals("true")){
-            return true;
-        } else {
-            return false;
-        } 
+    public String getIsRequired(){
+        return fields.get("isRequired");
     }
     
-    public void setIsRequired(boolean isRequired){
-        fields.put("isRequired", isRequired ? "true" : "false");        
+    public void setIsRequired(String isRequired){
+        fields.put("isRequired", isRequired != null ? isRequired.toLowerCase() : "false");        
     }    
     
     public void setDataType(String dataType) {
