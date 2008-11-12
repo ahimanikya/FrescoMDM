@@ -41,8 +41,19 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
+import javax.swing.Action;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.ImageIcon;
+
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.util.actions.SystemAction;
+import org.openide.nodes.Node;
+import org.openide.filesystems.FileUtil;
+import org.openide.filesystems.FileObject;
+import org.openide.util.Utilities;
+import org.netbeans.api.project.Project;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -53,16 +64,6 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.DnDConstants;
 import java.awt.Rectangle;
-import javax.swing.Action;
-import org.openide.util.actions.SystemAction;
-
-import org.openide.nodes.Node;
-import org.netbeans.api.project.Project;
-import java.io.File;
-import org.openide.filesystems.FileUtil;
-import org.openide.filesystems.FileObject;
-import org.openide.util.Utilities;
-import javax.swing.ImageIcon;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -71,12 +72,15 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionListener;
 
+import java.io.File;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
@@ -87,7 +91,7 @@ import com.sun.mdm.multidomain.project.actions.ImportDomainAction;
  *
  * @author  kkao
  */
-public class TabOverview extends javax.swing.JPanel implements MouseListener, MouseMotionListener  {
+public class TabOverview extends javax.swing.JPanel implements MouseListener, MouseMotionListener, ActionListener  {
     private final String ALL_DOMAINS = org.openide.util.NbBundle.getMessage(TabOverview.class, "All_Domains");
     TabOverview mTabOverview;
     EditorMainPanel mEditorMainPanel;
@@ -101,6 +105,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     static final ImageIcon DEFINITIONIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/Definition.png"));
     private BufferedImage backingImage;
     private Point last;
+    private JPopupMenu mDefinitionPopupMenu = new JPopupMenu();;
     private DefinitionTableHeaderRenderer mDefinitionTableHeaderRenderer = new DefinitionTableHeaderRenderer();
     private DefinitionTableColumnRenderer mDefinitionTableColumnRenderer = new DefinitionTableColumnRenderer();
     
@@ -127,11 +132,15 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         }
         jTableDomains.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    onDomainSelected();
+                    if (evt.getButton() == evt.BUTTON1) {
+                        onDomainSelected();
+                    }
                 }
             });
         //configureTableColumns(jTableDomains);
         
+        mDefinitionPopupMenu.add(createMenuItem(NbBundle.getMessage(TabOverview.class, "MSG_menu_Copy"), null));
+        mDefinitionPopupMenu.add(createMenuItem(NbBundle.getMessage(TabOverview.class, "MSG_menu_Delete"), null));
         // load all definitions
         rows = loadDefinitions(false);
         // load definitions per domain
@@ -140,94 +149,17 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jTableDefinitions.setModel(modelDefinitions);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         //jTableDefinitions.setRowSorter(sorter);
-        jTableDefinitions.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    onDefinitionSelected();
-                }
-            });
+        jTableDefinitions.addMouseListener(new DefinitionMouseListener());
         //configureTableColumns(jTableDefinitions);
         
         this.jRadioButtonShowAll.setSelected(true);
         
-        //Drag and drop
         addMouseListener(this);
         addMouseMotionListener(this);
-        this.jLabelDomainName.setDropTarget(new DropTarget(this, new DropTargetListener() { 
-            String dragTargetName = "";
-            public void dragEnter(DropTargetDragEvent dtde) {
-            }
-
-            public void dragExit(DropTargetEvent dte) {
-
-            }
-
-            public void dragOver(DropTargetDragEvent dtde) {
-                if (isMasterIndexProject(dtde)) {
-                    dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-                } else {
-                    dtde.rejectDrag();
-                }
-            }
-
-            public void drop(DropTargetDropEvent dtde) {
-                // Add DomainNode to the canvas
-                Transferable trans = dtde.getTransferable();
-                DataFlavor[] dfs = trans.getTransferDataFlavors();
-                if (dfs.length > 0) {
-                    try {
-                        Object obj = trans.getTransferData(dfs[0]);
-                        if (obj instanceof Node) {
-                            Node node = (Node) obj;
-                            Project p = node.getLookup().lookup(Project.class);
-                            if (p != null) {
-                                FileObject pfobj = p.getProjectDirectory();
-                                File selectedDomain = FileUtil.toFile(pfobj);
-                                String domainName = selectedDomain.getName();
-                                mEditorMainApp.addDomain(selectedDomain);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-
-            public void dropActionChanged(DropTargetDragEvent dtde) {
-
-            }
-            
-            public boolean isMasterIndexProject(DropTargetDragEvent dtde) {
-                dragTargetName = "";
-                boolean bRet = false;
-                Transferable trans = dtde.getTransferable();
-
-                DataFlavor[] dfs = trans.getTransferDataFlavors();
-                if (dfs.length > 0) {
-                    try {
-                        Object obj = trans.getTransferData(dfs[0]);
-                        if (obj instanceof Node) {
-                            Node node = (Node) obj;
-                            dragTargetName = node.getName();
-
-                            Project p = node.getLookup().lookup(Project.class);
-                            if (p != null) {
-                                String clsName = p.getClass().getName();
-                                if (clsName.equals("com.sun.mdm.index.project.EviewApplication")) {
-                                    bRet = true;
-                                    Graphics2D g2D = (Graphics2D) jLabelDomainName.getGraphics();
-                                    Rectangle visRect = jLabelDomainName.getVisibleRect();
-                                    jLabelDomainName.paintImmediately(visRect.x, visRect.y, visRect.width, visRect.height);
-                                    g2D.drawImage(DOMAINIMAGE, AffineTransform.getTranslateInstance(dtde.getLocation().getX(), dtde.getLocation().getY()), null);
-                                }
-                            }
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                return bRet;
-            }
-        }));          
+        //Drag and drop
+        jTableDomains.getTableHeader().setDropTarget(new DropTarget(this, new DomainDropTarget()));
+        jLabelDomainName.setDropTarget(new DropTarget(this, new DomainDropTarget()));
+        jButtonAddDomain.setDropTarget(new DropTarget(this, new DomainDropTarget()));
     }
 
     private ArrayList loadDomains() {
@@ -578,12 +510,12 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                                 //Already exists
                                 } else {
                                     // add new LinkNode
-                                    Definition definitionType = new Definition(definitionName, type, sourceDomain, targetDomain, null);
-                                    definitionNode = mEditorMainApp.addDefinition(definitionType);
+                                    Definition definition = new Definition(definitionName, type, sourceDomain, targetDomain, null);
+                                    definitionNode = mEditorMainApp.addDefinition(definition);
                                     mEditorMainPanel.loadDefinitionProperties(definitionNode);
                                     // add a new row
                                     TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
-                                    DefinitionRow r = new DefinitionRow(definitionType.getType(), definitionType.getName(), definitionType.getSourceDomain(), definitionType.getTargetDomain());
+                                    DefinitionRow r = new DefinitionRow(definition.getType(), definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
                                     int idx = model.getRowCount();
                                     model.addRow(idx, r);
                                     model.fireTableDataChanged();
@@ -1065,6 +997,167 @@ public void onAddHierarchy() {
     
     public void mouseMoved(MouseEvent e) {
         //last = null;
+    }
+    
+    class DomainDropTarget implements DropTargetListener {
+        public DomainDropTarget() {
+        }
+        
+        String dragTargetName = "";
+        public void dragEnter(DropTargetDragEvent dtde) {
+        }
+
+        public void dragExit(DropTargetEvent dte) {
+        }
+
+        public void dragOver(DropTargetDragEvent dtde) {
+            if (isMasterIndexProject(dtde)) {
+                dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+            } else {
+                dtde.rejectDrag();
+            }
+        }
+
+        public void drop(DropTargetDropEvent dtde) {
+            // Add DomainNode to the canvas
+            Transferable trans = dtde.getTransferable();
+            DataFlavor[] dfs = trans.getTransferDataFlavors();
+            if (dfs.length > 0) {
+                try {
+                    Object obj = trans.getTransferData(dfs[0]);
+                    if (obj instanceof Node) {
+                        Node node = (Node) obj;
+                        Project p = node.getLookup().lookup(Project.class);
+                        if (p != null) {
+                            FileObject pfobj = p.getProjectDirectory();
+                            File selectedDomain = FileUtil.toFile(pfobj);
+                            String domainName = selectedDomain.getName();
+                            mEditorMainApp.addDomain(selectedDomain);
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        public void dropActionChanged(DropTargetDragEvent dtde) {
+        }
+            
+        public boolean isMasterIndexProject(DropTargetDragEvent dtde) {
+            dragTargetName = "";
+            boolean bRet = false;
+            Transferable trans = dtde.getTransferable();
+
+            DataFlavor[] dfs = trans.getTransferDataFlavors();
+            if (dfs.length > 0) {
+                try {
+                    Object obj = trans.getTransferData(dfs[0]);
+                    if (obj instanceof Node) {
+                        Node node = (Node) obj;
+                        dragTargetName = node.getName();
+
+                        Project p = node.getLookup().lookup(Project.class);
+                        if (p != null) {
+                            String clsName = p.getClass().getName();
+                            if (clsName.equals("com.sun.mdm.index.project.EviewApplication")) {
+                                bRet = true;
+                                Graphics2D g2D = (Graphics2D) jLabelDomainName.getGraphics();
+                                Rectangle visRect = jLabelDomainName.getVisibleRect();
+                                jLabelDomainName.paintImmediately(visRect.x, visRect.y, visRect.width, visRect.height);
+                                g2D.drawImage(DOMAINIMAGE, AffineTransform.getTranslateInstance(dtde.getLocation().getX(), dtde.getLocation().getY()), null);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return bRet;
+        }
+    }      
+    
+    class DefinitionMouseListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getButton() == evt.BUTTON1) {
+                onDefinitionSelected();
+            } else {
+                if (jTableDefinitions.getSelectedRowCount() > 0) {
+                    maybeShowPopup(evt);
+                }
+            }
+        }
+        
+        @Override
+        public void mousePressed(MouseEvent evt) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent evt) {
+            maybeShowPopup(evt);
+        }
+
+        private void maybeShowPopup(MouseEvent evt) {
+            if (evt.isPopupTrigger()) {
+                mDefinitionPopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }
+    
+    /** Create context sensitive menu
+     *
+     *@param commandName menu item name
+     */
+    private JMenuItem createMenuItem(String commandName, ImageIcon defaultIcon) {
+        JMenuItem item = new JMenuItem(commandName);
+        item.addActionListener(this);
+        item.setActionCommand(commandName);
+        if (defaultIcon != null) {
+            item.setIcon(defaultIcon);
+        }
+        return item;
+    }
+    
+    /** ActionListener
+     *  Invoked when an action occurs.
+     *@param e ActionEvent from menu
+     */
+    public void actionPerformed(java.awt.event.ActionEvent e) {
+        if (e.getSource() instanceof JMenuItem) {
+            JMenuItem item = (JMenuItem) e.getSource();
+            String commandName = item.getText();
+            if (commandName.equals(NbBundle.getMessage(TabOverview.class, "MSG_menu_Copy"))) {
+                // copy selected definitions
+                TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+                int rs[] = jTableDefinitions.getSelectedRows();
+                int length = rs.length;
+                for (int i=0; i < length; i++) {
+                    int iSelectedRow = rs[i];
+                    DefinitionRow row = model.getRow(iSelectedRow);
+                    //String definitionType = (String) model.getValueAt(iSelectedRow,  model.iColDefinitionType);
+                    String definitionName = (String) model.getValueAt(iSelectedRow,  model.iColDefinitionName);
+                    String sourceDomain = (String) model.getValueAt(iSelectedRow,  model.iColSourceDomain);
+                    String targetDomain = (String) model.getValueAt(iSelectedRow,  model.iColTargetDomain);
+                    mSelectedDefinitionNode = mEditorMainApp.copyDefinitionNode(definitionName, sourceDomain, targetDomain);
+                    Definition definition = mSelectedDefinitionNode.getDefinition();
+                    DefinitionRow r = new DefinitionRow(definition.getType(), definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
+                    int idx = model.getRowCount();
+                    model.addRow(idx, r);
+                    model.fireTableDataChanged();
+                    jTableDefinitions.setRowSelectionInterval(idx, idx);
+                    onDefinitionSelected();
+                    mEditorMainApp.enableSaveAction(true);
+                    //update jTableDomains's # of definitions
+                    updateDomainDefinitionCount(sourceDomain, targetDomain, 1);
+                    
+                    //mEditorMainPanel.loadDefinitionProperties(mSelectedDefinitionNode);
+                    //mEditorMainPanel.loadDomainEntityTree(null);
+                }
+            } else if (commandName.equals(NbBundle.getMessage(TabOverview.class, "MSG_menu_Delete"))) {
+                onRemoveDefinition(e);
+            }
+        }
     }
     
     protected void configureTableColumns(JTable table) {

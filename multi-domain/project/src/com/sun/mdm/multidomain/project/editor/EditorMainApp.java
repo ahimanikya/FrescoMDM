@@ -153,7 +153,7 @@ public class EditorMainApp {
 
             //definition.getExtendedAttributes().get(0).
         }
-        DefinitionNode node = new DefinitionNode(this, definition, webDefinition);
+        DefinitionNode node = new DefinitionNode(this, definition, (WebDefinition) webDefinition);
         mAlDefinitionNodes.add(node);
         return node;
     }
@@ -205,7 +205,7 @@ public class EditorMainApp {
                 }
                 
             }
-            DefinitionNode node = new DefinitionNode(this, definition, webDefinition);
+            DefinitionNode node = new DefinitionNode(this, definition, (WebDefinition) webDefinition);
             this.mAlDefinitionNodes.add(node);
         }
         
@@ -229,6 +229,26 @@ public class EditorMainApp {
             }
         }
         return nodeFound;
+    }
+    
+    public DefinitionNode copyDefinitionNode(String defName, String sourceDomain, String targetDomain) {
+        DefinitionNode nodeFound = null;
+        DefinitionNode nodeNew = null;
+        for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
+            DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
+            if (node.getName().equals(defName) && node.getSourceDomain().equals(sourceDomain) && node.getTargetDomain().equals(targetDomain)) {
+                nodeFound = node;
+                break;
+            }
+        }
+        if (nodeFound != null) {           
+            nodeNew = new DefinitionNode(nodeFound.getEditorMainApp(), 
+                                         nodeFound.getDefinition().createCopy(), 
+                                         nodeFound.getWebDefinition().createCopy());
+            mAlDefinitionNodes.add(nodeNew);
+            
+        }
+        return nodeNew;
     }
     
     /**

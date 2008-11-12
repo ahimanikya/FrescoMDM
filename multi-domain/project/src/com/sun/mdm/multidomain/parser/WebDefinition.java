@@ -55,6 +55,17 @@ public class WebDefinition extends Definition {
         this.mRelExtendedAttrs = extendedFieldRefs;
     }
 
+
+    public WebDefinition createCopy() {
+        WebDefinition definition = new WebDefinition();
+        definition.name = "Copy" + this.name;
+        definition.sourceDomain = this.sourceDomain;
+        definition.targetDomain = this.targetDomain;
+        definition.displayName = this.displayName;
+        definition.mRelPredefinedAttrs = this.mRelPredefinedAttrs;
+        definition.mRelExtendedAttrs = this.mRelExtendedAttrs;
+        return definition;
+    }
     
     public String getDisplayName() {
         return this.mDisplayName;

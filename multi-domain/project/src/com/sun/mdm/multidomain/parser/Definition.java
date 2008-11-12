@@ -77,6 +77,19 @@ public class Definition {
         }
     }
 
+    public Definition createCopy() {
+        Definition definition = new Definition();
+        definition.name = "Copy" + this.name;
+        definition.type = this.type;
+        definition.sourceDomain = this.sourceDomain;
+        definition.targetDomain = this.targetDomain;
+        definition.plugin = this.plugin;
+        definition.description = this.description;
+        definition.direction = this.direction;
+        definition.setDefaultPredefinedAttributes();
+        return definition;
+    }
+    
     public String getSource() {
         return sourceDomain;
     }
