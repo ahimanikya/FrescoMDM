@@ -40,6 +40,8 @@ import javax.swing.JPanel;
 
 import com.sun.mdm.multidomain.parser.Attribute;
 import com.sun.mdm.multidomain.parser.Definition;
+import com.sun.mdm.multidomain.parser.WebDefinition;
+import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabRelationshipDef;
 import com.sun.mdm.multidomain.project.editor.TabHierarchyDef;
@@ -149,19 +151,51 @@ public class DefinitionNode extends AbstractNode {
         return mTabWebManagerDefinition;
     }
     
-    public void updateWebDefinitionAttrName(String oldAttrName, String newAttrName) {
-        
+    private void refreshTabWebManagerDefinition() {
+        //mTabWebManagerDefinition
     }
     
-    public void updateWebDefinitionAttrDataType(String attrName, String dataType) {
-        
+    /** Update a predefined attribute
+     * 
+     * @param name if found - replace;
+     * @param attribute
+     */
+    public void updatePredefinedAttribute(String attrName, Attribute newAttr) {
+        mDefinition.updatePredefinedAttribute(attrName, newAttr);
+        //((WebDefinition) mWebDefinition).updatePredefinedRelFieldRef(attrName, newAttr);
+    }
+
+    /** Add a predefined attribute
+     * 
+     * @param attribute
+     */
+    public void addExtendedAttribute(Attribute newAttr) {
+        mDefinition.addExtendedAttribute(newAttr);
+        int displayOrder = mWebDefinition.getExtendedRelFieldRefs().size() + 1;
+        RelationFieldReference fieldRef = new RelationFieldReference(newAttr.getName(), newAttr.getName(),
+                displayOrder, 1, "TextBox", null, newAttr.getDataType(), false);
+        ((WebDefinition) mWebDefinition).addExtendedRelFieldRef(fieldRef);
+        mTabWebManagerDefinition.addRelationFieldReference(fieldRef);
     }
     
-    public void addWebDefinitionAttribute(Attribute attr) {
-        
+    /** Delete a predefined attribute
+     * 
+     * @param attrName
+     */
+    public void deleteExtendedAttribute(String attrName) {
+        mDefinition.deleteExtendedAttribute(attrName);
+        ((WebDefinition) mWebDefinition).deleteExtendedAttribute(attrName);
+        mTabWebManagerDefinition.deleteRelationFieldReference(attrName);
     }
     
-    public void removeWebDefinitionAttribute(Attribute attr) {
-        
+    /** Update an extended attribute
+     * 
+     * @param oldName if found - replace;  if not - add
+     * @param attribute
+     */
+    public void updateExtendedAttribute(String attrName, Attribute newAttr) {
+        mDefinition.updateExtendedAttribute(attrName, newAttr);
+        RelationFieldReference fieldRef = ((WebDefinition) mWebDefinition).updateExtendedRelFieldRef(attrName, newAttr);
+        mTabWebManagerDefinition.updateRelationFieldReference(attrName, fieldRef);
     }
 }

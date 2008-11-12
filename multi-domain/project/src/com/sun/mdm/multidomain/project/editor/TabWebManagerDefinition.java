@@ -28,20 +28,20 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
     private JTable mTableFields;
     private boolean mModified = false;
     private EditorMainApp mEditorMainApp = null;
-    private Definition mLinkType = null;
+    private Definition mDefinition = null;
     //private 
 
     /** Creates new form TabWebManagerDefinition */
-    public TabWebManagerDefinition(EditorMainApp editorMainApp, Definition linkType) {
+    public TabWebManagerDefinition(EditorMainApp editorMainApp, Definition definition) {
         
         mEditorMainApp = editorMainApp;
         //mRelationshipTypes = relationshipTypes;
-        mLinkType = linkType;
+        mDefinition = definition;
         initComponents();
         mTableFields = new JTable();
-        if (mLinkType != null) {
+        if (mDefinition != null) {
             createRelationshipTypes();
-            this.jTextFieldLinkType.setText(mLinkType.getName());
+            this.jTextFieldLinkType.setText(mDefinition.getName());
         }
         jTxtDisplayOrder.setEditable(false);
         this.jTextFieldLinkType.setEditable(false);
@@ -151,7 +151,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
 
     }
     private void createRelationshipTypes() {
-        WebDefinition relType = (WebDefinition) mLinkType;
+        WebDefinition relType = (WebDefinition) mDefinition;
         String relationType = relType.getName();
 
         createFieldRefs(relType);
@@ -241,6 +241,52 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             //mTableFields.setR
 
         
+    }
+    
+    public void addRelationFieldReference(RelationFieldReference field) {
+        String fieldName = field.getFieldName();
+        String displayName = field.getFieldDisplayName();
+        int displayFieldOrder = field.getDisplayOrder();
+        int maxLen = field.getMaxLength();
+        String guiType = field.getGuiType();
+        String valueList = field.getValueList();
+        String valueType = field.getValueType();
+        boolean senstive = field.isSensitive();
+        String inputMask = field.getInputMask();
+        String valueMask = field.getOutputMask();
+        FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
+                        maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask);
+        
+        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        model.addRow(model.getRowCount(), row);
+        model.fireTableDataChanged();
+    }
+    
+    public void deleteRelationFieldReference(String attrName) {
+        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        int length = model.getRowCount();
+        for (int i=0; i < length; i++) {
+            FieldAttributeRow row = model.getRow(i);
+            if (row.getName().equals(attrName)) {
+                model.removeRow(i);
+                model.fireTableDataChanged();
+                break;
+            }
+        }
+    }
+    
+    public void updateRelationFieldReference(String attrName, RelationFieldReference field) {
+        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        int length = model.getRowCount();
+        for (int i=0; i < length; i++) {
+            FieldAttributeRow row = model.getRow(i);
+            if (row.getName().equals(attrName)) {
+                row.setName(field.getFieldName());
+                row.setValueType(field.getValueType());
+                model.fireTableDataChanged();
+                break;
+            }
+        }
     }
 
     /** This method is called from within the constructor to
@@ -506,9 +552,9 @@ private void onMaxLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKActionPerformed
 // TODO add your handling code here:
     this.mModified = true;
-    if (mLinkType instanceof WebDefinition) {
-        ((WebDefinition) mLinkType).getExtendedRelFieldRefs().clear();
-        ((WebDefinition) mLinkType).getPredefinedFieldRefs().clear();
+    if (mDefinition instanceof WebDefinition) {
+        ((WebDefinition) mDefinition).getExtendedRelFieldRefs().clear();
+        ((WebDefinition) mDefinition).getPredefinedFieldRefs().clear();
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
         int rowCount = model.getRowCount();
         for (FieldAttributeRow row : model.fieldRows) {
@@ -527,9 +573,9 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             RelationFieldReference field = new RelationFieldReference(name, displayName, displayOrder,
                     maxLen, guiType, valueList, valueType, inputMask, valueMask, isSensitive);
             if (row.isPredefined()) {
-                ((WebDefinition) mLinkType).getPredefinedFieldRefs().add(field);
+                ((WebDefinition) mDefinition).getPredefinedFieldRefs().add(field);
             } else {
-                ((WebDefinition) mLinkType).getExtendedRelFieldRefs().add(field);
+                ((WebDefinition) mDefinition).getExtendedRelFieldRefs().add(field);
             }
             
         }

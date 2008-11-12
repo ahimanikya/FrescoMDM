@@ -366,7 +366,7 @@ TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTabl
             String required = dialog.getRequired() == true ? "true" : "false";
             // Replace Attribute
             Attribute attr = new Attribute(attrName, included, required);
-            mDefinition.updatePredefinedAttribute(oldName, attr);
+            mDefinitionNode.updatePredefinedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setIncluded(included);
@@ -391,7 +391,7 @@ final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
                 // add new Attribute
                 Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                                searchable, required, attributeID);
-                mDefinition.addExtendedAttribute(attr);
+                mDefinitionNode.addExtendedAttribute(attr);
                 // add a new row
                 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
                 ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
@@ -418,7 +418,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             for (int i=length - 1; i>=0 && i < length; i--) {
                 int idx = rs[i];
                 ExtendedAttributeRow row = model.getRow(idx);
-                mDefinition.deleteExtendedAttribute(row.getName());
+                mDefinitionNode.deleteExtendedAttribute(row.getName());
                 model.removeRow(idx);
             }
             model.fireTableDataChanged();
@@ -445,7 +445,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                            searchable, required, attributeID);
-            mDefinition.updateExtendedAttribute(oldName, attr);
+            mDefinitionNode.updateExtendedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setColumnName(columnName);
@@ -478,7 +478,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
                                            searchable, required, attributeID);
-            mDefinition.updateExtendedAttribute(oldName, attr);
+            mDefinitionNode.updateExtendedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setColumnName(columnName);
@@ -506,7 +506,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             String required = dialog.getRequired() == true ? "true" : "false";
             // Replace Attribute
             Attribute attr = new Attribute(attrName, included, required);
-            mDefinition.updatePredefinedAttribute(oldName, attr);
+            mDefinitionNode.updatePredefinedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
             row.setIncluded(included);

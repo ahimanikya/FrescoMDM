@@ -84,6 +84,7 @@ public class Definition {
     public ArrayList<RelationFieldReference> getPredefinedFieldRefs() {
         return mRelPredefinedAttrs;
     }
+    
     public void addPredefinedFieldRef(RelationFieldReference fieldRef) {
         mRelPredefinedAttrs.add(fieldRef);
     }
@@ -96,7 +97,19 @@ public class Definition {
             }
         }
     }
-   
+    
+    /*
+    public void updatePredefinedRelFieldRef(String attrName, Attribute attr) {
+        for (RelationFieldReference field : mRelExtendedAttrs) {
+            if (field.getFieldName().equals(attrName)){
+                field.setFieldName(attr.getName());
+                field.setValueType(attr.getDataType());
+                break;
+            }
+        }
+    }
+    */
+    
     public ArrayList<RelationFieldReference> getExtendedRelFieldRefs() {
         return mRelExtendedAttrs;
     }
@@ -105,14 +118,28 @@ public class Definition {
         mRelExtendedAttrs.add(fieldRef);
     }
     
-    public void deleteExtendedRelFieldRef(RelationFieldReference fieldRef) {
+    public void deleteExtendedRelFieldRef(String attrName) {
         for (RelationFieldReference field : mRelExtendedAttrs) {
-            if (field.getFieldName().equals(fieldRef.getFieldName())){
+            if (field.getFieldName().equals(attrName)){
                 mRelExtendedAttrs.remove(field);
                 break;
             }
         }
-    }    
+    }
+    
+    public RelationFieldReference updateExtendedRelFieldRef(String attrName, Attribute attr) {
+        RelationFieldReference ret = null;
+        for (RelationFieldReference field : mRelExtendedAttrs) {
+            if (field.getFieldName().equals(attrName)){
+                field.setFieldName(attr.getName());
+                field.setValueType(attr.getDataType());
+                ret = field;
+                break;
+            }
+        }
+        return ret;
+    }
+    
     //[attrStartDate, attrEndDate, attrPurgeDate]
     public void setDefaultPredefinedAttributes() {
         this.predefinedAttributes.clear();

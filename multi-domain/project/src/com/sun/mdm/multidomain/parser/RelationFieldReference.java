@@ -101,6 +101,10 @@ public class RelationFieldReference {
         this.mValueList = valueList;
     }
 
+    public void setValueType(String valueType) {
+        this.mValueType = valueType;
+    }
+
     public String getValueType() {
         return this.mValueType;
     }
