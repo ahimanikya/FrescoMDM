@@ -175,21 +175,21 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td>
-            <div dojoType="dijit.layout.ContentPane" class="Box" hasShadow="true">
+            <div dojoType="dijit.layout.ContentPane" class="Box" hasShadow="true" style="height:400px;">
                 <div class="TitleBar" title="<f:message key="relationship_text" />"><f:message key="relationship_text" /></div>
                 <div dojoType="dijit.layout.ContentPane" class="Content" hasShadow="false">
                 <table width="100%">
                     <form name="relationshipListingForm">
                     <tr>
                         <td>
-                            <input type="button" onclick="showRelationshipDialog('addrelationship');" value="<f:message key="add_text" />..."  />&nbsp;
-                            <input type="button" value="<f:message key="delete_text" />" onclick="deleteRecords(this.form);" />                                                        
+                            <input type="button" id="addbutton" onclick="showRelationshipDialog('addrelationship');" value="<f:message key="add_text" />..."  />&nbsp;
+                            <input type="button" id="deletebutton" value="<f:message key="delete_text" />" onclick="deleteRecords(this.form);" />                                                        
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <!-- <START> List of available Relationships shown between the selected Source & Target Domains -->
-                                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="RelationshipsListing"  >
+                            <!-- <START> List of available RelationshipDefs between the selected Source & Target Domains -->
+                                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="DefsListing"  >
                                     <thead class="header">
                                         <tr>
                                         <th width="5%"  valign="bottom" class="label">

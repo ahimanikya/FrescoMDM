@@ -61,18 +61,69 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td>
-            <div dojoType="dijit.layout.ContentPane" class="Box" hasShadow="true">
+            <div dojoType="dijit.layout.ContentPane" class="Box" hasShadow="true" style="height:400px;">
                 <div class="TitleBar" title="<f:message key="hierarchy_text" />"><f:message key="hierarchy_text" /></div>
                 <div dojoType="dijit.layout.ContentPane" class="Content" hasShadow="false">
-                <table width="100%">
+                <table width="100%" border="0">
                     <tr>
                         <td>
-                            <input type="button" onclick="dijit.byId('addhierarchy').show();" value="<f:message key="add_text" />..."  />&nbsp;
-                            <input type="button" value="<f:message key="delete_text" />"  />                                                        
+                            <input type="button" id="addbutton" onclick="dijit.byId('addhierarchy').show();" value="<f:message key="add_text" />..."  />&nbsp;
+                            <input type="button" id="deletebutton" value="<f:message key="delete_text" />"  />                                                        
                         </td>
                     </tr>
                     <tr>
-                        <td>grid content goes here 
+                        <td>
+                            
+                            <table cellspacing="0" cellpadding="0" border="0" width="100%" class="DefsListing"  >
+                                <thead class="header">
+                                    <tr>
+                                    <th width="5%"  valign="bottom" class="label">
+                                        &nbsp;
+                                    </th>
+
+                                    <th width="25%" valign="bottom" class="label">
+                                        Name
+                                    </th>
+
+                                    <th width="10%" valign="bottom" class="label">
+                                        Direction
+                                    </th>
+
+                                    <th width="25%" valign="bottom" class="label">
+                                        Plugin 
+                                    </th>
+
+                                    <th width="25%" valign="bottom" class="label">
+                                        Attributes
+                                    </th> 
+
+                                    <th width="10%">&nbsp;</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="hierarchyListing">
+                                 <!--
+                                <tr class="dataRow">
+                                    <td align="center" ><input type="checkbox" name="relationshipId"></td>
+                                    <td class="textdata">Associate</td>
+                                    <td class="textdata">-></td>
+                                    <td class="textdata">RelOtherPlugin</td>
+                                    <td class="textdata">2 Predefined | 1 Custom</td> 
+                                    <td><input type="button" value="Edit..." class="editButton" onclick="dijit.byId('editrelationship').show();"></td>
+                                </tr>
+
+                                <tr class="dataRow">
+                                    <td align="center" ><input type="checkbox" name="relationshipId"></td>
+                                    <td class="textdata">Employed By</td>
+                                    <td class="textdata"><-></td>
+                                    <td class="textdata">RelOtherPlugin</td>
+                                    <td class="textdata">2 Predefined | 1 Custom</td> 
+                                    <td class="textdata"><input type="button" value="Edit..." class="editButton" onclick="dijit.byId('editrelationship').show();"></td>
+                                </tr>
+
+                                -->
+                                <tr><td class="textdata" colspan="6" align="center"> Loading... </td></tr>
+                            </table>
                         
                         
                         </td>
