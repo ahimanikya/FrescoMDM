@@ -103,16 +103,14 @@ function NewAttribute(tableId)
 }
 
 function deleteAttributes() {
-        if(confirm("Are you sure you want to delete selected attribute? " )) {
-                for(i=0;i<attributesArray.length; i++) {
-                attr = attributesArray[i];
-                        if(attr.IdField.checked) {
-                                attr.Delete();
-                                attributesArray.splice(i,1);
-                                i--;
-                        }
-                }
+  for(i=0;i<attributesArray.length; i++) {
+     attr = attributesArray[i];
+        if(attr.IdField.checked) {
+            attr.Delete();
+            attributesArray.splice(i,1);
+            i--;
         }
+  }
 }
 
 function showValues () {
