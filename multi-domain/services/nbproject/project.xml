@@ -8,6 +8,7 @@
             <explicit-platform explicit-source-supported="true"/>
             <source-roots>
                 <root id="src.java.dir" name="MultiDomain Web-Tier Source Packages"/>
+                <root id="src.resources.dir" name="Resources Packages"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
