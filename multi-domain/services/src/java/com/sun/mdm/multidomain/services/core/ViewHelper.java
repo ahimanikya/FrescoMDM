@@ -39,15 +39,18 @@ import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
-        
+import com.sun.mdm.multidomain.attributes.Attribute;
+import com.sun.mdm.multidomain.attributes.AttributeType;
+
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
+import com.sun.mdm.multidomain.services.model.AttributeDefExt;
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
-import com.sun.mdm.multidomain.services.security.Operations;
 import com.sun.mdm.multidomain.services.util.Helper;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
@@ -73,6 +76,68 @@ public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
     
+    public static RelationshipDefExt toRelationshipDefExt(RelationshipDef rDef) {
+        RelationshipDefExt rDefExt = new RelationshipDefExt();
+        rDefExt.setName(rDef.getName());
+        rDefExt.setId(Integer.toString(rDef.getId()));
+        rDefExt.setSourceDomain(rDef.getSourceDomain());
+        rDefExt.setTargetDomain(rDef.getTargetDomain());        
+        rDefExt.setBiDirection(rDef.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "true" : "false");
+        //TBD need to fix core RelationshipDef
+        //rDefExt.setPlugin();
+        //rDefExt.setStartDate();
+        //rDefExt.setEndDate();
+        //rDefExt.setPurgeDate();        
+        rDefExt.setStartDateRequired(rDef.getEffectiveFromRequired() ? "true" : "false");
+        rDefExt.setEndDateRequired(rDef.getEffectiveToRequired() ? "true" : "false");
+        rDefExt.setPurgeDateRequired(rDef.getPurgeDateRequired() ? "true" : "false");
+        
+        List<Attribute> attributes = rDef.getAttributes();
+        for (Attribute a : attributes) {
+            AttributeDefExt aExt = new AttributeDefExt();
+            aExt.setName(a.getName());
+            aExt.setColumnName(a.getColumnName());
+            aExt.setSearchable(a.getSearchable() ? "true" : "false");
+            aExt.setIsRequired(a.getIsRequired() ? "true" : "false");
+            aExt.setDataType(a.getType().toString());
+            aExt.setDefaultValue(a.getDefaultValue());
+            rDefExt.setExtendedAttribute(aExt);
+        }        
+        return rDefExt;
+    }
+    
+    public static RelationshipDef toRelationshipDef(RelationshipDefExt rDefExt) {
+        RelationshipDef rDef = new RelationshipDef();        
+        rDef.setName(rDefExt.getName());
+        rDef.setId(0);
+        rDef.setSourceDomain(rDefExt.getSourceDomain());
+        rDef.setTargetDomain(rDefExt.getTargetDomain());        
+        rDef.setDirection("true".equalsIgnoreCase(rDefExt.getBiDirection()) ? 
+                          RelationshipDef.DirectionMode.BIDIRECTIONAL : RelationshipDef.DirectionMode.UNIDIRECTIONAL);
+        //TBD need to fix core RelationshipDef
+        //rDef.setPlugin();
+        //rDef.setStartDate();
+        //rDef.setEndDate();
+        //rDef.setPurgeDate();        
+        rDef.setEffectiveFromRequired("true".equalsIgnoreCase(rDefExt.getStartDateRequired()) ? true : false);
+        rDef.setEffectiveToRequired("true".equalsIgnoreCase(rDefExt.getEndDateRequired()) ? true : false);        
+        rDef.setPurgeDateRequired("true".equalsIgnoreCase(rDefExt.getPurgeDateRequired()) ? true : false);
+        
+        List<AttributeDefExt> attributes = rDefExt.getExtendedAttributes();
+        for (AttributeDefExt aDefExt : attributes) {
+            Attribute a = new Attribute();            
+            a.setName(aDefExt.getName());
+            a.setId(aDefExt.getId());
+            a.setColumnName(aDefExt.getColumnName());
+            a.setType(new AttributeType(aDefExt.getDataType()));
+            a.setDefaultValue(aDefExt.getDefaultValue());
+            a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));
+            a.setSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
+            rDef.setAttribute(a);
+        }        
+        return rDef;        
+    }
+            
     public static DomainRelationshipsObject buildRelationshipView(PageIterator<MultiObject> pages, String primaryDomain) throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
         DomainRelationshipsObject domainRelationshipsObject  = new DomainRelationshipsObject();
