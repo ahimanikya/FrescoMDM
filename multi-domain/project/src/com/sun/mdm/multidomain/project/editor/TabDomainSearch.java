@@ -73,6 +73,9 @@ public class TabDomainSearch extends javax.swing.JPanel {
         
         mTableSearchType.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                     onEditSearchType(null);
+                 }
                 jBtnRemoveSearchPage.setEnabled(true);
                 jBtnEditSearchType.setEnabled(true);
             }
@@ -80,6 +83,9 @@ public class TabDomainSearch extends javax.swing.JPanel {
         
         mTableSearchResult.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                     onEditSearchResult(null);
+                 }
                 jBtnRemoveSearchResult.setEnabled(true);
                 jBtnEditSearchResult.setEnabled(true);
             }
@@ -591,7 +597,7 @@ private void jTxtDomainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return true;
+            return false;
         }
 
         /*
@@ -717,7 +723,7 @@ private void jTxtDomainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return true;
+            return false;
         }
 
         /*
@@ -850,7 +856,7 @@ private void jTxtDomainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return true;
+            return false;
         }
 
         /*

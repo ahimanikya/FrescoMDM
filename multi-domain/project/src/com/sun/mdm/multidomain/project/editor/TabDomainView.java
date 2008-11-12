@@ -45,6 +45,9 @@ public class TabDomainView extends javax.swing.JPanel {
         
         jTableRecordSummay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                     onEditSummaryGroup(null);
+                 }
                 jBtnRmvSummaryGroup.setEnabled(true);
                 jBtnEditSummaryGroup.setEnabled(true);
             }
@@ -52,6 +55,9 @@ public class TabDomainView extends javax.swing.JPanel {
         
         jTableRecordDetail.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                     onEditDetail(null);
+                 }
                 jBtnRemoveDetail.setEnabled(true);
                 jBtnEditDetail.setEnabled(true);
             }
@@ -604,7 +610,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return true;
+            return false;
         }
 
         /*
@@ -725,7 +731,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return true;
+            return false;
         }
 
         /*
@@ -845,7 +851,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return true;
+            return false;
         }
 
         /*

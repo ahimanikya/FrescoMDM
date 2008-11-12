@@ -8,10 +8,14 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.PageDefinition;
 import com.sun.mdm.multidomain.parser.ScreenDefinition;
+import com.sun.mdm.multidomain.parser.SearchDetail;
+import java.awt.event.FocusListener;
+import java.util.ArrayList;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.AbstractTableModel;
 import org.openide.util.NbBundle;
 
 /**
@@ -50,8 +54,29 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                 loadScreenProperties();
             }
         });
+        
+        jTableSubscreen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableSubscreen.getSelectedRow();
+                TableModelSubscreen subscreenModel = (TableModelSubscreen) jTableSubscreen.getModel();
+                ScreenDefinition screenDef = subscreenModel.getRow(selectedRow);
+                if (screenDef != null) {
+                    loadSubscreenProperties(screenDef);
+                }
+             }
+        });
+        
+        
+
     }
     
+    private void loadSubscreenProperties(ScreenDefinition subScreenDef) {
+        jTxtScreenTitle.setText(subScreenDef.getScreenTitle());
+        jSpinnerItemPerPage.setValue(subScreenDef.getItemPerPage());
+        jSpinnerMaxItems.setValue(subScreenDef.getMaxItems());
+        
+    }
+
     private void loadScreenList() {
         jCBScreenList.addItem(SCREEN_RELATIONSHIP);
         jCBScreenList.addItem(SCREEN_HIERARCHY);
@@ -67,7 +92,12 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         String selectedScreenType = (String) jCBScreenList.getSelectedItem();
         ScreenDefinition screenDef = mPageDefinition.getScreenDefintion(selectedScreenType);
         if (screenDef != null) {
-            
+            TableModelSubscreen subscreenModel = new TableModelSubscreen(screenDef.getChildPage().getScreenDefs());
+            jTableSubscreen.setModel(subscreenModel);   
+            if (jTableSubscreen.getRowCount() > 0) {
+                jTableSubscreen.setRowSelectionInterval(0, 0);
+                loadSubscreenProperties(subscreenModel.getRow(0));
+            }
         }
         
     }
@@ -88,7 +118,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jCBScreenList = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableSubscreen = new javax.swing.JTable();
         jPanelSubScreen = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTxtScreenTitle = new javax.swing.JTextField();
@@ -111,7 +141,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableSubscreen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null}
@@ -120,8 +150,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                 "Subscreen"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SUBSCREEN_NAME")); // NOI18N
+        jScrollPane1.setViewportView(jTableSubscreen);
+        jTableSubscreen.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SUBSCREEN_NAME")); // NOI18N
 
         jPanelSubScreen.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SUBSCREEN_PROPERTIES"))); // NOI18N
 
@@ -250,6 +280,123 @@ private void onBtnCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBt
             return false;
         }
     }
+    
+    class TableModelSubscreen extends AbstractTableModel {
+
+        private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_SUBSCREEN"),};
+        ArrayList fieldRows;
+        final static int iSubscreenName = 0;
+        
+        TableModelSubscreen(ArrayList rows) {
+            fieldRows = rows;
+        }
+
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        public int getRowCount() {
+            if (fieldRows != null) {
+                return fieldRows.size();
+            }
+            return 0;
+        }
+
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        public Object getValueAt(int row, int col) {
+            if (fieldRows != null) {
+                ScreenDefinition singleRow = (ScreenDefinition) fieldRows.get(row);
+                if (singleRow != null) {
+                    switch (col) {
+                        case iSubscreenName:
+                            return singleRow.getIdentifier();
+                        default:
+                            return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public ScreenDefinition getRow(int row) {
+            if (fieldRows != null) {
+                ScreenDefinition singleRow = (ScreenDefinition) fieldRows.get(row);
+                return singleRow;
+            }
+            return null;
+        }
+
+        public Class getColumnClass(int c) {
+            Object colNameObj = getValueAt(0, c);
+            return colNameObj.getClass();
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * editable.
+         */
+        public boolean isCellEditable(int row, int col) {
+            //Note that the data/cell address is constant,
+            //no matter where the cell appears onscreen.
+            return false;
+        }
+
+        /*
+         * Don't need to implement this method unless your table's
+         * data can change.
+         */
+        public void setValueAt(Object value, int row, int col) {
+            switch (col) {
+                case iSubscreenName:
+                    ((ScreenDefinition) fieldRows.get(row)).setIdentifier((String) value);
+                    break;
+
+            }
+
+            //fieldRows.set(row, value);
+            fireTableCellUpdated(row, col);
+
+        }
+
+        public void removeRow(int index) {
+            fieldRows.remove(index);
+            this.fireTableRowsDeleted(index, index);
+        }
+
+        public void addRow(int index, SearchDetail row) {
+            //fieldRows.add(row);
+            fieldRows.add(index, row);
+            this.fireTableRowsInserted(index, index);
+        }
+
+        /**
+        public MatchRuleRowPerProbType getRow(int index) {
+        //MatchRuleRowPerProbType row = (MatchRuleRowPerProbType) matchRuleRows.get(index);
+        return row;
+        }
+         */
+        public int findRowByFieldName(String fieldName) {
+            for (int i = 0; i < fieldRows.size(); i++) {
+                if (getValueAt(i, iSubscreenName).equals(fieldName)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public SearchDetail findRelTypeByFieldName(String fieldName) {
+            for (int i = 0; i < fieldRows.size(); i++) {
+                if (getValueAt(i, iSubscreenName).equals(fieldName)) {
+                    return (SearchDetail) fieldRows.get(i);
+                }
+            }
+            return null;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancel;
     private javax.swing.JButton jBtnOK;
@@ -262,7 +409,7 @@ private void onBtnCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBt
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerItemPerPage;
     private javax.swing.JSpinner jSpinnerMaxItems;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableSubscreen;
     private javax.swing.JTextField jTxtScreenTitle;
     // End of variables declaration//GEN-END:variables
 

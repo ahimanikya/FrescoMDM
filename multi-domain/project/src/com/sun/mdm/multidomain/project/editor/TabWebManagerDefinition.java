@@ -258,21 +258,35 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                         maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask);
         
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-        model.addRow(model.getRowCount(), row);
+        int rowCount = model.getRowCount();
+        model.addRow(rowCount, row);
         model.fireTableDataChanged();
+        mTableFields.setRowSelectionInterval(rowCount, rowCount);
+        retreiveFieldProperties();
+        
     }
     
     public void deleteRelationFieldReference(String attrName) {
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        int selectedRow = mTableFields.getSelectedRow();
         int length = model.getRowCount();
-        for (int i=0; i < length; i++) {
-            FieldAttributeRow row = model.getRow(i);
-            if (row.getName().equals(attrName)) {
-                model.removeRow(i);
-                model.fireTableDataChanged();
-                break;
-            }
-        }
+        int removedRow = model.findRowByFieldName(attrName);
+        model.removeRow(removedRow);
+        if (selectedRow == removedRow) {
+            mTableFields.setRowSelectionInterval(0, 0);
+            retreiveFieldProperties();
+        } 
+    }
+    
+    private void clearFieldProperties() {
+            jTxtDisplayName.setText("");
+            jTxtDisplayOrder.setText("");
+            jTxtMaxLength.setText("");
+            jTxtDataType.setText("");
+            this.jTxtInputMask.setText("");
+            this.jTxtValueMask.setText("");
+            this.jRBSensitive.setSelected(false);
+        
     }
     
     public void updateRelationFieldReference(String attrName, RelationFieldReference field) {
