@@ -23,6 +23,26 @@
     dojo.require("dijit.layout.ContentPane");
 </script>
 
+<script type="text/javascript">
+    
+    function loadDomains() {
+        DomainHandler.getDomains( updateDomains);
+    }
+    function updateDomains(data) {
+        dwr.util.addOptions("domain", data, "name");        
+        dwr.util.setValue("domain", data[0].name);       
+    }
+
+
+    function loadHierarchyDefs() {
+        var domain=document.getElementById("domain").value;
+        HierarchyDefHandler.getHierarchyDefs(domain, updateHierarchyDefs);
+    }
+    function updateHierarchyDefs (data) {
+        alert('got hierarchy defs ' + data)
+    }
+</script>
+
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <!--<tr>
@@ -45,10 +65,7 @@
                     <tr>
                         <td class="mainLabel"><f:message key="domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;</td>
                         <td>
-                            <select id="selectDomain" name="Domain" title="<f:message key="domain_text" />">
-                               <option value="Company"><f:message key="company_text" /></option>
-                               <option value="Product"><f:message key="product_text" /></option>
-                               <option value="Customer"><f:message key="customer_text" /></option>
+                            <select id="domain" name="Domain" title="<f:message key="domain_text" />" onchange="loadHierarchyDefs();">
                             </select>        
                         </td>
                         <td>&nbsp;</td>
@@ -66,9 +83,11 @@
                 <div dojoType="dijit.layout.ContentPane" class="Content" hasShadow="false">
                 <table width="100%" border="0">
                     <tr>
-                        <td>
-                            <input type="button" id="addbutton" onclick="dijit.byId('addhierarchy').show();" value="<f:message key="add_text" />..."  />&nbsp;
-                            <input type="button" id="deletebutton" value="<f:message key="delete_text" />"  />                                                        
+                        <td valign="bottom">
+                            <input type="button" id="selectallbutton" onclick="selectAllHierarchyDefs(this.form);" title="Select all"  />&nbsp;
+                            <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllHierarchyDefs(this.form);" /><img src="images/icons/actions_separator.gif" >
+                            <input type="button" id="addbutton" onclick="showHierarchyDialog('addhierarchy');" title="<f:message key="add_text" />..."  />&nbsp;
+                            <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteHierarchyDefs(this.form);" />
                         </td>
                     </tr>
                     <tr>
@@ -147,3 +166,41 @@
 <div id="edithierarchy" dojoType="dijit.Dialog" title="Edit Hierarchy" style="display:none;width:700px;">
     <%@ include file="/WEB-INF/jsp/administration/edit_hierarchy.jsp" %>
 </div>
+
+<script>
+    loadDomains();
+</script>  
+<script>
+function selectAllHierarchyDefs (objForm) {
+    alert("not yet implemented.");
+    var chkboxes = document.getElementsByName("chkHierarchyDef");
+    for(i=0;i<chkboxes.length; i++) {
+        chkboxes[i].checked = true;
+    }
+}
+function deselectAllHierarchyDefs (objForm) {
+    var chkboxes = document.getElementsByName("chkHierarchyDef");
+    for(i=0;i<chkboxes.length; i++) {
+        chkboxes[i].checked = false;
+    }
+}
+function deleteHierarchyDefs (objForm) {
+    var chkboxes = document.getElementsByName("chkHierarchyDef");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked) {
+            alert('deleting ' + chkboxes[i].value);
+            // Make DWR call to delete
+        }
+    }
+}
+
+function showHierarchyDialog (dialogId) {
+    var hierarchyDialog = dijit.byId(dialogId);
+    var strTitle = hierarchyDialog.title;
+    var domain = document.getElementById("domain").value;
+    if(domain != null )
+        strTitle += " - " + domain ;
+    hierarchyDialog.titleNode.innerHTML = strTitle;
+    hierarchyDialog.show();
+}
+</script>

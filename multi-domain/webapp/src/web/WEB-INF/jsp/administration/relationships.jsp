@@ -121,12 +121,17 @@
 
     
     var relationListingDataFuncs = [
-        function(data) { return "<input type='checkbox' align='center'>"; },
+        function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"'>"; },
         function(data) { return data.name; },
-        function(data) { return data.direction; },
+        function(data) { if(data.biDirection) return "<-->"; else return "-->" ; },
         function(data) { return data.plugin; },
         function(data) { 
-            var output = " 1 Predefined | " + data.attributes.length + " Custom"; 
+            var fixedAttributesCount = 0;
+            if(data.startDate) fixedAttributesCount ++;
+            if(data.endDate) fixedAttributesCount ++;
+            if(data.purgeDate) fixedAttributesCount ++;
+            var output = "";
+            output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
         },
         function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="showRelationshipDialog(\'editrelationship\');">'; },
@@ -181,9 +186,11 @@
                 <table width="100%">
                     <form name="relationshipListingForm">
                     <tr>
-                        <td>
-                            <input type="button" id="addbutton" onclick="showRelationshipDialog('addrelationship');" value="<f:message key="add_text" />..."  />&nbsp;
-                            <input type="button" id="deletebutton" value="<f:message key="delete_text" />" onclick="deleteRecords(this.form);" />                                                        
+                        <td valign="bottom">
+                            <input type="button" id="selectallbutton" onclick="selectAllRelationshipDefs(this.form);" title="Select all"  />&nbsp;
+                            <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllRelationshipDefs(this.form);" /><img src="images/icons/actions_separator.gif" >
+                            <input type="button" id="addbutton" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."  />&nbsp;
+                            <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs(this.form);" />
                         </td>
                     </tr>
                     <tr>
@@ -269,9 +276,26 @@
     loadTargetDomains("selectTargetDomain");
 </script>    
 <script>
-
-function deleteRecords (objForm) {
-    alert('Not yet implemented.');
+function selectAllRelationshipDefs (objForm) {
+    var chkboxes = document.getElementsByName("chkRelationshipDef");
+    for(i=0;i<chkboxes.length; i++) {
+        chkboxes[i].checked = true;
+    }
+}
+function deselectAllRelationshipDefs (objForm) {
+    var chkboxes = document.getElementsByName("chkRelationshipDef");
+    for(i=0;i<chkboxes.length; i++) {
+        chkboxes[i].checked = false;
+    }
+}
+function deleteRelationshipDefs (objForm) {
+    var chkboxes = document.getElementsByName("chkRelationshipDef");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked) {
+            alert('deleting ' + chkboxes[i].value);
+            // Make DWR call to delete
+        }
+    }
 }
 
 function showRelationshipDialog (dialogId) {
