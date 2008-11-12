@@ -36,7 +36,7 @@ public class MultiDomainWebManager {
 
     private DomainsForWebManager mDomains = new DomainsForWebManager();
     //private ArrayList<LinkType> mLinkTypes = new ArrayList<LinkType>();
-    private ArrayList<WebDefinition> mRelationshipTypes = new ArrayList<WebDefinition>();
+    private ArrayList<WebDefinition> mWebDefintions = new ArrayList<WebDefinition>();
     private JNDIResources mJndiResources = null;
     //private PageDefinition mPageDefinition = new PageDefinition();
     private PageDefinition mPageDefinition = null;
@@ -56,7 +56,7 @@ public class MultiDomainWebManager {
     }
      */    
     public ArrayList<WebDefinition> getRelationshipTypes() {
-        return this.mRelationshipTypes;
+        return this.mWebDefintions;
         
     }
     /** Retrieves the pages definitions 
@@ -71,7 +71,7 @@ public class MultiDomainWebManager {
     }
     
     public Definition getLinkType(String name, String source, String target) {
-        for (Definition type : mRelationshipTypes) {
+        for (Definition type : mWebDefintions) {
             if (type.getName().equals(name) && type.getSourceDomain().equals(source) && type.getTargetDomain().equals(target)) {
                 return type;
             }
@@ -83,30 +83,34 @@ public class MultiDomainWebManager {
         return this.mPageDefinition;
     }
     
-    public Definition createLinkType(String name, String source, String target) {
+    public Definition createWebDefinition(String name, String source, String target) {
         Definition linkType = new WebDefinition();
         linkType.setName(name);
         linkType.setSourceDomain(source);
         linkType.setTargetDomain(target);
-        this.mRelationshipTypes.add((WebDefinition) linkType);
+        this.mWebDefintions.add((WebDefinition) linkType);
         
         return linkType;
     }   
     
-    public void deleteLinkType(String name, String source, String target) {
-        for (Definition type : mRelationshipTypes) {
+    public void deleteWebDefinition(String name, String source, String target) {
+        for (Definition type : mWebDefintions) {
             if (type.getName().equals(name) && type.getSourceDomain().equals(source) && type.getTargetDomain().equals(target)) {
-                mRelationshipTypes.remove(type);
+                mWebDefintions.remove(type);
                 return;
             }
         }
         
     }
     
-    public void deleteLinkType(Definition linkType) {
-        mRelationshipTypes.remove(linkType);
+    public void deleteWebDefinition(Definition webDefinition) {
+        mWebDefintions.remove(webDefinition);
       
-    }    
+    }   
+    
+    public void addWebDefinition(Definition webDefinition) {
+        mWebDefintions.add((WebDefinition) webDefinition);
+    }
 
 
     public String writeToString() throws IOException, Exception {
@@ -149,7 +153,7 @@ public class MultiDomainWebManager {
     private Element getRelationTypeToStr(Document xmlDoc) throws Exception {
         
         Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
-        for (WebDefinition relType : mRelationshipTypes) {
+        for (WebDefinition relType : mWebDefintions) {
             //WebDefinition relType = (WebDefinition) linkType;
             String relTypeName = relType.getName();
             String destination = relType.getTargetDomain();
@@ -583,7 +587,7 @@ public class MultiDomainWebManager {
                 
                 parseType(elm, relType);
 
-                mRelationshipTypes.add(relType);
+                mWebDefintions.add(relType);
 
 
             }

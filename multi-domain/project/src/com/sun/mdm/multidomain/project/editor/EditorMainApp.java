@@ -137,7 +137,7 @@ public class EditorMainApp {
         mMultiDomainModel.addDefinition(definition);
         Definition webDefinition = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
         if (webDefinition == null) {
-            webDefinition = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
+            webDefinition = mMultiDomainWebManager.createWebDefinition(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
             int displayOrder = 1;
             for (Attribute al : definition.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
@@ -169,7 +169,7 @@ public class EditorMainApp {
         // delete webDefinition here
         Definition webDefinition = mMultiDomainWebManager.getLinkType(defName, sourceDomain, targetDomain);        
         if (webDefinition != null) {
-            mMultiDomainWebManager.deleteLinkType(webDefinition);
+            mMultiDomainWebManager.deleteWebDefinition(webDefinition);
         }
         for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
             DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
@@ -188,7 +188,7 @@ public class EditorMainApp {
             Definition definition = (Definition) alDefinitions.get(i);
             Definition webDefinition = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
             if (webDefinition == null) {
-                webDefinition = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());       
+                webDefinition = mMultiDomainWebManager.createWebDefinition(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());       
                 //ArrayList
                 int displayOrder = 1;
                 for (Attribute al : definition.getPredefinedAttributes()) {
