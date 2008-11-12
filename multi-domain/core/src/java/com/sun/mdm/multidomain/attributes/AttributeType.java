@@ -61,7 +61,19 @@ public class AttributeType {
      */
     public AttributeType() {
     }
-        
+
+    /**
+     * Create an instance of AttributeType.
+     * @param type Attribute type.
+     */
+    public AttributeType(String type) {
+        for (int i = 0; i < DESCRIPTION.length; i++) {            
+            if (DESCRIPTION[i].equalsIgnoreCase(type)) {                
+                this.type = i;
+            }            
+        }
+    }
+    
     /**
      * Create an instance of AttributeType.
      * @param type Attribute type.
