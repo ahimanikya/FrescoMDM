@@ -36,7 +36,7 @@ public class MultiDomainWebManager {
 
     private DomainsForWebManager mDomains = new DomainsForWebManager();
     //private ArrayList<LinkType> mLinkTypes = new ArrayList<LinkType>();
-    private ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
+    private ArrayList<WebDefinition> mRelationshipTypes = new ArrayList<WebDefinition>();
     private JNDIResources mJndiResources = null;
     //private PageDefinition mPageDefinition = new PageDefinition();
     private PageDefinition mPageDefinition = null;
@@ -55,7 +55,7 @@ public class MultiDomainWebManager {
     return this.mLinkTypes;
     }
      */    
-    public ArrayList<RelationshipType> getRelationshipTypes() {
+    public ArrayList<WebDefinition> getRelationshipTypes() {
         return this.mRelationshipTypes;
         
     }
@@ -73,12 +73,16 @@ public class MultiDomainWebManager {
         return null;
     }
     
+    public PageDefinition getPageDefinition() {
+        return this.mPageDefinition;
+    }
+    
     public Definition createLinkType(String name, String source, String target) {
-        Definition linkType = new RelationshipType();
+        Definition linkType = new WebDefinition();
         linkType.setName(name);
         linkType.setSourceDomain(source);
         linkType.setTargetDomain(target);
-        this.mRelationshipTypes.add((RelationshipType) linkType);
+        this.mRelationshipTypes.add((WebDefinition) linkType);
         
         return linkType;
     }   
@@ -139,8 +143,8 @@ public class MultiDomainWebManager {
     private Element getRelationTypeToStr(Document xmlDoc) throws Exception {
         
         Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
-        for (RelationshipType relType : mRelationshipTypes) {
-            //RelationshipType relType = (RelationshipType) linkType;
+        for (WebDefinition relType : mRelationshipTypes) {
+            //WebDefinition relType = (WebDefinition) linkType;
             String relTypeName = relType.getName();
             String destination = relType.getTargetDomain();
             String source = relType.getSource();
@@ -569,7 +573,7 @@ public class MultiDomainWebManager {
                 
                 ArrayList<RelationFieldReference> extendedFieldRefs = new ArrayList<RelationFieldReference>();
 
-                RelationshipType relType = new RelationshipType(nameAttr, sourceAttr, destAttr, displayAttr, fixedFieldRefs, extendedFieldRefs);
+                WebDefinition relType = new WebDefinition(nameAttr, sourceAttr, destAttr, displayAttr, fixedFieldRefs, extendedFieldRefs);
                 
                 parseType(elm, relType);
 
@@ -585,7 +589,7 @@ public class MultiDomainWebManager {
      * @param node - relationship-type object
      * @param fieldRefs
      */
-    private void parseType(Node node, RelationshipType relType) {
+    private void parseType(Node node, WebDefinition relType) {
 
         String elementName = null;
 

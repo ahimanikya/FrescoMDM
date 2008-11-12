@@ -76,6 +76,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
     static final ImageIcon HIERARCHYNODEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
+    static final ImageIcon SCREENPROPERTIESICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/screen.png"));    
     static final ImageIcon GROUPNODEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/GroupNode.png"));
     static final ImageIcon CATEGORYNODEICON = new ImageIcon(Utilities.loadImage(
@@ -107,6 +109,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
     private JButton mButtonAddRelationship;
+    private JButton mButtonScreenProperties;
     private JButton mButtonAddHierarchy;
     //private JButton mButtonAddGroup;
     //private JButton mButtonAddCategory;
@@ -262,6 +265,14 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonAddHierarchy.setBorder(null);
         mButtonAddHierarchy.setMnemonic('H');
         toolBar.add(mButtonAddHierarchy);
+
+        mButtonScreenProperties = new JButton(new ViewScreenPropertiesAction(
+                    this.SCREENPROPERTIESICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_ScreenProperties")));
+        mButtonScreenProperties.setBorder(null);
+        mButtonScreenProperties.setMnemonic('P');
+        toolBar.add(mButtonScreenProperties);
         /*
         mButtonAddGroup = new JButton(new AddGroupAction(
                     this.GROUPNODEICON,
@@ -406,6 +417,24 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         }
     }
      
+    /**
+     * To view screen properties
+     */
+    public class ViewScreenPropertiesAction extends AbstractAction {
+        
+        public ViewScreenPropertiesAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+        
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            mTabOverview.onViewScreenProperties();
+        }    
+    }
+    
     /** Add a Relationship
      *
      */

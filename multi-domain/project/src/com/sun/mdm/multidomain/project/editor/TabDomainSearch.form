@@ -24,20 +24,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jTxtDomain" min="-2" pref="302" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jPanel1" alignment="0" pref="586" max="32767" attributes="1"/>
                   <Component id="jPanelSearchResult" alignment="0" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace min="-2" pref="318" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jPanel1" pref="698" max="32767" attributes="1"/>
-              <EmptySpace pref="165" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -53,7 +49,7 @@
               <Component id="jPanelSearchResult" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="36" max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -167,7 +163,7 @@
         <Component class="javax.swing.JButton" name="jBtnUp">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/sun/mdm/multidomain/project/editor/UpArrow.jpg"/>
+              <Image iconType="3" name="/com/sun/mdm/multidomain/project/resources/UpArrow.jpg"/>
             </Property>
           </Properties>
           <Events>
@@ -177,7 +173,7 @@
         <Component class="javax.swing.JButton" name="jBtnDown">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/sun/mdm/multidomain/project/editor/DownArrow.JPG"/>
+              <Image iconType="3" name="/com/sun/mdm/multidomain/project/resources/DownArrow.JPG"/>
             </Property>
           </Properties>
           <Events>
@@ -216,7 +212,7 @@
                           <Component id="jScrollPaneSearchResult" min="-2" pref="519" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="41" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

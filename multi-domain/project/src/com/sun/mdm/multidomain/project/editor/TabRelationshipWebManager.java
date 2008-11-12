@@ -8,7 +8,7 @@ package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.WebDefinition;
 import java.util.ArrayList;
 import org.openide.util.NbBundle;
 
@@ -25,8 +25,8 @@ public class TabRelationshipWebManager extends javax.swing.JPanel {
 
     private TabDomainView mTabDomainView = null;
     
-    ArrayList<RelationshipType> mRelationshipTypes = new ArrayList<RelationshipType>();
-    //ArrayList<RelationshipType> mLinkTypes = new ArrayList<LinkType>();
+    ArrayList<WebDefinition> mRelationshipTypes = new ArrayList<WebDefinition>();
+    //ArrayList<WebDefinition> mLinkTypes = new ArrayList<LinkType>();
     
     MultiDomainWebManager mMultiDomainWebManager = null;
     

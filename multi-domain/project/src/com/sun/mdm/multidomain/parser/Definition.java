@@ -50,7 +50,10 @@ public class Definition {
     Attribute attrPurgeDate = new Attribute("purge-date", "true", "true");
     ArrayList <Attribute> predefinedAttributes = new ArrayList <Attribute>();
     ArrayList <Attribute> extendedAttributes = new ArrayList <Attribute>();
-    private ArrayList<RelationFieldReference> mRelFieldRefs = new ArrayList<RelationFieldReference>();
+    
+    ArrayList<RelationFieldReference> mRelPredefinedAttrs = new ArrayList<RelationFieldReference>();
+    
+    ArrayList<RelationFieldReference> mRelExtendedAttrs = new ArrayList<RelationFieldReference>();
 
     
     public Definition() {
@@ -62,8 +65,7 @@ public class Definition {
     }
 
     public Definition(String name, String type, String sourceDomain, String targetDomain,
-                            ArrayList <Attribute> predefinedAttributes,
-                            ArrayList <RelationFieldReference> fieldRefs) {
+                            ArrayList <Attribute> predefinedAttributes) {
         this.name = name;
         this.type = type;
         this.sourceDomain = sourceDomain;
@@ -73,29 +75,44 @@ public class Definition {
         } else {
             setDefaultPredefinedAttributes();
         }
-        this.mRelFieldRefs = fieldRefs;
     }
 
     public String getSource() {
         return sourceDomain;
     }
 
-    public ArrayList<RelationFieldReference> getRelFieldRefs() {
-        return mRelFieldRefs;
+    public ArrayList<RelationFieldReference> getFixedRelFieldRefs() {
+        return mRelPredefinedAttrs;
+    }
+    public void addFixedRelFieldRef(RelationFieldReference fieldRef) {
+        mRelPredefinedAttrs.add(fieldRef);
     }
     
-    public void addRelFieldRef(RelationFieldReference fieldRef) {
-        mRelFieldRefs.add(fieldRef);
-    }
-    
-    public void deleteRelFieldRef(RelationFieldReference fieldRef) {
-        for (RelationFieldReference field : mRelFieldRefs) {
+    public void deleteFixedRelFieldRef(RelationFieldReference fieldRef) {
+        for (RelationFieldReference field : mRelPredefinedAttrs) {
             if (field.getFieldName().equals(fieldRef.getFieldName())){
-                mRelFieldRefs.remove(field);
+                mRelPredefinedAttrs.remove(field);
                 break;
             }
         }
     }
+   
+    public ArrayList<RelationFieldReference> getExtendedRelFieldRefs() {
+        return mRelExtendedAttrs;
+    }
+    
+    public void addExtendedRelFieldRef(RelationFieldReference fieldRef) {
+        mRelExtendedAttrs.add(fieldRef);
+    }
+    
+    public void deleteExtendedRelFieldRef(RelationFieldReference fieldRef) {
+        for (RelationFieldReference field : mRelExtendedAttrs) {
+            if (field.getFieldName().equals(fieldRef.getFieldName())){
+                mRelExtendedAttrs.remove(field);
+                break;
+            }
+        }
+    }    
     //[attrStartDate, attrEndDate, attrPurgeDate]
     public void setDefaultPredefinedAttributes() {
         this.predefinedAttributes.clear();

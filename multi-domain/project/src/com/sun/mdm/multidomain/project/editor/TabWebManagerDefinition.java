@@ -9,7 +9,7 @@ package com.sun.mdm.multidomain.project.editor;
 import com.sun.mdm.multidomain.parser.Attribute;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.WebDefinition;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -151,7 +151,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
 
     }
     private void createRelationshipTypes() {
-        RelationshipType relType = (RelationshipType) mLinkType;
+        WebDefinition relType = (WebDefinition) mLinkType;
         String relationType = relType.getName();
 
         createFieldRefs(relType);
@@ -166,7 +166,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
              */ 
     }
     
-    private void createFieldRefs(RelationshipType relType) {
+    private void createFieldRefs(WebDefinition relType) {
             //ArrayList<RelationFieldReference> fieldRefs = relType.getFixedRelFieldRefs();
             ArrayList<FieldAttributeRow> attrs = new ArrayList<FieldAttributeRow>();
             for (RelationFieldReference field : relType.getFixedRelFieldRefs()) {
@@ -289,14 +289,14 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
 
         onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Cancel")); // NOI18N
 
-        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/UpArrow.jpg"))); // NOI18N
+        jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/resources/UpArrow.jpg"))); // NOI18N
         jBtnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onUpBtn(evt);
             }
         });
 
-        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/editor/DownArrow.JPG"))); // NOI18N
+        jBtnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/resources/DownArrow.JPG"))); // NOI18N
         jBtnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onDownBtn(evt);
@@ -506,9 +506,9 @@ private void onMaxLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKActionPerformed
 // TODO add your handling code here:
     this.mModified = true;
-    if (mLinkType instanceof RelationshipType) {
-        ((RelationshipType) mLinkType).getExtendedRelFieldRefs().clear();
-        ((RelationshipType) mLinkType).getFixedRelFieldRefs().clear();
+    if (mLinkType instanceof WebDefinition) {
+        ((WebDefinition) mLinkType).getExtendedRelFieldRefs().clear();
+        ((WebDefinition) mLinkType).getFixedRelFieldRefs().clear();
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
         int rowCount = model.getRowCount();
         for (FieldAttributeRow row : model.fieldRows) {
@@ -527,9 +527,9 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             RelationFieldReference field = new RelationFieldReference(name, displayName, displayOrder,
                     maxLen, guiType, valueList, valueType, inputMask, valueMask, isSensitive);
             if (row.isPredefined()) {
-                ((RelationshipType) mLinkType).getFixedRelFieldRefs().add(field);
+                ((WebDefinition) mLinkType).getFixedRelFieldRefs().add(field);
             } else {
-                ((RelationshipType) mLinkType).getExtendedRelFieldRefs().add(field);
+                ((WebDefinition) mLinkType).getExtendedRelFieldRefs().add(field);
             }
             
         }

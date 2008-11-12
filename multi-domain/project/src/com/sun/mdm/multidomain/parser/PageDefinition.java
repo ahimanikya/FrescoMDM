@@ -44,6 +44,16 @@ public class PageDefinition {
     public void deleteScreenDefinition(ScreenDefinition screenDef) {
         mScreenDefintions.remove(screenDef);
     }
+    
+    public ScreenDefinition getScreenDefintion(String screenIdentifier) {
+        for (ScreenDefinition screen : mScreenDefintions) {
+            if (screen.getIdentifier().equalsIgnoreCase(screenIdentifier)) {
+                return screen;
+            }
+        }
+        return null;
+        
+    }
 }
 
 

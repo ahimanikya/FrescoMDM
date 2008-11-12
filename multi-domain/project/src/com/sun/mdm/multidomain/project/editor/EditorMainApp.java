@@ -45,7 +45,7 @@ import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.WebDefinition;
 import com.sun.mdm.multidomain.project.MultiDomainApplication;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
@@ -142,13 +142,13 @@ public class EditorMainApp {
             for (Attribute al : definition.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getDataType(), false);                        
-                ((RelationshipType) webDefinition).addFixedRelFieldRef(fieldRef);
+                ((WebDefinition) webDefinition).addFixedRelFieldRef(fieldRef);
             }
 
             for (Attribute al : definition.getExtendedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getDataType(), false);
-                ((RelationshipType) webDefinition).addExtendedRelFieldRef(fieldRef);
+                ((WebDefinition) webDefinition).addExtendedRelFieldRef(fieldRef);
             }
 
             //definition.getExtendedAttributes().get(0).
@@ -195,13 +195,13 @@ public class EditorMainApp {
                     
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null, al.getDataType(), false);
-                    ((RelationshipType) webDefinition).addFixedRelFieldRef(fieldRef);
+                    ((WebDefinition) webDefinition).addFixedRelFieldRef(fieldRef);
                 }
 
                 for (Attribute al : definition.getExtendedAttributes()) {
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null,  al.getDataType(), false);
-                    ((RelationshipType) webDefinition).addExtendedRelFieldRef(fieldRef);
+                    ((WebDefinition) webDefinition).addExtendedRelFieldRef(fieldRef);
                 }
                 
             }

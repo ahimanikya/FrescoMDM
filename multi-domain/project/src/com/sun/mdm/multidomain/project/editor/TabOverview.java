@@ -578,7 +578,7 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                                 //Already exists
                                 } else {
                                     // add new LinkNode
-                                    Definition definitionType = new Definition(definitionName, type, sourceDomain, targetDomain, null, null);
+                                    Definition definitionType = new Definition(definitionName, type, sourceDomain, targetDomain, null);
                                     definitionNode = mEditorMainApp.addDefinition(definitionType);
                                     mEditorMainPanel.loadDefinitionProperties(definitionNode);
                                     // add a new row
@@ -633,6 +633,14 @@ private void onShowAllStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIR
 public void onAddRelationship() {
     //Definition.TYPE_RELATIONSHIP
     performAddDefinition(Definition.TYPE_RELATIONSHIP);
+}
+
+public void onViewScreenProperties() {
+    WebScreenPropertiesDialog screenDlg = new WebScreenPropertiesDialog(mEditorMainApp.getMultiDomainWebManager(false).getPageDefinition());
+    screenDlg.setVisible(true);
+    if (screenDlg.isModified()) {
+        mEditorMainApp.enableSaveAction(true);
+    }
 }
 
 public void onAddHierarchy() {

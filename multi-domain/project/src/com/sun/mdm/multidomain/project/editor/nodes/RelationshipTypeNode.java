@@ -37,7 +37,7 @@ import org.openide.nodes.NodeEvent;
 //import org.openide.nodes.CookieSet;
 import org.openide.util.Lookup;
 
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.WebDefinition;
 import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
 
 /**
@@ -46,7 +46,7 @@ import com.sun.mdm.multidomain.project.editor.TabRelationshipWebManager;
  */
 public class RelationshipTypeNode extends AbstractNode {
     RelationshipNode mParentRelationshipNode;
-    RelationshipType mRelationshipType;
+    WebDefinition mRelationshipType;
     RelationshipTypeNode mRelationshipTypeNode;
     String mRelationshipTypeName;
     TabRelationshipWebManager mTabRelationshipWebManager = null;
@@ -68,7 +68,7 @@ public class RelationshipTypeNode extends AbstractNode {
      * @param parentRelationshipNode
      * @param relationshipType
      */
-    public RelationshipTypeNode(RelationshipNode parentRelationshipNode, RelationshipType relationshipType) {
+    public RelationshipTypeNode(RelationshipNode parentRelationshipNode, WebDefinition relationshipType) {
         super(Children.LEAF);
         mParentRelationshipNode = parentRelationshipNode;
         mRelationshipType = relationshipType;
@@ -106,7 +106,7 @@ public class RelationshipTypeNode extends AbstractNode {
      * 
      * @return mRelationshipType
      */
-    public RelationshipType getRelationshipType() {
+    public WebDefinition getRelationshipType() {
         return mRelationshipType;
     }
 

@@ -38,7 +38,7 @@ import org.openide.util.Lookup;
 
 import java.util.ArrayList;
 
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.WebDefinition;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 /**
  *
@@ -81,7 +81,7 @@ public class RelationshipNode extends AbstractNode {
      * 
      * @param relationshipType
      */
-    public void addRelationshipTypeNode(RelationshipType relationshipType) {
+    public void addRelationshipTypeNode(WebDefinition relationshipType) {
         RelationshipTypeNode relationshipTypeNode = new RelationshipTypeNode(this, relationshipType);
         alRelationshipTypeNodes.add(relationshipTypeNode);
     }

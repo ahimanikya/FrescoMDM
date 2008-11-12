@@ -48,7 +48,7 @@ import java.util.ArrayList;
 
         String domain1;
         String domain2;
-        ArrayList <RelationshipType> alRelationshipTypes = new ArrayList();
+        ArrayList <WebDefinition> alRelationshipTypes = new ArrayList();
         ArrayList <String> alRelationshipTypeNames = new ArrayList();
 
         public void setDomain1(String domain1) {
@@ -67,20 +67,20 @@ import java.util.ArrayList;
             return domain2;
         }
 
-        public RelationshipType addRelationshipType() {
-            RelationshipType relationshipType = new RelationshipType();
+        public WebDefinition addRelationshipType() {
+            WebDefinition relationshipType = new WebDefinition();
             alRelationshipTypes.add(relationshipType);
             return relationshipType;
         }
         
-        public void addRelationshipType(RelationshipType relationshipType) {
+        public void addRelationshipType(WebDefinition relationshipType) {
             alRelationshipTypes.add(relationshipType);
         }
         
-        public RelationshipType getRelationshipType(String name) {
-            RelationshipType relationshipType = null;
+        public WebDefinition getRelationshipType(String name) {
+            WebDefinition relationshipType = null;
             for (int i=0; alRelationshipTypes.size() > i; i++) {
-                relationshipType = (RelationshipType) alRelationshipTypes.get(i);
+                relationshipType = (WebDefinition) alRelationshipTypes.get(i);
                 if (relationshipType.getName().equals(name)) {
                     break; 
                 }
@@ -88,10 +88,10 @@ import java.util.ArrayList;
             return relationshipType;
         }
         
-        public RelationshipType getRelationshipType(String name, String sourceDomain, String targetDomain) {
-            RelationshipType relationshipType = null;
+        public WebDefinition getRelationshipType(String name, String sourceDomain, String targetDomain) {
+            WebDefinition relationshipType = null;
             for (int i=0; alRelationshipTypes.size() > i; i++) {
-                relationshipType = (RelationshipType) alRelationshipTypes.get(i);
+                relationshipType = (WebDefinition) alRelationshipTypes.get(i);
                 if (relationshipType.getName().equals(name) &&
                     relationshipType.getSource().equals(sourceDomain) &&
                     relationshipType.getTargetDomain().equals(targetDomain)) {
@@ -102,27 +102,27 @@ import java.util.ArrayList;
         }
         
         public void deleteRelationshipType(String name) {
-            RelationshipType relationshipType = getRelationshipType(name);
+            WebDefinition relationshipType = getRelationshipType(name);
             if (relationshipType != null) {
                 alRelationshipTypes.remove(relationshipType);
             }
         }
         
         public void deleteRelationshipType(String name, String sourceDomain, String targetDomain) {
-            RelationshipType relationshipType = getRelationshipType(name, sourceDomain, targetDomain);
+            WebDefinition relationshipType = getRelationshipType(name, sourceDomain, targetDomain);
             if (relationshipType != null) {
                 alRelationshipTypes.remove(relationshipType);
             }
         }
         
-        public ArrayList <RelationshipType> getAllRelationshipTypes() {
+        public ArrayList <WebDefinition> getAllRelationshipTypes() {
             return alRelationshipTypes;
         }
         
-        public ArrayList <RelationshipType> getRelationshipTypesByType(String type) { // type="relationship/hierarchy/group/category
+        public ArrayList <WebDefinition> getRelationshipTypesByType(String type) { // type="relationship/hierarchy/group/category
             ArrayList al = new ArrayList();
             for (int i=0; i<alRelationshipTypes.size(); i++) {
-                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(i);
+                WebDefinition relationshipType = (WebDefinition) alRelationshipTypes.get(i);
                 if (relationshipType.type.equals(type)) {
                     al.add(relationshipType); 
                 }
@@ -130,10 +130,10 @@ import java.util.ArrayList;
             return al;
         }
         
-        public ArrayList <RelationshipType> getRelationshipTypesByDomain(String domainName) {
+        public ArrayList <WebDefinition> getRelationshipTypesByDomain(String domainName) {
             ArrayList al = new ArrayList();
             for (int i=0; i<alRelationshipTypes.size(); i++) {
-                RelationshipType relationshipType = (RelationshipType) alRelationshipTypes.get(i);
+                WebDefinition relationshipType = (WebDefinition) alRelationshipTypes.get(i);
                 if (relationshipType.sourceDomain.equals(domainName) || relationshipType.targetDomain.equals(domainName)) {
                     al.add(relationshipType); 
                 }
@@ -141,19 +141,19 @@ import java.util.ArrayList;
             return al;
         }
         
-        public ArrayList <RelationshipType> getRelationships() {         
+        public ArrayList <WebDefinition> getRelationships() {         
             return getRelationshipTypesByType(TYPE_RELATIONSHIP);
         }
         
-        public ArrayList <RelationshipType> getHierarchies() {         
+        public ArrayList <WebDefinition> getHierarchies() {         
             return getRelationshipTypesByType(TYPE_HIERARCHY);
         }
         
-        public ArrayList <RelationshipType> getGroups() {
+        public ArrayList <WebDefinition> getGroups() {
             return getRelationshipTypesByType(TYPE_GROUP);
         }
         
-        public ArrayList <RelationshipType> getCategories() {
+        public ArrayList <WebDefinition> getCategories() {
             return getRelationshipTypesByType(TYPE_CATEGORY);
         }
     }
