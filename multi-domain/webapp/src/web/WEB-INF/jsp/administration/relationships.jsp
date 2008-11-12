@@ -29,8 +29,7 @@
     function exceptionHandler(message) {
         alert("Exception: " + message);
     }
-    function loadSourceDomains() {                
-        var domain=document.getElementById("selectSourceDomain").value;
+    function loadSourceDomains() {
         DomainHandler.getDomains( updateSourceDomains);
     }
     function updateSourceDomains(data) {
@@ -41,8 +40,7 @@
             selectDomain();        
     }
 
-    function loadTargetDomains() {
-        var domain=document.getElementById("selectTargetDomain").value;                
+    function loadTargetDomains() {               
         DomainHandler.getDomains( updateTargetDomains);
     }
     function updateTargetDomains(data) {
@@ -86,39 +84,16 @@
               escapeHtml:false
             });
     }
-    
-    
+        
     function clickAdd() {
-        relationshipdef = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
-        alert("add new relationshipdef: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
+        relationshipdef = {name:"foo", sourceDomain:"Person", targetDomain:"Company"};
+        alert("add new relationshipdef: {name:'foo', sourceDomain:'Person', targetDomain:'Company'}");
         RelationshipDefHandler.addRelationshipDef(relationshipdef, clickAddCB);
     }
     function clickAddCB(data) {
         alert("added relationshipdef id=" + data);
         loadRelationshipDefs();
     }
-    function clickDelete() {
-        relationshipdef = {name:"foo", displayName:"foo", sourceDomain:"Person", targetDomain:"Product"};
-        alert("delete a relationshipdef {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
-        RelationshipDefHandler.deleteRelationshipDef(relationshipdef, clickDeleteCB);
-    }           
-    function clickDeleteCB() {
-        loadRelationshipDefs();
-    }
-    function clickEdit(id) {
-        alert("edit this " + id + " now!");
-    }
-    function clickClone(id) {
-        alert("clone this " + id + " now!");
-    }            
-    function clickThrow(){
-        alert("throw an exception now!");
-        var domain = "foo";
-        RelationshipDefHandler.getRelationshipDefCount(domain, clickThrowCB);
-    }
-    function clickThrowCB(data){
-    }
-
     
     var relationListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"'>"; },
@@ -165,7 +140,7 @@
                         <td>
                             <select id="selectSourceDomain"></select>
                         </td>
-                        <td>&nbsp;</td>
+                        <td><img src="images/spacer.gif" height="1" width="20"></td>
                         <td class="mainLabel"><f:message key="target_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;</td>
                         <td>
                             <select id="selectTargetDomain" onchange="selectDomain()"></select>
@@ -290,10 +265,15 @@ function deselectAllRelationshipDefs (objForm) {
 }
 function deleteRelationshipDefs (objForm) {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
+    var sourceDomain=document.getElementById("selectSourceDomain").value;
+    var targetDomain=document.getElementById("selectTargetDomain").value;
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked) {
             alert('deleting ' + chkboxes[i].value);
             // Make DWR call to delete
+            relationshipdef = {name:chkboxes[i].value, sourceDomain:sourceDomain, targetDomain:targetDomain};
+            alert("delete a relationshipdef " + relationshipdef);
+            RelationshipDefHandler.deleteRelationshipDef(relationshipdef, loadRelationshipDefs);
         }
     }
 }
@@ -308,5 +288,6 @@ function showRelationshipDialog (dialogId) {
         
     relationshipDialog.titleNode.innerHTML = strTitle;
     relationshipDialog.show();
+    //clickAdd();
 }
 </script>
