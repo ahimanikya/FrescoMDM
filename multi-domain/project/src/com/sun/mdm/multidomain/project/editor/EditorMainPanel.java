@@ -190,7 +190,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 title = TAB_CATEGORY;
             }
             mPropertiesTabbedPane.add(title, currentDefinitionNode.getDefinitionTab(true));
-            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentDefinitionNode.getRelationshipTypesTab(true));
+            mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentDefinitionNode.getWebManagerDefinitionTab(true));
         }
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }

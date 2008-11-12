@@ -50,11 +50,11 @@ import com.sun.mdm.multidomain.project.editor.TabWebManagerDefinition;
  */
 public class DefinitionNode extends AbstractNode {
     Definition mDefinition;
-    Definition mWebLinkType;
+    Definition mWebDefinition;
     DefinitionNode mDefinitionNode;
     EditorMainApp mEditorMainApp;
     JPanel mTabDefinitionDef;
-    TabWebManagerDefinition mTabWebManagerRelationshipTypes = null;
+    TabWebManagerDefinition mTabWebManagerDefinition = null;
     String type;
     
     public DefinitionNode() {
@@ -71,14 +71,15 @@ public class DefinitionNode extends AbstractNode {
     
     /**
      * 
-     * @param LinkParentNode
+     * @param EditorMainApp
      * @param definition
+     * @param webDefinition
      */
-    public DefinitionNode(EditorMainApp editorMainApp, Definition definition, Definition webLinkType) {
+    public DefinitionNode(EditorMainApp editorMainApp, Definition definition, Definition webDefinition) {
         super(Children.LEAF);
         mEditorMainApp = editorMainApp;
         mDefinition = definition;
-        mWebLinkType = webLinkType;
+        mWebDefinition = webDefinition;
         mDefinitionNode = this;
         addNodeListener(new NodeAdapter() {
             @Override
@@ -139,11 +140,11 @@ public class DefinitionNode extends AbstractNode {
         return mTabDefinitionDef;
     }
     
-    public TabWebManagerDefinition getRelationshipTypesTab(boolean bRefresh) {
-        if (mTabWebManagerRelationshipTypes == null) {
-            mTabWebManagerRelationshipTypes = new TabWebManagerDefinition(mEditorMainApp, mWebLinkType);
+    public TabWebManagerDefinition getWebManagerDefinitionTab(boolean bRefresh) {
+        if (mTabWebManagerDefinition == null) {
+            mTabWebManagerDefinition = new TabWebManagerDefinition(mEditorMainApp, mWebDefinition);
         }
         
-        return mTabWebManagerRelationshipTypes;
+        return mTabWebManagerDefinition;
     }
 }
