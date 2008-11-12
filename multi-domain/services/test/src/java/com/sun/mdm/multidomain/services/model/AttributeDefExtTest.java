@@ -28,9 +28,9 @@ import junit.framework.TestCase;
  * AttributeDefinitionTest class.
  * @author cye
  */
-public class AttributeDefTest extends TestCase {
+public class AttributeDefExtTest extends TestCase {
 
-    public AttributeDefTest (String name) {
+    public AttributeDefExtTest (String name) {
         super(name);
     }
     
@@ -38,7 +38,7 @@ public class AttributeDefTest extends TestCase {
     }
     
     public void test001() {
-        AttributeDef ad = new AttributeDef();
+        AttributeDefExt ad = new AttributeDefExt();
         assertTrue(ad.size() == 0);
         assertTrue(ad.getName() == null);
         ad.setName("FOO");

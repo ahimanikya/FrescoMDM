@@ -22,7 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.relationship;
 
-import com.sun.mdm.multidomain.services.model.AttributeDef;
+import com.sun.mdm.multidomain.services.model.AttributeDefExt;
 
 import junit.framework.TestCase;
 
@@ -30,9 +30,9 @@ import junit.framework.TestCase;
  * RelationshipDefinitionTest class.
  * @author cye
  */
-public class RelationshipDefinitionTest extends TestCase {
+public class RelationshipDefExtTest extends TestCase {
 
-    public RelationshipDefinitionTest (String name) {
+    public RelationshipDefExtTest (String name) {
         super(name);
     }
     
@@ -40,14 +40,18 @@ public class RelationshipDefinitionTest extends TestCase {
     }
     
     public void test001() {
-        RelationshipDefinition rDef = new RelationshipDefinition();
+        RelationshipDefExt rDef = new RelationshipDefExt();
         rDef.setName("FOO");
-        assertTrue("FOO".equals(rDef.getName()));        
+        assertTrue("FOO".equals(rDef.getName()));    
+        rDef.setBiDirection("true");
+        assertTrue("true".equals(rDef.getBiDirection()));
+        rDef.setBiDirection("true");
+        assertTrue("true".equals(rDef.getBiDirection()));        
     }
 
     public void test002() {
-        RelationshipDefinition rDef = new RelationshipDefinition();
-        AttributeDef aDef = new AttributeDef();
+        RelationshipDefExt rDef = new RelationshipDefExt();
+        AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("FOO");
         rDef.setExtendedAttribute(aDef);
         assertTrue("FOO".equals(rDef.getExtendeddAttribute("FOO").getName()));

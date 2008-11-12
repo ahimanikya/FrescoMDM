@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.ArrayList;        
 import junit.framework.TestCase;
 
-import com.sun.mdm.multidomain.relationship.RelationshipDef;
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 
 /**
  * DomainRelationshipDefObjectTest class.
@@ -43,12 +43,12 @@ public class DomainRelationshipDefObjectTest extends TestCase {
     
     public void test001() {
         
-        RelationshipDef rDef1 = new RelationshipDef();
+        RelationshipDefExt rDef1 = new RelationshipDefExt();
         rDef1.setName("FOO1");
         rDef1.setSourceDomain("sourceDomain");
         rDef1.setTargetDomain("targetDomain");
         
-        RelationshipDef rDef2 = new RelationshipDef();
+        RelationshipDefExt rDef2 = new RelationshipDefExt();
         rDef2.setName("FOO2");
         rDef2.setSourceDomain("targetDomain");
         rDef2.setTargetDomain("sourceDomain");

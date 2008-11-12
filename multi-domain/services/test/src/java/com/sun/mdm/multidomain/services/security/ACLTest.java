@@ -32,7 +32,7 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
  * ACLTest class.
  * @author cye
  */
-public class ACLTest  extends TestCase {
+public class ACLTest extends TestCase {
     
     public ACLTest (String name) {
         super(name);
