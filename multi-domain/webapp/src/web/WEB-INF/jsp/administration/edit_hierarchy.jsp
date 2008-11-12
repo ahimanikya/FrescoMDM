@@ -19,19 +19,20 @@
 
 
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
-    <form>
+    
     <tr>
         <td class="formLabel" width="200px">
             <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
-            <input  name="name" value="" title="<f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
+            <input id="hierarchy_edit_name" name="Name" value="" title="<f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
         </td> 
         <td class="formLabel">
            <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
-           <select  dojoType="dijit.form.FilteringSelect" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+           <select id="hierarchy_edit_plugin" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+                <option value=""></option>
                 <option value="HierPrunePlugin">HierPrunePlugin</option>
            </select>
          </td>
@@ -86,9 +87,30 @@
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="4">
-            <input type="button" value="<f:message key="save_text" />"/>
-            <input type="button" value="<f:message key="cancel_text" />" onclick="dijit.byId('edithierarchy').hide();"/>
+            <input type="submit" name="save_edit_hierarchy" onclick="return validateEditHierarchypForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
+            <input type="button" name="cancel_edit_hierarchy" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('edithierarchy').hide();"/>
         </td>
     </tr>
-    </form>
 </table> 
+
+
+<script language="javascript" 
+  type="text/javascript">
+      
+function validateHiervalidateEditHierarchypFormarchyForm() {
+    
+      if(dojo.byId('hierarchy_edit_name').value=='') 
+       {
+           alert("Please Enter the Name.");
+           dojo.byId('hierarchy_edit_name').focus();
+           return false;
+       }
+       
+       if(dojo.byId('hierarchy_edit_plugin').value=='') 
+       {
+           alert("Please Select the Plugin.");
+           dojo.byId('hierarchy_edit_plugin').focus();
+           return false;
+       }
+}
+</script>

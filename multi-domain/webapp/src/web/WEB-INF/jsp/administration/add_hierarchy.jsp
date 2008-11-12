@@ -19,19 +19,18 @@
 
 
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
-   <form  action="#" method="GET" name="addHierarchyForm" onsubmit=" return validateHierarchypForm(this);"> 
     <tr>
         <td class="formLabel" width="200px">
             <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
-            <input  name="name" value="" title="<f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
+            <input id="hierarchy_add_name"  name="Name" value="" title="<f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
         </td> 
         <td class="formLabel">
            <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
-           <select  dojoType="dijit.form.FilteringSelect" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+           <select id="hierarchy_add_plugin" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
                <option value=""></option>
                 <option value="HierPrunePlugin">HierPrunePlugin</option>
            </select>
@@ -60,7 +59,7 @@
     
     <tr>
         <td colspan="4">
-            <div dojoType="dijit.layout.ContentPane" class="MainBox" hasShadow="true" style="width:100%;">
+            <div dojoType="dijit.layout.ContentPane" class="MainBox" hasShadow="true">
                 <div class="TitleBar"><f:message key="node_attribute_text" /></div>
                 <div class="Content">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -87,27 +86,30 @@
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="4">
-            <input type="submit" name="submit_add_hierarchy" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
+            <input type="submit" name="save_add_hierarchy" onclick="return validateHierarchyForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
             <input type="button" name="cancel_add_hierarchy" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addhierarchy').hide();"/>
         </td>
     </tr>
-  </form>  
 </table> 
-
 
 
 <script language="javascript" 
   type="text/javascript">
       
-function validateHierarchypForm(objForm) {
-    if(""==objForm.name.value) {
-        alert("Please Enter the Name.");
-        return false;
-    }
-    if(""==objForm.Plugin.value) {
-        alert("Please Select the Plugin.");
-        return false;
-    }
-    return true;
+function validateHierarchyForm() {
+    
+      if(dojo.byId('hierarchy_add_name').value=='') 
+       {
+           alert("Please Enter the Name.");
+           dojo.byId('hierarchy_add_name').focus();
+           return false;
+       }
+       
+       if(dojo.byId('hierarchy_add_plugin').value=='') 
+       {
+           alert("Please Select the Plugin.");
+           dojo.byId('hierarchy_add_plugin').focus();
+           return false;
+       }
 }
 </script>

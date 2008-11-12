@@ -6,16 +6,26 @@ var selectOptions = new Array("string","date","int","float","char","boolean");
 function NewAttribute(tableId)
 {
         var _this = this;
-          // Create our row
+        // Create our row  
         this.Row = document.getElementById(tableId).insertRow(document.getElementById(tableId).rows.length);
-        this.Row.style.className="dataItem";
+        
+        //this.Row.style.className="AttributesListing_dataItem";
         this.Row.insertCell(0);
         this.Row.insertCell(1);
         this.Row.insertCell(2);
         this.Row.insertCell(3);
         this.Row.insertCell(4);
         this.Row.insertCell(5);
-
+        
+    var currentLength = document.getElementById(tableId).rows.length;
+    if(currentLength %2)
+        this.Row.style.backgroundColor = "#f4f2ed";
+    else
+        this.Row.style.backgroundColor = "#ffffff";
+    
+    this.Row.style.height ="22px";
+    
+    
         // ID field
         this.IdField = document.createElement("input");
         this.IdField.type = "checkbox";
@@ -150,7 +160,7 @@ function MoveDown(tableId) {
               }
       }
       // Refresh the view to replicate the array contents.
-      if(anythingChanged )
+      if(anythingChanged)
               refreshAttributesView(tableId);
 
 }
@@ -159,6 +169,7 @@ function MoveDown(tableId) {
 function refreshAttributesView (tableId) {
     var tempAttributesArray = new Array();
     var currentLength = attributesArray.length;
+    for(i=0;i<currentLength; i++ ) attributesArray[i].Delete(); // free up memory ;)
     for(i=0;i<currentLength; i++) {
             attr = attributesArray[i];
             tempAttr = new NewAttribute(tableId);
@@ -172,8 +183,7 @@ function refreshAttributesView (tableId) {
             tempAttr.SearchableField.checked = attr.SearchableField.checked;
 
             tempAttributesArray.push( tempAttr );
-
-            attr.Delete(); // free up memory ;)
     }
+
     attributesArray = tempAttributesArray;
 }

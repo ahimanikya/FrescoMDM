@@ -1,5 +1,41 @@
 /* CSS for Adminster section of MDWM */
 
+a.navbutton {
+	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll top right;
+        color: #40403E;
+        text-decoration:none;
+	display: block;
+	float:left;
+	height: 30px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	font-family: arial, sans-serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande",Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+}
+
+a.navbutton span {
+    background: transparent url('../images/navigation-buttons_span.png') no-repeat;
+    display: block;
+    color: #40403E;
+    line-height: 20px;
+    padding: 5px 0 5px 18px;
+}
+
+a.navbutton:active {
+    background-position: bottom right;
+    color: #0739B6;
+    
+}
+a.navbutton:active span {
+    background-position: bottom left;
+    /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
+    padding: 5px 0 5px 18px; 
+}
+
 .button_spacing {
     padding-left:6px;
 }
@@ -99,30 +135,53 @@
     padding-top:5px;
 }
 
-
 #addbutton { 
-    width:auto;
-    background-image: url(../images/icons/add.png);
+    width:20px;
+    height:20px;
+    background-image: url(../images/icons/add_button.png);
     background-repeat:no-repeat;
     background-color: transparent;
-    padding-left:20px; 
+    border:none;
+    cursor:pointer;
 }
 #deletebutton { 
-    width:auto;
-    background-image: url(../images/icons/delete.png);
+    width:20px;
+    height:20px;
+    background-image: url(../images/icons/delete_button.png);
     background-repeat:no-repeat;
     background-color: transparent;
-    padding-left:20px; 
+    border:none;
+    cursor:pointer;
+}
+#selectallbutton { 
+    width:23px;
+    height:20px;
+    background-image: url(../images/icons/select_multiple.gif);
+    background-repeat:no-repeat;
+    background-color: transparent;
+    border:none;
+    cursor:pointer;
+}
+#deselectallbutton { 
+    width:23px;
+    height:20px;
+    background-image: url(../images/icons/deselect_multiple.gif);
+    background-repeat:no-repeat;
+    background-color: transparent;
+    border:none;
+    cursor:pointer;
 }
 
 .AttributesListing {
     border-collapse: collapse;
+    
 }
 .AttributesListing .header{
-    background-color: #EEE;
+    background-color: #DDD7C9;
 }
-.AttributesListing .dataItem{
+.AttributesListing_dataItem{
     padding: 4px; border: 1px solid #CCC;
+    background-color:#ff0000;
 }
 
 .DefsListing {
@@ -167,6 +226,12 @@
 }
 .DefsListing .hSpacing {
     background-color: #FFFFFF;
+}
+
+.ScrollablePane{
+    height:170px;
+    overflow: auto;
+    border: 1px solid #a4936e;
 }
 
 		

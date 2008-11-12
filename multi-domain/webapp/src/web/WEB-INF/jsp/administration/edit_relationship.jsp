@@ -15,28 +15,29 @@
 
 
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
-    <form>
+    
     <tr>
         <td class="formLabel"><f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" /></td> 
         <td>
             <table  cellspacing="0" cellpadding="0">
                 <tr>
                     <td>
-                       <input  name="name" value="" dojoType="dijit.form.TextBox" style="width:150px"/>
+                       <input id="relationship_edit_name" name="Name" value="" dojoType="dijit.form.TextBox" style="width:150px"/>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select  dojoType="dijit.form.FilteringSelect" name="Direction" title="<f:message key="direction_text" />" hasDownArrow="true" style="width:75px">
+                         <select id="relationship_edit_direction" name="Direction" title="<f:message key="direction_text" />" hasDownArrow="true" style="width:75px">
+                            <option value=""></option>
                             <option value="->">-></option>
-                            <option value="<-"><-</option>
                             <option value="<->"><-></option>
                          </select>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                         <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select  dojoType="dijit.form.FilteringSelect" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+                         <select id="relationship_edit_plugin" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+                           <option value=""></option>
                            <option value="RelSpecialistPlugin">RelSpecialistPlugin</option>
                          </select>
                     </td>
@@ -81,11 +82,37 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="2">
-            <input type="button" value="<f:message key="save_text" />"/>
-            <input type="button" value="<f:message key="cancel_text" />" onclick="dijit.byId('editrelationship').hide();"/>
+            <input type="submit" name="save_edit_relations" onclick="return validateEditRelationshipForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
+            <input type="button" name="cancel_edit_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('editrelationship').hide();"/>
         </td>
     </tr>
-    </form>
-</table> 
+    
+</table>
 
-
+<script language="javascript" 
+  type="text/javascript">
+      
+function validateEditRelationshipForm() {
+    
+      if(dojo.byId('relationship_edit_name').value=='') 
+       {
+           alert("Please Enter the Name.");
+           dojo.byId('relationship_edit_name').focus();
+           return false;
+       }
+       
+       if(dojo.byId('relationship_edit_direction').value=='') 
+       {
+           alert("Please Select the Direction.");
+           dojo.byId('relationship_edit_direction').focus();
+           return false;
+       }
+       
+       if(dojo.byId('relationship_edit_plugin').value=='') 
+       {
+           alert("Please Select the Plugin.");
+           dojo.byId('relationship_edit_plugin').focus();
+           return false;
+       }
+}
+</script>

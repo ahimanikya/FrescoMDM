@@ -19,19 +19,19 @@
 
 
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
-   <form action="#" method="GET" name="addRelationshipForm" onSubmit="return validateRelationshipForm(this);"> 
+   
     <tr>
         <td class="formLabel"><f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" /></td> 
         <td>
             <table  cellspacing="0" cellpadding="0">
                 <tr>
                     <td>
-                       <input  type="text" name="Name" value="" title="<f:message key="name_text" />" style="width:150px"/>
+                       <input id="relationship_add_name" type="text" name="Name" value="" title="<f:message key="name_text" />" style="width:150px"/>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select  name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
+                         <select id="relationship_add_direction" name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
                             <option value=""></option>
                             <option value="->">-></option>
                             <option value="<->"><-></option>
@@ -40,7 +40,7 @@
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                         <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select  name="Plugin" title="<f:message key="plugin_text" />"  style="width:150px">
+                         <select id="relationship_add_plugin"  name="Plugin" title="<f:message key="plugin_text" />"  style="width:150px">
                            <option value=""></option>
                            <option value="RelSpecialistPlugin">RelSpecialistPlugin</option>
                          </select>
@@ -59,7 +59,7 @@
     
     <tr>
         <td colspan="2">
-            <div dojoType="dijit.layout.ContentPane" class="MainBox" hasShadow="true" style="width:100%;">
+            <div dojoType="dijit.layout.ContentPane" class="MainBox" hasShadow="true">
                 <div class="TitleBar"><f:message key="relationship_attributes_text" /></div>
                 <div class="Content">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -86,13 +86,12 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="2">
-            <input type="submit" name="submit_add_relations" title="<f:message key="save_text" />" value="<f:message key="save_text" />" />
+            <input type="submit" name="save_add_relations" onclick=" return validateRelationshipForm()" title="<f:message key="save_text" />" value="<f:message key="save_text" />" />
             <input type="button" name="cancel_add_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addrelationship').hide();"/>
         </td>
     </tr>
-  </form>  
-</table> 
-
+    
+</table>
 <!--
 <div id="errorDialog" class="MainBox" dojoType="dijit.Dialog" title="Error Message" style="display:none;width:500px;">
     <table>
@@ -110,23 +109,51 @@
 </div>
 -->
 
+
+
+
 <script language="javascript" 
   type="text/javascript">
       
-function validateRelationshipForm(objForm) {
-    if(""==objForm.Name.value) {
+function validateRelationshipForm() {
+    
+      if(dojo.byId('relationship_add_name').value=='') 
+       {
+           alert("Please Enter the Name.");
+           dojo.byId('relationship_add_name').focus();
+           return false;
+       }
+       
+       if(dojo.byId('relationship_add_direction').value=='') 
+       {
+           alert("Please Select the Direction.");
+           dojo.byId('relationship_add_direction').focus();
+           return false;
+       }
+       
+       if(dojo.byId('relationship_add_plugin').value=='') 
+       {
+           alert("Please Select the Plugin.");
+           dojo.byId('relationship_add_plugin').focus();
+           return false;
+       }                  
+                     
+   /* if(""==objForm.Name.value) {
         alert("Please Enter the Name.");
+        objForm.Name.focus();
         return false;
     }
     if(""==objForm.Direction.value) {
         alert("Please Select the Direction.");
+        objForm.Direction.focus();
         return false;
     }
     if(""==objForm.Plugin.value) {
         alert("Please Select the Plugin.");
+        objForm.Plugin.focus();
         return false;
     }
-    return true;
+    return true;*/
 }
 </script>
 
