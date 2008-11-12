@@ -502,11 +502,11 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                .add(jBtnDown, 0, 0, Short.MAX_VALUE)
-                                .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(jBtnDown, 0, 30, Short.MAX_VALUE)
+                                .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(jPanelFieldProperties, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         layout.linkSize(new java.awt.Component[] {onCancel, onOK}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -530,9 +530,9 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                             .add(onOK)))
                     .add(layout.createSequentialGroup()
                         .add(78, 78, 78)
-                        .add(jBtnUp)
+                        .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(20, 20, 20)
-                        .add(jBtnDown)))
+                        .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
