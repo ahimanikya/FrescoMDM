@@ -143,4 +143,41 @@ a.button:active span {
   background-position: bottom left;
   padding: 6px 0 4px 18px; /* push text down 1px */
 }
+
+/* for header tabs */
+a.navbutton {
+	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll top right;
+        color: #40403E;
+        text-decoration:none;
+	display: block;
+	float:left;
+	height: 30px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	font-family: arial, sans-serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande",Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+}
+
+a.navbutton span {
+    background: transparent url('../images/navigation-buttons_span.png') no-repeat;
+    display: block;
+    color: #40403E;
+    line-height: 20px;
+    padding: 5px 0 5px 18px;
+}
+
+a.navbutton:active {
+    background-position: bottom right;
+    color: #0739B6;
+    
+}
+a.navbutton:active span {
+    background-position: bottom left;
+    /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
+    padding: 5px 0 5px 18px; 
+}
 	
