@@ -223,8 +223,8 @@ public class EntityNode extends DefaultMutableTreeNode {
     public int getFieldCnt() {
         int iRet = 0;
         int cnt = this.getChildCount();
-        if (this.isPrimary() || this.isSub()) {
-            // multi-level data object model
+        if (this.isPrimary()) {
+            // multi-level data object model: add || this.isSub()
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) this.getChildAt(i);
                 if (subNode.isField()) {
