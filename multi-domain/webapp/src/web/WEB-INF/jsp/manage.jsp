@@ -6,6 +6,7 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <html>
     <head>
+        <title>Manage</title>
 <link rel="stylesheet" type="text/css" href="css/manage.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
 <script type='text/javascript' src='scripts/mdwm.js'></script>
@@ -18,11 +19,27 @@
     dojo.require("dojo.parser");
     dojo.require("dijit.Dialog");
     dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.layout.TabContainer");
+    dojo.require("dijit.form.Button");
 </script>
 </head>
 <body class="mdwm">
-    <%@ include file="/WEB-INF/jsp/header.jsp" %>
-Manages goes here
-<jsp:include page="/WEB-INF/jsp/manage/hierarchy_maintain.jsp" flush="true" />
+<%@ include file="/WEB-INF/jsp/header.jsp" %>
+
+
+
+
+<div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:580px;">
+            
+    <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
+        <%@ include file="manage/manage_hierarchy.jsp" %>
+    </div>
+    <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationships">
+        <%@ include file="manage/manage_relationships.jsp" %>
+    </div>
+    
+</div>
+
+
 </body>
 </html>

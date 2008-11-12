@@ -26,7 +26,7 @@
     <body class="mdwm">
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
         
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:80%;height:580px;">
+        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:100%;height:580px;">
             
             <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy" >
      
