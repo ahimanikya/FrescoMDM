@@ -530,13 +530,12 @@ public class FinishPanel implements WizardDescriptor.Panel {
         String tagTailObject = "</Configuration>";
 
         // multi-level object data model
-        // relationships need to b removed.
+        // Need to add getHierarchy() and remove Relationships()
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + mViewName +
                 "</name>" + "\n    <database>" + mDbName + "</database>" +
                 "\n    <dateformat>" + mDateFormat + "</dateformat>\n" +
                 getSubNodes(mPrimaryNode) + 
-                getRelationships() + 
-                getHierarchy() + 
+                getRelationships() +  
                 tagTailObject;
 
         // Write xml to repository
