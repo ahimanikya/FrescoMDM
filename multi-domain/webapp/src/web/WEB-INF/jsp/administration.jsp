@@ -23,19 +23,29 @@
         </script>
         
     </head>
-    <body class="mdwm">
+    <body class="mdwm" onLoad="showMainContent();">
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
         
         <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:100%;height:580px;">
             
             <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy" >
-     
-                <%@ include file="administration/hierarchy.jsp" %>
+                <div id="hierarchyTabContent" style="display:none;">
+                    <%@ include file="administration/hierarchy.jsp" %>
+                </div>
             </div>
             <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationships"  selected="true">
-                <%@ include file="administration/relationships.jsp" %>
+                <div id="relationshipTabContent" style="display:none;">
+                    <%@ include file="administration/relationships.jsp" %>
+                 </div>
             </div>
         </div>
         
     </body>
 </html>
+<script>
+    function showMainContent() {
+       // alert('loaded.. showing content now...');
+        dojo.byId("hierarchyTabContent").style.display = "block";
+        dojo.byId("relationshipTabContent").style.display = "block";
+    }
+    </script>
