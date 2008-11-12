@@ -51,8 +51,12 @@
         <param name="include" value="name" />
     </convert>		
 
-    <convert converter="bean" match="com.sun.mdm.multidomain.relationship.RelationshipDef">
-        <param name="include" value="name, sourceDomain, targetDomain, attributes" />
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
+        <param name="include" value="name, sourceDomain, targetDomain, plugin, biDirection, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
+    </convert>	
+
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.model.AttributeDefExt">
+        <param name="include" value="name, columnName, searchable, isRequired, dataType, defaultValue" />
     </convert>	
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefinitionView">
@@ -130,17 +134,17 @@
         ]]>                
         <![CDATA[
             import java.util.List;
-            import com.sun.mdm.multidomain.relationship.RelationshipDef;
+            import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
             import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
-            DomainRelationshipDefsObject.setRelationshipDefs(List<RelationshipDef> relationshipDefs);
-            List<RelationshipDef> DomainRelationshipDefsObject.getRelationshipDefs();  
+            DomainRelationshipDefsObject.setRelationshipDefs(List<RelationshipDefExt> relationshipDefs);
+            List<RelationshipDefExt> DomainRelationshipDefsObject.getRelationshipDefs();  
         ]]>        
         <![CDATA[
             import java.util.List;
-            import com.sun.mdm.multidomain.attributes.Attribute;
-            import com.sun.mdm.multidomain.relationship.RelationshipDef;
-            RelationshipDef.setAttributes(List<Attribute> attributes);            
-            List<Attribute> RelationshipDef.getAttributes();  
+            import com.sun.mdm.multidomain.services.model.AttributeDefExt;
+            import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
+            RelationshipDefExt.setExtendedAttributes(List<AttributeDefExt> extendedAttributes);            
+            List<AttributeDefExt> RelationshipDefExt.getExtendedAttributes();  
         ]]>
         <![CDATA[
             import java.util.List;
