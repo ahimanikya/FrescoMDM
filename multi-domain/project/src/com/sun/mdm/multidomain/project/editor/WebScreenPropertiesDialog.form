@@ -187,6 +187,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtScreenTitle">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onjTxtScreenTitle"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelItemPerPage">
           <Properties>
@@ -205,6 +208,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="jSpinnerMaxItems">
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="onMaxItems"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

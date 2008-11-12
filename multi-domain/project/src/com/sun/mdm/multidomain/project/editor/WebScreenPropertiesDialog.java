@@ -9,7 +9,7 @@ package com.sun.mdm.multidomain.project.editor;
 import com.sun.mdm.multidomain.parser.PageDefinition;
 import com.sun.mdm.multidomain.parser.ScreenDefinition;
 import com.sun.mdm.multidomain.parser.SearchDetail;
-import java.awt.event.FocusListener;
+import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
@@ -66,8 +66,43 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
              }
         });
         
+        jSpinnerItemPerPage.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                //evt.getComponent().getN
+                updateSubscreenProperties(jSpinnerItemPerPage);
+            }
+        });
         
+        jSpinnerItemPerPage.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                updateSubscreenProperties(jSpinnerItemPerPage);
+            }
+        });
+        
+        
+        jTxtScreenTitle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                //evt.getComponent();
+                updateSubscreenProperties(evt.getComponent());
+            }
+        });
 
+    }
+    
+    private void updateSubscreenProperties(Component comp) {
+        TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
+        int selectedRow = jTableSubscreen.getSelectedRow();
+        ScreenDefinition screenDef = model.getRow(selectedRow);
+        if (comp.equals(jSpinnerMaxItems)) {            
+            int maxItems = ((Integer) jSpinnerMaxItems.getValue()).intValue();
+            screenDef.setMaxItems(maxItems);            
+        } else if (comp.equals(jSpinnerItemPerPage)) {
+            screenDef.setItemPerPage(((Integer) jSpinnerItemPerPage.getValue()).intValue());
+        } else if (comp.equals(jTxtScreenTitle)) {
+            screenDef.setScreenTitle(jTxtScreenTitle.getText());
+        }
+        
+        
     }
     
     private void loadSubscreenProperties(ScreenDefinition subScreenDef) {
@@ -157,9 +192,21 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SUBSCREEN_TITLE")); // NOI18N
 
+        jTxtScreenTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onjTxtScreenTitle(evt);
+            }
+        });
+
         jLabelItemPerPage.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_ITEM_PER_PAGE")); // NOI18N
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_MAX_ITEMS")); // NOI18N
+
+        jSpinnerMaxItems.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                onMaxItems(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jPanelSubScreenLayout = new org.jdesktop.layout.GroupLayout(jPanelSubScreen);
         jPanelSubScreen.setLayout(jPanelSubScreenLayout);
@@ -267,6 +314,14 @@ private void onBtnCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBt
 // TODO add your handling code here:
     this.dispose();
 }//GEN-LAST:event_onBtnCancel
+
+private void onjTxtScreenTitle(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onjTxtScreenTitle
+// TODO add your handling code here:
+}//GEN-LAST:event_onjTxtScreenTitle
+
+private void onMaxItems(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onMaxItems
+// TODO add your handling code here:
+}//GEN-LAST:event_onMaxItems
 
 
     class NumbericVerifier extends InputVerifier {
