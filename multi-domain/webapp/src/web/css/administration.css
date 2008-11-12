@@ -20,7 +20,6 @@
 
 
 .Box {
-    position: relative;
     border: 1px solid #59707b;
     background-color: #F9F9F0;
     padding-left: 10px; 
@@ -48,7 +47,6 @@
   
 /* Styles used in Overlay windows */
 .MainBox {
-    position: relative;
     border: 1px solid #59707b;
     background-color: #FFFFFF;
     padding-left: 10px; 
@@ -75,7 +73,6 @@
 }
 
 .InnerBox {
-    position: relative;
     border: 1px solid #000000;
     background-color: #FFFFFF;
     padding-left: 10px; 
@@ -115,7 +112,7 @@
     background-image: url(../images/icons/delete.png);
     background-repeat:no-repeat;
     background-color: transparent;
-    padding-left:15px; 
+    padding-left:20px; 
 }
 
 .AttributesListing {
@@ -128,16 +125,15 @@
     padding: 4px; border: 1px solid #CCC;
 }
 
-.RelationshipsListing {
-    position: relative;
+.DefsListing {
     background-color: #F9F9F0;
     border: 1px solid #6E828C;
 }
-.RelationshipsListing .header {
+.DefsListing .header {
     background-color: #DDDDDD;
     text-align:left;
 }
-.RelationshipsListing .header .label {
+.DefsListing .header .label {
     font-family: Arial, Helvetica, sans-serif;
     font-size:12px;
     color:#343535;
@@ -145,13 +141,13 @@
     padding-left:2px;
     background-color: #DDDDDD;
 }
-.RelationshipsListing tbody {
+.DefsListing tbody {
     background-color: #FFFFFF;
 }
-.RelationshipsListing tbody tr {
+.DefsListing tbody tr {
     height:24px;
 }
-.RelationshipsListing tbody tr td{
+.DefsListing tbody tr td{
     font-family: Arial, Helvetica, sans-serif;
     font-size:11px;
     color:#343535;
@@ -159,17 +155,17 @@
     border-bottom: 1px solid #F9F9F0;
     padding-left:2px;
 }
-.RelationshipsListing tbody tr td input {
+.DefsListing tbody tr td input {
     font-family: Arial, Helvetica, sans-serif;
     font-size:12px;
     color:#343535;
     font-weight:normal;
     height:20px;
 }
-.RelationshipsListing .vSpacing {
+.DefsListing .vSpacing {
     background-color: #CCCCCC;
 }
-.RelationshipsListing .hSpacing {
+.DefsListing .hSpacing {
     background-color: #FFFFFF;
 }
 
