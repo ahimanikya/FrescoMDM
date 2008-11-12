@@ -59,6 +59,12 @@ public class MultiDomainWebManager {
         return this.mRelationshipTypes;
         
     }
+    /** Retrieves the pages definitions 
+     * @return Page definitions
+     */
+    public PageDefinition getPageDefinitions() {
+        return this.mPageDefinition;
+    }
 
     public JNDIResources getJndiResources() {
         return this.mJndiResources;
