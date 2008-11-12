@@ -22,15 +22,20 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
+import com.sun.mdm.multidomain.parser.Definition;
+import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.DomainForWebManager;
 import com.sun.mdm.multidomain.parser.DomainsForWebManager;
+import com.sun.mdm.multidomain.parser.PageDefinition;
+import com.sun.mdm.multidomain.parser.PageRelationType;
 import com.sun.mdm.multidomain.parser.SimpleSearchType;
 import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.SearchOptions;
 import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.parser.RecordDetail;
-import com.sun.mdm.multidomain.parser.RelationshipType;
+import com.sun.mdm.multidomain.parser.WebDefinition;
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
@@ -38,17 +43,22 @@ import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.services.model.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
+import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
+
+import org.xml.sax.InputSource;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import java.util.Properties;
+import java.io.InputStream;
 
+import org.xml.sax.InputSource;
 
 public class MDConfigManager {
 
@@ -85,25 +95,28 @@ public class MDConfigManager {
                 if (mInstance != null) {
                     return mInstance;
                 }
+                
+                // read the configuration XML file
+                mDWMInstance = getMultiDomainWebManager();
+                
                 mInstance = new MDConfigManager();
                 mScreens = new HashMap<Integer, ScreenObject>();
                 mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
                 mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
 
-                mDWMInstance = new MultiDomainWebManager();
 
                 configureDomains();
                 configureRelationships();
                 configureHierarchies();
                 configureGroups();
-                configureScreens();
+                configurePageDefinitions();
 
                 return mInstance;
             }
         } catch (Exception e) {
             throw new ConfigException(e);
         }
-	}  
+    }  
 
     /**
      * Forces a re-initialization of the the MDConfigManager.  
@@ -117,20 +130,22 @@ public class MDConfigManager {
                 if (mInstance != null) {
                     return mInstance;
                 }
-        	    mScreens = new HashMap<Integer, ScreenObject>();
-        	    mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
-        	    mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
-        	    
-        	    mDWMInstance = new MultiDomainWebManager();
-        	    
-        	    configureDomains();
-        	    configureRelationships();
-        	    configureHierarchies();
-        	    configureGroups();
-        	    configureScreens();
-        	    
-        	    return mInstance;
-        	}
+
+                // read the configuration XML file
+                mDWMInstance = getMultiDomainWebManager();
+                
+                mScreens = new HashMap<Integer, ScreenObject>();
+                mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
+                mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+
+                configureDomains();
+                configureRelationships();
+                configureHierarchies();
+                configureGroups();
+                configurePageDefinitions();
+
+                return mInstance;
+            }
         } catch (Exception e) {
             throw new ConfigException(e);
         }
@@ -147,6 +162,36 @@ public class MDConfigManager {
 	    return mInstance;
 	}
 
+    /** Parses MultiDomainWebManager.xml and returns com.sun.mdm.index.parser.MultiDomainWebManage.
+     *
+     * @throws ConfigException if an exception is encountered.
+     * @return the MultiDomainWebManager
+     */    
+    public static MultiDomainWebManager getMultiDomainWebManager() throws ConfigException {
+        
+        InputStream in;
+        String configFileName = MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML;
+        try {
+            in = MDConfigManager.class.getClassLoader().getResourceAsStream(configFileName);
+        } catch (Exception e) {
+            throw new ConfigException(mLocalizer.t("CFG551: Could not open the " +
+                                                   "MultiDomanWebManager configuration " +
+                                                   "file ({0}): {1}", 
+                                                   configFileName, 
+                                                   e.getMessage()));
+        }
+        try {
+            InputSource source = new InputSource(in);
+            return (Utils.parseMultiDomainWebManager(source));
+        } catch (Exception e) {
+            throw new ConfigException(mLocalizer.t("CFG552: Could not parse the " +
+                                                   "MultiDomanWebManager configuration " +
+                                                   "file ({0}): {1}", 
+                                                   configFileName, 
+                                                   e.getMessage()));
+        }
+    }
+
     /**
      * Configures the domains by retrieving the information from the parser.
      *
@@ -156,7 +201,7 @@ public class MDConfigManager {
         DomainsForWebManager dsFWM = mDWMInstance.getDomains();
         
         ArrayList<DomainForWebManager> domains = dsFWM.getDomains();
-        for (DomainForWebManager domain : domains) {
+        for (DomainForWebManager domainFWM : domains) {
             DomainScreenConfig domainScreenConfig = new DomainScreenConfig();
             
             // testing--raymond tam
@@ -165,28 +210,28 @@ public class MDConfigManager {
             domainScreenConfig.setSummaryLabel(summaryLabel);
 
             ArrayList<SearchScreenConfig> sSC = 
-                    convertSearchType(domain.getSearchType());
+                    convertSearchType(domainFWM.getSearchType());
             domainScreenConfig.setSearchScreenConfigs(sSC);
             
             ArrayList<SearchResultsConfig> sRC = 
-                    convertSearchDetail(domain.getSearchDetail());
+                    convertSearchDetail(domainFWM.getSearchDetail());
             domainScreenConfig.setSearchResultsConfigs(sRC);
 
 
 // testing--raymond tam
 // RESUME HERE
 //            ArrayList<SearchResultSummaryConfig> sRSC = 
-//                    convertSearchSummaryConfigs(domain.getRecordDetailList());
+//                    convertSearchSummaryConfigs(domainFWM.getRecordDetailList());
 //            domainScreenConfig.searchResultDetailsConfigs(sRSC);
             
             ArrayList<SearchResultDetailsConfig> sRDC = 
-                    convertRecordDetailList(domain.getRecordDetailList());
+                    convertRecordDetailList(domainFWM.getRecordDetailList());
             domainScreenConfig.setSearchResultDetailsConfigs(sRDC);
             
-            // testing--raymond tam
-            // RESUME HERE
-            // domain types conflict
-//            domainScreenConfig.setDomain(null);
+            String domainName = domainFWM.getDomainName();
+            com.sun.mdm.multidomain.services.model.Domain domain =
+                    new com.sun.mdm.multidomain.services.model.Domain(domainName);
+            domainScreenConfig.setDomain(domain);
             mInstance.addDomainScreenConfig(domainScreenConfig);
         }
     }
@@ -366,7 +411,20 @@ public class MDConfigManager {
         String guiType = relFieldRef.getGuiType();
         String valueList = relFieldRef.getValueList();
         String valueMask = relFieldRef.getValueList();
-        int valueType = Integer.parseInt(relFieldRef.getValueType());
+        
+        String valueTypeStr = "String";
+        if (relFieldRef.getValueType() != null) {
+            valueTypeStr = relFieldRef.getValueType();
+
+            // RESUME HERE
+            // if value type is date set the date input mask automatically, based on date format
+//            if (valueTypeStr.equals("date")) {
+//                inputMask = getDateInputMask();
+//            }
+        }
+
+        int valueType = getMetaType(valueTypeStr);
+        
         boolean keyType = relFieldRef.getKeyType();
                 
         FieldConfig fieldConfig = new FieldConfig(null, objRef, name, displayName, 
@@ -512,8 +570,8 @@ public class MDConfigManager {
      * @throws ConfigException if an error is encountered
      */
     private static void configureRelationships() throws ConfigException {
-        ArrayList<RelationshipType> relationshipTypes = mDWMInstance.getRelationshipTypes();
-        for (RelationshipType relationshipType : relationshipTypes) {
+        ArrayList<WebDefinition> relationshipTypes = mDWMInstance.getRelationshipTypes();
+        for (WebDefinition relationshipType : relationshipTypes) {
             String sourceDomainName = relationshipType.getSourceDomain();
     	    String targetDomainName = relationshipType.getTargetDomain();
     	    RelationshipScreenConfig relationshipScreenConfig = null;
@@ -529,7 +587,7 @@ public class MDConfigManager {
             String relationshipName = relationshipType.getName();
             
             ArrayList<RelationFieldReference> relTypePredefinedAttributes 
-                    = relationshipType.getFixedRelFieldRefs();     	
+                    = relationshipType.getPredefinedFieldRefs();     	
             ArrayList<FieldConfig> predefinedAttributes 
                     = convertRelationFieldReferences(relTypePredefinedAttributes);
                     
@@ -537,9 +595,33 @@ public class MDConfigManager {
                     = relationshipType.getExtendedRelFieldRefs();     	    
             ArrayList<FieldConfig> extendedAttributes 
                     = convertRelationFieldReferences(relTypeExtendedAttributes);
+            Definition definition = mDWMInstance.getLinkType(relationshipName, 
+                                                             sourceDomainName, 
+                                                             targetDomainName);
+            int id = -1;    // default value
+            String relTypeId = definition.getRelTypeId();
+            if (relTypeId != null && relTypeId.length() != 0 &&
+                !relTypeId.equalsIgnoreCase("null")) {
+                id = Integer.parseInt(relTypeId);
+            }
+
+            int direction = RelationshipDef.UNIDIRECTIONAL;     // default value
+            String relDir = definition.getDirection();
+            if (relDir != null && relDir.length() != 0 &&
+                !relDir.equalsIgnoreCase("null")) {
+                
+                // direction differs slightly in the parser
+                direction = Integer.parseInt(relDir) - 1;
+            }
+            RelationshipDef relDef = new RelationshipDef(relationshipName, 
+                                                         sourceDomainName, 
+                                                         targetDomainName,
+                                                         direction,
+                                                         id);
             
             RelationshipScreenConfigInstance rSCI 
-                    = new RelationshipScreenConfigInstance(relationshipName,
+                    = new RelationshipScreenConfigInstance(relDef,
+                                                           relationshipName,
                                                            displayName, 
                                                            predefinedAttributes,
                                                            extendedAttributes);
@@ -576,39 +658,116 @@ public class MDConfigManager {
     }
     
     /**
-     * Configures the the general screen definitions.
+     * Configures the page definitions.
      *
      * @throws ConfigException if an error is encountered
      */
-    private static void configureScreens() throws ConfigException {
-        // RESUME HERE
-        // not yet implemented
+    private static void configurePageDefinitions() throws ConfigException {
         
-        boolean initialScreenIDLocated = false;
-        Integer initialScreenID = - 1;
+        PageDefinition pageDef = mDWMInstance.getPageDefinitions();
+        int initialScreenID = pageDef.getInitialScreenId();
+        mInitialScreenID = initialScreenID;
+        ArrayList<com.sun.mdm.multidomain.parser.ScreenDefinition> screenDefs = pageDef.getScreenDefs();
         
-/*        
-        ArrayList<ScreenDef> screenDefintion = mDWMInstance.getScreenDefinitions();
-        for (ScreenDef screenDefintion : screenDefinitionObject) {
-            Integer id = screenDefinitionObject.getID();
-            if (initialScreenIDLocated == false && id.compareTo(initialScreenID) < 0 ) {
-                initialScreenID = id;
-            }
-          
-            String displayTitle= screenDefinitionObject.getDisplayTitle();
-            int displayOrder = screenDefinitionObject.getDisplayOrder();
-            ArrayList<ScreenObject> subscreens = screenDefinitionObject.getSubscreens();
-    	    ScreenObject scrObj = new ScreenObject(id, displayTitle, displayOrder, 
-    	                                           null, null, subscreens);
+        for (com.sun.mdm.multidomain.parser.ScreenDefinition screenDef : screenDefs) {
+
+            String displayTitle = screenDef.getScreenTitle();
+            int screenID = screenDef.getScreenId();
+            int displayOrder = screenDef.getDisplayOrder();
+            
+            ArrayList<SearchScreenConfig> searchScreenConfigs = convertPageRelationTypes(screenDef.getPageRelationType());
+            PageDefinition subPage = screenDef.getChildPage();
+            int initialSubscreenID = subPage.getInitialScreenId();
+            ArrayList<ScreenObject> subscreens = configurePageDefinitions(subPage);
+    	    ScreenObject scrObj = new ScreenObject(screenID, displayTitle, 
+                                                   displayOrder, initialSubscreenID, 
+                                                   searchScreenConfigs,
+                                                   subscreens);
             addScreen(scrObj);
         }
 
-*/        
-        // If default screen ID not found, set it to the screen with the lowest ID.
-
-        setInitialScreenID(initialScreenID);
     }
+    
+    /**
+     * Recursively configures the page definitions.
+     * 
+     * @param pageDef  Page definition to process.
+     * @return an ArrayList of ScreenObjects for the subscreens.
+     * @throws ConfigException if an error is encountered
+     */
+    private static ArrayList<ScreenObject> configurePageDefinitions(PageDefinition pageDef) 
+            throws ConfigException {
+        
+        if (pageDef == null) {
+            return null;
+        }
+        
+        ArrayList<com.sun.mdm.multidomain.parser.ScreenDefinition> screenDefs = pageDef.getScreenDefs();
+        ArrayList<ScreenObject> screenObjects = new ArrayList<ScreenObject> ();
+        for (com.sun.mdm.multidomain.parser.ScreenDefinition screenDef : screenDefs) {
 
+            String displayTitle = screenDef.getScreenTitle();
+            int screenID = screenDef.getScreenId();
+            int displayOrder = screenDef.getDisplayOrder();
+            
+            ArrayList<SearchScreenConfig> searchScreenConfigs = convertPageRelationTypes(screenDef.getPageRelationType());
+            PageDefinition subPage = screenDef.getChildPage();
+            ArrayList<ScreenObject> subscreens = null;
+            int initialSubscreenID = -1;
+            if (subPage != null) {
+                initialSubscreenID = subPage.getInitialScreenId();
+                subscreens =  configurePageDefinitions(subPage);
+            }
+    	    ScreenObject scrObj = new ScreenObject(screenID, displayTitle, 
+                                                   displayOrder, initialSubscreenID, 
+                                                   searchScreenConfigs,
+                                                   subscreens);
+            screenObjects.add(scrObj);
+        }
+        return screenObjects;
+    }
+    
+    /**
+     * Converts an ArrayList of PageRelationType instances to an ArrayList
+     * of SearchScreenConfig instances.
+     * 
+     * @param pageDef  Page definition to process.
+     * @return an ArrayList of SearchScreenConfig instances for the subscreens.
+     * @throws ConfigException if an error is encountered
+     */
+    private static ArrayList<SearchScreenConfig> convertPageRelationTypes(ArrayList<PageRelationType> pageRelationTypes) 
+            throws ConfigException {
+        
+        if (pageRelationTypes == null || pageRelationTypes.size() == 0) {
+            return null;
+        }
+        ArrayList<SearchScreenConfig> searchScreenConfigs = new ArrayList<SearchScreenConfig>();
+        for (PageRelationType pageRelType : pageRelationTypes) {
+            // RESUME HERE
+            // clean this up
+            ObjectNodeConfig rootObj = null;
+            String screenTitle = null;
+            String instruction = null;
+            int searchResultID = 0;
+            int screenOrder = 0;
+            boolean showEUID = false;
+            boolean showLID = false;
+            boolean showCreateDate = false;
+            boolean showCreateTime = false;
+            boolean showStatus = false;
+            SearchScreenOptions options = null;
+            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(pageRelType.getFieldGroups());
+            SearchScreenConfig sSC = new SearchScreenConfig(rootObj, screenTitle, 
+                                                            instruction, searchResultID, 
+                                                            screenOrder, showEUID, 
+                                                            showLID, showCreateDate, 
+                                                            showCreateTime, showStatus, 
+                                                            options, fieldConfigGroups);
+            searchScreenConfigs.add(sSC);
+        }
+        return searchScreenConfigs;
+    }
+    
     /**
      * Retrieve all domain screen configurations from the DomainScreenConfig hashmap.
      *
@@ -1163,6 +1322,50 @@ public class MDConfigManager {
             return true;
         }
         return false;
+    }
+    
+    private static int getMetaType(String valueTypeStr) {
+        if (valueTypeStr.equalsIgnoreCase("Int")) {
+            return ObjectField.OBJECTMETA_INT_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Boolean")) {
+            return ObjectField.OBJECTMETA_BOOL_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("String")) {
+            return ObjectField.OBJECTMETA_STRING_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Byte")) {
+            return ObjectField.OBJECTMETA_BYTE_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Character")) {
+            return ObjectField.OBJECTMETA_CHAR_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Long")) {
+            return ObjectField.OBJECTMETA_LONG_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Blob")) {
+            return ObjectField.OBJECTMETA_BLOB_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Date")) {
+            return ObjectField.OBJECTMETA_DATE_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Float")) {
+            return ObjectField.OBJECTMETA_FLOAT_TYPE;
+        }
+
+        if (valueTypeStr.equalsIgnoreCase("Time")) {
+            return ObjectField.OBJECTMETA_TIMESTAMP_TYPE;
+        }
+
+        return ObjectField.OBJECTMETA_UNDEFINED_TYPE;
     }
     
 }

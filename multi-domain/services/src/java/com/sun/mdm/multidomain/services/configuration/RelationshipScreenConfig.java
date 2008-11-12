@@ -93,7 +93,7 @@ public class RelationshipScreenConfig {
 	public void addRelScreenConfigInstance(RelationshipScreenConfigInstance rSCI) 
 	        throws Exception {
 	    if (rSCI == null) {
-            throw new Exception(mLocalizer.t("CFG528: Relationship screen " +
+                throw new Exception(mLocalizer.t("CFG528: Relationship screen " +
                                              "configuration instance cannot be null."));
 	    }
 	    String relationshipName = rSCI.getRelationshipDef().getName();

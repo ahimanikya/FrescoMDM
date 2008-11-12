@@ -73,6 +73,9 @@ public class SearchResultsConfig implements java.io.Serializable {
         mRootObj = rootObj;
         mDisplayName = displayName;
         mSearchResultsID = searchResultsID;
+        // RESUME HERE
+        // is this required?
+/*        
         if ((searchResultsSummaryID >= 0 && searchResultDetailsID >= 0) ||
             (searchResultsSummaryID < 0 && searchResultDetailsID < 0))  {
                 
@@ -87,6 +90,9 @@ public class SearchResultsConfig implements java.io.Serializable {
             mSearchResultsDetailID = searchResultDetailsID;
             mSearchResultsSummaryID = DISABLED;
         }
+ */
+        mSearchResultsSummaryID = searchResultsSummaryID;
+        mSearchResultsDetailID = searchResultDetailsID;
         mPageSize = pageSize;
         mMaxRecords = maxRecords;
         mShowEUID = showEUID;

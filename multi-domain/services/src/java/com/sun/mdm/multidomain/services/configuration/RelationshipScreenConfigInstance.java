@@ -28,8 +28,6 @@ import java.util.ArrayList;
 public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
 
     private RelationshipDef mRelationshipDef = null;
-    // RESUME HERE
-    // Should this be obtained from the RelationshipDef?
     private String mRelationshipDisplayName = null;
     private String mRelationshipName = null;
     private ArrayList<FieldConfig> mPredefinedAttributes;
@@ -40,10 +38,12 @@ public class RelationshipScreenConfigInstance extends ObjectScreenConfig {
         mExtendedAttributes = new ArrayList<FieldConfig> ();
     }
     
-    public RelationshipScreenConfigInstance(String relName,
+    public RelationshipScreenConfigInstance(RelationshipDef relationshipDef,
+                                            String relName,
                                             String relDisplayName,
                                             ArrayList<FieldConfig> predefinedAttributes,
                                             ArrayList<FieldConfig> extendedAttributes) {
+        mRelationshipDef = relationshipDef;
         mRelationshipName = relName;                                         
         mRelationshipDisplayName = relDisplayName;
         mPredefinedAttributes = predefinedAttributes;

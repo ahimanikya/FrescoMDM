@@ -25,6 +25,7 @@ package com.sun.mdm.multidomain.services.configuration;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -35,10 +36,14 @@ import junit.framework.TestCase;
 public class MDConfigManagerTest extends TestCase {
     
     private static MDConfigManager configManager = null;
-    private static int DOMAIN_SCREEN_CONFIGS_SIZE = 2;
-    private static int RELATIONSHIP_SCREEN_CONFIGS_SIZE = 2;
+    private static int DOMAIN_SCREEN_CONFIGS_SIZE = 5;
+    private static int RELATIONSHIP_SCREEN_CONFIGS_SIZE = 3;
+    private static int RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE = 5;
     private static int HIERARCHY_SCREEN_CONFIGS_SIZE = 0;
-    private static int SCREEN_OBJECT_CONFIGS_SIZE = 3;
+    private static int PAGE_DEF_CONFIG_SIZE = 1;
+    private static int PAGE_DEF_SUBSCREEN_CONFIG_SIZE = 2;
+    private static int PAGE_DEF_INITIAL_SCREEN_ID = 0;
+    private static int PAGE_DEF_INITIAL_SUBSCREEN_ID = 1;
     
     public MDConfigManagerTest (String name) throws ConfigException {
         super(name);
@@ -60,12 +65,14 @@ public class MDConfigManagerTest extends TestCase {
             int size = domainScreenConfigs.size();
             if (size != DOMAIN_SCREEN_CONFIGS_SIZE) {
                 System.out.println("Error: expected "  + DOMAIN_SCREEN_CONFIGS_SIZE +
-                                   " domain screen configurations but actually " +
+                                   " domain screen configurations but actually" +
                                    " retrieved " + size + " domain screen configurations.");
                 assert(false);
+            } else {
+                System.out.println("testDomains succeeded.");
+                assert(true);
+                // count the screens for each domain screen configuration
             }
-            assert(true);
-            // count the screens for each domain screen configuration
         } catch(Exception ex) {
             fail(ex.getMessage());
         }        
@@ -78,12 +85,29 @@ public class MDConfigManagerTest extends TestCase {
             int size = relationshipScreenConfigs.size();
             if (size != RELATIONSHIP_SCREEN_CONFIGS_SIZE) {
                 System.out.println("Error: expected "  + RELATIONSHIP_SCREEN_CONFIGS_SIZE +
-                                   " relationship screen configurations but actually " +
+                                   " relationship screen configurations but actually" +
                                    " retrieved " + size + " relationship screen configurations.");
                 assert(false);
+            } else {
+                
+                int relationshipConfigCount = 0;
+                Collection<RelationshipScreenConfig> values = relationshipScreenConfigs.values();
+                for (RelationshipScreenConfig rsc : values) {
+                    // count the individual screen configurations
+                    Collection<RelationshipScreenConfigInstance> relConfigs 
+                                = rsc.getRelationships().values();
+                    relationshipConfigCount += relConfigs.size();
+                }
+                if (relationshipConfigCount != RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE) {
+                    System.out.println("Error: expected "  + RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE +
+                                       " relationship screen configuration instances " + 
+                                       "but actually retrieved " + size + 
+                                       " relationship screen configuration instances.");
+                } else {
+                    System.out.println("testRelationships succeeded.");
+                    assert(true);
+                }
             }
-            assert(true);
-            // count the screens for each relationship screen configuration
         } catch(Exception ex) {
             fail(ex.getMessage());
         }        
@@ -92,16 +116,44 @@ public class MDConfigManagerTest extends TestCase {
     public void testScreens() {
         try {
             // count the number of screens
-        	HashMap<Integer, ScreenObject> screenObjects = configManager.getScreens();
+            HashMap<Integer, ScreenObject> screenObjects = configManager.getScreens();
             int size = screenObjects.size();
-            if (size != SCREEN_OBJECT_CONFIGS_SIZE) {
-                System.out.println("Error: expected "  + SCREEN_OBJECT_CONFIGS_SIZE +
-                                   " screen object configurations but actually " +
+            if (size != PAGE_DEF_CONFIG_SIZE) {
+                System.out.println("Error: expected "  + PAGE_DEF_CONFIG_SIZE +
+                                   " screen object configurations but actually" +
                                    " retrieved " + size + " screen object configurations.");
                 assert(false);
+            } else {
+                // check the initial screen
+                int initialScreenID = configManager.getInitialScreenID();
+                if (initialScreenID != PAGE_DEF_INITIAL_SCREEN_ID) {
+                    System.out.println("Error: expected top level page definition"  +
+                                       " to have an initial subscreen ID of "+ PAGE_DEF_INITIAL_SCREEN_ID +
+                                       " but actually retrieved " + initialScreenID);
+                    assert(false);
+                }
+                Collection<ScreenObject> values = screenObjects.values();
+                for (ScreenObject scrObj : values) {
+                    int initialSubscreenID = scrObj.getInitialSubscreenID();
+                    if (initialSubscreenID != PAGE_DEF_INITIAL_SUBSCREEN_ID) {
+                        System.out.println("Error: expected an initial subscreen ID of " + 
+                                           PAGE_DEF_INITIAL_SUBSCREEN_ID +
+                                           " but actually retrieved " + initialSubscreenID);
+                        assert(false);
+                    } else {
+                        Collection<ScreenObject> subscreens = scrObj.getSubscreens();
+                        int subscreenCount = subscreens.size();
+                        if (subscreenCount != PAGE_DEF_SUBSCREEN_CONFIG_SIZE) {
+                            System.out.println("Error: expected " + PAGE_DEF_SUBSCREEN_CONFIG_SIZE +
+                                               " subscreens but actually retrieved " + subscreenCount);
+                            assert(false);
+                        } else {
+                            System.out.println("testScreens succeeded.");
+                            assert(true);
+                        }
+                    }
+                }
             }
-            assert(true);
-            // check the initial screen
         } catch(Exception ex) {
             fail(ex.getMessage());
         }        
