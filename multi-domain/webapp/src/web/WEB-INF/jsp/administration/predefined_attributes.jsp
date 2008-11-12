@@ -7,11 +7,11 @@
 <%
 String prefixId = (String) request.getParameter("prefix");
 %>
-<div dojoType="dijit.layout.ContentPane" class="InnerBox" hasShadow="true" style="width:100%;">
+<div dojoType="dijit.layout.ContentPane" class="InnerBox" hasShadow="true" style="width:100%;height:105px;">
     <div class="TitleBar"><f:message key="include_these_predefine_attribute_text" /></div>
 
-    <div class="Content">
-        <form id="<%=prefixId %>_predefinedAttrubutesForm" name="<%=prefixId %>_predefinedAttrubutesForm">
+    <div class="Content"  style="height:100px;">
+        <form  id="<%=prefixId %>_predefinedAttrubutesForm" name="<%=prefixId %>_predefinedAttrubutesForm">
     <table cellspacing="5" cellpadding="0">
         <tr>
             <td class="formLabel"><input type="checkbox"  onclick="updateRequiredField(this, '<%=prefixId %>_EffectiveFromRequired');" dojoType="dijit.form.CheckBox" name="EffectiveFrom"><f:message key="effective_from_text" /></td> 

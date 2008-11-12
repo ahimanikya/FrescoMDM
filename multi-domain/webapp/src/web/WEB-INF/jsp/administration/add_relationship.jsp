@@ -17,9 +17,9 @@
 </script>
 
 
-<form action="#" method="GET" name="addRelationshipForm" onSubmit="return validateRelationshipForm(this);">
+
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
-    
+   <form action="#" method="GET" name="addRelationshipForm" onSubmit="return validateRelationshipForm(this);"> 
     <tr>
         <td class="formLabel"><f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" /></td> 
         <td>
@@ -90,9 +90,9 @@
             <input type="button" name="cancel_add_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addrelationship').hide();"/>
         </td>
     </tr>
-    
+  </form>  
 </table> 
-</form>
+
 <!--
 <div id="errorDialog" class="MainBox" dojoType="dijit.Dialog" title="Error Message" style="display:none;width:500px;">
     <table>

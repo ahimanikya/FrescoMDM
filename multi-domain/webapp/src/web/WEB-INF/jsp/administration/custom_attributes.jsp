@@ -7,7 +7,7 @@
 <%
 String prefixId = (String) request.getParameter("prefix");
 %>
-<div dojoType="dijit.layout.ContentPane" class="InnerBox" hasShadow="true" style="width:100%;">
+<div dojoType="dijit.layout.ContentPane" class="InnerBox" hasShadow="true" style="width:100%;height:150px;">
     <div class="TitleBar"><f:message key="define_custom_attribute_text" /></div>
 
     <div class="Content">

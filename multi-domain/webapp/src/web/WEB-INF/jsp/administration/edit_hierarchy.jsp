@@ -41,19 +41,19 @@
             <f:message key="effective_from_text" /><f:message key="colon_symbol" />
         </td>
         <td>
-            <input  name="name" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/><img src="images/cal.gif" title="calender">
+            <input  name="name" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
         </td> 
         <td class="formLabel">
            <f:message key="effective_to_text" /><f:message key="colon_symbol" />
        </td>
         <td>
-           <input  name="name" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/><img src="images/cal.gif" title="calender">
+           <input  name="name" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
          </td>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td colspan="3"> <textarea dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea><!--<textarea rows="3"  cols="70"  name="Description"></textarea>--></td> 
+        <td colspan="3"> <textarea dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     

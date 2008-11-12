@@ -17,9 +17,9 @@
 </script>
 
 
-<form  action="#" method="GET" name="addHierarchyForm" onsubmit=" return validateHierarchypForm(this);">
+
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
-    
+   <form  action="#" method="GET" name="addHierarchyForm" onsubmit=" return validateHierarchypForm(this);"> 
     <tr>
         <td class="formLabel" width="200px">
             <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
@@ -42,19 +42,19 @@
             <f:message key="effective_from_text" /><f:message key="colon_symbol" />
         </td>
         <td>
-            <input  name="EffectiveFrom" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/><img src="images/cal.gif" title="calender">
+            <input  name="EffectiveFrom" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
         </td> 
         <td class="formLabel">
            <f:message key="effective_to_text" /><f:message key="colon_symbol" />
        </td>
         <td>
-           <input  name="EffectiveTo" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/><img src="images/cal.gif" title="calender">
+           <input  name="EffectiveTo" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
          </td>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td colspan="3"> <textarea dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea><!--<textarea rows="3"  cols="70"  name="Description"></textarea>--></td> 
+        <td colspan="3"> <textarea dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -91,9 +91,9 @@
             <input type="button" name="cancel_add_hierarchy" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addhierarchy').hide();"/>
         </td>
     </tr>
-    
+  </form>  
 </table> 
-</form>
+
 
 
 <script language="javascript" 
