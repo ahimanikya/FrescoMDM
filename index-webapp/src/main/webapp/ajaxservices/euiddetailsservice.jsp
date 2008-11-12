@@ -165,8 +165,7 @@ boolean isSessionActive = true;
 			}  else if(isShowMergedRecords) { //If Show merged records for EO
             
 				eoArrayList  = recordDetailsHandler.buildEuids(euidReq);
-                eoMergeRecords = recordDetailsHandler.viewMergedRecords(euidReq,request.getParameter("tranNo"));
-
+                
 			} else { //If simple EUID lookup
 
 				if (euidReq != null) eoArrayList = recordDetailsHandler.buildEuids(euidReq);
@@ -678,18 +677,21 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                  <div style="width:170px;overflow:hidden">
+                                                  <div style="width:170px;overflow:hidden" class="history">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
+														   <%
+												            String[] dateandFunction = keyTitle.split(" ");
+											               %>
                                                             <tr>
-                                                                <td class="<%=menuClass%>"><%=keyTitle%></td>
+                                                                <td class="<%=menuClass%>" style="padding-left:2px;font-size: 10px;text-align:left;font-weight:bold"><nobr><%=ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, dateandFunction[0])%>&nbsp;<%=dateandFunction[1]%></nobr></td>
                                                             </tr>
                                                                 <tr>
                                                                     <td valign="top" class="dupfirst">
                                                                             <%=objectHistMapValues.get("EUID")%>
                                                                     </td>
                                                                 </tr>
-                                                        </table>
+                                                         </table>
                                                     </div>
                                                 </div>
 
@@ -824,28 +826,29 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     </div>
                                                 </div>
                                             </td>
-                                              <%                                                
-                                                }
-                                              }%>                                            
-                 
-                                              <!--END displaying the History-->
-
-											 <!--Start displaying merged records -->
+                                            
+											 <!--Start displaying merged records lidMerge -->
                                          <% 
-                                               if( eoMergeRecords != null && eoMergeRecords.size() > 0) {
-                                                 for(int i=0;i<eoMergeRecords.size();i++) {
-                                                    HashMap mergedValuesMap = (HashMap) eoMergeRecords.get(i);
-                                                    HashMap eoValuesMap = (HashMap) mergedValuesMap.get("ENTERPRISE_OBJECT");
+											  if(keyTitle.startsWith("euidMerge") || keyTitle.startsWith("lidMerge") ){
+                                                  eoMergeRecords = recordDetailsHandler.viewMergedRecords(euidReq,tranNo);
+											  } 
+											  %>
+                                               <% if( (keyTitle.startsWith("euidMerge") || keyTitle.startsWith("lidMerge")) && eoMergeRecords != null && eoMergeRecords.size() > 0) {
+												  int totalSize  = (keyTitle.startsWith("euidMerge")) ? eoMergeRecords.size() : eoMergeRecords.size() - 1;
+                                                 for(int m=0;m<totalSize;m++) {
+                                                    HashMap mergedValuesMap = (HashMap) eoMergeRecords.get(m);
+                                                    eoValuesMap = (HashMap) mergedValuesMap.get("ENTERPRISE_OBJECT");
 					                                String eoMergedStatus = (String) mergedValuesMap.get("EO_STATUS");
+													String mergeClass  = (keyTitle.startsWith("euidMerge"))?"euidmerge":"transaction";
                                             %>
                                                <td  valign="top">
-                                                <div id="eoMergeRecords<%=countEnt%><%=i%>">
+                                                <div id="eoMergeRecords<%=i%><%=m%>" style="visibility:hidden;display:none;">
                                                   <div style="width:170px;overflow:hidden">
-                                                    <div id="mainEuidContent<%=eoValuesMap.get("EUID")%>" class="transaction" >
+                                                    <div id="mainEuidContent<%=eoValuesMap.get("EUID")%>" class="<%=mergeClass%>" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
                                                                 <td class="<%=menuClass%>">
-																  <%if(i==0) {%>
+																  <%if(m==0) {%>
 																    <h:outputText value="#{msgs.main_euid_label_text}"/>
 																  <%}else {%>
 																    <h:outputText value="#{msgs.merged_euid_label}"/>
@@ -854,7 +857,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             </tr> 
                                                                  <tr>
                                                                     <td valign="top" class="dupfirst">
-                                                                            <%=eoValuesMap.get("EUID")%>
+                                                                           <%=eoValuesMap.get("EUID")%>
                                                                     </td>
                                                                 </tr>
                                                          </table>
@@ -863,7 +866,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
                                                   <div id="mainEuidContentButtonDiv<%=countEnt%>">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
-                                                            <div id="personEuidDataContent<%=mergedValuesMap.get("EUID")%>" class="transaction">
+                                                            <div id="personEuidDataContent<%=mergedValuesMap.get("EUID")%>" class="<%=mergeClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=midmUtilityManager.getStatus(eoMergedStatus)%></font></td></tr>
                                                                      <%
@@ -996,6 +999,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                 }
                                               }%>                                            
                                               <!--End displaying merged records-->
+
+                                              <%}%>
+
+                                              <%}%>                                            
+                                              <!--END displaying the History-->
+
                                            <%}%>
                                            <td valign="top"><div id="previewPane"></div></td>
                                         </tr>
@@ -1112,24 +1121,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                           mergekey = (String) objectHist.keySet().toArray()[0];
 														  
 										               }
-                                                        if (mergekey.startsWith("euidMerge")) {                                                  
+                                                        if( eoMergeRecords != null && eoMergeRecords.size() > 0) {   
                                                       %>  
                                                      <tr>
                                                       <td valign="top">
-                                                          <a href="javascript:void(0);" class="viewbtn" title="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>"									 onclick="javascript:showExtraDivs('tree',event);ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
-														  <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
-                                                          </a>
+                                                          <a href="javascript:void(0);" class="buttonbrown" title="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>"									 onclick="javascript:showExtraDivs('tree',event);ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)"><nobr><span><h:outputText  value="#{msgs.View_MergeTree_but_text}"/><img src="./images/spacer.gif" border="0" width="5px"/><img src="./images/chevrons-right.png" border="0" alt="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>" /></span></nobr></a>
                                                       </td>
                                                       </tr>
-                                                      <tr>
-                                                        <td valign="top">
- 														   <a  title="<h:outputText value="#{msgs.View_Merge_Records_but_text}" />" class="viewbtn" href="javascript:void(0)"
-														   onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&showMergedRecord=true&tranNo=<%=tranNo%>','targetDiv','')">
-                                                            <h:outputText  value="#{msgs.View_Merge_Records_but_text}"/>
-                                                           </a>																
-                                                         </td> 
-                                                       </tr>
-                                                   <%}%>
+                                                    <%}%>
  
                                           <%}%> 
 
@@ -1137,6 +1136,62 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                </table>                                               
   											   </div>
                                         </td>   
+                                        <%if(eoHistory.size() > 0) {%>
+										
+                                        <%
+										 String mergekey = new String();
+                                         
+										for(int i=0;i<eoHistory.size();i++) {
+                                             HashMap objectHist = (HashMap) eoHistory.get(i);
+											 mergekey = (String) objectHist.keySet().toArray()[0];
+                                                    String keyTitle = mergekey.substring(0, mergekey.indexOf(":"));
+                                                    int ind = mergekey.indexOf(":");
+                                                     tranNo = mergekey.substring(ind+1, mergekey.length()); 
+												  int totalMergeRecordsSize  = (keyTitle.startsWith("euidMerge")) ? eoMergeRecords.size() : eoMergeRecords.size() - 1;
+  
+											 %>		  
+
+											<td align="left" style="padding-left:0px;text-align:left;font-weight:bold">
+											  <div id="viewMergeRecordsDiv<%=i%>" style="visiblity:hidden;display:none;">
+												<table width="100%" cellpadding="0" cellspacing="0" border="0">
+												 <tr>
+												   <%if(keyTitle.startsWith("euidMerge") || keyTitle.startsWith("lidMerge") ){%>
+												   <td width="169px;" >
+                                                           <a class="buttonbrown"  style="text-align:left;" title="<h:outputText value="#{msgs.View_Merge_Records_but_text}"/>" href="javascript:showMergedRecords('<%=i%>','<%=totalMergeRecordsSize%>')" >  
+                                                             <nobr><span>
+                                                              <%if(keyTitle.startsWith("euidMerge") ){%>
+															  <h:outputText  value="#{msgs.View_Merge_Records_but_text}"/>
+															 <%} else {%>
+															  <h:outputText  value="#{msgs.View_lid_Merge_Records_but_text}"/>
+ 															 <%}%>
+															 <img src="./images/spacer.gif" border="0" width="2px"/><img src="./images/chevrons-right.png" border="0" alt="<h:outputText  value="#{msgs.View_Merge_Records_but_text}"/>" /></span></nobr>
+                                                           </a>
+ 												   </td>   
+ 												   <%}else {%>
+												   <td align="left" width="169px;">&nbsp;</td>   
+												   <%}%>
+												 </tr>
+												 </table>
+											   </div>
+											</td>
+                                             <% if(( keyTitle.startsWith("euidMerge") || keyTitle.startsWith("lidMerge") )&& eoMergeRecords != null && eoMergeRecords.size() > 0) {
+                                                for(int m=0;m<2;m++) {
+                                             %>
+                                               <td  valign="top">
+											  <div id="viewMergeRecordsOuterDiv<%=i%><%=m%>" style="visiblity:hidden;display:none;">
+												<table width="100%" cellpadding="0" cellspacing="0">
+												 <tr>
+												   <td>&nbsp;</td>   
+												 </tr>
+												 </table>
+											   </div>
+											</td>
+
+											<%}%>
+											<%}%>
+
+											<%}%>
+										<%}%>
 										<%}%>
                                     </tr>
                                 </table>

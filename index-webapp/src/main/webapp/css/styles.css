@@ -1253,6 +1253,43 @@ a.button:active span {
     padding: 6px 0 4px 18px; /* push text down 1px */
 }
 
+/* John's Styles */
+
+a.buttonbrown {
+	background: transparent url('../images/bg_button_a-brown.png') no-repeat scroll top right;
+	color: #FFFFFF;
+	display: block;
+	float: left;
+	height: 24px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	text-decoration: none;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+    font-variant: normal;
+}
+
+a.buttonbrown span {
+    background: transparent url('../images/bg_button_span-brown.png') no-repeat;
+    display: block;
+    color: #FFFFFF;
+    line-height: 14px;
+    padding: 5px 0 5px 10px;
+}
+a.buttonbrown:active {
+    background-position: bottom right;
+    color: #FFFFFF;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.buttonbrown:active span {
+    background-position: bottom left;
+    padding: 6px 0 4px 18px; /* push text down 1px */
+}
+
+
 /*
 .button 
 {
@@ -2185,7 +2222,7 @@ width:120px
                padding-left: 10px; padding-top: 4px; text-decoration:none }
 
 .viewbtn {  display:block; font-family: Arial, Helvetica, sans-serif; color: #FFFFF0; font-size: 12px; 
-               font-weight: bold; width: 115px; height: 21px; 
+               font-weight: bold; width: 120px; height: 23px; 
                background-image: url('../images/view.gif');  background-repeat:no-repeat; padding-left: 
                10px; padding-top: 4px; padding-top: 4px; text-decoration:none }
 .clearbtn {font-family: Arial, Helvetica, sans-serif; color: #393839; font-size: 12px; font-weight:bold; text-align:center; vertical-align:middle; margin:0px; padding:0px; border:0px; background-color: #FFFFFF; width:38px; height:16px; background-image: url('../images/clear.gif');}
@@ -2742,6 +2779,13 @@ div.w114 table td.fntdup5nou    {height: 25px; border-top: 1px solid #F7F3D6;  b
 .transaction table td.dupfirst{ display:block; height:25px; background-image: url('../images/transaction_heading.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
 .transaction table td a.dupbtn  {display:block;height:25px; background-color:#fdeddf; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
 
+/* euidmerge*/
+.euidmerge  {width:169px;vertical-align:top;}
+.euidmerge table {width:169px;background-color:#c0d9fb;background-image: url('../images/bglast.gif');}
+.euidmerge table td { width:169px;height:25px; background-color:#c0d9fb;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.euidmerge table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_euidmerge.jpg'); background-repeat:no-repeat}
+.euidmerge table td.dupfirst{ display:block; height:25px; background-image: url('../images/euidmerge_heading.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.euidmerge table td a.dupbtn  {display:block;height:25px; background-color:#c0d9fb; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
 
 .actionbuton  {vertical-align:top;}
 .actionbuton table {width:169px;vertical-align:top;background-color:#F7FBD6;padding-left:0px; padding-right:0px;}

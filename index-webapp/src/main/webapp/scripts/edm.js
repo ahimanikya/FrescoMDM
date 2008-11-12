@@ -1624,6 +1624,27 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize,
 			} //if spacer div condition
 		   } //Total number of euid columns
 		  }//Total numbe of src records column
+
+		   //HIDE history divs by default
+			for(var j=0;j<historySize;j++) {
+				if(document.getElementById("viewMergeRecordsDiv"+j) != null) {
+				  //viewMergeRecordsDiv
+				  document.getElementById("viewMergeRecordsDiv"+j).style.visibility="hidden";
+				  document.getElementById("viewMergeRecordsDiv"+j).style.display="none";
+				}
+				//Hide all the merged records divs if any
+				for(var mc=0;mc<2;mc++) {
+					if(document.getElementById("eoMergeRecords"+j+mc) != null)  {
+							//alert("eoMergeRecords"+j+mc);
+							//alert(document.getElementById("eoMergeRecords"+j+mc).style.visibility);
+							document.getElementById("eoMergeRecords"+j+mc).style.visibility="hidden";
+							document.getElementById("eoMergeRecords"+j+mc).style.display="none";
+							//viewMergeRecordsOuterDiv
+							document.getElementById("viewMergeRecordsOuterDiv"+j+mc).style.visibility="hidden";
+							document.getElementById("viewMergeRecordsOuterDiv"+j+mc).style.display="none";
+					 }
+				}
+ 	    }
 		var showSources = "true";
 		for(var i=0;i<count;i++) {
 		  divLayerMain = document.getElementById(mainDupSources+countEnt+i);
@@ -1651,6 +1672,27 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize,
 					divLayerHistory.style.visibility="hidden";
 					divLayerHistory.style.display="none";
 				  }
+
+				  if(document.getElementById("viewMergeRecordsDiv"+j) != null) {  
+			        //viewMergeRecordsDiv
+					document.getElementById("viewMergeRecordsDiv"+j).style.visibility="hidden";
+					document.getElementById("viewMergeRecordsDiv"+j).style.display="none";
+				  }
+
+				 //Hide all the merged records divs if any
+				 for(var mc=0;mc<2;mc++) {
+				   if(document.getElementById("eoMergeRecords"+j+mc) != null)  {
+					    //alert("eoMergeRecords"+j+mc);
+					    //alert(document.getElementById("eoMergeRecords"+j+mc).style.visibility);
+						document.getElementById("eoMergeRecords"+j+mc).style.visibility="hidden";
+						document.getElementById("eoMergeRecords"+j+mc).style.display="none";
+                        //viewMergeRecordsOuterDiv
+						document.getElementById("viewMergeRecordsOuterDiv"+j+mc).style.visibility="hidden";
+						document.getElementById("viewMergeRecordsOuterDiv"+j+mc).style.display="none";
+
+				   }
+				 }
+
 				}
 			  
 		   }
@@ -1757,6 +1799,18 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
 
 
 	for(var i=0;i<count;i++) {
+
+	 //Hide all the merged records divs if any
+     for(var mc=0;mc<2;mc++) {
+       if(document.getElementById("eoMergeRecords"+i+mc) != null)  {
+            document.getElementById("eoMergeRecords"+i+mc).style.visibility="hidden";
+            document.getElementById("eoMergeRecords"+i+mc).style.display="none";
+            
+			//viewMergeRecordsOuterDiv
+			document.getElementById("viewMergeRecordsOuterDiv"+i+mc).style.visibility="hidden";
+			document.getElementById("viewMergeRecordsOuterDiv"+i+mc).style.display="none";
+  	   }
+	 }
     divLayerHist = document.getElementById(mainDupHistory+countEnt+i);
     
     if (divLayerHist.style.display=="none" || divLayerHist.style.display=="") {
@@ -1843,6 +1897,18 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
 				showHistory = "true";
 			  }
 		  }			
+		  //view Merge Records Div
+			if(document.getElementById("viewMergeRecordsDiv"+j) != null ) {
+			   //alert(document.getElementById("viewMergeRecordsDiv"+j).style.visibility);
+               if(document.getElementById("viewMergeRecordsDiv"+j).style.visibility == 'visible') {
+			      document.getElementById("viewMergeRecordsDiv"+j).style.visibility="hidden";
+			      document.getElementById("viewMergeRecordsDiv"+j).style.display="none";
+			   } else {
+ 			      document.getElementById("viewMergeRecordsDiv"+j).style.visibility="visible";
+			      document.getElementById("viewMergeRecordsDiv"+j).style.display="block";
+			   }
+			}
+
 		}
        }
 
@@ -2352,3 +2418,37 @@ thisFrm = document.forms[thisForm];
  }
  return;
 }
+
+
+//show Merged Records for the EOS
+function showMergedRecords(transNo,totalMergedRecords) {
+	for(var i = 0 ; i <totalMergedRecords ; i ++) {
+		//eoMergeRecords<%=tranNo%><%=m%>
+		var divId = 'eoMergeRecords'+transNo+i;
+
+		if (document.getElementById(divId) != null)    {
+		   if (document.getElementById(divId).style.visibility == 'visible')    {
+			  document.getElementById(divId).style.visibility = "hidden";
+			  document.getElementById(divId).style.display = "none";
+	    	} else {
+		      document.getElementById(divId).style.visibility = "visible";
+			  document.getElementById(divId).style.display = "block";
+   		  }
+		}
+
+		//viewMergeRecordsOuterDiv<%=tranNo%><%=m%>
+		var divIdOuter = 'viewMergeRecordsOuterDiv'+transNo+i;
+ 	 	if (document.getElementById(divIdOuter) != null)    {
+			if (document.getElementById(divIdOuter).style.visibility == 'visible')    {
+				document.getElementById(divIdOuter).style.visibility = "hidden";
+				document.getElementById(divIdOuter).style.display = "none";
+			} else {
+				document.getElementById(divIdOuter).style.visibility = "visible";
+				document.getElementById(divIdOuter).style.display = "block";
+			}
+		}
+
+	}
+
+
+} 
