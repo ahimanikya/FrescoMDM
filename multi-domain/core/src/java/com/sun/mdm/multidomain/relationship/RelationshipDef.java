@@ -59,6 +59,27 @@ public class RelationshipDef extends AttributesDef implements Serializable {
     	    	
     }
     
+    /**
+     * Create an instance of RelationshipType.
+     * @param name Relationship type name. 
+     * @param sourceDomainName  Name of the source domain.
+     * @param targetDomainName  Name of the target domain.
+     * @param id Relationship def Id.
+     * @param dir  Relationship direction.
+     */
+    public RelationshipDef(String name, String sourceDomainName, 
+                           String targetDomainName, int id,
+                           int dir) {
+        super(name);
+    	this.id = id;
+        sourceDomain = sourceDomainName;
+        targetDomain = targetDomainName;
+        if (dir == UNIDIRECTIONAL) {
+            direction = DirectionMode.UNIDIRECTIONAL;
+        } else if (dir == BIDIRECTIONAL) {
+            direction = DirectionMode.BIDIRECTIONAL;
+        }   	
+    }
     
     /**
      * Get Relationship type source domain.
