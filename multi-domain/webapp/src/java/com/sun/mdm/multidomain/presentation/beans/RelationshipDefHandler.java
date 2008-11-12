@@ -25,7 +25,7 @@ package com.sun.mdm.multidomain.presentation.beans;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.sun.mdm.multidomain.relationship.RelationshipDef;
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.control.RelationshipManager;
@@ -52,19 +52,19 @@ public class RelationshipDefHandler {
      * Get all RelationshipDefs for the given source domain and target domain name.
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
-     * @return List<RelationshipDef> List of RelationshipDef.
+     * @return List<RelationshipDefExt> List of RelationshipDefExt.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipDef> getRelationshipDefs(String sourceDomain, String targetDomain) 
+    public List<RelationshipDefExt> getRelationshipDefs(String sourceDomain, String targetDomain) 
         throws ServiceException {                
-        List<RelationshipDef> types = null;
+        List<RelationshipDefExt> types = null;
         try {
             types = relationshipManager.getRelationshipDefs(sourceDomain, targetDomain);
         } catch(ServiceException sex) {
             throw sex;
         }
         if(types == null) {
-            types = new ArrayList<RelationshipDef>();
+            types = new ArrayList<RelationshipDefExt>();
         }
         return types;
     }
@@ -83,34 +83,34 @@ public class RelationshipDefHandler {
         /**
      * Get all RelationshipDefs for the given domain name.
      * @param domain Domain name.
-     * @return List<RelationshipDef> List of RelationshipDef.
+     * @return List<RelationshipDefExt> List of RelationshipDefExt.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipDef> getDefs(String domain) 
+    public List<RelationshipDefExt> getDefs(String domain) 
         throws ServiceException {                
-        List<RelationshipDef> types = null;
+        List<RelationshipDefExt> types = null;
         try {
             types = relationshipManager.getRelationshipDefs(domain);
         } catch(ServiceException sex) {
             throw sex;
         }
         if(types == null) {
-            types = new ArrayList<RelationshipDef>();
+            types = new ArrayList<RelationshipDefExt>();
         }
         return types;
     }
     
     /**
      * Create a new relationship type.
-     * @param RelationshipDef RelationshipDef.
+     * @param rDefExt RelationshipDefExt.
      * @return String Relationship Identifier which is newly added.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public String addRelationshipDef(RelationshipDef relationshipDef) 
+    public String addRelationshipDef(RelationshipDefExt rDefExt) 
         throws ServiceException {        
         String RelationshipDefId = null;
         try {
-            RelationshipDefId = relationshipManager.addRelationshipDef(relationshipDef);
+            RelationshipDefId = relationshipManager.addRelationshipDef(rDefExt);
         } catch(ServiceException sex) {
             throw sex;
         }
@@ -119,13 +119,13 @@ public class RelationshipDefHandler {
     
     /**
      * Update an existing relationship type.
-     * @param RelationshipDef RelationshipDef.
+     * @param rDefExt RelationshipDefExt.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public void updateRelationshipDef(RelationshipDef relationshipDef) 
+    public void updateRelationshipDef(RelationshipDefExt rDefExt) 
         throws ServiceException {        
         try {
-            relationshipManager.updateRelationshipDef(relationshipDef);
+            relationshipManager.updateRelationshipDef(rDefExt);
         } catch(ServiceException sex) {
             throw sex;
         }    
@@ -133,13 +133,13 @@ public class RelationshipDefHandler {
     
     /**
      * Delete an existing RelationshipDef.
-     * @param RelationshipDef RelationshipDef.
+     * @param rDefExt RelationshipDefExt.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public void deleteRelationshipDef(RelationshipDef relationshipDef) 
+    public void deleteRelationshipDef(RelationshipDefExt rDefExt) 
         throws ServiceException {        
         try {
-            relationshipManager.deleteRelationshipDef(relationshipDef);
+            relationshipManager.deleteRelationshipDef(rDefExt);
         } catch(ServiceException sex) {
             throw sex;
         }        
