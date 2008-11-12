@@ -167,9 +167,9 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
     }
     
     private void createFieldRefs(WebDefinition relType) {
-            //ArrayList<RelationFieldReference> fieldRefs = relType.getFixedRelFieldRefs();
+            //ArrayList<RelationFieldReference> fieldRefs = relType.getPredefinedFieldRefs();
             ArrayList<FieldAttributeRow> attrs = new ArrayList<FieldAttributeRow>();
-            for (RelationFieldReference field : relType.getFixedRelFieldRefs()) {
+            for (RelationFieldReference field : relType.getPredefinedFieldRefs()) {
                 String fieldName = field.getFieldName();
                 String displayName = field.getFieldDisplayName();
                 int displayFieldOrder = field.getDisplayOrder();
@@ -508,7 +508,7 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     this.mModified = true;
     if (mLinkType instanceof WebDefinition) {
         ((WebDefinition) mLinkType).getExtendedRelFieldRefs().clear();
-        ((WebDefinition) mLinkType).getFixedRelFieldRefs().clear();
+        ((WebDefinition) mLinkType).getPredefinedFieldRefs().clear();
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
         int rowCount = model.getRowCount();
         for (FieldAttributeRow row : model.fieldRows) {
@@ -527,7 +527,7 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             RelationFieldReference field = new RelationFieldReference(name, displayName, displayOrder,
                     maxLen, guiType, valueList, valueType, inputMask, valueMask, isSensitive);
             if (row.isPredefined()) {
-                ((WebDefinition) mLinkType).getFixedRelFieldRefs().add(field);
+                ((WebDefinition) mLinkType).getPredefinedFieldRefs().add(field);
             } else {
                 ((WebDefinition) mLinkType).getExtendedRelFieldRefs().add(field);
             }

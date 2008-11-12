@@ -81,14 +81,14 @@ public class Definition {
         return sourceDomain;
     }
 
-    public ArrayList<RelationFieldReference> getFixedRelFieldRefs() {
+    public ArrayList<RelationFieldReference> getPredefinedFieldRefs() {
         return mRelPredefinedAttrs;
     }
-    public void addFixedRelFieldRef(RelationFieldReference fieldRef) {
+    public void addPredefinedFieldRef(RelationFieldReference fieldRef) {
         mRelPredefinedAttrs.add(fieldRef);
     }
     
-    public void deleteFixedRelFieldRef(RelationFieldReference fieldRef) {
+    public void deletePredefinedFieldRef(RelationFieldReference fieldRef) {
         for (RelationFieldReference field : mRelPredefinedAttrs) {
             if (field.getFieldName().equals(fieldRef.getFieldName())){
                 mRelPredefinedAttrs.remove(field);

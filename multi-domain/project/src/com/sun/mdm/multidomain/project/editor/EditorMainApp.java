@@ -142,7 +142,7 @@ public class EditorMainApp {
             for (Attribute al : definition.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getDataType(), false);                        
-                ((WebDefinition) webDefinition).addFixedRelFieldRef(fieldRef);
+                ((WebDefinition) webDefinition).addPredefinedFieldRef(fieldRef);
             }
 
             for (Attribute al : definition.getExtendedAttributes()) {
@@ -195,7 +195,7 @@ public class EditorMainApp {
                     
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null, al.getDataType(), false);
-                    ((WebDefinition) webDefinition).addFixedRelFieldRef(fieldRef);
+                    ((WebDefinition) webDefinition).addPredefinedFieldRef(fieldRef);
                 }
 
                 for (Attribute al : definition.getExtendedAttributes()) {

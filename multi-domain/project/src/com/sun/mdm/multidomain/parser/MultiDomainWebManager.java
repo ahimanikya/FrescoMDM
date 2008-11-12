@@ -159,7 +159,7 @@ public class MultiDomainWebManager {
             Element relFixedAttr = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_FIXED_ATTRS);
             
             relTypeElm.appendChild(relFixedAttr);
-            getFieldAttrs(xmlDoc, relFixedAttr, relType.getFixedRelFieldRefs());
+            getFieldAttrs(xmlDoc, relFixedAttr, relType.getPredefinedFieldRefs());
 
             if (relType.getExtendedRelFieldRefs() != null && relType.getExtendedRelFieldRefs().size() > 0) {
                 Element relExtendedAttr = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_EXTENTED_ATTRS);
@@ -600,7 +600,7 @@ public class MultiDomainWebManager {
                 elementName = elm.getTagName();
                 if (elementName.equals(WebManagerProperties.mTAG_RELATIONSHIP_FIXED_ATTRS)) {
                     //ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();
-                    parseFieldAttrs(elm, relType.getFixedRelFieldRefs());
+                    parseFieldAttrs(elm, relType.getPredefinedFieldRefs());
                 } else if (elementName.equals(WebManagerProperties.mTAG_RELATIONSHIP_EXTENTED_ATTRS)) {
                     parseFieldAttrs(elm, relType.getExtendedRelFieldRefs());
                 }
