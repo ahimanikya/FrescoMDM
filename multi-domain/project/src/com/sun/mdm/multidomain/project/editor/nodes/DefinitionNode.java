@@ -38,6 +38,7 @@ import org.openide.nodes.NodeEvent;
 import org.openide.util.Lookup;
 import javax.swing.JPanel;
 
+import com.sun.mdm.multidomain.parser.Attribute;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabRelationshipDef;
@@ -146,5 +147,21 @@ public class DefinitionNode extends AbstractNode {
         }
         
         return mTabWebManagerDefinition;
+    }
+    
+    public void updateWebDefinitionAttrName(String oldAttrName, String newAttrName) {
+        
+    }
+    
+    public void updateWebDefinitionAttrDataType(String attrName, String dataType) {
+        
+    }
+    
+    public void addWebDefinitionAttribute(Attribute attr) {
+        
+    }
+    
+    public void removeWebDefinitionAttribute(Attribute attr) {
+        
     }
 }

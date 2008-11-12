@@ -135,25 +135,25 @@ public class EditorMainApp {
      */
     public DefinitionNode addDefinition(Definition definition) {
         mMultiDomainModel.addDefinition(definition);
-        Definition webLinkType = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
-        if (webLinkType == null) {
-            webLinkType = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
+        Definition webDefinition = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
+        if (webDefinition == null) {
+            webDefinition = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
             int displayOrder = 1;
             for (Attribute al : definition.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getDataType(), false);                        
-                ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
+                ((RelationshipType) webDefinition).addFixedRelFieldRef(fieldRef);
             }
 
             for (Attribute al : definition.getExtendedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                         displayOrder++, 1, "TextBox", null, al.getDataType(), false);
-                ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
+                ((RelationshipType) webDefinition).addExtendedRelFieldRef(fieldRef);
             }
 
             //definition.getExtendedAttributes().get(0).
         }
-        DefinitionNode node = new DefinitionNode(this, definition, webLinkType);
+        DefinitionNode node = new DefinitionNode(this, definition, webDefinition);
         mAlDefinitionNodes.add(node);
         return node;
     }
@@ -166,11 +166,10 @@ public class EditorMainApp {
      */
     public void deleteDefinition(String defName, String sourceDomain, String targetDomain) {      
         mMultiDomainModel.deleteDefinition(defName, sourceDomain, targetDomain);
-        // delete webLinkType here
-        Definition webLinkType = mMultiDomainWebManager.getLinkType(defName, sourceDomain, targetDomain);        
-        if (webLinkType != null) {
-            //ToDo - wee
-            mMultiDomainWebManager.deleteLinkType(webLinkType);
+        // delete webDefinition here
+        Definition webDefinition = mMultiDomainWebManager.getLinkType(defName, sourceDomain, targetDomain);        
+        if (webDefinition != null) {
+            mMultiDomainWebManager.deleteLinkType(webDefinition);
         }
         for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
             DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
@@ -183,31 +182,30 @@ public class EditorMainApp {
     
     private void loadDefinitions() {
         // build mAlDefinitionNodes
-        ArrayList <Definition> alLinkTypes = mMultiDomainModel.getAllDefinitions();
-        //ArrayList <LinkType> allWebLinkTypes = this.mMultiDomainWebManager.getRelationshipTypes();
+        ArrayList <Definition> alDefinitions = mMultiDomainModel.getAllDefinitions();
         
-        for (int i=0; alLinkTypes!=null && i<alLinkTypes.size(); i++) {
-            Definition definition = (Definition) alLinkTypes.get(i);
-            Definition webLinkType = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
-            if (webLinkType == null) {
-                webLinkType = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());       
+        for (int i=0; alDefinitions!=null && i<alDefinitions.size(); i++) {
+            Definition definition = (Definition) alDefinitions.get(i);
+            Definition webDefinition = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
+            if (webDefinition == null) {
+                webDefinition = mMultiDomainWebManager.createLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());       
                 //ArrayList
                 int displayOrder = 1;
                 for (Attribute al : definition.getPredefinedAttributes()) {
                     
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null, al.getDataType(), false);
-                    ((RelationshipType) webLinkType).addFixedRelFieldRef(fieldRef);
+                    ((RelationshipType) webDefinition).addFixedRelFieldRef(fieldRef);
                 }
 
                 for (Attribute al : definition.getExtendedAttributes()) {
                     RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
                             displayOrder++, 1, "TextBox", null,  al.getDataType(), false);
-                    ((RelationshipType) webLinkType).addExtendedRelFieldRef(fieldRef);
+                    ((RelationshipType) webDefinition).addExtendedRelFieldRef(fieldRef);
                 }
                 
             }
-            DefinitionNode node = new DefinitionNode(this, definition, webLinkType);
+            DefinitionNode node = new DefinitionNode(this, definition, webDefinition);
             this.mAlDefinitionNodes.add(node);
         }
         
@@ -256,8 +254,8 @@ public class EditorMainApp {
                         mMapDomainQueryXmls.put(domainName, queryXml);
                         mMapDomainMidmXmls.put(domainName, midmXml);
                         ArrayList <String> alAssociatedDomains = this.mMultiDomainModel.getAssociatedDomains(domainName);
-                        ArrayList <Definition> alLinkTypes = this.mMultiDomainModel.getDefinitionsByDomain(domainName);
-                        DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(domain), alAssociatedDomains, alLinkTypes);
+                        ArrayList <Definition> alDefinitions = this.mMultiDomainModel.getDefinitionsByDomain(domainName);
+                        DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(domain), alAssociatedDomains, alDefinitions);
                         mMapDomainNodes.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
                     }
