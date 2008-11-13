@@ -40,26 +40,6 @@ body {
   */
 }
 
-INPUT {
-  font-family: Arial, Helvetica, sans-serif;
-  background-repeat:no-repeat;     
-  font-size:12px;
-  padding-top:2px;
-  padding-bottom:2px;
-}
-
-INPUT.READONLY {
-  font-family: Arial, Helvetica, sans-serif;
-  background-repeat:no-repeat;               
-  background: buttonface;
-  background-color:#efefef;
-  font-color:#efefef;       
-  font-size:12px;          
-  padding-top:2px;
-  padding-bottom:2px;          
-  color:#837F74;           
-}
-
 #mainContent {
   width:100%;
   overflow:auto;
@@ -154,8 +134,7 @@ a.navbutton {
 	height: 30px;
 	margin-right: 6px;
 	padding-right: 18px; /* sliding doors padding */
-	font-family: arial, sans-serif;
-        font-family: "Lucida Sans Unicode", "Lucida Grande",Verdana, Arial, Helvetica, sans-serif;
+	font-family:verdana, arial, sans-serif;
 	font-size: 12px;
 	font-style: normal;
         font-variant: normal;
@@ -180,4 +159,51 @@ a.navbutton:active span {
     /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
     padding: 5px 0 5px 18px; 
 }
-	
+
+a.logoutButton {
+	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll top right;
+        color: #40403E;
+        text-decoration:none;
+	display: block;
+	float:right;
+	height: 30px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	font-family: Verdana,arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+}
+
+a.logoutButton span {
+    background: transparent url('../images/navigation-buttons_span.png') no-repeat;
+    display: block;
+    color: #40403E;
+    line-height: 20px;
+    padding: 5px 0 5px 18px;
+}
+
+a.logoutButton:active {
+    background-position: bottom right;
+    color: #0739B6;
+    
+}
+a.logoutButton:active span {
+    background-position: bottom left;
+    /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
+    padding: 5px 0 5px 18px; 
+}	
+
+.greetingsmall
+{
+	font-family: verdana, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#c4c8e1;
+	padding-top:7px;
+	padding-left:0px;
+        text-decoration:none; 
+        text-align:right;
+        width:150px;
+}
