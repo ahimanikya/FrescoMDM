@@ -83,7 +83,7 @@ public class MultiDomainProject implements Project, AntProjectListener {
         
         );
 
-    private static final Icon PROJECT_ICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainMDMProjectIcon.png")); // NOI18N
+    private static final Icon PROJECT_ICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainProject.png")); // NOI18N
     public static final String SOURCES_TYPE_ICANPRO = "BIZPRO";
 
     public static final String MODULE_INSTALL_NAME = "modules/com-sun-mdm-multidomain-project.jar";

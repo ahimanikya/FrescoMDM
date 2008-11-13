@@ -51,7 +51,7 @@ public class ObjectTopComponent
     /** The log4j message logger. */
     private static Logger mLog = Logger.getLogger(ObjectTopComponent.class.getName());
     public static final String MODE_NAME = "MULTI_DOMAIN_MDM";
-    static final Image MULTIDOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainMDMProjectIcon.png");
+    static final Image MULTIDOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainProject.png");
 
     /**
      * name of this TopComponent

@@ -82,7 +82,7 @@ public class RelationshipCanvas extends JPanel implements MouseListener, MouseMo
     private Point last;
     private RelationshipCanvas mRelationshipCanvas;
     private EditorMainApp mEditorMainApp;
-    static final Image DOMAINIMAGEICON = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
+    static final Image DOMAINIMAGEICON = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/DomainNode.png");
 
     
     public RelationshipCanvas(EditorMainApp editorMainApp) {

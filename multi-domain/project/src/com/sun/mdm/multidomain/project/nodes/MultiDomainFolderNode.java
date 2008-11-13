@@ -40,7 +40,7 @@ public class MultiDomainFolderNode extends DataFolder.FolderNode {
         this.folder = folder;
         this.displayName = displayName;
         this.setDisplayName(displayName);
-        this.setIconBaseWithExtension("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
+        this.setIconBaseWithExtension("com/sun/mdm/multidomain/project/resources/DomainNode.png");
     }
 
     @Override

@@ -38,7 +38,7 @@
                         <attr name="template" boolvalue="true"/>
                         <attr name="templateWizardIterator" newvalue="com.sun.mdm.multidomain.project.wizard.NewProjectIterator"/>
                         <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
-                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/MultiDomainMDMProjectIcon.png"/>
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/MultiDomainProject.png"/>
                         <attr name="templateWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/emptyProject.html"/>
                     </file>
                 </folder>
