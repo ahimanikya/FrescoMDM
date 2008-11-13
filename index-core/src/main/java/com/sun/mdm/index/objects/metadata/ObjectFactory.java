@@ -1196,6 +1196,15 @@ public class ObjectFactory {
         init();
         return mEIndexObject.getDataBase();
     }
+    
+    
+    /**
+     * @return String ret String
+     */
+    public static String getApplicationName() {
+    	init();
+        return mEIndexObject.getApplicationName();
+    }
 
     /**
      *  does Database requires ANSI queries
