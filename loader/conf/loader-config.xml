@@ -7,7 +7,7 @@
 
   <ValidationConfig name="Validation" class="com.sun.mdm.index.dataobject.validation.ValidationConfiguration" validate="false" reference="false">
   	<rules>
-    	<rule name="validate-local-id" class="com.sun.mdm.index.dataobject.validation.LocalIdValidator" system="*" length="10" format="[0-9]{10}" />
+    	<rule name="validate-local-id" description="local validation" class="com.sun.mdm.index.dataobject.validation.LocalIdValidator" system="*" length="10" format="[0-9]{10}" />
     	<rule name="validate-object-value" class="com.sun.mdm.index.dataobject.validation.ObjectDescriptorFileReader" />
     </rules>
   </ValidationConfig>
