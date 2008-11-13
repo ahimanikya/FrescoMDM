@@ -257,6 +257,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                 row.setSourceDomain(sourceDomain);
                 row.setTargetDomain(targetDomain);
                 model.fireTableDataChanged();
+                jTableDefinitions.setRowSelectionInterval(i, i);
                 break;
             }
         }

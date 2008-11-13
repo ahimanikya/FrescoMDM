@@ -246,7 +246,7 @@ public class EditorMainApp {
                                          nodeFound.getDefinition().createCopy(), 
                                          nodeFound.getWebDefinition().createCopy());
             mAlDefinitionNodes.add(nodeNew);
-            
+            mMultiDomainWebManager.addWebDefinition(nodeNew.getWebDefinition());
         }
         return nodeNew;
     }

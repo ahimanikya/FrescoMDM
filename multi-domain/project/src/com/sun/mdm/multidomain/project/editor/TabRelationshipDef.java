@@ -111,9 +111,17 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jTextName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
-                mDefinition.setName(jTextName.getText());
-                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
-                mOldDefName = jTextName.getText();
+            }
+        });
+        
+        jTextName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                String newName = jTextName.getText();
+                if (!newName.equals(mOldDefName)) {
+                    mDefinition.setName(jTextName.getText());
+                    mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
+                    mOldDefName = jTextName.getText();
+                }
             }
         });
         
@@ -984,18 +992,5 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             al.add(attr);
         }
         return al;
-    }
-
-    private class DefNameKeyAdapter extends java.awt.event.KeyAdapter {
-        /**
-         * key typed
-         * @param evt event
-         */
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                mEditorMainApp.enableSaveAction(true);
-                mDefinition.setName(jTextName.getText());
-                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
-                mOldDefName = jTextName.getText();
-            }
     }
 }
