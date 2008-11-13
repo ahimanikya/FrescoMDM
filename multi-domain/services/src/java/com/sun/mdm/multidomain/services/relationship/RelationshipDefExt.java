@@ -38,6 +38,7 @@ public class RelationshipDefExt {
     private String sourceDomain;
     private String targetDomain;
     private String plugin;
+    private String pluginInfo;     
     private String sourceRoleName;
     private String targetRoleName;    
     private String biDirection;  
@@ -136,6 +137,19 @@ public class RelationshipDefExt {
         AttributeDefExt aDef = new AttributeDefExt();
         aDef.setName("plugin");
         aDef.setDefaultValue(plugin);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);                        
+    }
+
+    public String getPluginInfo(){
+        AttributeDefExt aDef = getFixedAttribute("pluginInfo");
+        return aDef != null ? aDef.getDefaultValue() : null;                
+    }
+    
+    public void setPluginInfo(String pluginInfo){
+        AttributeDefExt aDef = new AttributeDefExt();
+        aDef.setName("pluginInfo");
+        aDef.setDefaultValue(pluginInfo);
         aDef.setDataType("String");
         setFixedAttribute(aDef);                        
     }
