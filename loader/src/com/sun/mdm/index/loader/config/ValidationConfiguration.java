@@ -66,6 +66,8 @@ public class ValidationConfiguration {
 	static final String ATTRIBUTE_VALIDATE = "validate";	
 	static final String ATTRIBUTE_REFERENCE = "reference";		
 	static final String ATTRIBUTE_SYSTEM = "system";
+	static final String ATTRIBUTE_DESCRIPTION = "description";
+	static final String DEFAULT_DESCRIPTION = "system description not defined";
 	public static final String DEFAULT_SYSTEM_CODE = "*";	
 	static final String ATTRIBUTE_LENGTH = "length";	
 	static final String ATTRIBUTE_FORMAT = "format";		
@@ -177,10 +179,12 @@ public class ValidationConfiguration {
     					!referenceValidationEnabled) {
 					
     					Node systemAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_SYSTEM);
+    					Node descriptionAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_DESCRIPTION);    					    					
     					Node lengthAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_LENGTH);
     					Node formatAttribute = ruleAttributes.getNamedItem(ATTRIBUTE_FORMAT);
+    					
     					initLocalIdValidator(classAttribute.getNodeValue(),
-    									     systemAttribute, lengthAttribute, formatAttribute);
+    									     systemAttribute, descriptionAttribute, lengthAttribute, formatAttribute);
 					
     				} else if (nameAttribute.getNodeValue()!= null &&
     						   nameAttribute.getNodeValue().equals(VALIDATE_OBJECT_VALUE)) {
@@ -193,7 +197,7 @@ public class ValidationConfiguration {
     	}
     }    
     
-    public void initLocalIdValidator(String className, Node systemAttribute, Node lengthAttribute, Node formatAttribute) 
+    public void initLocalIdValidator(String className, Node systemAttribute, Node descriptionAttribute, Node lengthAttribute, Node formatAttribute) 
     	throws ConfigException {
     	
     	ValidationRuleRegistry registry = ValidationRuleRegistry.getInstance();    	
@@ -207,14 +211,17 @@ public class ValidationConfiguration {
     		if (className.equals(LOCALID_VALIDATOR_CLASS)) {        			
     			LocalIdValidator localIdValidator = (LocalIdValidator)objectValidator;   
     			
+    			String description = descriptionAttribute != null ? 
+    																 descriptionAttribute.getNodeValue() : DEFAULT_DESCRIPTION;
+    			
     			if (systemAttribute == null || systemAttribute.equals("")) {
-    				localIdValidator.add(ValidationConfiguration.DEFAULT_SYSTEM_CODE, 
-    								     Integer.parseInt(lengthAttribute.getNodeValue()), 
-    								     formatAttribute.getNodeValue());
+    				localIdValidator.add(ValidationConfiguration.DEFAULT_SYSTEM_CODE, description,
+    												     Integer.parseInt(lengthAttribute.getNodeValue()), 
+    												     formatAttribute.getNodeValue());
     			} else {
-    				localIdValidator.add(systemAttribute.getNodeValue(), 
-							 			 Integer.parseInt(lengthAttribute.getNodeValue()),
-							 		     formatAttribute.getNodeValue());    				
+    				localIdValidator.add(systemAttribute.getNodeValue(), description,
+							 			 						 Integer.parseInt(lengthAttribute.getNodeValue()),
+							 		     					 formatAttribute.getNodeValue());    				
     			}
     		}
     	} catch(ClassNotFoundException cex) {
