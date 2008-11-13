@@ -13,7 +13,7 @@ String prefixId = (String) request.getParameter("prefix");
     <div class="Content">
     <table cellspacing="5" cellpadding="0">
         <tr>
-            <td class="formLabel"><input type="checkbox"  onclick="updateRequiredField(this, '<%=prefixId %>_EffectiveFromRequired');" dojoType="dijit.form.CheckBox" name="EffectiveFrom"><f:message key="effective_from_text" /></td> 
+            <td class="formLabel"><input type="checkbox"  onclick="updateRequiredField(this, '<%=prefixId %>_EffectiveFromRequired');" dojoType="dijit.form.CheckBox" name="EffectiveFrom" ><f:message key="effective_from_text" /></td> 
             <td><img src="images/spacer.gif" height="1" width="10"></td>
             <td class="formLabel"><input type="checkbox" dojoType="dijit.form.CheckBox" disabled="disabled" name="<%=prefixId %>_EffectiveFromRequired" id="<%=prefixId %>_EffectiveFromRequired"><f:message key="require_text" /></td>
         </tr>

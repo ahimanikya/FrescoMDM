@@ -159,13 +159,12 @@
                 <div class="TitleBar" title="<f:message key="relationship_text" />"><f:message key="relationship_text" /></div>
                 <div dojoType="dijit.layout.ContentPane" class="Content" hasShadow="false">
                 <table width="100%">
-                    <form name="relationshipListingForm">
                     <tr>
                         <td valign="bottom">
-                            <input type="button" id="selectallbutton" onclick="selectAllRelationshipDefs(this.form);" title="Select all"  />&nbsp;
-                            <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllRelationshipDefs(this.form);" /><img src="images/icons/actions_separator.gif" >
+                            <input type="button" id="selectallbutton" onclick="selectAllRelationshipDefs();" title="Select all"  />&nbsp;
+                            <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllRelationshipDefs();" /><img src="images/icons/actions_separator.gif" >
                             <input type="button" id="addbutton" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."  />&nbsp;
-                            <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs(this.form);" />
+                            <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs();" />
                         </td>
                     </tr>
                     <tr>
@@ -225,7 +224,6 @@
                         </td>
                     </tr>
                     <tr><td><img src="images/spacer.gif" height="10" width="1"></td></tr>
-                </form>
                 </table>
                 </div>
             </div>
@@ -251,28 +249,28 @@
     loadTargetDomains("selectTargetDomain");
 </script>    
 <script>
-function selectAllRelationshipDefs (objForm) {
+function selectAllRelationshipDefs () {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = true;
     }
 }
-function deselectAllRelationshipDefs (objForm) {
+function deselectAllRelationshipDefs () {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = false;
     }
 }
-function deleteRelationshipDefs (objForm) {
+function deleteRelationshipDefs () {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
     var sourceDomain=document.getElementById("selectSourceDomain").value;
     var targetDomain=document.getElementById("selectTargetDomain").value;
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked) {
-            alert('deleting ' + chkboxes[i].value);
+            //alert('deleting ' + chkboxes[i].value);
             // Make DWR call to delete
             relationshipdef = {name:chkboxes[i].value, sourceDomain:sourceDomain, targetDomain:targetDomain};
-            alert("delete a relationshipdef " + relationshipdef);
+            //alert("delete a relationshipdef " + relationshipdef);
             RelationshipDefHandler.deleteRelationshipDef(relationshipdef, loadRelationshipDefs);
         }
     }
@@ -285,9 +283,8 @@ function showRelationshipDialog (dialogId) {
     var targetDomain=document.getElementById("selectTargetDomain").value;
     if(sourceDomain != null && targetDomain != null)
         strTitle += " - " + sourceDomain + " and " + targetDomain;
-        
+    
     relationshipDialog.titleNode.innerHTML = strTitle;
     relationshipDialog.show();
-    //clickAdd();
 }
 </script>

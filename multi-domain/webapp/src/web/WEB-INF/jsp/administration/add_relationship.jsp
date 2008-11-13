@@ -33,8 +33,8 @@
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
                          <select id="relationship_add_direction" name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
                             <option value=""></option>
-                            <option value="->">-></option>
-                            <option value="<->"><-></option>
+                            <option value="false">-></option>
+                            <option value="true"><-></option>
                          </select>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
@@ -116,27 +116,47 @@
   type="text/javascript">
       
 function validateRelationshipForm() {
+
+    var relationshipDefName = dojo.byId("relationship_add_name").value;
+    var direction = dojo.byId("relationship_add_direction").value;
+    var pluginName = dojo.byId("relationship_add_plugin").value;
     
-      if(dojo.byId('relationship_add_name').value=='') 
-       {
-           alert("Please Enter the Name.");
-           dojo.byId('relationship_add_name').focus();
-           return false;
-       }
-       
-       if(dojo.byId('relationship_add_direction').value=='') 
-       {
-           alert("Please Select the Direction.");
-           dojo.byId('relationship_add_direction').focus();
-           return false;
-       }
-       
-       if(dojo.byId('relationship_add_plugin').value=='') 
-       {
-           alert("Please Select the Plugin.");
-           dojo.byId('relationship_add_plugin').focus();
-           return false;
-       }                  
+    if(dojo.byId('relationship_add_name').value=='') 
+    {
+       alert("Please Enter the Name.");
+       dojo.byId('relationship_add_name').focus();
+       return false;
+    }
+
+    if(dojo.byId('relationship_add_direction').value=='') 
+    {
+       alert("Please Select the Direction.");
+       dojo.byId('relationship_add_direction').focus();
+       return false;
+    }
+
+    if(dojo.byId('relationship_add_plugin').value=='') 
+    {
+       alert("Please Select the Plugin.");
+       dojo.byId('relationship_add_plugin').focus();
+       return false;
+    }           
+    
+    // Validation fine. Make DWR call to save this info.
+    var sourceDomain = dojo.byId("selectSourceDomain").value;
+    var targetDomain = dojo.byId("selectTargetDomain").value;
+    relationshipdef = {name:relationshipDefName };
+    relationshipdef.sourceDomain = sourceDomain;
+    relationshipdef.targetDomain = targetDomain;
+    relationshipdef.plugin = pluginName;
+    relationshipdef.biDirection = direction;
+
+    RelationshipDefHandler.addRelationshipDef(relationshipdef, loadRelationshipDefs );
+
+    // Close this dialog
+    dijit.byId('addrelationship').hide();
+
+    return true;
                      
    /* if(""==objForm.Name.value) {
         alert("Please Enter the Name.");
