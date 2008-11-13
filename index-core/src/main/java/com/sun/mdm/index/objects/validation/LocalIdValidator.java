@@ -44,7 +44,7 @@ public class LocalIdValidator implements ObjectValidator {
      * sbyn_systems does not support id_length, formatm etc yes.
      */
     private static String selectLocalIdSQL
-             = "select SYSTEMCODE, ID_LENGTH, FORMAT "
+             = "select SYSTEMCODE, DESCRIPTION, ID_LENGTH, FORMAT "
              + "from SBYN_SYSTEMS where STATUS = 'A'";
 
     private static final int MAXIMUM_LENGTH = 40;
@@ -96,15 +96,15 @@ public class LocalIdValidator implements ObjectValidator {
             throw new ValidationException(mLocalizer.t("OBJ670: The value for " + 
                                     "SystemObject[SystemCode] is required."));
         }
-        if (id == null) {
-            throw new ValidationException(mLocalizer.t("OBJ671: The value for " + 
-                                    "SystemObject[LocalID] is required."));
-        }
         
         LocalIdDefinition localIdDef = (LocalIdDefinition) mhIdDefs.get(systemId);
         if (localIdDef == null) {
             throw new ValidationException(mLocalizer.t("OBJ672: This is " + 
                                     "not a valid System Code: {0}", systemId));
+        }
+        if (id == null) {
+            throw new ValidationException(mLocalizer.t("OBJ671: The value for SystemObject[LocalId] " + 
+                                    "for {0} is required", localIdDef.getSystemDescription()));
         }
         localIdDef.validate(id);
     }
@@ -123,20 +123,20 @@ public class LocalIdValidator implements ObjectValidator {
             ResultSet rs = stmt.executeQuery(selectLocalIdSQL);
             while (rs.next()) {
                 String systemId = rs.getString(1);
-                int lenId = rs.getInt(2);
+                String description = rs.getString(2);
+                int lenId = rs.getInt(3);
                 if (lenId == 0) {
                     lenId = MetaDataService.getFieldSize("Enterprise.SystemObject.LocalID");
                 }
                 if (lenId > MAXIMUM_LENGTH) {
                     lenId = MAXIMUM_LENGTH;
                 }
-                String format = rs.getString(3);
-                LocalIdDefinition localIdDef = new LocalIdDefinition(systemId, lenId, format);
+                String format = rs.getString(4);
+                LocalIdDefinition localIdDef = new LocalIdDefinition(systemId, description, lenId, format);
                 mhIdDefs.put(systemId, localIdDef);
             }
             rs.close();
             stmt.close();
-            
           
     	 
         } catch (Exception e) {
@@ -157,11 +157,13 @@ public class LocalIdValidator implements ObjectValidator {
     public class LocalIdDefinition {
         private int localIddLength;
         private String systemId;
+        private String systemDescr;
         private String format = null;
         private Pattern pattern = null;
 
-        public LocalIdDefinition(String systemId, int len, String format) {
+        public LocalIdDefinition(String systemId, String systemDescr, int len, String format) {
             this.systemId = systemId;
+            this.systemDescr = systemDescr;
             this.localIddLength = len;
             this.format = format;
             if (format != null) {
@@ -169,23 +171,41 @@ public class LocalIdValidator implements ObjectValidator {
             }
         }
 
+        String getSystemDescription() {
+            return systemDescr;
+        }
+
+        String getSystemId() {
+            return systemId;
+        }
+        
+        String getFormat() {
+            return format;
+        }
+        
+        int getIdLen() {
+            return localIddLength;
+        }
+
         public void validate(String id) throws ValidationException {
 
             if (id.length() > localIddLength) {
-                throw new ValidationException(systemId, null, format, id, 
+                throw new ValidationException(systemId, systemDescr, format, id, 
                                     mLocalizer.t("OBJ675: The value " + 
-                                    "for ID {0} exceeds the maximum length " +
-                                    "allowed for a Local ID: {1}", id, localIddLength));
+                                    "of the Local ID ({0}) does not conform " + 
+                                    "to the format of the Local ID for {1}, " +
+                                    "which is this pattern \"{2}\" - [maximum ID length exceeded]", 
+                                    id, systemDescr, format));
             }
             
             if (pattern != null) {
                 if (!pattern.matcher(id).matches()) {
-                    throw new ValidationException(systemId, null, format ,id,
+                    throw new ValidationException(systemId, systemDescr, format ,id,
                                         mLocalizer.t("OBJ676: The value " + 
                                         "of the Local ID ({0}) does not conform " + 
                                         "to the format of the Local ID for {1}, " +
                                         "which is this pattern \"{2}\"", 
-                                        id, systemId, format));
+                                        id, systemDescr, format));
                 }
             }
                 
