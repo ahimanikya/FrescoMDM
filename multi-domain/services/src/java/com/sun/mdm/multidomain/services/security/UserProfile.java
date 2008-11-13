@@ -31,6 +31,7 @@ package com.sun.mdm.multidomain.services.security;
 import javax.servlet.http.HttpServletRequest;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author rtam
@@ -40,6 +41,7 @@ public class UserProfile {
     private String mUserName;
     private String[] mRoles;
     private String[] mOperations;
+    private ACL mACL;
 
     /** Constructor
      *
@@ -71,6 +73,7 @@ public class UserProfile {
              mRoles[j] = (String) mRolesList.get(j);
         }
         mOperations = SecurityManager.getInstance().getOperations(this);
+        mACL = new ACL(Arrays.asList(mOperations));
     }
 
     /** 
@@ -116,5 +119,14 @@ public class UserProfile {
         return false;
     }
     
+    /**
+     * Returns the ACL instance
+     *
+     * @return true if is allowed, false otherwise,
+     */
+    
+    public ACL getACL() {
+        return mACL;
+    }
 }
 
