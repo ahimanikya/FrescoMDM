@@ -124,22 +124,19 @@ function validateRelationshipForm() {
     var direction = dojo.byId("relationship_add_direction").value;
     var pluginName = dojo.byId("relationship_add_plugin").value;
     
-    if(dojo.byId('relationship_add_name').value=='') 
-    {
+    if(relationshipDefName == '') {
        alert("Please Enter the Name.");
        dojo.byId('relationship_add_name').focus();
        return false;
     }
 
-    if(dojo.byId('relationship_add_direction').value=='') 
-    {
+    if(direction == '') {
        alert("Please Select the Direction.");
        dojo.byId('relationship_add_direction').focus();
        return false;
     }
 
-    if(dojo.byId('relationship_add_plugin').value=='') 
-    {
+    if(pluginName == '') {
        alert("Please Select the Plugin.");
        dojo.byId('relationship_add_plugin').focus();
        return false;
@@ -168,19 +165,25 @@ function validateRelationshipForm() {
     relationshipdef.purgeDate = purgeDate;
     if(purgeDate) relationshipdef.purgeDateRequired = purgeDateRequired; else relationshipdef.purgeDateRequired = false;
     
-        var customAttributesArray = eval(addRelationshipPrefix + "_attributesArray");
-        alert("array to use is : " + customAttributesArray);
-        for(i=0;i<customAttributesArray.length; i++) {
-            var attr = customAttributesArray[i];
-            alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
-        }
-        var customAttributes = [];
-        customAttributes.push({name:"at1", defaultValue:"abc"});
-        //alert(customAttributes.length);
-        
-        return;
-        
+    var customAttributesArray = eval(addRelationshipPrefix + "_attributesArray");
+    //alert("array to use is : " + customAttributesArray);
+    
+    var customAttributes = [];
+    for(i=0;i<customAttributesArray.length; i++) {
+        var attr = customAttributesArray[i];
+        //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+        var  tempAttr = {};
+        tempAttr.name = attr.AttributeNameField.value;
+        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.defaultValue = attr.DefaultValueField.value;
+        tempAttr.required = attr.RequiredField.value;
+        tempAttr.searchable = attr.SearchableField.value;
+        customAttributes.push(tempAttr);
+    }
 
+    relationshipdef.extendedAttributes = customAttributes;
+    //alert("extended attr: " + relationshipdef.extendedAttributes);
+    
     RelationshipDefHandler.addRelationshipDef(relationshipdef, loadRelationshipDefs );
 
     // Close this dialog
