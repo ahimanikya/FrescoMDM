@@ -550,7 +550,7 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
     }
 
 private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
-    performAddDefinition(Definition.TYPE_RELATIONSHIP);
+    performAddDefinition(null);
 }//GEN-LAST:event_onAddDefinition
 
 private void onShowAllStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onShowAllStateChanged
@@ -617,6 +617,17 @@ public void onAddHierarchy() {
         
         //get properties panel from domainNode and present it
         mEditorMainPanel.loadDomainProperties(domainNode);
+    }
+    
+    private void hightlightDomianInDefinition(String domainName) {
+        TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+        int length = model.getRowCount();
+        for (int i=0; i < length; i++) {
+            DefinitionRow row = model.getRow(i);
+            if (row.getSourceDomain().equals(domainName) ||
+                row.getTargetDomain().equals(domainName)) {
+            }
+        }
     }
     
     private void onDefinitionSelected() {

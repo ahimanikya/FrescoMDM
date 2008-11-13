@@ -49,7 +49,21 @@ public class AddDefinitionDialog extends javax.swing.JDialog {
         jComboBoxDefinitions.insertItemAt(HIERARCHY, 1);
         //jComboBoxDefinitions.insertItemAt(GROUP, 2);
         //jComboBoxDefinitions.insertItemAt(CATEGORY, 3);
-        jComboBoxDefinitions.setSelectedItem(targetType);
+        if (targetType == null) {
+            jComboBoxDefinitions.setSelectedIndex(0);
+        } else {
+            jComboBoxDefinitions.setSelectedItem(targetType);
+            jComboBoxDefinitions.setEnabled(false);
+            if (targetType.equals(RELATIONSHIP)) {
+                setTitle(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "TITLE_Add_Relationship")); // NOI18N
+            } else if (targetType.equals(HIERARCHY)) {
+                setTitle(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "TITLE_Add_Hierarchy")); // NOI18N
+            } else if (targetType.equals(GROUP)) {
+                setTitle(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "TITLE_Add_Group")); // NOI18N
+            } else if (targetType.equals(CATEGORY)) {
+                setTitle(org.openide.util.NbBundle.getMessage(AddDefinitionDialog.class, "TITLE_Add_Category")); // NOI18N
+            } 
+        }
         setDomains(alDomains);
         enableBtnOK();
     }

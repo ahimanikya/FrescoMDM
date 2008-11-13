@@ -254,7 +254,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_AddDomain")));
         mButtonAddDomain.setBorder(null);
-        mButtonAddDomain.setMnemonic('A');
+        mButtonAddDomain.setMnemonic('D');
         toolBar.add(mButtonAddDomain);
         mButtonAddRelationship = new JButton(new AddRelationshipAction(
                     this.RELATIONSHIPNODEICON,
