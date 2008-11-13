@@ -100,7 +100,8 @@
 var editIndexid = ""; 
 var thisForm;
 var rand = "";
-
+var reloadUrl ="";
+var popUrl = "";
 // Fields used for merge 
 var rowCountMerge  ="";
 var destinationEOFinalMerge ="";
@@ -563,7 +564,11 @@ function align(thisevent,divID) {
 							 <td>
                               <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
                                 href="javascript:void(0)"
-                                onclick="javascript:window.location = popUrl;" class="button" >
+                                onclick="javascript:
+									showExtraDivs('activeDiv',event);
+									getFormValues('advancedformData');
+									setRand(Math.random());	
+								ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');" class="button" >
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
                                 </a>
 							  </td>
@@ -574,9 +579,69 @@ function align(thisevent,divID) {
                  </table>
              </form>
          </div>
+<!-- modified on 11-11-08 as fix of 202 -->
+		     <div id="mergeConfirmationDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
+             <form id="activeMerge" name="activeMerge" >
+                 <table cellspacing="0" cellpadding="0" border="0">
+ 					 <tr>
+					     <th title="<%=bundle.getString("move")%>">&nbsp;<h:outputText value="#{msgs.popup_information_text}"/></th> 
+					     <th>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+						</th>
+					  </tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr>
+					     <td colspan="2" ><b><div id="mergeConfirmationmessageDiv"></div></b></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2" border="2"  align="right" valign="top" >
+                            <table align="center">
+						      <tr>
+							 <td>&nbsp;</td>
+							 <td> 
+                               <a title="<h:outputText value="#{msgs.source_inpatient1_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="javascript:showExtraDivs('mergeConfirmationDiv',event);
+								if(reloadUrl.length<1) {
+									getFormValues('advancedformData');
+									setRand(Math.random());
+									ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')	
+								 }else {
+										window.location = reloadUrl;
+										reloadUrl='';
+ 								 }"
+ 							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient1_text}"/></span>
+                                </a>
+							  </td>
+							  <td>
+                              <a title="<h:outputText value="#{msgs.source_inpatient2_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="javascript:showExtraDivs('mergeConfirmationDiv',event);
+								getFormValues('advancedformData');
+								setRand(Math.random());
+								ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');"
+  							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient2_text}"/></span>
+                                </a>
+							  </td>
+							 </tr>
+							 </table>
+					     </td>
+                     </tr> 
+                 </table>
+             </form>
+         </div>
+
+
+
 	 
 	 </html> 
 	<script type="text/javascript">
   makeDraggable("resolvePopupDiv");
+  makeDraggable("mergeConfirmationDiv");
+  makeDraggable("activeDiv");
   </script>
 </f:view>

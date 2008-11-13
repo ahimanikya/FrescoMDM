@@ -84,6 +84,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     String errorMessage = null;   
     private  static final String SEARCH_DUPLICATES="Search Duplicates";
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
+    public static final String CONCURRENT_MOD_ERROR = "CONCURRENT_MOD_ERROR";    
      /**
      * Variable to hold the results defaulted to negative
      */
@@ -405,7 +406,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     HashMap eoMap = new HashMap();
                     eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(eo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
                     eoMap.put("EUID", eo.getEUID());
-                    
+                    //Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
+
+                    session.setAttribute("SBR_REVISION_NUMBER"+eo.getEUID(),eo.getSBR().getRevisionNumber());
                     //eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields((ObjectNode) duplicatesHashMap.get(euids), retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
                     //eoMap.put("EUID", euids);
                     
@@ -1156,9 +1159,29 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
   public HashMap previewPostMultiMergedEnterpriseObject(String[]  sourceDestnEuids,String rowCount) {
         HashMap finalPreviewMap = new HashMap();
         try {
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
+ 
+            //Check if the EUID is merged
+            String mergedEuid  = midmUtilityManager.getMergedEuid(sourceDestnEuids[0]);// modified as fix of 202
+            if(mergedEuid != null && mergedEuid.length() > 0) {
+                finalPreviewMap.put("IS_EUID_MERGED",sourceDestnEuids[0]);
+                finalPreviewMap.put("MERGED_EUID",mergedEuid);
+                return finalPreviewMap;
+             }
             //String destnEuidValue = (String) previewDuplicatesMap.get("destnEuid");
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(sourceDestnEuids[0]);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
+            Integer dbRevisionNumber  = destinationEO.getSBR().getRevisionNumber();
+            // modifying as part of fixing 202 on 12-11-08             
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                finalPreviewMap.put(SearchDuplicatesHandler.CONCURRENT_MOD_ERROR,bundle.getString("concurrent_mod_text"));
+                finalPreviewMap.put("DESTN_EUID",destinationEO.getEUID());
+                return finalPreviewMap;
+            }
              
             
             ArrayList srcsList  = new ArrayList();
@@ -1172,12 +1195,34 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             String[] sourceEUIDs  = new String[srcsList.size()];            
             String[] srcRevisionNumbers = new String[sourceEUIDs.length];
 
+
+             //Check if the EUID is merged - Fix for #202
             for (int i = 0; i < sourceEUIDObjs.length; i++) {
                 String sourceEuid = (String) sourceEUIDObjs[i];
                 sourceEUIDs[i] = sourceEuid;
-                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+                String mergedEuidDuplicate = midmUtilityManager.getMergedEuid(sourceEuid);// modified as fix of 202
+                if (mergedEuidDuplicate != null && mergedEuidDuplicate.length() > 0) {
+                    finalPreviewMap.put("IS_EUID_MERGED", sourceEuid);
+                    finalPreviewMap.put("MERGED_EUID", mergedEuidDuplicate);
+                    return finalPreviewMap;
+                }
+
             }
 
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+            // modifying as part of fixing 202 on 12-11-08                 
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+                sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+sourceEuid);
+                if(new Integer(srcRevisionNumbers[i]).intValue() != sessionRevisionNumber.intValue() ) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                    finalPreviewMap.put(SearchDuplicatesHandler.CONCURRENT_MOD_ERROR,bundle.getString("concurrent_mod_text"));
+                    finalPreviewMap.put("DESTN_EUID",sourceEuid);
+                    return finalPreviewMap;
+                }
+                
+            }
             EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
             HashMap eoMultiMergePreview = new HashMap();//midmUtilityManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
             eoMultiMergePreview.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(resulteo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));           
@@ -1218,14 +1263,33 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
          return finalPreviewMap;
 }
   
-  public EnterpriseObject performMultiMergeEnterpriseObject(String[]  sourceDestnEuids,String rowCount) {
-   
-      EnterpriseObject resultingEO = null;
+  public HashMap performMultiMergeEnterpriseObject(String[]  sourceDestnEuids,String rowCount) {
+        HashMap finalMergeHashMap = new HashMap();
+        EnterpriseObject resultingEO = null;
         try {
-
+            MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
+ 
+            //Check if the EUID is merged
+            String mergedEuid  = midmUtilityManager.getMergedEuid(sourceDestnEuids[0]);// modified as fix of 202
+            if(mergedEuid != null && mergedEuid.length() > 0) {
+                finalMergeHashMap.put("IS_EUID_MERGED",sourceDestnEuids[0]);
+                finalMergeHashMap.put("MERGED_EUID",mergedEuid);
+                return finalMergeHashMap;
+             }
             //String destnEuidValue = (String) previewDuplicatesMap.get("destnEuid");
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(sourceDestnEuids[0]);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+     
+            //modifying as part of fixing 202
+                    
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+destinationEO.getEUID());
+            Integer dbRevisionNumber  = destinationEO.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                finalMergeHashMap.put(SearchDuplicatesHandler.CONCURRENT_MOD_ERROR,bundle.getString("concurrent_mod_text"));
+                finalMergeHashMap.put("DESTN_EUID",destinationEO.getEUID());
+                return finalMergeHashMap;
+            }
             
             ArrayList srcsList  = new ArrayList();
             
@@ -1237,10 +1301,32 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
             Object[] sourceEUIDObjs =  srcsList.toArray();            
             String[] sourceEUIDs  = new String[srcsList.size()];            
             String[] srcRevisionNumbers = new String[sourceEUIDs.length];            
+            
+            //Check if the EUID is merged - Fix for #202
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                String mergedEuidDuplicate = midmUtilityManager.getMergedEuid(sourceEuid);// modified as fix of 202
+                if (mergedEuidDuplicate != null && mergedEuidDuplicate.length() > 0) {
+                    finalMergeHashMap.put("IS_EUID_MERGED", sourceEuid);
+                    finalMergeHashMap.put("MERGED_EUID", mergedEuidDuplicate);
+                    return finalMergeHashMap;
+                }
+
+            }
+
             for (int i = 0; i < sourceEUIDObjs.length; i++) {
                 String sourceEuid = (String) sourceEUIDObjs[i];
                 sourceEUIDs[i] = sourceEuid;
                 srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+                // modifying as part of fixing 202 on 12-11-08                 
+                sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+sourceEuid);
+                if(new Integer(srcRevisionNumbers[i]).intValue() != sessionRevisionNumber.intValue() ) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+destinationEO.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                    finalMergeHashMap.put(SearchDuplicatesHandler.CONCURRENT_MOD_ERROR,bundle.getString("concurrent_mod_text"));
+                    finalMergeHashMap.put("DESTN_EUID",sourceEuid);
+                    return finalMergeHashMap;
+                }                
             }
             
             //perform multi merge here
@@ -1291,9 +1377,11 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
            mLogger.error(mLocalizer.x("SDP060: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
            return null;
         }
-        return resultingEO;
- 
-}        
+        if(resultingEO==null)
+            return null;
+        else 
+            return finalMergeHashMap;
+    }        
 
    /** 
      * Addded on 22/08/2008 <br>
@@ -1329,4 +1417,5 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     }
 
 }
+
 
