@@ -16,6 +16,8 @@ public class DomainRecordID {
     private boolean mShowEUID = false;
     
     private FieldGroup mFieldGroup = new FieldGroup();
+    
+    private String validationStr = null;
 
     public boolean isMShowEUID() {
         return mShowEUID;
@@ -32,5 +34,17 @@ public class DomainRecordID {
     public void setFieldGroup(FieldGroup fieldGroup) {
         this.mFieldGroup = fieldGroup;
     }
-    
+
+    public boolean isValidDomainRecordID() {
+        if (mShowEUID == false && mFieldGroup.getFieldRefs().size() == 0) {
+            validationStr = "Either EUID or other field is required.";
+            return false;
+        }
+        
+        return true;
+    }
+
+    public String getValidationStr() {
+        return validationStr;
+    }
 }

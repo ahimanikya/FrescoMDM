@@ -41,8 +41,9 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         jTableFieldGroup.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableFieldGroup.getSelectedRow();
-                FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
-                TableModelField fieldModel = new TableModelField(fieldGroup);
+                //FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
+                GroupRow group =  ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
+                TableModelField fieldModel = new TableModelField(group);
                 jTableField.setModel(fieldModel);
                 jBtnAddField.setEnabled(true);
                 jBtnRemoveGroup.setEnabled(true);
@@ -59,15 +60,35 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         
         jTxtRecordDetail.requestFocus();
         
+        jTxtRecordDetail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jBtnOK.setEnabled(setEnabledOK());
+            }
+        });
+        
+        jBtnOK.setEnabled(setEnabledOK());
+        
+        //this.jTableFieldGroup.add
     }
     
    private void loadNewRecordDetail() {
         this.jTxtRecordDetail.setText(mRecordDetail.getDisplayName());
-        TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(mRecordDetail.getFieldGroups());
+        ArrayList<GroupRow> groups = new ArrayList<GroupRow>();
+        for (FieldGroup fieldGroup : mRecordDetail.getFieldGroups()) {
+            GroupRow group = new GroupRow(fieldGroup.getDescription());
+            ArrayList<FieldRow> fields = new ArrayList<FieldRow>();
+            group.setFieldRows(fields);
+            for (FieldGroup.FieldRef field : fieldGroup.getFieldRefs()) {
+                fields.add(new FieldRow(field.getFieldName()));
+            }
+            groups.add(group);
+        }
+        TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(groups);
+        
         jTableFieldGroup.setModel(fieldGroupModel);
         
         //jTableFieldGroup.setRowSelectionInterval(0, 0);
-        TableModelField fieldModel = new TableModelField(new FieldGroup());
+        TableModelField fieldModel = new TableModelField(new GroupRow("New Group"));
         this.jTableField.setModel(fieldModel);
         
         
@@ -75,16 +96,51 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
    
     private void loadRecordDetail() {
         this.jTxtRecordDetail.setText(mRecordDetail.getDisplayName());
-        TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(mRecordDetail.getFieldGroups());
+        ArrayList<GroupRow> groups = new ArrayList<GroupRow>();
+        for (FieldGroup fieldGroup : mRecordDetail.getFieldGroups()) {
+            GroupRow group = new GroupRow(fieldGroup.getDescription());
+            group.setGroupId(fieldGroup.hashCode());
+            ArrayList<FieldRow> fields = new ArrayList<FieldRow>();
+            group.setFieldRows(fields);
+            for (FieldGroup.FieldRef field : fieldGroup.getFieldRefs()) {
+                fields.add(new FieldRow(field.getFieldName()));
+            }
+            groups.add(group);
+        }
+        TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(groups);
         jTableFieldGroup.setModel(fieldGroupModel);
-        
-        //jTableFieldGroup.setRowSelectionInterval(0, 0);
-        TableModelField fieldModel = new TableModelField(mRecordDetail.getFieldGroups().get(0));
-        this.jTableField.setModel(fieldModel);
+        if (groups.size() > 0) {
+            TableModelField fieldModel = new TableModelField(groups.get(0));
+            this.jTableField.setModel(fieldModel);
+        }
         
         
     }
 
+    private boolean setEnabledOK() {
+         boolean setEnabled = true;
+         
+         if (jTxtRecordDetail.getText() == null || jTxtRecordDetail.getText().length() == 0) {
+             return !setEnabled;
+         }
+    
+         if (this.jTableFieldGroup.getRowCount() == 0 ) {
+             return !setEnabled;
+         }
+         
+         TableModelFieldGroup groupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
+         ArrayList groups =  groupModel.groupRows;
+         for (Object groupObj : groups) {
+             GroupRow group = (GroupRow)  groupObj;
+             if (group.getFieldRows().size() == 0) {
+                 return !setEnabled;
+             }
+         }
+         
+         return setEnabled;
+        
+    }
+    
     public boolean isModifed() {
         return this.bModified;
     }
@@ -237,6 +293,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         );
 
         jBtnOK.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_OK")); // NOI18N
+        jBtnOK.setEnabled(false);
         jBtnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onOK(evt);
@@ -304,7 +361,8 @@ private void onAddGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 // TODO add your handling code here:
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
     int iInsertRow = fieldGroupModel.getRowCount();
-    FieldGroup newFieldGroup = new FieldGroup();
+    //FieldGroup newFieldGroup = new FieldGroup();
+    GroupRow newFieldGroup = new GroupRow("New Group");
     //Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
     fieldGroupModel.addRow(iInsertRow, newFieldGroup);
     jTableFieldGroup.setModel(fieldGroupModel);
@@ -312,6 +370,7 @@ private void onAddGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     jTableFieldGroup.addRowSelectionInterval(iInsertRow, iInsertRow);
     jTableFieldGroup.setEditingRow(iInsertRow);
     jTableFieldGroup.setFocusTraversalKeysEnabled(true);
+    jBtnOK.setEnabled(setEnabledOK());
     
 }//GEN-LAST:event_onAddGroup
 
@@ -336,6 +395,8 @@ private void onRemoveGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             if (jTableFieldGroup.getRowCount() > 0) {
                 this.jBtnRemoveGroup.setEnabled(true);
                 jTableFieldGroup.setRowSelectionInterval(0, 0);
+            } else {
+                this.jBtnOK.setEnabled(false);
             }
             this.bModified = true;
         }
@@ -347,18 +408,25 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
     TableModelField fieldModel = (TableModelField) jTableField.getModel();
     int selectedRow = jTableFieldGroup.getSelectedRow();
-    FieldGroup group = fieldGroupModel.getRow(selectedRow);
-    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), group);
+    GroupRow group = fieldGroupModel.getRow(selectedRow);
+    FieldGroup fieldGroup = mRecordDetail.getFieldGroup(group.getGroupName());
+    if (fieldGroup == null) {
+        fieldGroup = mRecordDetail.getFieldGroup(group.getGroupId());
+    }
+    
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), fieldGroup);
     entityDlg.setVisible(true);
     if (entityDlg.isSelected()) {
         if (entityDlg.getFieldList().size() > 0) {
             for (String fieldName : entityDlg.getFieldList()) {
-                FieldGroup.FieldRef fieldRef = group.createFieldRef(fieldName);
+                FieldRow fieldRef = new FieldRow(fieldName);
                 fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
             }
             jTableField.setModel(fieldModel);
         }
     }
+    
+    jBtnOK.setEnabled(setEnabledOK());
     
 }//GEN-LAST:event_onAddField
 
@@ -385,6 +453,8 @@ private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             if (jTableField.getRowCount() > 0) {
                 this.jBtnRemoveField.setEnabled(true);
                 jTableField.setRowSelectionInterval(0, 0);
+            } else {
+                this.jBtnOK.setEnabled(false);
             }
 
             this.bModified = true;
@@ -396,8 +466,19 @@ private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
 // TODO add your handling code here:
     bModified = true;
     this.mRecordDetail.setDisplayName(this.jTxtRecordDetail.getText());
+    mRecordDetail.getFieldGroups().clear();
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
-    this.mRecordDetail.setFieldGroups(fieldGroupModel.fieldRows);
+    ArrayList<GroupRow> groups = fieldGroupModel.groupRows;
+    for (GroupRow group : fieldGroupModel.groupRows) {
+        FieldGroup fieldGroup = new FieldGroup();
+        fieldGroup.setDescription(group.getGroupName());
+        for (FieldRow field : group.getFieldRows()) {
+            fieldGroup.addFieldRef(fieldGroup.createFieldRef(field.getFieldName()));
+        }
+        mRecordDetail.addFieldGroup(fieldGroup);
+        
+    }
+//    this.mRecordDetail.setFieldGroups(fieldGroupModel.fieldRows);
     this.dispose();
 
 }//GEN-LAST:event_onOK
@@ -408,14 +489,69 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
     this.dispose();
 }//GEN-LAST:event_onCancel
 
+
+    class FieldRow {
+        private String fieldName;
+        
+        
+        public FieldRow(String name) {
+            fieldName = name;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+    }
+    class GroupRow {
+        
+        private String groupName;
+        
+        private int groupId;
+
+        private ArrayList<FieldRow> fieldRows = null;
+        
+        public GroupRow(String groupName) {
+            this.groupName = groupName;
+        }
+        
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public void setGroupName(String groupName) {
+            this.groupName = groupName;
+        }
+        public ArrayList<FieldRow> getFieldRows() {
+            return fieldRows;
+        }
+
+        public void setFieldRows(ArrayList<FieldRow> fieldRows) {
+            this.fieldRows = fieldRows;
+        }
+
+        public int getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(int groupId) {
+            this.groupId = groupId;
+        }
+        
+        
+    }
     class TableModelFieldGroup extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD_GROUP"),};
-        ArrayList fieldRows;
+        ArrayList<GroupRow> groupRows;
         final static int iColRecordDetailName = 0;
 
         TableModelFieldGroup(ArrayList rows) {
-            fieldRows = rows;
+            groupRows = rows;
         }
 
         public int getColumnCount() {
@@ -423,8 +559,8 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         }
 
         public int getRowCount() {
-            if (fieldRows != null) {
-                return fieldRows.size();
+            if (groupRows != null) {
+                return groupRows.size();
             }
             return 0;
         }
@@ -434,13 +570,13 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         }
 
         public Object getValueAt(int row, int col) {
-            if (fieldRows != null) {
-                FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
+            if (groupRows != null) {
+                GroupRow singleRow = (GroupRow) groupRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColRecordDetailName:
-                            if (singleRow.getDescription() != null && singleRow.getDescription().length() > 0) {
-                                return singleRow.getDescription();
+                            if (singleRow.getGroupName() != null && singleRow.getGroupName().length() > 0) {
+                                return singleRow.getGroupName();
                             }
                             int rowIdx = row + 1;
                             return "FieldGroup-" + rowIdx;
@@ -453,10 +589,10 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
             return null;
         }
 
-        public FieldGroup getRow(int row) {
-            if (fieldRows != null) {
-                FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
-                return singleRow;
+        public GroupRow getRow(int row) {
+            if (groupRows != null) {
+                 //singleRow = (FieldGroup) groupRows.get(row);
+                return groupRows.get(row);
             }
             return null;
         }
@@ -483,7 +619,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iColRecordDetailName:
-                    ((FieldGroup) fieldRows.get(row)).setDescription((String) value);
+                    ((GroupRow) groupRows.get(row)).setGroupName((String) value);
                     //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
                     break;
 
@@ -495,13 +631,13 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         }
 
         public void removeRow(int index) {
-            fieldRows.remove(index);
+            groupRows.remove(index);
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, FieldGroup row) {
+        public void addRow(int index, GroupRow row) {
             //fieldRows.add(row);
-            fieldRows.add(index, row);
+            groupRows.add(index, row);
             this.fireTableRowsInserted(index, index);
         }
 
@@ -512,7 +648,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         }
          */
         public int findRowByFieldName(String fieldName) {
-            for (int i = 0; i < fieldRows.size(); i++) {
+            for (int i = 0; i < groupRows.size(); i++) {
                 if (getValueAt(i, iColRecordDetailName).equals(fieldName)) {
                     return i;
                 }
@@ -520,10 +656,10 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
             return -1;
         }
 
-        public FieldGroup findRelTypeByFieldName(String fieldName) {
-            for (int i = 0; i < fieldRows.size(); i++) {
+        public GroupRow findRelTypeByFieldName(String fieldName) {
+            for (int i = 0; i < groupRows.size(); i++) {
                 if (getValueAt(i, iColRecordDetailName).equals(fieldName)) {
-                    return (FieldGroup) fieldRows.get(i);
+                    return (GroupRow) groupRows.get(i);
                 }
             }
             return null;
@@ -534,13 +670,15 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
      class TableModelField extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD"),};
-        ArrayList fieldRows;
+        ArrayList<FieldRow> fieldRows;
         final static int iColFieldName = 0;
-        private FieldGroup mFieldGroup = null;
+        private GroupRow mGroup = null;
 
-        TableModelField(FieldGroup fieldGroup) {
-            mFieldGroup = fieldGroup;
-            fieldRows = fieldGroup.getFieldRefs();
+        TableModelField(GroupRow group) {
+           // mFieldGroup = fieldGroup;
+           // fieldRows = fieldGroup.getFieldRefs();
+            mGroup = group;
+            fieldRows = mGroup.getFieldRows();
         }
 
         public int getColumnCount() {
@@ -560,7 +698,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
 
         public Object getValueAt(int row, int col) {
             if (fieldRows != null) {
-                FieldGroup.FieldRef singleRow = (FieldGroup.FieldRef) fieldRows.get(row);
+                FieldRow singleRow = (FieldRow) fieldRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColFieldName:
@@ -573,9 +711,9 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
             return null;
         }
 
-        public RecordDetail getRow(int row) {
+        public FieldRow getRow(int row) {
             if (fieldRows != null) {
-                RecordDetail singleRow = (RecordDetail) fieldRows.get(row);
+                FieldRow singleRow = (FieldRow) fieldRows.get(row);
                 return singleRow;
             }
             return null;
@@ -603,7 +741,8 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iColFieldName:
-                    mFieldGroup.createFieldRef((String) value);
+                    fieldRows.set(row, (FieldRow) value);
+                   // mFieldGroup.createFieldRef((String) value);
                     break;
 
             }
@@ -618,7 +757,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, FieldGroup.FieldRef row) {
+        public void addRow(int index, FieldRow row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
@@ -639,10 +778,10 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
             return -1;
         }
 
-        public FieldGroup.FieldRef findRelTypeByFieldName(String fieldName) {
+        public FieldRow findRelTypeByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
                 if (getValueAt(i, iColFieldName).equals(fieldName)) {
-                    return (FieldGroup.FieldRef) fieldRows.get(i);
+                    return (FieldRow) fieldRows.get(i);
                 }
             }
             return null;

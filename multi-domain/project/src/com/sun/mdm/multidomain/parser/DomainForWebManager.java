@@ -30,6 +30,8 @@ public class DomainForWebManager {
     
     private int recordDetailSeqValue = 0;
     
+    private String validationStr = null;
+    
     public DomainForWebManager(String name) {
         this.mDomainName = name;
     }
@@ -151,6 +153,59 @@ public class DomainForWebManager {
 
     public void setRecordID(DomainRecordID mRecordID) {
         this.mRecordID = mRecordID;
+    }
+    
+    public boolean isValidDomainXML() {
+        boolean isValid = true;
+        
+        if (mSearchType.size() == 0) {
+            validationStr = "Must have at least one Search Type defined for Domain[" + mDomainName + "]";
+            return !isValid;
+        }
+        
+        if (mSearchDetail.size() == 0) {
+            validationStr = "Must have at least one Search Result defined for Domain[" + mDomainName + "]";
+            return !isValid;
+        }
+        
+        if (mRecordDetailList.size() == 0) {
+            validationStr = "Must have at least one Record Detail defined for Domain[" + mDomainName + "]";
+            return !isValid;            
+        }
+        
+        if (mRecordSummaryFields.size() == 0) {
+            validationStr = "Must have at least one Record Summary defined for Domain[" + mDomainName + "]";
+            return !isValid;                        
+        }
+        
+        if (mRecordID != null) {
+            if (!mRecordID.isValidDomainRecordID()) {
+                validationStr = mRecordID.getValidationStr();
+                return !isValid;
+            }
+        }
+        
+        for (SimpleSearchType searchType : mSearchType) {
+            
+        }
+        
+        for (SearchDetail serachDetail : mSearchDetail) {
+            
+        }
+        
+        for (RecordDetail recDetail : mRecordDetailList) {
+            
+        }
+        
+        for (FieldGroup summary : mRecordSummaryFields) {
+            
+        }
+        
+        return isValid;
+    }
+
+    public String getValidationStr() {
+        return validationStr;
     }
     
 }

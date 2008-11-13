@@ -66,5 +66,25 @@ public class RecordDetail {
     public void deleteFieldGroup(FieldGroup fieldGroup) {
         mFieldGroups.remove(fieldGroup);
     }
+    
+    public FieldGroup getFieldGroup(String groupName) {
+     
+        for (FieldGroup group : mFieldGroups ) {
+            if (group.getDescription().equalsIgnoreCase(groupName)) {
+                return group;
+            }
+        }
+        return null;
+    }
 
+    public FieldGroup getFieldGroup(int groupId) {
+     
+        for (FieldGroup group : mFieldGroups ) {
+            if (group.hashCode() == groupId) {
+                return group;
+            }
+        }
+        return null;
+    }
+    
 }

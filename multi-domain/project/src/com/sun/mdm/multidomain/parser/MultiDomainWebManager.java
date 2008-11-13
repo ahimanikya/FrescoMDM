@@ -83,6 +83,16 @@ public class MultiDomainWebManager {
         return this.mPageDefinition;
     }
     
+    public boolean validateWebManagerXML() {
+        boolean isValid = true;
+        for (DomainForWebManager domain : mDomains.getDomains()) {
+            if (!domain.isValidDomainXML()) {
+                return false;
+            }
+        }
+        return isValid;
+    }
+    
     public Definition createWebDefinition(String name, String source, String target) {
         Definition linkType = new WebDefinition();
         linkType.setName(name);
@@ -312,7 +322,6 @@ public class MultiDomainWebManager {
              
         }
         
-        //return elmPageDefs;
     }
 
     private Element getDomainsToStr(Document xmlDoc) throws Exception {
