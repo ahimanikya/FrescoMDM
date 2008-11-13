@@ -4,6 +4,10 @@
     Author     : Narahari
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%
+    String prefixToUse = "editrelationship";
+%>
+
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true"></script>                
 <script type="text/javascript">
   dojo.require("dijit.form.TextBox");
@@ -91,9 +95,14 @@
 
 <script language="javascript" 
   type="text/javascript">
-      
+var prefix = "<%=prefixToUse%>";      
 function validateEditRelationshipForm() {
-    
+var customAttributesArray = eval(prefix + "_attributesArray");
+// showValues(customAttributesArray);
+for(i=0;i<customAttributesArray.length; i++) {
+    var attr = customAttributesArray[i];
+    alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+} 
       if(dojo.byId('relationship_edit_name').value=='') 
        {
            alert("Please Enter the Name.");

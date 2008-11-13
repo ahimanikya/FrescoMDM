@@ -4,7 +4,9 @@
     Author     : Harish
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-
+<%
+    String prefixToUse = "addrelationship";
+%>
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>                
 <script type="text/javascript">
   dojo.require("dijit.form.TextBox");
@@ -114,7 +116,8 @@
 
 <script language="javascript" 
   type="text/javascript">
-      
+
+var addRelationshipPrefix = "<%=prefixToUse%>";
 function validateRelationshipForm() {
 
     var relationshipDefName = dojo.byId("relationship_add_name").value;
@@ -151,29 +154,38 @@ function validateRelationshipForm() {
     relationshipdef.plugin = pluginName;
     relationshipdef.biDirection = direction;
 
+    var effectiveFrom = dojo.byId(addRelationshipPrefix + "_EffectiveFrom").checked;
+    var effectiveFromRequired = dojo.byId(addRelationshipPrefix + "_EffectiveFromRequired").checked;
+    var effectiveTo = dojo.byId(addRelationshipPrefix + "_EffectiveTo").checked;
+    var effectiveToRequired = dojo.byId(addRelationshipPrefix + "_EffectiveToRequired").checked;
+    var purgeDate = dojo.byId(addRelationshipPrefix + "_PurgeDate").checked;
+    var purgeDateRequired = dojo.byId(addRelationshipPrefix + "_PurgeDateRequired").checked;
+    
+    relationshipdef.startDate = effectiveFrom;
+    if(effectiveFrom) relationshipdef.startDateRequired = effectiveFromRequired; else relationshipdef.startDateRequired = false;
+    relationshipdef.endDate = effectiveTo;
+    if(effectiveTo) relationshipdef.endDateRequired = effectiveToRequired; else relationshipdef.endDateRequired = false;
+    relationshipdef.purgeDate = purgeDate;
+    if(purgeDate) relationshipdef.purgeDateRequired = purgeDateRequired; else relationshipdef.purgeDateRequired = false;
+    
+        var customAttributesArray = eval(addRelationshipPrefix + "_attributesArray");
+        alert("array to use is : " + customAttributesArray);
+        for(i=0;i<customAttributesArray.length; i++) {
+            var attr = customAttributesArray[i];
+            alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+        }
+        var customAttributes = [];
+        customAttributes.push({name:"at1", defaultValue:"abc"});
+        //alert(customAttributes.length);
+        
+        return;
+        
+
     RelationshipDefHandler.addRelationshipDef(relationshipdef, loadRelationshipDefs );
 
     // Close this dialog
     dijit.byId('addrelationship').hide();
-
     return true;
-                     
-   /* if(""==objForm.Name.value) {
-        alert("Please Enter the Name.");
-        objForm.Name.focus();
-        return false;
-    }
-    if(""==objForm.Direction.value) {
-        alert("Please Select the Direction.");
-        objForm.Direction.focus();
-        return false;
-    }
-    if(""==objForm.Plugin.value) {
-        alert("Please Select the Plugin.");
-        objForm.Plugin.focus();
-        return false;
-    }
-    return true;*/
 }
 </script>
 
