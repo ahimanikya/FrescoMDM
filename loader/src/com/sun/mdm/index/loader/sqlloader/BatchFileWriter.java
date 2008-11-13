@@ -96,6 +96,7 @@ public class BatchFileWriter implements Writer {
 			sb.append(t.getName() + ".sh");
 			sb.append(" & \n");
 		}
+		sb.append("wait \n");
 		return sb.toString();
 	}
 
