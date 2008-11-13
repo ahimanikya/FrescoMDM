@@ -50,8 +50,8 @@
                 dwr.util.removeAllRows("types");
                 dwr.util.addRows("types", data, cellfuncs, {escapeHtml:false});
             }
-            function clickAdd() {
-                relationshiptype = {name:"foo", sourceDomain:"Person", targetDomain:"Product", extendedAttributes:[{name:"foo"}]};
+            function clickAdd() {                
+                relationshiptype = {name:"foo", sourceDomain:"Person", targetDomain:"Product", plugin: "foo", pluginInfo:"foo", biDirection:"true", startDate:"true", endDate:"true", purgeDate:"true", startDateRequired:"true", endDateRequired:"true", purgeDate:"true", extendedAttributes:[{name:"foo", columnName:"foo", searchable:"true", isRequired:"true", dataType:"string", defaultValue:"foo"},{name:"foofoo", columnName:"foo", searchable:"true", isRequired:"true", dataType:"string", defaultValue:"foo"}]};
                 alert("add new relationshiptype: {name:'foo', sourceDomain:'Person', targetDomain:'Product'}");
                 RelationshipDefHandler.addRelationshipDef(relationshiptype, clickAddCB);
             }
