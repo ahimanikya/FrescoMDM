@@ -33,15 +33,28 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
  */
 public class ACL {    
     private List<Entry> entries = new ArrayList<Entry>();
-            
+    
+    /**
+     * Create an instacne of ACL.
+     */
     public ACL(){
     }
     
+    /**
+     * Create an instance of ACL.
+     * @param operations List of operations defined in the security policy.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public ACL(List<String> operations)
         throws ConfigException {
         initialize(operations);
     }
     
+    /**
+     * Initialize ACL based on operations and methods mapping.
+     * @param operations List of operations defined in the security policy.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public void initialize(List<String> operations) 
         throws ConfigException {
         for (String operation : operations) {
@@ -53,7 +66,12 @@ public class ACL {
             }
         }      
     }
-            
+
+    /**
+     * Check permission of the specified method.
+     * @param name Method name.
+     * @return boolean True if the permission is granted, otherwise false.
+     */
     public boolean checkPermission(String name) {
         boolean isPermitted = false;
         for (Entry e : entries) {
@@ -64,7 +82,12 @@ public class ACL {
         }
         return isPermitted;     
     }
-    
+
+    /**
+     * Check permission of the specified ACL entry.
+     * @param entry ACL entry.
+     * @return boolean True if the permission is granted, otherwise false.
+     */    
     public boolean checkPermission(ACL.Entry entry) {
         boolean isPermitted = false;
         for (Entry e : entries) {
@@ -76,7 +99,13 @@ public class ACL {
         }
         return isPermitted;
     }
-    
+
+    /**
+     * Check permission of the specified method name and action.
+     * @param name Method name.
+     * @param action Action, either "read" or "write".
+     * @return boolean True if the permission is granted, otherwise false.
+     */        
     public boolean checkPermission(String name, String action) {
         boolean isPermitted = false;
         for (Entry e : entries) {
@@ -89,6 +118,9 @@ public class ACL {
         return isPermitted;
     }
     
+    /**
+     * ACL Entry class.
+     */
     public static class Entry {
         private String name;
         private String action;

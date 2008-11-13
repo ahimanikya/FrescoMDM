@@ -97,10 +97,17 @@ public class Operations {
     private static List<String> operationsByName = new ArrayList<String>();
     private static Map<String, List<ACL.Entry>> methodsByOperation = new HashMap<String, List<ACL.Entry>>(); 
     private static boolean parsed = false;
-            
+
+    /**
+     * Create instance of Operations class.
+     */
     public Operations(){     
     }
     
+    /**
+     * Parse operations and methods mappings definition.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public static void parser() 
         throws ConfigException { 
         if (!parsed) {
@@ -141,12 +148,23 @@ public class Operations {
         }   
     }
         
+    /**
+     * Get list of operations supported.
+     * @return List<String> List of operations.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public static List<String> getOperations() 
         throws ConfigException {
         parser();
         return operationsByName;
     }
     
+    /**
+     * Get list of methods for the specified operation.
+     * @param operation Operation by name.
+     * @return List<ACL.Entry> List of Methods.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     */
     public static List<ACL.Entry> getMethods(String operation) 
         throws ConfigException {
         parser();
