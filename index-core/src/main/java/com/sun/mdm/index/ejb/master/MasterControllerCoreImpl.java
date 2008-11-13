@@ -486,18 +486,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             ObjectValidator lidValidator = reg
                     .getCustomValidatorByObject("SystemObject");
             if (lidValidator != null) {
-                try {
-                    lidValidator.validate(sysObj);
-                } catch (ValidationException v) {
-                    String systemDesc = lookupSystemDefinition(con,
-                            v.getSystemCode()).getDescription();
-                    String format = v.getFormat();
-                    String id = v.getId();
-                    String sysCode = v.getSystemCode();
-                    throw new ValidationException(mLocalizer.t("MSC502: getEUID() encountered a format validation error. " + 
-                                    "The ID {0} does not conform to the format of SystemObject[LocalId] for "
-                                    + "the system description {1}, which is {2}", id, systemDesc, format));
-                }
+                lidValidator.validate(sysObj);
             }
             euid = mQueryHelper.getEUID(con, key);
             if (mLogger.isLoggable(Level.FINE)) {
@@ -607,18 +596,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             ObjectValidator lidValidator = reg
                     .getCustomValidatorByObject("SystemObject");
             if (lidValidator != null) {
-                try {
-                    lidValidator.validate(sysObj);
-                } catch (ValidationException v) {
-                    String systemDesc = lookupSystemDefinition(con,
-                            v.getSystemCode()).getDescription();
-                    String format = v.getFormat();
-                    String id = v.getId();
-                    String sysCode = v.getSystemCode();
-                    throw new ValidationException(mLocalizer.t("MSC503: getEnterpriseObject() encountered a format validation " + 
-                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
-                                    + "the system description {1}, which is {2}", id, systemDesc, format));
-                }
+                lidValidator.validate(sysObj);
             }
 
             if (mLogger.isLoggable(Level.FINE)) {
@@ -1656,8 +1634,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                 }
                                 resultCode = MatchResult.ADD_NOT_ALLOWED;
                             } else {
-				// flag the assumed match as rejected
-				dmr.rejectAssumedMatch();
+                                // flag the assumed match as rejected
+                                dmr.rejectAssumedMatch();
                                 createNewEO = true;
                             }
                         } else {
@@ -1806,18 +1784,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             ObjectValidator lidValidator = reg
                     .getCustomValidatorByObject("SystemObject");
             if (lidValidator != null && (lid != null && lid.length() != 0)) {
-                try {
-                    lidValidator.validate(sysObj);
-                } catch (ValidationException v) {
-                    String systemDesc = lookupSystemDefinition(con,
-                            v.getSystemCode()).getDescription();
-                    String format = v.getFormat();
-                    String id = v.getId();
-                    String sysCode = v.getSystemCode();
-                    throw new ValidationException(mLocalizer.t("MSC520: lookupAssumedMatches() encountered a format validation " + 
-                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
-                                    + "the system description {1}, which is {2}", id, systemDesc, format));
-                }
+                lidValidator.validate(sysObj);
             }
 
             // Check properties of search obj.
@@ -1860,16 +1827,16 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * @return count of the assumed match records matching the search criteria.
      */
     public int countAssumedMatches(Connection con, AssumedMatchSearchObject amso)
-            throws ProcessingException, UserException {
+        throws ProcessingException, UserException {
         int count = 0;
         try {
             count = mAssumedMatchMgr.countAssumedMatches(con, amso);
-
+           
         } catch (ProcessingException e) {
             throwProcessingException(e);
         } catch (RuntimeException e) {
             throwProcessingException(e);
-        }
+        } 
         return count;
     }
     
@@ -2103,18 +2070,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             ObjectValidator lidValidator = reg
                     .getCustomValidatorByObject("SystemObject");
             if (lidValidator != null && (lid != null && lid.length() != 0)) {
-                try {
-                    lidValidator.validate(sysObj);
-                } catch (ValidationException v) {
-                    String systemDesc = lookupSystemDefinition(con,
-                            v.getSystemCode()).getDescription();
-                    String format = v.getFormat();
-                    String id = v.getId();
-                    String sysCode = v.getSystemCode();
-                    throw new ValidationException(mLocalizer.t("MSC523: lookupPotentialDuplicates() encountered a format validation " + 
-                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
-                                    + "the system description {1}, which is {2}", id, systemDesc, format));
-                }
+                lidValidator.validate(sysObj);
             }
 
             // Check properties of search obj.
@@ -2162,15 +2118,14 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         int count = 0;
         try {
             count = mPotDup.countPotentialDuplicates(con, pdso);
-
         } catch (ProcessingException e) {
             throwProcessingException(e);
         } catch (RuntimeException e) {
             throwProcessingException(e);
-        } 
+        }
         return count;
     }
-
+    
     /**
      * Return array of system definition
      * 
@@ -5475,23 +5430,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             ObjectValidator lidValidator = reg
                     .getCustomValidatorByObject("SystemObject");
             if (lidValidator != null) {
-                try {
-                    lidValidator.validate(sysObj);
-                } catch (ValidationException v) {
-                    String id = sysObj.getLID();
-                    String sysCode1 = sysObj.getSystemCode();
-
-                    SystemDefinition def = lookupSystemDefinition(con, sysCode1);
-                    String systemDesc = null;
-                    if (def != null) {
-                        systemDesc = def.getDescription();
-                    }
-                    String format = v.getFormat();
-
-                    throw new ValidationException(mLocalizer.t("MSC579: validateSystemObject() encountered a format validation " + 
-                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
-                                    + "the system description {1}, which is {2}", id, systemDesc, format));
-                }
+                lidValidator.validate(sysObj);
             }
             ObjectNode objNode = sysObj.getObject();
             ObjectDescriptor odsc = reg.getObjectDescriptor(objNode.pGetTag());
