@@ -100,8 +100,8 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     private ArrayList <DomainNode> mAlDomainNodes;
     private ArrayList <String> mAlDomainNames = new ArrayList();;
     private Map <String, DomainNode> mMapDomainNodes = new HashMap();  // domainName, DomainNode
-    static final Image DOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png");
-    static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
+    static final Image DOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/DomainNode.png");
+    static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/DomainNode.png"));
     static final ImageIcon DEFINITIONIMAGEICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/multidomain/project/resources/Definition.png"));
     private BufferedImage backingImage;
     private Point last;

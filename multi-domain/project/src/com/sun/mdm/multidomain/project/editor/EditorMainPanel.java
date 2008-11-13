@@ -71,7 +71,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         );
 
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/MultiDomainFolderNode.png"));
+                "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
     static final ImageIcon RELATIONSHIPNODEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
     static final ImageIcon HIERARCHYNODEICON = new ImageIcon(Utilities.loadImage(

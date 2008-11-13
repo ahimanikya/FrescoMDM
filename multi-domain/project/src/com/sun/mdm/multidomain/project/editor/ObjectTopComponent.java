@@ -23,11 +23,14 @@
 package com.sun.mdm.multidomain.project.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JOptionPane;
+
 import org.openide.nodes.Node;
 import org.openide.nodes.NodeAdapter;
 import org.openide.util.NbBundle;
+import org.openide.util.Utilities;
 import org.openide.ErrorManager;
 import org.openide.windows.TopComponent;
 import org.openide.cookies.SaveCookie;
@@ -48,6 +51,7 @@ public class ObjectTopComponent
     /** The log4j message logger. */
     private static Logger mLog = Logger.getLogger(ObjectTopComponent.class.getName());
     public static final String MODE_NAME = "MULTI_DOMAIN_MDM";
+    static final Image MULTIDOMAINIMAGE = Utilities.loadImage("com/sun/mdm/multidomain/project/resources/MultiDomainMDMProjectIcon.png");
 
     /**
      * name of this TopComponent
@@ -66,6 +70,7 @@ public class ObjectTopComponent
     public ObjectTopComponent() {
         super();
         putClientProperty("PersistenceType", "Never");
+        this.setIcon(MULTIDOMAINIMAGE);
     }
 
     /**
