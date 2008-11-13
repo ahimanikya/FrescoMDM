@@ -164,6 +164,7 @@ boolean isPreviewMerge = (null == previewMerge?false:true);
 String multiMergeEOs = request.getParameter("multiMergeEOs");
 boolean isMultiMergeEOs = (null == multiMergeEOs?false:true);
 
+boolean isMergeSuccess  = false;
 //cancel Multi Merge EOs operation fields  (cancelMultiMergeEOs)
 String cancelMultiMergeEOs = request.getParameter("cancelMultiMergeEOs");
 boolean isCancelMultiMergeEOs= (null == cancelMultiMergeEOs?false:true);
@@ -230,12 +231,13 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 		   </table>
    </div>
    <%}%>
-
-
+ 	  <%boolean concurrentMergeModification = false;%>
+	  <%boolean concurrentModification = false;%>
 <%if(isPreviewMerge) {%>  <!--if is Preview Merge-->
  <%
 	 HashMap previewDuplicatesMap = new HashMap();
      String[] srcDestnEuids = request.getParameter("PREVIEW_SRC_DESTN_EUIDS").split(",");
+	 Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
      for(int i = 0 ; i < srcDestnEuids.length;i++ ) {
 		previewEuidsHashMap.put(srcDestnEuids[i]+request.getParameter("rowCount"), srcDestnEuids[i]+request.getParameter("rowCount") );
 	 }
@@ -243,49 +245,70 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
      eoMultiMergePreviewHashMap = searchDuplicatesHandler.previewPostMultiMergedEnterpriseObject(srcDestnEuids,(String) request.getParameter("rowCount"));
     
 %>
- 
+ <!-- modify here for 202 -->
  <%if(eoMultiMergePreviewHashMap == null) {
 	 finalArrayList = null;
-	 
 	 %>
-    <div class="ajaxalert">
-    <table>
-	   <tr>
-	     <td>
-		 <% boolean concurrentModification = false;%>
-     <%
-		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
-	      StringBuffer msgs = new StringBuffer("<ul>");	
-          while (messagesIter.hasNext()) {
-                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
-                     if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 ) {
-				       concurrentModification = true;
-			         }
-			         
-                     msgs.append("<li>");
-					 msgs.append(facesMessage.getSummary());
-					 msgs.append("</li>");
-          }
-		  msgs.append("</ul>");		  
-     %>     	 
-	 <%if(concurrentModification) {%>
-	  <table><tr><td>
-		  <script>
-				window.location = "#top";
-				document.getElementById("activeDiv").innerHTML = 'EUID <%=srcDestnEuids[0]%>  <%=bundle.getString("concurrent_mod_text")%>';
-				document.getElementById("activeDiv").style.visibility="visible";
-				document.getElementById("activeDiv").style.display="block";
-				popUrl = "";
-				getFormValues('advancedformData');
-				setRand(Math.random());
-				ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')
-
-		 </script>
-	 </td></tr></table>
-	 <%} else {%>
-      <%=msgs%>
-	 <%}%>
-	 <script>
+	 	 <!--202 starts -->
+      <div id="ajaxalert">
+		  <table>
+				<tr>
+					<td>
+						  <ul>
+							<% while (messagesIter.hasNext())   { %>
+									<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+									<%if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS531") != -1) {
+										concurrentModification = true;
+									}			                    
+									%>
+									<%
+									if(facesMessage.getSummary().indexOf("MDM-MI-OPS537") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS535") != -1) {
+										   concurrentMergeModification = true;
+									   }
+									%>
+								  <%if(!concurrentMergeModification && !concurrentModification){%>
+										<li>
+										 <%= facesMessage.getSummary() %>
+										</li>
+								   <%}%>
+							 <% } %>
+						  </ul>
+					<td>
+				<tr>
+			</table>
+		</div>
+		<%if(concurrentMergeModification){%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+									reloadUrl ='euiddetails.jsf?euid=<%=midmUtilityManager.getMergedEuid(srcDestnEuids[0])%>';
+									document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_merged_text")%>";
+									document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+									document.getElementById("mergeConfirmationDiv").style.display="block";
+ 								  </script>
+					   <td>
+					<tr>
+				</table>
+		<%}%>
+		<%if(concurrentModification){
+ 									  %>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+									reloadUrl ='';
+									document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_merged_text")%>";
+									document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+									document.getElementById("mergeConfirmationDiv").style.display="block";
+								  </script>
+					   <td>
+					<tr>
+				</table>
+		<%									  
+	}%>
+		<!--202 ends -->
+ 	 <script>
    		 euids="";
          euidArray = [];
          alleuidsArray = [];
@@ -294,23 +317,52 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 	   </td>
 	   </tr>
 	 <table>
-	 </div>
+	 </div><!-- 202 modofication -->
   <%} else {%>
-     <table>
-	   <tr>
-	     <td>
-  	 
+		 <% if(eoMultiMergePreviewHashMap!=null && eoMultiMergePreviewHashMap.get("IS_EUID_MERGED")!=null){
+			 concurrentMergeModification = true;
+			 %>
+  			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+									reloadUrl ='euiddetails.jsf?euid=<%=eoMultiMergePreviewHashMap.get("MERGED_EUID")%>';
+									document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=eoMultiMergePreviewHashMap.get("IS_EUID_MERGED")%>' <%=bundle.getString("already_merged_text")%>";
+									document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+									document.getElementById("mergeConfirmationDiv").style.display="block";
+ 								  </script>
+					   <td>
+					<tr>
+				</table>
 
-	 <script>
-		document.getElementById('MERGE_SRC_DESTN_EUIDS<%=request.getParameter("rowCount")%>').value="<%=request.getParameter("PREVIEW_SRC_DESTN_EUIDS")%>";
- 		 euids="";
-         euidArray = [];
-         alleuidsArray = []; 
-	 </script>
-	   </td>
-	   </tr>
-	 <table>
- 
+		 <%} else if(eoMultiMergePreviewHashMap!=null && eoMultiMergePreviewHashMap.get(SearchDuplicatesHandler.CONCURRENT_MOD_ERROR)!=null){
+			 concurrentModification = true;
+			 %>
+			  <table><tr><td>
+				  <script>
+						window.location = "#top";
+						document.getElementById("activemessageDiv").innerHTML = 'EUID <%=eoMultiMergePreviewHashMap.get("DESTN_EUID")%>  <%=bundle.getString("concurrent_mod_text")%>';
+						document.getElementById("activeDiv").style.visibility="visible";
+						document.getElementById("activeDiv").style.display="block";
+						document.getElementById("outputdiv").style.visibility="hidden";
+						document.getElementById("outputdiv").style.display="none";
+
+				 </script>
+			 </td></tr></table>
+		 <%}else{%>
+			 <table>
+			   <tr>
+				 <td>
+			 <script>
+				document.getElementById('MERGE_SRC_DESTN_EUIDS<%=request.getParameter("rowCount")%>').value="<%=request.getParameter("PREVIEW_SRC_DESTN_EUIDS")%>";
+				 euids="";
+				 euidArray = [];
+				 alleuidsArray = []; 
+			 </script>
+			   </td>
+			   </tr>
+			 <table>
+	   <%}%>
   <%}%>
 
 
@@ -335,38 +387,124 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 </table>
 <%} else if(isMultiMergeEOs) {%>  <!--if MERGE EO's -->
  <%
-	HashMap previewDuplicatesMap = new HashMap();
-  
+ 	HashMap previewDuplicatesMap = new HashMap();
     String[] srcDestnEuids = request.getParameter("MERGE_SRC_DESTN_EUIDS").split(",");
-
- 	  
-    searchDuplicatesHandler.performMultiMergeEnterpriseObject(srcDestnEuids,request.getParameter("rowCount"));
-   
-    session.removeAttribute("finalArrayList");
-
-    String finalEuids  = request.getParameter("MERGE_SRC_DESTN_EUIDS").replaceAll(srcDestnEuids[0]+"," , "");
-    
+    HashMap finalMergeMap  = searchDuplicatesHandler.performMultiMergeEnterpriseObject(srcDestnEuids,request.getParameter("rowCount"));
+	Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+ %>
+<%     if(finalMergeMap == null){
 %>
-<table>
-  <tr>
-     <td>
-	   <script>
- 			euids="";
-            euidArray = [];
-            alleuidsArray = []; 
-		    previewEuidDivs = [];
+      <div id="ajaxalert">
+		  <table>
+				<tr>
+					<td>
+						  <ul>
+							<% while (messagesIter.hasNext())   { %>
+									<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+									<%if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS531") != -1) {
+										concurrentModification = true;
+									}			                    
+									%>
+									<%
+									if(facesMessage.getSummary().indexOf("MDM-MI-OPS537") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS535") != -1) {
+										   concurrentMergeModification = true;
+									   }
+									%>
+								  <%if(!concurrentMergeModification && !concurrentModification){%>
+										<li>
+										 <%= facesMessage.getSummary() %>
+										</li>
+								   <%}%>
+							 <% } %>
+						  </ul>
+					<td>
+				<tr>
+			</table>
+		</div>
+		<%if(concurrentMergeModification){%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+									reloadUrl ='euiddetails.jsf?euid=<%=midmUtilityManager.getMergedEuid(srcDestnEuids[0])%>';
+									document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_merged_text")%>";
+									document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+									document.getElementById("mergeConfirmationDiv").style.display="block";
+ 								  </script>
+					   <td>
+					<tr>
+				</table>
+		<%}%>
+		<%if(concurrentModification){%>
+			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+						  <script>
+							reloadUrl ='';
+							document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_merged_text")%>";
+							document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+							document.getElementById("mergeConfirmationDiv").style.display="block";
+						  </script>
+					   <td>
+					<tr>
+				</table>
+		<%
+		}%>
+	<%}else{ %>
+		 <% if(finalMergeMap!=null && finalMergeMap.get("IS_EUID_MERGED")!=null){
+			 concurrentMergeModification = true;
+			 %>
+  			  <table>
+					<tr>
+						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+								  <script>
+									reloadUrl ='euiddetails.jsf?euid=<%=finalMergeMap.get("MERGED_EUID")%>';
+									document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=finalMergeMap.get("IS_EUID_MERGED")%>' <%=bundle.getString("already_merged_text")%>";
+									document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+									document.getElementById("mergeConfirmationDiv").style.display="block";
+ 								  </script>
+					   <td>
+					<tr>
+				</table>
 
-		    var messages = document.getElementById("messages");
-			messages.className = "ajaxsuccess";
-	        messages.innerHTML= '<font style="padding-top:100px;color:green;"><%=finalEuids%>  <%=bundle.getString("so_merge_confirm_text")%>  <%=srcDestnEuids[0]%></font>' ;		 
-		
+		 <%} else if(finalMergeMap!=null && finalMergeMap.get(SearchDuplicatesHandler.CONCURRENT_MOD_ERROR)!=null){
+				concurrentModification = true;
+		 %>
+			  <table><tr><td>
+				  <script>
+						window.location = "#top";
+						document.getElementById("activemessageDiv").innerHTML = 'EUID <%=finalMergeMap.get("DESTN_EUID")%>  <%=bundle.getString("concurrent_mod_text")%>';
+						document.getElementById("activeDiv").style.visibility="visible";
+						document.getElementById("activeDiv").style.display="block";
+						document.getElementById("outputdiv").style.visibility="hidden";
+						document.getElementById("outputdiv").style.display="none";
+				 </script>
+			 </td></tr></table>
+		<%}else{%>
+			<%
+			  session.removeAttribute("finalArrayList");
+			  String finalEuids  = request.getParameter("MERGE_SRC_DESTN_EUIDS").replaceAll(srcDestnEuids[0]+"," , "");
+			  isMergeSuccess = true;
+			%>
+			<table>
+			  <tr>
+				 <td>
+				   <script>
+						euids="";
+						euidArray = [];
+						alleuidsArray = []; 
+						previewEuidDivs = [];
 
-      </script>
-	 </td>
-  </tr>
-</table>
-
-<%} else if(isUnresolveDuplicate) {%>  <!--if Resolve Duplicate-->
+						var messages = document.getElementById("messages");
+						messages.className = "ajaxsuccess";
+						messages.innerHTML= '<font style="padding-top:100px;color:green;"><%=finalEuids%>  <%=bundle.getString("so_merge_confirm_text")%>  <%=srcDestnEuids[0]%></font>' ;		 
+				  </script>
+				 </td>
+			  </tr>
+			</table>
+		<%}%>
+	<%}//else%>
+ <%} else if(isUnresolveDuplicate) {%>  <!--if Resolve Duplicate-->
   <%
 	 HashMap resolveDuplicatesMap = new HashMap();
   //parameterNamesResolve
@@ -475,9 +613,11 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 	 if(request.getParameter("selectedSearchType") != null ) {
 	   searchDuplicatesHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
 	 }
+ if(!concurrentMergeModification && !concurrentModification) {
+    //Final duplicates array list here
+     finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):(!isEuidValueNotEntered)?searchDuplicatesHandler.performSubmit():new ArrayList();
+  }
  
- //Final duplicates array list here
- finalArrayList = (isPreviewMerge) ? (ArrayList) session.getAttribute("finalArrayList"):(!isEuidValueNotEntered)?searchDuplicatesHandler.performSubmit():new ArrayList();
  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
  
 %>
@@ -512,8 +652,7 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 			 </tr>
 		   </table>
    </div>
-   <%}%>
-   
+   <%}%> 
 
 <% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
 <%if(iscompareEuids) {%>
@@ -1092,11 +1231,25 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 			  }
 			  msgs.append("</ul>");		  
 		 %>     	 
-
-		 <script>
+		 
+		 <%if(!concurrentMergeModification && !concurrentModification){%>
+          <script>
 			 var messages = document.getElementById("messages");
 			 messages.innerHTML= "<%=msgs%>";
 		 </script>
+		 <%}%>
+		 <!-- When no duplicate exists -->
+        <%if(isMergeSuccess) {
+ 			  String[] srcDestnEuids = request.getParameter("MERGE_SRC_DESTN_EUIDS").split(",");
+			  String finalEuids  = request.getParameter("MERGE_SRC_DESTN_EUIDS").replaceAll(srcDestnEuids[0]+"," , "");
+			%>
+		   <script>
+		  	var messages = document.getElementById("messages");
+ 		 	messages.className = "ajaxsuccess";
+		 	messages.innerHTML= '<font style="padding-top:100px;color:green;"><%=finalEuids%>  <%=bundle.getString("so_merge_confirm_text")%>  <%=srcDestnEuids[0]%></font>' ;		 
+           </script>
+		  <%}%>
+ 
 	    </td>
 	   </tr>
 	 <table>

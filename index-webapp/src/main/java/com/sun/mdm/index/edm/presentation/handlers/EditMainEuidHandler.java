@@ -148,6 +148,13 @@ public class EditMainEuidHandler {
     public String performSubmit() {
         try {
             String updateEuid = (String) session.getAttribute("editEuid");
+
+            //Check if the EUID is merged
+            String mergedEuid  = midmUtilityManager.getMergedEuid(updateEuid);// modified as fix of 202
+            if(mergedEuid != null && mergedEuid.length() > 0) {
+                return "MERGED_EUID:"+mergedEuid;
+            }
+            
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
 
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
