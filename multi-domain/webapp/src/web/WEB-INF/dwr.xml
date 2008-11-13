@@ -52,7 +52,7 @@
     </convert>		
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
-        <param name="include" value="name, sourceDomain, targetDomain, plugin, biDirection, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
+        <param name="include" value="name, sourceDomain, targetDomain, plugin, pluginInfo, biDirection, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
     </convert>	
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.AttributeDefExt">
