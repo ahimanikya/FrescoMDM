@@ -288,7 +288,9 @@ public class MultiDomainWebManager {
             }
             
             if (screenDef.getPageRelationType() != null && screenDef.getPageRelationType().size() > 0) {
-                
+                Element elmSearchPages = xmlDoc.createElement(WebManagerProperties.mTAG_SEARCH_PAGES);
+                Element elmSimplePage = xmlDoc.createElement(WebManagerProperties.mTAG_SIMPLE_SEARCH_PAGE);
+                elmSearchPages.appendChild(elmSimplePage);
                 ArrayList<PageRelationType> relTypes = screenDef.getPageRelationType();
                 for (PageRelationType tabRelType : relTypes) {
                     Element elmTabRelType = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPE);
@@ -299,9 +301,11 @@ public class MultiDomainWebManager {
                         getFieldGroup(relFieldGroups, xmlDoc, elmTabRelType, WebManagerProperties.mTAG_REL_FIELD_GROUP);
                     }
                     
-                    elmScreen.appendChild(elmTabRelType);
+                    elmSimplePage.appendChild(elmTabRelType);
 
                 }
+                elmScreen.appendChild(elmSearchPages);
+                
             }
 
             parent.appendChild(elmScreen);
@@ -767,13 +771,18 @@ public class MultiDomainWebManager {
                     PageDefinition subScreenDef = new PageDefinition();
                     parsePageDef(elm, subScreenDef);
                     screenDef.setChildPage(subScreenDef);
-                } else if (elementName.equals(WebManagerProperties.mTAG_RELATIONSHIP_TYPE)) {
+                } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_PAGES)) {
+                    parseRelSearchPages(elm, screenDef);
+                }
+                /**
+                else if (elementName.equals(WebManagerProperties.mTAG_RELATIONSHIP_TYPE)) {
                     String relType = elm.getAttribute(WebManagerProperties.mTAG_NAME);
                     pageRelType = new PageRelationType(relType);
                     //parsePageRelationship(elm.getChildNodes(), pageRelType);
                     parseRelFieldGroup(elm, pageRelType);
                     screenDef.addPageRelationType(pageRelType);
                 }
+                 */ 
 
             }
 
@@ -782,6 +791,38 @@ public class MultiDomainWebManager {
         return screenDef;
     }
 
+    private void parseRelSearchPages(Node node, ScreenDefinition screenDef) {
+        NodeList children = node.getChildNodes();
+        for (int i1 = 0; i1 < children.getLength(); i1++) {
+            if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
+                Element elm = (Element) children.item(i1);
+                parseRelSimpleSearchPage(elm, screenDef);
+            }
+        }
+        
+    }
+    
+    private void parseRelSimpleSearchPage(Node node, ScreenDefinition screenDef) {
+        NodeList children = node.getChildNodes();
+        PageRelationType pageRelType = null;
+        String elementName = null;
+        for (int i1 = 0; i1 < children.getLength(); i1++) {
+            if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
+                Element elm = (Element) children.item(i1);
+                elementName = elm.getTagName();
+                if (elementName.equals(WebManagerProperties.mTAG_RELATIONSHIP_TYPE)) {
+                    String relType = elm.getAttribute(WebManagerProperties.mTAG_NAME);
+                    pageRelType = new PageRelationType(relType);
+                    //parsePageRelationship(elm.getChildNodes(), pageRelType);
+                    parseRelFieldGroup(elm, pageRelType);
+                    screenDef.addPageRelationType(pageRelType);
+                }
+
+            }
+        }
+        
+    }
+    
     private void parsePageRelationship(NodeList children, PageRelationType pageRelType) {
         String elementName = null;
         for (int i1 = 0; i1 < children.getLength(); i1++) {
