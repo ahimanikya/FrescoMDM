@@ -54,16 +54,15 @@ public class WebDefinition extends Definition {
         this.mRelPredefinedAttrs = fixedFieldRefs;
         this.mRelExtendedAttrs = extendedFieldRefs;
     }
-
-
+    
     public WebDefinition createCopy() {
         WebDefinition definition = new WebDefinition();
         definition.name = "Copy" + this.name;
         definition.sourceDomain = this.sourceDomain;
         definition.targetDomain = this.targetDomain;
         definition.displayName = this.displayName;
-        definition.mRelPredefinedAttrs = this.mRelPredefinedAttrs;
-        definition.mRelExtendedAttrs = this.mRelExtendedAttrs;
+        definition.mRelPredefinedAttrs = copyRelationFieldReference(this.mRelPredefinedAttrs);
+        definition.mRelExtendedAttrs = copyRelationFieldReference(this.mRelExtendedAttrs);
         return definition;
     }
     

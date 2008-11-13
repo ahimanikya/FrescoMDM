@@ -86,7 +86,8 @@ public class Definition {
         definition.plugin = this.plugin;
         definition.description = this.description;
         definition.direction = this.direction;
-        definition.setDefaultPredefinedAttributes();
+        definition.predefinedAttributes = copyAttributes(this.predefinedAttributes);
+        definition.extendedAttributes = copyAttributes(this.extendedAttributes);
         return definition;
     }
     
@@ -151,6 +152,22 @@ public class Definition {
             }
         }
         return ret;
+    }
+    
+    public ArrayList <RelationFieldReference> copyRelationFieldReference(ArrayList <RelationFieldReference> originalRelationFieldReference) {
+        ArrayList <RelationFieldReference> copyOfRelationFieldReferences = new ArrayList <RelationFieldReference> ();
+        for (RelationFieldReference field : originalRelationFieldReference) {
+            copyOfRelationFieldReferences.add(field.createCopy());
+        }
+        return copyOfRelationFieldReferences;
+    }
+    
+    public ArrayList <Attribute> copyAttributes(ArrayList <Attribute> originalAttributes) {
+        ArrayList <Attribute> copyOfAttributes = new ArrayList <Attribute> ();
+        for (Attribute attr : originalAttributes) {
+            copyOfAttributes.add(attr.createCopy());
+        }
+        return copyOfAttributes;
     }
     
     //[attrStartDate, attrEndDate, attrPurgeDate]

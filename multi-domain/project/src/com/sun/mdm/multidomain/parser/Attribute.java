@@ -84,6 +84,19 @@ public class Attribute {
         this.type = TYPE_EXTENDED;
     }
        
+    public Attribute createCopy() {
+        Attribute attr = new Attribute();
+        attr.name = this.name;
+        attr.columnName = this.columnName;
+        attr.dataType = this.dataType;
+        attr.defaultValue = this.defaultValue;
+        attr.included = this.included;
+        attr.required = this.required;
+        attr.searchable = this.searchable;
+        attr.type = this.type;
+        return attr;
+    }
+    
     public void setColumnName(String columnName) {
         this.columnName = columnName;
     }

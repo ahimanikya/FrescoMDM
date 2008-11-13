@@ -22,6 +22,8 @@ public class RelationFieldReference {
     private String mOutputMask = null;
     private boolean mSensitive = false;
 
+    public RelationFieldReference() {}
+    
     public RelationFieldReference(String fieldName, String displayName, int displayOrder,
             int maxLen, String guiType, String valueList,
             String valueType, boolean keyType) {
@@ -53,6 +55,22 @@ public class RelationFieldReference {
         this.mSensitive = sensitive;
     }
 
+    public RelationFieldReference createCopy() {
+        RelationFieldReference field = new RelationFieldReference();
+        field.mFieldName = this.mFieldName;
+        field.mFieldDisplayName = this.mFieldDisplayName;
+        field.mDisplayOrder = this.mDisplayOrder;
+        field.mGuiType = this.mGuiType;
+        field.mMaxLength = this.mMaxLength;
+        field.mValueList = this.mValueList;
+        field.mValueType = this.mValueType;
+        field.mInputMask = this.mInputMask;
+        field.mOutputMask = this.mOutputMask;
+        field.mSensitive = this.mSensitive;
+        field.mKeyType = this.mKeyType;
+        return field;
+    } 
+    
     public String getFieldName() {
         return this.mFieldName;
     }
