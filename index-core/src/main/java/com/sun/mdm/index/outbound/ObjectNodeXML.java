@@ -50,6 +50,13 @@ public class ObjectNodeXML {
     private final String LINEFEED
              = new String(System.getProperty("line.separator"));
     private final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    
+    private static final String TAG_APPLICATION = ObjectFactory.getApplicationName();
+    
+    private static String namespace = " xsi:schemaLocation=\"uri:" +
+                                TAG_APPLICATION + "OutMsg outbound.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:tns=\"uri:" +
+                                TAG_APPLICATION + "OutMsg\"";
+                        
 
     private SimpleDateFormat mDateFormatter = null;
     
@@ -76,10 +83,10 @@ public class ObjectNodeXML {
         if (!name1.equalsIgnoreCase("ENTERPRISE") || !name2.equalsIgnoreCase("ENTERPRISE")) {
             return "";
         }
-        String outMsg = "OutMsg";
+        String outMsg = "OutMsg";        
         StringBuffer sb = new StringBuffer();
-        sb.append("<").append(outMsg).append(" Event=\"").append(event);
-        sb.append("\" ID=\"").append(id).append("\">").append(LINEFEED);
+        sb.append("<tns:").append(outMsg).append(" Event=\"").append(event);
+        sb.append("\" ID=\"").append(id).append("\"").append(ObjectNodeXML.namespace).append(">").append(LINEFEED);
         sb.append(sbrToXml(eo1));
         sb.append(sbrToXml(eo2));
         sb.append(endTag(outMsg));
@@ -103,8 +110,8 @@ public class ObjectNodeXML {
         String outMsg = "OutMsg";
         StringBuffer sb = new StringBuffer();
         sb.append(XML_HEADER).append(LINEFEED);
-        sb.append("<").append(outMsg).append(" Event=\"").append(event);
-        sb.append("\" ID=\"").append(id).append("\">").append(LINEFEED);
+        sb.append("<tns:").append(outMsg).append(" Event=\"").append(event);
+        sb.append("\" ID=\"").append(id).append("\"").append(ObjectNodeXML.namespace).append(">").append(LINEFEED);
         sb.append(sbrToXml(eo));
         sb.append(endTag(outMsg));
         return sb.toString();
@@ -117,7 +124,7 @@ public class ObjectNodeXML {
      */
     private String sbrToXml(EnterpriseObject eo) throws OutBoundException {
         StringBuffer sb = new StringBuffer();
-        sb.append("<SBR ");        
+        sb.append("<tns:SBR ");        
         try {
             sb.append("EUID=\"").append(eo.getEUID()).append("\" ");
         } catch (ObjectException e) {
@@ -131,7 +138,7 @@ public class ObjectNodeXML {
             Iterator soIterator = sysObjs.iterator();
             while (soIterator.hasNext()) {
                 SystemObject sysObj = (SystemObject) soIterator.next();
-                sb.append("<SystemObject ");
+                sb.append("<tns:SystemObject ");
                 try {
                     sb.append("SystemCode=\"").append(sysObj.getSystemCode()).append("\" ");
                     sb.append("LID=\"").append(sysObj.getLID()).append("\" ");
@@ -141,7 +148,7 @@ public class ObjectNodeXML {
                     throw new OutBoundException(mLocalizer.t("OUT501: Could not construct " + 
                                     "an XML string for an EnterpriseObject: {0}", e));
                 }
-                sb.append("</SystemObject>").append(LINEFEED);
+                sb.append("</tns:SystemObject>").append(LINEFEED);
             }
         }
         
@@ -153,7 +160,7 @@ public class ObjectNodeXML {
                 sb.append(nodeToXml(child, myPath));
             }
         }
-        sb.append("</SBR>").append(LINEFEED);
+        sb.append("</tns:SBR>").append(LINEFEED);
         return sb.toString();
     }
    
@@ -282,7 +289,7 @@ public class ObjectNodeXML {
         String myPath = ePath + "." + myName;
         Object[] fldNames = null;
         StringBuffer sb = new StringBuffer();
-        sb.append("<").append(myName);
+        sb.append("<tns:").append(myName);
 	ArrayList fns = node.pGetFieldNames();
 	if (fns != null) {
 	    fldNames = fns.toArray();
@@ -329,11 +336,25 @@ public class ObjectNodeXML {
     }
     
     private String startTag(String name) {
-        return "<" + name + ">";
+        return "<tns:" + name + ">";
     }
 
     private String endTag(String name) {
-        return "</" + name + ">\n";
+        return "</tns:" + name + ">\n";
     }
+    
+    private String replaceObjectName (String namespace, String objectName) {
+    	
+    	StringBuffer sb = new StringBuffer(namespace);
+    	if (objectName == null)
+    	   objectName = "";
+        
+        for (int from = sb.indexOf(TAG_APPLICATION); from >= 0; from = sb.indexOf(TAG_APPLICATION)) 
+             sb.replace(from, from + TAG_APPLICATION.length(), objectName);
+    
+    	return (new String(sb));
+    	
+    }	   
+    
 
 }
