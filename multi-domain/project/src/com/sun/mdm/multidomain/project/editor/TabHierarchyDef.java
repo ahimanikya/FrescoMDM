@@ -118,8 +118,9 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 String newName = jTextName.getText();
                 if (!newName.equals(mOldDefName)) {
-                    mDefinition.setName(jTextName.getText());
+                    mDefinition.setName(newName);
                     mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
+                    mDefinitionNode.updateDefinitionName(newName);
                     mOldDefName = jTextName.getText();
                 }
             }

@@ -54,7 +54,6 @@ import com.sun.mdm.multidomain.project.editor.TabWebManagerDefinition;
 public class DefinitionNode extends AbstractNode {
     Definition mDefinition;
     WebDefinition mWebDefinition;
-    DefinitionNode mDefinitionNode;
     EditorMainApp mEditorMainApp;
     JPanel mTabDefinitionDef;
     TabWebManagerDefinition mTabWebManagerDefinition = null;
@@ -83,7 +82,6 @@ public class DefinitionNode extends AbstractNode {
         mEditorMainApp = editorMainApp;
         mDefinition = definition;
         mWebDefinition = webDefinition;
-        mDefinitionNode = this;
         addNodeListener(new NodeAdapter() {
             @Override
             public void nodeDestroyed(NodeEvent ev) {
@@ -161,6 +159,10 @@ public class DefinitionNode extends AbstractNode {
         }
         
         return mTabWebManagerDefinition;
+    }
+    
+    public void updateDefinitionName(String newName) {
+        mTabWebManagerDefinition.setDefinitionName(newName);
     }
     
     private void refreshTabWebManagerDefinition() {

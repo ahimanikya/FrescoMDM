@@ -41,10 +41,10 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         mTableFields = new JTable();
         if (mDefinition != null) {
             createRelationshipTypes();
-            this.jTextFieldLinkType.setText(mDefinition.getName());
+            this.jTextFieldDefinitionName.setText(mDefinition.getName());
         }
         jTxtDisplayOrder.setEditable(false);
-        this.jTextFieldLinkType.setEditable(false);
+        this.jTextFieldDefinitionName.setEditable(false);
         
 
         mTableFields.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -318,7 +318,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         onCancel = new javax.swing.JButton();
         jBtnUp = new javax.swing.JButton();
         jBtnDown = new javax.swing.JButton();
-        jTextFieldLinkType = new javax.swing.JTextField();
+        jTextFieldDefinitionName = new javax.swing.JTextField();
         jPanelFieldProperties = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTxtDisplayName = new javax.swing.JTextField();
@@ -363,7 +363,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             }
         });
 
-        jTextFieldLinkType.setEditable(false);
+        jTextFieldDefinitionName.setEditable(false);
 
         jPanelFieldProperties.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_PROPERTIES"))); // NOI18N
 
@@ -492,7 +492,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                     .add(layout.createSequentialGroup()
                         .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 107, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jTextFieldDefinitionName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                         .add(layout.createSequentialGroup()
                             .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -517,7 +517,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelRelTypes)
-                    .add(jTextFieldLinkType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jTextFieldDefinitionName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
@@ -887,7 +887,11 @@ class TableModelRelationshipField extends AbstractTableModel {
 
     }
     
-
+    public void setDefinitionName(String newName) {
+        mDefinition.setName(newName);
+        jTextFieldDefinitionName.setText(newName);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnDown;
     private javax.swing.JButton jBtnUp;
@@ -901,7 +905,7 @@ class TableModelRelationshipField extends AbstractTableModel {
     private javax.swing.JPanel jPanelFieldProperties;
     private javax.swing.JRadioButton jRBSensitive;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextFieldLinkType;
+    private javax.swing.JTextField jTextFieldDefinitionName;
     private javax.swing.JTextField jTxtDataType;
     private javax.swing.JTextField jTxtDisplayName;
     private javax.swing.JTextField jTxtDisplayOrder;
