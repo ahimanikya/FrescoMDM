@@ -49,8 +49,9 @@ public class LocalIdValidator implements ObjectValidator {
 	private static Logger logger = Logger.getLogger("com.sun.mdm.index.dataobject.validation.LocalIdValidator");
 	private static Localizer localizer = Localizer.getInstance();
 
-    private static final String SELECT_LOCALID_SQL = "select systemcode, id_length, format "
-    				      					 	     + "from sbyn_systems where status = 'A'";
+    private static final String SELECT_LOCALID_SQL = 
+             "select SYSTEMCODE, DESCRIPTION, ID_LENGTH, FORMAT "
+             + "from SBYN_SYSTEMS where STATUS = 'A'";
     private static final int MAXIMUM_LOCALID_LENGTH = 40;
     
 	private Hashtable<String, LocalIdDefinition> 
@@ -68,11 +69,11 @@ public class LocalIdValidator implements ObjectValidator {
      * @param idLength	the length of system code. 
      * @param idFormat	the format of system code. 
      */
-    public void add(String systemId, int idLength, String idFormat) {
+    public void add(String systemId, String systemDescription, int idLength, String idFormat) {
     	
     	com.sun.mdm.index.objects.validation.LocalIdValidator x = 
     		new com.sun.mdm.index.objects.validation.LocalIdValidator(); 
-    	LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, idLength, idFormat);
+    	LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, systemDescription, idLength, idFormat);
     	localIdDefinitions.put(systemId, localIdDefinition);    	
     }
 
@@ -89,17 +90,18 @@ public class LocalIdValidator implements ObjectValidator {
              ResultSet rs = stmt.executeQuery(SELECT_LOCALID_SQL);
              while (rs.next()) {
                  String systemId = rs.getString(1);
-                 int lenId = rs.getInt(2);
+                 String description = rs.getString(2);
+                 int lenId = rs.getInt(3);
                  if (lenId == 0) {
-                     lenId = MetaDataService.getFieldSize("Enterprise.SystemObject.LocalID");
+                    lenId = MetaDataService.getFieldSize("Enterprise.SystemObject.LocalID");
                  }
                  if (lenId > MAXIMUM_LOCALID_LENGTH) {
-                     lenId = MAXIMUM_LOCALID_LENGTH;
+                    lenId = MAXIMUM_LOCALID_LENGTH;
                  }
-                 String format = rs.getString(3);
+                 String format = rs.getString(4);
                  com.sun.mdm.index.objects.validation.LocalIdValidator x = 
              		new com.sun.mdm.index.objects.validation.LocalIdValidator();                  
-                 LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, lenId, format);
+                 LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, description, lenId, format);
                  localIdDefinitions.put(systemId, localIdDefinition);
              }
              rs.close();
