@@ -87,6 +87,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/Save.png"));
+    static final ImageIcon VALIDATIONIMAGEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/Validation.png"));
+    
+    
     static final String TAB_OVERVIEW = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_OVERVIEW");
     static final String TAB_RELATIONSHIP = NbBundle.getMessage(EditorMainPanel.class,
@@ -115,6 +119,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     //private JButton mButtonAddCategory;
     private JButton mButtonDelete;
     private JButton mButtonSave;
+    private JButton mButtonValidation;
     private EditorMainApp mEditorMainApp;
     private EditorMainPanel mEditorMainPanel;
     private MultiDomainApplication mMultiDomainApplication;
@@ -290,6 +295,14 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         toolBar.add(mButtonAddCategory);
          */
         toolBar.addSeparator();
+        mButtonValidation = new JButton(new ValidateAction(this.VALIDATIONIMAGEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_Validation")));
+        mButtonValidation.setBorder(null);
+        mButtonValidation.setMnemonic('V');
+        mButtonValidation.setEnabled(true);
+        toolBar.add(mButtonValidation);
+        
         mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_Save")));
@@ -526,6 +539,26 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             Action action = SystemAction.get(CreateCategoryAction.class);
             ((CreateCategoryAction) action).perform(mEditorMainApp);
             action = null;
+        }
+    }
+    /** Save configuration
+     *
+     */
+    public class ValidateAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public ValidateAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            //mEditorMainApp.validate();
         }
     }
 
