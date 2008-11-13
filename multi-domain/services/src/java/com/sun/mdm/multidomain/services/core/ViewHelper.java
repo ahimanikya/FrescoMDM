@@ -85,6 +85,7 @@ public class ViewHelper {
         rDefExt.setBiDirection(rDef.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "true" : "false");
         //TBD need to fix core RelationshipDef
         //rDefExt.setPlugin();
+        //rDefExt.setPluginInfo();        
         //rDefExt.setStartDate();
         //rDefExt.setEndDate();
         //rDefExt.setPurgeDate();        
@@ -116,6 +117,7 @@ public class ViewHelper {
                           RelationshipDef.DirectionMode.BIDIRECTIONAL : RelationshipDef.DirectionMode.UNIDIRECTIONAL);
         //TBD need to fix core RelationshipDef
         //rDef.setPlugin();
+        //rDef.setPluginInfo();        
         //rDef.setStartDate();
         //rDef.setEndDate();
         //rDef.setPurgeDate();        
