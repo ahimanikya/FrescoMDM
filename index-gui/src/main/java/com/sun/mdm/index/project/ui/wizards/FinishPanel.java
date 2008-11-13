@@ -34,8 +34,10 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.Vector;
 import java.util.regex.PatternSyntaxException;
 
@@ -332,6 +334,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         }
     }
 
+/*
     private StringBuffer getCodeListFromNode(EntityNode subNode, String sRepeat) {
         String code = subNode.getCodeModule();
         StringBuffer codeBuffer = null;
@@ -348,7 +351,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         }
         return codeBuffer;
     }
-
+*/
     private void createDatabaseCodeList(WizardDescriptor wiz) {
         String template = null;
 
@@ -404,31 +407,55 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         StringBuffer strCodeList = new StringBuffer(sHeader);
 
-        int count = 0;
+        // Collate the codelist values into a Set to ensure uniqueness
+        TreeSet<String> setCodeList = new TreeSet<String>();
+        HashMap<String, String> mapCodeList = new HashMap<String, String>();
+
         for (int i = 0; i < mPrimaryNode.getChildCount(); i++) {
-            StringBuffer sbTemp;
             EntityNode node = (EntityNode) mPrimaryNode.getChildAt(i);
             if (node.isField()) {
-                sbTemp = getCodeListFromNode(node, sRepeat);
-                if (sbTemp != null) {
-                    strCodeList.append(sbTemp);
-                    count++;
+                String code = node.getCodeModule();
+                if (code != null && code.length() > 0) {
+                    if (setCodeList.add(code)) {
+                        mapCodeList.put(code, node.getDisplayName());
+                    }
                 }
             } else if (node.isSub()) {
                 for (int j = 0; j < node.getChildCount(); j++) {
                     EntityNode subNode = (EntityNode) node.getChildAt(j);
 
                     if (subNode.isField()) {
-                        sbTemp = getCodeListFromNode(subNode, sRepeat);
-                        if (sbTemp != null) {
-                            strCodeList.append(sbTemp);
-                            count++;
+                        String code = subNode.getCodeModule();
+                        if (code != null && code.length() > 0) {
+                            if (setCodeList.add(code)) {
+                                mapCodeList.put(code, subNode.getDisplayName());
+                            }
                         }
                     }
                 }
             }
         }
-        if (count > 0) {
+
+        StringBuffer codeBuffer = null;
+        for (String code : setCodeList) {
+            String displayName = mapCodeList.get(code);
+            codeBuffer = new StringBuffer(sRepeat);
+
+            replaceString(codeBuffer, TAG_MODULE_COMMENT, code);
+            replaceString(codeBuffer, TAG_MODULE, code);
+            if (displayName == null || displayName.length() == 0) {
+                displayName = "module description";
+            }
+            replaceString(codeBuffer, TAG_MODULE_DESCRIPTION,
+                   displayName);
+            replaceString(codeBuffer, TAG_CODE, "code");
+            replaceString(codeBuffer, TAG_CODE_DESCRIPTION,
+                    "code description");
+            strCodeList.append(codeBuffer);
+        }
+
+
+        if (setCodeList.size() > 0) {
             if (mDbName.equalsIgnoreCase(DB_ORACLE)) {
                 strCodeList.setLength(strCodeList.lastIndexOf(","));
             }
