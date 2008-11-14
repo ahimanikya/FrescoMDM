@@ -53,8 +53,8 @@ String prefixId = (String) request.getParameter("prefix");
         </table>
     </div>
     </td>
-    <td width="10%"><input type="button" value="Move Up" style="width:80px;" onclick="MoveUp('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray);">
-    <br><br><input type="button" value="Move Down" style="width:80px;" onclick="MoveDown('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray);">
+    <td width="10%"><input type="button" value="Move Up" id ="<%=prefixId%>_moveUpButton" style="width:80px;" onclick="MoveUp('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray);">
+    <br><br><input type="button" value="Move Down" id ="<%=prefixId%>_moveDownButton" style="width:80px;" onclick="MoveDown('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray);">
     </td></tr>
     </table>
     </div>

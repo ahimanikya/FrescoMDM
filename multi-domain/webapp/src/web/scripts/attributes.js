@@ -255,5 +255,14 @@ function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix)
       if(anySelected) imgDeleteAttributeObj.src =   deleteButtonEnabled.src;
       else imgDeleteAttributeObj.src =   deleteButtonDisabled.src;
     }
-    
+    var buttonMoveUpObj = dojo.byId(buttonIdPrefix+"_moveUpButton");
+    if(buttonMoveUpObj != null) {
+      if(anySelected) buttonMoveUpObj.disabled = false;
+      else buttonMoveUpObj.disabled = true;
+    }
+    var buttonMoveDownObj = dojo.byId(buttonIdPrefix+"_moveDownButton");
+    if(buttonMoveDownObj != null) {
+      if(anySelected) buttonMoveDownObj.disabled = false;
+      else buttonMoveDownObj.disabled = true;
+    }    
 }
