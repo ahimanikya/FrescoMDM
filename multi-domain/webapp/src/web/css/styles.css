@@ -126,7 +126,7 @@ a.button:active span {
 
 /* for header tabs */
 a.navbutton {
-	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll top right;
+	background: transparent url('../images/navigation-buttons_a1.png') no-repeat scroll top right;
         color: #40403E;
         text-decoration:none;
 	display: block;
@@ -142,7 +142,7 @@ a.navbutton {
 }
 
 a.navbutton span {
-    background: transparent url('../images/navigation-buttons_span.png') no-repeat;
+    background: transparent url('../images/navigation-buttons.png') no-repeat;
     display: block;
     color: #40403E;
     line-height: 20px;
@@ -160,8 +160,47 @@ a.navbutton:active span {
     padding: 5px 0 5px 18px; 
 }
 
+/**Selected Tabs in the header**/
+
+a.navbuttonselected {
+	background: transparent url('../images/navigation-buttons_a1.png') no-repeat scroll bottom right;
+        color: #0739B6;
+        text-decoration:none;
+	display: block;
+	float:left;
+	height: 30px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	font-family: arial, sans-serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande",Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+}
+a.navbuttonselected span {
+    background: transparent url('../images/navigation-buttons.png') no-repeat  bottom right;
+    background-position: bottom left;
+    display: block;
+    color: #ffffff;
+    line-height: 20px;
+    padding: 5px 0 5px 18px;
+}
+
+a.navbuttonselected:active {
+    background-position: bottom right;
+    color: #0739B6;
+    
+}
+a.navbuttonselected:active span {
+    background-position: bottom left;
+    /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
+    padding: 5px 0 5px 18px; 
+}
+
+
 a.logoutButton {
-	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll top right;
+	background: transparent url('../images/masthead_button_span_a.png') no-repeat scroll top right;
         color: #40403E;
         text-decoration:none;
 	display: block;
@@ -174,14 +213,15 @@ a.logoutButton {
 	font-style: normal;
         font-variant: normal;
         font-weight: bold;
+        text-align:center;
 }
 
 a.logoutButton span {
-    background: transparent url('../images/navigation-buttons_span.png') no-repeat;
+    background: transparent url('../images/masthead_button_span.png') no-repeat;
     display: block;
     color: #40403E;
-    line-height: 20px;
-    padding: 5px 0 5px 18px;
+    line-height: 12px;
+    padding: 5px 0px 5px 10px;
 }
 
 a.logoutButton:active {
@@ -192,7 +232,7 @@ a.logoutButton:active {
 a.logoutButton:active span {
     background-position: bottom left;
     /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
-    padding: 5px 0 5px 18px; 
+    padding: 5px 0px 5px 10px; 
 }	
 
 .greetingsmall
@@ -201,9 +241,11 @@ a.logoutButton:active span {
 	font-size:12px;
 	font-weight:bold;
 	color:#c4c8e1;
-	padding-top:7px;
+	padding-top:0px;
 	padding-left:0px;
-        text-decoration:none; 
+        text-decoration:none;
+        vertical-align:middle;        
         text-align:right;
         width:150px;
+        
 }
