@@ -58,13 +58,38 @@ public interface MultiDomainMetaService {
      * Get all relationship Defs of the given source domain and target domains.
      * @param sourceDomain Source domain name.
      * @param targetDomain Target domain name.
-     * @return RelationshipDef[] An array of relation Def.
+     * @return RelationshipDef[] An array of relationship Def.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source domain or target domain 
      * is passed as a parameter.
      */
     public RelationshipDef[] getRelationshipDefs(String sourceDomain, String targetDomain) 
         throws ProcessingException, UserException;
+    
+    /**
+     * Get a relationshipDef of the given name and source domain and target domains.
+     * @param name Relationship name.
+     * @param sourceDomain Source domain name.
+     * @param targetDomain Target domain name.
+     * @return RelationshipDef RelationshipDef.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid source domain or target domain 
+     * is passed as a parameter.
+     */
+    public RelationshipDef getRelationshipDefByName(String name, String sourceDomain, String targetDomain) 
+        throws ProcessingException, UserException;  
+    
+    /**
+     * Get a relationshipDef of the given relationship Id.
+     * @param relationshipDefId RelationshipDefId.
+     * @return RelationshipDef  RelationshipDef.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid source domain or target domain 
+     * is passed as a parameter.
+     */
+    public RelationshipDef getRelationshipDefById(long relationshipDefId) 
+        throws ProcessingException, UserException;  
+    
     
     /**
      * Create a relationship Def and persist the relationship Def in the database.

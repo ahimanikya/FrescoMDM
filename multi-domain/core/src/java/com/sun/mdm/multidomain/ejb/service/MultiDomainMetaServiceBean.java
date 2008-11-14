@@ -105,6 +105,22 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throw new ProcessingException("Not Implemented Yet."); 
     }
 
+   /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipDefByName() 
+     */    
+    public RelationshipDef getRelationshipDefByName(String name, String sourceDomain, String targetDomain) 
+        throws ProcessingException, UserException { 
+        throw new ProcessingException("Not Implemented Yet."); 
+    }  
+   
+   /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipDefById() 
+     */        
+    public RelationshipDef getRelationshipDefById(long relationshipDefId) 
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    } 
+    
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getRelationshipDefs() 
      */    
