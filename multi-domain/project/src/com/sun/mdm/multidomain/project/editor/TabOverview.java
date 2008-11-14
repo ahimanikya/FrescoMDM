@@ -106,7 +106,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
     private BufferedImage backingImage;
     private Point last;
     private JPopupMenu mDefinitionPopupMenu = new JPopupMenu();;
-    private DefinitionTableHeaderRenderer mDefinitionTableHeaderRenderer = new DefinitionTableHeaderRenderer();
+    private MyTableHeaderRenderer mMyTableHeaderRenderer = new MyTableHeaderRenderer();
     private DefinitionTableColumnRenderer mDefinitionTableColumnRenderer = new DefinitionTableColumnRenderer();
     
     public TabOverview(EditorMainPanel editorMainPanel, EditorMainApp editorMainApp) {
@@ -147,10 +147,13 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         //rows = loadDefinitionsByDomain(domainNode, false);
         TableModelDefinition modelDefinitions = new TableModelDefinition(rows);
         jTableDefinitions.setModel(modelDefinitions);
+        int w = jTableDefinitions.getColumnModel().getTotalColumnWidth();
+        int iw = (w * 1/11);
+        jTableDefinitions.getColumnModel().getColumn(0).setPreferredWidth(iw);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         //jTableDefinitions.setRowSorter(sorter);
         jTableDefinitions.addMouseListener(new DefinitionMouseListener());
-        //configureTableColumns(jTableDefinitions);
+        configureTableColumns(jTableDefinitions);
         
         this.jRadioButtonShowAll.setSelected(true);
         
@@ -813,16 +816,18 @@ public void onAddHierarchy() {
 
     // Table model for link definitions
     class TableModelDefinition extends AbstractTableModel {
-        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Definition_Type"), 
+        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Definition_Icon"), 
+                                         NbBundle.getMessage(TabOverview.class, "LBL_Definition_Type"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Definition_Name"),
                                          NbBundle.getMessage(TabOverview.class, "LBL_Source_Domain"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Target_Domain"), 
                                         };
         ArrayList <DefinitionRow> rows;
-        final static int iColDefinitionType = 0;
-        final static int iColDefinitionName = 1;
-        final static int iColSourceDomain = 2;
-        final static int iColTargetDomain = 3;
+        final static int iColIcon = 0;
+        final static int iColDefinitionType = 1;
+        final static int iColDefinitionName = 2;
+        final static int iColSourceDomain = 3;
+        final static int iColTargetDomain = 4;
         
         TableModelDefinition(ArrayList rows) {
             this.rows = rows;
@@ -1174,13 +1179,13 @@ public void onAddHierarchy() {
     
     protected void configureTableColumns(JTable table) {
         int cnt = table.getColumnCount();
-        for (int i = 0; i < cnt; i++) {
+        //for (int i = 0; i < cnt; i++) {
             TableColumn col = table.getColumnModel().getColumn(0);
-            col.setHeaderRenderer(mDefinitionTableHeaderRenderer);
-            //col.setCellRenderer(mDefinitionTableColumnRenderer);
-        }
+            //col.setHeaderRenderer(mMyTableHeaderRenderer);
+            col.setCellRenderer(mDefinitionTableColumnRenderer);
+        //}
     }
-    class DefinitionTableHeaderRenderer extends DefaultTableCellRenderer {
+    class MyTableHeaderRenderer extends DefaultTableCellRenderer {
         // This method is called each time a column header
         @Override
         public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
@@ -1188,13 +1193,13 @@ public void onAddHierarchy() {
             if (table != null) {
                 JTableHeader header = table.getTableHeader();
                 if (header != null) {
-                    setForeground(header.getForeground());
-                    setBackground(header.getBackground());
-                    setFont(header.getFont());
-                    setBorder(header.getBorder());
+                    //setForeground(header.getForeground());
+                    //setBackground(header.getBackground());
+                    //setFont(header.getFont());
+                    //setBorder(header.getBorder());
                 }
             }
-            setHorizontalAlignment(JLabel.CENTER);
+            //setHorizontalAlignment(JLabel.CENTER);
             return this;
         }
 
@@ -1213,24 +1218,14 @@ public void onAddHierarchy() {
                 if (table.getModel() instanceof TableModelDefinition) {
                     TableModelDefinition model = (TableModelDefinition) table.getModel();
                     DefinitionRow row = model.getRow(rowIndex);
-                    if (rowIndex >= 0 && colIndex == 0) {
+                    if (colIndex == TableModelDefinition.iColIcon) {
                         switch (colIndex) {
-                            case TableModelDefinition.iColDefinitionName:
-                                setText(row.getDefinitionName());
-                                break;
-                            case TableModelDefinition.iColDefinitionType:
-                                setText(row.getDefinitionType());
+                            case TableModelDefinition.iColIcon:
                                 if (row.getDefinitionType().equals(Definition.TYPE_RELATIONSHIP)) {
                                     setIcon(mEditorMainPanel.RELATIONSHIPNODEICON);
                                 } else if (row.getDefinitionType().equals(Definition.TYPE_HIERARCHY)) {
                                     setIcon(mEditorMainPanel.HIERARCHYNODEICON);
                                 }
-                                break;
-                            case TableModelDefinition.iColSourceDomain:
-                                setText(row.getSourceDomain());
-                                break;
-                            case TableModelDefinition.iColTargetDomain:
-                                setText(row.getTargetDomain());
                                 break;
                             default:
                                 break;
