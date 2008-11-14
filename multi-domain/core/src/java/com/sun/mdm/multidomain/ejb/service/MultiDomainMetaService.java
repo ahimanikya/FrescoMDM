@@ -133,6 +133,29 @@ public interface MultiDomainMetaService {
         throws ProcessingException, UserException;
     
     /**
+     * Get a HierarchyDef for the given name and domain.
+     * @param name Hierarchy name.
+     * @param domain Domain name.
+     * @return HierarchyDef HierarchyDef.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an error occurs during processing.
+     */
+    public HierarchyDef getHierarchyDefByName(String name, String domain)
+        throws ProcessingException, UserException;
+    
+    
+    /**
+     * Get a HierarchyDef for the given hierarchy Id.
+     * @param hierarchyId HierarchyId.
+     * @param domain Domain name.
+     * @return HierarchyDef HierarchyDef.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an error occurs during processing.
+     */  
+    public HierarchyDef getHierarchyDefById(long hierarchyId)
+        throws ProcessingException, UserException;
+  
+    /**
      * Get all Hierarchy Defs for the given domain.
      * @param domain Domain name.
      * @return HierarchyDef[] An array of relationship Def.

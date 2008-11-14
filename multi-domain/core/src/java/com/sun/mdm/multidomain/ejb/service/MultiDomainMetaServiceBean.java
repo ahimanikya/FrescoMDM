@@ -168,7 +168,23 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet."); 
     }
-   
+  
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyDefByName() 
+     */      
+    public HierarchyDef getHierarchyDefByName(String name, String domain)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet.");     
+    }
+     
+   /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyDefById() 
+     */ 
+    public HierarchyDef getHierarchyDefById(long hierarchyId)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet."); 
+    }
+    
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createHierarchyDef() 
      */        
