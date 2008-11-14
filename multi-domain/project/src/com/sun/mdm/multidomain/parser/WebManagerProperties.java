@@ -80,6 +80,8 @@ public class WebManagerProperties {
     
     public static String mTAG_PAGE_IDENTIFIER = "identifier";
     
+    public static String mTAG_VIEW_PATH = "view-path";
+    
     public static String mTAG_PAGE_TAB = "tab";
     
     public static String mTAG_SUB_SCREENS = "subscreens";

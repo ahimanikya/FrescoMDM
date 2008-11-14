@@ -270,6 +270,10 @@ public class MultiDomainWebManager {
             elmScreenTitle.appendChild(xmlDoc.createTextNode(screenDef.getScreenTitle()));
             elmScreen.appendChild(elmScreenTitle);
             
+            Element elmViewPath = xmlDoc.createElement(WebManagerProperties.mTAG_VIEW_PATH);
+            elmViewPath.appendChild(xmlDoc.createTextNode(screenDef.getViewPath()));
+            elmScreen.appendChild(elmViewPath);
+            
             Element elmScreenId = xmlDoc.createElement(WebManagerProperties.mTAG_SCREEN_ID);
             elmScreenId.appendChild(xmlDoc.createTextNode(String.valueOf(screenDef.getScreenId())));
             elmScreen.appendChild(elmScreenId);
@@ -749,6 +753,7 @@ public class MultiDomainWebManager {
         int itemPerPage = -1;
         int maxItems = -1;
         int intitalTabId = -1;
+        String viewPath = null;
         RelationshipPageTabDefination pageTab = null;
         ScreenDefinition screenDef = new ScreenDefinition();
         int tabId = -1;
@@ -764,6 +769,9 @@ public class MultiDomainWebManager {
                 } else if (elementName.equals(WebManagerProperties.mTAG_SCREEN_TITLE)) {
                     screenTitle = RelationshipUtil.getStrElementValue(elm);
                     screenDef.setScreenTitle(screenTitle);
+                } else if (elementName.equals(WebManagerProperties.mTAG_VIEW_PATH)) {
+                    viewPath = RelationshipUtil.getStrElementValue(elm);
+                    screenDef.setViewPath(viewPath);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SCREEN_ID)) {
                     screenId = RelationshipUtil.getIntElementValue(elm);
                     screenDef.setScreenId(screenId);

@@ -25,6 +25,8 @@ public class ScreenDefinition {
     
     private int mMaxItems = -1;
     
+    private String viewPath = null;
+    
     private ArrayList<PageRelationType> mPageRelationType = null;
     
     private PageDefinition mChildPage = null;
@@ -104,6 +106,14 @@ public class ScreenDefinition {
 
     public void setMaxItems(int maxItems) {
         this.mMaxItems = maxItems;
+    }
+
+    public String getViewPath() {
+        return viewPath;
+    }
+
+    public void setViewPath(String viewPath) {
+        this.viewPath = viewPath;
     }
 
 }
