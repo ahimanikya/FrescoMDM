@@ -2,7 +2,7 @@
 
 var selectOptions = new Array("string","date","int","float","char","boolean");
 
-function NewAttribute(tableId, attributesArray)
+function NewAttribute(tableId, attributesArray, prefixToUse)
 {
     var _this = this;
     // Create our row  
@@ -29,6 +29,7 @@ function NewAttribute(tableId, attributesArray)
     this.IdField = document.createElement("input");
     this.IdField.type = "checkbox";
     this.IdField.value = attributesArray.length;
+    this.IdField.onclick = function () { refreshCustomAttributesButtonsPalette(eval(prefixToUse+"_attributesArray"),prefixToUse); }
     this.Row.cells[0].appendChild(this.IdField);
 
     this.AttributeNameField = document.createElement("input");
@@ -232,4 +233,27 @@ function deselectAllCustomAttributes(attributesArray) {
       attr = attributesArray[i];
       attr.IdField.checked = false;
     }
+}
+
+
+var deleteButtonEnabled = new Image();
+deleteButtonEnabled.src = "images/icons/delete_button.png";
+var deleteButtonDisabled = new Image();
+deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
+
+function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix) {
+    //alert('refreshing...........' + buttonIdToRefresh);
+    var anySelected = false;
+    //var chkboxes = document.getElementsByName("chkRelationshipDef");
+    for(i=0;i<attributesArray.length; i++) {
+        var attr = attributesArray[i];
+        if(attr.IdField.checked )
+            anySelected = true;
+    }
+    var imgDeleteAttributeObj = dojo.byId(buttonIdPrefix+"_imgDeleteCustAttr");
+    if(imgDeleteAttributeObj != null) {
+      if(anySelected) imgDeleteAttributeObj.src =   deleteButtonEnabled.src;
+      else imgDeleteAttributeObj.src =   deleteButtonDisabled.src;
+    }
+    
 }
