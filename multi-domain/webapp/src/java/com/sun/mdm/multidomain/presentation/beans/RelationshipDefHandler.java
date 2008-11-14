@@ -60,8 +60,8 @@ public class RelationshipDefHandler {
         List<RelationshipDefExt> types = null;
         try {
             types = relationshipManager.getRelationshipDefs(sourceDomain, targetDomain);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }
         if(types == null) {
             types = new ArrayList<RelationshipDefExt>();
@@ -69,13 +69,49 @@ public class RelationshipDefHandler {
         return types;
     }
 
+    /**
+     * Get Relationship definition for the given name and source domains and target domain.
+     * @param name RelationshipDef name.
+     * @param sourceDomain Source domain.
+     * @param targetDomain Target domain.
+     * @return RelationshipDefExt RelationshipDefExt.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public RelationshipDefExt getRelationshipDefByName(String name, String sourceDomain, String targetDomain) 
+        throws ServiceException {                
+        RelationshipDefExt type = null;
+        try {
+            type = relationshipManager.getRelationshipDefByName(name, sourceDomain, targetDomain);
+        } catch(ServiceException svcex) {
+            throw svcex;
+        }
+        return type;
+    }
+
+    /**
+     * Get Relationship definition for the given relationship Id.
+     * @param relationshipDefId RelationshipDef Identifier.
+     * @return RelationshipDefExt RelationshipDefExt.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public RelationshipDefExt getRelationshipDefById(long relationshipDefId) 
+        throws ServiceException {                
+        RelationshipDefExt type = null;
+        try {
+            type = relationshipManager.getRelationshipDefById(relationshipDefId);
+        } catch(ServiceException svcex) {
+            throw svcex;
+        }
+        return type;
+    }
+        
     public List<DomainRelationshipDefsObject> getDomainRelationshipDefsObjects(String domain)             
         throws ServiceException {
         List<DomainRelationshipDefsObject> relationshipDefs = null;
         try {
             relationshipDefs = relationshipManager.getDomainRelationshipDefsObjects(domain);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }
         return relationshipDefs;
     }
@@ -91,8 +127,8 @@ public class RelationshipDefHandler {
         List<RelationshipDefExt> types = null;
         try {
             types = relationshipManager.getRelationshipDefs(domain);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }
         if(types == null) {
             types = new ArrayList<RelationshipDefExt>();
@@ -111,8 +147,8 @@ public class RelationshipDefHandler {
         String RelationshipDefId = null;
         try {
             RelationshipDefId = relationshipManager.addRelationshipDef(rDefExt);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }
         return RelationshipDefId;        
     }
@@ -126,8 +162,8 @@ public class RelationshipDefHandler {
         throws ServiceException {        
         try {
             relationshipManager.updateRelationshipDef(rDefExt);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }    
     }
     
@@ -140,8 +176,8 @@ public class RelationshipDefHandler {
         throws ServiceException {        
         try {
             relationshipManager.deleteRelationshipDef(rDefExt);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }        
     }
     
@@ -156,8 +192,8 @@ public class RelationshipDefHandler {
         int count = 0;
         try {
             count = relationshipManager.getRelationshipDefCount(domain);
-        } catch(ServiceException sex) {
-            throw sex;
+        } catch(ServiceException svcex) {
+            throw svcex;
         }   
         return count;
     }
