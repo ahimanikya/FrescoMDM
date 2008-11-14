@@ -20,13 +20,19 @@ pageTracker._trackPageview();
 <dt>Primary Record</dt>
 <dd>The record that was selected from the initial "Select
 Record" screen. &nbsp;This record is shown as the first child of
-it's Domain on the Relationship Tree. </dd>
+it's Domain on the Relationship Tree.<br><br>&nbsp;<img style="width: 301px; height: 60px;" alt="" src="../attach/RecordDragRules/PrimaryRecord.png"><br></dd><dt>Related Domain</dt><dd>
+<p style="margin-bottom: 0in;">A domain under a realtionship. &nbsp;The
+domain is associated with a parent domain via a specific
+relationship.&nbsp; For example, for Company -&gt;Owns Locations,
+Centerpoint, &nbsp;Locations is a related domain. &nbsp; All domains on
+the tree are related domains except the root domain.&nbsp;&nbsp;</p></dd><dt>
+Record of the Domain</dt><dd>The record for which the relationships are established/defined<br><br><img style="width: 360px; height: 332px;" alt="" src="../attach/RecordDragRules/RecordNomenclature.png"><br></dd></dl><dl>
 </dl>
-<br>
+
 <h2>Handling of the root Domain node<br>
 </h2>
 <br>
-This record can not be Deleted nor Moved. <br>
+No actions are avialable for this node. &nbsp;<br>
 <br>
 <h2>Handling delete of the "Primary Record"</h2>
 The first child in the Relatinship Tree is the Primary Record, its
@@ -105,23 +111,28 @@ works I will show drags from the source tree to the destination tree. <br><br>Bo
 trees should also be updated once a node has been moved. &nbsp;
 However, both&nbsp;trees should preserve what nodes where openned and
 where the user has scrolled to. To the user it should only look as
-though the old records have been moved from one place to the other. <br>
-<br>
+though the old records have been moved from one place to the other. <br><br><h3>General Rules</h3><ol><li>If
+the “record of the domain” is same for the drop, then the drop should
+not be allowed.&nbsp; In other words the “record of the domain” should
+always be different for the drop.</li><li>The key condition parameters to check during the drag and drop are<br><ul><li>relationship</li><li>domain</li><li>related domain</li><li>record of the domain</li></ul></li></ol>
+
 <h3>Primary Record</h3><br>Can not be selected for move nor drag / drop. <br><br><h3>Relationships</h3><br>Can be dragged either to a record located under the
 same domain as the source record of the relationship or to the same
-relationship located under the same domain. <br><br><div style="margin-left: 40px;"><img style="width: 707px; height: 210px;" alt="" src="../attach/RecordDragRules/MoveRelationship.png"><br></div><br> <h4>Notes <br></h4><ul><li>Re-assigns all records under each domain with the same relationship to the new record associated with the relationship. <br><br>For
+relationship located under the same domain. <br><br>&nbsp;A relationship can only be dropped on <br><ul><li>the record of the same parent domain</li><li>the same relationship under the same parent domain</li></ul><br><div style="margin-left: 40px;"><img style="width: 707px; height: 210px;" alt="" src="../attach/RecordDragRules/MoveRelationship.png"><br></div><br> <h4>Notes <br></h4><ul><li>Re-assigns all records under each domain with the same relationship to the new record associated with the relationship. <br><br>For
 example, in the above diagram all records in Centerpoint &gt; Owns
 Offices are now assigned to BoughtCenterpoint. &nbsp; This includes all
-the records under the the Locations and Commoities domains. <br></li><li>Should show a prompt comfirming the move of the relationships. <span style="font-style: italic;"></span></li></ul>
-<h3>Domains</h3><br>Can be dragged either to the same domain under the same relationship or to the relationship that the domain is under. <br><br><div style="margin-left: 40px;"><img style="width: 726px; height: 209px;" alt="" src="../attach/RecordDragRules/MoveDomain.png"><br></div><br><h4>Notes <br></h4><ul><li>Re-assigns
+the records under the the Locations and Commoities domains. <br></li><li>Should show a prompt comfirming the move of the relationships.</li><li>Records under the dropped relationship&nbsp;</li><ul><li>Are&nbsp;appended to the existing records of &nbsp;the same related domain</li></ul><ul><li>If the record already exists the system should overwrite the record with the relationship information from the dropped record</li></ul></ul>
+<h3>Related Domains</h3><br>Can be dragged either to the same domain under the same relationship or to the relationship that the domain is under. <br><br>A related domain can only be dropped&nbsp;<br><ul><li value="1"><p style="margin-bottom: 0in;">Under&nbsp;the same relationship and under the record of the same domain</p></li><li value="1"><p style="margin-bottom: 0in;">On &nbsp;the same related domain and under the same relationship and under the record of the same domain</p></li></ul>
+<p style="margin-left: 0.38in; margin-bottom: 0in;"><br>
+</p><br><div style="margin-left: 40px;"><img style="width: 726px; height: 209px;" alt="" src="../attach/RecordDragRules/MoveDomain.png"><br></div><br><h4>Notes <br></h4><ul><li>Re-assigns
 all records under the selected domain with the same relationship to the
 new record associated with the relationship. &nbsp; For example, in the
 above diagram all&nbsp;Centerpoint &gt; Owns &gt; Commities
 relationships to records under Commities would be moved from
-Centerpoint to BoughtCenterpoint. <br></li><li>Should show a prompt comfirming the move of the relationships.</li></ul><br>
+Centerpoint to BoughtCenterpoint. <br></li><li>Should show a prompt comfirming the move of the relationships.</li><li>Records under the dropped related domain&nbsp;</li><ul><li>Are&nbsp;appended to the existing records of &nbsp;the same related domain</li></ul><ul><li>If the record already exists the system should overwrite the record with the relationship information from the dropped record</li></ul></ul><br>
 <h3>Records</h3><br>Can be dragged either to the same domain located under the
 same relationship &gt; parent domain or&nbsp; a record under the same domain &gt;
-relationship &gt; parent domain as shown here.<br><br>In the following
+relationship &gt; parent domain as shown here.<br><br><br>The records can be dropped on same related domain and under the same relationship and under the record of the same domain,<br><br>In the following
 example both highlighted nodes would be reassigned to BoughtCenterpoint
 &gt; Owns &gt; Locations. &nbsp; Neither highlighted node could have
 been dragged to Commodites because the domains do not match.
@@ -130,7 +141,9 @@ been dragged to Commodites because the domains do not match.
 <h4>Notes </h4><ul><li>Re-assigns all the relationships to the selected nodes to the new record. <br></li><li>Should
 show a prompt comfirming that (N) records that will be moved. &nbsp;
 Example: This will move 2 records to BoughtCenterpoint -&gt; Owns
-Location. &nbsp;Do you wish to reassign these records? &nbsp;</li></ul><p></p><p></p>
+Location. &nbsp;Do you wish to reassign these records?</li><li>Allowing
+the user to drag a record to a record under the same related domain,
+relationship and parent domain is a nice to have feature. &nbsp; &nbsp;</li><li>Dropped records&nbsp;</li><ul><li>Are&nbsp;appended to the existing records of &nbsp;the same related domain</li></ul><ul><li>If the record already exists the system should overwrite the record with the relationship information from the dropped record</li></ul></ul><p></p><p></p>
 <div class="pageactions"> <i>This page last
 changed 16-Oct-2008
 01:52:00 PDT by <a href="mailto:andreakendall@dev.java.net">andreakendall@dev.java.net</a></i>
