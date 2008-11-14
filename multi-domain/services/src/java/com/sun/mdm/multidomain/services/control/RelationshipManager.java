@@ -221,12 +221,75 @@ public class RelationshipManager {
     }
     
     /**
+     * Get Relationship definition for the given name and source domains and target domain.
+     * @param name RelationshipDef name.
+     * @param sourceDomain Source domain.
+     * @param targetDomain Target domain.
+     * @return RelationshipDefExt RelationshipDefExt.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */    
+    public RelationshipDefExt getRelationshipDefByName(String name, String sourceDomain, String targetDomain) 
+        throws ServiceException {
+        RelationshipDefExt rDefExt = null;
+        if (!TBD) {
+        try {
+            RelationshipDef rDef = multiDomainMetaService.getRelationshipDefByName(name, sourceDomain, targetDomain);
+            rDefExt = ViewHelper.toRelationshipDefExt(rDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }
+        }
+         //demo
+        for (RelationshipDef rt:rts) {
+            if (rt.getName().equals(name) &&
+                rt.getSourceDomain().equals(sourceDomain) &&
+                rt.getTargetDomain().equals(targetDomain)) { 
+                rDefExt = ViewHelper.toRelationshipDefExt(rt);
+                break;
+            }
+    	}
+        return rDefExt;
+    }
+ 
+     /**
+     * Get Relationship definition for the given relationship Id.
+     * @param relationshipDefId RelationshipDef Identifier.
+     * @return RelationshipDefExt RelationshipDefExt.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+     public RelationshipDefExt getRelationshipDefById(long relationshipDefId) 
+            throws ServiceException {
+        RelationshipDefExt rDefExt = null;
+        if (!TBD) {
+        try {
+            RelationshipDef rDef = multiDomainMetaService.getRelationshipDefById(relationshipDefId);
+            rDefExt = ViewHelper.toRelationshipDefExt(rDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }
+        }
+        //demo
+        for (RelationshipDef rt:rts) {
+            if (rt.getId() == relationshipDefId) { 
+                rDefExt = ViewHelper.toRelationshipDefExt(rt);
+                break;
+            }
+    	}
+        return rDefExt;               
+     }  
+    
+    /**
      * Get a list of relationship types for the given domain.
      * @param domain Domain name.
      * @return List<RelationshipDefExt> List of relationship type.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipDefExt> getRelationshipDefs(String domain) throws ServiceException {
+    public List<RelationshipDefExt> getRelationshipDefs(String domain) 
+       throws ServiceException {
         
         List<RelationshipDefExt> RelationshipDefs = new ArrayList<RelationshipDefExt>();
         if (!TBD) {
@@ -257,7 +320,8 @@ public class RelationshipManager {
      * @return List<RelationshipDefExt> List of RelationshipDef.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<RelationshipDefExt> getRelationshipDefs(String sourceDomain, String targetDomain) throws ServiceException {
+    public List<RelationshipDefExt> getRelationshipDefs(String sourceDomain, String targetDomain) 
+        throws ServiceException {
  
         List<RelationshipDefExt> RelationshipDefs = new ArrayList<RelationshipDefExt>();
         if (!TBD) {
