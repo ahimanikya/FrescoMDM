@@ -38,8 +38,10 @@ import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
+import com.sun.mdm.multidomain.services.core.ViewHelper;
 
 /**
  * HierarchyManager class.
@@ -73,29 +75,32 @@ public class HierarchyManager {
         
     /**
      * Add a new HierarchyDef.
-     * @param HierarchyDef HierarchyDef.
+     * @param hDefExt HierarchyDefExt.
      * @return String HierarchyDef identifier which is newly added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addHierarchyDef(HierarchyDef HierarchyDef) throws ServiceException {
+    public String addHierarchyDef(HierarchyDefExt hDefExt) 
+        throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
      * Update an existing HierarchyDef.
-     * @param HierarchyDef HierarchyDef.
+     * @param hDefExt HierarchyDefExt.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateHierarchyDef(HierarchyDef HierarchyDef) throws ServiceException {
+    public void updateHierarchyDef(HierarchyDefExt hDefExt)
+        throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }
     
     /**
      * Delete an existing HierarchyDef.
-     * @param HierarchyDef HierarchyDef.
+     * @param hDefExt HierarchyDefExt.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteHierarchyDef(HierarchyDef HierarchyDef) throws ServiceException {
+    public void deleteHierarchyDef(HierarchyDefExt hExtDef)
+        throws ServiceException {
         throw new ServiceException("Not Implemented Yet");     
     }   
     
@@ -105,21 +110,62 @@ public class HierarchyManager {
      * @return In Count of hierarchy HierarchyObject type
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getHierarchyDefCount(String domain) throws ServiceException {
+    public int getHierarchyDefCount(String domain) 
+        throws ServiceException {
         throw new ServiceException("Not Implemented Yet");             
     }
     
     /**
-     * Get a list of hierarchy types for the given domain.
-     * @param domain Domain name.
-     * @return List<HierarchyDef> List of HierarchyObject type
+     * Get HierarchyDef definition for the given hierarchy name and domain name.
+     * @param name HierarchyDef name.
+     * @return HierarchyDefExt HierarchyDefExt.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<HierarchyDef> getHierarchyDefs(String domain) throws ServiceException {
-    	List<HierarchyDef> hierarchys = null;      
+    public HierarchyDefExt getHierarchyDefByName(String name, String domain) 
+        throws ServiceException {                
+        HierarchyDefExt hDefExt = null;
+        try {
+            HierarchyDef hDef = multiDomainMetaService.getHierarchyDefByName(name, domain);
+            hDefExt = ViewHelper.toHierarchyDefExt(hDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }
+        return hDefExt;
+    }
+    
+     /**
+     * Get HierarchyDef definition for the given hierarchy Id.
+     * @param hierarchyId HierarchyId.
+     * @return HierarchyDefExt HierarchyDefExt.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public HierarchyDefExt getHierarchyDefById(long hierarchyId) 
+        throws ServiceException {                
+        HierarchyDefExt hDefExt = null;
+        try {
+            HierarchyDef hDef = multiDomainMetaService.getHierarchyDefById(hierarchyId);
+            hDefExt = ViewHelper.toHierarchyDefExt(hDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }     
+        return hDefExt;
+    }
+    
+    /**
+     * Get a list of hierarchy definition for the given domain.
+     * @param domain Domain name.
+     * @return List<HierarchyDefExt> List of HierarchyDefExt
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public List<HierarchyDefExt> getHierarchyDefs(String domain) 
+        throws ServiceException {
+    	List<HierarchyDefExt> hierarchys = null;      
         try {
             HierarchyDef[] HierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);
-            hierarchys = Arrays.asList(HierarchyDefs);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
