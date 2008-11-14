@@ -217,6 +217,7 @@ public class BulkMatcherLoader {
 			}
 		}
 		logger.info(localizer.x("LDR020: Bulk Loader Completed"));
+    System.exit(0);
 	}
 
 	private void cleanDirs() {
