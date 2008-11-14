@@ -69,6 +69,9 @@
 	padding:0px;
 	border:1px solid #ccc;
 	background:#e2e2e2 url(images/tabEnabled.png) repeat-x;
+        font-weight:bold;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size:13px;
 }
 .mdwm .dijitTabInnerDiv {
 	padding:6px 8px 5px 9px;
@@ -92,7 +95,7 @@
 .mdwm .dijitTabCheckedHover {
 	color: inherit;
 	border:1px solid #ccc;
-	background:#fff;
+	background:#F9F9F0;
 }
 .mdwm .dijitTab .dijitClosable .closeNode {
 	
@@ -138,7 +141,7 @@
 	border-top: none;
 }
 .mdwm .dijitTabContainerTop-tabs .dijitTabChecked {
-	border-bottom-color:white;
+	border-bottom-color:#F9F9F0;
 }
 .mdwm .dijitTabContainerTopStrip {
 	border: 1px solid #ccc;
