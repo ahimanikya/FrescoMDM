@@ -26,14 +26,14 @@
     <body class="mdwm" onLoad="showMainContent();">
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
         
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" style="width:100%;height:580px;">
+        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer"  style="width:100%;height:580px;">
             
             <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy" >
                 <div id="hierarchyTabContent" style="display:none;">
                     <%@ include file="administration/hierarchy.jsp" %>
                 </div>
             </div>
-            <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationships"  selected="true">
+            <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationship"  selected="true">
                 <div id="relationshipTabContent" style="display:none;">
                     <%@ include file="administration/relationships.jsp" %>
                  </div>
