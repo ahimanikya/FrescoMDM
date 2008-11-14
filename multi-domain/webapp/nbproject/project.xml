@@ -38,6 +38,10 @@
                     <file>${reference.MultiDomain-Web-Tier-Services.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+                <library files="1">
+                    <file>${file.reference.resources.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <explicit-platform explicit-source-supported="true"/>

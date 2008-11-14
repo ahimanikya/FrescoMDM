@@ -572,9 +572,11 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy-ear-war file="${reference.MultiDomain-Core-Services.dist}" propname="included.lib.reference.MultiDomain-Core-Services.dist.X"/>
         <basename file="${reference.MultiDomain-Web-Tier-Services.jar}" property="included.lib.reference.MultiDomain-Web-Tier-Services.jar"/>
         <copy-ear-war file="${reference.MultiDomain-Web-Tier-Services.jar}" propname="included.lib.reference.MultiDomain-Web-Tier-Services.jar.X"/>
+        <basename file="${file.reference.resources.jar}" property="included.lib.file.reference.resources.jar"/>
+        <copy-ear-war file="${file.reference.resources.jar}" propname="included.lib.file.reference.resources.jar.X"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.file.reference.net.java.hulp.i18n.jar} ${included.lib.file.reference.dwr.jar} ${included.lib.libs.jstl11.classpath.1.X} ${included.lib.libs.jstl11.classpath.2.X} ${included.lib.libs.spring-framework.classpath.1.X} ${included.lib.libs.spring-framework.classpath.2.X} ${included.lib.libs.spring-webmvc.classpath} ${included.lib.file.reference.index-core.jar} ${included.lib.reference.MultiDomain-Core-Services.dist} ${included.lib.reference.MultiDomain-Web-Tier-Services.jar} "/>
+            <attribute name="Class-Path" value="${included.lib.file.reference.net.java.hulp.i18n.jar} ${included.lib.file.reference.dwr.jar} ${included.lib.libs.jstl11.classpath.1.X} ${included.lib.libs.jstl11.classpath.2.X} ${included.lib.libs.spring-framework.classpath.1.X} ${included.lib.libs.spring-framework.classpath.2.X} ${included.lib.libs.spring-webmvc.classpath} ${included.lib.file.reference.index-core.jar} ${included.lib.reference.MultiDomain-Core-Services.dist} ${included.lib.reference.MultiDomain-Web-Tier-Services.jar} ${included.lib.file.reference.resources.jar} "/>
         </manifest>
         <delete dir="${dist.ear.dir}/temp"/>
     </target>
@@ -589,6 +591,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${file.reference.index-core.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${reference.MultiDomain-Core-Services.dist}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${reference.MultiDomain-Web-Tier-Services.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${file.reference.resources.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" name="do-ear-dist">
         <dirname file="${dist.ear.war}" property="dist.jar.dir"/>
