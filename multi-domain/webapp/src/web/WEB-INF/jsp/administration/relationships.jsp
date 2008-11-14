@@ -83,6 +83,7 @@
               },
               escapeHtml:false
             });
+        refreshRelationshipDefsButtons(); // Refresh the buttons pallete to enable/disable the buttons.
     }
         
     function clickAdd() {
@@ -96,7 +97,7 @@
     }
     
     var relationListingDataFuncs = [
-        function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"'>"; },
+        function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtons();'>"; },
         function(data) { return data.name; },
         function(data) { if(data.biDirection) return "<-->"; else return "-->" ; },
         function(data) { return data.plugin; },
@@ -161,10 +162,23 @@
                 <table width="100%">
                     <tr>
                         <td valign="bottom">
+                            <table cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllRelationshipDefs();" ><img id="imgSelectAllRelationshipDef" src="images/icons/select_multiple.gif" class="palleteButton"  border="0"></a></td>
+                                    <td><img src="images/spacer.gif" height="1" width="4"></td>
+                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllRelationshipDefs();"><img id="imgDeselectAllRelationshipDef" src="images/icons/deselect_multiple.gif" border="0"></a></td>
+                                    <td><img src="images/icons/actions_separator.gif" border="0"></td>
+                                    <td><a href="javascript:void(0);" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."><img id="imgAddRelationshipDef" src="images/icons/add_button.png" border="0"></a></td>
+                                    <td><img src="images/spacer.gif" height="1" width="7"></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs();" ><img id="imgDeleteRelationshipDef" src="images/icons/delete_button.png" border="0"></a></td>
+                                </tr>
+                            </table>
+                           <!--
                             <input type="button" id="selectallbutton" onclick="selectAllRelationshipDefs();" title="Select all"  />&nbsp;
                             <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllRelationshipDefs();" /><img src="images/icons/actions_separator.gif" >
                             <input type="button" id="addbutton" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."  />&nbsp;
                             <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs();" />
+                            -->
                         </td>
                     </tr>
                     <tr>
@@ -249,17 +263,39 @@
     loadTargetDomains("selectTargetDomain");
 </script>    
 <script>
+var deleteButtonEnabled = new Image();
+deleteButtonEnabled.src = "images/icons/delete_button.png";
+var deleteButtonDisabled = new Image();
+deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
+
+function refreshRelationshipDefsButtons () {
+    var anySelected = false;
+    var chkboxes = document.getElementsByName("chkRelationshipDef");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked )
+            anySelected = true;
+    }
+    var imgDeleteRelationshipDefObj = dojo.byId("imgDeleteRelationshipDef");
+    if(anySelected)
+        imgDeleteRelationshipDefObj.src =   deleteButtonEnabled.src;
+    else
+        imgDeleteRelationshipDefObj.src =   deleteButtonDisabled.src;
+
+}
+
 function selectAllRelationshipDefs () {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = true;
     }
+    refreshRelationshipDefsButtons();
 }
 function deselectAllRelationshipDefs () {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = false;
     }
+    refreshRelationshipDefsButtons();
 }
 function deleteRelationshipDefs () {
     var chkboxes = document.getElementsByName("chkRelationshipDef");
@@ -274,6 +310,7 @@ function deleteRelationshipDefs () {
             RelationshipDefHandler.deleteRelationshipDef(relationshipdef, loadRelationshipDefs);
         }
     }
+    refreshRelationshipDefsButtons();
 }
 
 function showRelationshipDialog (dialogId) {
@@ -287,4 +324,7 @@ function showRelationshipDialog (dialogId) {
     relationshipDialog.titleNode.innerHTML = strTitle;
     relationshipDialog.show();
 }
+
+    
+
 </script>
