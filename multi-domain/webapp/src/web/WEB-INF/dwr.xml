@@ -14,6 +14,8 @@
       <param name="beanName" value="RelationshipDefHandler"/>
       <include method="getDefs" /> 
       <include method="getRelationshipDefs" />
+      <include method="getRelationshipDefByName" />
+      <include method="getRelationshipDefById" />    
       <include method="addRelationshipDef" />            
       <include method="deleteRelationshipDef" /> 
       <include method="updateRelationshipDef" />
