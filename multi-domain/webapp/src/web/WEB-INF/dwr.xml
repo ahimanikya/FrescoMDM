@@ -38,6 +38,12 @@
     <create creator="spring" javascript="HierarchyDefHandler" scope="session">
       <param name="beanName" value="HierarchyDefHandler"/>
       <include method="getHierarchyDefs" />
+      <include method="getHierarchyDefByName" />
+      <include method="getHierarchyDefById" />
+      <include method="addHierarchyDef" />
+      <include method="deleteHierarchyDef" />
+      <include method="updateHierarchyDef" />
+      <include method="getHierarchyDefCount" />
     </create>
 
     <create creator="spring" javascript="HierarchyHandler" scope="session">
@@ -53,10 +59,14 @@
         <param name="include" value="name" />
     </convert>		
 
-    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
-        <param name="include" value="name, sourceDomain, targetDomain, plugin, pluginInfo, biDirection, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt">
+        <param name="include" value="name, domain, plugin, pluginInfo, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
     </convert>	
 
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
+        <param name="include" value="name, sourceDomain, targetDomain, plugin, pluginInfo, biDirection, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
+    </convert>
+    
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.AttributeDefExt">
         <param name="include" value="name, columnName, searchable, isRequired, dataType, defaultValue" />
     </convert>	
@@ -115,6 +125,13 @@
     </convert>
     
     <signatures>
+        <![CDATA[
+            import java.util.List;
+            import com.sun.mdm.multidomain.services.model.AttributeDefExt;
+            import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
+            HierarchyDefExt.setExtendedAttributes(List<AttributeDefExt> extendedAttributes);            
+            List<AttributeDefExt> HierarchyDefExt.getExtendedAttributes();  
+        ]]>        
         <![CDATA[
             import java.util.List;
             import java.util.Map;            
