@@ -34,6 +34,7 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.relationship.Relationship;
@@ -51,6 +52,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.util.Helper;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
@@ -75,6 +77,12 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
+    
+    public static HierarchyDefExt toHierarchyDefExt(HierarchyDef hDef) {
+        HierarchyDefExt hDefExt = new HierarchyDefExt();
+        // need implementation.
+        return hDefExt;
+    }
     
     public static RelationshipDefExt toRelationshipDefExt(RelationshipDef rDef) {
         RelationshipDefExt rDefExt = new RelationshipDefExt();
