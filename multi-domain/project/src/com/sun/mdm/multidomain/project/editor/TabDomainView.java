@@ -342,22 +342,22 @@ private void enableSave() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanelRecordHighLight, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanelRecordHighLight, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(layout.createSequentialGroup()
+                                .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
+                        .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
+                        .add(jPanelDomainSummary, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .add(226, 226, 226))
-            .add(layout.createSequentialGroup()
-                .add(10, 10, 10)
-                .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(226, Short.MAX_VALUE))
-            .add(layout.createSequentialGroup()
-                .add(10, 10, 10)
-                .add(jPanelDomainSummary, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         layout.linkSize(new java.awt.Component[] {jPanelDomainSummary, jPanelRecordDetail, jPanelRecordHighLight}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -470,6 +470,8 @@ private void onEditSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     FieldGroupDialog dlg = new FieldGroupDialog(selectedGroup, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
+        jTableRecordSummay.setRowSelectionInterval(selectedRow, selectedRow);
+        model.fireTableDataChanged();
         enableSave();
     }
 }//GEN-LAST:event_onEditSummaryGroup
@@ -535,6 +537,7 @@ private void onEditDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onE
     DomainRecordDetailDialog dlg = new DomainRecordDetailDialog(recordDetail, false, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModifed()) {
+        recordDetailModel.fireTableDataChanged();
         this.enableSave();        
     }
 
@@ -548,7 +551,7 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 
     class TableModelRecordSummary extends AbstractTableModel {
 
-        private String columnNames[] = {NbBundle.getMessage(TabDomainView.class, "LBL_FIELD"),};
+        private String columnNames[] = {NbBundle.getMessage(TabDomainView.class, "LBL_FIELD_GROUP"),};
         ArrayList fieldRows;
         final static int iColRecordSummary = 0;
 
@@ -618,21 +621,16 @@ private void onCBIncludeEUID(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
          * data can change.
          */
         
-        /**
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
-                case iColRecordDetailName:
-                    ((FieldGroup.FieldRef) fieldRows.get(row)).getFieldName((String) value);
-                    //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
+                case iColRecordSummary:
+                    ((FieldGroup) fieldRows.get(row)).setDescription((String) value);
                     break;
 
             }
-
-            //fieldRows.set(row, value);
             fireTableCellUpdated(row, col);
 
         }
-         */ 
 
         public void removeRow(int index) {
             fieldRows.remove(index);

@@ -556,8 +556,8 @@ private void onOKBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKBtn
 // TODO add your handling code here:
     //if ()
     bModified = true;
-    this.mSearchType.setInstruction(this.jTxtInstruction.getText());
-    this.mSearchType.setScreenTitle(this.jTxtScreenTitle.getText());
+    mSearchType.setInstruction(this.jTxtInstruction.getText());
+    mSearchType.setScreenTitle(this.jTxtScreenTitle.getText());
     if (this.bRefreshSearchResult) {
         for (SearchDetail searchResult : mSearchResultList) {
             if (searchResult.getDisplayName().equals((String) this.jCBSearchResultList.getSelectedItem())) {

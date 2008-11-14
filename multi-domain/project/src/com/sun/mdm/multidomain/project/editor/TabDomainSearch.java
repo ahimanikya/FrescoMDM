@@ -122,7 +122,6 @@ public class TabDomainSearch extends javax.swing.JPanel {
 
         }
 
-//            comboBoxSearchRes.getS
         mJComboSearchResult.setSelectedItem(idx);
         mJComboSearchResult.addItemListener(new java.awt.event.ItemListener() {
 
@@ -479,6 +478,7 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
              mJComboSearchResult.setSelectedItem(dlg.getSelectedSearchResult());
              jScrollPaneSearchPage.setViewportView(mTableSearchType);
         }
+        searchPageModel.fireTableDataChanged();;
         this.enableSave();
     }
 }//GEN-LAST:event_onEditSearchType
@@ -491,8 +491,8 @@ private void onEditSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     DomainSearchResultDialog dlg = new DomainSearchResultDialog(searchDetail, false, mDomainNode);
     dlg.setVisible(true);
     if (dlg.isModified()) {
-        //this.mJComboRecordDetail.setSelectedItem(dlg.getSelectRecordDetail());
-        this.jScrollPaneSearchResult.setViewportView(mTableSearchResult);
+        jScrollPaneSearchResult.setViewportView(mTableSearchResult);
+        ((TableModelSearchPage) mTableSearchType.getModel()).fireTableDataChanged();
         this.enableSave();
     }
 }//GEN-LAST:event_onEditSearchResult

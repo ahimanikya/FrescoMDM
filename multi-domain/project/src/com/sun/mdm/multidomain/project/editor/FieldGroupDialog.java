@@ -3,15 +3,15 @@
  *
  * Created on October 28, 2008, 11:08 AM
  */
-
 package com.sun.mdm.multidomain.project.editor;
 
 import com.sun.mdm.multidomain.parser.FieldGroup;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.util.NbBundle;
-
 
 /**
  *
@@ -21,7 +21,8 @@ public class FieldGroupDialog extends javax.swing.JDialog {
 
     private boolean bModified = false;
     private DomainNode mDomainNode = null;
-    private FieldGroup mGroup =  null;
+    private FieldGroup mGroup = null;
+
     /** Creates new form FieldGroupDialog */
     public FieldGroupDialog(FieldGroup group, DomainNode domainNode) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
@@ -30,17 +31,48 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         //super(parent, modal);
         initComponents();
         this.jTxtGroupDescription.setText(group.getDescription());
-        TableModelField model = new TableModelField(group);
-        jTableField.setModel(model);
-        
+        loadFields();
         jTableField.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    jBtnRemove.setEnabled(true);
-                }
-            });
+
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBtnRemove.setEnabled(true);
+            }
+        });
+        
+        this.jBtnOK.setEnabled(enabledOKBtn());
+        
+        jTxtGroupDescription.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jBtnOK.setEnabled(enabledOKBtn());
+            }
+        });
 
     }
+    
+    private void loadFields() {
+        ArrayList<FieldRow> fieldRows = new ArrayList<FieldRow>();
+        for (FieldGroup.FieldRef field : mGroup.getFieldRefs()) {
+            FieldRow fieldRow = new FieldRow(field.getFieldName());
+            fieldRows.add(fieldRow);
+        }
+        TableModelField model = new TableModelField(fieldRows);
+        jTableField.setModel(model);
+        
+    }
 
+    private boolean enabledOKBtn() {
+         boolean setEnabled = true;
+         
+         if (jTxtGroupDescription.getText() == null || jTxtGroupDescription.getText().length() == 0) {
+             return !setEnabled;
+         }
+    
+         if (this.jTableField.getRowCount() == 0 ) {
+             return !setEnabled;
+         }
+                  
+         return setEnabled;        
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -129,6 +161,7 @@ public class FieldGroupDialog extends javax.swing.JDialog {
         );
 
         jBtnOK.setText(org.openide.util.NbBundle.getMessage(FieldGroupDialog.class, "LBL_OK")); // NOI18N
+        jBtnOK.setEnabled(false);
         jBtnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onBtnOK(evt);
@@ -195,22 +228,52 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         if (entityDlg.getFieldList().size() > 0) {
             TableModelField fieldModel = (TableModelField) jTableField.getModel();
             for (String fieldName : entityDlg.getFieldList()) {
-                FieldGroup.FieldRef fieldRef = mGroup.createFieldRef(fieldName);
+                FieldRow fieldRef = new FieldRow(fieldName);
                 fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
             }
             jTableField.setModel(fieldModel);
+            jBtnOK.setEnabled(true);
         }
     }
 }//GEN-LAST:event_onBtnAddField
 
 private void onBtnRemove(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnRemove
 // TODO add your handling code here:
+    //int rs[] = jTableField.getSelectedRows();
+   // int length = rs.length;
+    int rs = jTableField.getSelectedRow();
+    String prompt = NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Row_Prompt");
+
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+            prompt,
+            NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Row_Title"),
+            NotifyDescriptor.YES_NO_OPTION);
+    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+        TableModelField model = (TableModelField) jTableField.getModel();
+        model.removeRow(rs);
+
+        if (jTableField.getRowCount() > 0) {
+            jBtnRemove.setEnabled(true);
+            jTableField.setRowSelectionInterval(0, 0);
+        } else {
+            jBtnOK.setEnabled(false);
+        }
+
+        this.bModified = true;
+    }
+    
 }//GEN-LAST:event_onBtnRemove
 
 private void onBtnOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnOK
 // TODO add your handling code here:
     bModified = true;
+    mGroup.getFieldRefs().clear();
     mGroup.setDescription(this.jTxtGroupDescription.getText());
+    TableModelField fieldModel = (TableModelField) jTableField.getModel();
+    for (FieldRow field : fieldModel.fieldRows) {
+        mGroup.addFieldRef(mGroup.createFieldRef(field.getFieldName()));
+
+    }
     this.dispose();
 }//GEN-LAST:event_onBtnOK
 
@@ -224,18 +287,66 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
 // TODO add your handling code here:
 }//GEN-LAST:event_jTxtGroupDescriptionActionPerformed
 
+    class FieldRow {
 
+        private String fieldName;
 
-     class TableModelField extends AbstractTableModel {
+        public FieldRow(String name) {
+            fieldName = name;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+    }
+
+    class GroupRow {
+
+        private String groupName;
+        private int groupId;
+        private ArrayList<FieldRow> fieldRows = null;
+
+        public GroupRow(String groupName) {
+            this.groupName = groupName;
+        }
+
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public void setGroupName(String groupName) {
+            this.groupName = groupName;
+        }
+
+        public ArrayList<FieldRow> getFieldRows() {
+            return fieldRows;
+        }
+
+        public void setFieldRows(ArrayList<FieldRow> fieldRows) {
+            this.fieldRows = fieldRows;
+        }
+
+        public int getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(int groupId) {
+            this.groupId = groupId;
+        }
+    }
+
+    class TableModelField extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(FieldGroupDialog.class, "LBL_FIELD"),};
-        ArrayList fieldRows;
+        ArrayList<FieldRow> fieldRows;
         final static int iColFieldName = 0;
-        private FieldGroup mFieldGroup = null;
-
-        TableModelField(FieldGroup fieldGroup) {
-            mFieldGroup = fieldGroup;
-            fieldRows = fieldGroup.getFieldRefs();
+ 
+        TableModelField(ArrayList<FieldRow> rows) {
+            fieldRows = rows;
         }
 
         public int getColumnCount() {
@@ -255,7 +366,7 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
 
         public Object getValueAt(int row, int col) {
             if (fieldRows != null) {
-                FieldGroup.FieldRef singleRow = (FieldGroup.FieldRef) fieldRows.get(row);
+                FieldRow singleRow = (FieldRow) fieldRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColFieldName:
@@ -268,10 +379,9 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
             return null;
         }
 
-        public FieldGroup.FieldRef getRow(int row) {
+        public FieldRow getRow(int row) {
             if (fieldRows != null) {
-                FieldGroup.FieldRef singleRow = (FieldGroup.FieldRef) fieldRows.get(row);
-                return singleRow;
+                return fieldRows.get(row);
             }
             return null;
         }
@@ -298,7 +408,7 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iColFieldName:
-                    mFieldGroup.createFieldRef((String) value);
+                    fieldRows.set(row, (FieldRow) value);
                     break;
 
             }
@@ -313,7 +423,7 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, FieldGroup.FieldRef row) {
+        public void addRow(int index, FieldRow row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
@@ -334,17 +444,15 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
             return -1;
         }
 
-        public FieldGroup.FieldRef findRelTypeByFieldName(String fieldName) {
+        public FieldRow findRelTypeByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
                 if (getValueAt(i, iColFieldName).equals(fieldName)) {
-                    return (FieldGroup.FieldRef) fieldRows.get(i);
+                    return fieldRows.get(i);
                 }
             }
             return null;
         }
     }
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAdd;
     private javax.swing.JButton jBtnCancel;
@@ -356,5 +464,4 @@ private void jTxtGroupDescriptionActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JTable jTableField;
     private javax.swing.JTextField jTxtGroupDescription;
     // End of variables declaration//GEN-END:variables
-
 }

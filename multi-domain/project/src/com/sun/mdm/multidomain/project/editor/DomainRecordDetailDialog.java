@@ -469,7 +469,7 @@ private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
 // TODO add your handling code here:
     bModified = true;
-    this.mRecordDetail.setDisplayName(this.jTxtRecordDetail.getText());
+    mRecordDetail.setDisplayName(this.jTxtRecordDetail.getText());
     mRecordDetail.getFieldGroups().clear();
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
     ArrayList<GroupRow> groups = fieldGroupModel.groupRows;
@@ -482,7 +482,6 @@ private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
         mRecordDetail.addFieldGroup(fieldGroup);
         
     }
-//    this.mRecordDetail.setFieldGroups(fieldGroupModel.fieldRows);
     this.dispose();
 
 }//GEN-LAST:event_onOK
