@@ -99,7 +99,7 @@
     var relationListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },
         function(data) { return data.name; },
-        function(data) { if(data.biDirection) return "<-->"; else return "-->" ; },
+        function(data) { if(data.biDirection) return "<img src='images/icons/relationship-both.png'>"; else return "<img src='images/icons/relationship-right.png'>" ; },
         function(data) { return data.plugin; },
         function(data) { 
             var fixedAttributesCount = 0;
@@ -139,7 +139,7 @@
                     <tr>
                         <td class="mainLabel"><f:message key="source_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;</td>
                         <td>
-                            <select id="selectSourceDomain"></select>
+                            <select id="selectSourceDomain" onchange="selectDomain()"></select>
                         </td>
                         <td><img src="images/spacer.gif" height="1" width="20"></td>
                         <td class="mainLabel"><f:message key="target_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;</td>
