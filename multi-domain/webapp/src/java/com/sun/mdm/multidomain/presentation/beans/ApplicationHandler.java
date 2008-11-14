@@ -102,9 +102,9 @@ public class ApplicationHandler {
             SecurityManager.getInstance();
             
             /* initialize user profile */
-            //TBD UserProfile userProfile = new UserProfile(request.getRemoteUser(), request);
+            UserProfile userProfile = new UserProfile(request.getRemoteUser(), request);
             
-            //TBD session.setAttribute("userProfile", userProfile);
+            session.setAttribute("userProfile", userProfile);
             session.setAttribute("user", request.getRemoteUser());
              
             logger.info(localizer.x("WEB001: application handler initialization completed."));
