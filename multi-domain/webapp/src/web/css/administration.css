@@ -99,40 +99,7 @@
     padding-top:5px;
 }
 
-#addbutton { 
-    width:20px;
-    height:20px;
-    background-image: url(../images/icons/add_button.png);
-    background-repeat:no-repeat;
-    background-color: transparent;
-    border:none;
-    cursor:pointer;
-}
-#deletebutton { 
-    width:20px;
-    height:20px;
-    background-image: url(../images/icons/delete_button.png);
-    background-repeat:no-repeat;
-    background-color: transparent;
-    border:none;
-    cursor:pointer;
-}
-#selectallbutton { 
-    width:23px;
-    height:20px;
-    background-image: url(../images/icons/select_multiple.gif);
-    background-repeat:no-repeat;
-    background-color: transparent;
-    border:none;
-    cursor:pointer;
-}
-#deselectallbutton { 
-    width:23px;
-    height:20px;
-    background-image: url(../images/icons/deselect_multiple.gif);
-    background-repeat:no-repeat;
-    background-color: transparent;
-    border:none;
+.palleteButton { 
     cursor:pointer;
 }
 
