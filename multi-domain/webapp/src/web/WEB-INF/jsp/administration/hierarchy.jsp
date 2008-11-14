@@ -84,10 +84,22 @@
                 <table width="100%" border="0">
                     <tr>
                         <td valign="bottom">
-                            <input type="button" id="selectallbutton" onclick="selectAllHierarchyDefs(this.form);" title="Select all"  />&nbsp;
+                            <table cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllHierarchyDefs();" ><img id="imgSelectAllHierarchyDef" src="images/icons/select_multiple.gif" class="palleteButton"  border="0"></a></td>
+                                    <td><img src="images/spacer.gif" height="1" width="4"></td>
+                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllHierarchyDefs();"><img id="imgDeselectAllHierarchyDef" src="images/icons/deselect_multiple.gif" border="0"></a></td>
+                                    <td><img src="images/icons/actions_separator.gif" border="0"></td>
+                                    <td><a href="javascript:void(0);" onclick="showHierarchyDialog('addhierarchy');" title="<f:message key="add_text" />..."><img id="imgAddHierarchyDef" src="images/icons/add_button.png" border="0"></a></td>
+                                    <td><img src="images/spacer.gif" height="1" width="7"></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteHierarchyDefs();" ><img id="imgDeleteHierarchyDef" src="images/icons/delete_button.png" border="0"></a></td>
+                                </tr>
+                            </table>
+                            <!--<input type="button" id="selectallbutton" onclick="selectAllHierarchyDefs(this.form);" title="Select all"  />&nbsp;
                             <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllHierarchyDefs(this.form);" /><img src="images/icons/actions_separator.gif" >
                             <input type="button" id="addbutton" onclick="showHierarchyDialog('addhierarchy');" title="<f:message key="add_text" />..."  />&nbsp;
                             <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteHierarchyDefs(this.form);" />
+                            -->
                         </td>
                     </tr>
                     <tr>
@@ -121,26 +133,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="hierarchyListing">
-                                 <!--
-                                <tr class="dataRow">
-                                    <td align="center" ><input type="checkbox" name="relationshipId"></td>
-                                    <td class="textdata">Associate</td>
-                                    <td class="textdata">-></td>
-                                    <td class="textdata">RelOtherPlugin</td>
-                                    <td class="textdata">2 Predefined | 1 Custom</td> 
-                                    <td><input type="button" value="Edit..." class="editButton" onclick="dijit.byId('editrelationship').show();"></td>
-                                </tr>
-
-                                <tr class="dataRow">
-                                    <td align="center" ><input type="checkbox" name="relationshipId"></td>
-                                    <td class="textdata">Employed By</td>
-                                    <td class="textdata"><-></td>
-                                    <td class="textdata">RelOtherPlugin</td>
-                                    <td class="textdata">2 Predefined | 1 Custom</td> 
-                                    <td class="textdata"><input type="button" value="Edit..." class="editButton" onclick="dijit.byId('editrelationship').show();"></td>
-                                </tr>
-
-                                -->
+                                 
                                 <tr><td class="textdata" colspan="6" align="center"> Loading... </td></tr>
                             </table>
                         
@@ -171,20 +164,44 @@
     loadDomains();
 </script>  
 <script>
-function selectAllHierarchyDefs (objForm) {
+var deleteButtonEnabled = new Image();
+deleteButtonEnabled.src = "images/icons/delete_button.png";
+var deleteButtonDisabled = new Image();
+deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
+
+function refreshHierarchyDefsButtonsPalette () {
+    var anySelected = false;
+    var chkboxes = document.getElementsByName("chkHierarchyDef");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked )
+            anySelected = true;
+    }
+    var imgDeleteButtonObj = dojo.byId("imgDeleteHierarchyDef");
+    if(imgDeleteButtonObj != null ) {
+        if(anySelected)
+            imgDeleteButtonObj.src =   deleteButtonEnabled.src;
+        else
+            imgDeleteButtonObj.src =   deleteButtonDisabled.src;
+    }
+
+}
+
+    
+    
+function selectAllHierarchyDefs () {
     alert("not yet implemented.");
     var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = true;
     }
 }
-function deselectAllHierarchyDefs (objForm) {
+function deselectAllHierarchyDefs () {
     var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = false;
     }
 }
-function deleteHierarchyDefs (objForm) {
+function deleteHierarchyDefs () {
     var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked) {
@@ -203,4 +220,6 @@ function showHierarchyDialog (dialogId) {
     hierarchyDialog.titleNode.innerHTML = strTitle;
     hierarchyDialog.show();
 }
+
+refreshHierarchyDefsButtonsPalette ();
 </script>

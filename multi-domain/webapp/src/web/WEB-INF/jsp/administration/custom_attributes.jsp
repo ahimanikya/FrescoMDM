@@ -4,6 +4,7 @@
     Author     : Harish
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
+<script type='text/javascript' src='scripts/attributes.js'></script>
 <%
 String prefixId = (String) request.getParameter("prefix");
 %>
@@ -17,10 +18,22 @@ String prefixId = (String) request.getParameter("prefix");
 
         <table border="0" cellspacing="5" width="100%">
         <tr><td colspan="2" valign="bottom">
-            <input type="button" id="selectallbutton" onclick="selectAllCustomAttributes(<%=prefixId%>_attributesArray);" title="Select all"  />&nbsp;
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/select_multiple.gif" border="0"></a></td>
+                    <td><img src="images/spacer.gif" height="1" width="4"></td>
+                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/deselect_multiple.gif" border="0"></a></td>
+                    <td><img src="images/icons/actions_separator.gif" border="0"></td>
+                    <td><a href="javascript:void(0);" title="<f:message key="add_text" />..."  onclick="<%=prefixId%>_attributesArray.push( new NewAttribute('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray, '<%=prefixId%>') ); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/add_button.png" border="0"></a></td>
+                    <td><img src="images/spacer.gif" height="1" width="7"></td>
+                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteAttributes('<%=prefixId%>_customAttributesTable',<%=prefixId%>_attributesArray); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');" ><img id="<%=prefixId%>_imgDeleteCustAttr" src="images/icons/delete_button.png" border="0"></a></td>
+                </tr>
+            </table>
+           <!-- <input type="button" id="selectallbutton"  onclick="selectAllCustomAttributes(<%=prefixId%>_attributesArray);" title="Select all"  />&nbsp;
             <input type="button" id="deselectallbutton" title="De-select all" onclick="deselectAllCustomAttributes(<%=prefixId%>_attributesArray);" /><img src="images/icons/actions_separator.gif" >
             <input type="button" id="addbutton" title="<f:message key="add_text" />..."  onclick="<%=prefixId%>_attributesArray.push( new NewAttribute('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray) );" />&nbsp;
             <input type="button" id="deletebutton" title="<f:message key="delete_text" />" onclick="deleteAttributes('<%=prefixId%>_customAttributesTable',<%=prefixId%>_attributesArray);" />
+            -->
         </td></tr>
         <tr><td width="90%" valign="top">
         <div class="ScrollablePane">   
@@ -48,4 +61,7 @@ String prefixId = (String) request.getParameter("prefix");
 </div>
 
        
-        
+<script>
+    
+    refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, "<%=prefixId%>");
+</script>

@@ -95,14 +95,15 @@
 
 <script language="javascript" 
   type="text/javascript">
-var prefix = "<%=prefixToUse%>";      
+var editRelationshipPrefix = "<%=prefixToUse%>";      
 function validateEditRelationshipForm() {
-var customAttributesArray = eval(prefix + "_attributesArray");
-// showValues(customAttributesArray);
-for(i=0;i<customAttributesArray.length; i++) {
-    var attr = customAttributesArray[i];
-    alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
-} 
+    var customAttributesArray = eval(editRelationshipPrefix + "_attributesArray");
+    // showValues(customAttributesArray);
+    for(i=0;i<customAttributesArray.length; i++) {
+        var attr = customAttributesArray[i];
+        alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+    } 
+
       if(dojo.byId('relationship_edit_name').value=='') 
        {
            alert("Please Enter the Name.");
