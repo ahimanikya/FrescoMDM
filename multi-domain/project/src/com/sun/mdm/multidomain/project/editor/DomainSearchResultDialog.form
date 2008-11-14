@@ -40,8 +40,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jTxtResultName" min="-2" pref="199" max="-2" attributes="0"/>
-                          <Component id="jSpinnerMaxItems" alignment="0" min="-2" max="-2" attributes="1"/>
-                          <Component id="jSpinnerItemPerPage" alignment="0" min="-2" pref="44" max="-2" attributes="1"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="jSpinnerMaxItems" alignment="0" max="32767" attributes="1"/>
+                              <Component id="jSpinnerItemPerPage" alignment="0" pref="44" max="32767" attributes="1"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">

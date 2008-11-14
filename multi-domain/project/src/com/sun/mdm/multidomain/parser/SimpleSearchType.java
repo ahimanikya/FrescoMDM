@@ -83,5 +83,24 @@ public class SimpleSearchType {
     public void setSearchOption(SearchOptions searchOpt) {
         this.mSearchOption = searchOpt;
     }
-    
+
+    public FieldGroup getFieldGroup(String groupName) {
+     
+        for (FieldGroup group : mFieldGroups ) {
+            if (group.getDescription().equalsIgnoreCase(groupName)) {
+                return group;
+            }
+        }
+        return null;
+    }
+
+    public FieldGroup getFieldGroup(int groupId) {
+     
+        for (FieldGroup group : mFieldGroups ) {
+            if (group.hashCode() == groupId) {
+                return group;
+            }
+        }
+        return null;
+    }    
 }

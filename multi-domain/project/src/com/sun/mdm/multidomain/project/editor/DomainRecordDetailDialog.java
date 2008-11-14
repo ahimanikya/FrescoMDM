@@ -74,6 +74,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
    private void loadNewRecordDetail() {
         this.jTxtRecordDetail.setText(mRecordDetail.getDisplayName());
         ArrayList<GroupRow> groups = new ArrayList<GroupRow>();
+        /**
         for (FieldGroup fieldGroup : mRecordDetail.getFieldGroups()) {
             GroupRow group = new GroupRow(fieldGroup.getDescription());
             ArrayList<FieldRow> fields = new ArrayList<FieldRow>();
@@ -83,13 +84,16 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
             }
             groups.add(group);
         }
+         */ 
         TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(groups);
         
         jTableFieldGroup.setModel(fieldGroupModel);
         
         //jTableFieldGroup.setRowSelectionInterval(0, 0);
+        /**
         TableModelField fieldModel = new TableModelField(new GroupRow("New Group"));
         this.jTableField.setModel(fieldModel);
+         */ 
         
         
     }

@@ -64,7 +64,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         jTableFieldGroup.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableFieldGroup.getSelectedRow();
-                FieldGroup fieldGroup = ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
+                GroupRow fieldGroup =  ((TableModelFieldGroup) jTableFieldGroup.getModel()).getRow(selectedRow);
                 TableModelField fieldModel = new TableModelField(fieldGroup);
                 jTableFields.setModel(fieldModel);
                 jBtnAddField.setEnabled(true);
@@ -88,7 +88,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
                 int iSelectedRow = jTableFieldGroup.getSelectedRow();
                 if (iSelectedRow >= 0) {
                     int row = jTableFieldGroup.getSelectedRow();
-                    FieldGroup selectGroup = FieldGropModel.getRow(iSelectedRow);
+                    GroupRow selectGroup = FieldGropModel.getRow(iSelectedRow);
                     TableModelField fieldModel = new TableModelField(selectGroup);
                     jTableFields.setModel(fieldModel);
                 }
@@ -137,11 +137,13 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         this.mSearchType.setSearchOption(new SearchOptions());
         this.jCBQueryBuilder.setSelectedItem(0);
         this.jCheckBoxWeighted.setSelected(true);
-        TableModelFieldGroup groupModel = new TableModelFieldGroup(mSearchType.getFieldGroups());
+        TableModelFieldGroup groupModel = new TableModelFieldGroup(new ArrayList<GroupRow>());
         this.jTableFieldGroup.setModel(groupModel);
-        TableModelField fieldModel = new TableModelField(new FieldGroup());
+        /**
+        TableModelField fieldModel = new TableModelField(new GroupRow());
         this.jTableFields.setModel(fieldModel);
-        TableModelParameter paramModel = new TableModelParameter(new ArrayList<Parameter>());
+         */ 
+        TableModelParameter paramModel = new TableModelParameter(new ArrayList<ParameterRow>());
         this.jTableQueryParameter.setModel(paramModel);
         bRefreshSearchResult = true;
         jBtnAddField.setEnabled(false);
@@ -169,14 +171,23 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         
         jCBSearchResultList.setSelectedIndex(setIdx);
 
-        TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(mSearchType.getFieldGroups());
+        ArrayList<GroupRow> groups = new ArrayList<GroupRow>();
+        for (FieldGroup fieldGroup : mSearchType.getFieldGroups()) {
+            GroupRow group = new GroupRow(fieldGroup.getDescription());
+            group.setGroupId(fieldGroup.hashCode());
+            ArrayList<FieldRow> fields = new ArrayList<FieldRow>();
+            group.setFieldRows(fields);
+            for (FieldGroup.FieldRef field : fieldGroup.getFieldRefs()) {
+                fields.add(new FieldRow(field.getFieldName()));
+            }
+            groups.add(group);
+        }
+        TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(groups);
         jTableFieldGroup.setModel(fieldGroupModel);
         
         //jTableFieldGroup.setRowSelectionInterval(0, 0);
-        TableModelField fieldModel = new TableModelField(mSearchType.getFieldGroups().get(0));
+        TableModelField fieldModel = new TableModelField(groups.get(0));
         this.jTableFields.setModel(fieldModel);
-                
-                
  
          boolean foundQuery = false;
          for (Object builderName : mQueryBuilder.getQueryBuilders()) {
@@ -187,8 +198,14 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
         
         this.jCheckBoxWeighted.setSelected(mSearchType.getSearchOption().getWeighted());
        
-        
-        TableModelParameter paramModel = new TableModelParameter(mSearchType.getSearchOption().getParameterList());
+        ArrayList<ParameterRow> paramRows = new ArrayList<ParameterRow>();
+        for (Parameter param : mSearchType.getSearchOption().getParameterList()) {
+            ParameterRow paramRow = new ParameterRow();
+            paramRow.setParamName(param.getName());
+            paramRow.setParamValue(param.getValue());
+            paramRows.add(paramRow);
+        }
+        TableModelParameter paramModel = new TableModelParameter(paramRows);
         this.jTableQueryParameter.setModel(paramModel);
         
     }
@@ -549,14 +566,28 @@ private void onOKBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKBtn
             }
         }
     }
+    mSearchType.getFieldGroups().clear();
+    TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
+    ArrayList<GroupRow> groups = fieldGroupModel.groupRows;
+    for (GroupRow group : fieldGroupModel.groupRows) {
+        FieldGroup fieldGroup = new FieldGroup();
+        fieldGroup.setDescription(group.getGroupName());
+        for (FieldRow field : group.getFieldRows()) {
+            fieldGroup.addFieldRef(fieldGroup.createFieldRef(field.getFieldName()));
+        }
+        mSearchType.addFieldGroup(fieldGroup);
+        
+    }
     
     mSearchType.getSearchOption().setQueryBuilder((String) jCBQueryBuilder.getSelectedItem());      
     
     mSearchType.getSearchOption().setWeighted(this.jCheckBoxWeighted.isSelected());
     TableModelParameter paramModel = (TableModelParameter) this.jTableQueryParameter.getModel();
-    mSearchType.getSearchOption().setParameterList(paramModel.getAllRows());
+    mSearchType.getSearchOption().getParameterList().clear();
+    for (ParameterRow param : paramModel.getAllRows()) {
+        mSearchType.getSearchOption().addParameter(param.getParamName(), param.getParamValue());
+    }
     
-    //mSearchType.getSearchOption().setParameterList(paramModel.g
     
     
     this.dispose();
@@ -573,8 +604,7 @@ private void onAddFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 // TODO add your handling code here:
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) this.jTableFieldGroup.getModel();
     int iInsertRow = fieldGroupModel.getRowCount();
-    FieldGroup newFieldGroup = new FieldGroup();
-    //Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
+    GroupRow newFieldGroup = new GroupRow("New Group");
     fieldGroupModel.addRow(iInsertRow, newFieldGroup);
     jTableFieldGroup.setModel(fieldGroupModel);
     jTableFieldGroup.clearSelection();
@@ -648,7 +678,8 @@ private void onAddParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
     TableModelParameter model = (TableModelParameter) jTableQueryParameter.getModel();
     int iInsertRow = model.getRowCount();
     Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
-    model.addRow(iInsertRow, newParam);
+    ParameterRow newParameter = new ParameterRow();
+    model.addRow(iInsertRow, newParameter);
     jTableQueryParameter.setModel(model);
     jTableQueryParameter.clearSelection();
     jTableQueryParameter.addRowSelectionInterval(iInsertRow, iInsertRow);
@@ -688,13 +719,17 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     TableModelFieldGroup fieldGroupModel = (TableModelFieldGroup) jTableFieldGroup.getModel();
     TableModelField fieldModel = (TableModelField) jTableFields.getModel();
     int selectedRow = jTableFieldGroup.getSelectedRow();
-    FieldGroup group = fieldGroupModel.getRow(selectedRow);
-    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), group);
+    GroupRow group = fieldGroupModel.getRow(selectedRow);
+    FieldGroup fieldGroup = mSearchType.getFieldGroup(group.getGroupName());
+    if (fieldGroup == null) {
+        fieldGroup = mSearchType.getFieldGroup(group.getGroupId());
+    }
+    EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), fieldGroup);
     entityDlg.setVisible(true);
     if (entityDlg.isSelected()) {
         if (entityDlg.getFieldList().size() > 0) {
             for (String fieldName : entityDlg.getFieldList()) {
-                FieldGroup.FieldRef fieldRef = group.createFieldRef(fieldName);
+                FieldRow fieldRef = new FieldRow(fieldName);
                 fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
             }
             jTableFields.setModel(fieldModel);
@@ -703,17 +738,95 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     
 }//GEN-LAST:event_onBtnAddField
 
+    class ParameterRow {
+        
+        private String paramName;
+        private String paramValue;
+
+        public String getParamName() {
+            return paramName;
+        }
+
+        public void setParamName(String paramName) {
+            this.paramName = paramName;
+        }
+
+        public String getParamValue() {
+            return paramValue;
+        }
+
+        public void setParamValue(String paramValue) {
+            this.paramValue = paramValue;
+        }
+        
+        
+    }
+    
+    class FieldRow {
+        private String fieldName;
+        
+        
+        public FieldRow(String name) {
+            fieldName = name;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+    }
+    class GroupRow {
+        
+        private String groupName;
+        
+        private int groupId;
+
+        private ArrayList<FieldRow> fieldRows = null;
+        
+        public GroupRow(String groupName) {
+            this.groupName = groupName;
+        }
+        
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public void setGroupName(String groupName) {
+            this.groupName = groupName;
+        }
+        public ArrayList<FieldRow> getFieldRows() {
+            return fieldRows;
+        }
+
+        public void setFieldRows(ArrayList<FieldRow> fieldRows) {
+            this.fieldRows = fieldRows;
+        }
+
+        public int getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(int groupId) {
+            this.groupId = groupId;
+        }
+        
+        
+    }
 
     class TableModelParameter extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_PARAMETER_NAME"),
                                         NbBundle.getMessage(TabDomainSearch.class, "LBL_PARAMETER_VALUE"),
                                        };
-        ArrayList parameterRows;
+        ArrayList<ParameterRow> parameterRows;
         final static int iColParamName = 0;
         final static int iColParamValue = 1;
 
-        TableModelParameter(ArrayList rows) {
+        TableModelParameter(ArrayList<ParameterRow> rows) {
             parameterRows = rows;
         }
 
@@ -734,13 +847,13 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 
         public Object getValueAt(int row, int col) {
             if (parameterRows != null) {
-                Parameter singleRow = (Parameter) parameterRows.get(row);
+                ParameterRow singleRow = (ParameterRow) parameterRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColParamName:
-                            return singleRow.getName();
+                            return singleRow.getParamName();
                         case iColParamValue:
-                            return singleRow.getValue();
+                            return singleRow.getParamValue();
                         default:
                             return null;
                     }
@@ -749,10 +862,9 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             return null;
         }
 
-        public Parameter getRow(int row) {
+        public ParameterRow getRow(int row) {
             if (parameterRows != null) {
-                Parameter singleRow = (Parameter) parameterRows.get(row);
-                return singleRow;
+                return parameterRows.get(row);
             }
             return null;
         }
@@ -779,11 +891,11 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iColParamName:
-                    ((Parameter) parameterRows.get(row)).setName((String) value);
+                    ((ParameterRow) parameterRows.get(row)).setParamName((String) value);
                     //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
                     break;
                 case iColParamValue:
-                    ((Parameter) parameterRows.get(row)).setValue((String) value);
+                    ((ParameterRow) parameterRows.get(row)).setParamValue((String) value);
                     //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
                     break;
 
@@ -799,13 +911,13 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, Parameter row) {
+        public void addRow(int index, ParameterRow row) {
             //fieldRows.add(row);
             parameterRows.add(index, row);
             this.fireTableRowsInserted(index, index);
         }
         
-        public ArrayList<Parameter> getAllRows() {
+        public ArrayList<ParameterRow> getAllRows() {
             return this.parameterRows;
         }
 
@@ -815,11 +927,11 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     class TableModelFieldGroup extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD_GROUP"),};
-        ArrayList fieldRows;
+        ArrayList<GroupRow> groupRows;
         final static int iFieldGroupName = 0;
 
         TableModelFieldGroup(ArrayList rows) {
-            fieldRows = rows;
+            groupRows = rows;
         }
 
         public int getColumnCount() {
@@ -827,8 +939,8 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         }
 
         public int getRowCount() {
-            if (fieldRows != null) {
-                return fieldRows.size();
+            if (groupRows != null) {
+                return groupRows.size();
             }
             return 0;
         }
@@ -838,13 +950,13 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         }
 
         public Object getValueAt(int row, int col) {
-            if (fieldRows != null) {
-                FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
+            if (groupRows != null) {
+                GroupRow singleRow = groupRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iFieldGroupName:
-                            if (singleRow.getDescription() != null && singleRow.getDescription().length() > 0) {
-                                return singleRow.getDescription();
+                            if (singleRow.getGroupName() != null && singleRow.getGroupName().length() > 0) {
+                                return singleRow.getGroupName();
                             }
                             int rowIdx = row + 1;
                             return "FieldGroup-" + rowIdx;
@@ -857,9 +969,9 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             return null;
         }
 
-        public FieldGroup getRow(int row) {
-            if (fieldRows != null) {
-                FieldGroup singleRow = (FieldGroup) fieldRows.get(row);
+        public GroupRow getRow(int row) {
+            if (groupRows != null) {
+                GroupRow singleRow = (GroupRow) groupRows.get(row);
                 return singleRow;
             }
             return null;
@@ -887,7 +999,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iFieldGroupName:
-                    ((FieldGroup) fieldRows.get(row)).setDescription((String) value);
+                    ((GroupRow) groupRows.get(row)).setGroupName((String) value);
                     //((RecordDetail) fieldRows.get(row)).setRecordDetailId(Integer.parseInt((String) value));
                     break;
 
@@ -899,13 +1011,13 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         }
 
         public void removeRow(int index) {
-            fieldRows.remove(index);
+            groupRows.remove(index);
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, FieldGroup row) {
+        public void addRow(int index, GroupRow row) {
             //fieldRows.add(row);
-            fieldRows.add(index, row);
+            groupRows.add(index, row);
             this.fireTableRowsInserted(index, index);
         }
 
@@ -916,7 +1028,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         }
          */
         public int findRowByFieldName(String fieldName) {
-            for (int i = 0; i < fieldRows.size(); i++) {
+            for (int i = 0; i < groupRows.size(); i++) {
                 if (getValueAt(i, iFieldGroupName).equals(fieldName)) {
                     return i;
                 }
@@ -924,10 +1036,10 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             return -1;
         }
 
-        public FieldGroup findRelTypeByFieldName(String fieldName) {
-            for (int i = 0; i < fieldRows.size(); i++) {
+        public GroupRow findRelTypeByFieldName(String fieldName) {
+            for (int i = 0; i < groupRows.size(); i++) {
                 if (getValueAt(i, iFieldGroupName).equals(fieldName)) {
-                    return (FieldGroup) fieldRows.get(i);
+                    return (GroupRow) groupRows.get(i);
                 }
             }
             return null;
@@ -938,13 +1050,13 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
      class TableModelField extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD"),};
-        ArrayList fieldRows;
+        ArrayList<FieldRow> fieldRows;
         final static int iColFieldName = 0;
-        private FieldGroup mFieldGroup = null;
+        private GroupRow mFieldGroup = null;
 
-        TableModelField(FieldGroup fieldGroup) {
+        TableModelField(GroupRow fieldGroup) {
             mFieldGroup = fieldGroup;
-            fieldRows = fieldGroup.getFieldRefs();
+            fieldRows = fieldGroup.getFieldRows();
         }
 
         public int getColumnCount() {
@@ -964,7 +1076,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 
         public Object getValueAt(int row, int col) {
             if (fieldRows != null) {
-                FieldGroup.FieldRef singleRow = (FieldGroup.FieldRef) fieldRows.get(row);
+                FieldRow singleRow = fieldRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iColFieldName:
@@ -977,9 +1089,9 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             return null;
         }
 
-        public RecordDetail getRow(int row) {
+        public FieldRow getRow(int row) {
             if (fieldRows != null) {
-                RecordDetail singleRow = (RecordDetail) fieldRows.get(row);
+                FieldRow singleRow = (FieldRow) fieldRows.get(row);
                 return singleRow;
             }
             return null;
@@ -1007,7 +1119,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iColFieldName:
-                    mFieldGroup.createFieldRef((String) value);
+                    fieldRows.set(row, (FieldRow) value);
                     break;
 
             }
@@ -1022,7 +1134,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, FieldGroup.FieldRef row) {
+        public void addRow(int index, FieldRow row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
@@ -1043,10 +1155,10 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
             return -1;
         }
 
-        public FieldGroup.FieldRef findRelTypeByFieldName(String fieldName) {
+        public FieldRow findRelTypeByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
                 if (getValueAt(i, iColFieldName).equals(fieldName)) {
-                    return (FieldGroup.FieldRef) fieldRows.get(i);
+                    return (FieldRow) fieldRows.get(i);
                 }
             }
             return null;
