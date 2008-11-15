@@ -122,7 +122,7 @@ public class RelationshipDefHandler {
      * @return List<RelationshipDefExt> List of RelationshipDefExt.
      * @exception ServiceException Thrown if an error occurs during processing. 
      */
-    public List<RelationshipDefExt> getDefs(String domain) 
+    public List<RelationshipDefExt> getRelationshipDefsByDomain(String domain) 
         throws ServiceException {                
         List<RelationshipDefExt> types = null;
         try {
