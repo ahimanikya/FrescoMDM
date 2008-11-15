@@ -93,7 +93,7 @@ public class Operations {
      
     public static final String READ = "read"; 
     public static final String WRITE = "write";
-    public static final String OPERATIONS_META = "operations.xml";
+    public static final String OPERATIONS_META = "/operations.xml";
     private static List<String> operationsByName = new ArrayList<String>();
     private static Map<String, List<ACL.Entry>> methodsByOperation = new HashMap<String, List<ACL.Entry>>(); 
     private static boolean parsed = false;
