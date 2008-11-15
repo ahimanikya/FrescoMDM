@@ -187,7 +187,13 @@ function refreshAttributesView (tableId, attributesArray) {
     //alert("Refreshing view now ... " + attributesArray);
     //var tempAttributesArray = new Array();
     var currentLength = attributesArray.length;
-    
+    var tempTBody = document.getElementById(tableId);
+    // Remove existing rows.
+    while(tempTBody.hasChildNodes() && tempTBody.lastChild) {
+        tempTBody.removeChild(tempTBody.lastChild);
+    }
+
+    //alert("# of rows: " +attributesArray.length);
     for(i=0;i<currentLength; i++) {
         var attr = attributesArray[i];
 
@@ -217,6 +223,7 @@ function refreshAttributesView (tableId, attributesArray) {
         tempAttributesArray.push( tempAttr );
         */
     }
+    
     return true;
 }
 
@@ -244,12 +251,18 @@ deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
 function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix) {
     //alert('refreshing...........' + buttonIdToRefresh);
     var anySelected = false;
+    var enableMoveUp = false, enableMoveDown = false;
     //var chkboxes = document.getElementsByName("chkRelationshipDef");
     for(i=0;i<attributesArray.length; i++) {
         var attr = attributesArray[i];
-        if(attr.IdField.checked )
+        if(attr.IdField.checked ) {
             anySelected = true;
+            if(i>0) enableMoveUp = true;
+            if(i<attributesArray.length-1) enableMoveDown = true;
+        }
+        
     }
+   // alert("move up: " + enableMoveUp + " Move down: " + enableMoveDown);
     var imgDeleteAttributeObj = dojo.byId(buttonIdPrefix+"_imgDeleteCustAttr");
     if(imgDeleteAttributeObj != null) {
       if(anySelected) imgDeleteAttributeObj.src =   deleteButtonEnabled.src;
@@ -257,12 +270,33 @@ function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix)
     }
     var buttonMoveUpObj = dojo.byId(buttonIdPrefix+"_moveUpButton");
     if(buttonMoveUpObj != null) {
-      if(anySelected) buttonMoveUpObj.disabled = false;
+      if(enableMoveUp) buttonMoveUpObj.disabled = false;
       else buttonMoveUpObj.disabled = true;
     }
     var buttonMoveDownObj = dojo.byId(buttonIdPrefix+"_moveDownButton");
     if(buttonMoveDownObj != null) {
-      if(anySelected) buttonMoveDownObj.disabled = false;
+      if(enableMoveDown) buttonMoveDownObj.disabled = false;
       else buttonMoveDownObj.disabled = true;
     }    
+}
+
+// function to create set of custom attributes entry from data set.
+function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
+    //alert("creating custom attributes now for " + prefixToUse + " table id " + tableId);
+    attributesArray.splice(0, attributesArray.length); // Reset the array
+    if(data.extendedAttributes != null) {
+        for(i=0; i<data.extendedAttributes.length; i++) {
+            var attrValue = data.extendedAttributes[i];
+            //alert(i + " : " + attrValue.name + " : --- required:" + attrValue.required + " searchable:" + attrValue.searchable);
+            var tempAttr = new NewAttribute(tableId,attributesArray, prefixToUse);
+            attributesArray.push(tempAttr);
+            // put values in fields
+            tempAttr.AttributeNameField.value = attrValue.name;
+            tempAttr.AttributeTypeField.value = attrValue.type;
+            tempAttr.DefaultValueField.value = attrValue.defaultValue;
+            tempAttr.RequiredField.value = attrValue.required;
+            tempAttr.SearchableField.value = attrValue.searchable;
+        }
+    }
+    refreshAttributesView(tableId, attributesArray);
 }
