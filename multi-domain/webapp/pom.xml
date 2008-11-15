@@ -73,6 +73,16 @@
         </execution>        
         </executions>
       </plugin>
+      <!-- remote debug, 
+      		 <debugForkedProcess> true</debugForkedProcess>
+      		 by default 5005 port -->
+ 			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <debugForkedProcess>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8118</debugForkedProcess>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
