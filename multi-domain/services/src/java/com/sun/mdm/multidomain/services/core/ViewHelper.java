@@ -34,9 +34,9 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 
-import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.PageIterator;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
@@ -46,6 +46,7 @@ import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.model.AttributeDefExt;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
@@ -78,9 +79,62 @@ public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
     
+    public static HierarchyDef toHierarchyDef(HierarchyDefExt hDefExt) {
+        HierarchyDef hDef = new HierarchyDef();
+        hDef.setName(hDefExt.getName());
+        hDef.setId(0);
+        hDef.setDomain(hDefExt.getDomain());
+        //TBD need to fix core RelationshipDef
+        //hDef.setPlugin();
+        //hDef.setPluginInfo();        
+        //hDef.setStartDate();
+        //hDef.setEndDate();
+        //hDef.setPurgeDate();        
+        hDef.setEffectiveFromRequired("true".equalsIgnoreCase(hDefExt.getStartDateRequired()) ? true : false);
+        hDef.setEffectiveToRequired("true".equalsIgnoreCase(hDefExt.getEndDateRequired()) ? true : false);        
+        hDef.setPurgeDateRequired("true".equalsIgnoreCase(hDefExt.getPurgeDateRequired()) ? true : false);
+        
+        List<AttributeDefExt> attributes = hDefExt.getExtendedAttributes();
+        for (AttributeDefExt aDefExt : attributes) {
+            Attribute a = new Attribute();            
+            a.setName(aDefExt.getName());
+            a.setId(aDefExt.getId());
+            a.setColumnName(aDefExt.getColumnName());
+            a.setType(new AttributeType(aDefExt.getDataType()));
+            a.setDefaultValue(aDefExt.getDefaultValue());
+            a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));
+            a.setSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
+            hDef.setAttribute(a);
+        }                
+        return hDef;
+    }
+    
     public static HierarchyDefExt toHierarchyDefExt(HierarchyDef hDef) {
         HierarchyDefExt hDefExt = new HierarchyDefExt();
-        // need implementation.
+        hDefExt.setName(hDef.getName());
+        hDefExt.setId(Integer.toString(hDef.getId()));
+        hDefExt.setDomain(hDef.getDomain());
+        //TBD need to fix core RelationshipDef
+        //rDefExt.setPlugin();
+        //rDefExt.setPluginInfo();        
+        //rDefExt.setStartDate();
+        //rDefExt.setEndDate();
+        //rDefExt.setPurgeDate();        
+        hDefExt.setStartDateRequired(hDef.getEffectiveFromRequired() ? "true" : "false");
+        hDefExt.setEndDateRequired(hDef.getEffectiveToRequired() ? "true" : "false");
+        hDefExt.setPurgeDateRequired(hDef.getPurgeDateRequired() ? "true" : "false");
+        
+        List<Attribute> attributes = hDef.getAttributes();
+        for (Attribute a : attributes) {
+            AttributeDefExt aExt = new AttributeDefExt();
+            aExt.setName(a.getName());
+            aExt.setColumnName(a.getColumnName());
+            aExt.setSearchable(a.getSearchable() ? "true" : "false");
+            aExt.setIsRequired(a.getIsRequired() ? "true" : "false");
+            aExt.setDataType(a.getType().toString());
+            aExt.setDefaultValue(a.getDefaultValue());
+            hDefExt.setExtendedAttribute(aExt);
+        }                
         return hDefExt;
     }
     
