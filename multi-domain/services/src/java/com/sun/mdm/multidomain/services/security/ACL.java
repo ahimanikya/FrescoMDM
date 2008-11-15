@@ -57,14 +57,16 @@ public class ACL {
      */
     public void initialize(List<String> operations) 
         throws ConfigException {
-        for (String operation : operations) {
-            List<ACL.Entry> methods = Operations.getMethods(operation);
-            for (ACL.Entry method : methods) {
-                if (!entries.contains(method)) {
-                    entries.add(method);
+        if (operations != null) {
+            for (String operation : operations) {
+                List<ACL.Entry> methods = Operations.getMethods(operation);
+                for (ACL.Entry method : methods) {
+                    if (!entries.contains(method)) {
+                        entries.add(method);
+                    }
                 }
-            }
-        }      
+            }      
+        }
     }
 
     /**
