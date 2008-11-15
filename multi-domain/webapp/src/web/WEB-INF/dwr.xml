@@ -12,8 +12,8 @@
 
     <create creator="spring" javascript="RelationshipDefHandler" scope="session">
       <param name="beanName" value="RelationshipDefHandler"/>
-      <include method="getDefs" /> 
-      <include method="getRelationshipDefs" />
+      <include method="getRelationshipDefs" /> 
+      <include method="getRelationshipDefsByDomain" />
       <include method="getRelationshipDefByName" />
       <include method="getRelationshipDefById" />    
       <include method="addRelationshipDef" />            
