@@ -23,7 +23,7 @@
 package com.sun.mdm.multidomain.services.control;
 
 import java.util.List;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import net.java.hulp.i18n.Logger;
 
@@ -33,6 +33,8 @@ import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
 
+import com.sun.mdm.multidomain.attributes.Attribute;
+import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
@@ -54,10 +56,16 @@ public class HierarchyManager {
     private MultiDomainService multiDomainService;
     private MultiDomainMetaService multiDomainMetaService;
 	
+   // demo data
+    private List<HierarchyDef> hs = new ArrayList<HierarchyDef>(); 
+    private boolean TBD = true;
+    
     /**
      * HierarchyManager class.
      */
     public HierarchyManager() {
+        //TBD
+        init();
     }
     
     /**
@@ -70,7 +78,60 @@ public class HierarchyManager {
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
     	this.multiDomainMetaService = multiDomainMetaService;  
-        logger.info(localizer.x("SVC005: HierarchyManager initialization completed."));        
+        logger.info(localizer.x("SVC005: HierarchyManager initialization completed."));  
+        //TBD
+        init();
+    }
+     
+    private void init(){
+        // demo data
+    	HierarchyDef rt1 = new HierarchyDef();
+    	rt1.setName("worgchart");
+        rt1.setId(1);
+        rt1.setDomain("Person");    	
+    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	rt1.setAttribute(a1);
+    	
+    	HierarchyDef rt2 = new HierarchyDef();
+    	rt2.setName("employedby");
+        rt2.setId(1);
+        rt2.setDomain("Person");   	
+    	Attribute a2 = new Attribute("hiredDate", "hired date", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	rt2.setAttribute(a2);
+
+    	HierarchyDef rt3 = new HierarchyDef();
+        rt3.setName("contractwith");
+        rt3.setId(1);
+    	rt3.setDomain("Person");  	
+    	Attribute a3 = new Attribute("startDate", "date started", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	rt3.setAttribute(a3);
+        
+    	HierarchyDef rt4 = new HierarchyDef();
+    	rt4.setName("investon");
+        rt4.setId(2);
+        rt4.setDomain("Company");
+    	Attribute a4 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	rt4.setAttribute(a4);
+    	
+    	HierarchyDef rt5 = new HierarchyDef();
+    	rt5.setName("designon");
+        rt5.setId(3);
+        rt5.setDomain("Person");
+    	Attribute a5 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	rt5.setAttribute(a5);
+    	
+        HierarchyDef rt6 = new HierarchyDef();
+        rt6.setName("workon");
+        rt6.setId(3);
+    	rt6.setDomain("Product");
+    	Attribute a6 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	rt6.setAttribute(a6);    	       
+    	hs.add(rt1);
+    	hs.add(rt2);
+    	hs.add(rt3);    
+        hs.add(rt4);   
+        hs.add(rt5);   
+        hs.add(rt6);                           
     }
         
     /**
@@ -81,7 +142,23 @@ public class HierarchyManager {
      */
     public String addHierarchyDef(HierarchyDefExt hDefExt) 
         throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");     
+        String hDefId = null;
+        if (!TBD) {
+        try {
+            HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+            hDefId = multiDomainMetaService.createHierarchyDef(hDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }  
+        }
+        //demo
+        hDefExt.setId(Long.toString(System.currentTimeMillis()));
+        hs.add(ViewHelper.toHierarchyDef(hDefExt));
+        hDefId = hDefExt.getId();
+        
+        return hDefId;
     }
     
     /**
@@ -91,7 +168,30 @@ public class HierarchyManager {
      */
     public void updateHierarchyDef(HierarchyDefExt hDefExt)
         throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");     
+        if (!TBD) {
+        try {
+            HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+            multiDomainMetaService.updateHierarchyDef(hDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }   
+        }
+        // demo data
+        boolean updated = false;
+        for (HierarchyDef rt:hs) {
+            if (rt.getDomain().equals(hDefExt.getDomain()) &&
+                rt.getName().equals(hDefExt.getName())) {                                      
+                rt.setEffectiveFromRequired(hDefExt.getStartDateRequired().equalsIgnoreCase("true") ? true : false);
+                updated = true;
+             }
+    	}
+        if (!updated) {
+        throw new ServiceException("Invalid HierarchyDef:"  + 
+                                   " domain:" + hDefExt.getDomain() +
+                                   " name:" + hDefExt.getName());
+        }        
     }
     
     /**
@@ -99,9 +199,35 @@ public class HierarchyManager {
      * @param hDefExt HierarchyDefExt.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteHierarchyDef(HierarchyDefExt hExtDef)
+    public void deleteHierarchyDef(HierarchyDefExt hDefExt)
         throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");     
+        if (!TBD) {
+        try {
+            HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+            multiDomainMetaService.deleteHierarchyDef(hDef);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        } catch(ProcessingException pex) {
+            throw new ServiceException(pex);
+        }   
+        }
+         // demo data
+        boolean deleted = false;
+        List<HierarchyDef> temp = new ArrayList<HierarchyDef>();
+        for (HierarchyDef rt:hs) {
+            if (rt.getDomain().equals(hDefExt.getDomain()) &&
+                rt.getName().equals(hDefExt.getName())) {                      
+                deleted = true;
+             } else {
+                temp.add(rt);
+             }
+    	}
+        if (!deleted) {
+        throw new ServiceException("Invalid HierarchyDef:"  + 
+                                   " domain:" + hDefExt.getDomain() +
+                                   " name:" + hDefExt.getName());
+        }   
+        hs = temp;       
     }   
     
     /**
@@ -124,6 +250,7 @@ public class HierarchyManager {
     public HierarchyDefExt getHierarchyDefByName(String name, String domain) 
         throws ServiceException {                
         HierarchyDefExt hDefExt = null;
+        if (!TBD) {
         try {
             HierarchyDef hDef = multiDomainMetaService.getHierarchyDefByName(name, domain);
             hDefExt = ViewHelper.toHierarchyDefExt(hDef);
@@ -132,6 +259,15 @@ public class HierarchyManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }
+        }
+         //demo
+        for (HierarchyDef rt:hs) {
+            if (rt.getName().equals(name) &&
+                rt.getDomain().equals(domain)) { 
+                hDefExt = ViewHelper.toHierarchyDefExt(rt);
+                break;
+            }
+    	}        
         return hDefExt;
     }
     
@@ -144,6 +280,7 @@ public class HierarchyManager {
     public HierarchyDefExt getHierarchyDefById(long hierarchyId) 
         throws ServiceException {                
         HierarchyDefExt hDefExt = null;
+        if (!TBD) {
         try {
             HierarchyDef hDef = multiDomainMetaService.getHierarchyDefById(hierarchyId);
             hDefExt = ViewHelper.toHierarchyDefExt(hDef);
@@ -152,6 +289,14 @@ public class HierarchyManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }     
+        }
+        //demo
+        for (HierarchyDef rt:hs) {
+            if (rt.getId() == hierarchyId) {
+                hDefExt = ViewHelper.toHierarchyDefExt(rt);
+                break;
+            }
+    	}             
         return hDefExt;
     }
     
@@ -163,15 +308,23 @@ public class HierarchyManager {
      */
     public List<HierarchyDefExt> getHierarchyDefs(String domain) 
         throws ServiceException {
-    	List<HierarchyDefExt> hierarchys = null;      
+    	List<HierarchyDefExt> hDefs = new ArrayList<HierarchyDefExt>();
+        if (!TBD) {
         try {
             HierarchyDef[] HierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
-        }                 
-    	return hierarchys;
+        }   
+        }
+    	// demo data	
+    	for (HierarchyDef rt:hs) {
+            if (rt.getDomain().equals(domain)) {
+                hDefs.add(ViewHelper.toHierarchyDefExt(rt));	
+            }
+    	}       
+    	return hDefs;
     }
     
     /**

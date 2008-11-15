@@ -75,13 +75,14 @@ public class RelationshipManager {
     private MultiDomainMetaService multiDomainMetaService;
 
     // demo data
-    private ArrayList<RelationshipDef> rts = new ArrayList<RelationshipDef>(); 
+    private List<RelationshipDef> rts = new ArrayList<RelationshipDef>(); 
     private boolean TBD = true;
 
     /**
      * Create a instance of RelationshipManager.
      */
     public RelationshipManager () {   
+        //TDB
         init();
     }
 
@@ -95,6 +96,7 @@ public class RelationshipManager {
     	throws ServiceException {
     	this.multiDomainService = multiDomainService;
         this.multiDomainMetaService = multiDomainMetaService; 
+        //TDB
         init();
         logger.info(localizer.x("SVC007: RelationshipManager initialization completed."));                
     }
@@ -190,7 +192,7 @@ public class RelationshipManager {
         
         // demo data
         boolean deleted = false;
-        ArrayList<RelationshipDef> temp = new ArrayList<RelationshipDef>();
+        List<RelationshipDef> temp = new ArrayList<RelationshipDef>();
         for (RelationshipDef rt:rts) {
             if (rt.getSourceDomain().equals(rDefExt.getSourceDomain()) &&
                 rt.getTargetDomain().equals(rDefExt.getTargetDomain()) &&
@@ -291,26 +293,26 @@ public class RelationshipManager {
     public List<RelationshipDefExt> getRelationshipDefs(String domain) 
        throws ServiceException {
         
-        List<RelationshipDefExt> RelationshipDefs = new ArrayList<RelationshipDefExt>();
+        List<RelationshipDefExt> hDefs = new ArrayList<RelationshipDefExt>();
         if (!TBD) {
         try {
             RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs();
             for (int i = 0; i < relationships.length; i++) {
-                RelationshipDefs.add(ViewHelper.toRelationshipDefExt(relationships[i]));
+                hDefs.add(ViewHelper.toRelationshipDefExt(relationships[i]));
             }            
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }  
-        return RelationshipDefs;
+        return hDefs;
         }
     	// demo data	
     	for (RelationshipDef rt:rts) {
     		if (rt.getSourceDomain().equals(domain) || 
     			rt.getTargetDomain().equals(domain)) {
-    			RelationshipDefs.add(ViewHelper.toRelationshipDefExt(rt));	
+    			hDefs.add(ViewHelper.toRelationshipDefExt(rt));	
     		}
     	}
-    	return RelationshipDefs;
+    	return hDefs;
     }
     
     /**
