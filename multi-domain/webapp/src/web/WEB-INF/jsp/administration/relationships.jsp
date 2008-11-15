@@ -26,6 +26,7 @@
     var isSourceDomainsLoaded = false;
     var isTargetDomainsLoaded = false;
     dwr.engine.setErrorHandler(exceptionHandler);
+    
     function exceptionHandler(message) {
         alert("Exception: " + message);
     }
@@ -99,7 +100,7 @@
     var relationListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },
         function(data) { return data.name; },
-        function(data) { if(data.biDirection) return "<img src='images/icons/relationship-both.png'>"; else return "<img src='images/icons/relationship-right.png'>" ; },
+        function(data) { if(data.biDirection == true) {return "<img src='images/icons/relationship-both.png'>"; }else {return "<img src='images/icons/relationship-right.png'>" ;}  },
         function(data) { return data.plugin; },
         function(data) { 
             var fixedAttributesCount = 0; 
@@ -110,7 +111,7 @@
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
         },
-        function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="showRelationshipDialog(\'editrelationship\');">'; },
+        function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditRelationshipDef(\''+data.name+'\'); " >'; },
         //function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
     ];
 
@@ -330,6 +331,14 @@ function showRelationshipDialog (dialogId) {
     relationshipDialog.show();
 }
 
-    refreshRelationshipDefsButtonsPalette();
+function prepareEditRelationshipDef(relationshipDefName) {
+    //alert("editing for  ---------- " + relationshipDefName);
+    var sourceDomain=document.getElementById("selectSourceDomain").value;
+    var targetDomain=document.getElementById("selectTargetDomain").value;    
+    RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, targetDomain, populateEditRelationshipDefForm);   
+}
+
+
+refreshRelationshipDefsButtonsPalette();
 
 </script>

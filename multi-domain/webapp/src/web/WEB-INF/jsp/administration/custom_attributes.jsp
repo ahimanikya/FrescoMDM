@@ -40,12 +40,12 @@ String prefixId = (String) request.getParameter("prefix");
         <table  class="AttributesListing" border="0" cellpadding="3" cellspacing="0" width="100%">
             <thead class="header">
                 <tr>
-                <th>&nbsp;</th>
-                <th align="left" class="formLabel">Attribute</th>
-                <th align="left" class="formLabel">Type</th>
-                <th align="left" nowrap class="formLabel">Default Value</th>
-                <th align="left" class="formLabel">Required</th>
-                <th align="left" class="formLabel">Searchable</th>
+                <th width="7%">&nbsp;</th>
+                <th width="30%" align="left" class="formLabel">Attribute</th>
+                <th width="20%" align="left" class="formLabel">Type</th>
+                <th width="20%" align="left" nowrap class="formLabel">Default Value</th>
+                <th width="11%" align="left" class="formLabel">Required</th>
+                <th width="12%" align="left" class="formLabel">Searchable</th>
             </tr>
             </thead>
             <tbody id="<%=prefixId%>_customAttributesTable">
@@ -53,8 +53,8 @@ String prefixId = (String) request.getParameter("prefix");
         </table>
     </div>
     </td>
-    <td width="10%"><input type="button" value="Move Up" id ="<%=prefixId%>_moveUpButton" style="width:80px;" onclick="MoveUp('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray);">
-    <br><br><input type="button" value="Move Down" id ="<%=prefixId%>_moveDownButton" style="width:80px;" onclick="MoveDown('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray);">
+    <td width="10%"><input type="button" value="Move Up" id ="<%=prefixId%>_moveUpButton" style="width:80px;" onclick="MoveUp('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');">
+    <br><br><input type="button" value="Move Down" id ="<%=prefixId%>_moveDownButton" style="width:80px;" onclick="MoveDown('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');">
     </td></tr>
     </table>
     </div>

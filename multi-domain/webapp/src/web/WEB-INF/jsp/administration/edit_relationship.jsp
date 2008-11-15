@@ -33,8 +33,8 @@
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
                          <select id="relationship_edit_direction" name="Direction" title="<f:message key="direction_text" />" hasDownArrow="true" style="width:75px">
                             <option value=""></option>
-                            <option value="->">-></option>
-                            <option value="<->"><-></option>
+                            <option value="false">-></option>
+                            <option value="true"><-></option>
                          </select>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
@@ -98,6 +98,7 @@
 var editRelationshipPrefix = "<%=prefixToUse%>";      
 function validateEditRelationshipForm() {
     var customAttributesArray = eval(editRelationshipPrefix + "_attributesArray");
+   // alert( "Custom Attributes :---- " + customAttributesArray.length);
     // showValues(customAttributesArray);
     for(i=0;i<customAttributesArray.length; i++) {
         var attr = customAttributesArray[i];
@@ -124,5 +125,47 @@ function validateEditRelationshipForm() {
            dojo.byId('relationship_edit_plugin').focus();
            return false;
        }
+
 }
+    
+function populateEditRelationshipDefForm(data) {
+    //alert("data got for edit " + data);
+    if(data != null) {      
+        dojo.byId("relationship_edit_name").value = data.name;
+        dojo.byId("relationship_edit_direction").value = data.biDirection;
+        dojo.byId("relationship_edit_plugin").value = data.plugin;
+
+        //alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveFrom"), 
+            dijit.byId(editRelationshipPrefix+"_EffectiveFromRequired"), data.startDate, data.startDateRequired);
+
+        //alert("Effective To: " + data.endDate + " Required: " + data.endDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveTo"), 
+            dijit.byId(editRelationshipPrefix+"_EffectiveToRequired"), data.endDate, data.endDateRequired);
+
+        //alert("Purge date: " + data.purgeDate + " Required: " + data.purgeDatRequired);
+        populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_PurgeDate"), 
+            dijit.byId(editRelationshipPrefix+"_PurgeDateRequired"), data.purgeDate, data.purgeDatRequired);
+
+        // Populate custom attributes;
+        //eval(editRelationshipPrefix+'_attributesArray').splice(0, 0);
+        createCustomAttributes (data, editRelationshipPrefix+'_customAttributesTable', eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix );
+        refreshCustomAttributesButtonsPalette(eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix );
+    }
+    showRelationshipDialog('editrelationship');  
+}
+function populatePredefinedAttributeField (attributeObj, attributeRequiredObj, attributeValue, attributeRequiredValue) {
+    if(attributeObj == null || attributeRequiredObj==null) return;
+    if(attributeValue == true) {
+        attributeObj.setChecked (true);
+        attributeRequiredObj.setDisabled(false);
+    }  else {
+        attributeObj.setChecked (false);
+        attributeRequiredObj.setDisabled(true);
+    }
+    if(attributeRequiredValue == true) attributeRequiredObj.setChecked (true);
+    else attributeRequiredObj.setChecked (false);
+}
+    
+
 </script>
