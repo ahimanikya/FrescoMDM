@@ -74,6 +74,25 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>install-resources</id>
+                <phase>process-resources</phase>
+                <goals><goal>install-file</goal></goals>
+                <configuration>
+                    <generatePom>true</generatePom>
+                    <packaging>jar</packaging>
+                    <groupId>multidomain.servcies.test</groupId>
+                    <artifactId>resources</artifactId>
+                    <version>${mural.currentVersion}</version>
+                    <file>${basedir}/../services/test/metadata/resources.jar</file>
+                </configuration>
+            </execution>
+        </executions>            
+      </plugin>      
+      <plugin>
       	<groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -118,7 +137,12 @@
            		<fileset dir="${basedir}/../services/target/">
               	<include name="multidomain-services.jar"/>
               </fileset>
-           </copy>                          
+           </copy>
+         	<copy todir="target/multidomain-webapp/WEB-INF/lib">
+           		<fileset dir="${basedir}/../services/test/metadata/">
+              	<include name="resources.jar"/>
+              </fileset>
+           </copy>                                        
            </tasks>
 				</configuration>
 		</execution>
@@ -176,6 +200,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
 		</dependency>
+    <dependency>
+        <groupId>multidomain.servcies.test</groupId>
+        <artifactId>resources</artifactId>
+        <version>${mural.currentVersion}</version>
+      <scope>test</scope>        
+    </dependency>		
     <dependency>
     	<groupId>multidomain.webapp.test</groupId>
       <artifactId>spring-test</artifactId>
