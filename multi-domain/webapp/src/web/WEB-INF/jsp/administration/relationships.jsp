@@ -102,7 +102,7 @@
         function(data) { if(data.biDirection) return "<img src='images/icons/relationship-both.png'>"; else return "<img src='images/icons/relationship-right.png'>" ; },
         function(data) { return data.plugin; },
         function(data) { 
-            var fixedAttributesCount = 0;
+            var fixedAttributesCount = 0; 
             if(data.startDate) fixedAttributesCount ++;
             if(data.endDate) fixedAttributesCount ++;
             if(data.purgeDate) fixedAttributesCount ++;
@@ -300,6 +300,9 @@ function deselectAllRelationshipDefs () {
     refreshRelationshipDefsButtonsPalette();
 }
 function deleteRelationshipDefs () {
+    if(! confirm("Are you sure you want to delete the selected Relatioship Definitions?")) {
+        return ;
+    }
     var chkboxes = document.getElementsByName("chkRelationshipDef");
     var sourceDomain=document.getElementById("selectSourceDomain").value;
     var targetDomain=document.getElementById("selectTargetDomain").value;
