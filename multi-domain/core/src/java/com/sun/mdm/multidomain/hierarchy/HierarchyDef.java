@@ -32,7 +32,7 @@ import java.io.Serializable;
 public class HierarchyDef extends AttributesDef implements Serializable{
      
     private String  domain;
-    private int hierarchyDefID;
+    private int id;
    
     /**
      * Create an instance of HierarchyType. 
@@ -47,7 +47,7 @@ public class HierarchyDef extends AttributesDef implements Serializable{
      */
     public HierarchyDef(String name, int id) {      
     	super(name);
-        this.hierarchyDefID = id;
+        this.id = id;
     }
     
     
@@ -71,16 +71,16 @@ public class HierarchyDef extends AttributesDef implements Serializable{
      * Get relationship type Id.
      * @return String Relationship type Id.
      */
-    public int getID() {
-        return hierarchyDefID;
+    public int getId() {
+        return id;
     }
     
     /**
      * Set hierarchy def Id.
      * @param hierarchyDefID hierarchy def id.
      */
-    public void setID(int id) {
-        this.hierarchyDefID = id;
+    public void setId(int id) {
+        this.id = id;
     }    
     
           
@@ -89,7 +89,7 @@ public class HierarchyDef extends AttributesDef implements Serializable{
      * @param type HierarchyType.
      */
     public void copy(HierarchyDef def) {
-        this.hierarchyDefID = def.hierarchyDefID;
+        this.id = def.id;
         this.domain = def.domain;     
         super.copy(def);
     }    
