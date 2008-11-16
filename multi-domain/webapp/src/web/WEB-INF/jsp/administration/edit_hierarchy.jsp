@@ -87,7 +87,7 @@
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="4">
-            <input type="submit" name="save_edit_hierarchy" onclick="return validateEditHierarchypForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
+            <input type="submit" name="save_edit_hierarchy" onclick="return validateEditHierarchyForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
             <input type="button" name="cancel_edit_hierarchy" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('edithierarchy').hide();"/>
         </td>
     </tr>
@@ -97,7 +97,7 @@
 <script language="javascript" 
   type="text/javascript">
       
-function validateHiervalidateEditHierarchypFormarchyForm() {
+function validateEditHierarchyForm() {
     
       if(dojo.byId('hierarchy_edit_name').value=='') 
        {
