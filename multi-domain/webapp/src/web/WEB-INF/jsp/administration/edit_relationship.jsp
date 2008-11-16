@@ -53,7 +53,7 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td> <textarea dojoType="dijit.form.Textarea"  style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
+        <td> <textarea id="relationship_edit_description" dojoType="dijit.form.Textarea"  style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -97,43 +97,89 @@
   type="text/javascript">
 var editRelationshipPrefix = "<%=prefixToUse%>";      
 function validateEditRelationshipForm() {
+    var relationshipDefName = dojo.byId("relationship_edit_name").value;
+    var direction = dojo.byId("relationship_edit_direction").value;
+    var pluginName = dojo.byId("relationship_edit_plugin").value;
+
+  if(dojo.byId('relationship_edit_name').value=='') 
+   {
+       alert("Please Enter the Name.");
+       dojo.byId('relationship_edit_name').focus();
+       return false;
+   }
+
+   if(dojo.byId('relationship_edit_direction').value=='') 
+   {
+       alert("Please Select the Direction.");
+       dojo.byId('relationship_edit_direction').focus();
+       return false;
+   }
+
+   if(dojo.byId('relationship_edit_plugin').value=='') 
+   {
+       alert("Please Select the Plugin.");
+       dojo.byId('relationship_edit_plugin').focus();
+       return false;
+   }
+    // Validation fine. Make DWR call to save this info.
+    var sourceDomain = dojo.byId("selectSourceDomain").value;
+    var targetDomain = dojo.byId("selectTargetDomain").value;
+    relationshipdef = {name:relationshipDefName };
+    relationshipdef.sourceDomain = sourceDomain;
+    relationshipdef.targetDomain = targetDomain;
+    relationshipdef.plugin = pluginName;
+    relationshipdef.biDirection = direction;
+
+    var effectiveFrom = dojo.byId(editRelationshipPrefix + "_EffectiveFrom").checked;
+    var effectiveFromRequired = dojo.byId(editRelationshipPrefix + "_EffectiveFromRequired").checked;
+    var effectiveTo = dojo.byId(editRelationshipPrefix + "_EffectiveTo").checked;
+    var effectiveToRequired = dojo.byId(editRelationshipPrefix + "_EffectiveToRequired").checked;
+    var purgeDate = dojo.byId(editRelationshipPrefix + "_PurgeDate").checked;
+    var purgeDateRequired = dojo.byId(editRelationshipPrefix + "_PurgeDateRequired").checked;
+    
+    relationshipdef.startDate = effectiveFrom;
+    if(effectiveFrom) relationshipdef.startDateRequired = effectiveFromRequired; else relationshipdef.startDateRequired = false;
+    relationshipdef.endDate = effectiveTo;
+    if(effectiveTo) relationshipdef.endDateRequired = effectiveToRequired; else relationshipdef.endDateRequired = false;
+    relationshipdef.purgeDate = purgeDate;
+    if(purgeDate) relationshipdef.purgeDateRequired = purgeDateRequired; else relationshipdef.purgeDateRequired = false;
+    
     var customAttributesArray = eval(editRelationshipPrefix + "_attributesArray");
-   // alert( "Custom Attributes :---- " + customAttributesArray.length);
-    // showValues(customAttributesArray);
+    //alert("array to use is : " + customAttributesArray);
+    
+    var customAttributes = [];
     for(i=0;i<customAttributesArray.length; i++) {
         var attr = customAttributesArray[i];
-        alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
-    } 
+        //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+        var  tempAttr = {};
+        tempAttr.name = attr.AttributeNameField.value;
+        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.defaultValue = attr.DefaultValueField.value;
+        tempAttr.required = attr.RequiredField.value;
+        tempAttr.searchable = attr.SearchableField.value;
+        customAttributes.push(tempAttr);
+    }
 
-      if(dojo.byId('relationship_edit_name').value=='') 
-       {
-           alert("Please Enter the Name.");
-           dojo.byId('relationship_edit_name').focus();
-           return false;
-       }
+    relationshipdef.extendedAttributes = customAttributes;
+    //alert("Updating data now ............. extended attr: " + relationshipdef.extendedAttributes.length);
+    
+    RelationshipDefHandler.updateRelationshipDef(relationshipdef, loadRelationshipDefs );
+
+    // Close this dialog
+    dijit.byId('editrelationship').hide();
        
-       if(dojo.byId('relationship_edit_direction').value=='') 
-       {
-           alert("Please Select the Direction.");
-           dojo.byId('relationship_edit_direction').focus();
-           return false;
-       }
-       
-       if(dojo.byId('relationship_edit_plugin').value=='') 
-       {
-           alert("Please Select the Plugin.");
-           dojo.byId('relationship_edit_plugin').focus();
-           return false;
-       }
 
 }
-    
+
+
 function populateEditRelationshipDefForm(data) {
     //alert("data got for edit " + data);
     if(data != null) {      
         dojo.byId("relationship_edit_name").value = data.name;
         dojo.byId("relationship_edit_direction").value = data.biDirection;
         dojo.byId("relationship_edit_plugin").value = data.plugin;
+        dijit.byId("relationship_edit_description").attr("value", ""); 
+        dijit.byId("relationship_edit_description").attr("value", data.description); 
 
         //alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveFrom"), 
