@@ -30,7 +30,8 @@
     }
     function updateDomains(data) {
         dwr.util.addOptions("domain", data, "name");        
-        dwr.util.setValue("domain", data[0].name);       
+        dwr.util.setValue("domain", data[0].name);     
+        loadHierarchyDefs();        
     }
 
 
@@ -39,8 +40,49 @@
         HierarchyDefHandler.getHierarchyDefs(domain, updateHierarchyDefs);
     }
     function updateHierarchyDefs (data) {
-        alert('got hierarchy defs ' + data)
+        dwr.util.removeAllRows("hierachyListing");
+        if(data == null || data.length<=0) {
+            //alert("no relationship definitions found");
+            dwr.util.addRows("hierachyListing", [''], [function(data){return "No Hierarchy definitions found.";}], {
+                  cellCreator:function(options) {
+                    var td = document.createElement("td");
+                    td.colSpan="6"; td.align="center";
+                    return td;
+                  },
+                  escapeHtml:false
+            });
+        }
+        dwr.util.addRows("hierachyListing", data, hierarchyListingDataFuncs, {
+          rowCreator:function(options) {
+            var row = document.createElement("tr");
+            return row;
+          },
+          cellCreator:function(options) {
+            var td = document.createElement("td");
+            if(options.cellNum==0) td.align="center";// alert(options.cellNum);
+            return td;
+          },
+          escapeHtml:false
+        });
     }
+    
+    var hierarchyListingDataFuncs = [
+        function(data) { return "<input type='checkbox' align='center' name='chkHierarchyDef' value='"+data.name+"' onclick='refreshHierarchyDefsButtonsPalette();'>"; },
+        function(data) { return data.name; },
+        function(data) { return data.description;  },
+        function(data) { return data.plugin; },
+        function(data) { 
+            var fixedAttributesCount = 0; 
+            if(data.startDate) fixedAttributesCount ++;
+            if(data.endDate) fixedAttributesCount ++;
+            if(data.purgeDate) fixedAttributesCount ++;
+            var output = "";
+            output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
+            return output; //return data.attributes; 
+        },
+        function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
+        //function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
+    ];
 </script>
 
 
@@ -117,7 +159,7 @@
                                     </th>
 
                                     <th width="10%" valign="bottom" class="label">
-                                        Direction
+                                        Description
                                     </th>
 
                                     <th width="25%" valign="bottom" class="label">
@@ -132,9 +174,9 @@
 
                                     </tr>
                                 </thead>
-                                <tbody id="hierarchyListing">
+                                <tbody id="hierachyListing">
                                  
-                                <tr><td class="textdata" colspan="6" align="center"> Loading... </td></tr>
+                                <!--<tr><td class="textdata" colspan="6" align="center"> Loading... </td></tr>-->
                             </table>
                         
                         
@@ -189,17 +231,18 @@ function refreshHierarchyDefsButtonsPalette () {
     
     
 function selectAllHierarchyDefs () {
-    alert("not yet implemented.");
     var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = true;
     }
+    refreshHierarchyDefsButtonsPalette();
 }
 function deselectAllHierarchyDefs () {
     var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         chkboxes[i].checked = false;
     }
+    refreshHierarchyDefsButtonsPalette();
 }
 function deleteHierarchyDefs () {
     var chkboxes = document.getElementsByName("chkHierarchyDef");
@@ -221,5 +264,12 @@ function showHierarchyDialog (dialogId) {
     hierarchyDialog.show();
 }
 
+function prepareEditHierachyDef(hierarchyDefName) {
+    //alert("editing for  ---------- " + relationshipDefName);
+    var domain = document.getElementById("domain").value;
+    HierarchyDefHandler.getHierarchyDefByName(hierarchyDefName, domain, populateEditHierarchyDefForm);   
+}
+
+    
 refreshHierarchyDefsButtonsPalette ();
 </script>

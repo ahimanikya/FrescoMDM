@@ -113,4 +113,9 @@ function validateHiervalidateEditHierarchypFormarchyForm() {
            return false;
        }
 }
+
+function populateEditHierarchyDefForm(data) {
+    //alert("editing " + data);
+    showHierarchyDialog('edithierarchy');  
+}
 </script>

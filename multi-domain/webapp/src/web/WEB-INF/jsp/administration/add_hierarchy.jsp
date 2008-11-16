@@ -4,7 +4,9 @@
     Author     : Narahari
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-
+<%
+    String prefixToUse = "addhierarchy";
+%>
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true"></script>                
 <script type="text/javascript">
   dojo.require("dijit.form.TextBox");
@@ -41,19 +43,19 @@
             <f:message key="effective_from_text" /><f:message key="colon_symbol" />
         </td>
         <td>
-            <input  name="EffectiveFrom" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
+            <input id="hierarchy_add_effectiveFrom"  name="EffectiveFrom" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
         </td> 
         <td class="formLabel">
            <f:message key="effective_to_text" /><f:message key="colon_symbol" />
        </td>
         <td>
-           <input  name="EffectiveTo" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
+           <input id="hierarchy_add_effectiveTo"  name="EffectiveTo" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
          </td>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td colspan="3"> <textarea dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea>
+        <td colspan="3"> <textarea id="hierarchy_add_description" dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -95,21 +97,74 @@
 
 <script language="javascript" 
   type="text/javascript">
-      
+var addHierarchyPrefix = "<%=prefixToUse%>";      
 function validateHierarchyForm() {
-    
-      if(dojo.byId('hierarchy_add_name').value=='') 
-       {
-           alert("Please Enter the Name.");
-           dojo.byId('hierarchy_add_name').focus();
-           return false;
-       }
+    var hierarchyDefName = dojo.byId('hierarchy_add_name').value;
+    var plugin = dojo.byId('hierarchy_add_plugin').value;
+    var hierarchyEffectiveFrom = dojo.byId('hierarchy_add_effectiveFrom').value;
+    var hierarchyEffectiveTo = dojo.byId('hierarchy_add_effectiveTo').value;
+    var description =  dijit.byId("hierarchy_add_description").attr("value");
+
+    if(dojo.byId('hierarchy_add_name').value=='') {
+       alert("Please Enter the Name.");
+       dojo.byId('hierarchy_add_name').focus();
+       return false;
+    }
+
+    if(dojo.byId('hierarchy_add_plugin').value=='') {
+       alert("Please Select the Plugin.");
+       dojo.byId('hierarchy_add_plugin').focus();
+       return false;
+    }
        
-       if(dojo.byId('hierarchy_add_plugin').value=='') 
-       {
-           alert("Please Select the Plugin.");
-           dojo.byId('hierarchy_add_plugin').focus();
-           return false;
-       }
+       // Validation done. make DWR call to add hierarchy Def
+    var domain = dojo.byId("domain").value;
+    
+    var hierarchydef = {name:hierarchyDefName };
+    hierarchydef.sourceDomain = domain;
+    hierarchydef.plugin = plugin;
+    hierarchydef.description = description;
+
+    // fixed attributes
+    var effectiveFrom = dojo.byId(addHierarchyPrefix + "_EffectiveFrom").checked;
+    var effectiveFromRequired = dojo.byId(addHierarchyPrefix + "_EffectiveFromRequired").checked;
+    var effectiveTo = dojo.byId(addHierarchyPrefix + "_EffectiveTo").checked;
+    var effectiveToRequired = dojo.byId(addHierarchyPrefix + "_EffectiveToRequired").checked;
+    var purgeDate = dojo.byId(addHierarchyPrefix + "_PurgeDate").checked;
+    var purgeDateRequired = dojo.byId(addHierarchyPrefix + "_PurgeDateRequired").checked;
+    
+    hierarchydef.startDate = effectiveFrom;
+    if(effectiveFrom) hierarchydef.startDateRequired = effectiveFromRequired; else hierarchydef.startDateRequired = false;
+    hierarchydef.endDate = effectiveTo;
+    if(effectiveTo) hierarchydef.endDateRequired = effectiveToRequired; else hierarchydef.endDateRequired = false;
+    hierarchydef.purgeDate = purgeDate;
+    if(purgeDate) hierarchydef.purgeDateRequired = purgeDateRequired; else hierarchydef.purgeDateRequired = false;
+    
+    // Custom attributes
+    var customAttributesArray = eval(addHierarchyPrefix + "_attributesArray");
+    showValues(customAttributesArray);
+    //alert("array to use is : " + customAttributesArray);
+    
+    var customAttributes = [];
+    for(i=0;i<customAttributesArray.length; i++) {
+        var attr = customAttributesArray[i];
+        //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+        var  tempAttr = {};
+        tempAttr.name = attr.AttributeNameField.value;
+        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.defaultValue = attr.DefaultValueField.value;
+        tempAttr.required = attr.RequiredField.value;
+        tempAttr.searchable = attr.SearchableField.value;
+        customAttributes.push(tempAttr);
+    }
+
+    hierarchydef.extendedAttributes = customAttributes;
+    //alert("extended attr: " + hierarchydef.extendedAttributes);
+    
+    HierarchyDefHandler.addHierarchyDef(hierarchydef, loadHierarchyDefs );
+
+    // Close this dialog
+    dijit.byId('addhierarchy').hide();
+    return true;       
 }
 </script>
