@@ -37,13 +37,13 @@ public class MDConfigManagerTest extends TestCase {
     
     private static MDConfigManager configManager = null;
     private static int DOMAIN_SCREEN_CONFIGS_SIZE = 5;
-    private static int RELATIONSHIP_SCREEN_CONFIGS_SIZE = 3;
-    private static int RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE = 5;
+    private static int RELATIONSHIP_SCREEN_CONFIGS_SIZE = 5;
+    private static int RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE = 7;
     private static int HIERARCHY_SCREEN_CONFIGS_SIZE = 0;
     private static int PAGE_DEF_CONFIG_SIZE = 1;
     private static int PAGE_DEF_SUBSCREEN_CONFIG_SIZE = 2;
     private static int PAGE_DEF_INITIAL_SCREEN_ID = 0;
-    private static int PAGE_DEF_INITIAL_SUBSCREEN_ID = 1;
+    private static int PAGE_DEF_INITIAL_SUBSCREEN_ID = 0;
     
     public MDConfigManagerTest (String name) throws ConfigException {
         super(name);
@@ -101,7 +101,7 @@ public class MDConfigManagerTest extends TestCase {
                 if (relationshipConfigCount != RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE) {
                     System.out.println("Error: expected "  + RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE +
                                        " relationship screen configuration instances " + 
-                                       "but actually retrieved " + size + 
+                                       "but actually retrieved " + relationshipConfigCount + 
                                        " relationship screen configuration instances.");
                 } else {
                     System.out.println("testRelationships succeeded.");
