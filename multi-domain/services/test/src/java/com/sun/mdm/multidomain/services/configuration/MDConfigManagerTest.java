@@ -44,7 +44,7 @@ public class MDConfigManagerTest extends TestCase {
     private static int PAGE_DEF_SUBSCREEN_CONFIG_SIZE = 2;
     private static int PAGE_DEF_INITIAL_SCREEN_ID = 0;
     private static int PAGE_DEF_INITIAL_SUBSCREEN_ID = 0;
-    
+
     public MDConfigManagerTest (String name) throws ConfigException {
         super(name);
         configManager = MDConfigManager.init();        
@@ -148,6 +148,67 @@ public class MDConfigManagerTest extends TestCase {
                                                " subscreens but actually retrieved " + subscreenCount);
                             assert(false);
                         } else {
+                            ArrayList<ScreenObject> subScreensList = new ArrayList<ScreenObject>(subscreens);
+                            int expectedPageSize = 15;
+                            int expectedMaxRecords = 100;
+                            String expectedViewPath = "manage/history_relationship";
+                            
+                            scrObj = subScreensList.get(0);
+                            int pageSize = scrObj.getPageSize();
+                            if (pageSize != expectedPageSize) {
+                                System.out.println("Error: expected first subscreen " +
+                                                   " to have a page size of " + 
+                                                   expectedPageSize + " but retrieved " +
+                                                   " a page size of " + pageSize);
+                                assert(false);
+                            }
+                            int maxRecords = scrObj.getMaxRecords();
+                            if (maxRecords != expectedMaxRecords) {
+                                System.out.println("Error: expected first subscreen " +
+                                                   " to have a max records of " + 
+                                                   expectedMaxRecords + " but retrieved " +
+                                                   " a page size of " + maxRecords);
+                                assert(false);
+                            }
+
+                            String viewpath = scrObj.getViewPath();
+                            if (expectedViewPath.compareTo(viewpath) != 0) {
+                                System.out.println("Error: expected first subscreen " +
+                                                   " to have a view path of " + 
+                                                   expectedViewPath + " but retrieved " +
+                                                   " a view path of " + viewpath);
+                                assert(false);
+                            }
+                            
+                            scrObj = subScreensList.get(1);
+                            expectedPageSize = 12;
+                            expectedMaxRecords = 97;
+                            pageSize = scrObj.getPageSize();
+                            expectedViewPath = "manage/manage_relationship";
+                            if (pageSize != expectedPageSize) {
+                                System.out.println("Error: expected second subscreen " +
+                                                   " to have a page size of " + 
+                                                   expectedPageSize + " but retrieved " +
+                                                   " a page size of " + pageSize);
+                                assert(false);
+                            }
+                            maxRecords = scrObj.getMaxRecords();
+                            if (maxRecords != expectedMaxRecords) {
+                                System.out.println("Error: expected second subscreen " +
+                                                   " to have a max records of " + 
+                                                   expectedMaxRecords + " but retrieved " +
+                                                   " a page size of " + maxRecords);
+                                assert(false);
+                            }
+                            viewpath = scrObj.getViewPath();
+                            if (expectedViewPath.compareTo(viewpath) != 0) {
+                                System.out.println("Error: expected second subscreen " +
+                                                   " to have a view path of " + 
+                                                   expectedViewPath + " but retrieved " +
+                                                   " a view path of " + viewpath);
+                                assert(false);
+                            }
+                            
                             System.out.println("testScreens succeeded.");
                             assert(true);
                         }

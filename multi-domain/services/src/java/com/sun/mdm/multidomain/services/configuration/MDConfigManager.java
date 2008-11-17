@@ -670,17 +670,20 @@ public class MDConfigManager {
         ArrayList<com.sun.mdm.multidomain.parser.ScreenDefinition> screenDefs = pageDef.getScreenDefs();
         
         for (com.sun.mdm.multidomain.parser.ScreenDefinition screenDef : screenDefs) {
-
+            String viewPath = screenDef.getViewPath();
             String displayTitle = screenDef.getScreenTitle();
             int screenID = screenDef.getScreenId();
             int displayOrder = screenDef.getDisplayOrder();
+            int pageSize = screenDef.getItemPerPage();
+            int maxRecords = screenDef.getMaxItems();
             
             ArrayList<SearchScreenConfig> searchScreenConfigs = convertPageRelationTypes(screenDef.getPageRelationType());
             PageDefinition subPage = screenDef.getChildPage();
             int initialSubscreenID = subPage.getInitialScreenId();
             ArrayList<ScreenObject> subscreens = configurePageDefinitions(subPage);
-    	    ScreenObject scrObj = new ScreenObject(screenID, displayTitle, 
+    	    ScreenObject scrObj = new ScreenObject(screenID, displayTitle, viewPath,
                                                    displayOrder, initialSubscreenID, 
+                                                   pageSize, maxRecords,
                                                    searchScreenConfigs,
                                                    subscreens);
             addScreen(scrObj);
@@ -705,10 +708,12 @@ public class MDConfigManager {
         ArrayList<com.sun.mdm.multidomain.parser.ScreenDefinition> screenDefs = pageDef.getScreenDefs();
         ArrayList<ScreenObject> screenObjects = new ArrayList<ScreenObject> ();
         for (com.sun.mdm.multidomain.parser.ScreenDefinition screenDef : screenDefs) {
-
+            String viewPath = screenDef.getViewPath();
             String displayTitle = screenDef.getScreenTitle();
             int screenID = screenDef.getScreenId();
             int displayOrder = screenDef.getDisplayOrder();
+            int pageSize = screenDef.getItemPerPage();
+            int maxRecords = screenDef.getMaxItems();
             
             ArrayList<SearchScreenConfig> searchScreenConfigs = convertPageRelationTypes(screenDef.getPageRelationType());
             PageDefinition subPage = screenDef.getChildPage();
@@ -718,8 +723,9 @@ public class MDConfigManager {
                 initialSubscreenID = subPage.getInitialScreenId();
                 subscreens =  configurePageDefinitions(subPage);
             }
-    	    ScreenObject scrObj = new ScreenObject(screenID, displayTitle, 
+    	    ScreenObject scrObj = new ScreenObject(screenID, displayTitle, viewPath,
                                                    displayOrder, initialSubscreenID, 
+                                                   pageSize, maxRecords,
                                                    searchScreenConfigs,
                                                    subscreens);
             screenObjects.add(scrObj);

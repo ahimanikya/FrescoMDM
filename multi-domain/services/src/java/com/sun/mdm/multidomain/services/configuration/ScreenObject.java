@@ -28,8 +28,12 @@ import java.util.ArrayList;
 public class ScreenObject {
     private Integer mId;                    // screen ID
     private String mDisplayTitle;           // title to be displayed 
+    private String mViewPath;
     private int mDisplayOrder;		    // order in which the screen is displayed
     private int mInitialSubScreenID;        
+    private int mPageSize;
+    private int mMaxRecords;
+            
     private ArrayList<ScreenObject> mSubscreens;
     private ArrayList<SearchScreenConfig> mSearchScreenConfigs;
     
@@ -37,23 +41,31 @@ public class ScreenObject {
         mSubscreens = new ArrayList<ScreenObject> ();
     }
     
-    public ScreenObject(Integer id, String displayTitle, int displayOrder,
+    public ScreenObject(Integer id, String displayTitle, String viewPath, 
+                        int displayOrder, int pageSize, int maxRecords,
                         ArrayList<SearchScreenConfig> searchScreenConfigs, 
                         ArrayList<ScreenObject> subscreens) {
         mId = id;
         mDisplayTitle = displayTitle;
+        mViewPath = viewPath;
         mDisplayOrder = displayOrder;
+        mPageSize = pageSize;
+        mMaxRecords = maxRecords;
         mSearchScreenConfigs = searchScreenConfigs;
         mSubscreens = subscreens;
     }
     
-    public ScreenObject(Integer id, String displayTitle, int displayOrder,
-                        int initialSubscreenID, 
+    public ScreenObject(Integer id, String displayTitle, String viewPath, 
+                        int displayOrder, int initialSubscreenID, 
+                        int pageSize, int maxRecords,
                         ArrayList<SearchScreenConfig> searchScreenConfigs, 
                         ArrayList<ScreenObject> subscreens) {
         mId = id;
         mDisplayTitle = displayTitle;
+        mViewPath = viewPath;
         mDisplayOrder = displayOrder;
+        mPageSize = pageSize;
+        mMaxRecords = maxRecords;
         mInitialSubScreenID = initialSubscreenID;
         mSearchScreenConfigs = searchScreenConfigs;
         mSubscreens = subscreens;
@@ -96,6 +108,24 @@ public class ScreenObject {
     }
 
     /**
+     * Retrieves the screen object's view path.
+     *
+     * @return the screen object's view path.
+     */    
+    public String getViewPath() {  
+        return mViewPath;
+    }
+
+    /**
+     * Retrieves the screen object's view path.
+     *
+     * @param viewPath  The screen object's view path.
+     */    
+    public void setViewPath(String viewPath) {  
+        mViewPath = viewPath;
+    }
+
+    /**
      * Retrieves the screen object's display order.
      *
      * @return the screen object's display order.
@@ -129,6 +159,42 @@ public class ScreenObject {
      */    
     public void getInitialSubscreenID(int screenID) {
         mInitialSubScreenID =  screenID;
+    }
+	
+    /**
+     * Retrieves the maximum items per page
+     *
+     * @return the maximum items per page
+     */    
+    public int getPageSize() {
+        return mPageSize;
+    }
+	
+    /**
+     * Sets the maximum items per page
+     *
+     * @param pageSize Maximum number of items per page.
+     */    
+    public void setPageSize(int pageSize) {
+        mPageSize = pageSize;
+    }
+	
+    /**
+     * Retrieves the maximum number of records to retrieve from the database.
+     * 
+     * @return the maximum number of records to retrieve from the database.
+     */    
+    public int getMaxRecords() {
+        return mMaxRecords;
+    }
+	
+    /**
+     * Sets the maximum number of records to retrieve from the database.
+     * 
+     * @param maxRecords  The maximum number of records to retrieve from the database.
+     */    
+    public void getMaxRecords(int maxRecords) {
+        mMaxRecords = maxRecords;
     }
 	
     /**
