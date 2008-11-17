@@ -147,7 +147,8 @@ public class RelationshipManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            multiDomainMetaService.updateRelationshipDef(ViewHelper.toRelationshipDef(rDefExt));
+            RelationshipDef rDef = ViewHelper.toRelationshipDef(rDefExt);
+            multiDomainMetaService.updateRelationshipDef(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -161,8 +162,11 @@ public class RelationshipManager {
             if (rt.getSourceDomain().equals(rDefExt.getSourceDomain()) &&
                 rt.getTargetDomain().equals(rDefExt.getTargetDomain()) &&
                 rt.getName().equals(rDefExt.getName())) {                                      
-                rt.setEffectiveFromRequired(rDefExt.getStartDateRequired().equalsIgnoreCase("true") ? true : false);
+                RelationshipDef rDef = ViewHelper.toRelationshipDef(rDefExt);
+                rts.remove(rt);
+                rts.add(rDef);
                 updated = true;
+                break;
              }
     	}
         if (!updated) {

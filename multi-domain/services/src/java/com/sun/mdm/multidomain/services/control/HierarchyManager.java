@@ -182,9 +182,12 @@ public class HierarchyManager {
         boolean updated = false;
         for (HierarchyDef rt:hs) {
             if (rt.getDomain().equals(hDefExt.getDomain()) &&
-                rt.getName().equals(hDefExt.getName())) {                                      
-                rt.setEffectiveFromRequired(hDefExt.getStartDateRequired().equalsIgnoreCase("true") ? true : false);
+                rt.getName().equals(hDefExt.getName())) {                 
+                HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+                hs.remove(rt);
+                hs.add(hDef);
                 updated = true;
+                break;
              }
     	}
         if (!updated) {
