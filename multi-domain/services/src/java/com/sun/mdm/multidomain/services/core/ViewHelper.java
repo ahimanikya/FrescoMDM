@@ -84,7 +84,8 @@ public class ViewHelper {
         hDef.setName(hDefExt.getName());
         hDef.setId(0);
         hDef.setDomain(hDefExt.getDomain());
-        //TBD need to fix core RelationshipDef
+        //TBD need to fix core HierarchyDef
+        //hDef.setDscription();
         //hDef.setPlugin();
         //hDef.setPluginInfo();        
         //hDef.setStartDate();
@@ -114,12 +115,13 @@ public class ViewHelper {
         hDefExt.setName(hDef.getName());
         hDefExt.setId(Integer.toString(hDef.getId()));
         hDefExt.setDomain(hDef.getDomain());
-        //TBD need to fix core RelationshipDef
-        //rDefExt.setPlugin();
-        //rDefExt.setPluginInfo();        
-        //rDefExt.setStartDate();
-        //rDefExt.setEndDate();
-        //rDefExt.setPurgeDate();        
+        //TBD need to fix core HierarchyDef
+        //hDefExt.setDscription();
+        //hDefExt.setPlugin();
+        //hDefExt.setPluginInfo();        
+        //hDefExt.setStartDate();
+        //hDefExt.setEndDate();
+        //hDefExt.setPurgeDate();        
         hDefExt.setStartDateRequired(hDef.getEffectiveFromRequired() ? "true" : "false");
         hDefExt.setEndDateRequired(hDef.getEffectiveToRequired() ? "true" : "false");
         hDefExt.setPurgeDateRequired(hDef.getPurgeDateRequired() ? "true" : "false");
@@ -146,6 +148,7 @@ public class ViewHelper {
         rDefExt.setTargetDomain(rDef.getTargetDomain());        
         rDefExt.setBiDirection(rDef.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "true" : "false");
         //TBD need to fix core RelationshipDef
+        //rDefExt.setDscription();
         //rDefExt.setPlugin();
         //rDefExt.setPluginInfo();        
         //rDefExt.setStartDate();
@@ -178,6 +181,7 @@ public class ViewHelper {
         rDef.setDirection("true".equalsIgnoreCase(rDefExt.getBiDirection()) ? 
                           RelationshipDef.DirectionMode.BIDIRECTIONAL : RelationshipDef.DirectionMode.UNIDIRECTIONAL);
         //TBD need to fix core RelationshipDef
+        //rDefExt.setDscription();
         //rDef.setPlugin();
         //rDef.setPluginInfo();        
         //rDef.setStartDate();
