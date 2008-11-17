@@ -140,7 +140,9 @@ function validateHierarchyForm() {
     hierarchydef.purgeDate = purgeDate;
     if(purgeDate) hierarchydef.purgeDateRequired = purgeDateRequired; else hierarchydef.purgeDateRequired = false;
     
-    alert("Start date sending is : " + hierarchydef.startDate + "\n" + "end date sending is: " + hierarchydef.endDate);
+    //alert("Start date sending is : " + hierarchydef.startDate + "\n" + " -- required is: " + hierarchydef.startDateRequired);
+    //alert("end date sending is : " + hierarchydef.endDate + "\n" + " -- required is: " + hierarchydef.endDateRequired);
+    //alert("purge date sending is : " + hierarchydef.purgeDate + "\n" + " -- required is: " + hierarchydef.purgeDateRequired);
     
     // Custom attributes
     var customAttributesArray = eval(addHierarchyPrefix + "_attributesArray");

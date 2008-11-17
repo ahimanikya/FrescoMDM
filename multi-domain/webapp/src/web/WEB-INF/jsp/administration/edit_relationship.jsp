@@ -181,17 +181,17 @@ function populateEditRelationshipDefForm(data) {
         dijit.byId("relationship_edit_description").attr("value", ""); 
         dijit.byId("relationship_edit_description").attr("value", data.description); 
 
-        //alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
+        alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveFrom"), 
-            dijit.byId(editRelationshipPrefix+"_EffectiveFromRequired"), data.startDate, data.startDateRequired);
+            dijit.byId(editRelationshipPrefix+"_EffectiveFromRequired"), getBoolean(data.startDate), getBoolean(data.startDateRequired) );
 
-        //alert("Effective To: " + data.endDate + " Required: " + data.endDateRequired);
+        alert("Effective To: " + data.endDate + " Required: " + data.endDateRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveTo"), 
-            dijit.byId(editRelationshipPrefix+"_EffectiveToRequired"), data.endDate, data.endDateRequired);
+            dijit.byId(editRelationshipPrefix+"_EffectiveToRequired"), getBoolean(data.endDate), getBoolean(data.endDateRequired) );
 
-        //alert("Purge date: " + data.purgeDate + " Required: " + data.purgeDatRequired);
+        alert("Purge date: " + data.purgeDate + " Required: " + data.purgeDatRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_PurgeDate"), 
-            dijit.byId(editRelationshipPrefix+"_PurgeDateRequired"), data.purgeDate, data.purgeDatRequired);
+            dijit.byId(editRelationshipPrefix+"_PurgeDateRequired"), getBoolean(data.purgeDate), getBoolean(data.purgeDateRequired) );
 
         // Populate custom attributes;
         //eval(editRelationshipPrefix+'_attributesArray').splice(0, 0);
@@ -203,7 +203,10 @@ function populateEditRelationshipDefForm(data) {
 
 
 function populatePredefinedAttributeField (attributeObj, attributeRequiredObj, attributeValue, attributeRequiredValue) {
+
+    //alert(attributeObj + " : "  + attributeRequiredObj + "\n\n\n" + attributeValue + " : " + attributeRequiredValue);
     if(attributeObj == null || attributeRequiredObj==null) return;
+
     if(attributeValue == true) {
         attributeObj.setChecked (true);
         attributeRequiredObj.setDisabled(false);
@@ -215,5 +218,38 @@ function populatePredefinedAttributeField (attributeObj, attributeRequiredObj, a
     else attributeRequiredObj.setChecked (false);
 }
     
+function getBoolean(variable)    {
 
+    var vtype;
+    var toReturn;
+    if(variable != null && variable!=undefined)    {
+        switch(typeof(variable))    {
+            case 'boolean':    
+                vtype = "boolean";
+                return variable;
+                break;
+            case 'number':
+                vtype = "number";
+                if(variable == 0)    
+                    toReturn = false;
+                else toReturn = true;
+                break;
+            case 'string':
+                variable = variable.toLowerCase();
+                vtype = "string";
+                if(variable == "true")    
+                    toReturn = true;
+                else if(variable == "false")
+                    toReturn = false;
+                else if(variable.length > 0)
+                    toReturn = true;
+                else if(variable.length == 0)
+                    toReturn = false;                
+                break;
+        }
+        return toReturn;        
+
+    } else return false;
+    return false; 
+}
 </script>

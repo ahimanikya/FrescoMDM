@@ -124,17 +124,17 @@ function populateEditHierarchyDefForm(data) {
         dijit.byId("hierarchy_edit_description").attr("value", ""); 
         dijit.byId("hierarchy_edit_description").attr("value", data.description); 
         
-        alert("Start date got is: " + data.startDate + " Required: " + data.startDateRequired);
+        //alert("Start date got is: " + data.startDate + " Required: " + data.startDateRequired);
         populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveFrom"), 
-            dijit.byId(editHierarchyPrefix+"_EffectiveFromRequired"), data.startDate, data.startDateRequired);
+            dijit.byId(editHierarchyPrefix+"_EffectiveFromRequired"), getBoolean(data.startDate), getBoolean(data.startDateRequired) );
 
-        alert("end date got is: " + data.endDate + " Required: " + data.endDateRequired);
+        //alert("end date got is: " + data.endDate + " Required: " + data.endDateRequired);
         populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveTo"), 
-            dijit.byId(editHierarchyPrefix+"_EffectiveToRequired"), data.endDate, data.endDateRequired);
+            dijit.byId(editHierarchyPrefix+"_EffectiveToRequired"), getBoolean(data.endDate), getBoolean(data.endDateRequired));
 
-        //alert("Purge date got is: " + data.purgeDate + " Required: " + data.purgeDatRequired);
+        //alert("Purge date got is: " + data.purgeDate + " Required: " + data.purgeDateRequired);
         populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_PurgeDate"), 
-            dijit.byId(editHierarchyPrefix+"_PurgeDateRequired"), data.purgeDate, data.purgeDatRequired);
+            dijit.byId(editHierarchyPrefix+"_PurgeDateRequired"), getBoolean(data.purgeDate), getBoolean(data.purgeDateRequired) );
         
         // custom atributes populating
         createCustomAttributes (data, editHierarchyPrefix+'_customAttributesTable', eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix );

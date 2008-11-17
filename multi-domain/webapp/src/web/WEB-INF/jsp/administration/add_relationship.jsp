@@ -165,6 +165,8 @@ function validateRelationshipForm() {
     relationshipdef.purgeDate = purgeDate;
     if(purgeDate) relationshipdef.purgeDateRequired = purgeDateRequired; else relationshipdef.purgeDateRequired = false;
     
+    alert("Start date sending is : " + relationshipdef.startDate + "\n" + "required is: " + relationshipdef.endDate);
+    
     var customAttributesArray = eval(addRelationshipPrefix + "_attributesArray");
     //alert("array to use is : " + customAttributesArray);
     
