@@ -121,7 +121,7 @@ function validateHierarchyForm() {
     var domain = dojo.byId("domain").value;
     
     var hierarchydef = {name:hierarchyDefName };
-    hierarchydef.sourceDomain = domain;
+    hierarchydef.domain = domain;
     hierarchydef.plugin = plugin;
     hierarchydef.description = description;
 
