@@ -73,9 +73,9 @@
         function(data) { return data.plugin; },
         function(data) { 
             var fixedAttributesCount = 0; 
-            if(data.startDate) fixedAttributesCount ++;
-            if(data.endDate) fixedAttributesCount ++;
-            if(data.purgeDate) fixedAttributesCount ++;
+            if(getBoolean(data.startDate)) fixedAttributesCount ++;
+            if(getBoolean(data.endDate)) fixedAttributesCount ++;
+            if(getBoolean(data.purgeDate)) fixedAttributesCount ++;
             var output = "";
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
