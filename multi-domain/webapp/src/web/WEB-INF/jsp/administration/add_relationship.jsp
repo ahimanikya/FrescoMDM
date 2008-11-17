@@ -89,7 +89,7 @@
     <tr>
         <td align="right" colspan="2">
             <input type="submit" name="save_add_relations" onclick=" return validateRelationshipForm()" title="<f:message key="save_text" />" value="<f:message key="save_text" />" />
-            <input type="button" name="cancel_add_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addrelationship').hide();"/>
+            <input type="button" name="cancel_add_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addrelationship').hide(); clearAddRelationshipForm (); "/>
         </td>
     </tr>
     
@@ -193,7 +193,27 @@ function validateRelationshipForm() {
 
     // Close this dialog
     dijit.byId('addrelationship').hide();
+    clearAddRelationshipForm () ;
     return true;
+}
+function clearAddRelationshipForm () {
+    //alert("clearing fields of add hierarchy form");
+    dojo.byId('relationship_add_name').value = "";
+    dojo.byId('relationship_add_direction').value = "";
+    dojo.byId('relationship_add_plugin').value = "";
+    dojo.byId('relationship_add_description').value = "";
+    
+    // clear predefined attributes fields
+    clearPredefinedAttributeField(dijit.byId(addRelationshipPrefix+"_EffectiveFrom"), 
+            dijit.byId(addRelationshipPrefix+"_EffectiveFromRequired"));
+    clearPredefinedAttributeField(dijit.byId(addRelationshipPrefix+"_EffectiveTo"), 
+            dijit.byId(addRelationshipPrefix+"_EffectiveToRequired"));
+    clearPredefinedAttributeField(dijit.byId(addRelationshipPrefix+"_PurgeDate"), 
+            dijit.byId(addRelationshipPrefix+"_PurgeDateRequired"));
+            
+    // clear custom attributes
+    selectAllCustomAttributes( eval(addRelationshipPrefix+'_attributesArray') );
+    deleteAttributes( addRelationshipPrefix+'_customAttributesTable', eval(addRelationshipPrefix+'_attributesArray') );
 }
 </script>
 

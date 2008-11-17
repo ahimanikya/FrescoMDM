@@ -209,21 +209,5 @@ function populateEditRelationshipDefForm(data) {
 }
 
 
-function populatePredefinedAttributeField (attributeObj, attributeRequiredObj, attributeValue, attributeRequiredValue) {
-
-    //alert(attributeObj + " : "  + attributeRequiredObj + "\n\n\n" + attributeValue + " : " + attributeRequiredValue);
-    if(attributeObj == null || attributeRequiredObj==null) return;
-
-    if(attributeValue == true) {
-        attributeObj.setChecked (true);
-        attributeRequiredObj.setDisabled(false);
-    }  else {
-        attributeObj.setChecked (false);
-        attributeRequiredObj.setDisabled(true);
-    }
-    if(attributeRequiredValue == true) attributeRequiredObj.setChecked (true);
-    else attributeRequiredObj.setChecked (false);
-}
-
  
 </script>

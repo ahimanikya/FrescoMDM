@@ -86,16 +86,7 @@
             });
         refreshRelationshipDefsButtonsPalette(); // Refresh the buttons palette to enable/disable the buttons.
     }
-        
-    function clickAdd() {
-        relationshipdef = {name:"foo", sourceDomain:"Person", targetDomain:"Company"};
-        alert("add new relationshipdef: {name:'foo', sourceDomain:'Person', targetDomain:'Company'}");
-        RelationshipDefHandler.addRelationshipDef(relationshipdef, clickAddCB);
-    }
-    function clickAddCB(data) {
-        alert("added relationshipdef id=" + data);
-        loadRelationshipDefs();
-    }
+
     
     var relationListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },

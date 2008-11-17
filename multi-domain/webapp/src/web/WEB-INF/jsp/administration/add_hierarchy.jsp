@@ -89,7 +89,7 @@
     <tr>
         <td align="right" colspan="4">
             <input type="submit" name="save_add_hierarchy" onclick="return validateHierarchyForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
-            <input type="button" name="cancel_add_hierarchy" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addhierarchy').hide();"/>
+            <input type="button" name="cancel_add_hierarchy" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addhierarchy').hide();clearAddHierarchyForm();"/>
         </td>
     </tr>
 </table> 
@@ -171,6 +171,28 @@ function validateHierarchyForm() {
 
     // Close this dialog
     dijit.byId('addhierarchy').hide();
+    clearAddHierarchyForm();
     return true;       
 }
+function clearAddHierarchyForm () {
+    //alert("clearing fields of add hierarchy form");
+    dojo.byId('hierarchy_add_name').value = "";
+    dojo.byId('hierarchy_add_plugin').value = "";
+    dojo.byId('hierarchy_add_effectiveFrom').value = "";
+    dojo.byId('hierarchy_add_effectiveTo').value = "";
+    dojo.byId('hierarchy_add_description').value = "";
+    
+    // clear predefined attributes fields
+    clearPredefinedAttributeField(dijit.byId(addHierarchyPrefix+"_EffectiveFrom"), 
+            dijit.byId(addHierarchyPrefix+"_EffectiveFromRequired"));
+    clearPredefinedAttributeField(dijit.byId(addHierarchyPrefix+"_EffectiveTo"), 
+            dijit.byId(addHierarchyPrefix+"_EffectiveToRequired"));
+    clearPredefinedAttributeField(dijit.byId(addHierarchyPrefix+"_PurgeDate"), 
+            dijit.byId(addHierarchyPrefix+"_PurgeDateRequired"));
+            
+    // clear custom attributes
+    selectAllCustomAttributes( eval(addHierarchyPrefix+'_attributesArray') );
+    deleteAttributes( addHierarchyPrefix+'_customAttributesTable', eval(addHierarchyPrefix+'_attributesArray') );
+}
+
 </script>
