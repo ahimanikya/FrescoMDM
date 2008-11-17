@@ -266,7 +266,7 @@ public class RelationshipDefExt {
         
     public void setPurgeDateRequired(String purgeDateRequired){ 
         AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("endDateRequired");
+        aDef.setName("purgeDateRequired");
         aDef.setDefaultValue(purgeDateRequired.toLowerCase());
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                                    
