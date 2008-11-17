@@ -66,7 +66,7 @@
             dwr.util.addRows("relListing", [''], [function(data){return "No Relationship definitions found.";}], {
                   cellCreator:function(options) {
                     var td = document.createElement("td");
-                    td.colSpan="6"; td.align="center";
+                    td.colSpan="7"; td.align="center";
                     return td;
                   },
                   escapeHtml:false
