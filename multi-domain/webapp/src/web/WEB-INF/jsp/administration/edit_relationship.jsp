@@ -100,7 +100,8 @@ function validateEditRelationshipForm() {
     var relationshipDefName = dojo.byId("relationship_edit_name").value;
     var direction = dojo.byId("relationship_edit_direction").value;
     var pluginName = dojo.byId("relationship_edit_plugin").value;
-
+    var description = "";
+    
   if(dojo.byId('relationship_edit_name').value=='') 
    {
        alert("Please Enter the Name.");
@@ -129,6 +130,7 @@ function validateEditRelationshipForm() {
     relationshipdef.targetDomain = targetDomain;
     relationshipdef.plugin = pluginName;
     relationshipdef.biDirection = direction;
+    relationshipdef.description = description;
 
     var effectiveFrom = dojo.byId(editRelationshipPrefix + "_EffectiveFrom").checked;
     var effectiveFromRequired = dojo.byId(editRelationshipPrefix + "_EffectiveFromRequired").checked;

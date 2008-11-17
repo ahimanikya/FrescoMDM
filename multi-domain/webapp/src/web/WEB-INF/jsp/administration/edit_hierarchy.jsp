@@ -100,7 +100,7 @@
   type="text/javascript">
 var editHierarchyPrefix = "<%=prefixToUse%>";    
 function validateEditHierarchyForm() {
-    
+        var description = "";
       if(dojo.byId('hierarchy_edit_name').value=='') 
        {
            alert("Please Enter the Name.");
@@ -114,6 +114,7 @@ function validateEditHierarchyForm() {
            dojo.byId('hierarchy_edit_plugin').focus();
            return false;
        }
+       // Yet to be implemented. Make DWR call
 }
 
 function populateEditHierarchyDefForm(data) {
