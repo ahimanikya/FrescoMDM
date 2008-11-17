@@ -243,11 +243,16 @@ function deselectAllHierarchyDefs () {
     refreshHierarchyDefsButtonsPalette();
 }
 function deleteHierarchyDefs () {
+    var anySelected = false;
+    var chkboxes = document.getElementsByName("chkHierarchyDef");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked) anySelected = true;
+    }
+    if(!anySelected) return;
     if(! confirm("Are you sure you want to delete the selected Hierarchy Definitions?")) {
         return ;
     }
     var domain=document.getElementById("domain").value;
-    var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked) {
             //alert('deleting ' + chkboxes[i].value);

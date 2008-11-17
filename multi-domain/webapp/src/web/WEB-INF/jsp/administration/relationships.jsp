@@ -301,10 +301,16 @@ function deselectAllRelationshipDefs () {
     refreshRelationshipDefsButtonsPalette();
 }
 function deleteRelationshipDefs () {
+    var anySelected = false;
+    var chkboxes = document.getElementsByName("chkRelationshipDef");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked) anySelected = true;
+    }
+    if(!anySelected) return;
     if(! confirm("Are you sure you want to delete the selected Relatioship Definitions?")) {
         return ;
     }
-    var chkboxes = document.getElementsByName("chkRelationshipDef");
+    
     var sourceDomain=document.getElementById("selectSourceDomain").value;
     var targetDomain=document.getElementById("selectTargetDomain").value;
     for(i=0;i<chkboxes.length; i++) {
