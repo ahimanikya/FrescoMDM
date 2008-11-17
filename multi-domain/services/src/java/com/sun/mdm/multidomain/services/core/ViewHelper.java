@@ -85,12 +85,12 @@ public class ViewHelper {
         hDef.setId(0);
         hDef.setDomain(hDefExt.getDomain());
         //TBD need to fix core HierarchyDef
-        //hDef.setDscription();
-        //hDef.setPlugin();
-        //hDef.setPluginInfo();        
-        //hDef.setStartDate();
-        //hDef.setEndDate();
-        //hDef.setPurgeDate();        
+        //hDef.setPluginInfo(); 
+        hDef.setDescription(hDefExt.getDescription());
+        hDef.setPlugin(hDefExt.getPlugin());       
+        hDef.setEffectiveFrom("true".equalsIgnoreCase(hDefExt.getStartDate()));
+        hDef.setEffectiveTo("true".equalsIgnoreCase(hDefExt.getEndDate()));
+        hDef.setPurgeDate("true".equalsIgnoreCase(hDefExt.getPurgeDate()));        
         hDef.setEffectiveFromRequired("true".equalsIgnoreCase(hDefExt.getStartDateRequired()) ? true : false);
         hDef.setEffectiveToRequired("true".equalsIgnoreCase(hDefExt.getEndDateRequired()) ? true : false);        
         hDef.setPurgeDateRequired("true".equalsIgnoreCase(hDefExt.getPurgeDateRequired()) ? true : false);
@@ -116,12 +116,12 @@ public class ViewHelper {
         hDefExt.setId(Integer.toString(hDef.getId()));
         hDefExt.setDomain(hDef.getDomain());
         //TBD need to fix core HierarchyDef
-        //hDefExt.setDscription();
-        //hDefExt.setPlugin();
-        //hDefExt.setPluginInfo();        
-        //hDefExt.setStartDate();
-        //hDefExt.setEndDate();
-        //hDefExt.setPurgeDate();        
+        //hDefExt.setPluginInfo(); 
+        hDefExt.setDescription(hDef.getDescription());
+        hDefExt.setPlugin(hDef.getPlugin());       
+        hDefExt.setStartDate(hDef.getEffectiveFrom() ? "true" : "false");
+        hDefExt.setEndDate(hDef.getEffectiveTo() ? "true" : "false");
+        hDefExt.setPurgeDate(hDef.getPurgeDate() ? "true" : "false");        
         hDefExt.setStartDateRequired(hDef.getEffectiveFromRequired() ? "true" : "false");
         hDefExt.setEndDateRequired(hDef.getEffectiveToRequired() ? "true" : "false");
         hDefExt.setPurgeDateRequired(hDef.getPurgeDateRequired() ? "true" : "false");
@@ -148,12 +148,12 @@ public class ViewHelper {
         rDefExt.setTargetDomain(rDef.getTargetDomain());        
         rDefExt.setBiDirection(rDef.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "true" : "false");
         //TBD need to fix core RelationshipDef
-        //rDefExt.setDscription();
-        //rDefExt.setPlugin();
-        //rDefExt.setPluginInfo();        
-        //rDefExt.setStartDate();
-        //rDefExt.setEndDate();
-        //rDefExt.setPurgeDate();        
+        //rDefExt.setPluginInfo();
+        rDef.setDescription(rDefExt.getDescription());
+        rDef.setPlugin(rDefExt.getPlugin());       
+        rDef.setEffectiveFrom("true".equalsIgnoreCase(rDefExt.getStartDate()));
+        rDef.setEffectiveTo("true".equalsIgnoreCase(rDefExt.getEndDate()));
+        rDef.setPurgeDate("true".equalsIgnoreCase(rDefExt.getPurgeDate()));    
         rDefExt.setStartDateRequired(rDef.getEffectiveFromRequired() ? "true" : "false");
         rDefExt.setEndDateRequired(rDef.getEffectiveToRequired() ? "true" : "false");
         rDefExt.setPurgeDateRequired(rDef.getPurgeDateRequired() ? "true" : "false");
@@ -181,12 +181,12 @@ public class ViewHelper {
         rDef.setDirection("true".equalsIgnoreCase(rDefExt.getBiDirection()) ? 
                           RelationshipDef.DirectionMode.BIDIRECTIONAL : RelationshipDef.DirectionMode.UNIDIRECTIONAL);
         //TBD need to fix core RelationshipDef
-        //rDefExt.setDscription();
-        //rDef.setPlugin();
-        //rDef.setPluginInfo();        
-        //rDef.setStartDate();
-        //rDef.setEndDate();
-        //rDef.setPurgeDate();        
+        //rDef.setPluginInfo();   
+        rDefExt.setDescription(rDef.getDescription());
+        rDefExt.setPlugin(rDef.getPlugin());       
+        rDefExt.setStartDate(rDef.getEffectiveFrom() ? "true" : "false");
+        rDefExt.setEndDate(rDef.getEffectiveTo() ? "true" : "false");
+        rDefExt.setPurgeDate(rDef.getPurgeDate() ? "true" : "false");      
         rDef.setEffectiveFromRequired("true".equalsIgnoreCase(rDefExt.getStartDateRequired()) ? true : false);
         rDef.setEffectiveToRequired("true".equalsIgnoreCase(rDefExt.getEndDateRequired()) ? true : false);        
         rDef.setPurgeDateRequired("true".equalsIgnoreCase(rDefExt.getPurgeDateRequired()) ? true : false);
