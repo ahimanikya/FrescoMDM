@@ -34,3 +34,20 @@ function getBoolean(variable)    {
     } else return false;
     return false; 
 }
+    
+                
+// returns first N characters from a string. If blnTrimAtWordEnd is true, output is trimmed to last word end.
+function firstNCharacters(strData, intNChars, blnTrimAtWordEnd) {
+    //alert(strData + " \n\n" + intNChars + " characters only");
+    if(strData == null || strData==undefined) return null;
+    if(strData.length <= intNChars) return strData;
+    if(blnTrimAtWordEnd == null) blnTrimAtWordEnd = true;
+        
+    var returnValue = strData.substring(0,intNChars);
+    //alert("returnValue :" + returnValue + ":");
+    if(blnTrimAtWordEnd) {
+        returnValue = returnValue.substring(0,returnValue.lastIndexOf(" "));
+    }
+    //alert("returning :" + returnValue + ":");
+    return returnValue;
+}
