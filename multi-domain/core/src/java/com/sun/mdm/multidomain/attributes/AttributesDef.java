@@ -92,7 +92,7 @@ public abstract class AttributesDef {
      * @return String relationship type description.
      */
     public String getDescription() {
-        return name;
+        return description;
     }
     
     /**
