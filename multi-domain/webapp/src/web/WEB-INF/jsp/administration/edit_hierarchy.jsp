@@ -44,13 +44,13 @@
             <f:message key="effective_from_text" /><f:message key="colon_symbol" />
         </td>
         <td>
-            <input  name="name" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
+            <input id="hierarchy_edit_effectiveFrom" name="name" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
         </td> 
         <td class="formLabel">
            <f:message key="effective_to_text" /><f:message key="colon_symbol" />
        </td>
         <td>
-           <input  name="name" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
+           <input id="hierarchy_edit_effectiveTo" name="name" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
          </td>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
@@ -100,7 +100,12 @@
   type="text/javascript">
 var editHierarchyPrefix = "<%=prefixToUse%>";    
 function validateEditHierarchyForm() {
-        var description = "";
+    var hierarchyDefName = dojo.byId('hierarchy_edit_name').value;
+    var plugin = dojo.byId('hierarchy_edit_plugin').value;
+    var hierarchyEffectiveFrom = dojo.byId('hierarchy_edit_effectiveFrom').value;
+    var hierarchyEffectiveTo = dojo.byId('hierarchy_edit_effectiveTo').value;
+    var description =  dijit.byId("hierarchy_edit_description").attr("value");
+    
       if(dojo.byId('hierarchy_edit_name').value=='') 
        {
            alert("Please Enter the Name.");
@@ -115,6 +120,56 @@ function validateEditHierarchyForm() {
            return false;
        }
        // Yet to be implemented. Make DWR call
+    var domain = dojo.byId("domain").value;
+    
+    var hierarchydef = {name:hierarchyDefName };
+    hierarchydef.domain = domain;
+    hierarchydef.plugin = plugin;
+    hierarchydef.description = description;
+
+    // fixed attributes
+    var effectiveFrom = dojo.byId(editHierarchyPrefix + "_EffectiveFrom").checked;
+    var effectiveFromRequired = dojo.byId(editHierarchyPrefix + "_EffectiveFromRequired").checked;
+    var effectiveTo = dojo.byId(editHierarchyPrefix + "_EffectiveTo").checked;
+    var effectiveToRequired = dojo.byId(editHierarchyPrefix + "_EffectiveToRequired").checked;
+    var purgeDate = dojo.byId(editHierarchyPrefix + "_PurgeDate").checked;
+    var purgeDateRequired = dojo.byId(editHierarchyPrefix + "_PurgeDateRequired").checked;
+
+    hierarchydef.startDate = effectiveFrom;
+    if(effectiveFrom) hierarchydef.startDateRequired = effectiveFromRequired; else hierarchydef.startDateRequired = false;
+    hierarchydef.endDate = effectiveTo;
+    if(effectiveTo) hierarchydef.endDateRequired = effectiveToRequired; else hierarchydef.endDateRequired = false;
+    hierarchydef.purgeDate = purgeDate;
+    if(purgeDate) hierarchydef.purgeDateRequired = purgeDateRequired; else hierarchydef.purgeDateRequired = false;
+    
+    //alert("Start date sending is : " + hierarchydef.startDate + "\n" + " -- required is: " + hierarchydef.startDateRequired);
+    //alert("end date sending is : " + hierarchydef.endDate + "\n" + " -- required is: " + hierarchydef.endDateRequired);
+    //alert("purge date sending is : " + hierarchydef.purgeDate + "\n" + " -- required is: " + hierarchydef.purgeDateRequired);
+    
+    // Custom attributes
+    var customAttributesArray = eval(editHierarchyPrefix + "_attributesArray");
+    //showValues(customAttributesArray);
+    
+    var customAttributes = [];
+    for(i=0;i<customAttributesArray.length; i++) {
+        var attr = customAttributesArray[i];
+        //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
+        var  tempAttr = {};
+        tempAttr.name = attr.AttributeNameField.value;
+        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.defaultValue = attr.DefaultValueField.value;
+        tempAttr.required = attr.RequiredField.value;
+        tempAttr.searchable = attr.SearchableField.value;
+        customAttributes.push(tempAttr);
+    }
+
+    hierarchydef.extendedAttributes = customAttributes;
+    //alert("extended attr: " + hierarchydef.extendedAttributes);
+    
+    HierarchyDefHandler.updateHierarchyDef(hierarchydef, loadHierarchyDefs );
+
+    // Close this dialog
+    dijit.byId('edithierarchy').hide();       
 }
 
 function populateEditHierarchyDefForm(data) {
