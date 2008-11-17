@@ -176,7 +176,7 @@ function validateRelationshipForm() {
         tempAttr.name = attr.AttributeNameField.value;
         tempAttr.type = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
-        tempAttr.required = attr.RequiredField.value;
+        tempAttr.isRequired = attr.RequiredField.value;
         tempAttr.searchable = attr.SearchableField.value;
         customAttributes.push(tempAttr);
     }
