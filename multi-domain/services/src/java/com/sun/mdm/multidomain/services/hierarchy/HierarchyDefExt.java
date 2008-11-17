@@ -35,6 +35,7 @@ public class HierarchyDefExt {
     
     /* data model   
     private String name;
+    private String description;
     private String id; 
     private String domain;
     private String plugin;
@@ -85,6 +86,19 @@ public class HierarchyDefExt {
         aDef.setDataType("String");
         setFixedAttribute(aDef);
     }
+    
+    public String getDescription(){
+        AttributeDefExt aDef = getFixedAttribute("description");
+        return aDef != null ? aDef.getDefaultValue() : null;
+    }
+    
+    public void setDescription(String name){
+        AttributeDefExt aDef = new AttributeDefExt();
+        aDef.setName("description");
+        aDef.setDefaultValue(name);
+        aDef.setDataType("String");
+        setFixedAttribute(aDef);
+    } 
     
     public String getId(){
         AttributeDefExt aDef = getFixedAttribute("id");
