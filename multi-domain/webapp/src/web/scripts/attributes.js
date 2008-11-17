@@ -81,6 +81,7 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
         this.Row.cells[3].removeChild(this.Row.cells[3].firstChild);
         if ( this.AttributeTypeField.value == "date") {
                 this.DefaultValueField = document.createElement("input");
+                // This should be date field...
                 this.DefaultValueField.type = "text";
                 this.DefaultValueField.size = 10;
                 this.Row.cells[3].appendChild(this.DefaultValueField);
