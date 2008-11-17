@@ -64,6 +64,7 @@
           },
           escapeHtml:false
         });
+        refreshHierarchyDefsButtonsPalette();
     }
     
     var hierarchyListingDataFuncs = [
@@ -261,6 +262,7 @@ function deleteHierarchyDefs () {
             HierarchyDefHandler.deleteHierarchyDef(hierarchydef, loadHierarchyDefs);
         }
     }
+    refreshHierarchyDefsButtonsPalette();
 }
 
 function showHierarchyDialog (dialogId) {
