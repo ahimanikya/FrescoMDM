@@ -158,15 +158,15 @@
                                         Name
                                     </th>
 
-                                    <th width="10%" valign="bottom" class="label">
+                                    <th width="25%" valign="bottom" class="label">
                                         Description
                                     </th>
 
-                                    <th width="25%" valign="bottom" class="label">
+                                    <th width="15%" valign="bottom" class="label">
                                         Plugin 
                                     </th>
 
-                                    <th width="25%" valign="bottom" class="label">
+                                    <th width="20%" valign="bottom" class="label">
                                         Attributes
                                     </th> 
 

@@ -100,13 +100,14 @@
     var relationListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },
         function(data) { return data.name; },
+        function(data) { return data.description; },
         function(data) { if(data.biDirection == true) {return "<img src='images/icons/relationship-both.png'>"; }else {return "<img src='images/icons/relationship-right.png'>" ;}  },
         function(data) { return data.plugin; },
         function(data) { 
             var fixedAttributesCount = 0; 
-            if(data.startDate) fixedAttributesCount ++;
-            if(data.endDate) fixedAttributesCount ++;
-            if(data.purgeDate) fixedAttributesCount ++;
+            if(getBoolean(data.startDate)) fixedAttributesCount ++;
+            if(getBoolean(data.endDate)) fixedAttributesCount ++;
+            if(getBoolean(data.purgeDate)) fixedAttributesCount ++;
             var output = "";
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
@@ -192,15 +193,18 @@
                                             &nbsp;
                                         </th>
                                         
-                                        <th width="25%" valign="bottom" class="label">
+                                        <th width="20%" valign="bottom" class="label">
                                             Name
+                                        </th>
+                                        <th width="20%" valign="bottom" class="label">
+                                            Descrpition
                                         </th>
                                         
                                         <th width="10%" valign="bottom" class="label">
                                             Direction
                                         </th>
                                         
-                                        <th width="25%" valign="bottom" class="label">
+                                        <th width="10%" valign="bottom" class="label">
                                             Plugin 
                                         </th>
                                         
