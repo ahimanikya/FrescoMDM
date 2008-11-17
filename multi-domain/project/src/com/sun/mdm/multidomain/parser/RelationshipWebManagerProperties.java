@@ -27,7 +27,6 @@ public class RelationshipWebManagerProperties {
     
     public static String mTAG_REL_FIELD_DISPLAY_ORDER = "display-order";
 
-    // testing--raymond tam    
     public static String mTAG_DOMAIN_DISPLAY_ORDER = "display-order";
     
     public static String mTAG_REL_FIELD_MAX_LENGTH = "max-length";
