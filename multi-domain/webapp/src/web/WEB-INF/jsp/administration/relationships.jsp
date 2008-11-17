@@ -100,7 +100,17 @@
     var relationListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },
         function(data) { return data.name; },
-        function(data) { return data.description; },
+        function(data) { 
+            //data.description ="testing only this is only testing, testing only this is only testing, testing only this is only testing";
+            var desc =  data.description; 
+            if(desc == null) return "";
+            if(desc.length > 30) {
+                desc = firstNCharacters (desc, 30,true);
+                desc += "...";
+            }
+            var descHTML = "<span title='"+data.description+"'> "+ desc +"</span>"
+            return descHTML;  
+        },
         function(data) { if(data.biDirection == true) {return "<img src='images/icons/relationship-both.png'>"; }else {return "<img src='images/icons/relationship-right.png'>" ;}  },
         function(data) { return data.plugin; },
         function(data) { 

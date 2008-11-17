@@ -70,7 +70,17 @@
     var hierarchyListingDataFuncs = [
         function(data) { return "<input type='checkbox' align='center' name='chkHierarchyDef' value='"+data.name+"' onclick='refreshHierarchyDefsButtonsPalette();'>"; },
         function(data) { return data.name; },
-        function(data) { return data.description;  },
+        function(data) { 
+            //data.description ="testing only this is only testing, testing only this is only testing, testing only this is only testing";
+            var desc =  data.description; 
+            if(desc == null) return "";
+            if(desc.length > 30) {
+                desc = firstNCharacters (desc, 30,true);
+                desc += "...";
+            }
+            var descHTML = "<span title='"+data.description+"'> "+ desc +"</span>"
+            return descHTML;  
+        },
         function(data) { return data.plugin; },
         function(data) { 
             var fixedAttributesCount = 0; 
@@ -84,6 +94,8 @@
         function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
         //function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
     ];
+
+
 </script>
 
 
