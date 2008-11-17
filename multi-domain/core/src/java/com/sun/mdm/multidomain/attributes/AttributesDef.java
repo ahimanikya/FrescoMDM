@@ -30,6 +30,7 @@ import java.util.Iterator;
  * AttributesDef class.
  * Abstract class for different kinds of  types.
  * @author SwaranjitDua
+ * @author cye
  */
 public abstract class AttributesDef {
     
@@ -37,9 +38,14 @@ public abstract class AttributesDef {
     //public enum DirectionMode {UNIDIRECTIONAL,BIDIRECTIONAL};
     
     private String name;
+    private String description;
+    private String plugin;
     private boolean effectiveFromRequired;
     private boolean effectiveToRequired;
     private boolean purgeDateRequired; 
+    private boolean effectiveFrom;
+    private boolean effectiveTo;
+    private boolean purgeDate; 
     private List<Attribute> attributes; //extended attributes.
 
     /**
@@ -59,6 +65,9 @@ public abstract class AttributesDef {
     	this.effectiveFromRequired = true;
     	this.effectiveToRequired = true;
     	this.purgeDateRequired = true;
+        this.effectiveFrom = true;
+    	this.effectiveTo = true;
+    	this.purgeDate = true;   
     	this.attributes = new ArrayList<Attribute>();    	
     }
     
@@ -78,8 +87,38 @@ public abstract class AttributesDef {
         this.name = name;
     }
     
+     /**
+     * Get relationship type description.
+     * @return String relationship type description.
+     */
+    public String getDescription() {
+        return name;
+    }
     
-             
+    /**
+     * Set relationship type description.
+     * @param name Relationship type description.
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }   
+      
+   /**
+     * Get relationship type plugin.
+     * @return String relationship type plugin.
+     */
+    public String getPlugin() {
+        return plugin;
+    }
+    
+    /**
+     * Set relationship type plugin.
+     * @param plugin Relationship type plugin.
+     */
+    public void setPlugin(String plugin) {
+        this.plugin = plugin;
+    }
+    
     /**
      * Get effectiveFromRequired attribute.
      * @return boolean EffectiveFromRequired attribute.
@@ -125,7 +164,55 @@ public abstract class AttributesDef {
      * @param purgeDateRequired PurgeDateRequired attribute.
      */
     public void setPurgeDateRequired(boolean purgeDateRequired) {
-    	this.purgeDateRequired = purgeDateRequired;
+        this.purgeDateRequired = purgeDateRequired;
+    }
+    
+    /**
+     * Get effectiveFrom attribute.
+     * @return boolean EffectiveFromRequired attribute.
+     */
+    public boolean getEffectiveFrom() {
+    	return effectiveFrom;
+    }
+    
+    /**
+     * Set effectiveFrom attribute.
+     * @param effectiveFrom EffectiveFrom attribute.
+     */
+    public void setEffectiveFrom(boolean effectiveFrom) {
+    	this.effectiveFrom = effectiveFrom;
+    }    
+    
+    /**
+     * Get effectiveTo attribute.
+     * @return boolean effectiveTo attribute.
+     */
+    public boolean getEffectiveTo() {
+    	return effectiveTo;
+    }
+    
+    /**
+     * Set effectiveTo attribute.
+     * @param effectiveTo EffectiveTo attribute.
+     */
+    public void setEffectiveTo(boolean effectiveTo) {
+    	this.effectiveTo = effectiveTo; 
+    }    
+    
+    /**
+     * Get purgeDate attribute.
+     * @return boolean PurgeDate attribute.
+     */
+    public boolean getPurgeDate() {
+    	return purgeDate;
+    }
+         
+    /**
+     * Set purgeDate attribute.
+     * @param purgeDate PurgeDate attribute.
+     */
+    public void setPurgeDate(boolean purgeDate) {
+    	this.purgeDate = purgeDate;
     }   
       
     
