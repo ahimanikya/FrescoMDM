@@ -94,6 +94,18 @@ public class UserProfile {
         return mOperations;
     }
 
+    /** 
+     * Retrieves all operations for a role..
+     *
+     * @return String array of all operations for a role.
+     */
+    public String[] getOperations(String roleName) {
+        SecurityManager securityManager = SecurityManager.getInstance();
+        Role role = securityManager.getRole(roleName);
+        String[] operations = role.getOperationsArray();
+        return operations;
+    }
+
     /**
      * Returns the mUserName attribute for a UserProfile instance.
      *

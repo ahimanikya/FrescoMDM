@@ -69,14 +69,15 @@ public class SecurityManager {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.security.SecurityManager");
     private transient static final Localizer mLocalizer = Localizer.get();
     
-    // key = operation name, value = ArrayList of allowable operations
-    private HashMap mRoleOperations;
+    private HashMap<String, Role> mRoleOperations;
+    private HashMap<String, Role> mRoleRefs;
     private static SecurityManager instance = null;
     private DocumentBuilder builder;
     
     private static final String MDWM_SECURITY_FILENAME = "mdwm-security.xml";
     private static final String ROLES = "roles";
     private static final String ROLE = "role";
+    private static final String ROLE_REF = "role-ref";
     private static final String ROLE_NAME = "role-name";
     private static final String NAME = "name";
     private static final String OPERATIONS = "operations";
@@ -92,7 +93,8 @@ public class SecurityManager {
     private SecurityManager() throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
-        mRoleOperations = new HashMap();
+        mRoleOperations = new HashMap<String, Role>();
+        mRoleRefs = new HashMap<String, Role>();
     }
 
     /**
@@ -194,7 +196,8 @@ public class SecurityManager {
         ChildElementIterator itr = new ChildElementIterator(roleElement);
         
         String roleName = null;
-        ArrayList operations = new ArrayList();
+        ArrayList<String> operations = new ArrayList<String>();
+        ArrayList<String> roleRefs = new ArrayList<String>();
         HashMap excludedOperations = new HashMap();
         
         // parse each of the children
@@ -203,7 +206,7 @@ public class SecurityManager {
             if (element.getTagName().equalsIgnoreCase(ROLE_NAME)) {
                 roleName = NodeUtil.getNodeText(element);
             } else if (element.getTagName().equalsIgnoreCase(INHERITANCE)) {
-                ArrayList newOperations 
+                ArrayList<String> newOperations 
                         = buildInheritanceConfig(element, excludedOperations);
                 // Add any inherited operations
                 if (newOperations != null) {
@@ -211,6 +214,12 @@ public class SecurityManager {
                     while (iter.hasNext()) {
                         operations.add(iter.next().toString());
                     }
+                }
+            } else if (element.getTagName().equalsIgnoreCase(ROLE_REF)) {
+                String roleRef = NodeUtil.getNodeText(element);
+                // Add any role-ref
+                if (roleRef != null) {
+                    roleRefs.add(roleRef);
                 }
             } else if (element.getTagName().equalsIgnoreCase(OPERATIONS)) {
                 ArrayList newOperations 
@@ -222,9 +231,15 @@ public class SecurityManager {
                         operations.add(iter.next().toString());
                     }
                 }
-                Role role = new Role(roleName, operations);
-                mRoleOperations.put(roleName, role);
+                if (operations.size() > 0) {
+                    Role role = new Role(roleName, operations);
+                    mRoleOperations.put(roleName, role);
+                }
             }
+        }
+        if (roleRefs.size() > 0) {
+            Role role = new Role(roleName, roleRefs);
+            mRoleRefs.put(roleName, role);
         }
     }
 
@@ -281,6 +296,7 @@ public class SecurityManager {
         return operations;
     }
     
+
     /**
      * Parses an OPERATIONS block.  
      *
@@ -318,8 +334,6 @@ public class SecurityManager {
      * operations for a specified role name
      */
     public ArrayList getOperationsforRole(String roleName) throws Exception {
-        
-        ArrayList allAvailableRoles = new ArrayList();
         
         Role role = (Role) mRoleOperations.get(roleName);
         if (role != null) {
@@ -369,7 +383,9 @@ public class SecurityManager {
     public String[] getAllRoles() {
         
         Set roleOperationSet = mRoleOperations.entrySet();
-        String[] roleList = new String[roleOperationSet.size()];
+        Set roleRefsSet = mRoleRefs.entrySet();
+        
+        String[] roleList = new String[roleOperationSet.size() + roleRefsSet.size()];
         int i = 0;
         Iterator roleOpSetIter = roleOperationSet.iterator();
         while (roleOpSetIter.hasNext()) {
@@ -378,7 +394,27 @@ public class SecurityManager {
             roleList[i] = roleName;
             i++;
         }
+        Iterator roleRefSetIter = roleRefsSet.iterator();
+        while (roleRefSetIter.hasNext()) {
+            Map.Entry mapEntry = (Map.Entry) roleRefSetIter.next();
+            String roleName = (String) mapEntry.getKey();
+            roleList[i] = roleName;
+            i++;
+        }
         return roleList;
+    }
+    
+    /**
+     *  Retrieve a role with the matching role name.
+     *
+     * @returns a role with the matching role name.
+     */
+    public Role getRole(String roleName) {
+        if (roleName == null) {
+            return null;
+        }
+        Role role = mRoleOperations.get(roleName);
+        return role;
     }
     
     /**

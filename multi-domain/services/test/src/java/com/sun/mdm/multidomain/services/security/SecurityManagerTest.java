@@ -30,6 +30,8 @@ import junit.framework.TestCase;
  */
 public class SecurityManagerTest extends TestCase {
     
+    public static int ROLE_COUNT = 13;
+    
     public SecurityManagerTest (String name) {
         super(name);
     }
@@ -39,8 +41,16 @@ public class SecurityManagerTest extends TestCase {
     
     public void test001() {
         try {
-            SecurityManager.getInstance().init();        
-            assertTrue(true);
+            SecurityManager securityManager = SecurityManager.getInstance().init();    
+            String roles[] = securityManager.getAllRoles();
+            if (roles.length == ROLE_COUNT) {
+                System.out.println("Roles parsed successfully.");
+                assert(true);
+            } else {
+                System.out.println("Error: expected " + ROLE_COUNT + " roles but " +
+                                   "actually processed " + roles.length + "roles.");
+                assert(false);
+            }
         } catch(Exception ex) {
             fail(ex.getMessage());
         }        

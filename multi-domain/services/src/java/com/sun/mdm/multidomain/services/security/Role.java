@@ -75,7 +75,7 @@ public class Role {
     /** 
      *
      * Getter for the operations member.
-     * @returns Value of the name member.
+     * @returns Value of the mOperations member.
      */
     public ArrayList getOperations() {
         return mOperations;
@@ -83,8 +83,18 @@ public class Role {
     
     /** 
      *
+     * Getter for the operations member.
+     * @returns Value of the name member.
+     */
+    public String[] getOperationsArray() {
+        return (String[]) mOperations.toArray();
+        
+    }
+    
+    /** 
+     *
      * Setter for the name member.
-     * @param Value to which the name member is set
+     * @param Value to which the mOperations member is set
      */
     public void setOperations(ArrayList operations) {
         mOperations = operations;
