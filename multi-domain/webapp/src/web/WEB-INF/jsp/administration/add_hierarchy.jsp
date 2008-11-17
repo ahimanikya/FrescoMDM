@@ -132,7 +132,7 @@ function validateHierarchyForm() {
     var effectiveToRequired = dojo.byId(addHierarchyPrefix + "_EffectiveToRequired").checked;
     var purgeDate = dojo.byId(addHierarchyPrefix + "_PurgeDate").checked;
     var purgeDateRequired = dojo.byId(addHierarchyPrefix + "_PurgeDateRequired").checked;
-    
+
     hierarchydef.startDate = effectiveFrom;
     if(effectiveFrom) hierarchydef.startDateRequired = effectiveFromRequired; else hierarchydef.startDateRequired = false;
     hierarchydef.endDate = effectiveTo;
@@ -140,10 +140,11 @@ function validateHierarchyForm() {
     hierarchydef.purgeDate = purgeDate;
     if(purgeDate) hierarchydef.purgeDateRequired = purgeDateRequired; else hierarchydef.purgeDateRequired = false;
     
+    alert("Start date sending is : " + hierarchydef.startDate + "\n" + "end date sending is: " + hierarchydef.endDate);
+    
     // Custom attributes
     var customAttributesArray = eval(addHierarchyPrefix + "_attributesArray");
-    showValues(customAttributesArray);
-    //alert("array to use is : " + customAttributesArray);
+    //showValues(customAttributesArray);
     
     var customAttributes = [];
     for(i=0;i<customAttributesArray.length; i++) {

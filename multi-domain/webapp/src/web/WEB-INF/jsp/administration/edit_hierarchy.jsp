@@ -5,7 +5,9 @@
 --%>
 
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-
+<%
+    String prefixToUse = "edithierarchy";
+%>
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true"></script>                
 <script type="text/javascript">
   dojo.require("dijit.form.TextBox");
@@ -54,7 +56,7 @@
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td colspan="3"> <textarea dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
+        <td colspan="3"> <textarea id="hierarchy_edit_description" dojoType="dijit.form.Textarea" style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -96,7 +98,7 @@
 
 <script language="javascript" 
   type="text/javascript">
-      
+var editHierarchyPrefix = "<%=prefixToUse%>";    
 function validateEditHierarchyForm() {
     
       if(dojo.byId('hierarchy_edit_name').value=='') 
@@ -116,6 +118,28 @@ function validateEditHierarchyForm() {
 
 function populateEditHierarchyDefForm(data) {
     //alert("editing " + data);
+    if(data != null) {      
+        dojo.byId("hierarchy_edit_name").value = data.name;
+        dojo.byId("hierarchy_edit_plugin").value = data.plugin;
+        dijit.byId("hierarchy_edit_description").attr("value", ""); 
+        dijit.byId("hierarchy_edit_description").attr("value", data.description); 
+        
+        alert("Start date got is: " + data.startDate + " Required: " + data.startDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveFrom"), 
+            dijit.byId(editHierarchyPrefix+"_EffectiveFromRequired"), data.startDate, data.startDateRequired);
+
+        alert("end date got is: " + data.endDate + " Required: " + data.endDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveTo"), 
+            dijit.byId(editHierarchyPrefix+"_EffectiveToRequired"), data.endDate, data.endDateRequired);
+
+        //alert("Purge date got is: " + data.purgeDate + " Required: " + data.purgeDatRequired);
+        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_PurgeDate"), 
+            dijit.byId(editHierarchyPrefix+"_PurgeDateRequired"), data.purgeDate, data.purgeDatRequired);
+        
+        // custom atributes populating
+        createCustomAttributes (data, editHierarchyPrefix+'_customAttributesTable', eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix );
+        refreshCustomAttributesButtonsPalette(eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix );
+    }
     showHierarchyDialog('edithierarchy');  
 }
 </script>

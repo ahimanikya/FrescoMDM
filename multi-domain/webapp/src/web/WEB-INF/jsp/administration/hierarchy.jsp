@@ -192,14 +192,12 @@
 </table>
 <!-- Content for Add Hierarchy -->
 <div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;width:700px;">
-    
-     <%@ include file="/WEB-INF/jsp/administration/add_hierarchy.jsp" %>
-    
+    <jsp:include page="/WEB-INF/jsp/administration/add_hierarchy.jsp" flush="true" />
 </div>
 
 <!-- Content for Edit Hierarchy -->
 <div id="edithierarchy" dojoType="dijit.Dialog" title="Edit Hierarchy" style="display:none;width:700px;">
-    <%@ include file="/WEB-INF/jsp/administration/edit_hierarchy.jsp" %>
+    <jsp:include page="/WEB-INF/jsp/administration/edit_hierarchy.jsp" flush="true" />
 </div>
 
 <script>

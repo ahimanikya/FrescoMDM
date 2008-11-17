@@ -200,6 +200,8 @@ function populateEditRelationshipDefForm(data) {
     }
     showRelationshipDialog('editrelationship');  
 }
+
+
 function populatePredefinedAttributeField (attributeObj, attributeRequiredObj, attributeValue, attributeRequiredValue) {
     if(attributeObj == null || attributeRequiredObj==null) return;
     if(attributeValue == true) {
