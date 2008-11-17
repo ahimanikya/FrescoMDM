@@ -16,21 +16,14 @@
 
    
    String LoggedUser =(String) session.getAttribute("user");
-   
-   System.out.println("---user---- " +LoggedUser);
-   
-   System.out.println("--- QueryString---- " +request.getQueryString());
-   UserProfile userProfile = new UserProfile(LoggedUser,request);
        
-       System.out.println("---user name---- " +userProfile.getUserName());
-       
-String currentUri = request.getRequestURI();
+   String currentUri = request.getRequestURI();
 
-boolean isAdministerScreen = true; 
+   boolean isAdministerScreen = true; 
 
-if(currentUri.contains("manage")) {
+  if(currentUri.contains("manage")) {
     isAdministerScreen = false;
-}
+  }
 %>
 
 
