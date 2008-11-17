@@ -55,7 +55,7 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td> <textarea dojoType="dijit.form.Textarea"  style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
+        <td><textarea id="relationship_add_description" name="Description" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -123,7 +123,7 @@ function validateRelationshipForm() {
     var relationshipDefName = dojo.byId("relationship_add_name").value;
     var direction = dojo.byId("relationship_add_direction").value;
     var pluginName = dojo.byId("relationship_add_plugin").value;
-    var description = "";
+    var description = dojo.byId("relationship_add_description").value;
     if(relationshipDefName == '') {
        alert("Please Enter the Name.");
        dojo.byId('relationship_add_name').focus();

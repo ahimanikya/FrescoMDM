@@ -11,6 +11,8 @@
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true"></script>                
 <script type="text/javascript">
   dojo.require("dijit.form.TextBox");
+  dojo.require("dijit.form.CheckBox");
+  dojo.require("dijit.Dialog");
   dojo.require("dojo.parser");
   dojo.require("dijit.form.FilteringSelect");
 
@@ -53,7 +55,7 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td> <textarea id="relationship_edit_description" dojoType="dijit.form.Textarea"  style="height:50px;width:575px;" title="<f:message key="desctription_text" />"></textarea></td> 
+        <td> <textarea id="relationship_edit_description" name="Description" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -100,8 +102,7 @@ function validateEditRelationshipForm() {
     var relationshipDefName = dojo.byId("relationship_edit_name").value;
     var direction = dojo.byId("relationship_edit_direction").value;
     var pluginName = dojo.byId("relationship_edit_plugin").value;
-    var description = "";
-    
+    var description = dojo.byId("relationship_edit_description").value;
   if(dojo.byId('relationship_edit_name').value=='') 
    {
        alert("Please Enter the Name.");
@@ -180,8 +181,12 @@ function populateEditRelationshipDefForm(data) {
         dojo.byId("relationship_edit_name").value = data.name;
         dojo.byId("relationship_edit_direction").value = data.biDirection;
         dojo.byId("relationship_edit_plugin").value = data.plugin;
+        dojo.byId("relationship_edit_description").value=data.description;
+        
+        /* narahari
         dijit.byId("relationship_edit_description").attr("value", ""); 
         dijit.byId("relationship_edit_description").attr("value", data.description); 
+        */
 
         alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveFrom"), 
