@@ -50,17 +50,13 @@
       <param name="beanName" value="HierarchyHandler"/>
     </create>
     
-    <!-- relationship definition handling -->
-    <convert converter="bean" match="com.sun.mdm.multidomain.hierarchy.HierarchyDef">
-        <param name="include" value="name, domain" />
-    </convert>	
-    
+    <!-- relationship definition handling -->  
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.Domain">
         <param name="include" value="name" />
     </convert>		
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt">
-        <param name="include" value="name, domain, plugin, pluginInfo, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
+        <param name="include" value="name, domain, description, plugin, pluginInfo, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
     </convert>	
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
