@@ -72,11 +72,16 @@ public class DataObjectCreateReader implements DataObjectReader {
 		
 	}
 	
-	
-	
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#close();
+	 */	
 	public void close() throws Exception {
-		// TODO Auto-generated method stub
+	}
 
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#reset();
+	 */	
+	public void reset() throws Exception {
 	}
 
 	public DataObject readDataObject() throws InvalidRecordFormat {
