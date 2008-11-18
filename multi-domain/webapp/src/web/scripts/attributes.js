@@ -249,15 +249,25 @@ deleteButtonEnabled.src = "images/icons/delete_button.png";
 var deleteButtonDisabled = new Image();
 deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
 
+var selectAllButtonEnabled = new Image();
+selectAllButtonEnabled.src = "images/icons/select_multiple.png";
+var selectAllButtonDisabled = new Image();
+selectAllButtonDisabled.src = "images/icons/select_multiple_faded.png";
+
+var deselectAllButtonEnabled = new Image();
+deselectAllButtonEnabled.src = "images/icons/deselect_multiple.png";
+var deselectAllButtonDisabled = new Image();
+deselectAllButtonDisabled.src = "images/icons/deselect_multiple_faded.png";
+
 function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix) {
     //alert('refreshing...........' + buttonIdToRefresh);
-    var anySelected = false;
+    var selectedChoices = 0;
     var enableMoveUp = false, enableMoveDown = false;
     //var chkboxes = document.getElementsByName("chkRelationshipDef");
     for(i=0;i<attributesArray.length; i++) {
         var attr = attributesArray[i];
         if(attr.IdField.checked ) {
-            anySelected = true;
+            selectedChoices ++;
             if(i>0) enableMoveUp = true;
             if(i<attributesArray.length-1) enableMoveDown = true;
         }
@@ -266,9 +276,26 @@ function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix)
    // alert("move up: " + enableMoveUp + " Move down: " + enableMoveDown);
     var imgDeleteAttributeObj = dojo.byId(buttonIdPrefix+"_imgDeleteCustAttr");
     if(imgDeleteAttributeObj != null) {
-      if(anySelected) imgDeleteAttributeObj.src =   deleteButtonEnabled.src;
+      if(selectedChoices > 0) imgDeleteAttributeObj.src =   deleteButtonEnabled.src;
       else imgDeleteAttributeObj.src =   deleteButtonDisabled.src;
     }
+    
+    var imgSelectAllButtonObj = dojo.byId(buttonIdPrefix+"_imgSelectAllAttr");
+    if(imgSelectAllButtonObj != null ) {
+        if(selectedChoices != attributesArray.length)
+            imgSelectAllButtonObj.src =   selectAllButtonEnabled.src;
+        else
+            imgSelectAllButtonObj.src =   selectAllButtonDisabled.src;
+    }
+    var imgDeSelectAllButtonObj = dojo.byId(buttonIdPrefix+"_imgDeselectAllAttr");
+    if(imgDeSelectAllButtonObj != null ) {
+        if(selectedChoices > 0)
+            imgDeSelectAllButtonObj.src =   deselectAllButtonEnabled.src;
+        else
+            imgDeSelectAllButtonObj.src =   deselectAllButtonDisabled.src;
+    }
+    
+    // Enable/disable moveup & movedown buttons
     var buttonMoveUpObj = dojo.byId(buttonIdPrefix+"_moveUpButton");
     if(buttonMoveUpObj != null) {
       if(enableMoveUp) buttonMoveUpObj.disabled = false;
