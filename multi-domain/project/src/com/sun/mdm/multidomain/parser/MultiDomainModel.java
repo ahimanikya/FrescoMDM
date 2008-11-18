@@ -214,6 +214,13 @@ public class MultiDomainModel {
     /**
      * @return ArrayList Domain Names
      */
+    public void setDomainNames(ArrayList <String> alDomainNames) {
+        mDomains.alDomainNames = alDomainNames;
+    }
+    
+    /**
+     * @return ArrayList Domain Names
+     */
     public ArrayList <String> getDomainNames() {
         return mDomains.getDomainNames();
     }
@@ -463,12 +470,6 @@ public class MultiDomainModel {
         }
         
         ArrayList <String> getDomainNames() {
-            alDomainNames.clear();
-            for (int i=0; alDomains.size() > i; i++) {
-                Domain domain = (Domain) alDomains.get(i);
-                alDomainNames.add(domain.name); 
-            }
-
             return alDomainNames;
         }
 

@@ -76,7 +76,7 @@ public class EditorMainApp {
     private Map mMapDomainQueryXmls = new HashMap();  // domainName, FileObject of query.xml
     private Map mMapDomainMidmXmls = new HashMap();  // domainName, FileObject of midm.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
-    private ArrayList mAlDomainNodes = new ArrayList();   // DomainNode
+    private ArrayList <DomainNode> mAlDomainNodes = new ArrayList <DomainNode>();   // DomainNode
     private ArrayList <DefinitionNode> mAlDefinitionNodes = new ArrayList <DefinitionNode>();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
     private TabRelationshipWebManager mTabRelshipWebManager = null;
@@ -304,6 +304,7 @@ public class EditorMainApp {
         }
         return node;
     }
+    
     public ArrayList <DomainNode> getDomainNodes() {
         return mAlDomainNodes;
     }
@@ -550,7 +551,13 @@ public class EditorMainApp {
      */
     public String getMultiDomainModelXmlString() throws Exception {
         String xmlStr = null;
-        xmlStr = mMultiDomainApplication.getMultiDomainModel(false).writeToString();
+        //MultiDomainModel multiDomainModel = mMultiDomainApplication.getMultiDomainModel(false);
+        ArrayList <String> alDomainNames = new ArrayList <String>();
+        for (DomainNode node : mAlDomainNodes) {
+            alDomainNames.add(node.getName());
+        }
+        mMultiDomainModel.setDomainNames(alDomainNames);
+        xmlStr = mMultiDomainModel.writeToString();
         return xmlStr;
     }
 
