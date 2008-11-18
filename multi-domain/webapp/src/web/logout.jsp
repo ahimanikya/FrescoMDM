@@ -7,9 +7,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
    <%@ page import="com.sun.mdm.multidomain.presentation.beans.ApplicationHandler" %>
     
-    <%/*
+    <%
     System.out.println(" -----------1--------------"+request.getParameter("logout"));
-    String logout=request.getParameter("logout");
+    
     
     String Logout = request.getParameter("logout");
     boolean isLogout = (null == Logout?false:true);
@@ -19,7 +19,7 @@
         applicationhandler.logout();
         response.sendRedirect("login.htm");
         
-    }*/
+    }
     
     %>
-    <h3>TBD</h3>
+    
