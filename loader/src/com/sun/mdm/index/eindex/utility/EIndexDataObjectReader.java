@@ -710,10 +710,20 @@ public class EIndexDataObjectReader implements DataObjectReader {
 
 	}
 
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#close();
+	 */	
 	public void close() throws Exception {
 		reader.close();
 	}
 
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#reset();
+	 */	
+	public void reset() throws Exception {
+		reader.reset();
+	}
+	
 	public DataObject readDataObject() throws InvalidRecordFormat {
 		return readRecord();
 	}
