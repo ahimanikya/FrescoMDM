@@ -42,9 +42,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jBtnCancel" min="-2" pref="93" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jPanelSubScreen" alignment="1" min="-2" max="-2" attributes="1"/>
+                      <Component id="jPanelSubScreen" linkSize="1" alignment="1" min="-2" max="-2" attributes="1"/>
                   </Group>
-                  <Component id="jScrollPane1" alignment="0" pref="471" max="32767" attributes="1"/>
+                  <Component id="jScrollPane1" linkSize="1" alignment="0" pref="471" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -166,7 +166,7 @@
                           <Component id="jSpinnerMaxItems" alignment="0" pref="48" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="94" max="32767" attributes="0"/>
+                  <EmptySpace pref="97" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

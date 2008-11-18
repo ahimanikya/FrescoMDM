@@ -224,7 +224,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                     .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                         .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage)
                         .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerMaxItems, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanelSubScreenLayout.setVerticalGroup(
             jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -299,6 +299,9 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                     .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        layout.linkSize(new java.awt.Component[] {jPanelSubScreen, jScrollPane1}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
