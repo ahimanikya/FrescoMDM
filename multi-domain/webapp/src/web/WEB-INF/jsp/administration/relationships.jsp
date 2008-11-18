@@ -102,7 +102,7 @@
             var descHTML = "<span title='"+data.description+"'> "+ desc +"</span>"
             return descHTML;  
         },
-        function(data) { if(data.biDirection == true) {return "<img src='images/icons/relationship-both.png'>"; }else {return "<img src='images/icons/relationship-right.png'>" ;}  },
+        function(data) { if(getBoolean(data.biDirection)) {return "<img src='images/icons/relationship-both.png'>"; }else {return "<img src='images/icons/relationship-right.png'>" ;}  },
         function(data) { return data.plugin; },
         function(data) { 
             var fixedAttributesCount = 0; 
