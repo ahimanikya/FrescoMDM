@@ -105,9 +105,18 @@ public class DataObjectDirReader implements DataObjectReader {
 		
 	}
 	
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#close();
+	 */	
 	public void close() throws Exception {
 		curReader_.close();
 	}
 	
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#reset();
+	 */	
+	public void reset() throws Exception {
+		curReader_.reset();
+	}
 	
 }

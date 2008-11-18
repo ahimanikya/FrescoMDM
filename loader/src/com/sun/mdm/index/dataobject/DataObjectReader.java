@@ -43,4 +43,10 @@ public interface DataObjectReader {
 	 */
 	public abstract void close() throws Exception;
 
+	/**
+	 * Reset the begin of the file.
+	 * @throws Exception Thrown if any error occurs during processing.
+	 */
+	public abstract void reset() throws Exception;
+
 }
