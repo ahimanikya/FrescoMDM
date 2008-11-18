@@ -83,8 +83,29 @@ boolean isSessionActive = true;
      </td>
 	 </tr>
 	</table>
-<%}%>
-<%if (isSessionActive)  {%>
+<%}%> <!-- fix for 6710694, modified on 18-11-08 -->
+<%	 boolean isMergeEuid = false;
+	 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+     EditMainEuidHandler editMainEuidHandler =  new EditMainEuidHandler();
+	if(isSessionActive){%>
+	<%
+		String euidVal = request.getParameter("euid");
+		String mergeEuid = editMainEuidHandler.setEditEOFields(euidVal);
+		isMergeEuid = (mergeEuid!=null)?true:false;
+ 		if(mergeEuid!=null && mergeEuid.length()>0){
+  		%>
+		<table><tr><td>
+		 <script>
+			popUrl ='euiddetails.jsf?euid=<%=mergeEuid%>';
+ 			document.getElementById("activemessageDiv").innerHTML = "EUID '<%=mergeEuid%>' <%=bundle.getString("active_euid_text")%> '<%=euidVal%>'";
+			document.getElementById("activeDiv").style.visibility="visible";
+			document.getElementById("activeDiv").style.display="block";
+		  </script>
+		  </td></tr></table>
+		<%
+		}%>
+	<%}%>
+<%if (isSessionActive && !isMergeEuid)  {%>
 
 <%
  double rand = java.lang.Math.random();
@@ -145,10 +166,9 @@ if(session!=null){
 			//SourceHandler sourceHandler = new  SourceHandler(); facesSession.setAttribute("SourceHandler",sourceHandler);
    	        ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             String rootNodeName = objScreenObject.getRootObj().getName();
-            EditMainEuidHandler editMainEuidHandler =  new EditMainEuidHandler();
-
+ 
 			//(EditMainEuidHandler) facesSession.getAttribute("EditMainEuidHandler");
-            editMainEuidHandler.setEditEOFields(euidValue);
+            //editMainEuidHandler.setEditEOFields(euidValue);
 
             facesSession.setAttribute("EditMainEuidHandler",editMainEuidHandler);
 
@@ -159,7 +179,6 @@ if(session!=null){
         %>
 <!-- Global variables for the calendar-->
 <%
- ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
  String global_daysOfWeek  = bundle.getString("global_daysOfWeek");
  String global_months = bundle.getString("global_months");
  String cal_prev_text = bundle.getString("cal_prev_text");
