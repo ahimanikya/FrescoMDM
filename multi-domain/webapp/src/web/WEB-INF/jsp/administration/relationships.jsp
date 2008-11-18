@@ -113,8 +113,8 @@
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
         },
-        function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditRelationshipDef(\''+data.name+'\'); " >'; },
-        //function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
+        function(data) { return '<img src="images/icons/edit-button.png" title="Edit..." class="palleteButton" onclick="prepareEditRelationshipDef(\''+data.name+'\'); " >'; },
+             
     ];
 
 
@@ -167,12 +167,12 @@
                         <td valign="bottom">
                             <table cellspacing="0" cellpadding="0" border="0">
                                 <tr>
-                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllRelationshipDefs();" ><img id="imgSelectAllRelationshipDef" src="images/icons/select_multiple.gif" class="palleteButton"  border="0"></a></td>
-                                    <td><img src="images/spacer.gif" height="1" width="4"></td>
-                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllRelationshipDefs();"><img id="imgDeselectAllRelationshipDef" src="images/icons/deselect_multiple.gif" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllRelationshipDefs();" ><img id="imgSelectAllRelationshipDef" src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
+                                    <td><img src="images/spacer.gif" height="1" width="6"></td>
+                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllRelationshipDefs();"><img id="imgDeselectAllRelationshipDef" src="images/icons/deselect_multiple.png" border="0"></a></td>
                                     <td><img src="images/icons/actions_separator.gif" border="0"></td>
                                     <td><a href="javascript:void(0);" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."><img id="imgAddRelationshipDef" src="images/icons/add_button.png" border="0"></a></td>
-                                    <td><img src="images/spacer.gif" height="1" width="7"></td>
+                                    <td><img src="images/spacer.gif" height="1" width="6"></td>
                                     <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs();" ><img id="imgDeleteRelationshipDef" src="images/icons/delete_button.png" border="0"></a></td>
                                 </tr>
                             </table>

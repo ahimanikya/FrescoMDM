@@ -91,8 +91,9 @@
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
         },
-        function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
-        //function(data) { return "<input id='clone' type='button' value='Clone' onclick='clickClone(this.id)' />"; }              
+        function(data) { return '<img src="images/icons/edit-button.png" title="Edit..." class="palleteButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
+        //function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
+             
     ];
 
 
@@ -141,12 +142,12 @@
                         <td valign="bottom">
                             <table cellspacing="0" cellpadding="0" border="0">
                                 <tr>
-                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllHierarchyDefs();" ><img id="imgSelectAllHierarchyDef" src="images/icons/select_multiple.gif" class="palleteButton"  border="0"></a></td>
-                                    <td><img src="images/spacer.gif" height="1" width="4"></td>
-                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllHierarchyDefs();"><img id="imgDeselectAllHierarchyDef" src="images/icons/deselect_multiple.gif" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllHierarchyDefs();" ><img id="imgSelectAllHierarchyDef" src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
+                                    <td><img src="images/spacer.gif" height="1" width="6"></td>
+                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllHierarchyDefs();"><img id="imgDeselectAllHierarchyDef" src="images/icons/deselect_multiple.png" border="0"></a></td>
                                     <td><img src="images/icons/actions_separator.gif" border="0"></td>
                                     <td><a href="javascript:void(0);" onclick="showHierarchyDialog('addhierarchy');" title="<f:message key="add_text" />..."><img id="imgAddHierarchyDef" src="images/icons/add_button.png" border="0"></a></td>
-                                    <td><img src="images/spacer.gif" height="1" width="7"></td>
+                                    <td><img src="images/spacer.gif" height="1" width="6"></td>
                                     <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteHierarchyDefs();" ><img id="imgDeleteHierarchyDef" src="images/icons/delete_button.png" border="0"></a></td>
                                 </tr>
                             </table>
