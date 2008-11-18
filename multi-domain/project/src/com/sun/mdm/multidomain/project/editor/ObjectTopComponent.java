@@ -115,9 +115,7 @@ public class ObjectTopComponent
             if (mMultiDomainApplication.isValidated() &&  mMultiDomainApplication.isModified()) {
                 int ret = JOptionPane.showConfirmDialog(
                             this,
-                            NbBundle.getMessage(ObjectTopComponent.class, "Msg_Do_you_want_to_save_Configuration")
-                                + mPath
-                                + "?",
+                            NbBundle.getMessage(ObjectTopComponent.class, "Msg_Do_you_want_to_save_Configuration", mPath),
                             NbBundle.getMessage(ObjectTopComponent.class, "LBL_Editor"),
                             JOptionPane.YES_NO_CANCEL_OPTION);
                 if (ret == JOptionPane.YES_OPTION) {
