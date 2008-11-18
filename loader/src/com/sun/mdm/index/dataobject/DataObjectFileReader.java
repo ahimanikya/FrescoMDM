@@ -139,10 +139,19 @@ public class DataObjectFileReader implements DataObjectReader {
 
 	}
 	
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#close();
+	 */	
 	public void close() throws IOException {
 		loaderFile.close();
 	}
 	
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#reset();
+	 */
+	public void reset() throws IOException {
+		loaderFile = new BufferedReader(new FileReader(loaderFileName));			
+	}
 	
 	/**
 	 * Reads the next record string from the file or null if end of the file is
