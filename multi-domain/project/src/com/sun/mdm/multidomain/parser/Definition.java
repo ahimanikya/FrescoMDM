@@ -36,9 +36,9 @@ public class Definition {
     String sourceDomain;
     String targetDomain;
     String direction = ONEDIRECTION; // 1 one direction, 2 bidirectional
-    String description;
-    String effectiveFrom;
-    String effectiveTo;
+    String description = "";
+    String effectiveFrom = "";
+    String effectiveTo = "";
     boolean includeEffectiveFrom;
     boolean includeEffectiveTo;
     boolean includePurgeDate;

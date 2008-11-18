@@ -23,12 +23,26 @@
 package com.sun.mdm.multidomain.parser;
 
 import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import java.io.IOException;
 
 /**
  * @author Kevin Kao
@@ -59,7 +73,7 @@ public class MultiDomainModel {
     private final String mTagDataType = "data-type";
     private final String mTagSearchable = "searchable";
     private final String mTagRequired = "required";
-    private final String mTagUsed = "used";
+    private final String mTagIncluded = "included";
     private final String mTagStartDate = "start-date";
     private final String mTagEndDate = "end-date";
     private final String mTagAttributeID = "attributeID";
@@ -73,6 +87,7 @@ public class MultiDomainModel {
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
     private boolean mModified = false;
+    private static String CONFIGURATION = "Configuration";
 
 
     /**
@@ -112,7 +127,7 @@ public class MultiDomainModel {
     /**
      * @return String Database
      */
-    public String getDataBase() {
+    public String getDatabase() {
         return strDatabase;
     }
 
@@ -272,7 +287,7 @@ public class MultiDomainModel {
                         attr.setRequired(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagAttributeID.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setAttributeID(Utils.getStrElementValue(nl.item(i)));
-                    } else if (mTagUsed.equals(((Element) nl.item(i)).getTagName())) {
+                    } else if (mTagIncluded.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setIncluded(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagStartDate.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setStartDate(Utils.getStrElementValue(nl.item(i)));
@@ -457,6 +472,163 @@ public class MultiDomainModel {
             return alDomainNames;
         }
 
+    }
+    
+    private Element getDatabaseToStr(Document xmlDoc) throws Exception {
+        Element database = xmlDoc.createElement(this.mTagDatabase);
+        database.appendChild(xmlDoc.createTextNode(getDatabase()));
+        return database;
+    }
+    
+    private Element getDateFormatToStr(Document xmlDoc) throws Exception {
+        Element dateFormat = xmlDoc.createElement(this.mTagDateFormat);
+        dateFormat.appendChild(xmlDoc.createTextNode(getDateFormat()));
+        return dateFormat;
+    }
+    
+    private Element getDomainsToStr(Document xmlDoc) throws Exception {
+        Element domains = xmlDoc.createElement(this.mTagDomains);
+        for (String domainName : getDomainNames()) {
+            Element domain = xmlDoc.createElement(this.mTagDomain);
+            domain.setAttribute(mTagName, domainName);
+            domains.appendChild(domain);
+        }
+        
+        return domains;
+    }
+    
+    private void getDefinitionsToStr(Document xmlDoc) throws Exception {
+        Element root = xmlDoc.getDocumentElement();
+        for (Definition definition : getAllDefinitions()) {
+            Element def = xmlDoc.createElement(definition.getType());
+            def.setAttribute(mTagName, definition.getName());
+            //Sourec Domain
+            Element sDomain = xmlDoc.createElement(this.mTagSourceDomain);
+            sDomain.setAttribute(mTagName, definition.getSourceDomain());
+            def.appendChild(sDomain);
+            //Target Domain
+            Element tDomain = xmlDoc.createElement(this.mTagTargetDomain);
+            tDomain.setAttribute(mTagName, definition.getTargetDomain());
+            def.appendChild(tDomain);
+            //Direction
+            Element direction = xmlDoc.createElement(this.mTagDirection);
+            direction.appendChild(xmlDoc.createTextNode(definition.getDirection()));
+            def.appendChild(direction);
+            //Plugin
+            Element plugin = xmlDoc.createElement(this.mTagPlugin);
+            //plugin.appendChild(xmlDoc.createTextNode(definition.getPlugin()));
+            plugin.setAttribute(mTagName, definition.getPlugin());
+            def.appendChild(plugin);
+            //Description
+            Element description = xmlDoc.createElement(this.mTagDescription);
+            description.appendChild(xmlDoc.createTextNode(definition.getDescription()));
+            def.appendChild(description);
+            
+            Element predefinedAttrs = xmlDoc.createElement(this.mTagPredefinedAttributes);
+            def.appendChild(predefinedAttrs);
+            getPredefinedFieldAttrs(xmlDoc, predefinedAttrs, definition.getPredefinedAttributes());
+
+            if (definition.getExtendedAttributes() != null && definition.getExtendedAttributes().size() > 0) {
+                Element extendedAttrs = xmlDoc.createElement(this.mTagExtendedAttributes);
+                def.appendChild(extendedAttrs);
+                getExtendedFieldAttrs(xmlDoc, extendedAttrs, definition.getExtendedAttributes());
+            }
+            
+            root.appendChild(def);
+        }
+        
+        return;
+    }
+    
+    private void getPredefinedFieldAttrs(Document xmlDoc, Node elmNode, ArrayList<Attribute> attrs) {
+        for (Attribute attr : attrs) {
+            Element attrElm = xmlDoc.createElement(this.mTagAttribute);
+            elmNode.appendChild(attrElm);
+            
+            Element eName = xmlDoc.createElement(mTagName);
+            eName.appendChild(xmlDoc.createTextNode(attr.getName()));
+            attrElm.appendChild(eName);
+            
+            Element eDataType = xmlDoc.createElement(mTagDataType);
+            eDataType.appendChild(xmlDoc.createTextNode(attr.getDataType()));
+            attrElm.appendChild(eDataType);
+            
+            Element eIncluded = xmlDoc.createElement(mTagIncluded);
+            eIncluded.appendChild(xmlDoc.createTextNode(attr.getIncluded()));
+            attrElm.appendChild(eIncluded);
+            
+            Element eRequired = xmlDoc.createElement(mTagRequired);
+            eRequired.appendChild(xmlDoc.createTextNode(attr.getRequired()));
+            attrElm.appendChild(eRequired);
+        }
+    }
+    
+    private void getExtendedFieldAttrs(Document xmlDoc, Node elmNode, ArrayList<Attribute> attrs) {
+        for (Attribute attr : attrs) {
+            Element attrElm = xmlDoc.createElement(this.mTagAttribute);
+            elmNode.appendChild(attrElm);
+            
+            Element eName = xmlDoc.createElement(mTagName);
+            eName.appendChild(xmlDoc.createTextNode(attr.getName()));
+            attrElm.appendChild(eName);
+            
+            Element eColumnName = xmlDoc.createElement(mTagColumnName);
+            eColumnName.appendChild(xmlDoc.createTextNode(attr.getColumnName()));
+            attrElm.appendChild(eColumnName);
+            
+            Element eDataType = xmlDoc.createElement(mTagDataType);
+            eDataType.appendChild(xmlDoc.createTextNode(attr.getDataType()));
+            attrElm.appendChild(eDataType);
+            
+            Element eDefaultValue = xmlDoc.createElement(mTagDefaultValue);
+            eDefaultValue.appendChild(xmlDoc.createTextNode(attr.getDefaultValue()));
+            attrElm.appendChild(eDefaultValue);
+            
+            Element eSearchable = xmlDoc.createElement(mTagSearchable);
+            eSearchable.appendChild(xmlDoc.createTextNode(attr.getSearchable()));
+            attrElm.appendChild(eSearchable);
+            
+            Element eRequired = xmlDoc.createElement(mTagRequired);
+            eRequired.appendChild(xmlDoc.createTextNode(attr.getRequired()));
+            attrElm.appendChild(eRequired);
+        }
+    }
+    
+    public String writeToString() throws IOException, Exception {
+        //XMLWriterUtil xmlDoc = new XMLWriterUtil();
+        Document xmldoc = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        DOMImplementation impl = builder.getDOMImplementation();
+        xmldoc = impl.createDocument(null, CONFIGURATION, null);
+
+        Element root = xmldoc.getDocumentElement();
+        root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainModel.xsd");
+        root.appendChild(getDatabaseToStr(xmldoc));
+        root.appendChild(getDateFormatToStr(xmldoc));
+        root.appendChild(getDomainsToStr(xmldoc));
+        getDefinitionsToStr(xmldoc);
+        byte[] xml = transformToXML(xmldoc);
+        return new String(xml);
+
+    }
+    
+    public byte[] transformToXML(Document xmldoc) throws Exception {
+        DOMConfiguration domConfig = xmldoc.getDomConfig();
+        //domConfig.setParameter("format-pretty-print", "true");
+        DOMSource domSource = new DOMSource(xmldoc);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setAttribute("indent-number", 4);        
+        Transformer serializer = tf.newTransformer();
+        serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+        serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+        serializer.setOutputProperty(OutputKeys.VERSION, "1.0");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Result result = new StreamResult(new OutputStreamWriter(out, "UTF-8"));
+        serializer.transform(domSource, result);
+        return out.toByteArray();
+        
     }
 
     /**

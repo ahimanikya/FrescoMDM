@@ -549,8 +549,9 @@ public class EditorMainApp {
      *@return xml string for MultiDomainModel.xml
      */
     public String getMultiDomainModelXmlString() throws Exception {
-        String data = null;
-        return data;
+        String xmlStr = null;
+        xmlStr = mMultiDomainApplication.getMultiDomainModel(false).writeToString();
+        return xmlStr;
     }
 
     /**
