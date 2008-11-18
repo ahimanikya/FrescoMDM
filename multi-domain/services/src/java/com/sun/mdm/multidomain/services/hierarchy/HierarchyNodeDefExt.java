@@ -28,40 +28,20 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * HierarchyDefExt class.
+ * HierarchyNodeDefExt class.
  * @author cye
  */
-public class HierarchyDefExt {
-    
-    /* data model   
-    private String name;
-    private String description;
-    private String id; 
-    private String domain;
-    private String plugin;
-    private String pluginInfo;     
-    private String dateFormat;
-    private String effecriveFrom;
-    private String effecriveTo;
-     
-    // HierarchyNodeDef fixed attributes
+public class HierarchyNodeDefExt {
+
     private String startDate;
     private String endDate;
     private String purgeDate;
     private String startDateRequired;
     private String endDateRequired;
-    private String purgeDateRequired; */
-    
-     /* display model 
-    private String displayName; */    
+    private String purgeDateRequired;
+ 
     private List<AttributeDefExt> fixedAttributes;  
-    /* HierarchyNodeDef extended attributes */
     private List<AttributeDefExt> extendedAttributes;
-            
-    public  HierarchyDefExt(){
-        fixedAttributes = new ArrayList<AttributeDefExt>();
-        extendedAttributes = new ArrayList<AttributeDefExt>();        
-    }
     
     public void setFixedAttributes(ArrayList<AttributeDefExt> fixedAttributes) {
         this.fixedAttributes = fixedAttributes;
@@ -78,124 +58,7 @@ public class HierarchyDefExt {
     public List<AttributeDefExt> getExtendedAttributes(){
         return extendedAttributes;
     }
-    
-    public String getName(){
-        AttributeDefExt aDef = getFixedAttribute("name");
-        return aDef != null ? aDef.getDefaultValue() : null;
-    }
-    
-    public void setName(String name){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("name");
-        aDef.setDefaultValue(name);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);
-    }
-    
-    public String getDescription(){
-        AttributeDefExt aDef = getFixedAttribute("description");
-        return aDef != null ? aDef.getDefaultValue() : null;
-    }
-    
-    public void setDescription(String name){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("description");
-        aDef.setDefaultValue(name);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);
-    } 
-    
-    public String getId(){
-        AttributeDefExt aDef = getFixedAttribute("id");
-        return aDef != null ? aDef.getDefaultValue() : null;        
-    }
-    
-    public void setId(String id){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("id");
-        aDef.setDefaultValue(id);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);
-    }
-    
-    public String getDomain(){
-        AttributeDefExt aDef = getFixedAttribute("domain");
-        return aDef != null ? aDef.getDefaultValue() : null;                
-    }
-    
-    public void setDomain(String sourceDomain){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("domain");
-        aDef.setDefaultValue(sourceDomain);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);        
-    }
-        
-    public String getPlugin(){
-        AttributeDefExt aDef = getFixedAttribute("plugin");
-        return aDef != null ? aDef.getDefaultValue() : null;                
-    }
-    
-    public void setPlugin(String plugin){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("plugin");
-        aDef.setDefaultValue(plugin);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);                        
-    }
 
-    public String getPluginInfo(){
-        AttributeDefExt aDef = getFixedAttribute("pluginInfo");
-        return aDef != null ? aDef.getDefaultValue() : null;                
-    }
-    
-    public void setPluginInfo(String pluginInfo){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("pluginInfo");
-        aDef.setDefaultValue(pluginInfo);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);                        
-    }
-       
-    public String getDateFormat(){
-        AttributeDefExt aDef = getFixedAttribute("dateFormat");
-        return aDef != null ? aDef.getDefaultValue() : null;                        
-    }
-    
-    public void setDateFormat(String dateFormat){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("biDirection");
-        aDef.setDefaultValue(dateFormat);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);        
-    }
-    
-    public String getEffectiveFrom(){
-        AttributeDefExt aDef = getFixedAttribute("effectiveFrom");
-        return aDef != null ? aDef.getDefaultValue() : null;                        
-    }
-    
-    public void setEffectiveFrom(String startDate){ 
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("effectiveFrom");
-        aDef.setDefaultValue(startDate.toUpperCase());
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);                                    
-    }
-
-    public String getEffectiveTo(){
-        AttributeDefExt aDef = getFixedAttribute("effectiveTo");
-        return aDef != null ? aDef.getDefaultValue() : null;                        
-    }
-    
-    public void setEffectiveTo(String startDate){ 
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("effectiveTo");
-        aDef.setDefaultValue(startDate.toUpperCase());
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);                                    
-    }
-    
     public String getStartDate(){
         AttributeDefExt aDef = getFixedAttribute("startDate");
         return aDef != null ? aDef.getDefaultValue() : null;                        
@@ -273,20 +136,7 @@ public class HierarchyDefExt {
         aDef.setDataType("String");
         setFixedAttribute(aDef);                                                    
     }
-    
-    public String getDisplayName(){
-        AttributeDefExt aDef = getFixedAttribute("displayName");
-        return aDef != null ? aDef.getDefaultValue() : null;                        
-    }
-    
-    public void setDisplayName(String displayName){
-        AttributeDefExt aDef = new AttributeDefExt();
-        aDef.setName("displayName");
-        aDef.setDefaultValue(displayName);
-        aDef.setDataType("String");
-        setFixedAttribute(aDef);        
-    }
-    
+
     public AttributeDefExt getFixedAttribute(String name) {
         AttributeDefExt attributeDef = null;
         if (fixedAttributes != null && name != null) {
@@ -325,18 +175,5 @@ public class HierarchyDefExt {
             extendedAttributes = new ArrayList<AttributeDefExt>();
         }            
         extendedAttributes.add(aDef);
-    }
-    
-    public HierarchyNodeDefExt getHierarchyNodeDef() {
-        HierarchyNodeDefExt hNodeDefExt = new HierarchyNodeDefExt();
-        
-        hNodeDefExt.setStartDate(getStartDate());
-        hNodeDefExt.setEndDate(getEndDate());
-        hNodeDefExt.setPurgeDate(getPurgeDate());
-        hNodeDefExt.setStartDateRequired(getStartDateRequired());
-        hNodeDefExt.setEndDateRequired(getEndDateRequired());
-        hNodeDefExt.setPurgeDateRequired(getPurgeDateRequired());
-        hNodeDefExt.setExtendedAttributes(extendedAttributes);        
-        return hNodeDefExt;        
-    }
+    }     
 }
