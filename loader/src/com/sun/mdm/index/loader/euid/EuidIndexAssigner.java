@@ -450,7 +450,7 @@ public class EuidIndexAssigner {
 	private DataObjectReader getReader() throws Exception  {
 		if (isStandardize) {	
 		  File file = FileManager.getInputStandardizedFile();
-		  return new DataObjectFileReader(file.getAbsolutePath(), true);		 
+		  return new DataObjectFileReader(file.getAbsolutePath(), true);		 	 
 		} else {
 			DataObjectReader reader = config.getDataObjectReader();
 			reader.reset();
