@@ -101,14 +101,16 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
     private void updateSubscreenProperties(Component comp) {
         TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
         int selectedRow = jTableSubscreen.getSelectedRow();
-        ScreenDefinition screenDef = model.getRow(selectedRow);
-        if (comp.equals(jSpinnerMaxItems)) {            
-            int maxItems = ((Integer) jSpinnerMaxItems.getValue()).intValue();
-            screenDef.setMaxItems(maxItems);            
-        } else if (comp.equals(jSpinnerItemPerPage)) {
-            screenDef.setItemPerPage(((Integer) jSpinnerItemPerPage.getValue()).intValue());
-        } else if (comp.equals(jTxtScreenTitle)) {
-            screenDef.setScreenTitle(jTxtScreenTitle.getText());
+        if (selectedRow >= 0) {
+            ScreenDefinition screenDef = model.getRow(selectedRow);
+            if (comp.equals(jSpinnerMaxItems)) {
+                int maxItems = ((Integer) jSpinnerMaxItems.getValue()).intValue();
+                screenDef.setMaxItems(maxItems);
+            } else if (comp.equals(jSpinnerItemPerPage)) {
+                screenDef.setItemPerPage(((Integer) jSpinnerItemPerPage.getValue()).intValue());
+            } else if (comp.equals(jTxtScreenTitle)) {
+                screenDef.setScreenTitle(jTxtScreenTitle.getText());
+            }
         }
         
         
@@ -135,16 +137,22 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
     }
     
     private void loadScreenProperties() {
+        //jTableSubscreen.clearSelection();
+        //jSpinnerItemPerPage.setValue(1);
+        //jSpinnerMaxItems.setValue(1);
+        //jTxtScreenTitle.setText("");      
         String selectedScreenType = (String) jCBScreenList.getSelectedItem();
         ScreenDefinition screenDef = mPageDefinition.getScreenDefintion(selectedScreenType);
         if (screenDef != null) {
-            TableModelSubscreen subscreenModel = new TableModelSubscreen(screenDef.getChildPage().getScreenDefs());
-            jTableSubscreen.setModel(subscreenModel);   
-            if (jTableSubscreen.getRowCount() > 0) {
-                jTableSubscreen.setRowSelectionInterval(0, 0);
-                loadSubscreenProperties(subscreenModel.getRow(0));
-                this.jBtnDown.setEnabled(true);
-            }
+            if (screenDef.getChildPage() != null) {
+                TableModelSubscreen subscreenModel = new TableModelSubscreen(screenDef.getChildPage().getScreenDefs());
+                jTableSubscreen.setModel(subscreenModel);
+                if (jTableSubscreen.getRowCount() > 0) {
+                    jTableSubscreen.setRowSelectionInterval(0, 0);
+                    loadSubscreenProperties(subscreenModel.getRow(0));
+                    this.jBtnDown.setEnabled(true);
+                }
+            } 
         }
         
     }
