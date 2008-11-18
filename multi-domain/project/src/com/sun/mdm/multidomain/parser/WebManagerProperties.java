@@ -168,5 +168,17 @@ public class WebManagerProperties {
     public static String mTAG_JNDI_RESOURCE_TYPE = "res-type";
     
     public static String mTAG_JNDI_DESCRIPTION = "description";
+    
+    public static String mTAG_REL_SCREEN_IDENTIFIER = "Relationship";
+    
+    public static String mTAG_MAINTAIN_SCREEN_IDENTIFIER = "Maintain";
+    
+    public static String mTAG_HISTORY_SCREEN_IDENTIFIER = "History";
+    
+    public static String mTAG_HIER_SCREEN_IDENTIFIER = "Hierarchy";
+    
+    public static String mTAG_GROUP_SCREEN_IDENTIFIER = "Group";
+    
+    public static String mTAG_CATEGORY_SCREEN_IDENTIFIER = "Category";
 
 }

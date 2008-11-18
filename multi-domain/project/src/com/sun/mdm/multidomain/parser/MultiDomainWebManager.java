@@ -59,6 +59,78 @@ public class MultiDomainWebManager {
         return this.mWebDefintions;
         
     }
+    
+    public void addDefaultPageDefinitions() {
+        if (mPageDefinition == null) {
+            mPageDefinition = new PageDefinition();
+            mPageDefinition.setInitialScreenId(0);
+            
+            ScreenDefinition relScreenDef = new ScreenDefinition();
+            relScreenDef.setScreenId(mPageDefinition.getScreenDefs().size());
+            relScreenDef.setDisplayOrder(mPageDefinition.getScreenDefs().size());
+            relScreenDef.setScreenTitle(WebManagerProperties.mTAG_REL_SCREEN_IDENTIFIER);
+            //relScreenDef.setItemPerPage(100);
+            //relScreenDef.setMaxItems(100);
+            relScreenDef.setIdentifier(WebManagerProperties.mTAG_REL_SCREEN_IDENTIFIER);
+            relScreenDef.setViewPath("manage/relationship");
+            mPageDefinition.addScreenDefition(relScreenDef);
+            
+            //adding subscreen
+            PageDefinition subscreenDef = new PageDefinition();
+            relScreenDef.setChildPage(subscreenDef);
+            subscreenDef.setInitialScreenId(relScreenDef.getChildPage().getScreenDefs().size());
+            
+            ScreenDefinition maintainRelRef = new ScreenDefinition();
+            maintainRelRef.setScreenId(relScreenDef.getChildPage().getScreenDefs().size());
+            maintainRelRef.setDisplayOrder(relScreenDef.getChildPage().getScreenDefs().size());
+            maintainRelRef.setScreenTitle(WebManagerProperties.mTAG_MAINTAIN_SCREEN_IDENTIFIER + " " + WebManagerProperties.mTAG_REL_SCREEN_IDENTIFIER);
+            maintainRelRef.setItemPerPage(100);
+            maintainRelRef.setMaxItems(100);
+            maintainRelRef.setIdentifier(WebManagerProperties.mTAG_MAINTAIN_SCREEN_IDENTIFIER);
+            maintainRelRef.setViewPath("manage/manage_relationship");
+            subscreenDef.addScreenDefition(maintainRelRef);
+            
+            ScreenDefinition historyRelRef = new ScreenDefinition();
+            historyRelRef.setScreenId(relScreenDef.getChildPage().getScreenDefs().size());
+            historyRelRef.setDisplayOrder(relScreenDef.getChildPage().getScreenDefs().size());
+            historyRelRef.setScreenTitle(WebManagerProperties.mTAG_HISTORY_SCREEN_IDENTIFIER + " " + WebManagerProperties.mTAG_REL_SCREEN_IDENTIFIER);
+            historyRelRef.setItemPerPage(100);
+            historyRelRef.setMaxItems(100);
+            historyRelRef.setIdentifier(WebManagerProperties.mTAG_HISTORY_SCREEN_IDENTIFIER);
+            historyRelRef.setViewPath("manage/history_relationship");
+            subscreenDef.addScreenDefition(historyRelRef);
+
+            ScreenDefinition hierSceenDef = new ScreenDefinition();
+            hierSceenDef.setScreenId(mPageDefinition.getScreenDefs().size());
+            hierSceenDef.setDisplayOrder(mPageDefinition.getScreenDefs().size());
+            hierSceenDef.setScreenTitle(WebManagerProperties.mTAG_HIER_SCREEN_IDENTIFIER);
+            //hierSceenDef.setItemPerPage(100);
+            //hierSceenDef.setMaxItems(100);
+            hierSceenDef.setIdentifier(WebManagerProperties.mTAG_HIER_SCREEN_IDENTIFIER);
+            hierSceenDef.setViewPath("manage/hierarchy");
+            mPageDefinition.addScreenDefition(hierSceenDef);
+            ScreenDefinition groupSceenDef = new ScreenDefinition();
+            groupSceenDef.setScreenId(mPageDefinition.getScreenDefs().size());
+            groupSceenDef.setDisplayOrder(mPageDefinition.getScreenDefs().size());
+            groupSceenDef.setScreenTitle(WebManagerProperties.mTAG_GROUP_SCREEN_IDENTIFIER);
+            //groupSceenDef.setItemPerPage(100);
+            //groupSceenDef.setMaxItems(100);
+            groupSceenDef.setIdentifier(WebManagerProperties.mTAG_GROUP_SCREEN_IDENTIFIER);
+            groupSceenDef.setViewPath("manage/group");
+            mPageDefinition.addScreenDefition(groupSceenDef);
+            ScreenDefinition categorySceenDef = new ScreenDefinition();
+            categorySceenDef.setScreenId(mPageDefinition.getScreenDefs().size());
+            categorySceenDef.setDisplayOrder(mPageDefinition.getScreenDefs().size());
+            categorySceenDef.setScreenTitle(WebManagerProperties.mTAG_CATEGORY_SCREEN_IDENTIFIER);
+            //categorySceenDef.setItemPerPage(100);
+            //categorySceenDef.setMaxItems(100);
+            categorySceenDef.setIdentifier(WebManagerProperties.mTAG_CATEGORY_SCREEN_IDENTIFIER);
+            categorySceenDef.setViewPath("manage/category");
+            mPageDefinition.addScreenDefition(categorySceenDef);
+        }
+        
+    }
+    
     /** Retrieves the pages definitions 
      * @return Page definitions
      */

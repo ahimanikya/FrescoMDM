@@ -326,6 +326,9 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
     
     private void createMultiDomainWebManagerXml() {
         MultiDomainWebManager multiDomainWebManager = new MultiDomainWebManager();
+        // set default multi-doman page definition for Relationship, Hierarchy, Group and Category
+        multiDomainWebManager.addDefaultPageDefinitions();        
+        //create JNDI for multi-domain service
         String projName = (String) mWiz.getProperty(WizardProperties.NAME);
         String metaDataName = "ejb/" + projName + "_MultiDomainMetaService";
         String serviceName = "ejb/" + projName + "_MultiDomainService";
