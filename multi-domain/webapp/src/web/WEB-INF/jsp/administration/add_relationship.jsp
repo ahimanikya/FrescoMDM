@@ -33,12 +33,15 @@
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select id="temp" name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
+                       <!--  <select id="temp" name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
                             <option value=""></option>
                             <option value="false">-></option>
                             <option value="true"><-></option>
                          </select>
-                         <!-- put icons here -->
+                       -->
+                        <a href="#" onclick="direction('addRightDirection')"><img id="addRightDirection" src="images/icons/relationship-button_right.png" border="0"></a>
+                        <a href="#" onclick="bidirection('addBothDirection')"><img id="addBothDirection" src="images/icons/relationship-button_both.png" border="0"></a>
+                         
                          <input type="hidden" value="false" id="relationship_add_direction" >
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
@@ -204,6 +207,8 @@ function clearAddRelationshipForm () {
     dojo.byId('relationship_add_direction').value = "";
     dojo.byId('relationship_add_plugin').value = "";
     dojo.byId('relationship_add_description').value = "";
+    dojo.byId('addRightDirection').src ="images/icons/relationship-button_right.png";
+    dojo.byId('addBothDirection').src ="images/icons/relationship-button_both.png";
     
     // clear predefined attributes fields
     clearPredefinedAttributeField(dijit.byId(addRelationshipPrefix+"_EffectiveFrom"), 
@@ -217,6 +222,29 @@ function clearAddRelationshipForm () {
     selectAllCustomAttributes( eval(addRelationshipPrefix+'_attributesArray') );
     deleteAttributes( addRelationshipPrefix+'_customAttributesTable', eval(addRelationshipPrefix+'_attributesArray') );
 }
+
+   
+    var directionId;
+    var bidirectionId;
+    var rightDirection=new Image();
+        rightDirection.src="images/icons/relationship-button_right_tog.png";
+    var bothDirection=new Image();
+        bothDirection.src="images/icons/relationship-button_both_tog.png";
+    function direction(id){
+        
+         dojo.byId("relationship_add_direction").value='false';
+         directionId=dojo.byId(id);
+         directionId.src=rightDirection.src;
+         bidirectionId.src="images/icons/relationship-button_both.png";
+        
+    }
+    
+    function bidirection(id) {
+        dojo.byId("relationship_add_direction").value='true';
+        bidirectionId=dojo.byId(id);
+        bidirectionId.src=bothDirection.src;
+        directionsId.src="images/icons/relationship-button_right.png";
+    }
 </script>
 
 
