@@ -218,26 +218,35 @@
     loadDomains();
 </script>  
 <script>
-var deleteButtonEnabled = new Image();
-deleteButtonEnabled.src = "images/icons/delete_button.png";
-var deleteButtonDisabled = new Image();
-deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
 
 function refreshHierarchyDefsButtonsPalette () {
-    var anySelected = false;
+    var selectedChoices = 0;
     var chkboxes = document.getElementsByName("chkHierarchyDef");
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked )
-            anySelected = true;
+            selectedChoices ++;
     }
     var imgDeleteButtonObj = dojo.byId("imgDeleteHierarchyDef");
     if(imgDeleteButtonObj != null ) {
-        if(anySelected)
+        if(selectedChoices > 0 )
             imgDeleteButtonObj.src =   deleteButtonEnabled.src;
         else
             imgDeleteButtonObj.src =   deleteButtonDisabled.src;
     }
-
+    var imgSelectAllButtonObj = dojo.byId("imgSelectAllHierarchyDef");
+    if(imgSelectAllButtonObj != null ) {
+        if(selectedChoices != chkboxes.length)
+            imgSelectAllButtonObj.src =   selectAllButtonEnabled.src;
+        else
+            imgSelectAllButtonObj.src =   selectAllButtonDisabled.src;
+    }
+    var imgDeSelectAllButtonObj = dojo.byId("imgDeselectAllHierarchyDef");
+    if(imgDeSelectAllButtonObj != null ) {
+        if(selectedChoices > 0)
+            imgDeSelectAllButtonObj.src =   deselectAllButtonEnabled.src;
+        else
+            imgDeSelectAllButtonObj.src =   deselectAllButtonDisabled.src;
+    }
 }
 
     

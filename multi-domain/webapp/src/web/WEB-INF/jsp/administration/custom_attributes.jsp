@@ -20,9 +20,9 @@ String prefixId = (String) request.getParameter("prefix");
         <tr><td colspan="2" valign="bottom">
             <table cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/select_multiple.png" border="0"></a></td>
+                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img id="<%=prefixId%>_imgSelectAllAttr" src="images/icons/select_multiple.png" border="0"></a></td>
                     <td><img src="images/spacer.gif" height="1" width="6"></td>
-                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/deselect_multiple.png" border="0"></a></td>
+                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img id="<%=prefixId%>_imgDeselectAllAttr" src="images/icons/deselect_multiple.png" border="0"></a></td>
                     <td><img src="images/icons/actions_separator.gif" border="0"></td>
                     <td><a href="javascript:void(0);" title="<f:message key="add_text" />..."  onclick="<%=prefixId%>_attributesArray.push( new NewAttribute('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray, '<%=prefixId%>') ); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/add_button.png" border="0"></a></td>
                     <td><img src="images/spacer.gif" height="1" width="6"></td>

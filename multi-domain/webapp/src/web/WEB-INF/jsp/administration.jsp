@@ -23,6 +23,23 @@
             dojo.require("dijit.form.Button");
             
         </script>
+        <script>
+            // initialize icons
+            var deleteButtonEnabled = new Image();
+            deleteButtonEnabled.src = "images/icons/delete_button.png";
+            var deleteButtonDisabled = new Image();
+            deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
+
+            var selectAllButtonEnabled = new Image();
+            selectAllButtonEnabled.src = "images/icons/select_multiple.png";
+            var selectAllButtonDisabled = new Image();
+            selectAllButtonDisabled.src = "images/icons/select_multiple_faded.png";
+
+            var deselectAllButtonEnabled = new Image();
+            deselectAllButtonEnabled.src = "images/icons/deselect_multiple.png";
+            var deselectAllButtonDisabled = new Image();
+            deselectAllButtonDisabled.src = "images/icons/deselect_multiple_faded.png";            
+        </script>
         
     </head>
     <body class="mdwm" onLoad="showMainContent();">
@@ -50,4 +67,7 @@
         dojo.byId("hierarchyTabContent").style.display = "block";
         dojo.byId("relationshipTabContent").style.display = "block";
     }
-    </script>
+    
+
+    
+</script>
