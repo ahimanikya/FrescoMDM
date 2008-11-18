@@ -33,11 +33,13 @@
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select id="relationship_add_direction" name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
+                         <select id="temp" name="Direction" title="<f:message key="direction_text" />"  style="width:75px">
                             <option value=""></option>
                             <option value="false">-></option>
                             <option value="true"><-></option>
                          </select>
+                         <!-- put icons here -->
+                         <input type="hidden" value="false" id="relationship_add_direction" >
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
