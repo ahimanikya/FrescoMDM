@@ -1097,7 +1097,7 @@ public void onAddHierarchy() {
     class DefinitionMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getButton() == evt.BUTTON1) {
+            if (evt.getButton() == MouseEvent.BUTTON1) {
                 onDefinitionSelected();
             } else {
                 if (jTableDefinitions.getSelectedRowCount() > 0) {
@@ -1112,11 +1112,12 @@ public void onAddHierarchy() {
 
         @Override
         public void mouseReleased(MouseEvent evt) {
-            maybeShowPopup(evt);
+            //maybeShowPopup(evt);
         }
 
         private void maybeShowPopup(MouseEvent evt) {
-            if (evt.isPopupTrigger()) {
+            //if (evt.isPopupTrigger()) {
+            if (evt.getButton() != MouseEvent.BUTTON1) {
                 mDefinitionPopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
