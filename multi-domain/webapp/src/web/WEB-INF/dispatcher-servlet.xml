@@ -30,7 +30,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/relationshipdef.htm">manageRelationshipDef</prop>                
                 <prop key="/relationship.htm">manageRelationship</prop>                
                 <prop key="/hierarchydef.htm">manageHierarchyDef</prop>                
-                <prop key="/hierarchy.htm">manageHierarchy</prop>                                
+                <prop key="/hierarchy.htm">manageHierarchy</prop> 
+                <prop key="/administer_add_relationshipdef.htm">administer_add_relationshipdef</prop>
+                <prop key="/administer_edit_relationshipdef.htm">administer_edit_relationshipdef</prop>
+                <prop key="/administer_add_hierarchydef.htm">administer_add_hierarchydef</prop>
+                <prop key="/administer_edit_hierarchydef.htm">administer_edit_hierarchydef</prop>   
+                
             </props>
         </property>
     </bean>
@@ -62,6 +67,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           
     <bean name="administration" 
           class="com.sun.mdm.multidomain.presentation.web.AdministrationController" />
+          
+    <bean name="administer_add_relationshipdef" 
+          class="com.sun.mdm.multidomain.presentation.web.AdministerAddRelationshipDefController" /> 
+    <bean name="administer_edit_relationshipdef" 
+          class="com.sun.mdm.multidomain.presentation.web.AdministerEditRelationshipDefController" />
+          
+    <bean name="administer_add_hierarchydef" 
+          class="com.sun.mdm.multidomain.presentation.web.AdministerAddHierarchyDefController" />        
+    <bean name="administer_edit_hierarchydef" 
+          class="com.sun.mdm.multidomain.presentation.web.AdministerEditHierarchyDefController" /> 
           
     <bean name="manage" 
           class="com.sun.mdm.multidomain.presentation.web.ManageController" />
