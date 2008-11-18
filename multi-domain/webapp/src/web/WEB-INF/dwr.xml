@@ -56,7 +56,7 @@
     </convert>		
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt">
-        <param name="include" value="name, domain, description, plugin, pluginInfo, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
+        <param name="include" value="name, domain, description, plugin, pluginInfo, effecriveFrom, effecriveTo, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
     </convert>	
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
