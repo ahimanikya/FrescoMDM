@@ -21,11 +21,13 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.multidomain.hierarchy;
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.Serializable;
-//import com.sun.mdm.multidomain.attributes.AttributesValue;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.multidomain.attributes.Attribute;
 
 /**
@@ -41,9 +43,11 @@ public class HierarchyNode implements Serializable {
     private Date effectiveToDate;
     private Date purgeDate;
     private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
-    private HierarchyDef hierarchyDef;
-    
- //   private AttributesValue attValues;
+    private HierarchyNodeDef hierarchyNodeDef;
+    private ObjectNode objectNode;
+    private Hierarchy hierarchy;
+    private HierarchyNode parent;
+    private List<HierarchyNode> children;
     
     
     /**
@@ -182,5 +186,49 @@ public class HierarchyNode implements Serializable {
      */
     public Map<Attribute,String> getAttributes() {
     	return attributeValues;
+    }
+
+    public HierarchyNodeDef getHierarchyNodeDef() {
+        return hierarchyNodeDef;
+    }
+
+    public void setHierarchyNodeDef(HierarchyNodeDef hierarchyNodeDef) {
+        this.hierarchyNodeDef = hierarchyNodeDef;
+    }
+
+    public ObjectNode getObjectNode() {
+        return objectNode;
+    }
+
+    public void setObjectNode(ObjectNode objectNode) {
+        this.objectNode = objectNode;
+    }
+
+    public Hierarchy getHierarchy() {
+        return hierarchy;
+    }
+
+    public void setHierarchy(Hierarchy hierarchy) {
+        this.hierarchy = hierarchy;
+    }
+
+    public String getParentEUID() {
+        return parentEUID;
+    }
+
+    public HierarchyNode getParent() {
+        return parent;
+    }
+
+    public void setParent(HierarchyNode parent) {
+        this.parent = parent;
+    }
+
+    public List<HierarchyNode> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<HierarchyNode> children) {
+        this.children = children;
     }        
 }
