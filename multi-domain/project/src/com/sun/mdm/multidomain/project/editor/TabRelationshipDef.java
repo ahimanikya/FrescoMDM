@@ -66,11 +66,19 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             this.jComboBoxPlugin.insertItemAt(alPlugins.get(i), i);
             
         }
-        if (mDefinition.getPlugin() != null && !alPlugins.contains(mDefinition.getPlugin())) {
-            this.jComboBoxPlugin.insertItemAt(mDefinition.getPlugin(), 0);
+        if (mDefinition.getPlugin() != null) {
+            if (!alPlugins.contains(mDefinition.getPlugin())) {
+                this.jComboBoxPlugin.insertItemAt(mDefinition.getPlugin(), 0);
+                this.jComboBoxPlugin.setSelectedIndex(0);
+            } else {
+                this.jComboBoxPlugin.setSelectedItem(mDefinition.getPlugin());
+            }
+        } else {
             this.jComboBoxPlugin.setSelectedIndex(0);
+            mDefinition.setPlugin((String) jComboBoxPlugin.getSelectedItem());
         }
         //this.jComboBoxPlugin.setSelectedItem(definition.getPlugin());
+        
         this.jTextDomain1.setText(mDefinition.getSourceDomain());
         this.jTextDomain2.setText(mDefinition.getTargetDomain());
         String direction = mDefinition.getDirection();

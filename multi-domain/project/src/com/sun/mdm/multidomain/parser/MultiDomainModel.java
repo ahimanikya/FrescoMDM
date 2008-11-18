@@ -517,7 +517,6 @@ public class MultiDomainModel {
             def.appendChild(direction);
             //Plugin
             Element plugin = xmlDoc.createElement(this.mTagPlugin);
-            //plugin.appendChild(xmlDoc.createTextNode(definition.getPlugin()));
             plugin.setAttribute(mTagName, definition.getPlugin());
             def.appendChild(plugin);
             //Description
