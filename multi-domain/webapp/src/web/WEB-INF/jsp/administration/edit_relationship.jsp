@@ -188,15 +188,15 @@ function populateEditRelationshipDefForm(data) {
         dijit.byId("relationship_edit_description").attr("value", data.description); 
         */
 
-        alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
+        //alert("Effective From: " + data.startDate + " Required: " + data.startDateRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveFrom"), 
             dijit.byId(editRelationshipPrefix+"_EffectiveFromRequired"), getBoolean(data.startDate), getBoolean(data.startDateRequired) );
 
-        alert("Effective To: " + data.endDate + " Required: " + data.endDateRequired);
+        //alert("Effective To: " + data.endDate + " Required: " + data.endDateRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_EffectiveTo"), 
             dijit.byId(editRelationshipPrefix+"_EffectiveToRequired"), getBoolean(data.endDate), getBoolean(data.endDateRequired) );
 
-        alert("Purge date: " + data.purgeDate + " Required: " + data.purgeDatRequired);
+        //alert("Purge date: " + data.purgeDate + " Required: " + data.purgeDatRequired);
         populatePredefinedAttributeField(dijit.byId(editRelationshipPrefix+"_PurgeDate"), 
             dijit.byId(editRelationshipPrefix+"_PurgeDateRequired"), getBoolean(data.purgeDate), getBoolean(data.purgeDateRequired) );
 
