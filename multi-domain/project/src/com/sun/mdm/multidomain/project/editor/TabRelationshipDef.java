@@ -37,6 +37,7 @@ import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
+import java.awt.Toolkit;
 
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.parser.Definition;
@@ -125,7 +126,15 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jTextName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 String newName = jTextName.getText();
-                if (!newName.equals(mOldDefName)) {
+                if (newName == null || newName.length() == 0) {
+                    Toolkit.getDefaultToolkit().beep();
+
+                    NotifyDescriptor desc = new NotifyDescriptor.Message(NbBundle.getMessage(TabRelationshipDef.class, "MSG_Name_Cannot_Be_Empty"));
+                    desc.setMessageType(NotifyDescriptor.ERROR_MESSAGE);
+                    desc.setTitle(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Error"));
+                    DialogDisplayer.getDefault().notify(desc);
+                    jTextName.setText(mOldDefName);
+                } else if (!newName.equals(mOldDefName)) {
                     mDefinition.setName(newName);
                     mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
                     mDefinitionNode.updateDefinitionName(newName);

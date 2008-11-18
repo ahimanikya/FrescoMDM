@@ -312,7 +312,7 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
         // relationships need to b removed.
         String strXml = xmlHEADER + tagHeaderObject +
                 "    <database>" + mWiz.getProperty(WizardProperties.PROP_DATABASE) + "</database>\n" +
-                "    <dateformat>" + mWiz.getProperty(WizardProperties.PROP_DATABASE) + "</dateformat>\n" +
+                "    <dateformat>" + mWiz.getProperty(WizardProperties.PROP_DATE_FORMAT) + "</dateformat>\n" +
                 "    <domains>\n    </domains>\n" +
                 tagTailObject;
 

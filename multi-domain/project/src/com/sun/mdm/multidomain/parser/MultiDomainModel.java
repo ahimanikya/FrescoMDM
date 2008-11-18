@@ -82,7 +82,6 @@ public class MultiDomainModel {
     private final String mTagValue = "value";
     private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
-    private Relationships mRelationships = new Relationships();
     private ArrayList <Definition> mAlDefinitions = new ArrayList();
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
@@ -645,10 +644,6 @@ public class MultiDomainModel {
                + strDatabase 
                + ": " 
                + mDomains 
-               + "\n";
-        
-        ret += "mRelationships: \n" 
-               + mRelationships 
                + "\n";
 
         return ret;
