@@ -212,10 +212,14 @@ public class EditMainEuidHandler {
         return EditMainEuidHandler.EDIT_SUCCESS;
     }
 
-    public void setEditEOFields(String euid) {
+    public String setEditEOFields(String euid) {
         try {
             //String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
-
+            // fix for 6710694, modified on 18-11-08 
+            String mergeEuid = midmUtilityManager.getMergedEuid(euid);
+            if (mergeEuid != null && mergeEuid.length() > 0) {
+                return mergeEuid;
+            }
             EnterpriseObject editEnterpriseObject = masterControllerService.getEnterpriseObject(euid);
 
             setUpdatedEOFields(editEnterpriseObject); //set the updated values here
@@ -236,6 +240,7 @@ public class EditMainEuidHandler {
         } catch (UserException ex) {
             mLogger.error(mLocalizer.x("EME008: Service Layer User Exception occurred"), ex);
         }
+        return null;
     }
 
      public void activateEOSO(ActionEvent event) {
