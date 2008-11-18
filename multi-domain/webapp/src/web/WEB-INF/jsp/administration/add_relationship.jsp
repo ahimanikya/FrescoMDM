@@ -39,8 +39,8 @@
                             <option value="true"><-></option>
                          </select>
                        -->
-                        <a href="#" onclick="direction('addRightDirection')"><img id="addRightDirection" src="images/icons/relationship-button_right.png" border="0"></a>
-                        <a href="#" onclick="bidirection('addBothDirection')"><img id="addBothDirection" src="images/icons/relationship-button_both.png" border="0"></a>
+                        <a href="javascript:void(0);" onclick="refreshDirection(false,'relationship_add_direction','addRelationship_oneDirectionImg','addRelationship_biDirectionImg');"><img id="addRelationship_oneDirectionImg" src="images/icons/relationship-button_right.png" border="0"></a>
+                        <a href="javascript:void(0);" onclick="refreshDirection(true,'relationship_add_direction','addRelationship_oneDirectionImg','addRelationship_biDirectionImg');"><img id="addRelationship_biDirectionImg" src="images/icons/relationship-button_both.png" border="0"></a>
                          
                          <input type="hidden" value="false" id="relationship_add_direction" >
                    </td>
@@ -223,28 +223,7 @@ function clearAddRelationshipForm () {
     deleteAttributes( addRelationshipPrefix+'_customAttributesTable', eval(addRelationshipPrefix+'_attributesArray') );
 }
 
-   
-    var directionId;
-    var bidirectionId;
-    var rightDirection=new Image();
-        rightDirection.src="images/icons/relationship-button_right_tog.png";
-    var bothDirection=new Image();
-        bothDirection.src="images/icons/relationship-button_both_tog.png";
-    function direction(id){
-        
-         dojo.byId("relationship_add_direction").value='false';
-         directionId=dojo.byId(id);
-         directionId.src=rightDirection.src;
-         bidirectionId.src="images/icons/relationship-button_both.png";
-        
-    }
-    
-    function bidirection(id) {
-        dojo.byId("relationship_add_direction").value='true';
-        bidirectionId=dojo.byId(id);
-        bidirectionId.src=bothDirection.src;
-        directionsId.src="images/icons/relationship-button_right.png";
-    }
+
 </script>
 
 

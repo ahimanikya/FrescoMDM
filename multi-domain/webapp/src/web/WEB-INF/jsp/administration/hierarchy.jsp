@@ -21,6 +21,11 @@
     dojo.require("dojo.parser");
     dojo.require("dijit.Dialog");
     dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.form.DateTextBox");
+    dojo.require("dijit.form.Textarea");
+    dojo.require("dojo.parser");
+    dojo.require("dijit.form.FilteringSelect");    
 </script>
 
 <script type="text/javascript">
@@ -205,8 +210,8 @@
     </tr>
 </table>
 <!-- Content for Add Hierarchy -->
-<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;width:700px;">
-    <jsp:include page="/WEB-INF/jsp/administration/add_hierarchy.jsp" flush="true" />
+<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;width:700px;" href="administer_add_hierarchydef.htm">
+
 </div>
 
 <!-- Content for Edit Hierarchy -->

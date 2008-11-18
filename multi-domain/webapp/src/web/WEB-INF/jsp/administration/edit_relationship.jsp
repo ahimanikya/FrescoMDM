@@ -33,14 +33,10 @@
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                      <!--   <select id="relationship_edit_direction" name="Direction" title="<f:message key="direction_text" />" hasDownArrow="true" style="width:75px">
-                            <option value=""></option>
-                            <option value="false">-></option>
-                            <option value="true"><-></option>
-                         </select>
-                        -- > 
-                        <a href="#" onclick="editDirection('editRightDirection')"><img id="editRightDirection" src="images/icons/relationship-button_right.png" border="0"></a>
-                        <a href="#" onclick="editBidirection('editBothDirection')"><img id="editBothDirection" src="images/icons/relationship-button_both.png" border="0"></a>
+
+                        <a href="javascript:void(0);" onclick="refreshDirection(false,'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');"><img id="editRelationship_oneDirectionImg" src="images/icons/relationship-button_right.png" border="0"></a>
+                        <a href="javascript:void(0);" onclick="refreshDirection(true,'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');"><img id="editRelationship_biDirectionImg" src="images/icons/relationship-button_both.png" border="0"></a>
+
                          <input type="hidden" value="false" id="relationship_edit_direction">
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
@@ -181,21 +177,12 @@ function validateEditRelationshipForm() {
 
 function populateEditRelationshipDefForm(data) {
     //alert("data got for edit " + data);
-    var populateRightDirection =new Image();
-    var populateBothDirection=new Image();
+
     if(data != null) {      
         dojo.byId("relationship_edit_name").value = data.name;
         dojo.byId("relationship_edit_direction").value = data.biDirection;
-        if(dojo.byId("relationship_edit_direction").value=="false"){
-            populateRightDirection.src="images/icons/relationship-button_right_tog.png";
-            dojo.byId("editRightDirection").src=populateRightDirection.src;
-            dojo.byId("editBothDirection").src="images/icons/relationship-button_both.png";            
-        }
-        else{
-            populateBothDirection.src="images/icons/relationship-button_both_tog.png";  
-            dojo.byId("editBothDirection").src=populateBothDirection.src;
-            dojo.byId("editRightDirection").src="images/icons/relationship-button_right.png";            
-        }
+        
+        refreshDirection(getBoolean(data.biDirection),'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');
         
         dojo.byId("relationship_edit_plugin").value = data.plugin;
         dojo.byId("relationship_edit_description").value=data.description;
@@ -225,20 +212,5 @@ function populateEditRelationshipDefForm(data) {
     showRelationshipDialog('editrelationship');  
 }
 
-     
-     var editImgDirection=new Image();
-        editImgDirection.src="images/icons/relationship-button_right_tog.png";
-    var editImgBidirection=new Image();
-        editImgBidirection.src="images/icons/relationship-button_both_tog.png";
-function editDirection(id){
-    dojo.byId("relationship_edit_direction").value='false';
-    dojo.byId('editRightDirection').src=editImgDirection.src;
-    dojo.byId('editBothDirection').src="images/icons/relationship-button_both.png";
-}
-function editBidirection(id){
-    dojo.byId("relationship_edit_direction").value='true';
-    dojo.byId('editBothDirection').src=editImgBidirection.src;
-    dojo.byId('editRightDirection').src="images/icons/relationship-button_right.png";
-}
- 
+
 </script>

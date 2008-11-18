@@ -20,6 +20,10 @@
     dojo.require("dojo.parser");
     dojo.require("dijit.Dialog");
     dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.form.FilteringSelect");   
+
 </script>
 <script type='text/javascript'>
     var relationshipdef;
@@ -255,12 +259,12 @@
 
 
 <!-- Content for Add relationship -->
-<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;width:700px;">
-    <jsp:include page="/WEB-INF/jsp/administration/add_relationship.jsp" flush="true" />
+<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;width:700px;" href="administer_add_relationshipdef.htm">
+    
 </div>
 
 <!-- Content for Edit relationship -->
-<div id="editrelationship" dojoType="dijit.Dialog" title="Edit Relationship" style="display:none;width:700px;">
+<div id="editrelationship" dojoType="dijit.Dialog" title="Edit Relationship" style="display:none;width:700px;" >
     <jsp:include page="/WEB-INF/jsp/administration/edit_relationship.jsp" flush="true" />
 </div>
 
