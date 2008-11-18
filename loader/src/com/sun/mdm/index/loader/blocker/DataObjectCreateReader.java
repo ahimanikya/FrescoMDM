@@ -71,14 +71,19 @@ public class DataObjectCreateReader implements DataObjectReader {
 		createDataObjects();
 		
 	}
-	
-	
-	
+		
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#close();
+	 */	
 	public void close() throws Exception {
-		// TODO Auto-generated method stub
-
 	}
 
+	/**
+	 * @see com.sun.mdm.index.dataobject.DataObjectReader#reset();
+	 */	
+	public void reset() throws Exception {
+	}
+	
 	public DataObject readDataObject() throws InvalidRecordFormat {
 		// TODO Auto-generated method stub
 		if (cur == dataObjects.size()) {
