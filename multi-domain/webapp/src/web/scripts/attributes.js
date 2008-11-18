@@ -169,14 +169,13 @@ function MoveDown(tableId, attributesArray) {
             //alert("move this up " + attr.AttributeNameField.value);
             if(i!=attributesArray.length-1 && attributesArray[i+1].IdField.checked!=true ) {
                     // swap in array
-                    temp = attributesArray[i+1];
+                    var temp = attributesArray[i+1];
                     attributesArray[i+1] = attributesArray[i];
                     attributesArray[i] = temp;
                     anythingChanged = true;
             }
         }
     }
-      
     // Refresh the view to replicate the array contents.
     if(anythingChanged) {
            attributesArray = refreshAttributesView(tableId, attributesArray);
