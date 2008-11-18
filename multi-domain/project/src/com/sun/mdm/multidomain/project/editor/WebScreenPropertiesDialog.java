@@ -127,8 +127,10 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jCBScreenList.addItem(SCREEN_GROUP);  
         jCBScreenList.addItem(SCREEN_CATEGORY);
         
-        String screenType = mPageDefinition.getScreenDefs().get(0).getIdentifier();
-        jCBScreenList.setSelectedItem(screenType);     
+        if (mPageDefinition.getScreenDefs().size() > 0 ) {
+            String screenType = mPageDefinition.getScreenDefs().get(0).getIdentifier();
+            jCBScreenList.setSelectedItem(screenType);
+        }
         
     }
     

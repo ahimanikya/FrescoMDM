@@ -12,12 +12,16 @@ import java.util.ArrayList;
  * @author wee
  */
 public class JNDIResources {
-    private ArrayList<RelationshipProperty> mProperties = null;
-    private ArrayList<RelationshipJDNIResources> mJDNIResources = null;
+    private ArrayList<RelationshipProperty> mProperties = new ArrayList<RelationshipProperty>();
+    private ArrayList<RelationshipJDNIResources> mJDNIResources = new ArrayList<RelationshipJDNIResources>();
     
     public JNDIResources(ArrayList properties, ArrayList jndiResoures) {
         this.mProperties = properties;
         this.mJDNIResources = jndiResoures;
+    }
+    
+    public JNDIResources() {
+        
     }
     
     public ArrayList<RelationshipProperty> getProperties() {

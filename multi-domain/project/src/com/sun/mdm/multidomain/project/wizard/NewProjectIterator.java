@@ -23,6 +23,7 @@
 package com.sun.mdm.multidomain.project.wizard;
 
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
+import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 import org.openide.WizardDescriptor;
 import org.openide.loaders.TemplateWizard;
 import org.openide.util.NbBundle;
@@ -325,21 +326,13 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
     
     private void createMultiDomainWebManagerXml() {
         MultiDomainWebManager multiDomainWebManager = new MultiDomainWebManager();
-        /**
-        String tagHeaderObject = "<RelationshipWebManager xmlns:xsi=" +
-                "\"http://www.w3.org/2001/XMLSchema-instance" +
-                "\" xsi:noNamespaceSchemaLocation=\"schema/MultiDomainWebManager.xsd\">\n";
-        String tagTailObject = "</RelationshipWebManager>";
-
-        // multi-level object data model
-        // relationships need to b removed.
-        String strXml = xmlHEADER + tagHeaderObject + 
-                "    <domains>\n    </domains>\n" +
-                tagTailObject;
-
-        // Write xml to repository
-         */ 
-        
+        String projName = (String) mWiz.getProperty(WizardProperties.NAME);
+        String metaDataName = "ejb/" + projName + "_MultiDomainMetaService";
+        String serviceName = "ejb/" + projName + "_MultiDomainService";
+        RelationshipJDNIResources metaDataService = new RelationshipJDNIResources(metaDataName, "MultiDomainMetaService", "com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService", "MultiDomain Meta Service" );
+        RelationshipJDNIResources service = new RelationshipJDNIResources(serviceName, "MultiDomainService", "com.sun.mdm.multidomain.ejb.service.MultiDomainService", "MultiDomain Service" );
+        multiDomainWebManager.getJndiResources().addJNDIResource(metaDataService);
+        multiDomainWebManager.getJndiResources().addJNDIResource(service);
         try {
             String strXml = multiDomainWebManager.writeToString();
             mWiz.putProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_WEB_MANAGER_FILE, strXml);

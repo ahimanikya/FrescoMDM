@@ -67,6 +67,9 @@ public class MultiDomainWebManager {
     }
 
     public JNDIResources getJndiResources() {
+        if (mJndiResources == null) {
+            mJndiResources = new JNDIResources();
+        }
         return this.mJndiResources;
     }
     
