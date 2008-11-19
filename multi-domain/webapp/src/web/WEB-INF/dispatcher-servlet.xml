@@ -34,7 +34,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/administer_add_relationshipdef.htm">administer_add_relationshipdef</prop>
                 <prop key="/administer_edit_relationshipdef.htm">administer_edit_relationshipdef</prop>
                 <prop key="/administer_add_hierarchydef.htm">administer_add_hierarchydef</prop>
-                <prop key="/administer_edit_hierarchydef.htm">administer_edit_hierarchydef</prop>   
+                <prop key="/administer_edit_hierarchydef.htm">administer_edit_hierarchydef</prop>
+                
+                <prop key="/manage/record_details.htm">manage_record_details</prop>   
                 
             </props>
         </property>
@@ -80,5 +82,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           
     <bean name="manage" 
           class="com.sun.mdm.multidomain.presentation.web.ManageController" />
+
+    <bean name="manage_record_details"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageRecordDetailsController" />          
+          
      
 </beans>
