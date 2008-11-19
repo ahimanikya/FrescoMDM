@@ -84,6 +84,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
     static final ImageIcon SCREENPROPERTIESICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/screen.png"));    
+    static final ImageIcon JNDIICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/Jndi.png"));  
     static final ImageIcon GROUPNODEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/GroupNode.png"));
     static final ImageIcon CATEGORYNODEICON = new ImageIcon(Utilities.loadImage(
@@ -120,6 +122,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JButton mButtonAddDomain;
     private JButton mButtonAddRelationship;
     private JButton mButtonScreenProperties;
+    private JButton mButtonJndi;
     private JButton mButtonAddHierarchy;
     //private JButton mButtonAddGroup;
     //private JButton mButtonAddCategory;
@@ -277,6 +280,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonAddHierarchy.setMnemonic('H');
         toolBar.add(mButtonAddHierarchy);
 
+        toolBar.addSeparator();
         mButtonScreenProperties = new JButton(new ViewScreenPropertiesAction(
                     this.SCREENPROPERTIESICON,
                     NbBundle.getMessage(EditorMainPanel.class,
@@ -284,6 +288,14 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonScreenProperties.setBorder(null);
         mButtonScreenProperties.setMnemonic('P');
         toolBar.add(mButtonScreenProperties);
+        
+        mButtonJndi = new JButton(new JndiAction(
+                    this.JNDIICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_Jndi")));
+        mButtonJndi.setBorder(null);
+        mButtonJndi.setMnemonic('J');
+        toolBar.add(mButtonJndi);
         /*
         mButtonAddGroup = new JButton(new AddGroupAction(
                     this.GROUPNODEICON,
@@ -471,6 +483,24 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {           
             mTabOverview.onViewScreenProperties();
+        }    
+    }
+    
+    /**
+     * To view jndi properties
+     */
+    public class JndiAction extends AbstractAction {
+        
+        public JndiAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+        
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {           
+            //mTabOverview.onJndi();
         }    
     }
     
