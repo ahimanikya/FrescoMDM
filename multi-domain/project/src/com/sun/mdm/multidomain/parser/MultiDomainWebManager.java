@@ -229,6 +229,15 @@ public class MultiDomainWebManager {
         return null;
     }
     
+    public Definition getLinkType(String domain) {
+        for (Definition type : mWebDefintions) {
+            if (type.getSourceDomain().equals(domain) || type.getTargetDomain().equals(domain)) {
+                return type;
+            }
+        }
+        return null;
+    }
+    
     public PageDefinition getPageDefinition() {
         return this.mPageDefinition;
     }

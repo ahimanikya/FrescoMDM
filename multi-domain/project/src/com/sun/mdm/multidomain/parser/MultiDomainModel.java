@@ -194,6 +194,21 @@ public class MultiDomainModel {
         }
     }
     
+    /** Delete a definition when domain is removed
+     * 
+     * @param sourceDomain
+     */
+    public void deleteDefinition(String domain) {
+        for (int i=0; i< this.mAlDefinitions.size(); i++) {
+            Definition definition = (Definition) mAlDefinitions.get(i);
+            if (definition.getSourceDomain().equals(domain) ||
+                definition.getTargetDomain().equals(domain)) {
+                mAlDefinitions.remove(i);
+                break;
+            }
+        }
+    }
+    
     /** Add a definition to the array mAlDefinitions
      * 
      * @param definition

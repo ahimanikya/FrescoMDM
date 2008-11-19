@@ -464,6 +464,7 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
             DomainRow row = model.getRow(idx);
             String domainName = row.getDomainName();
             mEditorMainApp.deleteDomain(domainName);
+            mEditorMainApp.deleteDefinition(domainName);
             model.removeRow(idx);
         }
         loadDomains();
@@ -528,8 +529,8 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
         }
     }
     
-    // add new LinkNode
-    private void addLinkNode(Definition definition) {
+    // add new DefinitionNode
+    private void addDefinitionNode(Definition definition) {
         DefinitionNode definitionNode = mEditorMainApp.addDefinition(definition);
         mEditorMainPanel.loadDefinitionProperties(definitionNode);
         // add a new row
@@ -561,7 +562,7 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                             } else {
                                 // add new LinkNode
                                 Definition definition = new Definition(definitionName, Definition.TYPE_RELATIONSHIP, sourceDomain, targetDomain, plugin, null);
-                                addLinkNode(definition);
+                                addDefinitionNode(definition);
                             }
                         }
                     }
@@ -586,7 +587,7 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                             } else {
                                 // add new LinkNode
                                 Definition definition = new Definition(definitionName, Definition.TYPE_HIERARCHY, domain, domain, plugin, null);
-                                addLinkNode(definition);
+                                addDefinitionNode(definition);
                             }
                         }
                     }

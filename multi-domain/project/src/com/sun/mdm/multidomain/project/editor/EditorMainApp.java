@@ -180,6 +180,27 @@ public class EditorMainApp {
         }
     }
     
+    /** Delete a definition from MultiDomainModel, MultiDomainWebManager and mAlDefinitionNodes
+     *  when domain is removed
+     * 
+     * @param sourceDomain
+     */
+    public void deleteDefinition(String domain) {      
+        mMultiDomainModel.deleteDefinition(domain);
+        // delete webDefinition here
+        Definition webDefinition = mMultiDomainWebManager.getLinkType(domain);        
+        while (webDefinition != null) {
+            mMultiDomainWebManager.deleteWebDefinition(webDefinition);
+            webDefinition = mMultiDomainWebManager.getLinkType(domain);
+        }
+        for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
+            DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
+            if (node.getSourceDomain().equals(domain) || node.getTargetDomain().equals(domain)) {
+                mAlDefinitionNodes.remove(i);
+            }
+        }
+    }
+    
     private void loadDefinitions() {
         // build mAlDefinitionNodes
         ArrayList <Definition> alDefinitions = mMultiDomainModel.getAllDefinitions();
