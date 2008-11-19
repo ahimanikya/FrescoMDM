@@ -33,6 +33,7 @@ public class Definition {
     String displayName;
     String sourceRelationshipName; //
     String targetRelationshipName;
+    String domain;
     String sourceDomain;
     String targetDomain;
     String direction = ONEDIRECTION; // 1 one direction, 2 bidirectional
@@ -68,6 +69,7 @@ public class Definition {
                             ArrayList <Attribute> predefinedAttributes) {
         this.name = name;
         this.type = type;
+        this.domain = sourceDomain;
         this.sourceDomain = sourceDomain;
         this.targetDomain = targetDomain;
         this.plugin = plugin;
@@ -82,6 +84,7 @@ public class Definition {
         Definition definition = new Definition();
         definition.name = "Copy" + this.name;
         definition.type = this.type;
+        definition.domain = this.domain;
         definition.sourceDomain = this.sourceDomain;
         definition.targetDomain = this.targetDomain;
         definition.plugin = this.plugin;
@@ -314,6 +317,10 @@ public class Definition {
         this.sourceRelationshipName = sourceRelationshipName;
     }
 
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
     public void setSourceDomain(String sourceDomain) {
         this.sourceDomain = sourceDomain;
     }
@@ -395,13 +402,25 @@ public class Definition {
     public String getSourceRelationshipName() {
         return sourceRelationshipName;
     }
+    
+    public String getDomain() {
+        return domain;
+    }
 
     public String getSourceDomain() {
-        return sourceDomain;
+        if (type != null && type.equals(TYPE_HIERARCHY) && domain != null) {
+            return domain;
+        } else {
+            return sourceDomain;
+        }
     }
 
     public String getTargetDomain() {
-        return targetDomain;
+        if (type != null && type.equals(TYPE_HIERARCHY) && domain != null) {
+            return domain;
+        } else {
+            return targetDomain;
+        }
     }
 
     public String getTargetRelationshipName() {

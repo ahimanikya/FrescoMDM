@@ -208,10 +208,10 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ArrayList <DefinitionRow> rows = new ArrayList();
         for (int i=0; alDefinitionNodes != null && i<alDefinitionNodes.size(); i++) {
             DefinitionNode definitionNode = alDefinitionNodes.get(i);
-            Definition type = definitionNode.getDefinition();
-            String sourceDomain = type.getSourceDomain();
-            String targetDomain = type.getTargetDomain();
-            DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
+            Definition definition = definitionNode.getDefinition();
+            String sourceDomain = definition.getSourceDomain();
+            String targetDomain = definition.getTargetDomain();
+            DefinitionRow r = new DefinitionRow(definition.getType(), definition.getName(), sourceDomain, targetDomain);
             rows.add(r);
             if (model != null) {
                 model.addRow(i, r);
@@ -234,10 +234,10 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         if (domainNode != null) {
             ArrayList <Definition> alDefinitions = domainNode.getDefinitions();
             for (int i=0; alDefinitions != null && i<alDefinitions.size(); i++) {
-                Definition type = alDefinitions.get(i);
-                String sourceDomain = type.getSourceDomain();
-                String targetDomain = type.getTargetDomain();
-                DefinitionRow r = new DefinitionRow(type.getType(), type.getName(), type.getSourceDomain(), type.getTargetDomain());
+                Definition definition = alDefinitions.get(i);
+                String sourceDomain = definition.getSourceDomain();
+                String targetDomain = definition.getTargetDomain();
+                DefinitionRow r = new DefinitionRow(definition.getType(), definition.getName(), sourceDomain, targetDomain);
                 rows.add(r);
                 if (model != null) {
                     model.addRow(i, r);

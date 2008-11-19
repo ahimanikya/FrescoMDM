@@ -347,6 +347,8 @@ public class MultiDomainModel {
                         definition.setSourceDomain(getAttributeName(nl.item(i)));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
                         definition.setTargetDomain(getAttributeName(nl.item(i)));
+                    } else if (mTagDomain.equals(((Element) nl.item(i)).getTagName())) {
+                        definition.setDomain(getAttributeName(nl.item(i)));
                     } else if (mTagPlugin.equals(((Element) nl.item(i)).getTagName())) {
                         definition.setPlugin(getAttributeName(nl.item(i)));
                     } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
@@ -500,16 +502,23 @@ public class MultiDomainModel {
     private void getDefinitionsToStr(Document xmlDoc) throws Exception {
         Element root = xmlDoc.getDocumentElement();
         for (Definition definition : getAllDefinitions()) {
-            Element def = xmlDoc.createElement(definition.getType());
+            String type = definition.getType();
+            Element def = xmlDoc.createElement(type);
             def.setAttribute(mTagName, definition.getName());
-            //Sourec Domain
-            Element sDomain = xmlDoc.createElement(this.mTagSourceDomain);
-            sDomain.setAttribute(mTagName, definition.getSourceDomain());
-            def.appendChild(sDomain);
-            //Target Domain
-            Element tDomain = xmlDoc.createElement(this.mTagTargetDomain);
-            tDomain.setAttribute(mTagName, definition.getTargetDomain());
-            def.appendChild(tDomain);
+            if (type.equals(Definition.TYPE_HIERARCHY)) {
+                Element domain = xmlDoc.createElement(this.mTagDomain);
+                domain.setAttribute(mTagName, definition.getDomain());
+                def.appendChild(domain);
+            } else {
+                //Sourec Domain
+                Element sDomain = xmlDoc.createElement(this.mTagSourceDomain);
+                sDomain.setAttribute(mTagName, definition.getSourceDomain());
+                def.appendChild(sDomain);
+                //Target Domain
+                Element tDomain = xmlDoc.createElement(this.mTagTargetDomain);
+                tDomain.setAttribute(mTagName, definition.getTargetDomain());
+                def.appendChild(tDomain);
+            }
             //Direction
             Element direction = xmlDoc.createElement(this.mTagDirection);
             direction.appendChild(xmlDoc.createTextNode(definition.getDirection()));
