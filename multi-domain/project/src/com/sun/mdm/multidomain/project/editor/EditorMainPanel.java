@@ -397,6 +397,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         }
     }
    
+    /* Enable mButtonAddRelationship button when domain # is > 1
+     * 
+     */
+    public void enableAddRelationship(boolean flag) {
+        mButtonAddRelationship.setEnabled(flag);
+    }
+    
     /* Enable delete button when domain or definition selected
      * 
      */

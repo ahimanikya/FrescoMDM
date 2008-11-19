@@ -184,11 +184,13 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                 rows.add(r);
             }
             jTableDomains.setRowSelectionInterval(0, 0);
-            jButtonAddRelationship.setEnabled(true);
+            mEditorMainPanel.enableAddRelationship(mAlDomainNodes.size() > 1);
+            jButtonAddRelationship.setEnabled(mAlDomainNodes.size() > 1);
             jButtonAddHierarchy.setEnabled(true);
         } else {
             // make sure the properties tab is empty
             mEditorMainPanel.loadDomainProperties(null);
+            mEditorMainPanel.enableAddRelationship(false);
             jButtonAddRelationship.setEnabled(false);
             jButtonAddHierarchy.setEnabled(false);
         }
@@ -1009,7 +1011,8 @@ public void onAddHierarchy() {
             jTableDomains.setRowSelectionInterval(idx, idx);
             //jTableDomains.setEditingRow(idx);
             onDomainSelected();
-            jButtonAddRelationship.setEnabled(true);
+            mEditorMainPanel.enableAddRelationship(mAlDomainNodes.size() > 1);
+            jButtonAddRelationship.setEnabled(mAlDomainNodes.size() > 1);
             jButtonAddHierarchy.setEnabled(true);
         } else {
             // find it and set it
