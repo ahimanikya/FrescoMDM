@@ -106,6 +106,7 @@ public class ApplicationHandler {
             
             session.setAttribute("userProfile", userProfile);
             session.setAttribute("user", request.getRemoteUser());
+            session.setAttribute("applicationHandler", this);
              
             logger.info(localizer.x("WEB001: application handler initialization completed."));
         } catch(ServiceException sex) {
@@ -119,8 +120,7 @@ public class ApplicationHandler {
      * Logout. 
      */
     public void logout() {
-        if(request != null && session != null) {
-            request.setAttribute("logout", "LoggedOut");
+        if(session != null) {
             session.invalidate();
             logger.info(localizer.x("WEB002: application logged out."));            
         }
