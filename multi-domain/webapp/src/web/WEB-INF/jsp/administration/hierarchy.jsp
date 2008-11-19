@@ -210,7 +210,7 @@
     </tr>
 </table>
 <!-- Content for Add Hierarchy -->
-<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;width:700px;" href="administer_add_hierarchydef.htm">
+<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;width:700px;" href="administer_add_hierarchydef.htm" onload="refreshCustomAttributesButtonsPalette (addhierarchy_attributesArray, 'addhierarchy');">
 
 </div>
 

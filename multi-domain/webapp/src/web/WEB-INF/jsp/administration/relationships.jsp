@@ -259,7 +259,7 @@
 
 
 <!-- Content for Add relationship -->
-<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;width:700px;" href="administer_add_relationshipdef.htm">
+<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;width:700px;" href="administer_add_relationshipdef.htm" onload="refreshCustomAttributesButtonsPalette (addrelationship_attributesArray, 'addrelationship');">
     
 </div>
 
