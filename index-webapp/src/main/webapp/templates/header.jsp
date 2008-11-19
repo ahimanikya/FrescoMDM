@@ -433,5 +433,9 @@ function highlighTabs(formName,thisEvent)   {
 			}
     }
 }
+var yui_prev_var  = "<%=bundle.getString("yui_dt_prev_text")%>";
+var yui_next_var  = "<%=bundle.getString("yui_dt_next_text")%>";
+var yui_first_var  = "<%=bundle.getString("yui_dt_first_text")%>";
+var yui_last_var  = "<%=bundle.getString("yui_dt_last_text")%>";
 </script>
 </div>
