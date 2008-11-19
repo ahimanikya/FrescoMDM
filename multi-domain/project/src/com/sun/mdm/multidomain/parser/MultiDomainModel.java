@@ -509,6 +509,12 @@ public class MultiDomainModel {
                 Element domain = xmlDoc.createElement(this.mTagDomain);
                 domain.setAttribute(mTagName, definition.getDomain());
                 def.appendChild(domain);
+                Element effectiveFrom = xmlDoc.createElement(this.mTagEffectiveFrom);
+                effectiveFrom.appendChild(xmlDoc.createTextNode(definition.getEffectiveFrom()));
+                def.appendChild(effectiveFrom);
+                Element effectiveTo = xmlDoc.createElement(this.mTagEffectiveTo);
+                effectiveTo.appendChild(xmlDoc.createTextNode(definition.getEffectiveTo()));
+                def.appendChild(effectiveTo);
             } else {
                 //Sourec Domain
                 Element sDomain = xmlDoc.createElement(this.mTagSourceDomain);

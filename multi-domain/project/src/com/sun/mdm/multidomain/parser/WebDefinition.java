@@ -49,6 +49,7 @@ public class WebDefinition extends Definition {
         
         this.name = relationshipName;
         this.targetDomain = destination;
+        this.domain = source;
         this.sourceDomain = source;
         this.mDisplayName = displayName;
         this.mRelPredefinedAttrs = fixedFieldRefs;
@@ -58,6 +59,7 @@ public class WebDefinition extends Definition {
     public WebDefinition createCopy() {
         WebDefinition definition = new WebDefinition();
         definition.name = "Copy" + this.name;
+        definition.domain = this.domain;
         definition.sourceDomain = this.sourceDomain;
         definition.targetDomain = this.targetDomain;
         definition.displayName = this.displayName;

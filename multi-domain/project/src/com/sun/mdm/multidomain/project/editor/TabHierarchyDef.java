@@ -142,6 +142,30 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             }
         });
         
+        jTextEffectiveFrom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+            }
+        });
+        
+        jTextEffectiveFrom.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                mDefinition.setEffectiveFrom(jTextEffectiveFrom.getText());
+            }
+        });
+        
+        jTextEffectiveTo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mEditorMainApp.enableSaveAction(true);
+            }
+        });
+        
+        jTextEffectiveTo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                mDefinition.setEffectiveTo(jTextEffectiveTo.getText());
+            }
+        });
+        
         this.jTextAreaDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
