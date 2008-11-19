@@ -64,8 +64,6 @@ public class TemplateObjects {
     static final String VALUEMASKPHONE = "xDDDxxDDDxDDDD";
     
     static final String INPUTMASKDATE = "DD/DD/DDDD";
-
-    static boolean bMatchEngineVality = false;
     
     static String mViewName = null;
     
@@ -83,21 +81,12 @@ public class TemplateObjects {
      *
      */
     public static void setMatchTypes(String matchEngine) {
-        if (matchEngine == NbBundle.getMessage(TemplateObjects.class, "MSG_match_engine_Vality")) {
-            mMatchTypePersonFirstName = "Person.FirstName";
-            mMatchTypePersonLastName = "Person.LastName";
-            mMatchTypePersonSSN = "Person.SSN";
-            mMatchTypePersonDOB = "Person.DOB";
-            mMatchTypePersonGender = "Person.Gender";
-            mMatchTypeBusiness = "Business";
-        } else { // Master Index
-            mMatchTypePersonLastName = "PersonLastName";
-            mMatchTypePersonFirstName = "PersonFirstName";
-            mMatchTypePersonSSN = MATCHTYPE_NONE;
-            mMatchTypePersonDOB = MATCHTYPE_NONE;
-            mMatchTypePersonGender = MATCHTYPE_NONE;
-            mMatchTypeBusiness = MATCHTYPE_BUSINESSNAME;
-        }
+        mMatchTypePersonLastName = "PersonLastName";
+        mMatchTypePersonFirstName = "PersonFirstName";
+        mMatchTypePersonSSN = MATCHTYPE_NONE;
+        mMatchTypePersonDOB = MATCHTYPE_NONE;
+        mMatchTypePersonGender = MATCHTYPE_NONE;
+        mMatchTypeBusiness = MATCHTYPE_BUSINESSNAME;
     }
     
     /**

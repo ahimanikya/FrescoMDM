@@ -131,8 +131,6 @@ public class PropertiesDeploymentPanel extends JPanel {
         cbMatchEngine.insertItemAt(NbBundle.getMessage(
                 PropertiesDeploymentPanel.class, "MSG_match_engine_Seebeyond"),
             0);
-        //cbMatchEngine.insertItemAt(NbBundle.getMessage(
-        //        PropertiesDeploymentPanel.class, "MSG_match_engine_Vality"), 1);
         cbMatchEngine.setSelectedIndex(0);
         
         cbDateFormat = new JComboBox();
