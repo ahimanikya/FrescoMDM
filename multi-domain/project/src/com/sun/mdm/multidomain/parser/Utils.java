@@ -32,7 +32,6 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
-import org.openide.ErrorManager;
 
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -41,13 +40,6 @@ import com.sun.mdm.multidomain.util.Logger;
  * @version
  */
 public class Utils {
-    
-    //private transient static final Localizer mLocalizer = Localizer.get();
-    private static final Logger mLog = Logger.getLogger(
-            Utils.class.getName()
-        
-        );
-
     private static Document mDoc;
     public static final String LINE = "\r";
     public static final String TAB = "    ";    // each tab = 4 spaces
@@ -147,7 +139,6 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR502: Failed to parse: " + 
                                                     xmlPath + ":" + ex.getMessage());
         }
@@ -167,7 +158,6 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse MultiDomainModel: " + 
                                                     xmlSource.getPublicId() + ":" + ex.getMessage());
         }
@@ -188,7 +178,6 @@ public class Utils {
             ret.parseNode(mDoc);
             return ret;
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse MultiDomainWebManager: " + 
                                                     xmlSource.getPublicId() + ":" + ex.getMessage());
         }
@@ -208,7 +197,6 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
                                                     xmlSource.getPublicId() + ":" + ex.getMessage());
         }
@@ -229,7 +217,6 @@ public class Utils {
             MIDMObjectDef ret = new MIDMObjectDef();
             return ret.parseMIDMNode(xmlSource);
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
                                                     xmlSource.getPublicId() + ":" + ex.getMessage());
         }
@@ -248,7 +235,6 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR503: Failed to parse: {0}:{1}" + 
                                                     xmlSource.getPublicId() + ":" + ex.getMessage());
         }
@@ -271,7 +257,6 @@ public class Utils {
             foutput.write(data.getBytes("UTF-8"));
             foutput.close();
         } catch (IOException ex) {
-            ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, ex);
             throw new ParserException("PAR509: Failed to write " +
                                                 "file: " + path + ":" + ex.getMessage());
         }
