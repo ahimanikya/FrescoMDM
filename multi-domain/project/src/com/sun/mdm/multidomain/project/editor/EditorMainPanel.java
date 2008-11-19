@@ -500,7 +500,8 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          *@param e Action event
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {           
-            //mTabOverview.onJndi();
+            mTabOverview.onJNDIResProperties();
+            
         }    
     }
     

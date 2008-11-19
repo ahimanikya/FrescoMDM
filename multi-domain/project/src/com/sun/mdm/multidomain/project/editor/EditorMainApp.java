@@ -361,7 +361,9 @@ public class EditorMainApp {
                 DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToOverview(domainNode, true);
-                mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
+                if (mMultiDomainWebManager.getDomains().getDomain(domainNode.getName()) == null) {
+                    mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
+                }
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }
@@ -383,6 +385,7 @@ public class EditorMainApp {
                 mMapDomainMidmXmls.remove(domainName);
                 mAlDomainNodes.remove(mMapDomainNodes.get(domainName));
                 mMapDomainNodes.remove(domainName);
+                mMultiDomainWebManager.getDomains().removeDomain(domainName);
                 
                 FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
                 FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);

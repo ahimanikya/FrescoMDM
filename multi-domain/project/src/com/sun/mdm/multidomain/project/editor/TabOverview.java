@@ -642,6 +642,14 @@ public void onViewScreenProperties() {
     }
 }
 
+public void onJNDIResProperties() {
+    JNDIPropertiesDialog screenDlg = new JNDIPropertiesDialog(mEditorMainApp.getMultiDomainWebManager(false).getJndiResources());
+    screenDlg.setVisible(true);
+    if (screenDlg.isModified()) {
+        mEditorMainApp.enableSaveAction(true);
+    }
+}
+
 public void onAddHierarchy() {
     performAddHierarchy();
 }
