@@ -307,12 +307,12 @@ public class ObjectNodeConfig implements java.io.Serializable, Comparable {
     }
 
     // add child node configure
-    void addChildConfig(ObjectNodeConfig childConfig) {
+    void addChildConfig(ObjectNodeConfig childConfig) throws Exception {
         childConfigMap.put(childConfig.getName(), childConfig);
     }
 
     // add a field to the object
-    void addFieldConfig(FieldConfig fieldConfig) {
+    void addFieldConfig(FieldConfig fieldConfig) throws Exception {
         fieldConfigMap.put(fieldConfig.getName(), fieldConfig);
     }
 
