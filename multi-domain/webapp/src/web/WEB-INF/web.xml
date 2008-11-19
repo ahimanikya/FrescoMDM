@@ -73,7 +73,8 @@
         <web-resource-collection>
             <web-resource-name>mdwmresources</web-resource-name>
             <description>protect all resources of  multidomain web manager</description>
-            <url-pattern>*.jsp</url-pattern>           
+            <url-pattern>*.jsp</url-pattern>  
+            <url-pattern>*.htm</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
             <http-method>HEAD</http-method>
