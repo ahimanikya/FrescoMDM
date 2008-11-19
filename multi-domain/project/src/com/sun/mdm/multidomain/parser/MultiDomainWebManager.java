@@ -1080,8 +1080,6 @@ public class MultiDomainWebManager {
         
         DomainRecordID recordID = new DomainRecordID();
 
-        // testing--raymond tam
-        //FieldGroup fieldGroup = null;
         for (int i1 = 0; i1 < children.getLength(); i1++) {
             if (children.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                 Element elm = (Element) children.item(i1);
@@ -1091,7 +1089,6 @@ public class MultiDomainWebManager {
                     recordID.setMShowEUID(value);
                  } else  if (elementName.equals(WebManagerProperties.mTAG_FIELD_GROUP)) {
                     parseFieldGroup(elm, recordID.getFieldGroup());
-                    //recordID.setFieldGroup(fieldGroup);
                 }                
 
             }
