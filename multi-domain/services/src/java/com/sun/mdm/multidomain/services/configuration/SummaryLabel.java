@@ -106,12 +106,12 @@ public class SummaryLabel {
     public void setDelimiters(ArrayList<String> delimiters) throws ConfigException {
         if (mShowEUID == true) {
             if (delimiters.size() != mFieldConfigs.size() + 2) {
-                throw new ConfigException(mLocalizer.t("CFG552: The number of delimiters ({0}) " +
+                throw new ConfigException(mLocalizer.t("CFG553: The number of delimiters ({0}) " +
                                                  "must be two more than the number of fields({1}).", 
                                                  delimiters.size(), mFieldConfigs.size()));
             }
         } else if (delimiters.size() != mFieldConfigs.size() + 1) {
-                throw new ConfigException(mLocalizer.t("CFG553: The number of delimiters ({0}) " +
+                throw new ConfigException(mLocalizer.t("CFG554: The number of delimiters ({0}) " +
                                                  "must be one more than the number of fields({1}).", 
                                                  delimiters.size(), mFieldConfigs.size()));
         }
