@@ -624,16 +624,7 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
         
         
     }
-    
-    class SubscreenRow {
-        
-        int screenId;
-        
-        String screenTitle;
-        
-        
-    }
-    
+     
     class TableModelSubscreen extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_SUBSCREEN"),};
