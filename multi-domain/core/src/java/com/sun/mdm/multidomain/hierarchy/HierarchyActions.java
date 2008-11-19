@@ -123,7 +123,7 @@ public interface HierarchyActions {
      * @param euid the euid of the node
      * @return the hierarchy tree representing the euid
      */
-    public HierarchyTree getHierarchyTree(Hierarchy hierarcy, String euid);
+    public HierarchyTree getHierarchyTree(Hierarchy hierarchy, String euid);
     
     /**
      * Delete a hierarchy node.
