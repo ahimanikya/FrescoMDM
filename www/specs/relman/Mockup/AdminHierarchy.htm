@@ -43,8 +43,11 @@ Up/Down &nbsp;function acts as if each line was moved separately. &nbsp;I.E. For
 Move Up - Adate would move before AString and &nbsp;Afloat would move before
 AnInt.</li><li>The
 Edit Hiearchy screen needs to check if the database has any data
-associated with the Hierarchy. &nbsp;If it does than everything in the
-dialog should be disabled except Plugin, Effective From, Effective To,
+associated with the Hierarchy. If the Hiearchy has any records
+associated with it than changes should not be allowed to be made to its
+name, or should it be allowed to be deleted. &nbsp;The best way to
+implement this would be to disabled except Plugin, Effective From,
+Effective To,
 Description, Required check boxes, Add and Searchable.</li><li>The
 ablity to update values on the main screen is a nice to have feature.
 &nbsp;It is recommended that &nbsp;for the first release all editing of
