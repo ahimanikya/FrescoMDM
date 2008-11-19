@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.multidomain.ejb.service;
 
+import java.util.List;
+
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
@@ -32,6 +34,7 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
+import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
 import com.sun.mdm.multidomain.group.Group;
 import com.sun.mdm.multidomain.group.GroupMember;
 import com.sun.mdm.multidomain.attributes.AttributesValue;
@@ -41,7 +44,8 @@ import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.MultiFieldValuePair;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
- 
+import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
+        
 /**
  * MultiDomainService interface.
  * @author SwaranjitDua
@@ -192,34 +196,25 @@ public interface MultiDomainService {
         throws ProcessingException, UserException;
     
     /**
-     * Persists the new hierarchy node in the hierarchy tables. A node encapsulates link between a parentEUID and a child EUID. 
-     * @param hierarchyNode hierarchy Node instance. 
-     * @return int Hierarchy Node identifer which is newly created.
+     * Add hierarchyNode under parent nodeId.
+     * @param hierarchyNode HierarchyNode.
+     * @return int HierarchyNodeId.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-   // public String addHierarchyNode(String partentEUID, HierarchyNode hierarchyLink)
-     //   throws ProcessingException, UserException;
-
-    
-    //public String addHierarchyNode(String parentEUID, HierarchyNode node);
-    
-    public int addHierarchyNode(HierarchyNode childNode)
+    public int addHierarchyNode(HierarchyNode hierarchyNode)
             throws ProcessingException, UserException ;
     
     /**
-     * add set of hierarchy Nodes to a parent nodeid.
-     * @param parentNodeID
-     * @param nodes
-     * @return
+     * Add set of hierarchy Nodes to a parent nodeid.
+     * @param parentNodeId Parent nodeId.
+     * @param nodes List of HierarchyNode.
+     * @return int[] List of node Ids.
      */
     
-    public int[] addHierarchyNodes(int parentNodeID, HierarchyNode[] nodes)
+    public int[] addHierarchyNodes(int parentNodeId, HierarchyNode[] nodes)
             throws ProcessingException, UserException ;
     
-    
-    
-
     /*
      * Create a new hierarchy instance between a parent record and a list of child records. 
      * Both parent record and child records are identified using MultiFieldValuePair.
@@ -234,7 +229,6 @@ public interface MultiDomainService {
     		AttributesValue nodeAttributesValue)
         throws ProcessingException, UserException;
 
-
     /**
      * Delete a hierarchy node identified by nodeid.
      * delete all its children as well.
@@ -242,10 +236,8 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public void deleteHierarchy(int nodeid)
+    public void deleteHierarchy(int hierarchyNodeId)
         throws ProcessingException, UserException;
-
- 
 
     /**
      * Update an existing hierarchy between parent EUID and a child EUID from hierarchy tables.
@@ -257,6 +249,56 @@ public interface MultiDomainService {
         throws ProcessingException, UserException;
     
     /**
+     * Get all children nodes for the given hierarchy node Id.
+     * @param hierarchyNodeId HierarchyNodeId.
+     * @return List<HierarchyNode> List of children nodes.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid parameter value is passed.
+     */
+    public List<HierarchyNode> getHierarchyNodeChildren(int hierarchyNodeId)
+        throws ProcessingException, UserException; 
+       
+    /**
+     * Get HierarchyNode by NodeId.
+     * @param hierarchyNodeId HierarchyNodeId.
+     * @return HierarchyNode HierarchyNode.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid parameter value is passed.
+     */
+    public HierarchyNode getHierarchyNode(long hierarchyNodeId)
+        throws ProcessingException, UserException;
+     
+    /**
+     * Move a set of nodes to have a new Parent
+     * @param nodeIds[] set of nodes that are moved
+     * @param newParentNodeId new parent node id.
+     */
+    public void moveHierarchyNodes(int[] nodeIds, int newParentNodeId)
+            throws ProcessingException, UserException;
+   
+    /**
+     * Get a list of HierarchyNode for the given search options and criteria.
+     * @param searchOption DomainSearchOption.
+     * @param searchCriteria HierarchySearchCriteria.
+     * @return List<HierarchyNode> List of HierarchyNode.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid parameter value is passed.
+     */
+    public List<HierarchyNode> searchHierarchys(DomainSearchOption searchOption, HierarchySearchCriteria searchCriteria) 
+            throws ProcessingException, UserException;
+    
+    /**
+     * Get a hierarchyTree for the given hierarchyNodeId and EUID.
+     * @param hierarchyNodeId HierarchyNodeId.
+     * @param EUID EUID.
+     * @return HierarchyObjectTree HierarchyObjectTree.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid parameter value is passed.  
+     */
+    public HierarchyObjectTree getHierarchyTree(int hierarchyNodeId, String EUID)
+        throws ProcessingException, UserException;
+
+    /**
      * Search hierarchy for the given EUID from  hierarchy tables.
      * @param hierarchytypeid hierarchy type for which hierarchy tree is retrieved
      * @param EUID EUID for which Hierarchy is searched.
@@ -267,16 +309,6 @@ public interface MultiDomainService {
      */
     public HierarchyObjectTree searchHierarchy(int hierarchyDefID, String EUID, EPathArrayList ePathFields)
         throws ProcessingException, UserException;
-    
-    /**
-     * Move a set of nodes to have a new Parent
-     * @param nodeIDs[] set of nodes that are moved
-     * @param newParentNodeID new parent node id.
-     */
-    
-    public void moveHierarchyNodes(int[] nodeIDs, int newParentNodeID)
-            throws ProcessingException, UserException;;
-            
     
     /**
      * Create a group.

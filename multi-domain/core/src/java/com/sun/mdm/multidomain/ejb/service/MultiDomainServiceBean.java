@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.multidomain.ejb.service;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.SessionContext;
 import javax.ejb.Local;
@@ -47,6 +49,7 @@ import com.sun.mdm.multidomain.attributes.AttributesValue;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
+import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
 import com.sun.mdm.multidomain.group.Group;
 import com.sun.mdm.multidomain.group.GroupMember;
 
@@ -55,7 +58,7 @@ import com.sun.mdm.multidomain.query.MultiFieldValuePair;
 import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
-
+import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 
 /**
  * The enterprise beans implementation of MultiDomainService that is exposed to the clients.
@@ -214,8 +217,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
             throws ProcessingException, UserException {
            throw new ProcessingException("Not Implemented Yet.");
     }
-      
-    
+         
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createHierarchy()
      */  
@@ -250,11 +252,46 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         throw new ProcessingException("Not Implemented Yet.");
     }
     
-     public void moveHierarchyNodes(int[] nodeIDs, int newParentNodeID)
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchHierarchys()
+     */    
+    public List<HierarchyNode> searchHierarchys(DomainSearchOption searchOption, HierarchySearchCriteria searchCriteria) 
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet.");
+    }
+ 
+   /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#moveHierarchyNodes()
+     */    
+    public void moveHierarchyNodes(int[] nodeIDs, int newParentNodeID)
              throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
-            
+  
+   /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getHierarchyNodeChildren()
+     */     
+    public List<HierarchyNode> getHierarchyNodeChildren(int hierarchyNodeId)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet.");
+    } 
+     
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getHierarchyNode()
+     */    
+    public HierarchyNode getHierarchyNode(long hierarchyNodeId)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet.");        
+    }
+    
+    /**
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getHierarchyTree()
+     */    
+    public HierarchyObjectTree getHierarchyTree(int hierarchyNodeId, String EUID)
+        throws ProcessingException, UserException {
+        throw new ProcessingException("Not Implemented Yet.");   
+    }    
+    
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createGroup()
      */                                    
