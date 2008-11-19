@@ -36,6 +36,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
     
     private boolean bModified = false;
     
+    
     /** Creates new form WebScreenPropertiesDialog */
     public WebScreenPropertiesDialog(PageDefinition pageDefinition) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
@@ -109,6 +110,23 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
 
             }
         });
+        
+        jCheckBoxInitialScreen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBoxInitialScreen.setEnabled(false);
+                        String selectedScreenType = (String) jCBScreenList.getSelectedItem();
+                for (ScreenRow row : mScreenRows) {
+                    if (row.getIdentifier().equalsIgnoreCase(selectedScreenType)) {
+                        row.setInitialScreen(true);
+                    } else {
+                        row.setInitialScreen(false);
+                    }
+                    
+                
+         }
+
+             }
+        });
 
     }
     
@@ -152,13 +170,15 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
     }
     
     private void loadScreenProperties() {
-        //jTableSubscreen.clearSelection();
-        //jSpinnerItemPerPage.setValue(1);
-        //jSpinnerMaxItems.setValue(1);
-        //jTxtScreenTitle.setText("");      
         String selectedScreenType = (String) jCBScreenList.getSelectedItem();
         for (ScreenRow row : mScreenRows) {
             if (row.getIdentifier().equalsIgnoreCase(selectedScreenType)) {
+                jCheckBoxInitialScreen.setSelected(row.isInitialScreen());
+                if (jCheckBoxInitialScreen.isSelected()) {
+                    jCheckBoxInitialScreen.setEnabled(false);
+                } else {
+                    jCheckBoxInitialScreen.setEnabled(true);
+                }
                 jTextFieldScreenTitle.setText(row.getScreenTitle());
                 TableModelSubscreen subscreenModel = new TableModelSubscreen(row.getSubScreenRows());
                 jTableSubscreen.setModel(subscreenModel);
@@ -181,6 +201,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             screenRow.setScreenId(screenDef.getScreenId());
             screenRow.setScreenTitle(screenDef.getScreenTitle());
             screenRow.setDisplayOrder(screenDef.getDisplayOrder());
+            screenRow.setInitialScreen(pageDefinition.getInitialScreenId() == screenDef.getScreenId());
             screenRow.setViewPath(screenDef.getViewPath());
             if (screenDef.getItemPerPage() > 0) {
                 screenRow.setItemPerPage(screenDef.getItemPerPage());
@@ -198,7 +219,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
 
     }
 
-    private void saveScreenDefinitions(PageDefinition pageDefinition, ArrayList<ScreenRow> screenRows) {
+    private void saveScreenDefinitions(PageDefinition pageDefinition, ArrayList<ScreenRow> screenRows) {        
         ArrayList<ScreenDefinition> sceenDefs = pageDefinition.getScreenDefs();
         for (ScreenRow screenRow : screenRows) {
             ScreenDefinition screenDef = new ScreenDefinition();
@@ -207,6 +228,9 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             screenDef.setScreenTitle(screenRow.getScreenTitle());
             screenDef.setDisplayOrder(screenRow.getDisplayOrder());
             screenDef.setViewPath(screenRow.getViewPath());
+            if (screenRow.isInitialScreen()) {
+                pageDefinition.setInitialScreenId(screenDef.getScreenId());
+            }
             if (screenRow.getItemPerPage() > 0) {
                 screenDef.setItemPerPage(screenRow.getItemPerPage());
             }
@@ -253,12 +277,13 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jBtnDown = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldScreenTitle = new javax.swing.JTextField();
+        jCheckBoxInitialScreen = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SCREEN_PROPERTIES")); // NOI18N
         setResizable(false);
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_INITIAL_SCREEN")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SCREEN_NAME")); // NOI18N
 
         jCBScreenList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -354,6 +379,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
 
         jLabel4.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SCREEN_TITLE")); // NOI18N
 
+        jCheckBoxInitialScreen.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_INITIAL_SCREEN")); // NOI18N
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -376,12 +403,14 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(jTextFieldScreenTitle, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                        .add(jTextFieldScreenTitle, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                         .add(6, 6, 6))
                     .add(layout.createSequentialGroup()
                         .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 216, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 163, Short.MAX_VALUE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .add(27, 27, 27)
+                        .add(jCheckBoxInitialScreen)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 32, Short.MAX_VALUE)))
+                .addContainerGap(23, Short.MAX_VALUE))
             .add(layout.createSequentialGroup()
                 .add(289, 289, 289)
                 .add(jBtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -398,7 +427,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
                 .add(19, 19, 19)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
-                    .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jCheckBoxInitialScreen))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel4)
@@ -515,6 +545,7 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
         private String viewPath = null;
         private int itemPerPage = -1;
         private int maxItems = -1;
+        private boolean bInitialScreen = false;
         
         ArrayList<ScreenRow> subScreenRows = new ArrayList<ScreenRow>();
 
@@ -580,6 +611,14 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 
         public void setViewPath(String viewPath) {
             this.viewPath = viewPath;
+        }
+
+        public boolean isInitialScreen() {
+            return bInitialScreen;
+        }
+
+        public void setInitialScreen(boolean initialScreen) {
+            this.bInitialScreen = initialScreen;
         }
         
         
@@ -717,6 +756,7 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     private javax.swing.JButton jBtnOK;
     private javax.swing.JButton jBtnUp;
     private javax.swing.JComboBox jCBScreenList;
+    private javax.swing.JCheckBox jCheckBoxInitialScreen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
