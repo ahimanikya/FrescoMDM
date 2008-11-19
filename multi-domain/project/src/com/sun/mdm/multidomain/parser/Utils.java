@@ -33,8 +33,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 
-import com.sun.mdm.multidomain.util.Logger;
-
 /**
  * @author gzheng
  * @version
