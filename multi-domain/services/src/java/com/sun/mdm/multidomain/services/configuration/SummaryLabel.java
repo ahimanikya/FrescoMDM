@@ -22,75 +22,128 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.multidomain.services.util.DomainUtil;
+import com.sun.mdm.multidomain.services.core.ConfigException;
+
 import com.sun.mdm.index.util.Localizer;
-import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
-import net.java.hulp.i18n.Logger;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SummaryLabel {
     
-    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SummaryLabel");
     private static transient final Localizer mLocalizer = Localizer.get();
     
-    private ArrayList<FieldConfig> mFieldConfigs;   // FieldConfig objects from which record-specific values are retrieved
-    private ArrayList<String> mDelimiters;          // ArrayList of Strings
+    private ArrayList<FieldConfig> mFieldConfigs;   
+    private ArrayList<String> mDelimiters;       
+    private String DEFAULT_DELIMITER = " ";
+    private boolean mShowEUID = false;
 
-    public SummaryLabel() {
+    public SummaryLabel(boolean showEUID, ArrayList<FieldConfig> fieldConfigs, 
+                        ArrayList<String> delimiters) throws ConfigException {
+        
+        mShowEUID = showEUID;
+        mFieldConfigs = fieldConfigs;
+        setDelimiters(delimiters);
     }
     
-    // retrieves a List of FieldConfig objects
+    public SummaryLabel(boolean showEUID, ArrayList<FieldConfig> fieldConfigs) 
+            throws ConfigException {
+        
+        mShowEUID = showEUID;
+        mFieldConfigs = fieldConfigs;
+        createDefaultDelimiters();
+    }
+
+    /** Creates an ArrayList of DEFAULT_DELIIMITERs
+     * 
+     */
+    private void createDefaultDelimiters() throws ConfigException {
+        int defaultDelimArrayListSize = 0;
+        if (mShowEUID == true) {
+            defaultDelimArrayListSize = mFieldConfigs.size() + 2;
+        } else {
+            defaultDelimArrayListSize = mFieldConfigs.size() + 1;
+        }
+        mDelimiters = new ArrayList<String> (defaultDelimArrayListSize);
+        for (int i = 0; i < defaultDelimArrayListSize; i++) {
+            mDelimiters.add(DEFAULT_DELIMITER);
+        }
+    }
     
+    /** Retrieves a List of FieldConfig objects.
+     * 
+     * @return A List of FieldConfig objects.
+     */
     public List<FieldConfig> getFieldConfigs() {      
         return mFieldConfigs;
     }
 
-    // sets the fieldConfigs 
-    
+    /** Sets the fieldConfigs ArrayList that represents the fields comprising
+     *  this SummaryLabel object.
+     * 
+     * @param fieldConfigs  The ArrayList of FieldConfig objects to which the 
+     * fieldConfigs member is set.
+     */
     public void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) { 
         mFieldConfigs = fieldConfigs;
     }
 
-    // retrieves a List of String objects
+    /** Retrieves a List of String objects as delimiters.
+     * 
+     * @return A List of String objects as delimiters.
+     */
     public List<String> getDelimiters() {     
         return mDelimiters;
     }
 
-    // sets the delimiters
-     
-    public void setDelimiters(ArrayList<String> delimiters) throws Exception { 
-        if (delimiters.size() != mFieldConfigs.size() + 1) {
-            throw new Exception(mLocalizer.t("CFG501: The number of delimiters ({0}) " +
-                                             "must be one greater than number of fields({1}).", 
-                                             delimiters.size(), mFieldConfigs.size()));
+    /** Sets the delimiters.
+     * 
+     * @param delimiters  Delimiters to set.
+     * @throws Exception if an error occurred.
+     */
+    public void setDelimiters(ArrayList<String> delimiters) throws ConfigException {
+        if (mShowEUID == true) {
+            if (delimiters.size() != mFieldConfigs.size() + 2) {
+                throw new ConfigException(mLocalizer.t("CFG552: The number of delimiters ({0}) " +
+                                                 "must be two more than the number of fields({1}).", 
+                                                 delimiters.size(), mFieldConfigs.size()));
+            }
+        } else if (delimiters.size() != mFieldConfigs.size() + 1) {
+                throw new ConfigException(mLocalizer.t("CFG553: The number of delimiters ({0}) " +
+                                                 "must be one more than the number of fields({1}).", 
+                                                 delimiters.size(), mFieldConfigs.size()));
         }
         mDelimiters = delimiters;
     }
 
-    // retrieves the ID label
-    // ID label has the following format:
-    // mFieldConfigs[0] + mDelimiters[0] + ...  + mFieldConfigs[i] + mDelimiters[i+1] 
-    
-    public String getIDLabel() throws Exception {          
-        if (mDelimiters.size() != mFieldConfigs.size()) {
-            throw new Exception(mLocalizer.t("CFG502: The number of delimiters ({0}) " +
-                                             "does not match the number of fields({1}).", 
-                                             mDelimiters.size(), mFieldConfigs.size()));
+    /** Retrieves the ID label.  ID label has the following format:
+     *  mDelimiters[0] + mFieldConfigs[0] + mDelimiters[1] + ...  + mFieldConfigs[i] + mDelimiters[i+1] 
+     * 
+     * @param objectNode  ObjectNode instance that contains the values to retrieve.
+     * @return A string representing the ID label for an ObjectNode instance.
+     * @throws java.lang.Exception if an error occurred.
+     */
+    public String getIDLabel(ObjectNode objectNode) throws Exception {          
+        
+        List fieldValues = DomainUtil.getFieldValues(objectNode, mFieldConfigs);
+        
+        // If necessary, insert the EUID to the beginning of the list.
+        
+        if (mShowEUID == true) {
+            Object euid = DomainUtil.getEUIDValue(objectNode);
+            fieldValues.add(0, euid);
         }
+        
         StringBuffer str = new StringBuffer();
-        int maxSize = 0;
-        for (int i = 0; i < mFieldConfigs.size(); i++ ) {
-            str.append(mDelimiters.get(i));
-            // RESUME HERE
-            // Retrieve the value from the FieldConfig instance.
-//            str.append(mFieldConfigs.get(i));
-            str.append(" ");
-            maxSize++;
+        int delimiterIndex = 0;
+        str.append(mDelimiters.get(delimiterIndex));
+        delimiterIndex++;
+        for (int i = 0; i < fieldValues.size(); i++, delimiterIndex++) {
+            str.append(fieldValues.get(i));
+            str.append(mDelimiters.get(delimiterIndex));
         }
-        str.append(mDelimiters.get(maxSize + 1));
         return str.toString();
     }
 

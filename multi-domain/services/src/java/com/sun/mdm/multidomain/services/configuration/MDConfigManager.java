@@ -24,6 +24,7 @@ package com.sun.mdm.multidomain.services.configuration;
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.Utils;
+import com.sun.mdm.multidomain.parser.DomainRecordID;
 import com.sun.mdm.multidomain.parser.DomainForWebManager;
 import com.sun.mdm.multidomain.parser.DomainsForWebManager;
 import com.sun.mdm.multidomain.parser.PageDefinition;
@@ -204,9 +205,7 @@ public class MDConfigManager {
         for (DomainForWebManager domainFWM : domains) {
             DomainScreenConfig domainScreenConfig = new DomainScreenConfig();
             
-            // testing--raymond tam
-            // RESUME HERE
-            SummaryLabel summaryLabel = convertSummaryLabel();
+            SummaryLabel summaryLabel = convertSummaryLabel(domainFWM.getRecordID());
             domainScreenConfig.setSummaryLabel(summaryLabel);
 
             ArrayList<SearchScreenConfig> sSC = 
@@ -243,10 +242,17 @@ public class MDConfigManager {
      * @throws ConfigException if an error is encountered
      */
      
-    private static SummaryLabel convertSummaryLabel() throws ConfigException {
-        // testing--raymond tam
-        // RESUME HERE
-        return null;
+    private static SummaryLabel convertSummaryLabel(DomainRecordID domainRecordID) 
+            throws ConfigException {
+        
+        if (domainRecordID == null) {
+            return null;
+        }
+        boolean showEUID = domainRecordID.isMShowEUID();
+        FieldGroup fg = domainRecordID.getFieldGroup();
+        ArrayList<FieldConfig> fieldConfigs = createFieldConfig(fg.getFieldRefs());
+        SummaryLabel summaryLabel = new SummaryLabel(showEUID, fieldConfigs);
+        return summaryLabel;
     }
 
     /**
