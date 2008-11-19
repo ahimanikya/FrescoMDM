@@ -24,25 +24,31 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-              <Group type="102" alignment="1" attributes="1">
-                  <Component id="jLabelDefinition" min="-2" pref="150" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jButtonAddDomain" min="-2" pref="90" max="-2" attributes="0"/>
-                  <Component id="jButtonRemoveDomain" min="-2" pref="90" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" alignment="1" attributes="1">
+                          <Component id="jLabelDefinition" min="-2" pref="150" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jButtonAddDomain" min="-2" pref="90" max="-2" attributes="0"/>
+                          <Component id="jButtonRemoveDomain" min="-2" pref="90" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jScrollPane1" alignment="1" min="-2" pref="360" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jLabelDomainName" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="1">
+                      <Component id="jRadioButtonShowAll" min="-2" pref="94" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jButtonAddRelationship" min="-2" pref="78" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonAddHierarchy" min="-2" pref="79" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonRemoveDefinition" min="-2" pref="90" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jScrollPane2" alignment="0" min="-2" pref="360" max="-2" attributes="0"/>
               </Group>
-              <Component id="jScrollPane1" alignment="1" min="-2" pref="360" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
-          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-              <Group type="102" alignment="1" attributes="1">
-                  <Component id="jRadioButtonShowAll" min="-2" pref="121" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jButtonAddDefinition" min="-2" pref="90" max="-2" attributes="0"/>
-                  <Component id="jButtonRemoveDefinition" min="-2" pref="90" max="-2" attributes="0"/>
-              </Group>
-              <Component id="jScrollPane2" alignment="1" min="-2" pref="360" max="-2" attributes="0"/>
-          </Group>
-          <Component id="jLabelDomainName" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -65,15 +71,16 @@
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="110" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="jButtonAddDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButtonShowAll" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="jButtonRemoveDefinition" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jRadioButtonShowAll" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAddRelationship" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonRemoveDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAddHierarchy" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -155,14 +162,14 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButtonAddDefinition">
+    <Component class="javax.swing.JButton" name="jButtonAddRelationship">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Add" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddDefinition"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddRelationship"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonRemoveDefinition">
@@ -183,6 +190,16 @@
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="onShowAllStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAddHierarchy">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Add" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddHierarchy"/>
       </Events>
     </Component>
   </SubComponents>

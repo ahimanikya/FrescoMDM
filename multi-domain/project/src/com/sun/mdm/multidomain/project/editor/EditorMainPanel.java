@@ -72,9 +72,15 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
-    static final ImageIcon RELATIONSHIPNODEICON = new ImageIcon(Utilities.loadImage(
+    static final ImageIcon ADDDOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
+    static final ImageIcon ADDRELATIONSHIPICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
-    static final ImageIcon HIERARCHYNODEICON = new ImageIcon(Utilities.loadImage(
+    static final ImageIcon ADDHIERARCHYICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
+    static final ImageIcon RELATIONSHIPICON = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
+    static final ImageIcon HIERARCHYICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
     static final ImageIcon SCREENPROPERTIESICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/screen.png"));    
@@ -83,7 +89,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     static final ImageIcon CATEGORYNODEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/CategoryNode.png"));
 
-    static final ImageIcon DELETENODEIMAGEICON = new ImageIcon(Utilities.loadImage(
+    static final ImageIcon DELETEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/Save.png"));
@@ -254,17 +260,17 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_AddDomain")));
         mButtonAddDomain.setBorder(null);
-        mButtonAddDomain.setMnemonic('D');
+        mButtonAddDomain.setMnemonic('M');
         toolBar.add(mButtonAddDomain);
         mButtonAddRelationship = new JButton(new AddRelationshipAction(
-                    this.RELATIONSHIPNODEICON,
+                    this.RELATIONSHIPICON,
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_AddRelationship")));
         mButtonAddRelationship.setBorder(null);
         mButtonAddRelationship.setMnemonic('R');
         toolBar.add(mButtonAddRelationship);
         mButtonAddHierarchy = new JButton(new AddHierarchyAction(
-                    this.HIERARCHYNODEICON,
+                    this.HIERARCHYICON,
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_AddHierarchy")));
         mButtonAddHierarchy.setBorder(null);
@@ -303,6 +309,14 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         mButtonValidation.setEnabled(true);
         toolBar.add(mButtonValidation);
         
+        mButtonDelete = new JButton(new DeleteAction(this.DELETEIMAGEICON,
+                    NbBundle.getMessage(EditorMainPanel.class,
+                        "MSG_ToolTip_Delete")));
+        mButtonDelete.setBorder(null);
+        mButtonDelete.setMnemonic('D');
+        mButtonDelete.setEnabled(false);
+        toolBar.add(mButtonDelete);
+        
         mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
                     NbBundle.getMessage(EditorMainPanel.class,
                         "MSG_ToolTip_Save")));
@@ -332,9 +346,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
      */
     protected void createMenu() {
         mMenu = new JPopupMenu();
-
         String commandName = null;
-        mButtonDelete.setEnabled(false);
     }
 
     /** Expand the tree
@@ -383,6 +395,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         } catch (Exception ev) {
             ev.printStackTrace();
         }
+    }
+   
+    /* Enable delete button when domain or definition selected
+     * 
+     */
+    public void enableDeleteButton(boolean flag) {
+        mButtonDelete.setEnabled(flag);
     }
    
     /* Enable save button when configuration changed
@@ -559,6 +578,27 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {
             //mEditorMainApp.validate();
+        }
+    }
+    
+    /** Delete domain or definition
+     *
+     */
+    public class DeleteAction extends AbstractAction {
+        /**
+         *@param icon image icon
+         *@param desc description
+         */
+        public DeleteAction(ImageIcon icon, String desc) {
+            super(null, icon);
+            putValue(SHORT_DESCRIPTION, desc);
+        }
+
+        /**
+         *@param e Action event
+         */
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            mTabOverview.performDeleteAction();
         }
     }
 

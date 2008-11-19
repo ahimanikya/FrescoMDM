@@ -28,17 +28,15 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
+//import javax.swing.table.TableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableCellRenderer;
+//import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
+//import javax.swing.border.Border;
+//import javax.swing.border.EmptyBorder;
 
 //import javax.swing.table.TableModel;
 //import javax.swing.table.TableRowSorter;
-import javax.swing.JLabel;
-import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.Action;
@@ -116,10 +114,14 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         mEditorMainApp = editorMainApp;
         jLabelDomainName.setIcon(DOMAINIMAGEICON);
         jLabelDefinition.setIcon(DEFINITIONIMAGEICON);
-        // load domain nodes
+        jButtonAddDomain.setIcon(EditorMainPanel.ADDDOMAINIMAGEICON);
+        jButtonAddRelationship.setIcon(EditorMainPanel.ADDRELATIONSHIPICON);
+        jButtonAddHierarchy.setIcon(EditorMainPanel.ADDHIERARCHYICON);
+        jButtonRemoveDomain.setIcon(EditorMainPanel.DELETEIMAGEICON);
+        jButtonRemoveDefinition.setIcon(EditorMainPanel.DELETEIMAGEICON);
         jButtonRemoveDomain.setEnabled(false);
         jButtonRemoveDefinition.setEnabled(false);
-        
+
         // load domains
         ArrayList rows = loadDomains();
         TableModelDomains modelDomains = new TableModelDomains(rows);
@@ -182,11 +184,13 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                 rows.add(r);
             }
             jTableDomains.setRowSelectionInterval(0, 0);
-            jButtonAddDefinition.setEnabled(true);
+            jButtonAddRelationship.setEnabled(true);
+            jButtonAddHierarchy.setEnabled(true);
         } else {
             // make sure the properties tab is empty
             mEditorMainPanel.loadDomainProperties(null);
-            jButtonAddDefinition.setEnabled(false);
+            jButtonAddRelationship.setEnabled(false);
+            jButtonAddHierarchy.setEnabled(false);
         }
         return rows;
     }
@@ -305,9 +309,10 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         jLabelDefinition = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableDefinitions = new javax.swing.JTable();
-        jButtonAddDefinition = new javax.swing.JButton();
+        jButtonAddRelationship = new javax.swing.JButton();
         jButtonRemoveDefinition = new javax.swing.JButton();
         jRadioButtonShowAll = new javax.swing.JRadioButton();
+        jButtonAddHierarchy = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Overview"))); // NOI18N
 
@@ -355,10 +360,10 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
         ));
         jScrollPane2.setViewportView(jTableDefinitions);
 
-        jButtonAddDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
-        jButtonAddDefinition.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddRelationship.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
+        jButtonAddRelationship.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddDefinition(evt);
+                onAddRelationship(evt);
             }
         });
 
@@ -376,25 +381,37 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         });
 
+        jButtonAddHierarchy.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Add")); // NOI18N
+        jButtonAddHierarchy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddHierarchy(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                .add(layout.createSequentialGroup()
-                    .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jButtonAddDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jButtonRemoveDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                .add(layout.createSequentialGroup()
-                    .add(jRadioButtonShowAll, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 121, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jButtonAddDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jButtonRemoveDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(jLabelDomainName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+            .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                        .add(layout.createSequentialGroup()
+                            .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jButtonAddDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jButtonRemoveDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelDomainName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(layout.createSequentialGroup()
+                        .add(jRadioButtonShowAll, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 94, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jButtonAddRelationship, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jButtonAddHierarchy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jButtonRemoveDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -412,13 +429,15 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
                     .add(layout.createSequentialGroup()
                         .add(jLabelDefinition, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(jButtonAddDefinition)
-                        .add(jRadioButtonShowAll))
-                    .add(jButtonRemoveDefinition)))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jRadioButtonShowAll)
+                    .add(jButtonAddRelationship)
+                    .add(jButtonRemoveDefinition)
+                    .add(jButtonAddHierarchy))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -458,6 +477,7 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         } else {
             loadDefinitions(true);
             this.jButtonRemoveDomain.setEnabled(false);
+            mEditorMainPanel.enableDeleteButton(false);
             mEditorMainPanel.loadDomainEntityTree(null);
         }
         mEditorMainApp.enableSaveAction(true);
@@ -492,49 +512,86 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
                 } else {
                     mEditorMainPanel.loadDefinitionProperties(null);
                     this.jButtonRemoveDefinition.setEnabled(false);
+                    mEditorMainPanel.enableDeleteButton(false);
                 }
                 mEditorMainApp.enableSaveAction(true);
             }
 }//GEN-LAST:event_onRemoveDefinition
 
-    private void performAddDefinition(String type) {
-        final String targetType = type;
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    final AddDefinitionDialog dialog = new AddDefinitionDialog(mAlDomainNames, targetType);
-                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                        public void windowClosed(java.awt.event.WindowEvent e) {
-                            if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
-                                String type = dialog.getDefinitionType();
-                                String definitionName = dialog.getDefinitionName();
-                                String sourceDomain = dialog.getSourceDomain();
-                                String targetDomain = dialog.getTargetDomain();
-                                DefinitionNode definitionNode = mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain);
-                                if (definitionNode != null) {
+    public void performDeleteAction() {
+        if (jTableDefinitions.getSelectedRowCount() > 0) {
+            onRemoveDefinition(null);
+        } else if (jTableDomains.getSelectedRowCount() > 0) {
+            onRemoveDomain(null);
+        }
+    }
+    
+    // add new LinkNode
+    private void addLinkNode(Definition definition) {
+        DefinitionNode definitionNode = mEditorMainApp.addDefinition(definition);
+        mEditorMainPanel.loadDefinitionProperties(definitionNode);
+        // add a new row
+        TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+        DefinitionRow r = new DefinitionRow(definition.getType(), definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
+        int idx = model.getRowCount();
+        model.addRow(idx, r);
+        model.fireTableDataChanged();
+        jTableDefinitions.setRowSelectionInterval(idx, idx);
+        onDefinitionSelected();
+        mEditorMainApp.enableSaveAction(true);
+        //update jTableDomains's # of definitions
+        updateDomainDefinitionCount(definition.getSourceDomain(), definition.getTargetDomain(), 1);
+    }
+    
+    private void performAddRelationship() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                final AddRelationshipDialog dialog = new AddRelationshipDialog(mAlDomainNames, mEditorMainApp.getPluginList());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+                            String definitionName = dialog.getDefinitionName();
+                            String sourceDomain = dialog.getSourceDomain();
+                            String targetDomain = dialog.getTargetDomain();
+                            String plugin = dialog.getPlugin();
+                            if (mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain) != null) {
                                 //Already exists
-                                } else {
-                                    // add new LinkNode
-                                    Definition definition = new Definition(definitionName, type, sourceDomain, targetDomain, null);
-                                    definitionNode = mEditorMainApp.addDefinition(definition);
-                                    mEditorMainPanel.loadDefinitionProperties(definitionNode);
-                                    // add a new row
-                                    TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
-                                    DefinitionRow r = new DefinitionRow(definition.getType(), definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
-                                    int idx = model.getRowCount();
-                                    model.addRow(idx, r);
-                                    model.fireTableDataChanged();
-                                    jTableDefinitions.setRowSelectionInterval(idx, idx);
-                                    onDefinitionSelected();
-                                    mEditorMainApp.enableSaveAction(true);
-                                    //update jTableDomains's # of definitions
-                                    updateDomainDefinitionCount(sourceDomain, targetDomain, 1);
-                                }
+                            } else {
+                                // add new LinkNode
+                                Definition definition = new Definition(definitionName, Definition.TYPE_RELATIONSHIP, sourceDomain, targetDomain, plugin, null);
+                                addLinkNode(definition);
                             }
                         }
-                    });
-                    dialog.setVisible(true);
-                }
-            });
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+    
+    private void performAddHierarchy() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                final AddHierarchyDialog dialog = new AddHierarchyDialog(mAlDomainNames, mEditorMainApp.getPluginList());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+                            String definitionName = dialog.getDefinitionName();
+                            String domain = dialog.getDomain();
+                            String plugin = dialog.getPlugin();
+                            if (mEditorMainApp.getDefinitionNode(definitionName, domain, domain) != null) {
+                                //Already exists
+                            } else {
+                                // add new LinkNode
+                                Definition definition = new Definition(definitionName, Definition.TYPE_HIERARCHY, domain, domain, plugin, null);
+                                addLinkNode(definition);
+                            }
+                        }
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
     
     //ToDo update jTableDomains's # of definitions
@@ -552,9 +609,9 @@ TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel()
         model.fireTableDataChanged();
     }
 
-private void onAddDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddDefinition
-    performAddDefinition(null);
-}//GEN-LAST:event_onAddDefinition
+private void onAddRelationship(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddRelationship
+    performAddRelationship();
+}//GEN-LAST:event_onAddRelationship
 
 private void onShowAllStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onShowAllStateChanged
     if (this.jRadioButtonShowAll.isSelected()) {
@@ -566,9 +623,12 @@ private void onShowAllStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIR
     }
 }//GEN-LAST:event_onShowAllStateChanged
 
+private void onAddHierarchy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddHierarchy
+    performAddHierarchy();
+}//GEN-LAST:event_onAddHierarchy
+
 public void onAddRelationship() {
-    //Definition.TYPE_RELATIONSHIP
-    performAddDefinition(Definition.TYPE_RELATIONSHIP);
+    performAddRelationship();
 }
 
 public void onViewScreenProperties() {
@@ -580,15 +640,15 @@ public void onViewScreenProperties() {
 }
 
 public void onAddHierarchy() {
-    // Definition.TYPE_HIERARCHY
-    performAddDefinition(Definition.TYPE_HIERARCHY);
+    performAddHierarchy();
 }
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAddDefinition;
     private javax.swing.JButton jButtonAddDomain;
+    private javax.swing.JButton jButtonAddHierarchy;
+    private javax.swing.JButton jButtonAddRelationship;
     private javax.swing.JButton jButtonRemoveDefinition;
     private javax.swing.JButton jButtonRemoveDomain;
     private javax.swing.JLabel jLabelDefinition;
@@ -620,6 +680,7 @@ public void onAddHierarchy() {
         
         //get properties panel from domainNode and present it
         mEditorMainPanel.loadDomainProperties(domainNode);
+        mEditorMainPanel.enableDeleteButton(true);
     }
     
     private void hightlightDomianInDefinition(String domainName) {
@@ -646,6 +707,7 @@ public void onAddHierarchy() {
         mSelectedDefinitionNode = mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain);
         mEditorMainPanel.loadDefinitionProperties(mSelectedDefinitionNode);
         mEditorMainPanel.loadDomainEntityTree(null);
+        mEditorMainPanel.enableDeleteButton(true);
      }
 
     class DomainRow {
@@ -947,7 +1009,8 @@ public void onAddHierarchy() {
             jTableDomains.setRowSelectionInterval(idx, idx);
             //jTableDomains.setEditingRow(idx);
             onDomainSelected();
-            jButtonAddDefinition.setEnabled(true);
+            jButtonAddRelationship.setEnabled(true);
+            jButtonAddHierarchy.setEnabled(true);
         } else {
             // find it and set it
             //jTableDomains.setRowSelectionInterval(idx, idx);
@@ -1223,9 +1286,9 @@ public void onAddHierarchy() {
                         switch (colIndex) {
                             case TableModelDefinition.iColIcon:
                                 if (row.getDefinitionType().equals(Definition.TYPE_RELATIONSHIP)) {
-                                    setIcon(mEditorMainPanel.RELATIONSHIPNODEICON);
+                                    setIcon(mEditorMainPanel.RELATIONSHIPICON);
                                 } else if (row.getDefinitionType().equals(Definition.TYPE_HIERARCHY)) {
-                                    setIcon(mEditorMainPanel.HIERARCHYNODEICON);
+                                    setIcon(mEditorMainPanel.HIERARCHYICON);
                                 }
                                 break;
                             default:

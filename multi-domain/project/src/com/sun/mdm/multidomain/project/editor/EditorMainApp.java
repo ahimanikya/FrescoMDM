@@ -580,7 +580,9 @@ public class EditorMainApp {
         return mMultiDomainApplication.getMultiDomainWebManager(refresh);
     }
  
-    
+    public void enableDeleteAction(boolean flag) {
+        this.mEditorMainPanel.enableDeleteButton(flag);
+    }   
     
     public void enableSaveAction(boolean flag) {
         this.mMultiDomainApplication.setModified(flag);

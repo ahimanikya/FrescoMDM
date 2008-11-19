@@ -64,12 +64,13 @@ public class Definition {
         this.type = type;
     }
 
-    public Definition(String name, String type, String sourceDomain, String targetDomain,
+    public Definition(String name, String type, String sourceDomain, String targetDomain, String plugin,
                             ArrayList <Attribute> predefinedAttributes) {
         this.name = name;
         this.type = type;
         this.sourceDomain = sourceDomain;
         this.targetDomain = targetDomain;
+        this.plugin = plugin;
         if (predefinedAttributes != null) {
             setPredefinedAttributes(predefinedAttributes);
         } else {
