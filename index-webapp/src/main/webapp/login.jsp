@@ -46,6 +46,8 @@
 LoginHandler loginHandler = new LoginHandler();
 if (request.getAttribute(LoginHandler.FAIL_INITIALIZATION) == null  && request.getAttribute("Logout") == null && request.getRemoteUser() != null && request.isUserInRole("MasterIndex.Admin")) {
     FacesContext.getCurrentInstance().getExternalContext().redirect("results.jsf");
+} else if (request.getRemoteUser() != null && !request.isUserInRole("MasterIndex.Admin")) { // Modified for bug #128.
+    FacesContext.getCurrentInstance().getExternalContext().redirect("results.jsf");
 }
 %>        
         <head>
@@ -142,10 +144,7 @@ if (request.getAttribute(LoginHandler.FAIL_INITIALIZATION) == null  && request.g
                         <table border="0">
                             <tr>
                                 <td>
-                               <%if (request.getAttribute("Logout") == null && request.getRemoteUser() != null && !request.isUserInRole("MasterIndex.Admin")) { %>
-                                 Please check the user credentials.
-							   <%}%>
-                                </td>
+                                 </td>
                                 <td><img src='images/spacer.gif' alt="" width='35px'></td>
                             </tr>
                         </table>

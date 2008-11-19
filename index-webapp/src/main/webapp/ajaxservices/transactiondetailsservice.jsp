@@ -310,7 +310,7 @@ boolean isSessionActive = true;
 			            <tr><td><div id="transDetailsDiv" style="font-color:#000000"></div></td></tr>
                         <tr>
                             <td>
-                                <div style="height:500px;overflow:auto;">
+                                <div style="height:500px;overflow:scroll;">
                     
                                     <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>

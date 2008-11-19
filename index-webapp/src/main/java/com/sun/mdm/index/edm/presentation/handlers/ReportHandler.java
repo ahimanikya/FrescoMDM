@@ -1628,21 +1628,20 @@ public class ReportHandler {
  * This method checks if the screen has required fields
  * @return false if the user has not entered any values 
  */
-  public boolean checkOneOfManyCondition() {       
+  public boolean checkOneOfManyCondition() {       // modified on 17-11-08 as fix of #55
         HashMap oneOfMap = getReportParameters();
         Object[] keySet = oneOfMap.keySet().toArray();
         for (int i = 0; i < keySet.length; i++) {
             String key = (String) keySet[i];
-            if (key.equalsIgnoreCase("MaxResultSize")) {
+            /*if (key.equalsIgnoreCase("MaxResultSize")) { 
                 continue;
-            }
-            if ((oneOfMap.get(key) != null && ((String) oneOfMap.get(key)).trim().length() > 0) || oneOfMap.get(key) == null) {
-                return true;
+            }*/
+            if ((oneOfMap.get(key) != null && ((String) oneOfMap.get(key)).trim().length() > 0)) {
+               return true;
             }
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-        //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
-        mLogger.info(mLocalizer.x("RPT039: Validation failed : {0}", errorMessage));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("potential_dup_search_error"), bundle.getString("potential_dup_search_error")));
+        mLogger.info(mLocalizer.x("RPT039: Validation failed : {0}", bundle.getString("potential_dup_search_error")));                
         return false;
     }
 /**

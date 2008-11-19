@@ -101,7 +101,7 @@ boolean isSessionActive = true;
                         <tr>
                             <td align="left">
                                 <!--div style="text-align:left;width:200px"-->
-                              <div style="height:700px;overflow:auto;">
+                              <div style="height:700px;overflow:scroll;">
                                  <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
                                             
