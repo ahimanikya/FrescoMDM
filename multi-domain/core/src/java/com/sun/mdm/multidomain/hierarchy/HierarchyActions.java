@@ -117,6 +117,15 @@ public interface HierarchyActions {
     public boolean replaceHierarchyNode(Hierarchy hierarchy, String euid, HierarchyNode node);
     
     /**
+     * Return the tree including all ancestors up to the root, and children 1 level deep.
+     *  
+     * @param hierarcy the hierarchy
+     * @param euid the euid of the node
+     * @return the hierarchy tree representing the euid
+     */
+    public HierarchyTree getHierarchyTree(Hierarchy hierarcy, String euid);
+    
+    /**
      * Delete a hierarchy node.
      *
      * @param hierarchy the hierarchy
