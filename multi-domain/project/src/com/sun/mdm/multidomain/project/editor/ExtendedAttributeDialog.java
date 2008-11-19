@@ -264,7 +264,6 @@ private void onDefaultValueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
     
     private void enableBtnOK() {
         boolean flag = (this.jTextFieldColumnName.getText().length() == 0 || 
-                        this.jTextFieldDefaultValue.getText().length() == 0 || 
                         this.jTextFieldName.getText().length() == 0);
         this.okButton.setEnabled(!flag);
     }
