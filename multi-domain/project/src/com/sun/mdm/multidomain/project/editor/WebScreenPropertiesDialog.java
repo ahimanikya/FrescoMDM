@@ -32,6 +32,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
     
     private PageDefinition mPageDefinition = null;
     
+    ArrayList<ScreenRow> mScreenRows = null;
+    
     private boolean bModified = false;
     
     /** Creates new form WebScreenPropertiesDialog */
@@ -39,14 +41,16 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mPageDefinition = pageDefinition;
         initComponents();
-        loadScreenList();
         jSpinnerItemPerPage.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
         jSpinnerMaxItems.setModel(new SpinnerNumberModel(1, 1, 300000, 1));
         jSpinnerItemPerPage.setInputVerifier(verifier);
         jSpinnerMaxItems.setInputVerifier(verifier);
-        
-        
+        mScreenRows = new ArrayList<ScreenRow>();
+        loadScreenDefinitions(mPageDefinition, mScreenRows);
+        loadScreenList();
         loadScreenProperties();
+        
+        
 
 
         jCBScreenList.addItemListener(new java.awt.event.ItemListener() {
@@ -59,7 +63,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableSubscreen.getSelectedRow();
                 TableModelSubscreen subscreenModel = (TableModelSubscreen) jTableSubscreen.getModel();
-                ScreenDefinition screenDef = subscreenModel.getRow(selectedRow);
+                ScreenRow screenDef = subscreenModel.getRow(selectedRow);
                 if (screenDef != null) {
                     loadSubscreenProperties(screenDef);
                 }
@@ -89,35 +93,46 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         });
         
         
-        jTxtScreenTitle.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTxtSubscreenTitle.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 //evt.getComponent();
                 updateSubscreenProperties(evt.getComponent());
             }
         });
+        
+        jTextFieldScreenTitle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                //evt.getComponent();
+                String selectedScreenType = (String) jCBScreenList.getSelectedItem();
+                ScreenDefinition screenDef = mPageDefinition.getScreenDefintion(selectedScreenType);
+                screenDef.setScreenTitle(jTextFieldScreenTitle.getText());
+
+            }
+        });
 
     }
+    
     
     private void updateSubscreenProperties(Component comp) {
         TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
         int selectedRow = jTableSubscreen.getSelectedRow();
         if (selectedRow >= 0) {
-            ScreenDefinition screenDef = model.getRow(selectedRow);
+            ScreenRow screenDef = model.getRow(selectedRow);
             if (comp.equals(jSpinnerMaxItems)) {
                 int maxItems = ((Integer) jSpinnerMaxItems.getValue()).intValue();
                 screenDef.setMaxItems(maxItems);
             } else if (comp.equals(jSpinnerItemPerPage)) {
                 screenDef.setItemPerPage(((Integer) jSpinnerItemPerPage.getValue()).intValue());
-            } else if (comp.equals(jTxtScreenTitle)) {
-                screenDef.setScreenTitle(jTxtScreenTitle.getText());
+            } else if (comp.equals(jTxtSubscreenTitle)) {
+                screenDef.setScreenTitle(jTxtSubscreenTitle.getText());
             }
         }
         
         
     }
     
-    private void loadSubscreenProperties(ScreenDefinition subScreenDef) {
-        jTxtScreenTitle.setText(subScreenDef.getScreenTitle());
+    private void loadSubscreenProperties(ScreenRow subScreenDef) {
+        jTxtSubscreenTitle.setText(subScreenDef.getScreenTitle());
         jSpinnerItemPerPage.setValue(subScreenDef.getItemPerPage());
         jSpinnerMaxItems.setValue(subScreenDef.getMaxItems());
         
@@ -130,7 +145,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jCBScreenList.addItem(SCREEN_CATEGORY);
         
         if (mPageDefinition.getScreenDefs().size() > 0 ) {
-            String screenType = mPageDefinition.getScreenDefs().get(0).getIdentifier();
+            String screenType = mScreenRows.get(0).getIdentifier();
             jCBScreenList.setSelectedItem(screenType);
         }
         
@@ -142,21 +157,72 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         //jSpinnerMaxItems.setValue(1);
         //jTxtScreenTitle.setText("");      
         String selectedScreenType = (String) jCBScreenList.getSelectedItem();
-        ScreenDefinition screenDef = mPageDefinition.getScreenDefintion(selectedScreenType);
-        if (screenDef != null) {
-            if (screenDef.getChildPage() != null) {
-                TableModelSubscreen subscreenModel = new TableModelSubscreen(screenDef.getChildPage().getScreenDefs());
+        for (ScreenRow row : mScreenRows) {
+            if (row.getIdentifier().equalsIgnoreCase(selectedScreenType)) {
+                jTextFieldScreenTitle.setText(row.getScreenTitle());
+                TableModelSubscreen subscreenModel = new TableModelSubscreen(row.getSubScreenRows());
                 jTableSubscreen.setModel(subscreenModel);
                 if (jTableSubscreen.getRowCount() > 0) {
                     jTableSubscreen.setRowSelectionInterval(0, 0);
                     loadSubscreenProperties(subscreenModel.getRow(0));
                     this.jBtnDown.setEnabled(true);
                 }
+                break;
             } 
-        }
+                
+         }
         
     }
+    
+    private void loadScreenDefinitions(PageDefinition pageDefinition, ArrayList<ScreenRow> screenRows) {
+        for (ScreenDefinition screenDef : pageDefinition.getScreenDefs()) {
+            ScreenRow screenRow = new ScreenRow();
+            screenRow.setIdentifier(screenDef.getIdentifier());
+            screenRow.setScreenId(screenDef.getScreenId());
+            screenRow.setScreenTitle(screenDef.getScreenTitle());
+            screenRow.setDisplayOrder(screenDef.getDisplayOrder());
+            screenRow.setViewPath(screenDef.getViewPath());
+            if (screenDef.getItemPerPage() > 0) {
+                screenRow.setItemPerPage(screenDef.getItemPerPage());
+            }
+            if (screenDef.getMaxItems() > 0) {
+                screenRow.setMaxItems(screenDef.getMaxItems());
+            }
+            if (screenDef.getChildPage() != null) {
+                ArrayList<ScreenRow> subScreenRows = new ArrayList<ScreenRow>();
+                loadScreenDefinitions(screenDef.getChildPage(), subScreenRows);
+                screenRow.setSubScreenRows(subScreenRows);
+            }
+            screenRows.add(screenRow);
+        }
 
+    }
+
+    private void saveScreenDefinitions(PageDefinition pageDefinition, ArrayList<ScreenRow> screenRows) {
+        ArrayList<ScreenDefinition> sceenDefs = pageDefinition.getScreenDefs();
+        for (ScreenRow screenRow : screenRows) {
+            ScreenDefinition screenDef = new ScreenDefinition();
+            screenDef.setIdentifier(screenRow.getIdentifier());
+            screenDef.setScreenId(screenRow.getScreenId());
+            screenDef.setScreenTitle(screenRow.getScreenTitle());
+            screenDef.setDisplayOrder(screenRow.getDisplayOrder());
+            screenDef.setViewPath(screenRow.getViewPath());
+            if (screenRow.getItemPerPage() > 0) {
+                screenDef.setItemPerPage(screenRow.getItemPerPage());
+            }
+            if (screenRow.getMaxItems() > 0) {
+                screenDef.setMaxItems(screenRow.getMaxItems());
+            }
+            if (screenRow.getSubScreenRows().size() > 0) {
+                PageDefinition childPage = new PageDefinition();
+                saveScreenDefinitions(childPage, screenRow.getSubScreenRows());
+                screenDef.setChildPage(childPage);
+            }
+            sceenDefs.add(screenDef);
+        }
+
+    }
+    
     public boolean isModified() {
         return bModified;
     }
@@ -176,7 +242,7 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jTableSubscreen = new javax.swing.JTable();
         jPanelSubScreen = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTxtScreenTitle = new javax.swing.JTextField();
+        jTxtSubscreenTitle = new javax.swing.JTextField();
         jLabelItemPerPage = new javax.swing.JLabel();
         jSpinnerItemPerPage = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
@@ -185,6 +251,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         jBtnCancel = new javax.swing.JButton();
         jBtnUp = new javax.swing.JButton();
         jBtnDown = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldScreenTitle = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SCREEN_PROPERTIES")); // NOI18N
@@ -225,33 +293,32 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             .add(jPanelSubScreenLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabelItemPerPage)
-                    .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jTxtScreenTitle, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 244, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTxtSubscreenTitle, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 244, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerMaxItems, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerMaxItems)
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)))
+                .add(125, 125, 125))
         );
         jPanelSubScreenLayout.setVerticalGroup(
             jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelSubScreenLayout.createSequentialGroup()
-                .addContainerGap()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelSubScreenLayout.createSequentialGroup()
                 .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
-                    .add(jTxtScreenTitle, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jTxtSubscreenTitle, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelItemPerPage)
                     .add(jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(31, 31, 31)
+                .add(18, 18, 18)
                 .add(jPanelSubScreenLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel3)
                     .add(jSpinnerMaxItems, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jBtnOK.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_OK")); // NOI18N
@@ -285,6 +352,8 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setText(org.openide.util.NbBundle.getMessage(WebScreenPropertiesDialog.class, "LBL_SCREEN_TITLE")); // NOI18N
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -292,22 +361,33 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 116, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 216, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(layout.createSequentialGroup()
-                            .add(jBtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                    .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 499, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+            .add(layout.createSequentialGroup()
+                .add(10, 10, 10)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 116, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(jTextFieldScreenTitle, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                        .add(6, 6, 6))
+                    .add(layout.createSequentialGroup()
+                        .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 216, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 163, Short.MAX_VALUE)))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .add(layout.createSequentialGroup()
+                .add(289, 289, 289)
+                .add(jBtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         layout.linkSize(new java.awt.Component[] {jPanelSubScreen, jScrollPane1}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -315,30 +395,36 @@ public class WebScreenPropertiesDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .add(19, 19, 19)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel1)
+                    .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel4)
+                    .add(jTextFieldScreenTitle, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(13, 13, 13)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(19, 19, 19)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabel1)
-                            .add(jCBScreenList, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(22, 22, 22)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
-                        .add(90, 90, 90)
+                        .add(51, 51, 51)
                         .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(10, 10, 10)
-                        .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnCancel)
-                    .add(jBtnOK))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(41, 41, 41)
+                        .add(jPanelSubScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jBtnCancel)
+                            .add(jBtnOK))
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(219, 219, 219))))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-535)/2, (screenSize.height-449)/2, 535, 449);
+        setBounds((screenSize.width-563)/2, (screenSize.height-449)/2, 563, 449);
     }// </editor-fold>//GEN-END:initComponents
 
 private void onCBScreenList(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCBScreenList
@@ -348,6 +434,9 @@ private void onCBScreenList(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
 private void onBtnOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBtnOK
 // TODO add your handling code here:
     bModified = true;
+    mPageDefinition.getScreenDefs().clear();
+    mPageDefinition.setInitialScreenId(0);
+    saveScreenDefinitions(mPageDefinition, mScreenRows);
     this.dispose();
 }//GEN-LAST:event_onBtnOK
 
@@ -360,9 +449,9 @@ private void onUpBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
 // TODO add your handling code here:
     TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
     int iSelectedRow = jTableSubscreen.getSelectedRow();
-    ScreenDefinition movedUpRow = model.getRow(iSelectedRow);
+    ScreenRow movedUpRow = model.getRow(iSelectedRow);
     int screenOrderUpRow = movedUpRow.getDisplayOrder();
-    ScreenDefinition movedDownRow = model.getRow(iSelectedRow - 1);
+    ScreenRow movedDownRow = model.getRow(iSelectedRow - 1);
     int screenOrderDownRow = movedDownRow.getDisplayOrder();
     movedDownRow.setDisplayOrder(screenOrderUpRow);
     movedUpRow.setDisplayOrder(screenOrderDownRow);
@@ -383,10 +472,10 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 // TODO add your handling code here:
     TableModelSubscreen model = (TableModelSubscreen) jTableSubscreen.getModel();
     int iSelectedRow = jTableSubscreen.getSelectedRow();
-    ScreenDefinition movedRow = model.getRow(iSelectedRow);
+    ScreenRow movedRow = model.getRow(iSelectedRow);
     int screenOrderMovedRow = movedRow.getDisplayOrder();
     model.removeRow(iSelectedRow);
-    ScreenDefinition previousRow = model.getRow(iSelectedRow);
+    ScreenRow previousRow = model.getRow(iSelectedRow);
     int screenOrderPrevRow = previousRow.getDisplayOrder();
     previousRow.setDisplayOrder(screenOrderMovedRow);
     iSelectedRow++;
@@ -414,10 +503,102 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
         }
     }
     
+    class ScreenRow  {
+        
+        //private String screenName;
+        
+//      private int initialSubScreenId;
+        private String identifier = null;
+        private String screenTitle = null;
+        private int screenId = -1;
+        private int displayOrder = -1;
+        private String viewPath = null;
+        private int itemPerPage = -1;
+        private int maxItems = -1;
+        
+        ArrayList<ScreenRow> subScreenRows = new ArrayList<ScreenRow>();
+
+        public String getScreenTitle() {
+            return screenTitle;
+        }
+
+        public void setScreenTitle(String screenName) {
+            this.screenTitle = screenName;
+        }
+
+        public ArrayList<ScreenRow> getSubScreenRows() {
+            return subScreenRows;
+        }
+
+        public void setSubScreenRows(ArrayList<ScreenRow> subScreenRows) {
+            this.subScreenRows = subScreenRows;
+        }
+
+        public String getIdentifier() {
+            return identifier;
+        }
+
+        public void setIdentifier(String identifier) {
+            this.identifier = identifier;
+        }
+
+        public int getItemPerPage() {
+            return itemPerPage;
+        }
+
+        public void setItemPerPage(int itemPerPage) {
+            this.itemPerPage = itemPerPage;
+        }
+
+        public int getMaxItems() {
+            return maxItems;
+        }
+
+        public void setMaxItems(int maxItems) {
+            this.maxItems = maxItems;
+        }
+
+        public int getScreenId() {
+            return screenId;
+        }
+
+        public void setScreenId(int screenId) {
+            this.screenId = screenId;
+        }
+
+        public int getDisplayOrder() {
+            return displayOrder;
+        }
+
+        public void setDisplayOrder(int displayOrder) {
+            this.displayOrder = displayOrder;
+        }
+
+        public String getViewPath() {
+            return viewPath;
+        }
+
+        public void setViewPath(String viewPath) {
+            this.viewPath = viewPath;
+        }
+        
+        
+        
+    }
+    
+    class SubscreenRow {
+        
+        int screenId;
+        
+        String screenTitle;
+        
+        
+    }
+    
     class TableModelSubscreen extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_SUBSCREEN"),};
-        ArrayList fieldRows;
+        ArrayList<ScreenRow> fieldRows;
         final static int iSubscreenName = 0;
         
         TableModelSubscreen(ArrayList rows) {
@@ -441,7 +622,7 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 
         public Object getValueAt(int row, int col) {
             if (fieldRows != null) {
-                ScreenDefinition singleRow = (ScreenDefinition) fieldRows.get(row);
+                ScreenRow singleRow = (ScreenRow) fieldRows.get(row);
                 if (singleRow != null) {
                     switch (col) {
                         case iSubscreenName:
@@ -454,9 +635,9 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
             return null;
         }
 
-        public ScreenDefinition getRow(int row) {
+        public ScreenRow getRow(int row) {
             if (fieldRows != null) {
-                ScreenDefinition singleRow = (ScreenDefinition) fieldRows.get(row);
+                ScreenRow singleRow = (ScreenRow) fieldRows.get(row);
                 return singleRow;
             }
             return null;
@@ -484,7 +665,7 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
                 case iSubscreenName:
-                    ((ScreenDefinition) fieldRows.get(row)).setIdentifier((String) value);
+                    ((ScreenRow) fieldRows.get(row)).setIdentifier((String) value);
                     break;
 
             }
@@ -499,7 +680,7 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
             this.fireTableRowsDeleted(index, index);
         }
 
-        public void addRow(int index, ScreenDefinition row) {
+        public void addRow(int index, ScreenRow row) {
             //fieldRows.add(row);
             fieldRows.add(index, row);
             this.fireTableRowsInserted(index, index);
@@ -520,10 +701,10 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
             return -1;
         }
 
-        public SearchDetail findRelTypeByFieldName(String fieldName) {
+        public ScreenRow findRelTypeByFieldName(String fieldName) {
             for (int i = 0; i < fieldRows.size(); i++) {
                 if (getValueAt(i, iSubscreenName).equals(fieldName)) {
-                    return (SearchDetail) fieldRows.get(i);
+                    return (ScreenRow) fieldRows.get(i);
                 }
             }
             return null;
@@ -539,13 +720,15 @@ private void onDownBtnPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelItemPerPage;
     private javax.swing.JPanel jPanelSubScreen;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerItemPerPage;
     private javax.swing.JSpinner jSpinnerMaxItems;
     private javax.swing.JTable jTableSubscreen;
-    private javax.swing.JTextField jTxtScreenTitle;
+    private javax.swing.JTextField jTextFieldScreenTitle;
+    private javax.swing.JTextField jTxtSubscreenTitle;
     // End of variables declaration//GEN-END:variables
 
 }
