@@ -60,7 +60,7 @@ public class FieldConfigGroup implements java.io.Serializable {
     public FieldConfigGroup(String description, FieldConfig[] fieldConfigs) {
         super();
         mDescription = description;
-        mFieldGroup = new ArrayList();
+        mFieldGroup = new ArrayList<FieldConfig>();
         for (int i = 0; i < fieldConfigs.length; i++) {
             mFieldGroup.add(fieldConfigs[i]);
         }

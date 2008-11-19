@@ -50,7 +50,7 @@ public class SearchResultDetailsConfig implements java.io.Serializable {
 
     public SearchResultDetailsConfig(ObjectNodeConfig rootObj, String displayName, 
                                 int searchResultDetailID, boolean showEUID, 
-                                boolean showLID, ArrayList fieldConfigGroups) {
+                                boolean showLID, ArrayList<FieldConfigGroup> fieldConfigGroups) {
                     
         mRootObj = rootObj;
         mDisplayName = displayName;
@@ -68,7 +68,7 @@ public class SearchResultDetailsConfig implements java.io.Serializable {
      * stored in mFieldConfigGroups.
      */
     public ArrayList getEPaths() {
-        ArrayList<String> ePaths = new ArrayList();
+        ArrayList<String> ePaths = new ArrayList<String>();
         Iterator aListIter = mFieldConfigGroups.iterator();
         
         while (aListIter.hasNext()) {
