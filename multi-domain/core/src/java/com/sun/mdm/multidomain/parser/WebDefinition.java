@@ -73,7 +73,7 @@ public class WebDefinition extends Definition {
     }
 
     public String getType() {
-        return Definition.TYPE_RELATIONSHIP;
+        return super.getType();
     }
     
     

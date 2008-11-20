@@ -42,6 +42,8 @@ public class MultiDomainWebManager {
     private PageDefinition mPageDefinition = null;
     //private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
     private static String RELATIONSHIP_WEB_MANAGER = "MultiDomainWebManager";
+    
+    private String validationStr = "";
 
     /**
      * Parse method will parse RelationshipWebManager.xml
@@ -246,15 +248,17 @@ public class MultiDomainWebManager {
         boolean isValid = true;
         for (DomainForWebManager domain : mDomains.getDomains()) {
             if (!domain.isValidDomainXML()) {
+                validationStr = domain.getValidationStr();
                 return false;
             }
         }
         return isValid;
     }
     
-    public Definition createWebDefinition(String name, String source, String target) {
+    public Definition createWebDefinition(String name, String source, String target, String defintionType) {
         Definition linkType = new WebDefinition();
         linkType.setName(name);
+        linkType.setType(defintionType);
         linkType.setSourceDomain(source);
         linkType.setTargetDomain(target);
         this.mWebDefintions.add((WebDefinition) linkType);
@@ -292,7 +296,7 @@ public class MultiDomainWebManager {
 
         Element root = xmldoc.getDocumentElement();
         root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainWebManager.xsd");
-        root.appendChild(getRelationTypeToStr(xmldoc));
+        root.appendChild(geDefinitionTypesToStr(xmldoc));
         root.appendChild(getPageDefinitionToStr(xmldoc));
         root.appendChild(getDomainsToStr(xmldoc));
         root.appendChild(getJndiResToStr(xmldoc));
@@ -319,17 +323,16 @@ public class MultiDomainWebManager {
         
     }
 
-    private Element getRelationTypeToStr(Document xmlDoc) throws Exception {
+    private Element geDefinitionTypesToStr(Document xmlDoc) throws Exception {
         
-        Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPES);
+        Element relTypes = xmlDoc.createElement(WebManagerProperties.mTAG_DEFINITION_TYPES);
         for (WebDefinition relType : mWebDefintions) {
             //WebDefinition relType = (WebDefinition) linkType;
             String relTypeName = relType.getName();
             String destination = relType.getTargetDomain();
             String source = relType.getSource();
             String displayName = relType.getDisplayName();
-            Element relTypeElm = xmlDoc.createElement(WebManagerProperties.mTAG_RELATIONSHIP_TYPE);
-            //org.jdom.Attribute relAttrName = new org.jdom.Attribute(WebManagerProperties.mTAG_NAME, relTypeName);
+            Element relTypeElm = xmlDoc.createElement(relType.getType());
             relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_SOURCE, source);
             relTypeElm.setAttribute(WebManagerProperties.mTAG_RELATIONSHIP_TYPE_DESTINATION, destination);
             relTypeElm.setAttribute(WebManagerProperties.mTAG_NAME, relTypeName);
@@ -711,12 +714,12 @@ public class MultiDomainWebManager {
                 }
             }
 
-            if (null != element && ((Element) element).getTagName().equals(WebManagerProperties.mTAG_RELATIONSHIP_WEB_MANAGER) && element.hasChildNodes()) {
+            if (null != element && ((Element) element).getTagName().equals(WebManagerProperties.mTAG_MULTIDOMAIN_WEB_MANAGER) && element.hasChildNodes()) {
                 nl1 = element.getChildNodes();
                 for (int i1 = 0; i1 < nl1.getLength(); i1++) {
                     if (nl1.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                         String name = ((Element) nl1.item(i1)).getTagName();
-                        if (name.equals(WebManagerProperties.mTAG_RELATIONSHIP_TYPES)) {
+                        if (name.equals(WebManagerProperties.mTAG_DEFINITION_TYPES)) {
                             parseRelTypes(nl1.item(i1));
                         } else if (name.equals(WebManagerProperties.mTAG_PAGE_DEFINITION)) {
                             mPageDefinition = new PageDefinition();
@@ -760,6 +763,8 @@ public class MultiDomainWebManager {
                 ArrayList<RelationFieldReference> extendedFieldRefs = new ArrayList<RelationFieldReference>();
 
                 WebDefinition relType = new WebDefinition(nameAttr, sourceAttr, destAttr, displayAttr, fixedFieldRefs, extendedFieldRefs);
+                
+                relType.setType(elementName);
                 
                 parseType(elm, relType);
 
@@ -1387,5 +1392,9 @@ public class MultiDomainWebManager {
 
         }
 
+    }
+
+    public String getValidationStr() {
+        return validationStr;
     }
 }

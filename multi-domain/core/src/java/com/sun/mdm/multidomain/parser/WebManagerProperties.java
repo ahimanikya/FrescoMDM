@@ -11,9 +11,9 @@ package com.sun.mdm.multidomain.parser;
  */
 public class WebManagerProperties {
     
-    public static String mTAG_RELATIONSHIP_WEB_MANAGER = "MultiDomainWebManager";
-    
-    public static String mTAG_RELATIONSHIP_TYPES = "relationships";
+    public static String mTAG_MULTIDOMAIN_WEB_MANAGER = "MultiDomainWebManager";
+        
+    public static String mTAG_DEFINITION_TYPES = "definition-types";
     
     public static String mTAG_RELATIONSHIP_TYPE = "relationship";
     
