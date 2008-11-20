@@ -11,6 +11,8 @@ import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 import com.sun.mdm.multidomain.parser.RelationshipProperty;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.util.NbBundle;
 
 /**
@@ -28,6 +30,13 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
         mJNDIResources = multiDomainJNDI;
         initComponents();
         loadProperties();
+        jTableProperties.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableProperties.getSelectedRow();
+                jBtnRemoveProperty.setEnabled(true);
+             }
+        });
+        
     }
     
     private void loadProperties() {
@@ -72,8 +81,8 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableProperties = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jBtnAddProperty = new javax.swing.JButton();
+        jBtnRemoveProperty = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
@@ -112,10 +121,20 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
         jTableProperties.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_PROPERTY_NAME")); // NOI18N
         jTableProperties.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_PROPERTY_VALUE")); // NOI18N
 
-        jButton1.setText(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_Add")); // NOI18N
+        jBtnAddProperty.setText(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_Add")); // NOI18N
+        jBtnAddProperty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddProperty(evt);
+            }
+        });
 
-        jButton2.setText(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_Remove")); // NOI18N
-        jButton2.setEnabled(false);
+        jBtnRemoveProperty.setText(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_Remove")); // NOI18N
+        jBtnRemoveProperty.setEnabled(false);
+        jBtnRemoveProperty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onRemoveProperty(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,9 +146,9 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
                 .addContainerGap())
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(231, Short.MAX_VALUE)
-                .add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jBtnAddProperty, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jBtnRemoveProperty, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(14, 14, 14))
         );
         jPanel1Layout.setVerticalGroup(
@@ -139,8 +158,8 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 103, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
-                    .add(jButton2))
+                    .add(jBtnAddProperty)
+                    .add(jBtnRemoveProperty))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -207,8 +226,43 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
 private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
 // TODO add your handling code here:
     bModified = true;
+    mJNDIResources.getProperties().clear();
+    TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
+    for (PropertyRow row : modelProperties.fieldRows) {
+        RelationshipProperty property = new RelationshipProperty(row.getName(), row.getValue());
+        mJNDIResources.getProperties().add(property);
+    }
     this.dispose();
 }//GEN-LAST:event_onOK
+
+private void onAddProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddProperty
+// TODO add your handling code here:
+    TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
+    int iInsertRow = modelProperties.getRowCount();
+    PropertyRow newProperty = new PropertyRow();
+    newProperty.setName("");
+    newProperty.setValue("");
+    modelProperties.addRow(iInsertRow, newProperty);
+    jTableProperties.setModel(modelProperties);
+    
+}//GEN-LAST:event_onAddProperty
+
+private void onRemoveProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveProperty
+// TODO add your handling code here:
+    int rs = jTableProperties.getSelectedRow();
+    String prompt = NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Row_Prompt");
+        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                                 prompt, 
+                                 NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 NotifyDescriptor.YES_NO_OPTION);
+        if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+            this.bModified = true;
+            TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
+            modelProperties.removeRow(rs);
+            
+        }
+    
+}//GEN-LAST:event_onRemoveProperty
 
     public boolean isModified() {
         return bModified;
@@ -456,7 +510,7 @@ private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            return false;
+            return true;
         }
 
         /*
@@ -489,8 +543,8 @@ private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
         }
     }    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jBtnAddProperty;
+    private javax.swing.JButton jBtnRemoveProperty;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
