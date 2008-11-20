@@ -23,6 +23,7 @@
 package com.sun.mdm.multidomain.project;
 
 import java.io.File;
+import com.sun.mdm.multidomain.parser.ConfigurationFiles;
 
 /** Defines constants for properties used in Multi-Domain Master Index. 
  */
@@ -56,8 +57,8 @@ public class MultiDomainProjectProperties {
     public static final String MIDM_XML = "midm.xml";
     public static final String MULTI_DOMAIN_MODEL_XML = "MultiDomainModel.xml";
     public static final String MULTI_DOMAIN_MODEL_XSD = "MultiDomainModel.xsd";
-    public static final String RELATIONSHIP_WEB_MANAGER_XML = "MultiDomainWebManager.xml";
-    public static final String RELATIONSHIP_WEB_MANAGER_XSD = "MultiDomainWebManager.xsd";
+    public static final String RELATIONSHIP_WEB_MANAGER_XML = ConfigurationFiles.RELATIONSHIP_WEB_MANAGER_XML;
+    public static final String RELATIONSHIP_WEB_MANAGER_XSD = ConfigurationFiles.RELATIONSHIP_WEB_MANAGER_XSD;
     public static final String SECURITY_XML = SECURITY_TEMPLATE_LOCATION + File.separator + "security.xml";
     public static final String SECURITY_XSD = "security.xsd";
     
