@@ -48,6 +48,16 @@
 
     <create creator="spring" javascript="HierarchyHandler" scope="session">
       <param name="beanName" value="HierarchyHandler"/>
+      <include method="getHierarchyTree" />
+      <include method="searchHierarchyNodes" />
+      <include method="moveHierarchyNodes" />
+      <include method="getHierarchyNodeChildren" />
+      <include method="getHierarchyNode" />
+      <include method="addHierarchyNodes" />
+      <include method="addHierarchyNode" />
+      <include method="deleteHierarchyNode" />
+      <include method="updateHierarchyNode" />
+      <include method="getHierarchyCount" />      
     </create>
     
     <!-- relationship definition handling -->  
@@ -59,6 +69,22 @@
         <param name="include" value="name, domain, description, plugin, pluginInfo, effecriveFrom, effecriveTo, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
     </convert>	
 
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeView">
+        <param name="include" value="id, EUID, hightLight, objectRecord" />        
+    </convert>	
+
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord">
+        <param name="include" value="id, EUID, parentId, parentEUID, startDate, endDate, purgeDate, objectRecord" />                
+    </convert>	
+
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchyTreeView">
+          <param name="include" value="node, parent, children" />
+    </convert>	
+
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.hierarchy.HierarchySearch">
+        <param name="include" value="name, domain, startDate, endDate, purgeDate, attributes" />
+    </convert>	
+
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefExt">
         <param name="include" value="name, description, sourceDomain, targetDomain, plugin, pluginInfo, biDirection, startDate, endDate, purgeDate, startDateRequired, endDateRequired, purgeDateRequired, extendedAttributes" />
     </convert>
@@ -67,7 +93,7 @@
         <param name="include" value="name, columnName, searchable, isRequired, dataType, defaultValue" />
     </convert>	
 
-    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefinitionView">
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefView">
         <param name="include" value="name, id, sourceDomain, targetDomain, biDirection" />
     </convert>	
 
@@ -75,8 +101,8 @@
         <param name="include" value="name" />
     </convert>	
 
-    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefinitionObject">
-        <param name="include" value="name, relationshipDefinitions" />
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject">
+        <param name="include" value="name, relationshipDefs" />
     </convert>	
         
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject">
@@ -123,6 +149,15 @@
     <signatures>
         <![CDATA[
             import java.util.List;
+            import com.sun.mdm.multidomain.services.model.Attribute;
+            import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeView;
+            HierarchyNodeRecord.setAttributes(List<Attribute> attributes);            
+            List<Attribute> HierarchyNodeRecord.getAttributes();             
+            HierarchyTreeView.setChildren(List<HierarchyNodeView> children);            
+            List<HierarchyNodeView> HierarchyTreeView.getChildren();             
+        ]]>                   
+        <![CDATA[
+            import java.util.List;
             import com.sun.mdm.multidomain.services.model.AttributeDefExt;
             import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
             HierarchyDefExt.setExtendedAttributes(List<AttributeDefExt> extendedAttributes);            
@@ -166,10 +201,13 @@
             import com.sun.mdm.multidomain.services.model.Attribute;
             import com.sun.mdm.multidomain.services.model.DomainSearch;
             import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
+            import com.sun.mdm.multidomain.services.hierarchy.HierarchySearch;            
             DomainSearch.setAttributes(List<Attribute> attributes);            
             List<Attribute> DomainSearch.getAttributes();
             RelationshipSearch.setAttributes(List<Attribute> attributes);            
-            List<Attribute> RelationshipSearch.getAttributes();     
+            List<Attribute> RelationshipSearch.getAttributes();                 
+            HierarchySearch.setAttributes(List<Attribute> attributes);            
+            List<Attribute> HierarchySearch.getAttributes();                             
         ]]>        
         <![CDATA[
             import java.util.List;
@@ -180,8 +218,7 @@
             List<Attribute> ObjectRecord.getAttributes();
             RelationshipRecord.setAttributes(List<Attribute> attributes);            
             List<Attribute> RelationshipRecord.getAttributes(); 
-        ]]>   
-        
+        ]]>           
     </signatures>
   </allow>
 </dwr>
