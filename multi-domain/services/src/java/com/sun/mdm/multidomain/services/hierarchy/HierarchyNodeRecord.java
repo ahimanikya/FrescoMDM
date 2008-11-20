@@ -32,8 +32,8 @@ import java.util.Date;
  */
 public class HierarchyNodeRecord extends AttributeList {
 
-    private String nodeId;
-    private String nodeEUID;
+    private String id;
+    private String EUID;
     private String parentId;
     private String parentEUID; 
     private Date startDate;
@@ -44,20 +44,20 @@ public class HierarchyNodeRecord extends AttributeList {
     public HierarchyNodeRecord() {
     }
     
-    public void setNodeId(String nodeId) {
-        this.nodeId = nodeId;
+    public void setId(String id) {
+        this.id = id;
     }
     
-    public String getNodeId() {
-        return this.nodeId;
+    public String getId() {
+        return this.id;
     }
             
-    public void setNodeEUID(String nodeEUID) {
-        this.nodeEUID = nodeEUID;
+    public void setEUID(String EUID) {
+        this.EUID = EUID;
     }
     
-    public String getNodeEUID() {
-        return this.nodeId;
+    public String getEUID() {
+        return this.EUID;
     }
     
     public void setParentId(String parentId) {

@@ -29,10 +29,10 @@ import com.sun.mdm.multidomain.services.model.AttributeList;
 import com.sun.mdm.multidomain.services.model.Attribute;
 
 /**
- * HierarchyNodeSearch class.
+ * HierarchySearch class.
  * @author cye
  */
-public class HierarchyNodeSearch extends AttributeList {
+public class HierarchySearch extends AttributeList {
 
     private String name;    
     private String domain;        
@@ -41,17 +41,17 @@ public class HierarchyNodeSearch extends AttributeList {
     private Date purgeDate;
     
     /**
-     * Create an instance of HierarchyNodeSearch.
+     * Create an instance of HierarchySearch.
      */
-    public HierarchyNodeSearch() {
+    public HierarchySearch() {
         super();
     }
     
     /**
-     * Create an instance of HierarchyNodeSearch.
+     * Create an instance of HierarchySearch.
      * @param attributes List of Attribute.
      */
-    public HierarchyNodeSearch(List<Attribute> attributes) {
+    public HierarchySearch(List<Attribute> attributes) {
         super(attributes);
     }
 
