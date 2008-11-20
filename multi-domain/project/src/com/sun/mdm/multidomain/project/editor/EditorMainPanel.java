@@ -59,6 +59,8 @@ import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.parser.Definition;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
@@ -616,6 +618,16 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {
             //mEditorMainApp.validate();
+            if (!mEditorMainApp.validate()) {
+                mEditorMainApp.setValid(false);
+                mButtonSave.setEnabled(false);
+                //String warningMsg = mEditorMainApp.
+                NotifyDescriptor errorNotify = new NotifyDescriptor.Message(
+                        mEditorMainApp.getValidationMsg(),
+                        NotifyDescriptor.ERROR_MESSAGE);
+                DialogDisplayer.getDefault().notify(errorNotify);
+
+            }
         }
     }
     

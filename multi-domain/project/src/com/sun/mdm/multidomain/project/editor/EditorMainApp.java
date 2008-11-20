@@ -79,9 +79,10 @@ public class EditorMainApp {
     private ArrayList <DomainNode> mAlDomainNodes = new ArrayList <DomainNode>();   // DomainNode
     private ArrayList <DefinitionNode> mAlDefinitionNodes = new ArrayList <DefinitionNode>();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
-    private TabRelationshipWebManager mTabRelshipWebManager = null;
     private MultiDomainModel mMultiDomainModel;
     private MultiDomainWebManager mMultiDomainWebManager;
+    private boolean bValid = false;
+    private String validationMsg = "";
     
     /**
      * Creates a new instance of EditorMainApp the constructor is decleared private
@@ -127,6 +128,19 @@ public class EditorMainApp {
         mInstance = (EditorMainApp) mMapInstances.get(instanceName);
         return mInstance;
     }
+    
+    /**
+     * Validate MultiDomainModel.xml and MultiDomainWebManager.xml 
+     * before Save button is enabled.
+     */
+    public boolean validate() {
+        if (!mMultiDomainWebManager.validateWebManagerXML()) {
+            validationMsg = mMultiDomainWebManager.getValidationStr();
+            mLog.error(mMultiDomainWebManager.getValidationStr());
+            return false;
+        }
+        return true;
+    }
         
     /** Add a Definition 
      * 
@@ -137,7 +151,7 @@ public class EditorMainApp {
         mMultiDomainModel.addDefinition(definition);
         Definition webDefinition = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
         if (webDefinition == null) {
-            webDefinition = mMultiDomainWebManager.createWebDefinition(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());
+            webDefinition = mMultiDomainWebManager.createWebDefinition(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain(), definition.getType());
             int displayOrder = 1;
             for (Attribute al : definition.getPredefinedAttributes()) {
                 RelationFieldReference fieldRef = new RelationFieldReference(al.getName(), al.getName(),
@@ -209,7 +223,7 @@ public class EditorMainApp {
             Definition definition = (Definition) alDefinitions.get(i);
             Definition webDefinition = mMultiDomainWebManager.getLinkType(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());        
             if (webDefinition == null) {
-                webDefinition = mMultiDomainWebManager.createWebDefinition(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain());       
+                webDefinition = mMultiDomainWebManager.createWebDefinition(definition.getName(), definition.getSourceDomain(), definition.getTargetDomain(), definition.getType());       
                 //ArrayList
                 int displayOrder = 1;
                 for (Attribute al : definition.getPredefinedAttributes()) {
@@ -681,6 +695,14 @@ public class EditorMainApp {
             ErrorManager.getDefault().notify(
                           ErrorManager.WARNING, new Exception(userFriendlyMsg));
         }
+    }
+
+    public void setValid(boolean bValid) {
+        this.bValid = bValid;
+    }
+
+    public String getValidationMsg() {
+        return validationMsg;
     }
     
     /**
