@@ -55,13 +55,15 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria.RangeSystemObject
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 import com.sun.mdm.multidomain.relationship.Relationship;
-
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
+        
 import com.sun.mdm.multidomain.services.model.Attribute;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.services.util.Localizer;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
 
 /**
  * QueryBuilder class.
@@ -529,5 +531,16 @@ public class QueryBuilder {
             //String fieldDisplayName = config.getFieldConfig(field).getDisplayName(); 
             throw new ObjectException("Invalid value [" + value + "] for field [" + field + "]"); 
         }
-   }	        
+   }
+    
+   /**
+    * Build HierarchyNode for the given HierarchyNodeRecord.
+    * @param hNodeRecord HierarchyNodeRecord.
+    * @return HierarchyNode HierarchyNode.
+    */ 
+   public static HierarchyNode buildHierarchyNode(HierarchyNodeRecord hNodeRecord) {
+        HierarchyNode hNode = new HierarchyNode();
+        // Implement me.
+        return hNode;
+   } 
 }

@@ -37,6 +37,7 @@ import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.MultiObject.RelationshipObject;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
@@ -47,6 +48,7 @@ import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.model.AttributeDefExt;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
@@ -79,6 +81,12 @@ public class ViewHelper {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
     
+    public static HierarchyNodeRecord toHierarchyNodeRecord(HierarchyNode hNode) {
+        HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
+        // implement me, need to convert to objectrecord based on search result. 
+        return hNodeRecord;
+    }
+     
     public static HierarchyDef toHierarchyDef(HierarchyDefExt hDefExt) {
         HierarchyDef hDef = new HierarchyDef();
         hDef.setName(hDefExt.getName());
@@ -213,9 +221,9 @@ public class ViewHelper {
     
         MultiObject multiObject =  pages.first();
         ObjectNode sourceObject = multiObject.getSourceDomainObject();
-        //TBD: configManager.getrecordIdEPathFields(sourceDomain);
+        //TBD: configManager.getRecordIdEPathFields(sourceDomain);
         EPathArrayList sourceRecordIdEPathFields = new EPathArrayList();
-        //TBD: configManager.getrecordIdConfigFields(sourceDomain);
+        //TBD: configManager.getRecordIdConfigFields(sourceDomain);
         List<FieldConfig> sourceRecordIdConfigFields = new ArrayList<FieldConfig>();            
         String sourceHighLight = buildHighLight(primaryDomain, sourceRecordIdConfigFields, sourceRecordIdEPathFields, sourceObject);
         ObjectView primaryObject = new ObjectView();
@@ -230,9 +238,9 @@ public class ViewHelper {
             ObjectNode targetObject = relationshipObject.getTargetObject();
             Relationship relationship = relationshipObject.getRelationship();
             
-            //TBD: configManager.getrecordIdEPathFields(targetDomain);
+            //TBD: configManager.getRecordIdEPathFields(targetDomain);
             EPathArrayList targetRecordIdEPathFields = new EPathArrayList();
-            //TBD: configManager.getrecordIdConfigFields(targetDomain);
+            //TBD: configManager.getRecordIdConfigFields(targetDomain);
             List<FieldConfig> targetRecordIdConfigFields = new ArrayList<FieldConfig>();            
             String targetHighLight = buildHighLight(targetObject.pGetTag(), targetRecordIdConfigFields, targetRecordIdEPathFields, targetObject); 
             
