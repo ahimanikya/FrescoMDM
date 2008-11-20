@@ -33,6 +33,7 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
+import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
 import com.sun.mdm.multidomain.group.Group;
@@ -295,7 +296,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.  
      */
-    public HierarchyObjectTree getHierarchyTree(int hierarchyNodeId, String EUID)
+    public HierarchyTree getHierarchyTree(int hierarchyNodeId, String EUID)
         throws ProcessingException, UserException;
 
     /**

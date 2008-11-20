@@ -49,6 +49,7 @@ import com.sun.mdm.multidomain.attributes.AttributesValue;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
+import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
 import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
 import com.sun.mdm.multidomain.group.Group;
 import com.sun.mdm.multidomain.group.GroupMember;
@@ -287,7 +288,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getHierarchyTree()
      */    
-    public HierarchyObjectTree getHierarchyTree(int hierarchyNodeId, String EUID)
+    public HierarchyTree getHierarchyTree(int hierarchyNodeId, String EUID)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");   
     }    
