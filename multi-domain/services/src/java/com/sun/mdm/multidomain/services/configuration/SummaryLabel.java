@@ -35,9 +35,9 @@ public class SummaryLabel {
     
     private static transient final Localizer mLocalizer = Localizer.get();
     
+    private static String  DEFAULT_DELIMITER = " ";
     private ArrayList<FieldConfig> mFieldConfigs;   
     private ArrayList<String> mDelimiters;       
-    private String DEFAULT_DELIMITER = " ";
     private boolean mShowEUID = false;
 
     public SummaryLabel(boolean showEUID, ArrayList<FieldConfig> fieldConfigs, 
@@ -70,6 +70,22 @@ public class SummaryLabel {
         for (int i = 0; i < defaultDelimArrayListSize; i++) {
             mDelimiters.add(DEFAULT_DELIMITER);
         }
+    }
+    
+    /** Retrieves the value of mShowEUID.
+     * 
+     * @return Retrieves the value of mShowEUID
+     */
+    public boolean getShowEUID() {      
+        return mShowEUID;
+    }
+    
+    /** Sets the value of mShowEUID.
+     * 
+     * @param  showEUID  Set to true if the EUID is to be displayed, false otherwise.
+     */
+    public void getShowEUID(boolean showEUID) {      
+        mShowEUID= showEUID;
     }
     
     /** Retrieves a List of FieldConfig objects.
@@ -117,34 +133,4 @@ public class SummaryLabel {
         }
         mDelimiters = delimiters;
     }
-
-    /** Retrieves the ID label.  ID label has the following format:
-     *  mDelimiters[0] + mFieldConfigs[0] + mDelimiters[1] + ...  + mFieldConfigs[i] + mDelimiters[i+1] 
-     * 
-     * @param objectNode  ObjectNode instance that contains the values to retrieve.
-     * @return A string representing the ID label for an ObjectNode instance.
-     * @throws java.lang.Exception if an error occurred.
-     */
-    public String getIDLabel(ObjectNode objectNode) throws Exception {          
-        
-        List fieldValues = DomainUtil.getFieldValues(objectNode, mFieldConfigs);
-        
-        // If necessary, insert the EUID to the beginning of the list.
-        
-        if (mShowEUID == true) {
-            Object euid = DomainUtil.getEUIDValue(objectNode);
-            fieldValues.add(0, euid);
-        }
-        
-        StringBuffer str = new StringBuffer();
-        int delimiterIndex = 0;
-        str.append(mDelimiters.get(delimiterIndex));
-        delimiterIndex++;
-        for (int i = 0; i < fieldValues.size(); i++, delimiterIndex++) {
-            str.append(fieldValues.get(i));
-            str.append(mDelimiters.get(delimiterIndex));
-        }
-        return str.toString();
-    }
-
 }

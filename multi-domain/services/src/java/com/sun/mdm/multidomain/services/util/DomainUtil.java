@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
+import com.sun.mdm.multidomain.services.configuration.SummaryLabel;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -44,6 +45,42 @@ public class DomainUtil {
     public DomainUtil() { 
     }
     
+    /** Retrieves the ID label.  ID label has the following format:
+     *  mDelimiters[0] + mFieldConfigs[0] + mDelimiters[1] + ...  + mFieldConfigs[i] + mDelimiters[i+1] 
+     * 
+     * @param objectNode  ObjectNode instance that contains the values to retrieve.
+     * @return A string representing the ID label for an ObjectNode instance.
+     * @throws java.lang.Exception if an error occurred.
+     */
+    public String createIDLabel(ObjectNode objectNode, SummaryLabel summaryLabel) 
+            throws Exception {          
+        
+        List fieldValues = getFieldValues(objectNode, summaryLabel.getFieldConfigs());
+        
+        // If necessary, insert the EUID to the beginning of the list.
+        try {
+            if (summaryLabel.getShowEUID() == true) {
+                Object euid = DomainUtil.getEUIDValue(objectNode);
+                fieldValues.add(0, euid);
+            }
+
+            StringBuffer str = new StringBuffer();
+            int delimiterIndex = 0;
+            str.append(summaryLabel.getDelimiters().get(delimiterIndex));
+            delimiterIndex++;
+            for (int i = 0; i < fieldValues.size(); i++, delimiterIndex++) {
+                str.append(fieldValues.get(i));
+                str.append(summaryLabel.getDelimiters().get(delimiterIndex));
+            }
+            return str.toString();
+        } catch (Exception e) {
+            throw new Exception(mLocalizer.t("UTL506: Could not create the record " +
+                                             "ID for object tag ({0}): {1}" + 
+                                             objectNode.pGetTag(), e.getMessage()));
+        }
+    }
+
+    
     /** Retrieves the field values from an ObjectNode instance based on the 
      *  FieldConfig instances supplied.
      * 
@@ -54,7 +91,7 @@ public class DomainUtil {
      * FieldConfig array.
      * @throws Exception if an error is encountered.
      */
-    public static List getFieldValues(ObjectNode objectNode, ArrayList<FieldConfig> fieldConfigs) 
+    public static List getFieldValues(ObjectNode objectNode, List<FieldConfig> fieldConfigs) 
             throws Exception {
         if (objectNode == null) {
             throw new Exception(mLocalizer.t("UTL501: The objectNode parameter cannot be null"));
