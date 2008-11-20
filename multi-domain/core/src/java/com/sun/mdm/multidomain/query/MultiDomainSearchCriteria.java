@@ -24,10 +24,12 @@ package com.sun.mdm.multidomain.query;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.sun.mdm.index.objects.SystemObject;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 
 /**
  * MultiDomainSearchCriteria class. This class is used to specify different 
@@ -48,13 +50,13 @@ public class MultiDomainSearchCriteria {
      * Each domain has a system object that is used for search criteri
      * in that domain.
      */
-    private Map<String, SystemObject> systemObjects;   
+    private Map<String, EOSearchCriteria> searchCriterias;   
 
     /**
      * SearchCritera constructor.
      */
     public MultiDomainSearchCriteria() {
-    	systemObjects = new HashMap<String, SystemObject>();
+    	searchCriterias = new HashMap<String, EOSearchCriteria>();
     }
     
     /**
@@ -98,7 +100,11 @@ public class MultiDomainSearchCriteria {
      * @return size
      */
     public int size() {
-        return systemObjects != null ? systemObjects.size() : 0;
+        return searchCriterias != null ? searchCriterias.size() : 0;
+    }
+    
+    public Set<String> getDomains() {
+        return searchCriterias.keySet();
     }
     
     /**
@@ -106,82 +112,19 @@ public class MultiDomainSearchCriteria {
      * @param domain
      * @return system object
      */
-    public SystemObject getSystemObject(String domain) {
-        return systemObjects.get(domain);
+    public EOSearchCriteria getDomainSearchCriteria(String domain) {
+        return searchCriterias.get(domain);
     }
     
-    /**
-     * Get all system objects.
-     * @return a list of system objects
-     */
-    public Map<String, SystemObject> getSystemObjects() {
-        return systemObjects;
-    }
+  
     
     /**
      * Set system object.
      * @param domain
      * @param systemObject
      */
-    public void setSystemObject(String domain, SystemObject systemObject) {
-        systemObjects.put(domain,systemObject);
+    public void setDomainSearchCriteria(String domain, EOSearchCriteria searchCriteria) {
+        searchCriterias.put(domain,searchCriteria);
     }   
     
-    /**
-     * RangeSystemObecjt supports range search.
-     */
-    public static class RangeSystemObject {
-        
-        SystemObject systemObject;
-        SystemObject systemObjectFrom;
-        SystemObject systemObjectTo;
-        
-        /**
-         * Set primary system object.
-         * @param systemObject system object.
-         */
-        public void setSystemObject(SystemObject systemObject) {
-            this.systemObject = systemObject;
-        }
-        
-        /**
-         * Get primary system object.
-         * @return SystemObject Primary system object.
-         */
-        public SystemObject getSystemObject() {
-            return systemObject;
-        }
-        
-        /**
-         * Set system object for the upper bound of range search.
-         * @param systemObjectFrom SystemObject.
-         */
-        public void setSystemObjectFrom(SystemObject systemObjectFrom) {
-            this.systemObjectFrom = systemObjectFrom;
-        }
-        
-        /**
-         * Get system object for the upper bound of range search.
-         * @return systemObjectFrom SystemObject.
-         */
-        public SystemObject getSystemObjectFrom() {
-            return systemObjectFrom;
-        } 
-        
-        /**
-         * Set system object for the lower bound of range search.
-         * @param systemObjectTo SystemObject.
-         */
-        public void setSystemObjectTo(SystemObject systemObjectTo) {
-            this.systemObjectTo = systemObjectTo;
-        }
-        
-        /**
-         * Get system object for the lower bound of range search.
-         * @return systemObjectTo SystemObject.
-         */
-        public SystemObject getSystemObjectTo() {
-            return systemObjectTo;
-        }          
-    }
 }
