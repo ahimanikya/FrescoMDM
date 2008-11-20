@@ -24,6 +24,7 @@ package com.sun.mdm.multidomain.query;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 
@@ -48,6 +49,8 @@ public class MultiDomainSearchOptions {
      * Page size.
      */
     private int pageSize;
+    
+    private String primaryDomain;
  
     
   /**
@@ -74,6 +77,13 @@ public class MultiDomainSearchOptions {
     this.pageSize = pageSize;
   }
   
+  public String getPrimaryDomain() {
+      return primaryDomain;
+  }
+  
+  public void setPrimaryDomain(String primaryDomain) {
+      this.primaryDomain = primaryDomain;
+  }
   /**
    * Get maxElements.
    * @return maxElements;
@@ -118,6 +128,10 @@ public class MultiDomainSearchOptions {
   public Map<String, DomainSearchOption> getOptions() {
     return domainSearchOptions;
   }
+  
+  public Set<String> getDomains() {
+        return domainSearchOptions.keySet();
+    }
   
   
   public static class DomainSearchOption {
