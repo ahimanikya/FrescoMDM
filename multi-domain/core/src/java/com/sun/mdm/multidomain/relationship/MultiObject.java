@@ -86,13 +86,27 @@ public class MultiObject {
     public void addRelationshipDomain(RelationshipDomain reldomain) {
         relationshipDomains.add(reldomain);
     }
+    
+    /**
+     * Get RelationshipDomain object.
+     * @param domain
+     * @return RelationshipDomain.
+     */
+    public RelationshipDomain getRelationshipDomain(String domain) {
+        RelationshipDomain relationshipDomain = null;
+        for (RelationshipDomain relDomain : relationshipDomains) {
+            if(domain.equals(relDomain.getDomain())) {
+                 relationshipDomain = relDomain;
+            }
+        }
+        return  relationshipDomain;
+    }
+       
     /*  
-    public int getRelationshipTypeCount() {
-    	
+    public int getRelationshipTypeCount() {	
     }
     
-    public int getRelationshipCount(RelationshipType type) {
-    	
+    public int getRelationshipCount(RelationshipType type) {	
     }
     */
     
