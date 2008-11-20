@@ -14,10 +14,10 @@
     <version>1.0</version>
     <name>Multi-Domain Manager</name>
     <url>http://maven.apache.org</url>
-    <modules>
-        <module>project</module>        
+    <modules>      
         <module>core</module>                
         <module>services</module>                
-        <module>webapp</module>        
+        <module>webapp</module>
+        <module>project</module>        
     </modules>
 </project>
