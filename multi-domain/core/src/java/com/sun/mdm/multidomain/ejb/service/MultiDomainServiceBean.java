@@ -227,10 +227,10 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     }
 
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteHierarchy()
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteHierarchyNode()
      */ 
     
-    public void deleteHierarchy(int nodeID)
+    public void deleteHierarchyNode(int nodeId)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }

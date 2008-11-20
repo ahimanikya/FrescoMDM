@@ -236,7 +236,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public void deleteHierarchy(int hierarchyNodeId)
+    public void deleteHierarchyNode(int hierarchyNodeId)
         throws ProcessingException, UserException;
 
     /**
