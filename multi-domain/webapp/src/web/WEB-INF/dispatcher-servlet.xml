@@ -36,7 +36,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/administer_add_hierarchydef.htm">administer_add_hierarchydef</prop>
                 <prop key="/administer_edit_hierarchydef.htm">administer_edit_hierarchydef</prop>
                 
-                <prop key="/manage/record_details.htm">manage_record_details</prop>   
+                <prop key="/m_record_details.htm">manage_record_details</prop>
+                <prop key="/m_byrel_edit_attributes.htm">manage_byrel_edit_relationship_attributes</prop>
                 
             </props>
         </property>
@@ -84,7 +85,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           class="com.sun.mdm.multidomain.presentation.web.ManageController" />
 
     <bean name="manage_record_details"  
-          class="com.sun.mdm.multidomain.presentation.web.ManageRecordDetailsController" />          
+          class="com.sun.mdm.multidomain.presentation.web.ManageRecordDetailsController" />
+   <bean name="manage_byrel_edit_relationship_attributes"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageByRelEditRelationshipAttributes" />
           
      
 </beans>
