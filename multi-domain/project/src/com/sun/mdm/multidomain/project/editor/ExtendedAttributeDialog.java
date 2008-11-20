@@ -140,7 +140,7 @@ public class ExtendedAttributeDialog extends javax.swing.JDialog {
 
         jLabelDataType.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Data_Type_Colon")); // NOI18N
 
-        jComboBoxDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "date", "int", "boolean" }));
+        jComboBoxDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "char", "date", "int", "float", "boolean" }));
 
         jLabelDefaultValue.setText(org.openide.util.NbBundle.getMessage(ExtendedAttributeDialog.class, "LBL_Default_Value_Colon")); // NOI18N
 
