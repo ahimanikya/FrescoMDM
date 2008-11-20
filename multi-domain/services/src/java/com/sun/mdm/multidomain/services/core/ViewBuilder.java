@@ -50,6 +50,8 @@ import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.model.AttributeDefExt;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeView;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyTreeView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
@@ -78,17 +80,23 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
  * ViewHelper class.
  * @author cye
  */
-public class ViewHelper {
+public class ViewBuilder {
     public static final String RECORD_ID_DELIMITER = " ";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle("com.sun.mdm.multidomain.services.resources.mdwm", Locale.getDefault());
     
-    public static HierarchyNodeRecord toHierarchyNodeRecord(HierarchyNode hNode) {
+    public static HierarchyTreeView buildHierarchyTreeView(HierarchyNode hNode, List<HierarchyNode> ancestors, List<HierarchyNode> children) {
+        HierarchyTreeView hTreeView = new HierarchyTreeView();
+        // implement me, need to convert to objectrecord based on search result.         
+        return hTreeView;
+    }
+      
+    public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) {
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
         // implement me, need to convert to objectrecord based on search result. 
         return hNodeRecord;
     }
      
-    public static HierarchyDef toHierarchyDef(HierarchyDefExt hDefExt) {
+    public static HierarchyDef buildHierarchyDef(HierarchyDefExt hDefExt) {
         HierarchyDef hDef = new HierarchyDef();
         hDef.setName(hDefExt.getName());
         hDef.setId(0);
@@ -119,7 +127,7 @@ public class ViewHelper {
         return hDef;
     }
     
-    public static HierarchyDefExt toHierarchyDefExt(HierarchyDef hDef) {
+    public static HierarchyDefExt buildHierarchyDefExt(HierarchyDef hDef) {
         HierarchyDefExt hDefExt = new HierarchyDefExt();
         hDefExt.setName(hDef.getName());
         hDefExt.setId(Integer.toString(hDef.getId()));
@@ -149,7 +157,7 @@ public class ViewHelper {
         return hDefExt;
     }
     
-    public static RelationshipDefExt toRelationshipDefExt(RelationshipDef rDef) {
+    public static RelationshipDefExt buildRelationshipDefExt(RelationshipDef rDef) {
         RelationshipDefExt rDefExt = new RelationshipDefExt();
         rDefExt.setName(rDef.getName());
         rDefExt.setId(Integer.toString(rDef.getId()));

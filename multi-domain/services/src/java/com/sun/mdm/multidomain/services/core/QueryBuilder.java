@@ -55,6 +55,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
+import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
         
 import com.sun.mdm.multidomain.services.model.Attribute;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
@@ -63,6 +64,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.services.util.Localizer;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeSearch;
 
 /**
  * QueryBuilder class.
@@ -536,7 +538,14 @@ public class QueryBuilder {
     */ 
    public static HierarchyNode buildHierarchyNode(HierarchyNodeRecord hNodeRecord) {
         HierarchyNode hNode = new HierarchyNode();
-        // Implement me.
+        // implement me.
         return hNode;
    } 
+   
+   public static HierarchySearchCriteria buildHierarchySearchCriteria(HierarchyNodeSearch hNodeSearch) {
+        HierarchySearchCriteria hSearchCriteria = new HierarchySearchCriteria();
+        // implement me.
+        return hSearchCriteria;
+   }
+   
 }
