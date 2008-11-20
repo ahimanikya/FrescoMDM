@@ -39,4 +39,14 @@ public class DomainsForWebManager {
         return null;
     }
 
+    public void removeDomain(String domainName) {
+        for (DomainForWebManager domain : mDomains) {
+            if (domain.getDomainName().equals(domainName)) {
+                mDomains.remove(domain);
+                break;
+            }
+        }
+        
+    }
+    
 }
