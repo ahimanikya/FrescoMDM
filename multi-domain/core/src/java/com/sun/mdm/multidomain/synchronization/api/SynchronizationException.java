@@ -34,7 +34,7 @@ public class SynchronizationException extends RuntimeException {
     private static final long serialVersionUID = 6009470345372096165L;
 
     /**
-     * Constructs an <code>MdmStandardizationException</code> with no
+     * Constructs an <code>SynchronizationException</code> with no
      * detail message.
      * 
      * @param t
@@ -45,7 +45,7 @@ public class SynchronizationException extends RuntimeException {
     }
 
     /**
-     * Constructs an <code>MdmStandardizationException</code> with the
+     * Constructs an <code>SynchronizationException</code> with the
      * specified detail message.
      * 
      * @param s
@@ -59,7 +59,7 @@ public class SynchronizationException extends RuntimeException {
     }
 
     /**
-     * Constructs an <code>MdmStandardizationException</code> with the
+     * Constructs an <code>SynchronizationException</code> with the
      * specified detail message.
      * 
      * @param s
@@ -70,7 +70,7 @@ public class SynchronizationException extends RuntimeException {
     }
     
     /**
-     * Constructs an <code>MdmStandardizationException</code> with the
+     * Constructs an <code>SynchronizationException</code> with the
      * specified detail message.
      * 
      * @param s
