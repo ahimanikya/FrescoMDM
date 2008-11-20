@@ -41,7 +41,7 @@ import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
 import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
         
-import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeSearch;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchySearch;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeView;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
@@ -340,11 +340,11 @@ public class HierarchyManager {
     
     /**
      * Get a total count of hierarchy HierarchyNode instances for the given HierarchyDef.
-     * @param HierarchyDef HierarchyDef.
+     * @param hDefExt HierarchyDefExt.
      * @return int Count of hierarchy HierarchyObject instances.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getHierarchyNodeCount(HierarchyDef HierarchyDef) throws ServiceException {
+    public int getHierarchyNodeCount(HierarchyDefExt hDefExt) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");  
     }
     
@@ -495,11 +495,11 @@ public class HierarchyManager {
     /**
      * Get a list of HierarchyNode for the given search options and criteria.
      * @param dSearch DomainSearch option.
-     * @param hNodeSearch HierarchyNodeSearch criteria.
+     * @param hNodeSearch HierarchySearch criteria.
      * @return List<HierarchyNodeView> List of HierarchyNodeView.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<HierarchyNodeView> searchHierarchyNodes(DomainSearch dSearch, HierarchyNodeSearch hNodeSearch) 
+    public List<HierarchyNodeView> searchHierarchyNodes(DomainSearch dSearch, HierarchySearch hNodeSearch) 
         throws ServiceException {
         List<HierarchyNodeView> hNodeViews = new ArrayList<HierarchyNodeView>();
         try {
@@ -538,6 +538,5 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         }                  
         return hTreeView;
-    }
-            
+    }            
 }
