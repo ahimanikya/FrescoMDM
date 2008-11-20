@@ -46,7 +46,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
          
-import com.sun.mdm.multidomain.services.core.ViewHelper;
+import com.sun.mdm.multidomain.services.core.ViewBuilder;
 import com.sun.mdm.multidomain.services.core.QueryBuilder;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.model.AttributeDefExt;
@@ -113,7 +113,7 @@ public class RelationshipManager {
         if (!TBD) {
         String relationshId = null;
         try {
-            RelationshipDef rDef = ViewHelper.toRelationshipDef(rDefExt);
+            RelationshipDef rDef = ViewBuilder.toRelationshipDef(rDefExt);
             relationshId = multiDomainMetaService.createRelationshipDef(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -134,7 +134,7 @@ public class RelationshipManager {
             }
     	}       
         rDefExt.setId(Long.toString(System.currentTimeMillis()));
-        rts.add(ViewHelper.toRelationshipDef(rDefExt));     
+        rts.add(ViewBuilder.toRelationshipDef(rDefExt));     
         return rDefExt.getId();
     }
     
@@ -147,7 +147,7 @@ public class RelationshipManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            RelationshipDef rDef = ViewHelper.toRelationshipDef(rDefExt);
+            RelationshipDef rDef = ViewBuilder.toRelationshipDef(rDefExt);
             multiDomainMetaService.updateRelationshipDef(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -162,7 +162,7 @@ public class RelationshipManager {
             if (rt.getSourceDomain().equals(rDefExt.getSourceDomain()) &&
                 rt.getTargetDomain().equals(rDefExt.getTargetDomain()) &&
                 rt.getName().equals(rDefExt.getName())) {                                      
-                RelationshipDef rDef = ViewHelper.toRelationshipDef(rDefExt);
+                RelationshipDef rDef = ViewBuilder.toRelationshipDef(rDefExt);
                 rts.remove(rt);
                 rts.add(rDef);
                 updated = true;
@@ -186,7 +186,7 @@ public class RelationshipManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            multiDomainMetaService.deleteRelationshipDef(ViewHelper.toRelationshipDef(rDefExt));
+            multiDomainMetaService.deleteRelationshipDef(ViewBuilder.toRelationshipDef(rDefExt));
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -240,7 +240,7 @@ public class RelationshipManager {
         if (!TBD) {
         try {
             RelationshipDef rDef = multiDomainMetaService.getRelationshipDefByName(name, sourceDomain, targetDomain);
-            rDefExt = ViewHelper.toRelationshipDefExt(rDef);
+            rDefExt = ViewBuilder.buildRelationshipDefExt(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -252,7 +252,7 @@ public class RelationshipManager {
             if (rt.getName().equals(name) &&
                 rt.getSourceDomain().equals(sourceDomain) &&
                 rt.getTargetDomain().equals(targetDomain)) { 
-                rDefExt = ViewHelper.toRelationshipDefExt(rt);
+                rDefExt = ViewBuilder.buildRelationshipDefExt(rt);
                 break;
             }
     	}
@@ -271,7 +271,7 @@ public class RelationshipManager {
         if (!TBD) {
         try {
             RelationshipDef rDef = multiDomainMetaService.getRelationshipDefById(relationshipDefId);
-            rDefExt = ViewHelper.toRelationshipDefExt(rDef);
+            rDefExt = ViewBuilder.buildRelationshipDefExt(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -281,7 +281,7 @@ public class RelationshipManager {
         //demo
         for (RelationshipDef rt:rts) {
             if (rt.getId() == relationshipDefId) { 
-                rDefExt = ViewHelper.toRelationshipDefExt(rt);
+                rDefExt = ViewBuilder.buildRelationshipDefExt(rt);
                 break;
             }
     	}
@@ -302,7 +302,7 @@ public class RelationshipManager {
         try {
             RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs();
             for (int i = 0; i < relationships.length; i++) {
-                hDefs.add(ViewHelper.toRelationshipDefExt(relationships[i]));
+                hDefs.add(ViewBuilder.buildRelationshipDefExt(relationships[i]));
             }            
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
@@ -313,7 +313,7 @@ public class RelationshipManager {
     	for (RelationshipDef rt:rts) {
     		if (rt.getSourceDomain().equals(domain) || 
     			rt.getTargetDomain().equals(domain)) {
-    			hDefs.add(ViewHelper.toRelationshipDefExt(rt));	
+    			hDefs.add(ViewBuilder.buildRelationshipDefExt(rt));	
     		}
     	}
     	return hDefs;
@@ -336,7 +336,7 @@ public class RelationshipManager {
             for (RelationshipDef relationship : relationships) {
                 if(sourceDomain.equals(relationship.getSourceDomain()) ||
                    targetDomain.equals(relationship.getTargetDomain())) {                    
-                   RelationshipDefs.add(ViewHelper.toRelationshipDefExt(relationship)); 
+                   RelationshipDefs.add(ViewBuilder.buildRelationshipDefExt(relationship)); 
                 }
             }
          } catch(UserException uex) {
@@ -350,7 +350,7 @@ public class RelationshipManager {
     	for (RelationshipDef rt:rts) {
     		if (rt.getSourceDomain().equals(sourceDomain) && 
                     rt.getTargetDomain().equals(targetDomain)) {                    
-    		    RelationshipDefs.add(ViewHelper.toRelationshipDefExt(rt));	
+    		    RelationshipDefs.add(ViewBuilder.buildRelationshipDefExt(rt));	
     		}
     	}
     	return RelationshipDefs;
@@ -461,7 +461,7 @@ public class RelationshipManager {
             mdSearchOptions.setOptions(domainSearch.getName(),mdSearchOption);
             MultiDomainSearchCriteria mdSearchCriteria = new MultiDomainSearchCriteria();
             PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);            
-            domainRelationshipsObject = ViewHelper.buildRelationshipView(pages, domainSearch.getName());
+            domainRelationshipsObject = ViewBuilder.buildRelationshipView(pages, domainSearch.getName());
         } catch (ConfigException cex) {
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
@@ -492,7 +492,7 @@ public class RelationshipManager {
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
             MultiDomainSearchCriteria mdSearchCriteria = QueryBuilder.buildMultiDomainSearchCriteria(sourceDomainSearch, targetDomainSearch, relationshipSearch);
             PageIterator<MultiObject> pages = multiDomainService.searchRelationships(mdSearchOptions, mdSearchCriteria);
-            relationships = ViewHelper.buildRelationshipView(pages, sourceDomainSearch.getName(), targetDomainSearch.getName(), relationshipSearch.getName());
+            relationships = ViewBuilder.buildRelationshipView(pages, sourceDomainSearch.getName(), targetDomainSearch.getName(), relationshipSearch.getName());
         } catch (ConfigException cex) {
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
@@ -561,7 +561,7 @@ public class RelationshipManager {
             relationship.setTargetEUID(relationshipView.getTargetEUID());
             // need to add a new method in multiDomainService to getRelationship
             MultiObject relationshipObject = multiDomainService.getRelationship(relationship);
-            relationshipComposite = ViewHelper.buildRelationshipComposite(relationshipObject);
+            relationshipComposite = ViewBuilder.buildRelationshipComposite(relationshipObject);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch(UserException uex) {
@@ -609,7 +609,7 @@ public class RelationshipManager {
             EOSearchCriteria eoSearchCriteria = QueryBuilder.buildEOSearchCriteria(domainSearch);
             PageIterator<ObjectNode> pages = multiDomainService.searchEnterprises(domainSearch.getName(), eoSearchOptions, eoSearchCriteria);
             // TBD: should return a lits of ObjectNode, EUID, and ComparisonScore.
-            objects = ViewHelper.buildObjectRecords(domainSearch.getName(), pages, eoSearchOptions.isWeighted());
+            objects = ViewBuilder.buildObjectRecords(domainSearch.getName(), pages, eoSearchOptions.isWeighted());
         } catch (ConfigException cex) {
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
@@ -643,7 +643,7 @@ public class RelationshipManager {
         try {           
             // need to add a new method in multiDomainService to getObject
             ObjectNode objectNoe = multiDomainService.getEnterprise(object.getName(), object.getEUID());
-            objectRecord = ViewHelper.buildObjectRecord(object.getName(), object.getEUID(),objectNoe);
+            objectRecord = ViewBuilder.buildObjectRecord(object.getName(), object.getEUID(),objectNoe);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch(UserException uex) {

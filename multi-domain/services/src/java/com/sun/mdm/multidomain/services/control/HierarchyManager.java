@@ -37,14 +37,20 @@ import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
-import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
-import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
-
+import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
+import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
+import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
+        
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeSearch;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeView;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyTreeView;
+import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.core.ServiceException;
+import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.util.Localizer;
-import com.sun.mdm.multidomain.services.core.ViewHelper;
+import com.sun.mdm.multidomain.services.core.ViewBuilder;
 import com.sun.mdm.multidomain.services.core.QueryBuilder;
 
 /**
@@ -147,7 +153,7 @@ public class HierarchyManager {
         String hDefId = null;
         if (!TBD) {
         try {
-            HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+            HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
             hDefId = multiDomainMetaService.createHierarchyDef(hDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -157,7 +163,7 @@ public class HierarchyManager {
         }
         //demo
         hDefExt.setId(Long.toString(System.currentTimeMillis()));
-        hs.add(ViewHelper.toHierarchyDef(hDefExt));
+        hs.add(ViewBuilder.buildHierarchyDef(hDefExt));
         hDefId = hDefExt.getId();
         
         return hDefId;
@@ -172,7 +178,7 @@ public class HierarchyManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+            HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
             multiDomainMetaService.updateHierarchyDef(hDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -185,7 +191,7 @@ public class HierarchyManager {
         for (HierarchyDef rt:hs) {
             if (rt.getDomain().equals(hDefExt.getDomain()) &&
                 rt.getName().equals(hDefExt.getName())) {                 
-                HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+                HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
                 hs.remove(rt);
                 hs.add(hDef);
                 updated = true;
@@ -208,7 +214,7 @@ public class HierarchyManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            HierarchyDef hDef = ViewHelper.toHierarchyDef(hDefExt);
+            HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
             multiDomainMetaService.deleteHierarchyDef(hDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -258,7 +264,7 @@ public class HierarchyManager {
         if (!TBD) {
         try {
             HierarchyDef hDef = multiDomainMetaService.getHierarchyDefByName(name, domain);
-            hDefExt = ViewHelper.toHierarchyDefExt(hDef);
+            hDefExt = ViewBuilder.buildHierarchyDefExt(hDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -269,7 +275,7 @@ public class HierarchyManager {
         for (HierarchyDef rt:hs) {
             if (rt.getName().equals(name) &&
                 rt.getDomain().equals(domain)) { 
-                hDefExt = ViewHelper.toHierarchyDefExt(rt);
+                hDefExt = ViewBuilder.buildHierarchyDefExt(rt);
                 break;
             }
     	}        
@@ -288,7 +294,7 @@ public class HierarchyManager {
         if (!TBD) {
         try {
             HierarchyDef hDef = multiDomainMetaService.getHierarchyDefById(hierarchyId);
-            hDefExt = ViewHelper.toHierarchyDefExt(hDef);
+            hDefExt = ViewBuilder.buildHierarchyDefExt(hDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
@@ -298,7 +304,7 @@ public class HierarchyManager {
         //demo
         for (HierarchyDef rt:hs) {
             if (rt.getId() == hierarchyId) {
-                hDefExt = ViewHelper.toHierarchyDefExt(rt);
+                hDefExt = ViewBuilder.buildHierarchyDefExt(rt);
                 break;
             }
     	}             
@@ -326,7 +332,7 @@ public class HierarchyManager {
     	// demo data	
     	for (HierarchyDef rt:hs) {
             if (rt.getDomain().equals(domain)) {
-                hDefs.add(ViewHelper.toHierarchyDefExt(rt));	
+                hDefs.add(ViewBuilder.buildHierarchyDefExt(rt));	
             }
     	}       
     	return hDefs;
@@ -433,7 +439,7 @@ public class HierarchyManager {
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
         try {
             HierarchyNode hNode = multiDomainService.getHierarchyNode(hierarchyNodeId);
-            hNodeRecord = ViewHelper.toHierarchyNodeRecord(hNode);
+            hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
@@ -454,7 +460,7 @@ public class HierarchyManager {
          try {
             List<HierarchyNode> hNodes = multiDomainService.getHierarchyNodeChildren(hierarchyNodeId);
             for (HierarchyNode hNode : hNodes) {
-                HierarchyNodeRecord hNodeRecord = ViewHelper.toHierarchyNodeRecord(hNode);
+                HierarchyNodeRecord hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
                 hNodeRecords.add(hNodeRecord);
             }
         } catch (ProcessingException pex) {
@@ -485,4 +491,53 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         }            
     }   
+    
+    /**
+     * Get a list of HierarchyNode for the given search options and criteria.
+     * @param dSearch DomainSearch option.
+     * @param hNodeSearch HierarchyNodeSearch criteria.
+     * @return List<HierarchyNodeView> List of HierarchyNodeView.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public List<HierarchyNodeView> searchHierarchyNodes(DomainSearch dSearch, HierarchyNodeSearch hNodeSearch) 
+        throws ServiceException {
+        List<HierarchyNodeView> hNodeViews = new ArrayList<HierarchyNodeView>();
+        try {
+            DomainSearchOption dSearchOption = QueryBuilder.buildMultiDomainSearchOption(dSearch);
+            HierarchySearchCriteria hSearchCriteria = QueryBuilder.buildHierarchySearchCriteria(hNodeSearch);
+            List<HierarchyNode> hNodes = multiDomainService.searchHierarchys(dSearchOption, hSearchCriteria);
+        } catch (ConfigException cex) {    
+            throw new ServiceException(cex);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }                    
+        return hNodeViews;
+    }
+     
+    /**
+     * Get a HierarchyTree for the given node id and node EUID.
+     * @param nodeId Node Id.
+     * @param EUID Node EUID.
+     * @return HierarchyTreeView HierarchyTreeView.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public HierarchyTreeView getHierarchyTree(int nodeId, String EUID) 
+        throws ServiceException {
+        HierarchyTreeView hTreeView = new HierarchyTreeView();
+        try {
+            HierarchyTree hTree = multiDomainService.getHierarchyTree(nodeId, EUID);
+            HierarchyNode hNode = hTree.getNode();
+            List<HierarchyNode> ancestors = hTree.getAncestors();
+            List<HierarchyNode> children = hTree.getChildren();
+            hTreeView = ViewBuilder.buildHierarchyTreeView(hNode, ancestors, children);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }                  
+        return hTreeView;
+    }
+            
 }
