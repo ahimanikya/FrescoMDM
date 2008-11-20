@@ -41,9 +41,11 @@ import com.sun.mdm.multidomain.hierarchy.HierarchyObject;
 import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.util.Localizer;
 import com.sun.mdm.multidomain.services.core.ViewHelper;
+import com.sun.mdm.multidomain.services.core.QueryBuilder;
 
 /**
  * HierarchyManager class.
@@ -331,97 +333,156 @@ public class HierarchyManager {
     }
     
     /**
-     * Get a total count of hierarchy HierarchyObject instances for the given HierarchyObject type.
+     * Get a total count of hierarchy HierarchyNode instances for the given HierarchyDef.
      * @param HierarchyDef HierarchyDef.
      * @return int Count of hierarchy HierarchyObject instances.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public int getHierarchyObjectCount(HierarchyDef HierarchyDef) throws ServiceException {
+    public int getHierarchyNodeCount(HierarchyDef HierarchyDef) throws ServiceException {
         throw new ServiceException("Not Implemented Yet");  
     }
     
     /**
-     * Get a list of hierarchy HierarchyObject instances for the given HierarchyObject type.
-     * @param HierarchyDef HierarchyDef.
-     * @return List<HierarchyObject> List of hierarchy HierarchyObject instances
+     * Add a new hierarchy node for the given parent node Id and parent node EUID.
+     * @param hNodeRecord HierarchyNodeRecord.
+     * @return String Hierarchy node identifier of a newly added hierarchy node.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public List<HierarchyObject> getHierarchyObjects(HierarchyDef HierarchyDef) throws ServiceException {
-    	List<HierarchyObject> hierarchys = null;
-    	return hierarchys;
+    public String addHierarchyNode(HierarchyNodeRecord hNodeRecord) 
+        throws ServiceException {
+        int hNodeId = 0;
+        try {
+            HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
+            hNodeId = multiDomainService.addHierarchyNode(hNode);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }     
+        return Integer.toString(hNodeId);
+    }
+    
+     /**
+     * Add a list of new hierarchy node for the given parent node Id and parent node EUID.
+     * @param hNodeRecords List<HierarchyNodeRecord>.
+     * @return List<String> List of hierarchy node Id.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public List<String> addHierarchyNodes(String parentId, List<HierarchyNodeRecord> hNodeRecords) 
+        throws ServiceException {
+        List<String> nodeIds = new ArrayList<String>();
+        try {
+            HierarchyNode[] hNodes = new HierarchyNode[hNodeRecords.size()];
+            int i = 0;
+            for (HierarchyNodeRecord hNodeRecord : hNodeRecords) {
+                hNodes[i++] = QueryBuilder.buildHierarchyNode(hNodeRecord);
+            };
+            int[] ids = multiDomainService.addHierarchyNodes(Integer.parseInt(parentId), hNodes);
+            for (int id : ids) {
+                nodeIds.add(Integer.toString(id));
+            }
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }     
+        return nodeIds;
+    }
+    
+    /**
+     * Delete an existing hierarchyNode for the given hierarchyNode Id.
+     * @param hierarchyNodeId HierarchyNodeId.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public void deleteHierarchyNode(int hierarchyNodeId) 
+        throws ServiceException {
+        try {
+             multiDomainService.deleteHierarchyNode(hierarchyNodeId);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }           
     }
        
     /**
-     * Add a new hierarchy instance for the given domain.
-     * @param domain Domain name.
-     * @param parentEUID Parent entity EUID.
-     * @param childEUID Child entity EUID.
-     * @param hierarchy HierarchyObject.
-     * @return String Hierarchy identifier of a newly added hierarchy instance.
+     * Update an existing HierarchyNode for the given HierarchyNodeRecord.
+     * @param hNodeRecord HierarchyNodeRecord.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addHierarchy(String domain, String parentEUID, String childEUID, HierarchyObject hierarchy) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
+    public void updateHierarchyNode(HierarchyNodeRecord hNodeRecord) 
+        throws ServiceException {
+        try {
+            HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
+            multiDomainService.updateHierarchyNode(hNode);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }          
     }
     
     /**
-     * Add a new hierarchy instance between patent entity and children entities for the given domain.
-     * @param domain Domain name.
-     * @param parentEUID Parent entity EUID.
-     * @param childEUIDs Children entities EUIDs.
-     * @param hierarchy HierarchyObject.
-     * @return String Hierarchy identifier of a newly added hierarchy instance.
+     * Get a HierarchyNode for the given hierarchyNode Id.
+     * @param hierarchyNodeId HierarchyNode Id.
+     * @return HierarchyNodeRecord HierarchyNodeRecord.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addHierarchy(String domain, String parentEUID, List<String> childEUIDs, HierarchyObject hierarchy) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
-    }    
-    
-    /**
-     * Update an existing hierarchy instance for the given domain.
-     * @param domain Domain name.
-     * @param parentEUID Parent entity EUID.
-     * @param childEUID Child entity EUID.
-     * @param hierarchy HierarchyObject.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */
-    public void updateHierarchy(String domain, String parentEUID, String childEUID, HierarchyObject hierarchy) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
+    public HierarchyNodeRecord getHierarchyNode(int hierarchyNodeId) 
+        throws ServiceException {
+        HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
+        try {
+            HierarchyNode hNode = multiDomainService.getHierarchyNode(hierarchyNodeId);
+            hNodeRecord = ViewHelper.toHierarchyNodeRecord(hNode);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }            
+        return hNodeRecord;
     }
     
     /**
-     * Update an existing hierarchy instance between patent entity and children entities for the given domain.
-     * @param domain Domain name.
-     * @param parentEUID Parent entity EUID.
-     * @param childEUIDs Children entities EUIDs.
-     * @param hierarchy HierarchyObject.
+     * Get all children for the given hierarchy node Id.
+     * @param hierarchyNodeId HierarchyNode Id.
+     * @return List<HierarchyNodeRecord> List of HierarchyNodeRecord.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateHierarchy(String domain, String parentEUID, List<String> childEUIDs, HierarchyObject hierarchy) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
-    } 
-    
+    public List<HierarchyNodeRecord> getHierarchyNodeChildren(int hierarchyNodeId)
+        throws ServiceException {
+        List<HierarchyNodeRecord> hNodeRecords = new ArrayList<HierarchyNodeRecord>();
+         try {
+            List<HierarchyNode> hNodes = multiDomainService.getHierarchyNodeChildren(hierarchyNodeId);
+            for (HierarchyNode hNode : hNodes) {
+                HierarchyNodeRecord hNodeRecord = ViewHelper.toHierarchyNodeRecord(hNode);
+                hNodeRecords.add(hNodeRecord);
+            }
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }    
+        return hNodeRecords;
+    }   
+     
     /**
-     * Delete an existing hierarchy instance for the given domain.
-     * @param domain Domain name. 
-     * @param parentEUID Parent entity EUID.
-     * @param childEUID Child entity EUID.
-     * @param hierarchyName HierarchyName.
+     * Move a set of nodes to a new parentNode.
+     * @param nodeIds List of NodeId.
+     * @param newParentNodeId New ParentNodeId.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteHierarchy(String domain, String parentEUID, String childEUID, String hierarchyName) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
-    }     
- 
-    /**
-     * Delete an existing hierarchy instance for the given domain.
-     * @param domain Domain name.
-     * @param parentEUID Parent entity EUID.
-     * @param childEUIDs Children entities EUIDs. 
-     * @param hierarchyName HierarchyName.
-     * @throws ServiceException Thrown if an error occurs during processing.
-     */    
-    public void deleteHierarchy(String domain, String parentEUID, List<String> childEUIDs, String hierarchyName) throws ServiceException {
-        throw new ServiceException("Not Implemented Yet");
-    }
+    public void moveHierarchyNodes(List<Integer> nodeIds, int newParentNodeId)
+        throws ServiceException {        
+        try {
+            int[] iNodeIds = new int[nodeIds.size()]; 
+            for(int i = 0; i < nodeIds.size(); i++) {
+                iNodeIds[i] = nodeIds.get(i).intValue();
+            }
+            multiDomainService.moveHierarchyNodes(iNodeIds, newParentNodeId);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch (UserException uex) {
+            throw new ServiceException(uex);
+        }            
+    }   
 }
