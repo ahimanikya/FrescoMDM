@@ -36,7 +36,7 @@ import com.sun.mdm.multidomain.parser.SearchOptions;
 import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.WebDefinition;
-import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+import com.sun.mdm.multidomain.parser.ConfigurationFiles;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
@@ -171,7 +171,7 @@ public class MDConfigManager {
     public static MultiDomainWebManager getMultiDomainWebManager() throws ConfigException {
         
         InputStream in;
-        String configFileName = MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML;
+        String configFileName = ConfigurationFiles.RELATIONSHIP_WEB_MANAGER_XML;
         try {
             in = MDConfigManager.class.getClassLoader().getResourceAsStream(configFileName);
         } catch (Exception e) {
