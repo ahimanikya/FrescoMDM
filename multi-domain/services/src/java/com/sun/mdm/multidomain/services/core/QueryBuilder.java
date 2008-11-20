@@ -51,7 +51,6 @@ import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
 
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
-import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria.RangeSystemObject;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 import com.sun.mdm.multidomain.relationship.Relationship;
@@ -185,16 +184,13 @@ public class QueryBuilder {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
         MultiDomainSearchCriteria mdSearchSearchCriteria = new MultiDomainSearchCriteria();
         Relationship relationship = buildRelationship(relationshipSearch);
-        SystemObject object1 = buildSystemObjects(sourceDomainSearch)[0];
-        SystemObject object2 = buildSystemObjects(targetDomainSearch)[0];
+        EOSearchCriteria sourceEOSearchCriteria = buildEOSearchCriteria(sourceDomainSearch);
+        EOSearchCriteria targetEOSearchCriteria = buildEOSearchCriteria(targetDomainSearch);
         
         mdSearchSearchCriteria.setRelationship(relationship);
-        //TBD: the back-end multidomain service does not support the range search yet.
-        RangeSystemObject range = new RangeSystemObject(); 
-        
-        mdSearchSearchCriteria.setSystemObject(sourceDomainSearch.getName(), object1);
-        mdSearchSearchCriteria.setSystemObject(targetDomainSearch.getName(), object2);
-        
+        mdSearchSearchCriteria.setDomainSearchCriteria(sourceDomainSearch.getName(), sourceEOSearchCriteria);
+        mdSearchSearchCriteria.setDomainSearchCriteria(targetDomainSearch.getName(), targetEOSearchCriteria);
+    
         return mdSearchSearchCriteria;
     } 
 
