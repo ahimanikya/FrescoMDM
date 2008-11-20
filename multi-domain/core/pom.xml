@@ -27,8 +27,8 @@
 	</reporting> 
   
   <build>
-		<finalName>multidomain-core</finalName>
-    <sourceDirectory>src</sourceDirectory>
+	<finalName>multidomain-core</finalName>
+    <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
     <resources>
     	<resource>
