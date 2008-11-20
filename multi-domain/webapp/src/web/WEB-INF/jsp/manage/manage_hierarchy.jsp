@@ -36,5 +36,5 @@
 
 
 <div id="SelectManageHierarchy" dojoType="dijit.Dialog" title="Select Hierarchy" style="display:none;width:900px;">
-    <jsp:include page="/WEB-INF/jsp/manage/select_hierarchy.jsp" flush="true" />
+    <jsp:include page="/WEB-INF/jsp/manage/hierarchy/select_hierarchy.jsp" flush="true" />
 </div>
