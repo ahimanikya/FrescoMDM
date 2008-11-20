@@ -117,6 +117,7 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
                 "Name", "Value"
             }
         ));
+        jTableProperties.setCellSelectionEnabled(true);
         jScrollPane2.setViewportView(jTableProperties);
         jTableProperties.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_PROPERTY_NAME")); // NOI18N
         jTableProperties.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_PROPERTY_VALUE")); // NOI18N
@@ -220,6 +221,7 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
 
 private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCancel
 // TODO add your handling code here:
+    bModified = false;
     this.dispose();
 }//GEN-LAST:event_onCancel
 
@@ -244,6 +246,8 @@ private void onAddProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     newProperty.setValue("");
     modelProperties.addRow(iInsertRow, newProperty);
     jTableProperties.setModel(modelProperties);
+    jTableProperties.setColumnSelectionInterval(0, 0);
+    jTableProperties.setRowSelectionInterval(iInsertRow, iInsertRow);
     
 }//GEN-LAST:event_onAddProperty
 
@@ -256,7 +260,6 @@ private void onRemoveProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
                                  NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Row_Title"), 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
-            this.bModified = true;
             TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
             modelProperties.removeRow(rs);
             

@@ -392,6 +392,8 @@ private void onAddHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
                 fieldModel.addRow(fieldModel.getRowCount(), fieldRef);
             }
             jTableRecordID.setModel(fieldModel);
+            enableSave();
+
         }
     }
 
