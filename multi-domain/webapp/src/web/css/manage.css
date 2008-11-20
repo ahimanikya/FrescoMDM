@@ -84,4 +84,85 @@
     border-bottom: 1px solid #000000;
     
 }
+
+/* record_details---------------->narahari */
+
+.button_spacing {
+    padding-left:6px;
+}
 		
+.Details{
+    
+    border: 1px solid #a4936e;
+}
+.TitleBar{
+    height:24px;
+    background-color: #A4936E;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    padding-left:5px;
+    padding-top:3px;
+    vertical-align:bottom;
+}
+
+.Content{
+    
+    background-color:#fefee4;
+    padding-left:10px;
+    padding-top:5px;
+    padding-right:10px;
+    padding-bottom:10px;
+    border-right: 1px solid #d1c8a9;
+    border-left: 1px solid #d1c8a9;
+    border-top: 1px solid #d1c8a9;
+    border-bottom: 1px solid #d1c8a9;
+    
+}
+
+ .LeftPane {
+    color:#637881;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:14px;
+    font-weight:bold;
+}
+
+ .RightPane {
+    color:#595a55;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.EditAttributes {
+    border: 1px solid #a4936e;
+}
+
+.TopRow {
+    border-right: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+.BottomRow {
+    border-right: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+.mainLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#343535;
+    font-weight:bold;
+}
+
+.subLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:bold;
+}
