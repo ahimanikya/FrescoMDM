@@ -23,6 +23,8 @@
 package com.sun.mdm.multidomain.relationship;
 
 import com.sun.mdm.index.objects.ObjectNode;
+import java.util.List;
+import java.util.ArrayList;
 
         
 /**
@@ -33,13 +35,20 @@ import com.sun.mdm.index.objects.ObjectNode;
  */
 public class MultiObject {
     private ObjectNode sourceDomainObject;	
-    private RelationshipDomain[] relationshipDomains;
+    private List<RelationshipDomain> relationshipDomains = new ArrayList<RelationshipDomain>();
 	
     
     /**
      * Create an instance of MultiObject.
      */
-    public void MultiObject(){
+    public MultiObject(){
+    }
+    
+     /**
+     * Create an instance of MultiObject.
+     */
+    public MultiObject(ObjectNode sourceDomainObject){
+        this.sourceDomainObject = sourceDomainObject; 
     }
          
     /**
@@ -62,7 +71,7 @@ public class MultiObject {
      * Get an array of RelationshipDomain objects.
      * @return RelationshipDomain[] An array of RelationshipDomain objects.
      */
-    public RelationshipDomain[] getRelationshipDomains() {        
+    public List<RelationshipDomain> getRelationshipDomains() {        
         return relationshipDomains;
     }
     
@@ -70,10 +79,13 @@ public class MultiObject {
      * Set an array of RelationshipDomain objects.
      * @param relationshipDomains An array of RelationshipDomain objects.
      */
-    public void setRelationshipDomains(RelationshipDomain[] relationshipDomains) {        
+    public void setRelationshipDomains(List<RelationshipDomain> relationshipDomains) {        
         this.relationshipDomains = relationshipDomains;
     }
     
+    public void addRelationshipDomain(RelationshipDomain reldomain) {
+        relationshipDomains.add(reldomain);
+    }
     /*  
     public int getRelationshipTypeCount() {
     	
@@ -92,12 +104,13 @@ public class MultiObject {
      */
     public static class RelationshipDomain {
         private String domain;
-        private RelationshipObject[] relationshipObjects;
+        private List<RelationshipObject> relationshipObjects = new ArrayList<RelationshipObject>();
         
         /**
          * Public constructor
          */
-        public RelationshipDomain() {
+        public RelationshipDomain(String domain) {
+            this.domain = domain;
         }
         
         /**
@@ -117,11 +130,15 @@ public class MultiObject {
         	this.domain = domain;
         }
         
+        public void addRelationshipObejct(RelationshipObject relobject) {
+            this.relationshipObjects.add(relobject);
+        }
+          
         /**
          * Set an array of RelationshipObject.
          * @param relationshipObjects Array of RelationshipObject.
          */
-        public void setRelationshipObjects(RelationshipObject[] relationshipObjects) {
+        public void setRelationshipObjects(List<RelationshipObject> relationshipObjects) {
             this.relationshipObjects = relationshipObjects;
         }
         
@@ -129,7 +146,7 @@ public class MultiObject {
          * Get an array of RelationshipObject.
          * @return RelationshipObject[] Array of RelationshipObject.
          */
-        public RelationshipObject[] getRelationshipObjects() {
+        public List<RelationshipObject> getRelationshipObjects() {
             return relationshipObjects;
         }
         
@@ -158,7 +175,9 @@ public class MultiObject {
         /**
          * Public constructor
          */
-        public RelationshipObject() {
+        public RelationshipObject(Relationship relationship, ObjectNode object) {
+            this. relationship = relationship;
+            this.targetObject = object;
         }
         
         /**
