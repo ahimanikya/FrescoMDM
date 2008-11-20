@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
  * ManageByRelEditRelationshipAttributes class
  * @author Narahari
  */
-public class ManageByRelEditRelationshipAttributes implements Controller {
+public class ManageByRelEditAttributesController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException { 
         
