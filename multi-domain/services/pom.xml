@@ -122,12 +122,7 @@
     	<groupId>mural</groupId>
         <artifactId>multidomain-core</artifactId>
         <version>${mural.currentVersion}</version>
-    </dependency>    
-    <dependency>
-        <groupId>mural</groupId>
-        <artifactId>com-sun-mdm-multidomain-project</artifactId>
-        <version>${mural.currentVersion}</version>
-    </dependency>    
+    </dependency>
     <dependency>
     	<groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
