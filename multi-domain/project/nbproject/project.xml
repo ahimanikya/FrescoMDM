@@ -241,6 +241,10 @@
                 <runtime-relative-path>ext/mdm/net.java.hulp.i18n.jar</runtime-relative-path>
                 <binary-origin>../../lib/net.java.hulp.i18n.jar</binary-origin>
             </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/mdm/multidomain/multidomain-core.jar</runtime-relative-path>
+                <binary-origin>../core/target/multidomain-core.jar</binary-origin>
+            </class-path-extension>
         </data>
     </configuration>
 </project>

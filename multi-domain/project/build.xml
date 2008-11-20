@@ -10,6 +10,8 @@
     </target>
     <target name="copy-jar">
         <copy file="../../lib/net.java.hulp.i18n.jar" todir="${cluster}/modules/ext/mdm"/>
+        <copy file="../core/target/multidomain-core.jar" todir="${cluster}/modules/ext/mdm/multidomain"/>
+        <copy file="src/com/sun/mdm/multidomain/project/EviewApplicationTemplateProject.zip" todir="${cluster}/modules/ext/mdm/repository/templates"/>
     </target>
     
 </project>
