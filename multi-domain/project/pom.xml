@@ -70,7 +70,26 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                                
+                            <!--Use EviewApplicationTemplateProject.zip from Master Index Project -->
+                                <!--copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates">
+                                    <fileset dir="${basedir}/src/com/sun/mdm/multidomain/project">									      
+                                        <include name="EviewApplicationTemplateProject.zip"></include>
+                                    </fileset>
+                                </copy-->
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain">
+                                    <fileset dir="${basedir}/../webapp/target">
+                                        <include name="multidomain-webapp.war"></include>
+                                    </fileset>
+                                    <fileset dir="${basedir}/../services/target">
+                                        <include name="multidomain-services.jar"></include>
+                                    </fileset>
+                                    <fileset dir="${basedir}/../core/target">
+                                        <include name="ejb-source.zip"></include>                  
+                                    </fileset>
+                                    <fileset dir="${basedir}/../core/target">
+                                        <include name="multidomain-core.jar"></include>                  
+                                    </fileset>
+                                </copy>                                
                             </tasks>          
                         </configuration>
                     </execution>
@@ -92,10 +111,10 @@
                                         <delete file="${install.dir}/${netbeans.cluster}/update_tracking/com-sun-mdm-multidomain-project.xml"></delete>
                                         <delete file="${install.dir}/${netbeans.cluster}/config/Modules/com-sun-mdm-multidomain-project.xml"></delete>
                                         <delete file="${install.dir}/${netbeans.cluster}/modules/com-sun-mdm-multidomain-project.jar"></delete>
+                                        <delete dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/multidomain"></delete>
                                         <copy todir="${install.dir}">
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
-                                                <exclude name="module_tracking.xml"></exclude>
-                                                <exclude name="soa2/modules/ext/*.jar"></exclude>                 
+                                                <exclude name="module_tracking.xml"></exclude>                 
                                             </fileset>
                                         </copy>
                                         <echo>*** INFO: Install to netbeans: ${install.dir} successfully! ***</echo>                    
@@ -176,6 +195,11 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-core-multiview</artifactId>
             <version>${netbeans.version}</version>			
+        </dependency>
+        <dependency>
+        	<groupId>mural</groupId>
+            <artifactId>multidomain-core</artifactId>
+            <version>${mural.currentVersion}</version>
         </dependency>
     </dependencies>
 </project>
