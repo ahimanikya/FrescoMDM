@@ -64,7 +64,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.services.util.Localizer;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
-import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeSearch;
+import com.sun.mdm.multidomain.services.hierarchy.HierarchySearch;
 
 /**
  * QueryBuilder class.
@@ -542,7 +542,7 @@ public class QueryBuilder {
         return hNode;
    } 
    
-   public static HierarchySearchCriteria buildHierarchySearchCriteria(HierarchyNodeSearch hNodeSearch) {
+   public static HierarchySearchCriteria buildHierarchySearchCriteria(HierarchySearch hNodeSearch) {
         HierarchySearchCriteria hSearchCriteria = new HierarchySearchCriteria();
         // implement me.
         return hSearchCriteria;
