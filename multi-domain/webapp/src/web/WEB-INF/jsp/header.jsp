@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.sun.mdm.multidomain.services.security.ACL" %>
 <%@ page import="com.sun.mdm.multidomain.services.security.UserProfile" %>
+<%@ page import="com.sun.mdm.multidomain.services.security.Operations" %>
+
 
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 
@@ -24,6 +26,23 @@
   if(currentUri.contains("manage")) {
     isAdministerScreen = false;
   }
+   
+   UserProfile userProfile = (UserProfile)session.getAttribute("userProfile");
+
+   boolean showAdminsterTab = false;
+   if(userProfile != null) {
+        ACL acl = userProfile.getACL();
+        if (acl.checkPermission(Operations.RelationshipDef_getRelationshipDefs)) {
+            showAdminsterTab = true;
+        } else if (acl.checkPermission(Operations.RelationshipDef_addRelationshipDef)) {
+            showAdminsterTab = true;
+        } else {
+            showAdminsterTab = false;
+        }; 
+   }
+   
+   session.setAttribute("showAdminsterTab", showAdminsterTab);
+   //out.println("Show administer tab : " + showAdminsterTab);
 %>
 
 
@@ -38,10 +57,10 @@
     <tr>
          <td colspan="4">
              <% if (isAdministerScreen) { // Current screen is Adminster %>
-             <a href="administration.htm" class="navbuttonselected" title="<f:message key="administration_text" />"><span><f:message key="administration_text" /></span></a> 
+                <% if(showAdminsterTab) {%><a href="administration.htm" class="navbuttonselected" title="<f:message key="administration_text" />"><span><f:message key="administration_text" /></span></a> <% } %>
              <a href="manage.htm" class="navbutton" title="<f:message key="manage_text" />"><span><f:message key="manage_text" /></span></a>
              <% } else { // Current screen is Manage %>
-             <a href="administration.htm" class="navbutton" title="<f:message key="administration_text" />"><span><f:message key="administration_text" /></span></a> 
+                <% if(showAdminsterTab) {%><a href="administration.htm" class="navbutton" title="<f:message key="administration_text" />"><span><f:message key="administration_text" /></span></a> <% } %>
              <a href="manage.htm" class="navbuttonselected" title="<f:message key="manage_text" />"><span><f:message key="manage_text" /></span></a>
              <% } %>
          </td>

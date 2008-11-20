@@ -44,28 +44,34 @@
     </head>
     <body class="mdwm" onLoad="showMainContent();">
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
-        
-        <div id="mainTabContainer" dojoType="dijit.layout.TabContainer"  style="width:100%;height:580px;">
-            
-            <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true">
-                <div id="hierarchyTabContent" style="display:none;">
-                    <%@ include file="administration/hierarchy.jsp" %>
+        <%
+            Boolean showAdministerTabs = (Boolean)session.getAttribute("showAdminsterTab");
+        %>
+
+        <% if(showAdministerTabs) { %>
+            <div id="mainTabContainer" dojoType="dijit.layout.TabContainer"  style="width:100%;height:580px;">
+
+                <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true">
+                    <div id="hierarchyTabContent" style="display:none;">
+                        <%@ include file="administration/hierarchy.jsp" %>
+                    </div>
+                </div>
+                <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationship" >
+                    <div id="relationshipTabContent" style="display:none;">
+                        <%@ include file="administration/relationships.jsp" %>
+                     </div>
                 </div>
             </div>
-            <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationship" >
-                <div id="relationshipTabContent" style="display:none;">
-                    <%@ include file="administration/relationships.jsp" %>
-                 </div>
-            </div>
-        </div>
-        
+        <% } else { %>
+            <div>You dont have permission to access this page.</div>
+        <% } %>
     </body>
 </html>
 <script>
     function showMainContent() {
        // alert('loaded.. showing content now...');
-        dojo.byId("hierarchyTabContent").style.display = "block";
-        dojo.byId("relationshipTabContent").style.display = "block";
+       if(dojo.byId("hierarchyTabContent") != null ) dojo.byId("hierarchyTabContent").style.display = "block";
+       if(dojo.byId("relationshipTabContent") != null ) dojo.byId("relationshipTabContent").style.display = "block";
     }
     
 
