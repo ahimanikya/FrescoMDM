@@ -83,8 +83,15 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
                 this.DefaultValueField = document.createElement("input");
                 // This should be date field...
                 this.DefaultValueField.type = "text";
-                this.DefaultValueField.size = 10;
+                this.DefaultValueField.size = 5; 
+                this.DefaultValueField.style.width = "100px";
                 this.Row.cells[3].appendChild(this.DefaultValueField);
+                var props = {
+                      name: "date_attr",
+                      promptMessage: "mm/dd/yyyy",
+                      invalidMessage: "Invalid date."
+                }; 
+                var w = new dijit.form.DateTextBox(props, this.DefaultValueField);
         } else if( this.AttributeTypeField.value == "boolean") {
                 this.DefaultValueField = document.createElement("select");
                 var tOption = document.createElement ("option");
