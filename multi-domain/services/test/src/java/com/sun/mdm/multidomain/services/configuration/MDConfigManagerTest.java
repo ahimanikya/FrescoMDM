@@ -69,8 +69,8 @@ public class MDConfigManagerTest extends TestCase {
                                    " retrieved " + size + " domain screen configurations.");
                 assert(false);
             } else {
-                System.out.println("testDomains succeeded.");
                 assert(true);
+                // TODO
                 // count the screens for each domain screen configuration
             }
         } catch(Exception ex) {
@@ -104,7 +104,6 @@ public class MDConfigManagerTest extends TestCase {
                                        "but actually retrieved " + relationshipConfigCount + 
                                        " relationship screen configuration instances.");
                 } else {
-                    System.out.println("testRelationships succeeded.");
                     assert(true);
                 }
             }
@@ -209,7 +208,6 @@ public class MDConfigManagerTest extends TestCase {
                                 assert(false);
                             }
                             
-                            System.out.println("testScreens succeeded.");
                             assert(true);
                         }
                     }
