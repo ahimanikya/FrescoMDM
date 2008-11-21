@@ -408,7 +408,7 @@ public class Definition {
     }
 
     public String getSourceDomain() {
-        if (type != null && type.equals(TYPE_HIERARCHY) && domain != null) {
+        if ((type != null && type.equals(TYPE_HIERARCHY) && domain != null) || sourceDomain == null) {
             return domain;
         } else {
             return sourceDomain;
@@ -416,7 +416,7 @@ public class Definition {
     }
 
     public String getTargetDomain() {
-        if (type != null && type.equals(TYPE_HIERARCHY) && domain != null) {
+        if ((type != null && type.equals(TYPE_HIERARCHY) && domain != null) || targetDomain == null) {
             return domain;
         } else {
             return targetDomain;
