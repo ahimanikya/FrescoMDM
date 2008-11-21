@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 sp1 U (http://www.altova.com) by Wee Tan (SeeBeyond Technology Corp.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="MultiDomainWebManager">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="definition-types" type="DefinitionTypes"/>
+				<xs:element name="page-definition" type="PageDefinitionType"/>
+				<xs:element name="domains" type="DomainsType"/>
+				<xs:element ref="jndi-resources"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="DefinitionTypes">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="relationship" type="DefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="hierarchy" type="DefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="category" type="DefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="grouip" type="DefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DefinitionType">
+		<xs:sequence>
+			<xs:element name="fixed-rs-fields" type="FieldType"/>
+			<xs:element name="extended-rs-fields" type="FieldType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Destination" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Source" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="DisplayName" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="FieldType">
+		<xs:sequence>
+			<xs:element name="rs-field-ref" type="RelationFieldType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelationFieldType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="display-name" type="xs:string"/>
+			<xs:element name="display-order" type="idOrderType"/>
+			<xs:element name="max-length" type="xs:positiveInteger"/>
+			<xs:element name="gui-type" type="xs:string"/>
+			<xs:element name="value-list" type="xs:string" minOccurs="0"/>
+			<xs:element name="value-type" type="xs:string"/>
+			<xs:element name="input-mask" type="xs:string" minOccurs="0"/>
+			<xs:element name="value-mask" type="xs:string" minOccurs="0"/>
+			<xs:element name="is-sensitive" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageDefinitionType">
+		<xs:sequence>
+			<xs:element name="initial-screen-id" type="xs:int"/>
+			<xs:element name="screen" type="PageType" maxOccurs="4"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageType">
+		<xs:sequence>
+			<xs:element name="identifier" type="xs:string"/>
+			<xs:element name="screen-title" type="xs:string"/>
+			<xs:element name="view-path" type="xs:string"/>
+			<xs:element name="screen-id" type="xs:int"/>
+			<xs:element name="display-order" type="xs:positiveInteger"/>
+			<xs:element name="subscreens" type="SubscreenType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubscreenType">
+		<xs:sequence>
+			<xs:element name="initial-screen-id" type="xs:int"/>
+			<xs:element name="screen" type="SubscreenDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubscreenDefinitionType">
+		<xs:sequence>
+			<xs:element name="identifier" type="xs:string"/>
+			<xs:element name="screen-title" type="xs:string"/>
+			<xs:element name="view-path" type="xs:string"/>
+			<xs:element name="screen-id" type="xs:int"/>
+			<xs:element name="display-order" type="idOrderType"/>
+			<xs:element name="item-per-page" type="xs:positiveInteger"/>
+			<xs:element name="max-result-size" type="xs:positiveInteger"/>
+			<xs:element name="search-pages" type="SearchPagesRelationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchPagesRelationType">
+		<xs:sequence>
+			<xs:element name="simple-search-page" type="SimpleSearchRelType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SimpleSearchRelType">
+		<xs:sequence>
+			<xs:element name="relationship" type="SearchRelationGroupType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchRelationGroupType">
+		<xs:sequence>
+			<xs:element name="rs-field-group" type="FieldGroupType"/>
+		</xs:sequence>
+		<xs:attribute name="name">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="DomainsType">
+		<xs:sequence>
+			<xs:element name="domain" type="DomainType" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="search-pages" type="SearchPagesType"/>
+			<xs:element name="search-result-pages" type="SearchResultPageType"/>
+			<xs:element name="record-detail-pages" type="RecordDetailPageType"/>
+			<xs:element name="record-id" type="RecordIDType" minOccurs="0"/>
+			<xs:element name="record-summary" type="RecordSummaryType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecordSummaryType">
+		<xs:sequence>
+			<xs:element name="field-group" type="FieldGroupType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecordIDType">
+		<xs:sequence>
+			<xs:element name="show-euid" type="xs:boolean"/>
+			<xs:element name="field-group" type="FieldGroupType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchResultPageType">
+		<xs:sequence>
+			<xs:element name="search-detail" type="SearchDetailType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecordDetailPageType">
+		<xs:sequence>
+			<xs:element name="record-detail" type="RecordDetailType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchPagesType">
+		<xs:sequence>
+			<xs:element name="simple-search-page" type="simpleSearchPageType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="simpleSearchPageType">
+		<xs:sequence>
+			<xs:element name="screen-title" type="xs:string"/>
+			<xs:element name="search-result-id" type="idOrderType"/>
+			<xs:element name="search-screen-order" type="idOrderType"/>
+			<xs:element name="instruction" type="xs:string" minOccurs="0"/>
+			<xs:element name="field-group" type="FieldGroupType" maxOccurs="unbounded"/>
+			<xs:element name="search-option" type="SearchOptionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchOptionType">
+		<xs:sequence>
+			<xs:element name="query-builder" type="xs:string"/>
+			<xs:element name="weighted" type="xs:boolean"/>
+			<xs:element name="parameter" type="searchOptionParameterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="searchOptionParameterType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchDetailType">
+		<xs:sequence>
+			<xs:element name="search-result-name" type="xs:string"/>
+			<xs:element name="search-result-id" type="xs:int"/>
+			<xs:element name="record-detail-id" type="xs:int"/>
+			<xs:element name="item-per-page" type="xs:positiveInteger"/>
+			<xs:element name="max-result-size" type="xs:positiveInteger"/>
+			<xs:element name="field-group" type="FieldGroupType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="idOrderType">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" id="short.minInclusive"/>
+			<xs:maxInclusive value="32767" id="short.maxInclusive"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RecordDetailType">
+		<xs:sequence>
+			<xs:element name="record-detail-id" type="xs:int"/>
+			<xs:element name="record-detail-name" type="xs:string"/>
+			<xs:element name="field-group" type="FieldGroupType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FieldGroupType">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="field-ref" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="choice">
+								<xs:simpleType>
+									<xs:restriction base="xs:string"/>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="jndi-resources">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="properties" minOccurs="0"/>
+				<xs:element name="resource" type="ResourceType" minOccurs="2" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ResourceType">
+		<xs:attribute name="id" type="xs:string" use="required"/>
+		<xs:attribute name="jndi-name" type="xs:string" use="required"/>
+		<xs:attribute name="res-type" type="xs:string" use="required"/>
+		<xs:attribute name="description" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="properties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="property" type="PropertyType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PropertyType">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+</xs:schema>
