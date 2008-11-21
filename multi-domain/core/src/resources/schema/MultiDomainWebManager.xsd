@@ -76,7 +76,7 @@
 			<xs:element name="screen-title" type="xs:string"/>
 			<xs:element name="view-path" type="xs:string"/>
 			<xs:element name="screen-id" type="xs:int"/>
-			<xs:element name="display-order" type="xs:positiveInteger"/>
+			<xs:element name="display-order" type="xs:int"/>
 			<xs:element name="subscreens" type="SubscreenType"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -95,7 +95,7 @@
 			<xs:element name="display-order" type="idOrderType"/>
 			<xs:element name="item-per-page" type="xs:positiveInteger"/>
 			<xs:element name="max-result-size" type="xs:positiveInteger"/>
-			<xs:element name="search-pages" type="SearchPagesRelationType"/>
+			<xs:element name="search-pages" type="SearchPagesRelationType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SearchPagesRelationType">
@@ -120,7 +120,7 @@
 	</xs:complexType>
 	<xs:complexType name="DomainsType">
 		<xs:sequence>
-			<xs:element name="domain" type="DomainType" minOccurs="2" maxOccurs="unbounded"/>
+			<xs:element name="domain" type="DomainType" minOccurs="1" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DomainType">
@@ -135,7 +135,7 @@
 	</xs:complexType>
 	<xs:complexType name="RecordSummaryType">
 		<xs:sequence>
-			<xs:element name="field-group" type="FieldGroupType" maxOccurs="unbounded"/>
+			<xs:element name="field-group" type="FieldGroupType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RecordIDType">
@@ -165,7 +165,7 @@
 			<xs:element name="search-result-id" type="idOrderType"/>
 			<xs:element name="search-screen-order" type="idOrderType"/>
 			<xs:element name="instruction" type="xs:string" minOccurs="0"/>
-			<xs:element name="field-group" type="FieldGroupType" maxOccurs="unbounded"/>
+			<xs:element name="field-group" type="FieldGroupType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="search-option" type="SearchOptionType"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -206,7 +206,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="FieldGroupType">
-		<xs:sequence>
+		<xs:sequence minOccurs="0">
 			<xs:element name="description" type="xs:string" minOccurs="0"/>
 			<xs:element name="field-ref" maxOccurs="unbounded">
 				<xs:complexType>
