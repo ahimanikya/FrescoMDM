@@ -116,12 +116,12 @@ public class ViewBuilder {
         for (AttributeDefExt aDefExt : attributes) {
             Attribute a = new Attribute();            
             a.setName(aDefExt.getName());
-            a.setId(aDefExt.getId());
+            a.setId(Long.parseLong(aDefExt.getId()));
             a.setColumnName(aDefExt.getColumnName());
-            a.setType(new AttributeType(aDefExt.getDataType()));
+            a.setType(AttributeType.valueOf(aDefExt.getDataType()));
             a.setDefaultValue(aDefExt.getDefaultValue());
             a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));
-            a.setSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
+            a.setIsSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
             hDef.setAttribute(a);
         }                
         return hDef;
@@ -130,7 +130,7 @@ public class ViewBuilder {
     public static HierarchyDefExt buildHierarchyDefExt(HierarchyDef hDef) {
         HierarchyDefExt hDefExt = new HierarchyDefExt();
         hDefExt.setName(hDef.getName());
-        hDefExt.setId(Integer.toString(hDef.getId()));
+        hDefExt.setId(Long.toString(hDef.getId()));
         hDefExt.setDomain(hDef.getDomain());
         //TBD need to fix core HierarchyDef
         //hDefExt.setPluginInfo(); 
@@ -148,7 +148,7 @@ public class ViewBuilder {
             AttributeDefExt aExt = new AttributeDefExt();
             aExt.setName(a.getName());
             aExt.setColumnName(a.getColumnName());
-            aExt.setSearchable(a.getSearchable() ? "true" : "false");
+            aExt.setSearchable(a.getIsSearchable() ? "true" : "false");
             aExt.setIsRequired(a.getIsRequired() ? "true" : "false");
             aExt.setDataType(a.getType().toString());
             aExt.setDefaultValue(a.getDefaultValue());
@@ -160,7 +160,7 @@ public class ViewBuilder {
     public static RelationshipDefExt buildRelationshipDefExt(RelationshipDef rDef) {
         RelationshipDefExt rDefExt = new RelationshipDefExt();
         rDefExt.setName(rDef.getName());
-        rDefExt.setId(Integer.toString(rDef.getId()));
+        rDefExt.setId(Long.toString(rDef.getId()));
         rDefExt.setSourceDomain(rDef.getSourceDomain());
         rDefExt.setTargetDomain(rDef.getTargetDomain());        
         rDefExt.setBiDirection(rDef.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "true" : "false");
@@ -180,7 +180,7 @@ public class ViewBuilder {
             AttributeDefExt aExt = new AttributeDefExt();
             aExt.setName(a.getName());
             aExt.setColumnName(a.getColumnName());
-            aExt.setSearchable(a.getSearchable() ? "true" : "false");
+            aExt.setSearchable(a.getIsSearchable() ? "true" : "false");
             aExt.setIsRequired(a.getIsRequired() ? "true" : "false");
             aExt.setDataType(a.getType().toString());
             aExt.setDefaultValue(a.getDefaultValue());
@@ -212,12 +212,12 @@ public class ViewBuilder {
         for (AttributeDefExt aDefExt : attributes) {
             Attribute a = new Attribute();            
             a.setName(aDefExt.getName());
-            a.setId(aDefExt.getId());
+            a.setId(Long.parseLong(aDefExt.getId()));
             a.setColumnName(aDefExt.getColumnName());
-            a.setType(new AttributeType(aDefExt.getDataType()));
+            a.setType(AttributeType.valueOf(aDefExt.getDataType()));
             a.setDefaultValue(aDefExt.getDefaultValue());
             a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));
-            a.setSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
+            a.setIsSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
             rDef.setAttribute(a);
         }        
         return rDef;        
@@ -355,7 +355,7 @@ public class ViewBuilder {
         RelationshipDefView relationshipDefView = new RelationshipDefView();        
         RelationshipDef type = relationship.getRelationshipDef();
         relationshipDefView.setName(type.getName());
-        relationshipDefView.setId(Integer.toString(type.getId()));
+        relationshipDefView.setId(Long.toString(type.getId()));
         relationshipDefView.setSourceDomain(type.getSourceDomain());
         relationshipDefView.setTargetDomain(type.getTargetDomain());
         relationshipDefView.setBiDirection(type.getDirection()== RelationshipDef.DirectionMode.BIDIRECTIONAL? true : false);        
@@ -364,7 +364,7 @@ public class ViewBuilder {
     
     public static RelationshipView buildRelationshipView(Relationship relationship, String sourceHighLight, String targetHighLight) {   
         RelationshipView relationshipView = new RelationshipView();        
-        relationshipView.setId(Integer.toString(relationship.getRelationshipId()));
+        relationshipView.setId(Long.toString(relationship.getRelationshipId()));
         relationshipView.setSourceEUID(relationship.getSourceEUID());
         relationshipView.setTargetEUID(relationship.getTargetEUID());
         relationshipView.setSourceHighLight(sourceHighLight);
@@ -471,7 +471,7 @@ public class ViewBuilder {
         RelationshipRecord relationshipRecord = new RelationshipRecord();
         
         RelationshipDef type = (RelationshipDef)relationship.getRelationshipDef();
-        relationshipRecord.setId(Integer.toString(relationship.getRelationshipId()));
+        relationshipRecord.setId(Long.toString(relationship.getRelationshipId()));
         relationshipRecord.setSourceEUID(relationship.getSourceEUID());
         relationshipRecord.setTargetEUID(relationship.getTargetEUID());
         relationshipRecord.setName(type.getName());
