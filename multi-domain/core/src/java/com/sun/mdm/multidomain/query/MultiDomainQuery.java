@@ -37,7 +37,6 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.attributes.AttributesValue;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.RelationshipLite;
 
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.MultiFieldValuePair;
