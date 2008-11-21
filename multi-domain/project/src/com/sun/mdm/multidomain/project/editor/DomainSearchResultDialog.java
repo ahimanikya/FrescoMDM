@@ -520,7 +520,7 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
         
         private int groupId;
 
-        private ArrayList<FieldRow> fieldRows = null;
+        private ArrayList<FieldRow> fieldRows = new ArrayList<FieldRow>();
         
         public GroupRow(String groupName) {
             this.groupName = groupName;

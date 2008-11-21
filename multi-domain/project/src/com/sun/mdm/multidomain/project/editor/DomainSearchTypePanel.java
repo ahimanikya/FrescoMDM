@@ -799,7 +799,7 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
         
         private int groupId;
 
-        private ArrayList<FieldRow> fieldRows = null;
+        private ArrayList<FieldRow> fieldRows = new ArrayList<FieldRow>();
         
         public GroupRow(String groupName) {
             this.groupName = groupName;
