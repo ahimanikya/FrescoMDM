@@ -677,8 +677,10 @@ private void onAddParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
 // TODO add your handling code here:
     TableModelParameter model = (TableModelParameter) jTableQueryParameter.getModel();
     int iInsertRow = model.getRowCount();
-    Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
+    //Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
     ParameterRow newParameter = new ParameterRow();
+    newParameter.setParamName("");
+    newParameter.setParamValue("");
     model.addRow(iInsertRow, newParameter);
     jTableQueryParameter.setModel(model);
     jTableQueryParameter.clearSelection();
@@ -720,9 +722,21 @@ private void onBtnAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     TableModelField fieldModel = (TableModelField) jTableFields.getModel();
     int selectedRow = jTableFieldGroup.getSelectedRow();
     GroupRow group = fieldGroupModel.getRow(selectedRow);
-    FieldGroup fieldGroup = mSearchType.getFieldGroup(group.getGroupName());
-    if (fieldGroup == null) {
+    FieldGroup fieldGroup = null;
+    if (group.getGroupName() == null || group.getGroupName().length() == 0) {
         fieldGroup = mSearchType.getFieldGroup(group.getGroupId());
+        if (fieldGroup == null) {
+            fieldGroup = new FieldGroup();
+        }
+
+    }  else {
+        fieldGroup = mSearchType.getFieldGroup(group.getGroupName());
+        if (fieldGroup == null) {
+            fieldGroup = mSearchType.getFieldGroup(group.getGroupId());
+            if (fieldGroup == null) {
+                fieldGroup = new FieldGroup();
+            }
+        }
     }
     EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), fieldGroup);
     entityDlg.setVisible(true);

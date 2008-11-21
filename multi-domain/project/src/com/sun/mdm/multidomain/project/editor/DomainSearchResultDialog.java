@@ -469,10 +469,18 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     int selectedRow = jTableFieldGroup.getSelectedRow();
     GroupRow group = fieldGroupModel.getRow(selectedRow);
     FieldGroup fieldGroup = null;
-    if (group.getGroupName().length() > 0) {
+    if (group.getGroupName() == null || group.getGroupName().length() == 0) {
         fieldGroup = mSearchDetail.getFieldGroup(group.getGroupId());
+        if (fieldGroup == null) {
+            fieldGroup = new FieldGroup();
+        }
+
     } else {
         fieldGroup = mSearchDetail.getFieldGroup(group.getGroupName());
+        if (fieldGroup == null) {
+            fieldGroup = new FieldGroup();
+        }
+
     }
 
     EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), fieldGroup);
