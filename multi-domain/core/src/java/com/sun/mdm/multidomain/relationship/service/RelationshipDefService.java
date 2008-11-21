@@ -154,7 +154,7 @@ public class RelationshipDefService implements Serializable {
      *
      */
     private void copyToRelDto(RelationshipDef rel, RelationshipDefDto dto) {
-        dto.setRelationshipDefId(rel.getReldefID());
+        dto.setRelationshipDefId(rel.getId());
         dto.setRelationshipName(rel.getName());
         dto.setDescription(rel.getDescription());
         dto.setSourceDomain(rel.getSourceDomain());
@@ -173,7 +173,7 @@ public class RelationshipDefService implements Serializable {
      *
      */
     private void copyFromRelDto(RelationshipDef rel, RelationshipDefDto dto) {
-        rel.setReldefID(dto.getRelationshipDefId());
+        rel.setId(dto.getRelationshipDefId());
         rel.setName(dto.getRelationshipName());
         rel.setDescription(dto.getDescription());
         rel.setSourceDomain(dto.getSourceDomain());
