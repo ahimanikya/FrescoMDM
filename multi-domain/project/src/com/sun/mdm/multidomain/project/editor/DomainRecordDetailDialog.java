@@ -413,9 +413,21 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     TableModelField fieldModel = (TableModelField) jTableField.getModel();
     int selectedRow = jTableFieldGroup.getSelectedRow();
     GroupRow group = fieldGroupModel.getRow(selectedRow);
-    FieldGroup fieldGroup = mRecordDetail.getFieldGroup(group.getGroupName());
-    if (fieldGroup == null) {
+    FieldGroup fieldGroup = null;
+    if (group.getGroupName() == null || group.getGroupName().length() == 0) {
         fieldGroup = mRecordDetail.getFieldGroup(group.getGroupId());
+        if (fieldGroup == null) {
+            fieldGroup = new FieldGroup();
+        }
+
+    }  else {
+        fieldGroup = mRecordDetail.getFieldGroup(group.getGroupName());
+        if (fieldGroup == null) {
+            fieldGroup = mRecordDetail.getFieldGroup(group.getGroupId());
+            if (fieldGroup == null) {
+                fieldGroup = new FieldGroup();
+            }
+        }
     }
     
     EntityTreeDialog entityDlg = new EntityTreeDialog(mDomainNode.getEntityTree(), fieldGroup);
@@ -516,7 +528,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
         
         private int groupId;
 
-        private ArrayList<FieldRow> fieldRows = null;
+        private ArrayList<FieldRow> fieldRows = new ArrayList<FieldRow>();
         
         public GroupRow(String groupName) {
             this.groupName = groupName;
@@ -673,7 +685,7 @@ private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCance
      class TableModelField extends AbstractTableModel {
 
         private String columnNames[] = {NbBundle.getMessage(TabDomainSearch.class, "LBL_FIELD"),};
-        ArrayList<FieldRow> fieldRows;
+        ArrayList<FieldRow> fieldRows = null;
         final static int iColFieldName = 0;
         private GroupRow mGroup = null;
 
