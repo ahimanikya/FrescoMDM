@@ -135,7 +135,7 @@ public class MultiDomainProjectGenerator {
         EditableProperties ep = projHelper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         ep.setProperty(MultiDomainProjectProperties.EJB_DIR, mainProjectName + "-ejb");
         ep.setProperty(MultiDomainProjectProperties.WAR_DIR, mainProjectName + "-war");
-        ep.setProperty("eView.generated.dir", 
+        ep.setProperty("mdm.mutidomain.generated.dir", 
                        MultiDomainProjectProperties.MULTIDOMAIN_GENERATED_FOLDER);
         ep.setProperty(MultiDomainProjectProperties.J2EE_SERVER_TYPE, 
                        Deployment.getDefault().getServerID(serverInstanceID));

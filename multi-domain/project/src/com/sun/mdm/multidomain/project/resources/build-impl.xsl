@@ -163,34 +163,14 @@ is divided into following sections:
                     </and>
                 </condition>
                 <path id="generate.class.path">
-                    <pathelement location="${{module.install.dir}}/ext/mdm/com-sun-mdm-index-project-anttasks.jar" />
-                    <pathelement location="${{module.install.dir}}/com-sun-mdm-mutidomain-project.jar" />
-                    <pathelement location="${{module.install.dir}}/ext/mdm/index-core.jar" />
-                    <pathelement location="${{module.install.dir}}/ext/mdm/standardizer/lib/commons-logging-1.0.4.jar"/>
+                    <pathelement location="${{module.install.dir}}/com-sun-mdm-multidomain-project.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/mdm/mdm-multidomain/multidomain-core.jar" />
                 </path>
-                <taskdef name="generate-mdm-index-files"
-                         classname="com.sun.mdm.index.project.anttasks.EViewGeneratorTask">
+                <taskdef name="generate-mdm-multidomain-files"
+                         classname="com.sun.mdm.multidomain.project.anttasks.MultidomainGeneratorTask">
                     <classpath refid="generate.class.path"/>
                 </taskdef>
-                
-                <taskdef name="mi-validation"
-                         classname="com.sun.mdm.index.project.anttasks.ValidationTask">
-                    <classpath refid="generate.class.path"/>
-                </taskdef>
-                
-                <taskdef name="generate-loader-zip"
-                         classname="com.sun.mdm.index.project.anttasks.LoaderGeneratorTask">
-                    <classpath>
-                        <pathelement
-                            location="${{module.install.dir}}/ext/mdm/com-sun-mdm-index-project-anttasks.jar" />
-                        <pathelement
-                            location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
-                        <pathelement location="${{module.install.dir}}/ext/mdm/index-core.jar" />
-                    </classpath>
-                </taskdef>
-                
             </target>
-            
             <target name="post-init">
                 <xsl:comment>Empty placeholder for easier customization.</xsl:comment>
                 <xsl:comment>You can override this target in the ../build.xml file.</xsl:comment>
@@ -233,89 +213,21 @@ is divided into following sections:
                 <mi-validation srcdir="${{src.dir}}" />
             </target>
             
-            <target name="gen-mdm-index-files">
-                <xsl:attribute name="depends">init,validate-mi</xsl:attribute>
-                <generate-mdm-index-files srcdir="${{src.dir}}" ejbdir="${{ejb.dir}}"
+            <target name="gen-mdm-multidomain-files">
+                <xsl:attribute name="depends">init</xsl:attribute>
+                <generate-mdm-multidomain-files srcdir="${{src.dir}}" ejbdir="${{ejb.dir}}"
                                           wardir="${{war.dir}}" />
-            </target>
-                        
-            <target name="gen-loader-zip" depends="pre-pre-compile"
-                    description="generate loader zip">
-                <mkdir dir="loader-generated/loader/conf" />
-                <mkdir dir="loader-generated/loader/lib" />
-                <!-- mkdir dir="loader-generated/bulkloader"/ -->
-                <copy todir="loader-generated/loader/lib">                    
-                    <fileset dir="lib">
-                        <include name="*.jar" />
-                    </fileset>
-                    <fileset dir="${{module.install.dir}}/ext/mdm/loader">
-                        <include name="*.jar" />
-                    </fileset>
-                    <fileset dir="${{module.install.dir}}/ext/mdm/bulkloader">
-                        <include name="*.jar" />
-                    </fileset>
-                </copy>
-                <!--copy todir="loader-generated/bulkloader"-->
-                <copy todir="loader-generated/loader">
-                    <fileset dir="${{module.install.dir}}/ext/mdm/bulkloader"/>
-                </copy>
-                <move todir="loader-generated/loader/lib">
-                    <fileset dir="loader-generated/loader">
-                    	<include name="*.jar"/>
-                    </fileset>
-                </move>
-                <generate-loader-zip srcDir="${{src.dir}}" configDir="loader-generated/loader/conf" />
-                
-                <zip destfile="loader-generated/loader.zip" basedir="loader-generated"
-                     excludes="loader.zip">
-                </zip>
-                
-                <delete dir="loader-generated/loader"></delete>
-                <!-- delete dir="loader-generated/bulkloader"/-->
-            </target>
-            
-            <target name="gen-cleanser-zip" depends="pre-pre-compile" description="generate cleanser zip">
-                <mkdir dir="cleanser-generated/cleanser"/>
-                <copy todir="cleanser-generated/cleanser">
-                    <fileset dir="${{module.install.dir}}/ext/mdm/dataanalysis/cleanser"/>
-                </copy>
-                <jar destfile="cleanser-generated/cleanser/lib/resources.jar" basedir="files-generated/resource"/>
-                <copy file="files-generated/resource/object.xml" todir="cleanser-generated/cleanser"/>
-                <copy file="lib/master-index-client.jar" todir="cleanser-generated/cleanser/lib"/>
-                <copy todir="cleanser-generated/cleanser/lib">
-                    <fileset dir="${{module.install.dir}}/ext/mdm/standardizer/lib"/>
-                </copy>
-                <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated" excludes="cleanser.zip"/>
-                <delete dir="cleanser-generated/cleanser"/>
-            </target>
-            
-            <target name="gen-profiler-zip" depends="pre-pre-compile" description="generate profiler zip">
-                
-                <mkdir dir="profiler-generated/profiler"/>
-                <copy todir="profiler-generated/profiler">
-                    <fileset dir="${{module.install.dir}}/ext/mdm/dataanalysis/profiler"/>
-                </copy>
-                
-                <copy file="files-generated/resource/object.xml" todir="profiler-generated/profiler"/>
-                <copy file="lib/master-index-client.jar" todir="profiler-generated/profiler/lib"/>
-                <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated" excludes="profiler.zip"/>
-                <delete dir="profiler-generated/profiler"/>
-            </target>
-            
-            <target name="gen-bulkloader-zip" depends="gen-mdm-index-files" description="generate bulk loader zip">
-                <mkdir dir="bulkloader-generated"/>
-                <zip destfile="bulkloader-generated/bulkloader.zip" basedir="${{module.install.dir}}/ext/mdm/bulkloader" excludes="bulkloader.zip"/>
             </target>
             
             <target name="dist_se">
                 <xsl:attribute name="depends">dist</xsl:attribute>
                 <copy file="${{dist.jar}}" tofile="${{dist.dir}}/jbi/${{jbi.jar}}" />
                 <jar destfile="${{dist.dir}}/jbi/${{jbi.jar}}"
-                     basedir="${{eView.generated.dir}}/jbi" update="true" />
+                     basedir="${{mdm.multidomain.generated.dir}}/jbi" update="true" />
             </target>
             
             <target name="pre-pre-compile">
-                <xsl:attribute name="depends">init,gen-mdm-index-files,deps-jar,deps-j2ee-archive</xsl:attribute>
+                <xsl:attribute name="depends">init,gen-mdm-multidomain-files,deps-jar,deps-j2ee-archive</xsl:attribute>
                 <!--mkdir dir="${{build.classes.dir}}"/-->
             </target>
             
@@ -380,14 +292,8 @@ is divided into following sections:
                 <xsl:attribute name="description">Compile project.</xsl:attribute>
             </target>
             
-            <xsl:comment>DIST BUILDING SECTION</xsl:comment>
-            <target name="-pre-dist-mdm-lib-">
-                <copy todir="${{build.dir}}/lib">
-                    <fileset dir="lib"/>
-                </copy>
-            </target>            
+            <xsl:comment>DIST BUILDING SECTION</xsl:comment>       
             <target name="pre-dist">
-                <xsl:attribute name="depends">-pre-dist-mdm-lib-</xsl:attribute>
                 <xsl:comment>Empty placeholder for easier customization.</xsl:comment>
                 <xsl:comment>You can override this target in the ../build.xml file.</xsl:comment>
             </target>

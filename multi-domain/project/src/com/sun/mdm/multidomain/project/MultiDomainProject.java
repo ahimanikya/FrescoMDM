@@ -90,12 +90,7 @@ public class MultiDomainProject implements Project, AntProjectListener {
     public static final String MODULE_INSTALL_CBN = "com.sun.mdm.multidomain.project";
     public static final String MODULE_INSTALL_DIR = "module.install.dir";
 
-    public static final String COMMAND_GENEVIEW = "gen-mdm-index-files";
-    public static final String COMMAND_GENLOADER = "gen-loader-zip";
-    //public static final String COMMAND_GENBULKLOADER = "gen-bulkloader-zip";
-    
-    public static final String COMMAND_CLEANSER = "gen-cleanser-zip";
-    public static final String COMMAND_PROFILER = "gen-profiler-zip";
+    public static final String COMMAND_GEN_MDM_MULTIDOMAIN = "gen-mdm-multidomain-files";
     
     public static final String COMMAND_REDEPLOY = "redeploy";
     public static final String COMMAND_DEPLOY = "deploy";
@@ -460,7 +455,7 @@ public class MultiDomainProject implements Project, AntProjectListener {
                     javax.swing.SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             try {
-                                ActionUtils.runTarget(buildXml, new String[] {MultiDomainProject.COMMAND_GENEVIEW}, null);
+                                ActionUtils.runTarget(buildXml, new String[] {MultiDomainProject.COMMAND_GEN_MDM_MULTIDOMAIN}, null);
                             } catch (IOException e) {
                                 ErrorManager.getDefault().notify(e);
                             }

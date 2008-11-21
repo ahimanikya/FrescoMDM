@@ -54,11 +54,7 @@ class MultiDomainProjectActionProvider implements ActionProvider {
         ActionProvider.COMMAND_BUILD, 
         ActionProvider.COMMAND_CLEAN, 
         ActionProvider.COMMAND_REBUILD, 
-        MultiDomainProject.COMMAND_GENEVIEW,
-        MultiDomainProject.COMMAND_GENLOADER,
-        //MultiDomainProject.COMMAND_GENBULKLOADER,
-        MultiDomainProject.COMMAND_CLEANSER,
-        MultiDomainProject.COMMAND_PROFILER,
+        MultiDomainProject.COMMAND_GEN_MDM_MULTIDOMAIN,
         MultiDomainProject.COMMAND_DEPLOY,
         ActionProvider.COMMAND_RENAME,
         ActionProvider.COMMAND_COPY,
@@ -81,12 +77,7 @@ class MultiDomainProjectActionProvider implements ActionProvider {
         commands.put(ActionProvider.COMMAND_BUILD, new String[] {"dist"}); // NOI18N
         commands.put(ActionProvider.COMMAND_CLEAN, new String[] {"clean"}); // NOI18N
         commands.put(ActionProvider.COMMAND_REBUILD, new String[] {"clean", "dist"}); // NOI18N
-        commands.put(MultiDomainProject.COMMAND_GENEVIEW, new String[] {"gen-mdm-index-files"}); // NOI18N
-        commands.put(MultiDomainProject.COMMAND_GENLOADER, new String[] {"gen-loader-zip"}); // NOI18N
-        //commands.put(MultiDomainProject.COMMAND_GENBULKLOADER, new String[] {"gen-bulkloader-zip"}); // NOI18N
-        
-        commands.put(MultiDomainProject.COMMAND_CLEANSER, new String[] {"gen-cleanser-zip"}); // NOI18N
-        commands.put(MultiDomainProject.COMMAND_PROFILER, new String[] {"gen-profiler-zip"}); // NOI18N
+        commands.put(MultiDomainProject.COMMAND_GEN_MDM_MULTIDOMAIN, new String[] {MultiDomainProject.COMMAND_GEN_MDM_MULTIDOMAIN}); // NOI18N
         commands.put(MultiDomainProject.COMMAND_DEPLOY, new String[] {"run-deploy"}); // NOI18N
         commands.put(COMMAND_RENAME, null); // NOI18N
         commands.put(COMMAND_COPY, null); // NOI18N

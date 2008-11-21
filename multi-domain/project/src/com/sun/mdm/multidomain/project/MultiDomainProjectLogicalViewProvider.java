@@ -162,7 +162,7 @@ public class MultiDomainProjectLogicalViewProvider implements LogicalViewProvide
                 ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_REBUILD, NbBundle.getMessage(MultiDomainProjectLogicalViewProvider.class, "LBL_RebuildAction"  ), null  ), // NOI18N
                 ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_CLEAN, NbBundle.getMessage(MultiDomainProjectLogicalViewProvider.class, "LBL_CleanAction"  ), null  ), // NOI18N
                 null,
-                ProjectSensitiveActions.projectCommandAction( MultiDomainProject.COMMAND_GENEVIEW, NbBundle.getMessage(MultiDomainProjectLogicalViewProvider.class, "LBL_GenerateAction"), null  ),
+                ProjectSensitiveActions.projectCommandAction( MultiDomainProject.COMMAND_GEN_MDM_MULTIDOMAIN, NbBundle.getMessage(MultiDomainProjectLogicalViewProvider.class, "LBL_GenerateAction"), null  ),
                 null,
                 ProjectSensitiveActions.projectCommandAction( MultiDomainProject.COMMAND_DEPLOY, NbBundle.getMessage(MultiDomainProjectLogicalViewProvider.class, "LBL_DeployAction"  ), null  ), // NOI18N
                 null,
