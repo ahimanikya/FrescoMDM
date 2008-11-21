@@ -29,7 +29,6 @@ package com.sun.mdm.multidomain.attributes;
 public enum AttributeType {
 
     BOOLEAN("Boolean"),
-    BLOB("Blob"),
     BYTE("Byte"),
     CHAR("Character"),
     DATE("Date"),
