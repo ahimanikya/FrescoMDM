@@ -93,7 +93,7 @@ public class SearchDetail {
     
     public FieldGroup getFieldGroup(String groupName) {    
         for (FieldGroup group : mFieldGroups ) {
-            if (group.getDescription().equalsIgnoreCase(groupName)) {
+            if (group.getDescription()!= null && group.getDescription().equalsIgnoreCase(groupName)) {
                 return group;
             }
         }
