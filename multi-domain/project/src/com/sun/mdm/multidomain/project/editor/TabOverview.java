@@ -464,10 +464,20 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
             DomainRow row = model.getRow(idx);
             String domainName = row.getDomainName();
             mEditorMainApp.deleteDomain(domainName);
-            mEditorMainApp.deleteDefinition(domainName);
+            int cnt = mEditorMainApp.deleteDefinition(domainName);
+            //update jTableDomains's # of definitions
+            //updateDomainDefinitionCount(row.getDomainName(), row.getDomainName(), -cnt);
             model.removeRow(idx);
         }
-        loadDomains();
+        // ToDo just need to update the definition cnt
+        ArrayList <DomainRow> rows = loadDomains();
+        model.removeAll();
+        for (int i= 0; i <rows.size(); i++) {
+            DomainRow r = rows.get(i);
+            model.addRow(i, r);
+        }
+        
+        loadDefinitions(true);
         // load all definitions
         if (this.jRadioButtonShowAll.isSelected()) {
             //loadDefinitions(true);
@@ -478,7 +488,6 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
             jTableDomains.setRowSelectionInterval(0, 0);
             onDomainSelected();
         } else {
-            loadDefinitions(true);
             this.jButtonRemoveDomain.setEnabled(false);
             mEditorMainPanel.enableDeleteButton(false);
             mEditorMainPanel.loadDomainEntityTree(null);
@@ -838,6 +847,10 @@ public void onAddHierarchy() {
         public DomainRow getRow(int index) {
             DomainRow row = (DomainRow) rows.get(index);
             return row;
+        }
+        
+        public void removeAll() {
+            rows.clear();
         }
     }
     

@@ -250,12 +250,20 @@ public class DomainNode extends AbstractNode {
         return node.getFields();
     }
     
-    public void addDefinition(String definitionName, String sourceDomainName, String targetDomainName) {
+    public void addDefinition(String defName, String sourceDomain, String targetDomain) {
         //updateDefinitions
     }
     
-    public void removeDefinition(String definitionName, String sourceDomainName, String targetDomainName) {
+    public void removeDefinition(String defName, String sourceDomain, String targetDomain) {
         //updateDefinitions
+        for (Definition definition : this.alDefinitions) {
+            if (definition.getName().equals(defName) &&
+                definition.getSourceDomain().equals(sourceDomain) &&
+                definition.getSourceDomain().equals(targetDomain)) {
+                alDefinitions.remove(definition);
+                break;
+            }
+        }
     }
     
     public ArrayList getAssociatedDomains() {

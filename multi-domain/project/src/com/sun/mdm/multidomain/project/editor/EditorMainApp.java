@@ -76,6 +76,7 @@ public class EditorMainApp {
     private Map mMapDomainQueryXmls = new HashMap();  // domainName, FileObject of query.xml
     private Map mMapDomainMidmXmls = new HashMap();  // domainName, FileObject of midm.xml
     private Map mMapDomainNodes = new HashMap();  // domainName, DomainNode
+    private Map mMapDomainNodesSaved = new HashMap();  // domainName, DomainNode
     private ArrayList <DomainNode> mAlDomainNodes = new ArrayList <DomainNode>();   // DomainNode
     private ArrayList <DefinitionNode> mAlDefinitionNodes = new ArrayList <DefinitionNode>();   // RelationshipNode
     private EditorMainPanel mEditorMainPanel;
@@ -199,20 +200,25 @@ public class EditorMainApp {
      * 
      * @param sourceDomain
      */
-    public void deleteDefinition(String domain) {      
-        mMultiDomainModel.deleteDefinition(domain);
+    public int deleteDefinition(String domain) {      
+        int cnt = mMultiDomainModel.deleteDefinition(domain);
+        deleteDefinitionFromDomainNode(domain);
+        if (mAlDefinitionNodes!=null) {
+            int length = this.mAlDefinitionNodes.size();
+            for (int i=length - 1; i>=0 && i < length; i--) {
+                DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
+                if (node.getSourceDomain().equals(domain) || node.getTargetDomain().equals(domain)) {
+                    mAlDefinitionNodes.remove(i);
+                }
+            }
+        }
         // delete webDefinition here
         Definition webDefinition = mMultiDomainWebManager.getLinkType(domain);        
         while (webDefinition != null) {
             mMultiDomainWebManager.deleteWebDefinition(webDefinition);
             webDefinition = mMultiDomainWebManager.getLinkType(domain);
         }
-        for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
-            DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
-            if (node.getSourceDomain().equals(domain) || node.getTargetDomain().equals(domain)) {
-                mAlDefinitionNodes.remove(i);
-            }
-        }
+        return cnt;
     }
     
     private void loadDefinitions() {
@@ -312,6 +318,7 @@ public class EditorMainApp {
                         ArrayList <Definition> alDefinitions = this.mMultiDomainModel.getDefinitionsByDomain(domainName);
                         DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(domain), alAssociatedDomains, alDefinitions);
                         mMapDomainNodes.put(domainName, domainNode);
+                        mMapDomainNodesSaved.put(domainName, domainNode);
                         mAlDomainNodes.add(domainNode);
                     }
                 }
@@ -385,6 +392,32 @@ public class EditorMainApp {
         return added;
     }
     
+    /** Called from save()
+     *  Do actual remove when save
+     * @return
+     */
+    private boolean deleteDomainFileObject() {
+        boolean removed = false;
+        for (Object domain : mMapDomainNodesSaved.keySet()) {
+            String domainName = (String) domain;
+            if (!mMapDomainNodes.containsKey(domain)) {
+                FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
+                FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
+                FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+                FileObject selectedDomainFolder = domainsFolder.getFileObject((String) domain);
+                if (selectedDomainFolder != null) {
+                    try {
+                        selectedDomainFolder.delete();
+                        removed = true;
+                    } catch (IOException ex) {
+                        mLog.severe(ex.getMessage());
+                    }
+                }
+            }
+        }
+        return removed;
+    }
+    
     /**
      * Remove domain from the model
      * @param domainName
@@ -393,35 +426,40 @@ public class EditorMainApp {
     public boolean deleteDomain(String domainName) {
         boolean removed = false;
         if (mMapDomainObjectXmls.containsKey(domainName)) {
-            try {
-                mMapDomainObjectXmls.remove(domainName);
-                mMapDomainQueryXmls.remove(domainName);
-                mMapDomainMidmXmls.remove(domainName);
-                mAlDomainNodes.remove(mMapDomainNodes.get(domainName));
-                mMapDomainNodes.remove(domainName);
+            mMapDomainObjectXmls.remove(domainName);
+            mMapDomainQueryXmls.remove(domainName);
+            mMapDomainMidmXmls.remove(domainName);
+            mAlDomainNodes.remove(mMapDomainNodes.get(domainName));
+            mMapDomainNodes.remove(domainName);
                 mMultiDomainWebManager.getDomains().removeDomain(domainName);
                 
-                FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
-                FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
-                FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
-                FileObject selectedDomainFolder = domainsFolder.getFileObject(domainName);
-                if (selectedDomainFolder != null) {
-                    selectedDomainFolder.delete();
-                    removed = true;
-                }
                 
-                //Remove all domain's definitions too
-                for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
-                    DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
-                    if (node.getSourceDomain().equals(domainName) || node.getTargetDomain().equals(domainName)) {
-                        mAlDefinitionNodes.remove(i);
-                    }
+            //Remove all domain's definitions too
+            /*
+            int cnt = 0;
+            for (int i=0; mAlDefinitionNodes!=null && i<mAlDefinitionNodes.size(); i++) {
+                DefinitionNode node = (DefinitionNode) mAlDefinitionNodes.get(i);
+                if (node.getSourceDomain().equals(domainName) || node.getTargetDomain().equals(domainName)) {
+                    mAlDefinitionNodes.remove(i);
+                    cnt++;
                 }
-            } catch (IOException ex) {
-                mLog.severe(ex.getMessage());
             }
+            */
         }
         return removed;
+    }
+    
+    public void deleteDefinitionFromDomainNode(String associatedDomain) {
+        for (DomainNode node : mAlDomainNodes) {
+            ArrayList <Definition> alDefinitions = node.getDefinitions();
+            int length = alDefinitions.size();
+            for (int i = length - 1; i>= 0 && i < length; i--) {
+                Definition definition = alDefinitions.get(i);
+                if (definition.getSourceDomain().equals(associatedDomain) || definition.getTargetDomain().equals(associatedDomain)) {
+                    alDefinitions.remove(i);
+                }
+            }
+        }
     }
     
     /**
@@ -655,6 +693,7 @@ public class EditorMainApp {
                 DialogDisplayer.getDefault().notify(desc);
                 
             }
+            deleteDomainFileObject();
             mMultiDomainApplication.resetModified(false);
             enableSaveAction(false);
         } catch (Exception ex) {
