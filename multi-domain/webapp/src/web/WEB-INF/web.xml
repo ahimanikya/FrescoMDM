@@ -40,6 +40,11 @@
   	</init-param>        
     </servlet>
 
+    <servlet>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <servlet-class>com.sun.ws.rest.impl.container.servlet.ServletAdaptor</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
  	<servlet-name>dwr-invoker</servlet-name>
  	<url-pattern>/dwr/*</url-pattern>
@@ -49,6 +54,10 @@
         <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
    
+    <servlet-mapping>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
