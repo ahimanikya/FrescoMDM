@@ -29,11 +29,12 @@ package com.sun.mdm.multidomain.attributes;
  */
 public class Attribute {
              
-    private String id;
+    private long id;
     private String name;
     private String columnName;
     private boolean searchable;
     private boolean isRequired;
+    private boolean isIncluded;
     private AttributeType type; 
     private String defaultValue;
   
@@ -50,7 +51,7 @@ public class Attribute {
      * @param type Attribute type.
      * @param value Attribute value.
      */
-    public Attribute(String id, String name,  AttributeType type, String value) {
+    public Attribute(long id, String name,  AttributeType type, String value) {
     	this.id = id;
     	this.name = name;
     	this.columnName = name;
@@ -73,7 +74,7 @@ public class Attribute {
      * Get Id attribute.
      * @return String Id attribute.
      */
-    public String getId() {
+    public long getId() {
         return id;
     }
     
@@ -81,7 +82,7 @@ public class Attribute {
      * Set Id attribute.
      * @param id Id attribute.
      */
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -122,7 +123,7 @@ public class Attribute {
      * Get searchable attribute.
      * @return boolean Searchable attribute.
      */
-    public boolean getSearchable() {
+    public boolean getIsSearchable() {
         return searchable;
     }
     
@@ -130,7 +131,7 @@ public class Attribute {
      * Set searchable attribute.
      * @param searchable Searchable attribute.
      */
-    public void setSearchable(boolean searchable) {
+    public void setIsSearchable(boolean searchable) {
         this.searchable = searchable;;
     }
     
@@ -149,7 +150,23 @@ public class Attribute {
     public void setIsRequired(boolean isRequired) {
         this.isRequired = isRequired;;
     }
-    
+
+     /**
+     * Get isIncluded attribute.
+     * @return boolean IsIncluded attribute.
+     */
+    public boolean getIsIncluded() {
+        return isIncluded;
+    }
+
+    /**
+     * Set isIncluded attribute.
+     * @param isIncluded IsIncluded attribute.
+     */
+    public void setIsIncluded(boolean isIncluded) {
+        this.isIncluded = isIncluded;
+    }
+
     /**
      * Set attribute date type attribute.
      * @param type Attribute data type attribute.
@@ -191,7 +208,7 @@ public class Attribute {
         Attribute copy = new Attribute();
         copy.setName(this.name);
         copy.setColumnName(this.columnName);
-        copy.setSearchable(this.searchable);
+        copy.setIsSearchable(this.searchable);
         copy.setIsRequired(this.isRequired);
         copy.setType(this.type);        
         return copy;

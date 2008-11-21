@@ -33,16 +33,15 @@ import java.util.Iterator;
  * @author cye
  */
 public abstract class AttributesDef {
-    
+
     //public enum RelationshipMode {RELATIONSHIP,HIERARCHY, GROUP};
     //public enum DirectionMode {UNIDIRECTIONAL,BIDIRECTIONAL};
-    
     private String name;
     private String description;
-    private String plugin;
     private boolean effectiveFromRequired;
     private boolean effectiveToRequired;
-    private boolean purgeDateRequired; 
+    private boolean purgeDateRequired;
+    private String plugIn;
     private boolean effectiveFrom;
     private boolean effectiveTo;
     private boolean purgeDate; 
@@ -54,6 +53,7 @@ public abstract class AttributesDef {
     public AttributesDef() {
         this.attributes = new ArrayList<Attribute>();
     }
+
     /**
      * Create an instance of RelationshipType.
      * @param name Relationship type name. 
@@ -61,16 +61,14 @@ public abstract class AttributesDef {
      * @param id Relationship type Id.
      */
     public AttributesDef(String name) {
-    	this.name = name;
-    	this.effectiveFromRequired = true;
-    	this.effectiveToRequired = true;
-    	this.purgeDateRequired = true;
-        this.effectiveFrom = true;
-    	this.effectiveTo = true;
-    	this.purgeDate = true;   
-    	this.attributes = new ArrayList<Attribute>();    	
+        this.name = name;
+        this.effectiveFromRequired = true;
+        this.effectiveToRequired = true;
+        this.purgeDateRequired = true;
+        this.attributes = new ArrayList<Attribute>();
+
     }
-    
+
     /**
      * Get relationship type name.
      * @return String relationship type name.
@@ -78,7 +76,7 @@ public abstract class AttributesDef {
     public String getName() {
         return name;
     }
-    
+
     /**
      * Set relationship type name.
      * @param name Relationship type name.
@@ -86,6 +84,7 @@ public abstract class AttributesDef {
     public void setName(String name) {
         this.name = name;
     }
+
     
      /**
      * Get relationship type description.
@@ -94,29 +93,13 @@ public abstract class AttributesDef {
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * Set relationship type description.
-     * @param name Relationship type description.
+     * @param description Relationship type description.
      */
     public void setDescription(String description) {
         this.description = description;
-    }   
-      
-   /**
-     * Get relationship type plugin.
-     * @return String relationship type plugin.
-     */
-    public String getPlugin() {
-        return plugin;
-    }
-    
-    /**
-     * Set relationship type plugin.
-     * @param plugin Relationship type plugin.
-     */
-    public void setPlugin(String plugin) {
-        this.plugin = plugin;
     }
     
     /**
@@ -124,41 +107,41 @@ public abstract class AttributesDef {
      * @return boolean EffectiveFromRequired attribute.
      */
     public boolean getEffectiveFromRequired() {
-    	return effectiveFromRequired;
+        return effectiveFromRequired;
     }
-    
+
     /**
      * Set effectiveFromRequired attribute.
      * @param effectiveFromRequired EffectiveFromRequired attribute.
      */
     public void setEffectiveFromRequired(boolean effectiveFromRequired) {
-    	this.effectiveFromRequired = effectiveFromRequired;
-    }    
-    
+        this.effectiveFromRequired = effectiveFromRequired;
+    }
+
     /**
      * Get effectiveToRequired attribute.
      * @return boolean effectiveToRequired attribute.
      */
     public boolean getEffectiveToRequired() {
-    	return effectiveToRequired;
+        return effectiveToRequired;
     }
-    
+
     /**
      * Set effectiveToRequired attribute.
      * @param effectiveToRequired EffectiveToRequired attribute.
      */
     public void setEffectiveToRequired(boolean effectiveToRequired) {
-    	this.effectiveToRequired = effectiveToRequired; 
-    }    
-    
+        this.effectiveToRequired = effectiveToRequired;
+    }
+
     /**
      * Get purgeDateRequired attribute.
      * @return boolean PurgeDateRequired attribute.
      */
     public boolean getPurgeDateRequired() {
-    	return purgeDateRequired;
+        return purgeDateRequired;
     }
-    
+
     /**
      * Set purgeDateRequired attribute.
      * @param purgeDateRequired PurgeDateRequired attribute.
@@ -166,7 +149,7 @@ public abstract class AttributesDef {
     public void setPurgeDateRequired(boolean purgeDateRequired) {
         this.purgeDateRequired = purgeDateRequired;
     }
-    
+
     /**
      * Get effectiveFrom attribute.
      * @return boolean EffectiveFromRequired attribute.
@@ -215,7 +198,22 @@ public abstract class AttributesDef {
     	this.purgeDate = purgeDate;
     }   
       
-    
+    /**
+     * Get plugIn name.
+     * @return String Plug-in name.
+     */
+    public String getPlugIn() {
+        return plugIn;
+    }
+
+    /**
+     * Set plugIn name.
+     * @param plugIn Plug-in name.
+     */
+    public void setPlugIn(String plugIn) {
+        this.plugIn = plugIn;
+    }
+
     /**
      * Get all extended attributes.
      * @return List<Attribute> A list of extended attributes.
@@ -223,52 +221,52 @@ public abstract class AttributesDef {
     public List<Attribute> getAttributes() {
         return attributes;
     }
-    
+
     /**
      * Get the attribute for the given attribute name.
      * @param name Attribute name.
      * @return Attribute Attribute if exits otherwise return null.
      */
     public Attribute getAttribute(String name) {
-    	Iterator<Attribute> attrs = attributes.iterator();
-    	while(attrs.hasNext()) {
-    		Attribute attr = (Attribute)attrs.next();
-    		if (attr.getName().equals(name)) {
-    			return attr;
-    		}
-    	}
-    	return null;
+        Iterator<Attribute> attrs = attributes.iterator();
+        while (attrs.hasNext()) {
+            Attribute attr = (Attribute) attrs.next();
+            if (attr.getName().equals(name)) {
+                return attr;
+            }
+        }
+        return null;
     }
-    
+
     /**
      * Set all extended attributes.
      * @param attributes A list of extended attributes.
      */
     public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
-    }    
-    
+    }
+
     /**
      * Set an extended attribute.
      * @param attribute Extended attribute.
      */
     public void setAttribute(Attribute attribute) {
         attributes.add(attribute);
-    }    
-    
+    }
+
     /**
      * Copy AttributesDef.
      * @param atdef Attributes Def.
      */
     public void copy(AttributesDef atdef) {
-        this.name = atdef.getName(); 
+        this.name = atdef.getName();
         this.effectiveFromRequired = atdef.effectiveFromRequired;
-        
+
         this.purgeDateRequired = atdef.purgeDateRequired;
-        this.effectiveToRequired = atdef.effectiveFromRequired;            
-        this.attributes.clear();        
-        for(Attribute attribute : atdef.getAttributes()) {            
+        this.effectiveToRequired = atdef.effectiveFromRequired;
+        this.attributes.clear();
+        for (Attribute attribute : atdef.getAttributes()) {
             attributes.add(attribute.clone());
         }
-    }    
+    }
 }
