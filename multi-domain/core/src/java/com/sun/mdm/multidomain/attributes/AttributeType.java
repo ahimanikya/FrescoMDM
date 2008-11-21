@@ -29,12 +29,10 @@ package com.sun.mdm.multidomain.attributes;
 public enum AttributeType {
 
     BOOLEAN("Boolean"),
-    BYTE("Byte"),
     CHAR("Character"),
     DATE("Date"),
     FLOAT("Float"),
     INTEGER("Integer"),
-    LONG("Long"),
     STRING("String");
     
     /*
