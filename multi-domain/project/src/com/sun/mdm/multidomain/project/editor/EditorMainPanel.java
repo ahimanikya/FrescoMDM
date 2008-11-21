@@ -84,6 +84,10 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
     static final ImageIcon HIERARCHYICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
+    static final ImageIcon RELATIONSHIPICONSMALL = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/RelationshipNode16.png"));
+    static final ImageIcon HIERARCHYICONSMALL = new ImageIcon(Utilities.loadImage(
+                "com/sun/mdm/multidomain/project/resources/HierarchyNode16.png"));
     static final ImageIcon SCREENPROPERTIESICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/screen.png"));    
     static final ImageIcon JNDIICON = new ImageIcon(Utilities.loadImage(
