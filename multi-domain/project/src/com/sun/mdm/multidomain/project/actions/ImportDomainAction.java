@@ -97,7 +97,7 @@ public class ImportDomainAction extends CookieAction {
                         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                         fc.setFileFilter(new DomainFilter(fc)); // look for MDM domains
                         fc.setAcceptAllFileFilterUsed(false);
-            
+                        fc.setDialogTitle(NbBundle.getMessage(ImportDomainAction.class, "MSG_Select_Master_Index_Title"));
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
                             mLoadProgress = ProgressHandleFactory.createHandle(
