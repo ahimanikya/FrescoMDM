@@ -66,6 +66,7 @@ public class ObjectTopComponent
     public ObjectTopComponent() {
         super();
         putClientProperty("PersistenceType", "Never");
+        setIcon(mIcon);
     }
 
     /**
