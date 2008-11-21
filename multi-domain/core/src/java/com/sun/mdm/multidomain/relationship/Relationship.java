@@ -40,7 +40,7 @@ import java.io.Serializable;
  */
 
 public class Relationship implements Serializable  {
-    private int relationshipId;
+    private long relationshipId;
 
     private String sourceEUID;
     private String targetEUID;
@@ -61,7 +61,7 @@ public class Relationship implements Serializable  {
      * @return long Relationship Id.
      */
 
-    public int getRelationshipId() {
+    public long getRelationshipId() {
     	return relationshipId;
 
     }
@@ -71,7 +71,7 @@ public class Relationship implements Serializable  {
      * @param relationshipID Relationship Id.
      */
 
-    public void setRelationshipId(int relationshipId){
+    public void setRelationshipId(long relationshipId){
     	this.relationshipId = relationshipId;
 
     }

@@ -151,7 +151,7 @@ public class RelationshipService implements Serializable {
     private void copyToRelDto(Relationship rel, RelationshipDto dto) {
 
         dto.setRelationshipDefId(rel.getRelationshipDef().getReldefID());
-        dto.setRelationshipId(rel.getRelationshipID());
+        dto.setRelationshipId(rel.getRelationshipId());
         dto.setSourceEuid(rel.getSourceEUID());
         dto.setTargetEuid(rel.getTargetEUID());
         dto.setEffectiveFromDate(rel.getEffectiveFromDate());
@@ -164,7 +164,7 @@ public class RelationshipService implements Serializable {
      *
      */
     private void copyFromRelDto(Relationship rel, RelationshipDto relDto) {
-        rel.setRelationshipID(relDto.getRelationshipId());
+        rel.setRelationshipId(relDto.getRelationshipId());
         rel.setSourceEUID(relDto.getSourceEuid());
         rel.setTargetEUID(relDto.getTargetEuid());
         rel.setEffectiveFromDate(relDto.getEffectiveFromDate());
