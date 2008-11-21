@@ -32,7 +32,6 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.hierarchy.HierarchyObjectTree;
 import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
@@ -299,18 +298,6 @@ public interface MultiDomainService {
     public HierarchyTree getHierarchyTree(int hierarchyNodeId, String EUID)
         throws ProcessingException, UserException;
 
-    /**
-     * Search hierarchy for the given EUID from  hierarchy tables.
-     * @param hierarchytypeid hierarchy type for which hierarchy tree is retrieved
-     * @param EUID EUID for which Hierarchy is searched.
-     * @param ePathFields EPathArrayList specifies the fields that needs to retrieved.
-     * @return HierarchyObjectTree HierarchyObjectTree contains all ancestors for input EUID and all its immediate children.
-     * @throws ProcessingException Thrown if an error occurs during processing.
-     * @throws UserException Thrown if an invalid parameter value is passed.
-     */
-    public HierarchyObjectTree searchHierarchy(int hierarchyDefID, String EUID, EPathArrayList ePathFields)
-        throws ProcessingException, UserException;
-    
     /**
      * Create a group.
      * @param group Group.
