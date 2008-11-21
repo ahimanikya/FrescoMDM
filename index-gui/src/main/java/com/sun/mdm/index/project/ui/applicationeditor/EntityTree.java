@@ -63,7 +63,7 @@ public class EntityTree extends JTree implements CellEditorListener {
     private static Logger mLog = Logger.getLogger(EntityTree.class.getName());
 
     static final ImageIcon ROOTIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/index/project/ui/wizards/resources/images/Root.gif"));
+                "com/sun/mdm/index/project/ui/resources/eviewproProjectIcon.png"));
     static final ImageIcon PRIMARYNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/index/project/ui/wizards/resources/images/PrimaryObject.png"));
     static final ImageIcon SUBNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
@@ -412,7 +412,7 @@ public class EntityTree extends JTree implements CellEditorListener {
             EntityNode node = (EntityNode) value;
 
             if (node.isRoot()) {
-                setIcon(null /*ROOTIMAGEICON*/);
+                setIcon(ROOTIMAGEICON);
                 setToolTipText("Root Node");
             } else if (node.isPrimary()) {
                 setIcon(PRIMARYNODEIMAGEICON);
