@@ -21,13 +21,14 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.multidomain.hierarchy;
+
 import java.io.Serializable;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.multidomain.attributes.Attribute;
 
 /**
@@ -36,180 +37,177 @@ import com.sun.mdm.multidomain.attributes.Attribute;
  * @author SwaranjitDua
  */
 public class HierarchyNode implements Serializable {
-    private int nodeID; // unique node identified by this id.
-    private String EUID; 
-    private String parentEUID; 
+
+    private long nodeID; // unique node identified by this id.
+    private String EUID;
+    private String parentEUID;
     private Date effectiveFromDate;
     private Date effectiveToDate;
     private Date purgeDate;
-    private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
-    private HierarchyNodeDef hierarchyNodeDef;
-    private ObjectNode objectNode;
-    private Hierarchy hierarchy;
     private HierarchyNode parent;
     private List<HierarchyNode> children;
-    
-    
+
+    private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
+
+    private HierarchyDef hierarchyDef = null;
+
+    //   private AttributesValue attValues;
+
     /**
      * Create an instance of Hierarchy.
      */
-    public HierarchyNode() {    	
+    public HierarchyNode() {
     }
-    
+
     /**
      * Get hierarchy Node Id.
      * @return String Hierarchy Node Id.
      */
-    public int getNodeID() {
-    	return nodeID;
+    public long getNodeID() {
+        return nodeID;
     }
-    
+
     /**
      * Set hierarchy Node Id.
      * @param nodeID Hierarchy Node Id.
      */
-    public void setNodeID(int nodeID){
-    	this.nodeID = nodeID;
+    public void setNodeID(long nodeID) {
+        this.nodeID = nodeID;
     }
-    
+
     /** 
      * Get Parent EUID
      * @return parentEUID
      */
     public String getparentEUID() {
-    	return parentEUID;
+        return parentEUID;
     }
-    
+
     /**
      *  set parentEUID
      * @param parentEUID
      */
     public void setParentEUID(String parentEUID) {
-    	this.parentEUID = parentEUID;
+        this.parentEUID = parentEUID;
     }
-    
+
     /** 
      * Get child EUID
      * @return childEUID
      */
     public String getEUID() {
-    	return EUID;
+        return EUID;
     }
-    
+
     /**
      *  set childEUID
      * @param childEUID
      */
     public void setEUID(String EUID) {
-    	this.EUID = EUID;
+        this.EUID = EUID;
     }
-    
-        /**
+
+    /**
      * Get start date attribute.
      * @return Date Start date attribute.
      */
     public Date getEffectiveFromDate() {
         return effectiveFromDate;
     }
-    
+
     /**
      * Set Start date attribute.
      * @param effectiveFromDate Start date attribute.
      */
     public void setEffectiveFromDate(Date effectiveFromDate) {
         this.effectiveFromDate = effectiveFromDate;
-    }  
-    
+    }
+
     /**
      * Get end date attribute.
      * @return Date End date attribute.
-     */    
+     */
     public Date getEffectiveToDate() {
         return effectiveToDate;
     }
-  
+
     /**
      * Set End date attribute.
      * @param effectiveToDate End date attribute.
-     */    
+     */
     public void setEffectiveToDate(Date effectiveToDate) {
         this.effectiveToDate = effectiveToDate;
     }
-    
+
     /**
      * Get Purge date attribute.
      * @return Date Purge date attribute.
-     */     
+     */
     public Date getPurgeDate() {
         return purgeDate;
     }
-   
+
     /**
      * Set Purge date attribute.
      * @param purgeDate Purge date attribute.
-     */       
+     */
     public void setPurgeDate(Date purgeDate) {
         this.purgeDate = purgeDate;
-    } 
-    
+    }
+
     /**
      * Set attribute value.
      * @param attribute Attribute.
      * @param value Attribute value.
      */
     public void setAttributeValue(Attribute attribute, String value) {
-    	attributeValues.put(attribute, value);
+        attributeValues.put(attribute, value);
     }
-    
+
     /**
      * Get attribute value.
      * @param attribute Attribute.
      * @return String Attribute value.
      */
     public String getAttributeValue(Attribute attribute) {
-    	return attributeValues.get(attribute);
+        return attributeValues.get(attribute);
     }
-    
+
     /**
      * Set attribute value.
      * @param attribute Attribute.
      * @param value Attribute value.
      */
-    public void setAttributes(Map<Attribute,String> attributeValues) {
-    	this.attributeValues = attributeValues;
+    public void setAttributes(Map<Attribute, String> attributeValues) {
+        this.attributeValues = attributeValues;
     }
-    
+
     /**
      * Get attribute value.
      * @param attribute Attribute.
      * @return String Attribute value.
      */
-    public Map<Attribute,String> getAttributes() {
-    	return attributeValues;
+    public Map<Attribute, String> getAttributes() {
+        return attributeValues;
     }
 
-    public HierarchyNodeDef getHierarchyNodeDef() {
-        return hierarchyNodeDef;
+    /**
+     * Set HierarchyDef instance
+     * @param hierDef HierarchyDef.
+     */
+    public void setHierarchyDef(HierarchyDef hierDef) {
+        this.hierarchyDef = hierDef;
     }
 
-    public void setHierarchyNodeDef(HierarchyNodeDef hierarchyNodeDef) {
-        this.hierarchyNodeDef = hierarchyNodeDef;
-    }
-
-    public ObjectNode getObjectNode() {
-        return objectNode;
-    }
-
-    public void setObjectNode(ObjectNode objectNode) {
-        this.objectNode = objectNode;
-    }
-
-    public Hierarchy getHierarchy() {
-        return hierarchy;
-    }
-
-    public void setHierarchy(Hierarchy hierarchy) {
-        this.hierarchy = hierarchy;
+    /**
+     * Get HierarchyDef instance.
+     * @return HierarchyDef HierarchyDef instance.
+     */
+    public HierarchyDef getHierarchyDef() {
+        if (hierarchyDef == null) {
+            hierarchyDef = new HierarchyDef();
+        }
+        return hierarchyDef;
     }
 
     public String getParentEUID() {
@@ -231,4 +229,6 @@ public class HierarchyNode implements Serializable {
     public void setChildren(List<HierarchyNode> children) {
         this.children = children;
     }        
+
 }
+
