@@ -23,31 +23,35 @@
 package com.sun.mdm.multidomain.attributes;
 
 /**
- *
+ * AttributeType class.
  * @author davidp
  */
 public enum AttributeType {
 
     BOOLEAN("Boolean"),
+    BLOB("Blob"),
+    BYTE("Byte"),
     CHAR("Character"),
     DATE("Date"),
     FLOAT("Float"),
     INTEGER("Integer"),
-    STRING("String"),;
+    LONG("Long"),
+    STRING("String");
+    
     /*
      * Attribute type description
      * */
     public final String description;
 
-    /* Defines attribute types with descriptions.
-     * */
+    /** 
+     * Defines attribute types with descriptions.
+     */
     AttributeType(String desc) {
         this.description = desc;
     }
 
     /**
      * Method 'types'
-     *
      * @return List A list of available attribute types.
      */
     public static AttributeType[] types() {
@@ -58,4 +62,5 @@ public enum AttributeType {
     public String toString() {
         return description;
     }
+
 }
