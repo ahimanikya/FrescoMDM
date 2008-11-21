@@ -55,7 +55,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
-import com.sun.mdm.multidomain.hierarchy.HierarchySearchCriteria;
+import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
         
 import com.sun.mdm.multidomain.services.model.Attribute;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
