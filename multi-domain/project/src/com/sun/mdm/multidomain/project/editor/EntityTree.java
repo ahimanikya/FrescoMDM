@@ -53,7 +53,7 @@ public class EntityTree extends JTree {
     private static Logger mLog = Logger.getLogger(EntityTree.class.getName());
 
     static final ImageIcon ROOTIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/Root.gif"));
+                "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
     static final ImageIcon PRIMARYNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
                 "com/sun/mdm/multidomain/project/resources/PrimaryObject.png"));
     static final ImageIcon SUBNODEIMAGEICON = new ImageIcon(Utilities.loadImage(
@@ -254,7 +254,7 @@ public class EntityTree extends JTree {
             EntityNode node = (EntityNode) value;
 
             if (node.isRoot()) {
-                setIcon(null /*ROOTIMAGEICON*/);
+                setIcon(ROOTIMAGEICON);
                 setToolTipText("Root Node");
             } else if (node.isPrimary()) {
                 setIcon(PRIMARYNODEIMAGEICON);
