@@ -165,7 +165,7 @@ public class RelationshipDefService implements Serializable {
         dto.setEffectiveFromReq(rel.getEffectiveFromRequired() ? "Y" : "N");
         dto.setEffectiveToReq(rel.getEffectiveToRequired() ? "Y" : "N");
         dto.setPurgeDateReq(rel.getPurgeDateRequired() ? "Y" : "N");
-        dto.setPlugIn(rel.getPlugIn());
+        dto.setPlugIn(rel.getPlugin());
     }
 
     /**
@@ -182,7 +182,7 @@ public class RelationshipDefService implements Serializable {
         rel.setEffectiveFromRequired(dto.getEffectiveFromReq().equalsIgnoreCase("Y") ? true : false);
         rel.setEffectiveToRequired(dto.getEffectiveToReq().equalsIgnoreCase("Y") ? true : false);
         rel.setPurgeDateRequired(dto.getPurgeDateReq().equalsIgnoreCase("Y") ? true : false);
-        rel.setPlugIn(dto.getPlugIn());
+        rel.setPlugin(dto.getPlugIn());
         List<RelationshipEaDto> eaDto = dto.getAttributeDefs();
         for (RelationshipEaDto ea : eaDto) {
             Attribute att = new Attribute();

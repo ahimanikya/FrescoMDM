@@ -152,13 +152,13 @@ public class HierarchyDefService implements Serializable {
      *
      */
     private void copyToHierDto(HierarchyDef hier, HierarchyDefDto dto) {
-        dto.setHierarchyDefId(hier.getID());
+        dto.setHierarchyDefId(hier.getId());
         dto.setHierarchyName(hier.getName());
         dto.setDescription(hier.getDescription());
         dto.setDomain(hier.getDomain());
         dto.setEffectiveFromDate(hier.getEffectiveFromDate());
         dto.setEffectiveToDate(hier.getEffectiveToDate());
-        dto.setPlugIn(hier.getPlugIn());
+        dto.setPlugIn(hier.getPlugin());
     }
 
     /**
@@ -166,14 +166,14 @@ public class HierarchyDefService implements Serializable {
      *
      */
     private void copyFromHierDto(HierarchyDef hier, HierarchyDefDto dto) {
-        hier.setID(dto.getHierarchyDefId());
+        hier.setId(dto.getHierarchyDefId());
         hier.setName(dto.getHierarchyName());
         hier.setDescription(dto.getDescription());
         hier.setDomain(dto.getDomain());
         hier.setEffectiveFromDate(dto.getEffectiveFromDate());
         hier.setEffectiveToDate(dto.getEffectiveToDate());
        
-        hier.setPlugIn(dto.getPlugIn());
+        hier.setPlugin(dto.getPlugIn());
         List<HierarchyNodeEaDto> eaDto = dto.getAttributeDefs();
         for (HierarchyNodeEaDto ea : eaDto) {
             Attribute att = new Attribute();

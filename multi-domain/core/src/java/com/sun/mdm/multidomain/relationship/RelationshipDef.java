@@ -49,13 +49,16 @@ public class RelationshipDef extends AttributesDef implements Serializable {
          */
         public boolean IsBidirectional() {
             return (intValue == 1 ? true : false);
-           
+
         }
     };
+    public static int UNIDIRECTIONAL = 0;
+    public static int BIDIRECTIONAL = 1;
     private String sourceDomain;
     private String targetDomain;
     private DirectionMode direction;
     private long reldefID;
+    int id;
 
     /**
      * Create an instance of RelationshipType. 
@@ -73,6 +76,28 @@ public class RelationshipDef extends AttributesDef implements Serializable {
         super(name);
         this.reldefID = id;
 
+    }
+
+    /**
+     * Create an instance of RelationshipType.
+     * @param name Relationship type name.
+     * @param sourceDomainName  Name of the source domain.
+     * @param targetDomainName  Name of the target domain.
+     * @param id Relationship def Id.
+     * @param dir  Relationship direction.
+     */
+    public RelationshipDef(String name, String sourceDomainName,
+            String targetDomainName, int id,
+            int dir) {
+        super(name);
+        this.id = id;
+        sourceDomain = sourceDomainName;
+        targetDomain = targetDomainName;
+        if (dir == UNIDIRECTIONAL) {
+            direction = DirectionMode.UNIDIRECTIONAL;
+        } else if (dir == BIDIRECTIONAL) {
+            direction = DirectionMode.BIDIRECTIONAL;
+        }
     }
 
     /**

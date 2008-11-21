@@ -202,7 +202,7 @@ public abstract class AttributesDef {
      * Get plugIn name.
      * @return String Plug-in name.
      */
-    public String getPlugIn() {
+    public String getPlugin() {
         return plugIn;
     }
 
@@ -210,7 +210,7 @@ public abstract class AttributesDef {
      * Set plugIn name.
      * @param plugIn Plug-in name.
      */
-    public void setPlugIn(String plugIn) {
+    public void setPlugin(String plugIn) {
         this.plugIn = plugIn;
     }
 

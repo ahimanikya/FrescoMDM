@@ -146,7 +146,7 @@ public class HierarchyNodeService implements Serializable {
      */
     private void copyToHierDto(HierarchyNode hier, HierarchyNodeDto dto) {
         dto.setHierarchyNodeId(hier.getNodeID());
-        dto.setHierarchyDefId(hier.getHierarchyDef().getID());
+        dto.setHierarchyDefId(hier.getHierarchyDef().getId());
         dto.setEuid(hier.getEUID());
         dto.setEffectiveFromDate(hier.getEffectiveFromDate());
         dto.setEffectiveToDate(hier.getEffectiveToDate());

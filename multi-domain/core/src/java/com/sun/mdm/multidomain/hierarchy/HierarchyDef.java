@@ -76,7 +76,7 @@ public class HierarchyDef extends AttributesDef implements Serializable {
      * Get relationship type Id.
      * @return String Relationship type Id.
      */
-    public long getID() {
+    public long getId() {
         return hierarchyDefID;
 
     }
@@ -85,7 +85,7 @@ public class HierarchyDef extends AttributesDef implements Serializable {
      * Set hierarchy def Id.
      * @param hierarchyDefID hierarchy def id.
      */
-    public void setID(long id) {
+    public void setId(long id) {
         this.hierarchyDefID = id;
 
     }
