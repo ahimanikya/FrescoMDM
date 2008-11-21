@@ -363,7 +363,7 @@ public class RelationshipManager {
         rt1.setId(1);
         rt1.setSourceDomain("Person");
     	rt1.setTargetDomain("Company");    	
-    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	Attribute a1 = new Attribute("salary", "yearly income", AttributeType.FLOAT, "500000.0");
     	rt1.setAttribute(a1);
     	
     	RelationshipDef rt2 = new RelationshipDef();
@@ -371,7 +371,7 @@ public class RelationshipManager {
         rt2.setId(1);
         rt2.setSourceDomain("Person");
     	rt2.setTargetDomain("Company");    	
-    	Attribute a2 = new Attribute("hiredDate", "hired date", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	Attribute a2 = new Attribute("hiredDate", "hired date", AttributeType.DATE, "09/10/2008");
     	rt2.setAttribute(a2);
 
     	RelationshipDef rt3 = new RelationshipDef();
@@ -379,7 +379,7 @@ public class RelationshipManager {
         rt3.setId(1);
     	rt3.setSourceDomain("Person");
     	rt3.setTargetDomain("Company");    	
-    	Attribute a3 = new Attribute("startDate", "date started", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	Attribute a3 = new Attribute("startDate", "date started", AttributeType.DATE, "09/10/2008");
     	rt3.setAttribute(a3);
         
     	RelationshipDef rt4 = new RelationshipDef();
@@ -387,7 +387,7 @@ public class RelationshipManager {
         rt4.setId(2);
         rt4.setSourceDomain("Company");
     	rt4.setTargetDomain("Product");
-    	Attribute a4 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	Attribute a4 = new Attribute("invest", "total investment", AttributeType.FLOAT, "500000.0");
     	rt4.setAttribute(a4);
     	
     	RelationshipDef rt5 = new RelationshipDef();
@@ -395,7 +395,7 @@ public class RelationshipManager {
         rt5.setId(3);
         rt5.setSourceDomain("Person");
     	rt5.setTargetDomain("Product");
-    	Attribute a5 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	Attribute a5 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
     	rt5.setAttribute(a5);
     	
         RelationshipDef rt6 = new RelationshipDef();
@@ -403,7 +403,7 @@ public class RelationshipManager {
         rt6.setId(3);
     	rt6.setSourceDomain("Person");
     	rt6.setTargetDomain("Product");
-    	Attribute a6 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	Attribute a6 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
     	rt6.setAttribute(a6);    	       
     	rts.add(rt1);
     	rts.add(rt2);

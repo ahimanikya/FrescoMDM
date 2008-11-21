@@ -97,42 +97,42 @@ public class HierarchyManager {
     	rt1.setName("worgchart");
         rt1.setId(1);
         rt1.setDomain("Person");    	
-    	Attribute a1 = new Attribute("salary", "yearly income", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	Attribute a1 = new Attribute("salary", "yearly income", AttributeType.FLOAT, "500000.0");
     	rt1.setAttribute(a1);
     	
     	HierarchyDef rt2 = new HierarchyDef();
     	rt2.setName("employedby");
         rt2.setId(1);
         rt2.setDomain("Person");   	
-    	Attribute a2 = new Attribute("hiredDate", "hired date", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	Attribute a2 = new Attribute("hiredDate", "hired date", AttributeType.DATE, "09/10/2008");
     	rt2.setAttribute(a2);
 
     	HierarchyDef rt3 = new HierarchyDef();
         rt3.setName("contractwith");
         rt3.setId(1);
     	rt3.setDomain("Person");  	
-    	Attribute a3 = new Attribute("startDate", "date started", new AttributeType(AttributeType.DATE), "09/10/2008");
+    	Attribute a3 = new Attribute("startDate", "date started", AttributeType.DATE, "09/10/2008");
     	rt3.setAttribute(a3);
         
     	HierarchyDef rt4 = new HierarchyDef();
     	rt4.setName("investon");
         rt4.setId(2);
         rt4.setDomain("Company");
-    	Attribute a4 = new Attribute("invest", "total investment", new AttributeType(AttributeType.FLOAT), "500000.0");
+    	Attribute a4 = new Attribute("invest", "total investment", AttributeType.FLOAT, "500000.0");
     	rt4.setAttribute(a4);
     	
     	HierarchyDef rt5 = new HierarchyDef();
     	rt5.setName("designon");
         rt5.setId(3);
         rt5.setDomain("Person");
-    	Attribute a5 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	Attribute a5 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
     	rt5.setAttribute(a5);
     	
         HierarchyDef rt6 = new HierarchyDef();
         rt6.setName("workon");
         rt6.setId(3);
     	rt6.setDomain("Product");
-    	Attribute a6 = new Attribute("location", "phyiscal location", new AttributeType(AttributeType.STRING), "Monrovia");
+    	Attribute a6 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
     	rt6.setAttribute(a6);    	       
     	hs.add(rt1);
     	hs.add(rt2);
