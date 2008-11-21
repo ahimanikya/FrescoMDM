@@ -29,7 +29,7 @@
       <table border="0" width="100%">
         <tr>
             <td>
-                <div class="TopRow">
+                <div class="AttributesTopRow">
                     <table border="0">
                         <tr>
                             <td class="mainLabel">
@@ -52,7 +52,7 @@
         </tr>
         <tr>
             <td>
-                <div class="BottomRow">
+                <div class="AttributesBottomRow">
                     <table border="0">
                         <tr>
                             <td class="mainLabel">

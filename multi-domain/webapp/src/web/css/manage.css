@@ -90,7 +90,57 @@
 .button_spacing {
     padding-left:6px;
 }
-		
+.MainDiv {
+    border-right: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    padding-left:10px;
+    padding-top:5px;
+    padding-right:10px;
+    padding-bottom:10px;
+    width:75%;
+}
+
+.AttributeDiv {
+    border-right: 1px solid #59707B;
+    border-left: 1px solid #59707B;
+    border-top: 1px solid #59707B;
+    border-bottom: 1px solid #59707B;
+    padding-left:10px;
+    padding-top:5px;
+    padding-right:10px;
+    padding-bottom:10px;
+}
+
+
+.DomainDiv {
+    border-right: 1px solid #59707B;
+    border-left: 1px solid #59707B;
+    border-top: 1px solid #59707B;
+    border-bottom: 1px solid #59707B;
+    padding-left:10px;
+    padding-top:5px;
+    padding-right:10px;
+    padding-bottom:10px;
+}
+
+.MainTitleBar{
+    height:24px;
+    background-color: #6E828C;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    text-align:left;
+    padding-left:10px;
+    padding-top:5px;
+    padding-right:10px;
+    width:908px;
+    
+    
+}
+
 .Details{
     
     border: 1px solid #a4936e;
@@ -139,14 +189,14 @@
     border: 1px solid #a4936e;
 }
 
-.TopRow {
+.AttributesTopRow {
     border-right: 1px solid #000000;
     border-left: 1px solid #000000;
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
 }
 
-.BottomRow {
+.AttributesBottomRow {
     border-right: 1px solid #000000;
     border-left: 1px solid #000000;
     border-top: 1px solid #000000;
@@ -158,11 +208,12 @@
     font-size:14px;
     color:#343535;
     font-weight:bold;
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 .subLabel {
     font-family: Arial, Helvetica, sans-serif;
-    font-size:12px;
+    font-size:10px;
     color:#343535;
-    font-weight:bold;
 }
