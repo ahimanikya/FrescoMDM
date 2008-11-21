@@ -160,7 +160,7 @@ public class HierarchyNodeDto implements Serializable {
      *
      * @param attrValues
      */
-    public void setgetHierarchyAttributes(Map<HierarchyNodeEaDto, String> attrValues) {
+    public void setHierarchyAttributes(Map<HierarchyNodeEaDto, String> attrValues) {
         this.attributeValues = attrValues;
     }
 
