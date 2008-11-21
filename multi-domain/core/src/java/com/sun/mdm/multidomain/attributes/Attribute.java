@@ -32,7 +32,7 @@ public class Attribute {
     private long id;
     private String name;
     private String columnName;
-    private boolean searchable;
+    private boolean isSearchable;
     private boolean isRequired;
     private boolean isIncluded;
     private AttributeType type; 
@@ -43,6 +43,22 @@ public class Attribute {
      */
     public Attribute() {    	
     }
+    
+   /**
+     * Create an instance of Attribute class.
+     * @param columnName Attribute colummn name.
+     * @param name Attribute name.
+     * @param type Attribute type.
+     * @param value Attribute value.
+     */
+    public Attribute(String name, String columnName, AttributeType type, String value) {
+    	this.name = name;
+    	this.columnName = columnName;
+    	this.isSearchable = true;
+    	this.isRequired = true;
+    	this.type = type;
+    	this.defaultValue = value;
+    } 
     
     /**
      * Create an instance of  Attribute class.
@@ -55,21 +71,12 @@ public class Attribute {
     	this.id = id;
     	this.name = name;
     	this.columnName = name;
-    	this.searchable = true;
+    	this.isSearchable = true;
     	this.isRequired = true;
     	this.type = type;
     	this.defaultValue = value;
     } 
     
-    /**
-     * Create an instance of  Attribute class.
-     * @param id Attribute Id.
-     * @param name Attribute name.
-     * @param displayName Attribute displayname.
-     * @param type Attribute type.
-     * @param value Attribute value.
-     */
-
     /**
      * Get Id attribute.
      * @return String Id attribute.
@@ -124,7 +131,7 @@ public class Attribute {
      * @return boolean Searchable attribute.
      */
     public boolean getIsSearchable() {
-        return searchable;
+        return isSearchable;
     }
     
     /**
@@ -132,7 +139,7 @@ public class Attribute {
      * @param searchable Searchable attribute.
      */
     public void setIsSearchable(boolean searchable) {
-        this.searchable = searchable;;
+        this.isSearchable = searchable;;
     }
     
     /**
@@ -208,7 +215,7 @@ public class Attribute {
         Attribute copy = new Attribute();
         copy.setName(this.name);
         copy.setColumnName(this.columnName);
-        copy.setIsSearchable(this.searchable);
+        copy.setIsSearchable(this.isSearchable);
         copy.setIsRequired(this.isRequired);
         copy.setType(this.type);        
         return copy;
