@@ -245,9 +245,9 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     }
        
     /**
-     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchHierarchys()
+     * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchHierarchyNodes()
      */    
-    public List<HierarchyNode> searchHierarchys(DomainSearchOption searchOption, HierarchySearchCriteria searchCriteria) 
+    public List<HierarchyNode> searchHierarchyNodes(DomainSearchOption searchOption, HierarchySearchCriteria searchCriteria) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }

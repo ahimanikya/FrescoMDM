@@ -284,7 +284,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public List<HierarchyNode> searchHierarchys(DomainSearchOption searchOption, HierarchySearchCriteria searchCriteria) 
+    public List<HierarchyNode> searchHierarchyNodes(DomainSearchOption searchOption, HierarchySearchCriteria searchCriteria) 
             throws ProcessingException, UserException;
     
     /**
