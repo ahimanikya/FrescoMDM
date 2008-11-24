@@ -505,7 +505,7 @@ public class HierarchyManager {
         try {
             DomainSearchOption dSearchOption = QueryBuilder.buildMultiDomainSearchOption(dSearch);
             HierarchySearchCriteria hSearchCriteria = QueryBuilder.buildHierarchySearchCriteria(hNodeSearch);
-            List<HierarchyNode> hNodes = multiDomainService.searchHierarchys(dSearchOption, hSearchCriteria);
+            List<HierarchyNode> hNodes = multiDomainService.searchHierarchyNodes(dSearchOption, hSearchCriteria);
         } catch (ConfigException cex) {    
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
