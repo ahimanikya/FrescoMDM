@@ -17,28 +17,17 @@
     dojo.require("dijit.dijit");
     dojo.require("dijit.TitlePane");
     dojo.require("dojo.parser");
-
+    dojo.require("dijit.RecordDetailsTitlePane");
+     
 </script>
 
 
 <body class="mdwm">
-<div dojoType="dijit.TitlePane" title="Title Pane #1" class="Details" jsId="pane1">
-    
-    <div class="TitleBar">
-       <table border="0" width="100%" class="TitleBar">
-           <tr>
-               <td align="left">
-                    <img src="images/icons/document_icon.png" border="0">&nbsp;Dr. George Karlin
-                </td>
-                <td align="right">
-                    <a href="javascript:void(0);" onclick="RefreshRecordDetails('summary_deatails_hidden_id','summaryOn','detailsOff')"><img id="summaryOn" src="images/icons/summary-button-down.gif" border="0" title="<f:message key="summary_text" />" alt="<f:message key="summary_text" />"></a>
-                    <a href="javascript:void(0);" onclick="RefreshRecordDetails('summary_deatails_hidden_id','summaryOn','detailsOff')"><img id="detailsOff" src="images/icons/details-button.gif" border="0" title="<f:message key="details_text" />" alt="<f:message key="details_text" />" ></a>
-                    <input type="hidden" value="false" id="summary_deatails_hidden_id">
-               </td>
-           </tr>
-       </table>
-    </div>
-<!-- sumarry content -->
+
+<div dojoType="dijit.RecordDetailsTitlePane" title="Dr. George Karlin" class="Details" 
+        onSummaryClick="showDetails('DetailContent',false);" onDetailsClick="showDetails('DetailContent',true);">
+
+    <!-- sumarry content -->
     <div class="Content">
     <table border="0">
         <tr>
@@ -104,7 +93,7 @@
         <!--  detail content displays after summary -->
         <tr>
             <td colspan="4">
-                <div id="DetailsAndSummary" style="display:none;">
+                <div id="DetailContent" style="display:none;">
                     <table>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
@@ -167,37 +156,16 @@
    
   
 <script>
-      // Refresh summary and details icons in record details screens
        
-       var summaryOn=new Image();
-           summaryOn.src="images/icons/summary-button-down.gif";
-       var summaryOff=new Image();
-           summaryOff.src="images/icons/summary-button.gif";
-       var DetailOn=new Image();
-           DetailOn.src="images/icons/details-button-down.gif";
-       var DetailsOff=new Image();
-           DetailsOff.src="images/icons/details-button.gif";
-       
-       
-       
-       function RefreshRecordDetails(hiddenId,summary_on_id,details_off_id){
-           
-           if(dojo.byId(hiddenId).value=='false'){
-               document.getElementById('DetailsAndSummary').style.visibility='hidden';
-              document.getElementById('DetailsAndSummary').style.display='none';
-               dojo.byId(summary_on_id).src=summaryOn.src;
-               dojo.byId(details_off_id).src=DetailsOff.src;
-               dojo.byId(hiddenId).value='true';
+       function showDetails(contentId, showDetailsFlag){
+           if(! showDetailsFlag){
+               document.getElementById(contentId).style.visibility='hidden';
+              document.getElementById(contentId).style.display='none';
            }
            else{
-              document.getElementById('DetailsAndSummary').style.visibility='visible';
-              document.getElementById('DetailsAndSummary').style.display='block';
-              dojo.byId(summary_on_id).src=summaryOff.src;
-              dojo.byId(details_off_id).src=DetailOn.src;
-              dojo.byId(hiddenId).value='false';
+              document.getElementById(contentId).style.visibility='visible';
+              document.getElementById(contentId).style.display='block';
            }
-           
-           
        }
        
-   </script>  
+</script>  
