@@ -87,6 +87,19 @@
 
 /* record_details---------------->narahari */
 
+.sample {
+  color:black;  
+}
+.abc {
+  border-right: 1px solid #6E828C;
+  border-left: 1px solid #6E828C;
+  border-top: 1px solid #6E828C;
+  border-bottom: 1px solid #6E828C;
+    
+}
+.palleteButton { 
+    cursor:pointer;
+}
 .button_spacing {
     padding-left:6px;
 }

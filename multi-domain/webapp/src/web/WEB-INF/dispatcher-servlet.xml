@@ -41,6 +41,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/m_byrel_domain_criteria.htm">manage_byrel_domain_criteria</prop>
                 <prop key="/m_byrel_attributes_criteria.htm">manage_byrel_attributes_criteria</prop>
                 <prop key="/m_byrel_select_relationship.htm">manage_byrel_select_relationship</prop>
+                <prop key="/m_byrel_relationships_listing.htm">manage_byrel_relationships_listing</prop>
+                <prop key="/m_byrel_add_relationship.htm">manage_byrel_add_relationship</prop>
+                <prop key="/m_rel_domain_criteria_with_results.htm">manage_rel_domain_criteria_with_results</prop>
+                <prop key="/m_rel_add_relationship_attributes.htm">manage_rel_add_relationship_attributes</prop>
+                
                 
             </props>
         </property>
@@ -101,6 +106,18 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           
    <bean name="manage_byrel_select_relationship"  
           class="com.sun.mdm.multidomain.presentation.web.ManageByRelSelectRelationshipController" />
+          
+   <bean name="manage_byrel_relationships_listing"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageByRelRelationshipsListController" />
+          
+   <bean name="manage_byrel_add_relationship"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageByRelAddRelationshipController" />
+          
+  <bean name="manage_rel_domain_criteria_with_results"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageRelDomainCriteriaWithResultController" />
+          
+  <bean name="manage_rel_add_relationship_attributes"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageRelAddRelationshipAttributesController" />
           
      
 </beans>
