@@ -25,9 +25,10 @@ package com.sun.mdm.multidomain.hierarchy;
 import java.io.Serializable;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sun.mdm.multidomain.attributes.Attribute;
 
@@ -45,7 +46,7 @@ public class HierarchyNode implements Serializable {
     private Date effectiveToDate;
     private Date purgeDate;
     private HierarchyNode parent;
-    private List<HierarchyNode> children;
+    private List<HierarchyNode> children = new ArrayList<HierarchyNode>();
 
     private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
 
@@ -229,6 +230,20 @@ public class HierarchyNode implements Serializable {
     public void setChildren(List<HierarchyNode> children) {
         this.children = children;
     }        
+    
+    public void addChild(HierarchyNode childNode) {        
+        childNode.setParent(parent);
+        childNode.setParentEUID(parentEUID);
+        children.add(childNode);
+    }        
 
+    public void addChildren(List<HierarchyNode> children) {
+        for (HierarchyNode cNode : children) {
+            cNode.setParent(parent);
+            cNode.setParentEUID(parentEUID);
+            this.children.add(cNode);
+        }
+    }        
+    
 }
 

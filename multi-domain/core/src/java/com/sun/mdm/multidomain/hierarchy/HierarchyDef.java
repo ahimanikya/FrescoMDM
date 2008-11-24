@@ -48,7 +48,6 @@ public class HierarchyDef extends AttributesDef implements Serializable {
     /**
      * Create an instance of HierarchyType.
      * @param name Hierarchy type name. 
-    // * @param displayName Relationship type display name.
      * @param id Hierarchy type Id.
      */
     public HierarchyDef(String name, long id) {
