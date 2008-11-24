@@ -20,7 +20,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanelRecordHighLight" linkSize="4" alignment="0" max="32767" attributes="1"/>
+                          <Component id="jPanelRecordHighLight" linkSize="4" alignment="0" min="-2" max="-2" attributes="1"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" pref="77" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -30,11 +30,11 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                      <Component id="jPanelRecordDetail" linkSize="4" max="32767" attributes="1"/>
+                      <Component id="jPanelRecordDetail" linkSize="4" min="-2" max="-2" attributes="1"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                      <Component id="jPanelDomainSummary" linkSize="4" max="32767" attributes="1"/>
+                      <Component id="jPanelDomainSummary" linkSize="4" min="-2" max="-2" attributes="1"/>
                   </Group>
               </Group>
               <EmptySpace min="226" pref="226" max="-2" attributes="0"/>
@@ -52,7 +52,7 @@
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="jPanelRecordHighLight" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jPanelDomainSummary" max="32767" attributes="0"/>
+              <Component id="jPanelDomainSummary" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanelRecordDetail" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
