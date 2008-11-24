@@ -89,7 +89,13 @@ public class ViewBuilder {
         // implement me, need to convert to objectrecord based on search result.         
         return hTreeView;
     }
-      
+
+    public static HierarchyNodeView buildHierarchyNodeView(HierarchyNode hNode) {
+        HierarchyNodeView hNodeView = new HierarchyNodeView();
+        // implement me, need to convert to objectrecord based on search result. 
+        return hNodeView;
+    }
+    
     public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) {
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
         // implement me, need to convert to objectrecord based on search result. 
