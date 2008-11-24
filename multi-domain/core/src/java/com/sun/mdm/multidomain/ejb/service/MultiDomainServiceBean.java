@@ -65,7 +65,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption
  * @author SwaranjitDua
  * @author cye
  */
-@Stateless(mappedName="ejb/MULTIDOMAIN_APPLICATION_TOKEN_MultiDomainService")
+@Stateless(name="MultiDomainService", mappedName="ejb/MULTIDOMAIN_APPLICATION_TOKEN_MultiDomainService")
 @Remote(MultiDomainServiceRemote.class)
 @Local(MultiDomainServiceLocal.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
