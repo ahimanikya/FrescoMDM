@@ -60,6 +60,19 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                 retreiveFieldProperties();
             }
         });
+        
+        jTxtInputMask.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                setInputMask();
+            }
+        });
+        
+        jTxtValueMask.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                setValueMask();
+            }
+        });
+        
         mTableFields.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
@@ -635,12 +648,24 @@ private void onjTxtDataType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
 // TODO add your handling code here:
 }//GEN-LAST:event_onjTxtDataType
 
-private void onInputMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onInputMask
-// TODO add your handling code here:
-    int selectedRow = mTableFields.getSelectedRow();
+private void setInputMask() {
+     int selectedRow = mTableFields.getSelectedRow();
     TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
     FieldAttributeRow fieldRef = model.getRow(selectedRow);
     fieldRef.setInputMask(this.jTxtInputMask.getText());
+  
+}
+
+private void setValueMask() {
+    int selectedRow = mTableFields.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setValueMask(this.jTxtValueMask.getText());
+
+}
+
+private void onInputMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onInputMask
+// TODO add your handling code here:
     
 }//GEN-LAST:event_onInputMask
 
