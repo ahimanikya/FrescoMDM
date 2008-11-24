@@ -591,6 +591,10 @@ public class HierarchyManager {
             DomainSearchOption dSearchOption = QueryBuilder.buildMultiDomainSearchOption(dSearch);
             HierarchySearchCriteria hSearchCriteria = QueryBuilder.buildHierarchySearchCriteria(hNodeSearch);
             List<HierarchyNode> hNodes = multiDomainService.searchHierarchyNodes(dSearchOption, hSearchCriteria);
+            for (HierarchyNode hNode : hNodes) {
+                HierarchyNodeView hNodeView = ViewBuilder.buildHierarchyNodeView(hNode);
+                hNodeViews.add(hNodeView);
+            }            
         } catch (ConfigException cex) {    
             throw new ServiceException(cex);
         } catch (ProcessingException pex) {
