@@ -103,7 +103,8 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
      */
     private void loadNewSearchDetail() {
         //jCBRecordDetail.setSelectedIndex(0);
-        TableModelFieldGroup groupModel = new TableModelFieldGroup(mSearchDetail.getFieldGroups());
+        ArrayList<GroupRow> groupRows = new ArrayList<GroupRow>();
+        TableModelFieldGroup groupModel = new TableModelFieldGroup(groupRows);
         jTableFieldGroup.setModel(groupModel);
         /**
         TableModelField fieldModel = new TableModelField(new FieldGroup());
