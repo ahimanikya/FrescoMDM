@@ -65,7 +65,9 @@ public class HierarchyManager {
     private MultiDomainMetaService multiDomainMetaService;
 	
    // demo data
-    private List<HierarchyDef> hs = new ArrayList<HierarchyDef>(); 
+    private List<HierarchyDef> hds = new ArrayList<HierarchyDef>(); 
+    private List<HierarchyNode> hs = new ArrayList<HierarchyNode>(); 
+    private long NODE_ID = 0;
     private boolean TBD = true;
     
     /**
@@ -134,12 +136,12 @@ public class HierarchyManager {
     	rt6.setDomain("Product");
     	Attribute a6 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
     	rt6.setAttribute(a6);    	       
-    	hs.add(rt1);
-    	hs.add(rt2);
-    	hs.add(rt3);    
-        hs.add(rt4);   
-        hs.add(rt5);   
-        hs.add(rt6);                           
+    	hds.add(rt1);
+    	hds.add(rt2);
+    	hds.add(rt3);    
+        hds.add(rt4);   
+        hds.add(rt5);   
+        hds.add(rt6);                           
     }
         
     /**
@@ -163,7 +165,7 @@ public class HierarchyManager {
         }
         //demo
         hDefExt.setId(Long.toString(System.currentTimeMillis()));
-        hs.add(ViewBuilder.buildHierarchyDef(hDefExt));
+        hds.add(ViewBuilder.buildHierarchyDef(hDefExt));
         hDefId = hDefExt.getId();
         
         return hDefId;
@@ -188,12 +190,12 @@ public class HierarchyManager {
         }
         // demo data
         boolean updated = false;
-        for (HierarchyDef rt:hs) {
+        for (HierarchyDef rt:hds) {
             if (rt.getDomain().equals(hDefExt.getDomain()) &&
                 rt.getName().equals(hDefExt.getName())) {                 
                 HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
-                hs.remove(rt);
-                hs.add(hDef);
+                hds.remove(rt);
+                hds.add(hDef);
                 updated = true;
                 break;
              }
@@ -225,7 +227,7 @@ public class HierarchyManager {
          // demo data
         boolean deleted = false;
         List<HierarchyDef> temp = new ArrayList<HierarchyDef>();
-        for (HierarchyDef rt:hs) {
+        for (HierarchyDef rt:hds) {
             if (rt.getDomain().equals(hDefExt.getDomain()) &&
                 rt.getName().equals(hDefExt.getName())) {                      
                 deleted = true;
@@ -238,7 +240,7 @@ public class HierarchyManager {
                                    " domain:" + hDefExt.getDomain() +
                                    " name:" + hDefExt.getName());
         }   
-        hs = temp;       
+        hds = temp;       
     }   
     
     /**
@@ -272,7 +274,7 @@ public class HierarchyManager {
         }
         }
          //demo
-        for (HierarchyDef rt:hs) {
+        for (HierarchyDef rt:hds) {
             if (rt.getName().equals(name) &&
                 rt.getDomain().equals(domain)) { 
                 hDefExt = ViewBuilder.buildHierarchyDefExt(rt);
@@ -302,7 +304,7 @@ public class HierarchyManager {
         }     
         }
         //demo
-        for (HierarchyDef rt:hs) {
+        for (HierarchyDef rt:hds) {
             if (rt.getId() == hierarchyId) {
                 hDefExt = ViewBuilder.buildHierarchyDefExt(rt);
                 break;
@@ -330,7 +332,7 @@ public class HierarchyManager {
         }   
         }
     	// demo data	
-    	for (HierarchyDef rt:hs) {
+    	for (HierarchyDef rt:hds) {
             if (rt.getDomain().equals(domain)) {
                 hDefs.add(ViewBuilder.buildHierarchyDefExt(rt));	
             }
@@ -357,6 +359,7 @@ public class HierarchyManager {
     public String addHierarchyNode(HierarchyNodeRecord hNodeRecord) 
         throws ServiceException {
         int hNodeId = 0;
+        if (!TBD) {    
         try {
             HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
             hNodeId = multiDomainService.addHierarchyNode(hNode);
@@ -366,6 +369,12 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         }     
         return Integer.toString(hNodeId);
+        }
+        //demo 
+        HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
+        hNode.setNodeID(NODE_ID++);    
+        hs.add(hNode);
+        return Long.toString(hNode.getNodeID());
     }
     
      /**
@@ -377,6 +386,7 @@ public class HierarchyManager {
     public List<String> addHierarchyNodes(String parentId, List<HierarchyNodeRecord> hNodeRecords) 
         throws ServiceException {
         List<String> nodeIds = new ArrayList<String>();
+        if (!TBD) {
         try {
             HierarchyNode[] hNodes = new HierarchyNode[hNodeRecords.size()];
             int i = 0;
@@ -393,6 +403,19 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         }     
         return nodeIds;
+        }
+        //demo
+        for (HierarchyNodeRecord hNodeRecord : hNodeRecords) {
+            HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
+            for (HierarchyNode pNode : hs) {
+                 if (pNode.getNodeID() == Long.parseLong(parentId)) {
+                     hNode.setNodeID(NODE_ID++);
+                     pNode.addChild(hNode);
+                     nodeIds.add(Long.toString(hNode.getNodeID()));
+                 }
+            }
+        };        
+        return nodeIds;
     }
     
     /**
@@ -402,13 +425,23 @@ public class HierarchyManager {
      */
     public void deleteHierarchyNode(int hierarchyNodeId) 
         throws ServiceException {
+        if (!TBD) {
         try {
              multiDomainService.deleteHierarchyNode(hierarchyNodeId);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
             throw new ServiceException(uex);
-        }           
+        } 
+        }
+        // demo
+        for (HierarchyNode hNode : hs) {
+            if (hNode.getNodeID() == hierarchyNodeId) {
+                List<HierarchyNode> children = hNode.getChildren();
+                hs.remove(hNode);
+                break;
+            }
+        }        
     }
        
     /**
@@ -418,6 +451,7 @@ public class HierarchyManager {
      */
     public void updateHierarchyNode(HierarchyNodeRecord hNodeRecord) 
         throws ServiceException {
+        if (!TBD) {
         try {
             HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
             multiDomainService.updateHierarchyNode(hNode);
@@ -425,7 +459,17 @@ public class HierarchyManager {
             throw new ServiceException(pex);
         } catch (UserException uex) {
             throw new ServiceException(uex);
-        }          
+        }      
+        }
+        //demo
+        HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
+        for (HierarchyNode node : hs) {
+            if(node.getNodeID() == hNode.getNodeID()) {
+                hs.remove(node);
+                hs.add(hNode);
+                break;
+            }
+        }
     }
     
     /**
@@ -437,6 +481,7 @@ public class HierarchyManager {
     public HierarchyNodeRecord getHierarchyNode(int hierarchyNodeId) 
         throws ServiceException {
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
+        if (!TBD) {        
         try {
             HierarchyNode hNode = multiDomainService.getHierarchyNode(hierarchyNodeId);
             hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
@@ -445,6 +490,14 @@ public class HierarchyManager {
         } catch (UserException uex) {
             throw new ServiceException(uex);
         }            
+        return hNodeRecord;
+        }
+        //demo
+        for (HierarchyNode node : hs) {
+            if(node.getNodeID() == hierarchyNodeId) {
+                hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(node);
+            }
+        }
         return hNodeRecord;
     }
     
@@ -457,6 +510,7 @@ public class HierarchyManager {
     public List<HierarchyNodeRecord> getHierarchyNodeChildren(int hierarchyNodeId)
         throws ServiceException {
         List<HierarchyNodeRecord> hNodeRecords = new ArrayList<HierarchyNodeRecord>();
+        if (!TBD) {
          try {
             List<HierarchyNode> hNodes = multiDomainService.getHierarchyNodeChildren(hierarchyNodeId);
             for (HierarchyNode hNode : hNodes) {
@@ -469,6 +523,19 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         }    
         return hNodeRecords;
+        }
+        //demo
+         for (HierarchyNode node : hs) {
+            if(node.getNodeID() == hierarchyNodeId) {
+                List<HierarchyNode> hNodes = node.getChildren();
+                for (HierarchyNode hNode : hNodes) {
+                HierarchyNodeRecord hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
+                hNodeRecords.add(hNodeRecord);
+                }                
+                break;
+            }
+         }
+         return hNodeRecords;
     }   
      
     /**
@@ -478,7 +545,8 @@ public class HierarchyManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public void moveHierarchyNodes(List<Integer> nodeIds, int newParentNodeId)
-        throws ServiceException {        
+        throws ServiceException {
+        if (!TBD) {
         try {
             int[] iNodeIds = new int[nodeIds.size()]; 
             for(int i = 0; i < nodeIds.size(); i++) {
@@ -489,7 +557,23 @@ public class HierarchyManager {
             throw new ServiceException(pex);
         } catch (UserException uex) {
             throw new ServiceException(uex);
-        }            
+        }         
+        }
+        //demo
+        List<HierarchyNode> children = new ArrayList<HierarchyNode>();
+        for (Integer nodeId : nodeIds) {
+            for (HierarchyNode node : hs) {
+                if(node.getNodeID() == nodeId.longValue()) {
+                    children.add(node);
+                }
+            }
+        }
+        for (HierarchyNode pNode : hs) {
+            if(pNode.getNodeID() == newParentNodeId) {
+                pNode.addChildren(children);
+            }
+        }
+        
     }   
     
     /**
@@ -502,6 +586,7 @@ public class HierarchyManager {
     public List<HierarchyNodeView> searchHierarchyNodes(DomainSearch dSearch, HierarchySearch hNodeSearch) 
         throws ServiceException {
         List<HierarchyNodeView> hNodeViews = new ArrayList<HierarchyNodeView>();
+        if (!TBD) {
         try {
             DomainSearchOption dSearchOption = QueryBuilder.buildMultiDomainSearchOption(dSearch);
             HierarchySearchCriteria hSearchCriteria = QueryBuilder.buildHierarchySearchCriteria(hNodeSearch);
@@ -513,6 +598,12 @@ public class HierarchyManager {
         } catch (UserException uex) {
             throw new ServiceException(uex);
         }                    
+        return hNodeViews;
+        }
+        //demo
+        for (HierarchyNode node : hs) {
+            hNodeViews.add(ViewBuilder.buildHierarchyNodeView(node));
+        }
         return hNodeViews;
     }
      
@@ -526,6 +617,7 @@ public class HierarchyManager {
     public HierarchyTreeView getHierarchyTree(int nodeId, String EUID) 
         throws ServiceException {
         HierarchyTreeView hTreeView = new HierarchyTreeView();
+        if (!TBD) {
         try {
             HierarchyTree hTree = multiDomainService.getHierarchyTree(nodeId, EUID);
             HierarchyNode hNode = hTree.getNode();
@@ -537,6 +629,19 @@ public class HierarchyManager {
         } catch (UserException uex) {
             throw new ServiceException(uex);
         }                  
+        return hTreeView;
+        }
+        //demo
+        HierarchyNode snode = null;
+        for (HierarchyNode node : hs) {
+            if (node.getNodeID() == nodeId) {
+                snode = node;
+                break;
+            }
+        }
+        List<HierarchyNode> ancestors = hs;
+        List<HierarchyNode> children = hs;
+        hTreeView = ViewBuilder.buildHierarchyTreeView(snode, ancestors, children);        
         return hTreeView;
     }            
 }
