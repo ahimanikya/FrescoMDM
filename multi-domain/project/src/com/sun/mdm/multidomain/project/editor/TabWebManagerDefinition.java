@@ -268,7 +268,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         String inputMask = field.getInputMask();
         String valueMask = field.getOutputMask();
         FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
-                        maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask);
+                        maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask);
         
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
         int rowCount = model.getRowCount();
