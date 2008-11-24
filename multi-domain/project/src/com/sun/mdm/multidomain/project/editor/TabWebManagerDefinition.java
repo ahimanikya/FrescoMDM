@@ -251,8 +251,6 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
 
                 }
             }
-            //mTableFields.setR
-
         
     }
     
