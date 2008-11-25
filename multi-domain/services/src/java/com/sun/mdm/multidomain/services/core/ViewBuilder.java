@@ -22,7 +22,9 @@
  */
 package com.sun.mdm.multidomain.services.core;
 
+import java.util.Map;
 import java.util.List;
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.ResourceBundle; 
 import java.util.Locale;
@@ -92,13 +94,31 @@ public class ViewBuilder {
 
     public static HierarchyNodeView buildHierarchyNodeView(HierarchyNode hNode) {
         HierarchyNodeView hNodeView = new HierarchyNodeView();
-        // implement me, need to convert to objectrecord based on search result. 
+        // implement me, need to convert to objectrecord based on search result.                 
         return hNodeView;
     }
     
-    public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) {
-        HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
-        // implement me, need to convert to objectrecord based on search result. 
+    public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) 
+        throws ConfigException {
+        HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();        
+        hNodeRecord.setId(Long.toString(hNode.getNodeID()));
+        hNodeRecord.setEUID(hNode.getEUID());
+        HierarchyNode parent = hNode.getParent();
+        hNodeRecord.setParentId(parent != null ? Long.toString(parent.getNodeID()) : "");
+        hNodeRecord.setParentEUID(hNode.getParentEUID());
+        hNodeRecord.setStartDate(hNode.getEffectiveFromDate());
+        hNodeRecord.setEndDate(hNode.getEffectiveToDate());
+        hNodeRecord.setPurgeDate(hNode.getPurgeDate());
+        ObjectNode objectNode = hNode.getObjectNode();    
+        ObjectRecord objectRecord = buildObjectRecord(hNode.getHierarchyDef().getDomain(), hNode.getEUID(), objectNode);
+        hNodeRecord.setObjectRecord(objectRecord);        
+        Map<Attribute, String> extAttrs = hNode.getAttributes();
+        Iterator<Attribute> keys = extAttrs.keySet().iterator();
+        while(keys.hasNext()) {
+            Attribute key = keys.next();
+            String value = extAttrs.get(key);
+            hNodeRecord.setAttributeValue(key.getName(), value);
+        }
         return hNodeRecord;
     }
      
