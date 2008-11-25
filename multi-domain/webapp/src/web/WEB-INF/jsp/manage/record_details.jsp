@@ -9,7 +9,7 @@
 <style type="text/css">
             @import "scripts/dijit/themes/mdwm/mdwm.css";
 </style>
-
+<script type='text/javascript' src='scripts/manage.js'></script>
 <script type="text/javascript" src="scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>
 <script type="text/javascript">
     dojo.require("dijit.Dialog");
@@ -21,11 +21,8 @@
      
 </script>
 
-
-<body class="mdwm">
-
 <div dojoType="dijit.RecordDetailsTitlePane" title="Dr. George Karlin" class="Details" 
-        onSummaryClick="showDetails('DetailContent',false);" onDetailsClick="showDetails('DetailContent',true);">
+        onSummaryClick="showRecordFullDetails('DetailContent',false);" onDetailsClick="showRecordFullDetails('DetailContent',true);" parseOnLoad="true">
 
     <!-- sumarry content -->
     <div class="Content">
@@ -145,27 +142,8 @@
     </table>
     </div>
 </div>
-</body>
-
- <!-- <script>        dojo.byId("nari").title = dojo.byId('titleContent').innerHTML;
-     </script>
-  -->
-   
-   
-   
    
   
 <script>
-       
-       function showDetails(contentId, showDetailsFlag){
-           if(! showDetailsFlag){
-               document.getElementById(contentId).style.visibility='hidden';
-              document.getElementById(contentId).style.display='none';
-           }
-           else{
-              document.getElementById(contentId).style.visibility='visible';
-              document.getElementById(contentId).style.display='block';
-           }
-       }
-       
+
 </script>  

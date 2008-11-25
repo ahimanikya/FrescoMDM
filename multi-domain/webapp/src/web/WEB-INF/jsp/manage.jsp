@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="css/manage.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
 <script type='text/javascript' src='scripts/mdwm.js'></script>
+<script type='text/javascript' src='scripts/manage.js'></script>
 
 <style type="text/css">
             @import "scripts/dijit/themes/mdwm/mdwm.css";
@@ -21,6 +22,9 @@
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.layout.TabContainer");
     dojo.require("dijit.form.Button");
+    dojo.require("dijit.layout.BorderContainer");
+    dojo.require("dijit.TitlePane");
+    dojo.require("dijit.RecordDetailsTitlePane");
 </script>
 </head>
 <body class="mdwm">
@@ -31,11 +35,11 @@
 
 <div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:580px;">
             
-    <div id="tab1" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
-        <%@ include file="manage/manage_hierarchy.jsp" %>
+    <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
+        Under construction!
     </div>
-    <div id="tab2" dojoType="dijit.layout.ContentPane" title="Relationships">
-        <%@ include file="manage/manage_relationships.jsp" %>
+    <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="Relationships" href="m_relationships.htm" parseOnLoad="true">
+        
     </div>
     
 </div>

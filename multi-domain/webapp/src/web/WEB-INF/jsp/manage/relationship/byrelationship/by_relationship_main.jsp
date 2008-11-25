@@ -1,7 +1,7 @@
 <%-- 
-    Document   : select_hierarchy
+    Document   : Main screen for Manage - By Relationship 
     Created on : Nov 19, 2008, 10:10:45 AM
     Author     : Harish
 --%>
 
-Content here
+By relationship main page here. 
