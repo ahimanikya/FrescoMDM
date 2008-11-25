@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.multidomain.attributes.Attribute;
 
 /**
@@ -47,12 +48,10 @@ public class HierarchyNode implements Serializable {
     private Date purgeDate;
     private HierarchyNode parent;
     private List<HierarchyNode> children = new ArrayList<HierarchyNode>();
-
+    private ObjectNode objectNode;    
     private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
 
     private HierarchyDef hierarchyDef = null;
-
-    //   private AttributesValue attValues;
 
     /**
      * Create an instance of Hierarchy.
@@ -80,7 +79,7 @@ public class HierarchyNode implements Serializable {
      * Get Parent EUID
      * @return parentEUID
      */
-    public String getparentEUID() {
+    public String getParentEUID() {
         return parentEUID;
     }
 
@@ -211,10 +210,6 @@ public class HierarchyNode implements Serializable {
         return hierarchyDef;
     }
 
-    public String getParentEUID() {
-        return parentEUID;
-    }
-
     public HierarchyNode getParent() {
         return parent;
     }
@@ -245,5 +240,13 @@ public class HierarchyNode implements Serializable {
         }
     }        
     
+    public ObjectNode getObjectNode() {
+        return this.objectNode;
+    }
+
+    public void setObjectNode(ObjectNode objectNode) {
+        this.objectNode = objectNode;
+    }
+        
 }
 
