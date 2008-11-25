@@ -89,7 +89,7 @@ public class ImportDomainAction extends CookieAction {
     
     public void perform(final EditorMainApp editorMainApp) {
         try {
-            RequestProcessor.getDefault().post(new Runnable() {
+            javax.swing.SwingUtilities.invokeLater (new Runnable () {
                 public void run() {
                     JFileChooser fc = new JFileChooser();
                     try {

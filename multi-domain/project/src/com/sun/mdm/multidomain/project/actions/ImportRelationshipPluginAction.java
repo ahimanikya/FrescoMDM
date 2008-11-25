@@ -83,7 +83,7 @@ public class ImportRelationshipPluginAction extends CookieAction {
      */
     public void performAction(final Node[] activatedNodes) {
         try {
-            RequestProcessor.getDefault().post(new Runnable() {
+            javax.swing.SwingUtilities.invokeLater (new Runnable () {
                 public void run() {
                     JFileChooser fc = new JFileChooser();
                     try {
