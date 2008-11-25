@@ -485,6 +485,8 @@ public class HierarchyManager {
         try {
             HierarchyNode hNode = multiDomainService.getHierarchyNode(hierarchyNodeId);
             hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);            
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
@@ -495,7 +497,11 @@ public class HierarchyManager {
         //demo
         for (HierarchyNode node : hs) {
             if(node.getNodeID() == hierarchyNodeId) {
-                hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(node);
+                try {
+                    hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(node);
+                } catch (ConfigException cex) {
+                    throw new ServiceException(cex);
+                }
             }
         }
         return hNodeRecord;
@@ -517,6 +523,8 @@ public class HierarchyManager {
                 HierarchyNodeRecord hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
                 hNodeRecords.add(hNodeRecord);
             }
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
@@ -529,8 +537,12 @@ public class HierarchyManager {
             if(node.getNodeID() == hierarchyNodeId) {
                 List<HierarchyNode> hNodes = node.getChildren();
                 for (HierarchyNode hNode : hNodes) {
-                HierarchyNodeRecord hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
-                hNodeRecords.add(hNodeRecord);
+                try {    
+                    HierarchyNodeRecord hNodeRecord = ViewBuilder.buildHierarchyNodeRecord(hNode);
+                    hNodeRecords.add(hNodeRecord);
+                } catch (ConfigException cex) {
+                    throw new ServiceException(cex);
+                }    
                 }                
                 break;
             }
