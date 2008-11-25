@@ -22,9 +22,9 @@
 </script>
 
 <body class="mdwm">
-<div>
-    <div class="MainTitleBar" style="width:302px;"><f:message key="records_in_relationship_text" /></div>
-    <div class="Content" style="width:300px;">
+<div class="MainBox">
+    <div class="TitleBar"><f:message key="records_in_relationship_text" /></div>
+    <div >
            <table border="0">
                <tr>
                    <td class="mainLabel" colspan="2">

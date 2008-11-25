@@ -25,6 +25,8 @@
     dojo.require("dijit.layout.BorderContainer");
     dojo.require("dijit.TitlePane");
     dojo.require("dijit.RecordDetailsTitlePane");
+        dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.form.DateTextBox");
 </script>
 </head>
 <body class="mdwm">
@@ -33,7 +35,7 @@
 
 
 
-<div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:580px;">
+<div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:700px;">
             
     <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
         Under construction!

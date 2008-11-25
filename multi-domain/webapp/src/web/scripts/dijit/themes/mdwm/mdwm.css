@@ -906,11 +906,11 @@
 }
 .mdwm .dijitTitlePaneContentOuter {
 	background: #ffffff;
-	border:1px solid #bfbfbf;
+	border:0px solid #bfbfbf;
 	border-top: 1px solid #ccc;	
 }
 .mdwm .dijitTitlePaneContentInner {
-	padding:10px;
+	padding:0px;
 }
 .dj_ie6 .mdwm .dijitTitlePaneContentOuter,
 .dj_ie6 .mdwm .dijitTitlePane .dijitTitlePaneTitle {
