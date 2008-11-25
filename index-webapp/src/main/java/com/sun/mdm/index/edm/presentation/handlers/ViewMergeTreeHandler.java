@@ -46,6 +46,7 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import javax.faces.application.FacesMessage;
 import javax.xml.bind.ValidationException;
 import net.java.hulp.i18n.LocalizationSupport;
@@ -150,7 +151,8 @@ public class ViewMergeTreeHandler {
 
             MergeHistoryNode node = mergeHistoryNode;
             TextNode euidNode = null;
-            euidNode = buildTree(node, euidNode);
+            //Modified for the bug #247
+            euidNode = buildTree(node, euidNode,euid);
 
             htmlNodeTreeDataModel.addNode(euidNode);
 
@@ -185,7 +187,9 @@ public class ViewMergeTreeHandler {
         return SUCCESS;
     }
 
-    public TextNode buildTree(MergeHistoryNode rootNode, TextNode textNode) throws ObjectException {
+    public TextNode buildTree(MergeHistoryNode rootNode, TextNode textNode,String sourceEuid) throws ObjectException {
+        TreeMap transDetailsMap = new TreeMap();
+
         if (textNode == null) {
             textNode = new TextNode(rootNode.getEUID(), rootNode.getEUID());
         }
@@ -193,7 +197,12 @@ public class ViewMergeTreeHandler {
         TextNode rightTextNode = new TextNode(rootNode.getDestinationNode().getEUID(), rootNode.getDestinationNode().getEUID());
 
         String transactionNumberRoot = rootNode.getTransactionObject().getTransactionNumber();
-        String urlRoot = "transeuiddetails.jsf?transactionId=" + transactionNumberRoot + "&function=euidMerge";
+        //Modified for the bug #247
+        String urlRoot = "transeuiddetails.jsf?transactionId=" + transactionNumberRoot + "&function=euidMerge&fromPage=euiddetails.jsf&euid="+sourceEuid;
+   	
+        transDetailsMap.put(transactionNumberRoot,"euidMerge");
+        
+    
         textNode.setHref(urlRoot);
 
         textNode.addNode(leftTextNode);
@@ -202,16 +211,17 @@ public class ViewMergeTreeHandler {
         leftTextNode.setHref(urlRoot);
         rightTextNode.setHref(urlRoot);
 
-
-
+ 
         MergeHistoryNode rootNodeLeft = rootNode.getSourceNode();
         if (rootNodeLeft.getTransactionObject() != null) {
-            buildTree(rootNodeLeft, leftTextNode);
-        }
+            buildTree(rootNodeLeft, leftTextNode,sourceEuid);
+         }
         MergeHistoryNode rootNodeRight = rootNode.getDestinationNode();
         if (rootNodeRight.getTransactionObject() != null) {
-            buildTree(rootNodeRight, rightTextNode);
-        }
+            buildTree(rootNodeRight, rightTextNode,sourceEuid);
+         }
+         session.setAttribute("transdetails",transDetailsMap);
+
         return textNode;
     }
 }

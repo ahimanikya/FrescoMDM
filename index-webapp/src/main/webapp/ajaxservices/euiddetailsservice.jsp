@@ -1404,7 +1404,16 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                  </table>
              </form>
          </div>
-
+		 <!-- Fix for bug #247 start-->
+		 <%if(request.getParameter("showMergeTree") != null ) {%>
+		 <table><tr><td><script>
+            document.getElementById('tree').style.visibility = "visible";
+            document.getElementById('tree').style.display = "block";
+  		    ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=euidReq%>&rand=<%=rand%>','tree','');
+		   </script>
+		 </td></tr></table>
+		 <%}%>
+		 <!-- Fix for bug #247 end-->
  <%}%> <!-- if session is active -->
 
 

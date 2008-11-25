@@ -275,10 +275,15 @@ if(session!=null){
                 <td><div id="targetDiv"></div></td></tr>
                 </table>
 			   <%if(request.getParameter("euid") != null) {%>
-			   <script>
-               	  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>','targetDiv','');
-               </script>
-
+				   <%if(request.getParameter("showMergeTree") != null) {%>
+					   <script>
+						  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>&showMergeTree=true','targetDiv','');
+					   </script>
+				   <%} else {%>
+					   <script>
+						  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>','targetDiv','');
+					   </script>
+				   <%}%>
               <%}%>
 
 			   </div> <!-- Ajax content div-->

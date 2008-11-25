@@ -168,7 +168,9 @@ var thisIdx=0;
 								 <% 
  								    String pageName = request.getParameter("fromUrl");
 								    String previousQuery = request.getQueryString();
-									String URL= pageName+"?"+previousQuery+"&back=true";
+									//Modified the following URL variable fix for #247
+									String URL= (pageName != null) ? (pageName+"?"+previousQuery+"&back=true") : (request.getParameter("fromPage")+"?euid="+request.getParameter("euid")+"&showMergeTree=true");
+ 
 								 %>
 								 <td>
 			               		      <a  href="<%=URL%>"  class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>">
