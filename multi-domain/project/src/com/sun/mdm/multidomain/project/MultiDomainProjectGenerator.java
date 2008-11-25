@@ -235,7 +235,9 @@ public class MultiDomainProjectGenerator {
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML, str);
             // MULTI_DOMAIN_WEB_MANAGER_XML
             str = (String) wDesc.getProperty(WizardProperties.PROP_XML_MULTI_DOMAIN_WEB_MANAGER_FILE);
-            repository.createConfigurationFile(folder, MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML, str);            
+            repository.createConfigurationFile(folder, MultiDomainProjectProperties.MULTI_DOMAIN_WEB_MANAGER_XML, str);            
+
+            FileObject schemaFolder = getConfigSchemaFiles(folder, MultiDomainProjectProperties.SCHEMA_FOLDER, MultiDomainProjectProperties.SCHEMA_TEMPLATE_LOCATION);
             
             // *** Sub folder - Database Script ***
             folder = srcRoot.createFolder(MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER); // NOI18N
@@ -248,6 +250,7 @@ public class MultiDomainProjectGenerator {
             folder = srcRoot.createFolder(MultiDomainProjectProperties.RELATIONSHIP_PLUGINS_FOLDER); // NOI18N
     }
     
+
     private static void createEjbWar(FileObject projectDir, String mainProjectName, String serverInstanceID, String j2eeLevel )
             throws MultiDomainRepositoryException, FileNotFoundException, IOException{
         MultiDomainRepository repository  = MultiDomainRepository.getMultiDomainRepository(); 
@@ -437,7 +440,7 @@ public class MultiDomainProjectGenerator {
                 FileObject file = files[i];
                 if (file.isData() &&
                     (file.getNameExt().equals(MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XSD) ||
-                     file.getNameExt().equals(MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XSD))) {
+                     file.getNameExt().equals(MultiDomainProjectProperties.MULTI_DOMAIN_WEB_MANAGER_XSD))) {
                     FileUtil.copyFile(file, folder, file.getName());
                 }
             }

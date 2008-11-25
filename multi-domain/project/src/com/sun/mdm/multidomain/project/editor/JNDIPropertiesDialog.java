@@ -10,6 +10,7 @@ import com.sun.mdm.multidomain.parser.JNDIResources;
 import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 import com.sun.mdm.multidomain.parser.RelationshipProperty;
 import java.util.ArrayList;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -36,6 +37,18 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
                 jBtnRemoveProperty.setEnabled(true);
              }
         });
+        
+        jTableProperties.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                int selectedRow = jTableProperties.getSelectedRow();
+                TableModelProperties propertiesModel = (TableModelProperties) jTableProperties.getModel();
+                PropertyRow propRow = propertiesModel.getRow(selectedRow);
+                Object data = propertiesModel.getValueAt(selectedRow, 1);
+                propRow.setValue((String) data);
+                //jBtnRemoveProperty.setEnabled(true);
+            }
+        });
+        
         
     }
     

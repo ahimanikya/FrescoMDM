@@ -27,7 +27,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -48,6 +47,7 @@ import com.sun.mdm.multidomain.util.Logger;
  * EntityTree.java
  *
  */
+import javax.swing.tree.TreeSelectionModel;
 public class EntityTree extends JTree {
     /** The logger. */
     private static Logger mLog = Logger.getLogger(EntityTree.class.getName());

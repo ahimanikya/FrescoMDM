@@ -37,6 +37,7 @@ public class TabDomainView extends javax.swing.JPanel {
         initComponents();
         getDomain(domain.getDomainName());
         mDomainNode = mEditorMainApp.getDomainNode(domain.getDomainName());
+        
         jTableRecordID.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jBtnRmvHighLightField.setEnabled(true);

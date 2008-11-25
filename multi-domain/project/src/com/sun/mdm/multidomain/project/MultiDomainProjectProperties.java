@@ -29,13 +29,14 @@ import com.sun.mdm.multidomain.parser.ConfigurationFiles;
  */
 public class MultiDomainProjectProperties {
     public static final String MODULES_EXT_MDM_LOCATION = "modules" + File.separator + "ext" + File.separator + "mdm";
+    public static final String MODULES_MULTIDOMAIN_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "multidomain";
     public static final String MULTIDOMAIN_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "repository" + File.separator + "templates";
     public static final String PLUGINS = "plug-ins";
     public static final String RELATIONSHIP_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "relationship" + File.separator + PLUGINS;
     public static final String SECURITY_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "security" + File.separator + PLUGINS;
 
     public static final String RELATIONSHIP_PLUGIN_LOCATION = RELATIONSHIP_DEPLOYMENT_LOCATION + File.separator + PLUGINS;
-    public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "repository" + File.separator + "schema";
+    public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_MULTIDOMAIN_LOCATION + File.separator + "repository" + File.separator + "schema";
     /** Auto Generate */
     public static final String AUTO_GENERATE = "AutoGenerate";
 
@@ -57,8 +58,10 @@ public class MultiDomainProjectProperties {
     public static final String MIDM_XML = "midm.xml";
     public static final String MULTI_DOMAIN_MODEL_XML = "MultiDomainModel.xml";
     public static final String MULTI_DOMAIN_MODEL_XSD = "MultiDomainModel.xsd";
-    public static final String RELATIONSHIP_WEB_MANAGER_XML = ConfigurationFiles.RELATIONSHIP_WEB_MANAGER_XML;
-    public static final String RELATIONSHIP_WEB_MANAGER_XSD = ConfigurationFiles.RELATIONSHIP_WEB_MANAGER_XSD;
+    
+    public static final String MULTI_DOMAIN_WEB_MANAGER_XML = "MultiDomainWebManager.xml";
+    public static final String MULTI_DOMAIN_WEB_MANAGER_XSD = "MultiDomainWebManager.xsd";
+    
     public static final String SECURITY_XML = SECURITY_TEMPLATE_LOCATION + File.separator + "security.xml";
     public static final String SECURITY_XSD = "security.xsd";
     

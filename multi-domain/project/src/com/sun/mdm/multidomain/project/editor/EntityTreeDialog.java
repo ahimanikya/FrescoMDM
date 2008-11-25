@@ -42,6 +42,7 @@ public class EntityTreeDialog extends javax.swing.JDialog {
         mEntityTree.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    fieldList.clear();
                     if (evt.getClickCount() == 1) {
                         TreePath hitPath = mEntityTree.getPathForLocation(
                                 evt.getX(),
@@ -60,10 +61,10 @@ public class EntityTreeDialog extends javax.swing.JDialog {
                                     fieldList.add(ePath);
                                     mSelected = true;
                                 }
-                                //onBtnOK(null);
-                            } 
+                            //onBtnOK(null);
+                            }
                         }
-                    } 
+                    }
                 }
             });        
     }

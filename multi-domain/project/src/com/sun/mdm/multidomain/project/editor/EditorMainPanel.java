@@ -65,46 +65,41 @@ import org.openide.NotifyDescriptor;
 /** The main panel for Multi-Domain MDM Configuration Editor.
  *
  */
-public class EditorMainPanel extends JPanel implements ActionListener  {
+public class EditorMainPanel extends JPanel implements ActionListener {
+
     /** The logger. */
     private static final Logger mLog = Logger.getLogger(
-            EditorMainPanel.class.getName()
-        
-        );
-
+            EditorMainPanel.class.getName());
     static final ImageIcon DOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
+            "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
     static final ImageIcon ADDDOMAINIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
+            "com/sun/mdm/multidomain/project/resources/DomainNode.png"));
     static final ImageIcon ADDRELATIONSHIPICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
+            "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
     static final ImageIcon ADDHIERARCHYICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
+            "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
     static final ImageIcon RELATIONSHIPICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
+            "com/sun/mdm/multidomain/project/resources/RelationshipNode.png"));
     static final ImageIcon HIERARCHYICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
+            "com/sun/mdm/multidomain/project/resources/HierarchyNode.png"));
     static final ImageIcon RELATIONSHIPICONSMALL = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/RelationshipNode16.png"));
+            "com/sun/mdm/multidomain/project/resources/RelationshipNode16.png"));
     static final ImageIcon HIERARCHYICONSMALL = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/HierarchyNode16.png"));
+            "com/sun/mdm/multidomain/project/resources/HierarchyNode16.png"));
     static final ImageIcon SCREENPROPERTIESICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/screen.png"));    
+            "com/sun/mdm/multidomain/project/resources/screen.png"));
     static final ImageIcon JNDIICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/Jndi.png"));  
+            "com/sun/mdm/multidomain/project/resources/Jndi.png"));
     static final ImageIcon GROUPNODEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/GroupNode.png"));
+            "com/sun/mdm/multidomain/project/resources/GroupNode.png"));
     static final ImageIcon CATEGORYNODEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/CategoryNode.png"));
-
+            "com/sun/mdm/multidomain/project/resources/CategoryNode.png"));
     static final ImageIcon DELETEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/Remove.png"));
+            "com/sun/mdm/multidomain/project/resources/Remove.png"));
     static final ImageIcon SAVEIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/Save.png"));
+            "com/sun/mdm/multidomain/project/resources/Save.png"));
     static final ImageIcon VALIDATIONIMAGEICON = new ImageIcon(Utilities.loadImage(
-                "com/sun/mdm/multidomain/project/resources/Validation.png"));
-    
-    
+            "com/sun/mdm/multidomain/project/resources/Validation.png"));
     static final String TAB_OVERVIEW = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_OVERVIEW");
     static final String TAB_RELATIONSHIP = NbBundle.getMessage(EditorMainPanel.class,
@@ -121,9 +116,6 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
             "MSG_TAB_WEB_MANAGER_Domain_SEARCH");
     static final String TAB_WEB_MANAGER_PAGE_DEFINITIONS = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_WEB_MANAGER_PAGE_DEFINITIONS");
-    
-
-
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
     private JButton mButtonAddRelationship;
@@ -142,12 +134,12 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
     private JTabbedPane mPropertiesTabbedPane = new JTabbedPane();
     private JScrollPane mPropertiesScrollPane = new JScrollPane();
     private JSplitPane mLeftSplitPane;
-    private JScrollPane mEntityTreeScrollPane  = new JScrollPane();
-    private JScrollPane mOverviewScrollPane  = new JScrollPane();
+    private JScrollPane mEntityTreeScrollPane = new JScrollPane();
+    private JScrollPane mOverviewScrollPane = new JScrollPane();
     //private RelationshipCanvas canvas = null; //The component the user draws on
     private TabOverview mTabOverview = null;
     private EntityTree mEntityTree = null;
-    
+
     /**
      * Create the panel and set up some basic properties.
      *
@@ -169,12 +161,13 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
 
         this.add(createToolBar(), BorderLayout.PAGE_START);
         JSplitPane splitPane = createSplitPane(); // Put tree and table in a split pane splitPane
+
         this.add(splitPane, BorderLayout.CENTER);
     }
-    
+
     private void addListeners() {
     }
-    
+
     public void loadDomainEntityTree(DomainNode currentDomainNode) {
         if (currentDomainNode != null) {
             mEntityTree = currentDomainNode.getMainEntityTree();
@@ -189,7 +182,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //mMultiViewPane.setMinimumSize(minimumSize);
         mLeftSplitPane.setMinimumSize(minimumSize);
     }
-    
+
     public void loadDomainProperties(DomainNode currentDomainNode) {
         mPropertiesTabbedPane.removeAll();
         if (currentDomainNode != null) {
@@ -198,7 +191,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         }
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
-    
+
     public void loadDefinitionProperties(DefinitionNode currentDefinitionNode) {
         mPropertiesTabbedPane.removeAll();
         if (currentDefinitionNode != null) {
@@ -217,20 +210,21 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         }
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
-    
+
     private JSplitPane createSplitPane() {
         // Put tree and table in a split pane splitPane
         mMultiViewPane = new JScrollPane();
         mMultiViewPane.setBorder(new javax.swing.border.TitledBorder(
-                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                    NbBundle.getMessage(EditorMainPanel.class, "LBL_MultiDomain_Model")));
-               
+                new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                NbBundle.getMessage(EditorMainPanel.class, "LBL_MultiDomain_Model")));
+
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
-                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                    NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
-        
-        ArrayList <DomainNode> alDomainNodes = mEditorMainApp.getDomainNodes();
+                new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
+
+        ArrayList<DomainNode> alDomainNodes = mEditorMainApp.getDomainNodes();
         DomainNode currentDomainNode = null; // use this to load web tabs for domain
+
         if (alDomainNodes != null && alDomainNodes.size() > 0) {
             currentDomainNode = alDomainNodes.get(0);
             mEntityTree = currentDomainNode.getMainEntityTree();
@@ -254,7 +248,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 mLeftSplitPane, mPropertiesScrollPane);
         mainSplitPane.setOneTouchExpandable(true);
         mainSplitPane.setDividerLocation(400);
-        
+
         return mainSplitPane;
     }
 
@@ -265,86 +259,88 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         toolBar.setFocusCycleRoot(true);
         //separator for object buttons
         mButtonAddDomain = new JButton(new AddDomainAction(
-                    this.DOMAINIMAGEICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_AddDomain")));
+                this.DOMAINIMAGEICON,
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_AddDomain")));
         mButtonAddDomain.setBorder(null);
         mButtonAddDomain.setMnemonic('M');
         toolBar.add(mButtonAddDomain);
         mButtonAddRelationship = new JButton(new AddRelationshipAction(
-                    this.RELATIONSHIPICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_AddRelationship")));
+                this.RELATIONSHIPICON,
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_AddRelationship")));
         mButtonAddRelationship.setBorder(null);
         mButtonAddRelationship.setMnemonic('R');
         toolBar.add(mButtonAddRelationship);
         mButtonAddHierarchy = new JButton(new AddHierarchyAction(
-                    this.HIERARCHYICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_AddHierarchy")));
+                this.HIERARCHYICON,
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_AddHierarchy")));
         mButtonAddHierarchy.setBorder(null);
         mButtonAddHierarchy.setMnemonic('H');
         toolBar.add(mButtonAddHierarchy);
 
         toolBar.addSeparator();
         mButtonScreenProperties = new JButton(new ViewScreenPropertiesAction(
-                    this.SCREENPROPERTIESICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_ScreenProperties")));
+                this.SCREENPROPERTIESICON,
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_ScreenProperties")));
         mButtonScreenProperties.setBorder(null);
         mButtonScreenProperties.setMnemonic('P');
         toolBar.add(mButtonScreenProperties);
-        
+
         mButtonJndi = new JButton(new JndiAction(
-                    this.JNDIICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_Jndi")));
+                this.JNDIICON,
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_Jndi")));
         mButtonJndi.setBorder(null);
         mButtonJndi.setMnemonic('J');
         toolBar.add(mButtonJndi);
         /*
         mButtonAddGroup = new JButton(new AddGroupAction(
-                    this.GROUPNODEICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_AddGroup")));
+        this.GROUPNODEICON,
+        NbBundle.getMessage(EditorMainPanel.class,
+        "MSG_ToolTip_AddGroup")));
         mButtonAddGroup.setBorder(null);
         mButtonAddGroup.setMnemonic('G');
         toolBar.add(mButtonAddGroup);
         mButtonAddCategory = new JButton(new AddCategoryAction(
-                    this.CATEGORYNODEICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_AddCategory")));
+        this.CATEGORYNODEICON,
+        NbBundle.getMessage(EditorMainPanel.class,
+        "MSG_ToolTip_AddCategory")));
         mButtonAddCategory.setBorder(null);
         mButtonAddCategory.setMnemonic('H');
         toolBar.add(mButtonAddCategory);
          */
         toolBar.addSeparator();
         mButtonValidation = new JButton(new ValidateAction(this.VALIDATIONIMAGEICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_Validation")));
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_Validation")));
         mButtonValidation.setBorder(null);
         mButtonValidation.setMnemonic('V');
         mButtonValidation.setEnabled(true);
         toolBar.add(mButtonValidation);
-        
+
         mButtonDelete = new JButton(new DeleteAction(this.DELETEIMAGEICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_Delete")));
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_Delete")));
         mButtonDelete.setBorder(null);
         mButtonDelete.setMnemonic('D');
         mButtonDelete.setEnabled(false);
         toolBar.add(mButtonDelete);
-        
+
         mButtonSave = new JButton(new SaveAction(this.SAVEIMAGEICON,
-                    NbBundle.getMessage(EditorMainPanel.class,
-                        "MSG_ToolTip_Save")));
+                NbBundle.getMessage(EditorMainPanel.class,
+                "MSG_ToolTip_Save")));
         mButtonSave.setBorder(null);
         mButtonSave.setMnemonic('S');
         mButtonSave.setEnabled(false);   // ToDo to false
+
         toolBar.add(mButtonSave);
 
         return toolBar;
     }
+
     /** Create context sensitive menu
      *
      *@param commandName menu item name
@@ -391,9 +387,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //if (expand) {
         tree.expandPath(parent);
 
-        //} else {
-        //    tree.collapsePath(parent);
-        //}
+    //} else {
+    //    tree.collapsePath(parent);
+    //}
     }
 
     /** ActionListener
@@ -407,42 +403,42 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                 String commandName = item.getText();
 
                 if (commandName.equals(NbBundle.getMessage(
-                                EditorMainPanel.class, "MSG_menu_Delete"))) {
+                        EditorMainPanel.class, "MSG_menu_Delete"))) {
                 }
             }
         } catch (Exception ev) {
             ev.printStackTrace();
         }
     }
-   
+
     /* Enable mButtonAddRelationship button when domain # is > 1
      * 
      */
     public void enableAddRelationship(boolean flag) {
         mButtonAddRelationship.setEnabled(flag);
     }
-    
+
     /* Enable delete button when domain or definition selected
      * 
      */
     public void enableDeleteButton(boolean flag) {
         mButtonDelete.setEnabled(flag);
     }
-   
+
     /* Enable save button when configuration changed
      * 
      */
     public void enableSaveButton(boolean flag) {
         mButtonSave.setEnabled(flag);
     }
-    
+
     public void loadDomainNodesToOverview() {
-        ArrayList <DomainNode> al = mEditorMainApp.getDomainNodes();
-        for (int i=0; i<al.size(); i++) {
+        ArrayList<DomainNode> al = mEditorMainApp.getDomainNodes();
+        for (int i = 0; i < al.size(); i++) {
             addDomainNodeToOverview(al.get(i), false);
         }
     }
-    
+
     /** Add a Domain Node to the overview
      *
      */
@@ -450,11 +446,12 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         //mMultiViewPane.setViewportView(canvas);
         mTabOverview.setCurrentDomainNode(node, bNew);
     }
-     
+
     /** Add a Domain action
      *
      */
     public class AddDomainAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -467,54 +464,55 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             Action action = SystemAction.get(ImportDomainAction.class);
             ((ImportDomainAction) action).perform(mEditorMainApp);
             action = null;
         }
     }
-     
+
     /**
      * To view screen properties
      */
     public class ViewScreenPropertiesAction extends AbstractAction {
-        
+
         public ViewScreenPropertiesAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
         }
-        
+
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             mTabOverview.onViewScreenProperties();
-        }    
+        }
     }
-    
+
     /**
      * To view jndi properties
      */
     public class JndiAction extends AbstractAction {
-        
+
         public JndiAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
         }
-        
+
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             mTabOverview.onJNDIResProperties();
-            
-        }    
+
+        }
     }
-    
+
     /** Add a Relationship
      *
      */
     public class AddRelationshipAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -527,18 +525,19 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             Action action = SystemAction.get(CreateRelationshipAction.class);
             ((CreateRelationshipAction) action).perform(mEditorMainApp);
             action = null;
             mTabOverview.onAddRelationship();
         }
     }
-     
+
     /** Add a Hierarchy
      *
      */
     public class AddHierarchyAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -551,18 +550,19 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             Action action = SystemAction.get(CreateHierarchyAction.class);
             ((CreateHierarchyAction) action).perform(mEditorMainApp);
             action = null;
             mTabOverview.onAddHierarchy();
         }
     }
-    
+
     /** Add a Hierarchy
      *
      */
     public class AddGroupAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -575,17 +575,18 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             Action action = SystemAction.get(CreateGroupAction.class);
             ((CreateGroupAction) action).perform(mEditorMainApp);
             action = null;
         }
     }
-    
+
     /** Add a Category
      *
      */
     public class AddCategoryAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -598,16 +599,18 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
         /**
          *@param e Action event
          */
-        public void actionPerformed(java.awt.event.ActionEvent e) {           
+        public void actionPerformed(java.awt.event.ActionEvent e) {
             Action action = SystemAction.get(CreateCategoryAction.class);
             ((CreateCategoryAction) action).perform(mEditorMainApp);
             action = null;
         }
     }
+
     /** Save configuration
      *
      */
     public class ValidateAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -631,14 +634,20 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
                         NotifyDescriptor.ERROR_MESSAGE);
                 DialogDisplayer.getDefault().notify(errorNotify);
 
+            } else {
+                String validMsg = NbBundle.getMessage(TabDomainSearch.class, "MSG_VALID_MULTIDOMAIN_PROJECT");
+                NotifyDescriptor successNotify = new NotifyDescriptor.Message(
+                        validMsg);
+                DialogDisplayer.getDefault().notify(successNotify);
             }
         }
     }
-    
+
     /** Delete domain or definition
      *
      */
     public class DeleteAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -660,6 +669,7 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
      *
      */
     public class SaveAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -673,15 +683,34 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          *@param e Action event
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {
-            mEditorMainApp.save(false);
+            if (!mEditorMainApp.validate()) {
+                mEditorMainApp.setValid(false);
+                mButtonSave.setEnabled(false);
+                //String warningMsg = mEditorMainApp.
+                String prompt = NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_SAVE_WITH_ERRORS");
+                NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                        prompt,
+                        NbBundle.getMessage(EditorMainPanel.class, "MSG_Confirm_SAVE_WITH_ERRORS"),
+                        NotifyDescriptor.YES_NO_OPTION);
+                if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+                    mEditorMainApp.save(false);
+                } else {
+                    mButtonSave.setEnabled(true);
+                }
+                
+            } else {
+                    mEditorMainApp.save(false);
+
+            }
+
         }
     }
-    
 
     /** Bring up TabApplicationProperties
      *
      */
     public class TabApplicationPropertiesAction extends AbstractAction {
+
         /**
          *@param icon image icon
          *@param desc description
@@ -695,10 +724,9 @@ public class EditorMainPanel extends JPanel implements ActionListener  {
          *@param e Action event
          */
         public void actionPerformed(java.awt.event.ActionEvent e) {
-
         }
     }
-    
+
     public TabOverview getTabOverview() {
         return mTabOverview;
     }

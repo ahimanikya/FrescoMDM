@@ -77,7 +77,7 @@
                                     </fileset>
                                 </copy-->
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain">
-                                    <fileset dir="${basedir}/../webapp/target">
+                                    <!--eset dir="${basedir}/../webapp/target">
                                         <include name="multidomain-webapp.war"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../services/target">
@@ -85,11 +85,16 @@
                                     </fileset>
                                     <fileset dir="${basedir}/../core/target">
                                         <include name="ejb-source.zip"></include>                  
-                                    </fileset>
+                                    </fileset-->
                                     <fileset dir="${basedir}/../core/target">
                                         <include name="multidomain-core.jar"></include>                  
                                     </fileset>
-                                </copy>                                
+                                </copy>  
+								<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain/repository/schema">
+									<fileset dir="${basedir}/../core/src/resources/schema">
+										<include name="**/*.xsd"></include>
+									</fileset>
+								</copy>                                                                                                  
                             </tasks>          
                         </configuration>
                     </execution>

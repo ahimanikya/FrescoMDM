@@ -243,7 +243,7 @@ public class MultiDomainApplication extends MultiDomainProject {
      * @return FileObject fo
      */ 
     public FileObject getMultiDomainWebManagerFile() {
-        FileObject fo = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.RELATIONSHIP_WEB_MANAGER_XML, false);
+        FileObject fo = getConfigurationFile(MultiDomainProjectProperties.CONFIGURATION_FOLDER, MultiDomainProjectProperties.MULTI_DOMAIN_WEB_MANAGER_XML, false);
         return fo;
     }
     
