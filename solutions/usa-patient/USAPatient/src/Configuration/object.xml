@@ -546,7 +546,7 @@
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -556,7 +556,7 @@
             <field-type>string</field-type>
             <size>4</size>
             <updateable>true</updateable>
-            <required>true</required>
+            <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
