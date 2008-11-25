@@ -60,7 +60,6 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
-import com.sun.mdm.multidomain.services.hierarchy.HierarchyDefExt;
 import com.sun.mdm.multidomain.services.util.Helper;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
