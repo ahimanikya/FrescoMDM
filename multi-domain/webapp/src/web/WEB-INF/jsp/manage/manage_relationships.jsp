@@ -20,14 +20,16 @@
 </script>
 
 <body class="mdwm">
+    
 <div dojoType="dijit.layout.BorderContainer" splitter="true" style="width:100%; height:100%;padding:0px;">
-    <div dojoType="dijit.layout.ContentPane" region="left" gutters="false" splitter="true" minSize="50"  style="width:30%;">
-           Search box & search results
+    <div dojoType="dijit.layout.ContentPane" region="left" gutters="false" splitter="true" minSize="50"  style="width:30%;" href="m_byrel_relationships_listing.htm" parseOnLoad="true">
+           <!--Search box & search results-->
     </div>
     <div dojoType="dijit.layout.ContentPane" gutters="false" region="center" splitter="true" style="padding:0px;border:0px;">
         <div dojoType="dijit.layout.BorderContainer" style="padding:0px;">
-            <div dojoType="dijit.layout.ContentPane" region="top" minSize="50" splitter="true" style="height:60%;" href="m_record_details.htm" parseOnLoad="true" >
+            <div dojoType="dijit.layout.ContentPane" region="top" minSize="50" splitter="true" style="height:60%;"  >
                     <!--Record details-->
+                    <jsp:include page="/WEB-INF/jsp/manage/relationship/byrelationship/byrel_details_section.jsp" flush="true" />
             </div>
             <div dojoType="dijit.layout.ContentPane" region="center" splitter="true" >
                     Relationship attributes update section
