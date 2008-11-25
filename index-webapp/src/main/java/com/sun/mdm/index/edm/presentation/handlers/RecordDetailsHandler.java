@@ -1342,6 +1342,28 @@ public class RecordDetailsHandler extends ScreenConfiguration {
     public ArrayList activateEO(String euid) {
         ArrayList euidsMapList = new ArrayList();
         try {
+            // modified as fix for bug #247, on 24-NOV-08
+            String mergeEuid  = midmUtilityManager.getMergedEuid(euid);         
+            
+            if(mergeEuid != null && mergeEuid.length() > 0) {
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put("Merged_EUID_Message", mergeEuid+" "+ bundle.getString("active_euid_text") + " " +euid);
+                retHashMap.put("Merged_EUID", mergeEuid );
+                euidsMapList.add(retHashMap);
+                return euidsMapList;
+            }            
+
+            
+            EnterpriseObject beforeEo = masterControllerService.getEnterpriseObject(euid);
+
+            //Check if the EO is already deactivated - fix for bug #247 Modified on 24-NOV-08
+            if("active".equalsIgnoreCase(beforeEo.getStatus())) {
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put("ALREADY_ACTIVATED", bundle.getString("cannot_activate_eo"));
+                euidsMapList.add(retHashMap);
+                return  euidsMapList;
+            }
+
             masterControllerService.activateEnterpriseObject(euid);
 
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
@@ -1404,6 +1426,29 @@ public class RecordDetailsHandler extends ScreenConfiguration {
         public ArrayList deactivateEO(String euid) {
         ArrayList euidsMapList = new ArrayList();
         try {
+            
+            // modified as fix for bug #247, on 23-10-08
+            String mergeEuid  = midmUtilityManager.getMergedEuid(euid);         
+            
+            if(mergeEuid != null && mergeEuid.length() > 0) {
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put("Merged_EUID_Message", mergeEuid+" "+ bundle.getString("active_euid_text") + " " +euid);
+                retHashMap.put("Merged_EUID", mergeEuid );
+                euidsMapList.add(retHashMap);
+                return euidsMapList;
+            }            
+
+            
+            EnterpriseObject beforeEo = masterControllerService.getEnterpriseObject(euid);
+
+            //Check if the EO is already deactivated - fix for bug #247
+            if("inactive".equalsIgnoreCase(beforeEo.getStatus())) {
+                HashMap retHashMap  = new HashMap();
+                retHashMap.put("ALREADY_DEACTIVATED", bundle.getString("cannot_deactivate_eo"));
+                euidsMapList.add(retHashMap);
+                return  euidsMapList;
+            }
+
             masterControllerService.deactivateEnterpriseObject(euid);
 
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);

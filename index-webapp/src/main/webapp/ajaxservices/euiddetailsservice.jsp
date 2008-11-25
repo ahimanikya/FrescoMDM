@@ -159,7 +159,7 @@ boolean isSessionActive = true;
  	         
 			    if (euidReq != null) eoArrayList  = recordDetailsHandler.activateEO(euidReq);
 
- 			} else if(isDeactiveEO) { //If activate EO
+ 			} else if(isDeactiveEO) { //If deactivate EO
  				if (euidReq != null) eoArrayList  = recordDetailsHandler.deactivateEO(euidReq);
 
 			}  else if(isShowMergedRecords) { //If Show merged records for EO
@@ -196,10 +196,34 @@ boolean isSessionActive = true;
 			  <table>
 			     <tr><td>
 				      <script>
-						 document.getElementById("activemessageDiv").innerHTML='<%=euidMap.get("Merged_EUID_Message")%>';
+						 document.getElementById("activemessageDiv").innerHTML="<%=euidMap.get("Merged_EUID_Message")%>";
 						 document.getElementById('activeDiv').style.visibility='visible';
 						 document.getElementById('activeDiv').style.display='block';
 						 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=euidMap.get("Merged_EUID")%>';
+ 				      </script>
+				    </td>
+				 </tr>
+			  </table>
+			<%} else if(euidMap.get("ALREADY_ACTIVATED") != null ) {%>
+			  <table>
+			     <tr><td>
+				      <script>
+						 document.getElementById("activemessageDiv").innerHTML="<%=euidMap.get("ALREADY_ACTIVATED")%>";
+						 document.getElementById('activeDiv').style.visibility='visible';
+						 document.getElementById('activeDiv').style.display='block';
+						 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=euidReq%>';
+ 				      </script>
+				    </td>
+				 </tr>
+			  </table>
+			<%} else if(euidMap.get("ALREADY_DEACTIVATED") != null ) {%>
+			  <table>
+			     <tr><td>
+				      <script>
+						 document.getElementById("activemessageDiv").innerHTML="<%=euidMap.get("ALREADY_DEACTIVATED")%>";
+						 document.getElementById('activeDiv').style.visibility='visible';
+						 document.getElementById('activeDiv').style.display='block';
+						 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=euidReq%>';
  				      </script>
 				    </td>
 				 </tr>
@@ -1206,22 +1230,104 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 			<%}%>
  
 			<%}else {%>
+		 <% boolean alreadyActivated = false;%>
+		 <% boolean alreadyDeactivated = false;%>
+		 <% boolean concurrentModification = false;%>
+		 <% boolean concurrentMergeModification = false;%>
+
 				 <div class="ajaxalert">
 				  <table>
 						<tr>
 							<td>
 								  <ul>
 									<% while (messagesIter.hasNext())   { %>
-										 <li>
 											<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+											<%if(facesMessage.getSummary().indexOf("MDM-MI-OPS533") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS531") != -1) {
+												concurrentModification = true;
+											}			                    
+											%>
+											<%
+											if(facesMessage.getSummary().indexOf("MDM-MI-OPS537") != -1 || facesMessage.getSummary().indexOf("MDM-MI-OPS535") != -1) {
+												   concurrentMergeModification = true;
+											   }
+											%>
+											<%
+											if(facesMessage.getSummary().indexOf("MDM-MI-MSC507") != -1 ) {
+												   alreadyActivated = true;
+											   }
+											%>
+											<%
+											if(facesMessage.getSummary().indexOf("MDM-MI-MSC514") != -1 ) {
+												   alreadyDeactivated = true;
+											   }
+											%>
+											
+										  <%if(!concurrentMergeModification && !concurrentModification){%>
+											<li>
 											<%= facesMessage.getSummary() %>
-										 </li>
+											</li>
+										 <%}%>
 									 <% } %>
 								  </ul>
 							<td>
 						<tr>
 					</table>
 					</div>
+
+					<%if(concurrentMergeModification){%>
+						  <table>
+								<tr>
+									<td><!-- Modified  on 23-NOV-2008 as fix of 247 -->
+											  <script>
+													document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=euidReq%>' <%=bundle.getString("already_updated_text")%>";
+													document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+													document.getElementById("mergeConfirmationDiv").style.display="block";
+											  </script>
+								   <td>
+								<tr>
+							</table>
+					<%}%>
+					<%if(concurrentModification) {%>
+						  <table>
+								<tr>
+									<td><!-- Modified  on 23-NOV-2008 as fix of 247 -->
+									  <script>
+											document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=euidReq%>' <%=bundle.getString("already_updated_text")%>";
+											document.getElementById("mergeConfirmationDiv").style.visibility="visible";
+											document.getElementById("mergeConfirmationDiv").style.display="block";
+									  </script>
+								   <td>
+								<tr>
+							</table>
+					<%}%>
+
+					<%if(alreadyActivated) {%>
+							  <table>
+								 <tr><td>
+									  <script>
+										 document.getElementById("activemessageDiv").innerHTML="<%=bundle.getString("cannot_activate_eo")%>";
+										 document.getElementById('activeDiv').style.visibility='visible';
+										 document.getElementById('activeDiv').style.display='block';
+										 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=euidReq%>';
+									  </script>
+									</td>
+								 </tr>
+							  </table>
+					<%}%>
+					<%if(alreadyDeactivated) {%>
+							  <table>
+								 <tr><td>
+									  <script>
+										 document.getElementById("activemessageDiv").innerHTML="<%=bundle.getString("cannot_deactivate_eo")%>";
+										 document.getElementById('activeDiv').style.visibility='visible';
+										 document.getElementById('activeDiv').style.display='block';
+										 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=euidReq%>';
+									  </script>
+									</td>
+								 </tr>
+							  </table>
+					<%}%>
+
 			 <%}%>
 
 			<div id="tree" style="VISIBILITY: hidden;WIDTH: 180px;POSITION: absolute;  OVERFLOW: auto;  BACKGROUND-COLOR: #c4c8e1;    border-right: 1px solid #000000;border-left: 1px solid #000000;border-top: 1px solid #000000;border-bottom: 1px solid #000000;"></div> 

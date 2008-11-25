@@ -63,6 +63,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"  %>
+
 <%@ page import="java.util.ResourceBundle"  %>
 
 <%
@@ -87,9 +89,11 @@ boolean isSessionActive = true;
 <%	 boolean isMergeEuid = false;
 	 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
      EditMainEuidHandler editMainEuidHandler =  new EditMainEuidHandler();
+	 MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
+     String euidVal = request.getParameter("euid");
+
 	if(isSessionActive){%>
 	<%
-		String euidVal = request.getParameter("euid");
 		String mergeEuid = editMainEuidHandler.setEditEOFields(euidVal);
 		isMergeEuid = (mergeEuid!=null)?true:false;
  		if(mergeEuid!=null && mergeEuid.length()>0){
@@ -105,7 +109,27 @@ boolean isSessionActive = true;
 		<%
 		}%>
 	<%}%>
-<%if (isSessionActive && !isMergeEuid)  {%>
+
+    <% //Fix for #247
+	   EnterpriseObject eoBefore = midmUtilityManager.getEnterpriseObject(euidVal);
+	   boolean isDeactivated = false; 
+		if("inactive".equalsIgnoreCase(eoBefore.getStatus()) ) {
+			isDeactivated = true;
+			%>
+		  <table>
+			 <tr><td>
+				  <script>
+					 document.getElementById("activemessageDiv").innerHTML="EUID  '<%=euidVal%>' <%=bundle.getString("already_deactivated_text")%>";
+					 document.getElementById('activeDiv').style.visibility='visible';
+					 document.getElementById('activeDiv').style.display='block';
+ 					 popUrl ='euiddetails.jsf?euid=<%=euidVal%>';
+				  </script>
+				</td>
+			 </tr>
+		  </table>
+	<%}%>
+
+<%if (isSessionActive && !isMergeEuid && !isDeactivated)  {%>
 
 <%
  double rand = java.lang.Math.random();
