@@ -71,7 +71,7 @@
 					   <div class="errorHeadMessage"><%=bundle.getString("login_error_heading_text")%></div> 
                         <div id="errorSummary" class="errorSummary" > 
                             <p>
-                               <%=bundle.getString("login_user_login_failure_message")%> <a title="<%=bundle.getString("login_try_again_text")%>" href="login.jsf"> <%=bundle.getString("login_try_again_text")%></a>
+                               <%=bundle.getString("login_user_login_failure_message")%> <a title="<%=bundle.getString("login_try_again_text")%>" href="login.jsf"> <%=bundle.getString("login_try_again_text")%></a>.
                             </p>
                         </div>
 
