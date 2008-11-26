@@ -28,44 +28,29 @@
             <xs:choice>
                 <xs:element name="database" type="xs:string" minOccurs="1" maxOccurs="1"/>
                 <xs:element name="dateformat" type="xs:string" minOccurs="1" maxOccurs="1"/>
-                <xs:element name="domains"/>
-                <xs:element name="relationship" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="hierarchy" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="group" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="category" type="definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="domains"/>
+                <xs:element name="relationship" type="relationshipType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="hierarchy" type="hierarchyType" minOccurs="0" maxOccurs="unbounded"/>
+                <!--xs:element name="group" type="definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="category" type="definition" minOccurs="0" maxOccurs="unbounded"/-->
             </xs:choice>
         </xs:complexType>
     </xs:element>
-    
     <xs:element name="domains">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="domain" maxOccurs="unbounded"/>
+                <xs:element name="domain" type="domainType" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="domain">
+    <xs:complexType name="domainType">
         <xs:attribute name="name" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:NMTOKEN"/>
             </xs:simpleType>
 	</xs:attribute>
     </xs:complexType>
-    <xs:complexType name="source-domain">
-        <xs:attribute name="name" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:string"/>
-            </xs:simpleType>
-	</xs:attribute>
-    </xs:complexType>
-    <xs:complexType name="target-domain">
-        <xs:attribute name="name" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:string"/>
-            </xs:simpleType>
-	</xs:attribute>
-    </xs:complexType>
-    <xs:complexType name="plugin">
+    <xs:complexType name="pluginType">
         <xs:attribute name="name" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:string"/>
@@ -78,19 +63,38 @@
             <xs:maxInclusive value="2" id="short.maxInclusive"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="definition">
-            <xs:all>
-                <xs:element name="domain"/>
-                <xs:element name="source-domain"/>
-                <xs:element name="target-domain"/>
-                <xs:element name="direction" type="directionType"/>
-                <xs:element name="plugin"/>
-                <xs:element name="description" type="xs:string"/>
-                <xs:element name="effective-from" type="xs:string"/>
-                <xs:element name="effective-to" type="xs:string"/>
-                <xs:element name="predefined-attributes" type="predefinedAttributesType"/>
-                <xs:element name="extended-attributes" type="extendedAttributesType"/>
-            </xs:all>
+    <xs:complexType name="relationshipType">
+        <xs:all>
+            <xs:element name="source-domain" type="domainType"/>
+            <xs:element name="target-domain" type="domainType"/>
+            <xs:element name="direction" type="directionType"/>
+            <xs:element name="plugin" type="pluginType"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="predefined-attributes" type="predefinedAttributesType"/>
+            <xs:element name="extended-attributes" type="extendedAttributesType"/>
+        </xs:all>
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="hierarchyType">
+        <xs:all>
+            <xs:element name="domain" type="domainType"/>
+            <xs:element name="direction" type="directionType"/>
+            <xs:element name="plugin" type="pluginType"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="effective-from" type="xs:string"/>
+            <xs:element name="effective-to" type="xs:string"/>
+            <xs:element name="predefined-attributes" type="predefinedAttributesType"/>
+            <xs:element name="extended-attributes" type="extendedAttributesType"/>
+        </xs:all>
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="preAttribute">
         <xs:all>
