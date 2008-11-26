@@ -437,7 +437,11 @@ boolean isSessionActive = true;
 					document.getElementById('populatePreviewDiv').innerHTML = "<%=message%>";
 					document.getElementById('mergeDiv').style.visibility ='hidden';
 					document.getElementById('mergeDiv').style.display ='none';				      
-		       </script>
+		            
+					//  fix for #236
+					document.getElementById("advancedformData:euidField").focus();
+
+               </script>
               </td>
              </tr>
             </table>
