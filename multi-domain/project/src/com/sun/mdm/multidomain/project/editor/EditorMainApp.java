@@ -381,6 +381,7 @@ public class EditorMainApp {
                 mMapDomainMidmXmls.put(domainName, midmXml);
                 DomainNode domainNode = new DomainNode(mInstance, domainName, FileUtil.toFile(newDomainFolder), null, null);
                 mMapDomainNodes.put(domainName, domainNode);
+                mMapDomainNodesSaved.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToOverview(domainNode, true);
                 if (mMultiDomainWebManager.getDomains().getDomain(domainNode.getName()) == null) {
                     mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
