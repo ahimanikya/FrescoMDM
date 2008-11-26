@@ -76,8 +76,13 @@
                                         <include name="EviewApplicationTemplateProject.zip"></include>
                                     </fileset>
                                 </copy-->
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm">
+                                    <fileset dir="${basedir}/../../lib">
+                                        <include name="net.java.hulp.i18n.jar"></include>
+                                    </fileset>
+                                </copy>      
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain">
-                                    <!--eset dir="${basedir}/../webapp/target">
+                                    <fileset dir="${basedir}/../webapp/target">
                                         <include name="multidomain-webapp.war"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../services/target">
@@ -85,7 +90,7 @@
                                     </fileset>
                                     <fileset dir="${basedir}/../core/target">
                                         <include name="ejb-source.zip"></include>                  
-                                    </fileset-->
+                                    </fileset>
                                     <fileset dir="${basedir}/../core/target">
                                         <include name="multidomain-core.jar"></include>                  
                                     </fileset>
