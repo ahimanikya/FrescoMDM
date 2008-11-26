@@ -635,7 +635,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
 							  <script>
 								reloadUrl ='';
-								document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID <%=editEuid%> <%=bundle.getString("already_merged_text")%>";
+								document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>";
 								document.getElementById("mergeConfirmationDiv").style.visibility="visible";
 								document.getElementById("mergeConfirmationDiv").style.display="block";
 							  </script>

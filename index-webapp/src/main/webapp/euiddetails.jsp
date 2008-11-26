@@ -61,6 +61,7 @@
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
+  String URL = new String();
  %>
 <%
 //set locale value
@@ -236,7 +237,7 @@ if(session!=null){
 								<% 
 								 String pageName = request.getParameter("fromUrl");
 								 String previousQuery = request.getQueryString();
-								 String URL= pageName+"?"+previousQuery+"&back=true";
+								 URL= pageName+"?"+previousQuery+"&back=true";
 								 %>
  			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="<%=URL%>" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
@@ -361,6 +362,54 @@ if(session!=null){
                 </table> 
                 </form>
             </div> 
+		       <div id="mergeConfirmationDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
+             <form id="activeMerge" name="activeMerge" >
+                 <table cellspacing="0" cellpadding="0" border="0">
+ 					 <tr>
+					     <th title="<%=bundle.getString("move")%>">&nbsp;<h:outputText value="#{msgs.popup_information_text}"/></th> 
+					     <th>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+						</th>
+					  </tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr>
+					     <td colspan="2" ><b><div id="mergeConfirmationmessageDiv"></div></b></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2" border="2"  align="right" valign="top" >
+                            <table align="center">
+						      <tr>
+							 <td>&nbsp;</td>
+							 <td> 
+                               <a title="<h:outputText value="#{msgs.source_inpatient1_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="if(reloadUrl.length<1) { 
+								           window.location.reload(true);
+										  }else {
+                                            window.location = reloadUrl;
+										    reloadUrl='';
+ 										  }";
+ 							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient1_text}"/></span>
+                                </a>
+							  </td>
+							  <td>
+                              <a title="<h:outputText value="#{msgs.source_inpatient2_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="window.location = '<%=URL%>' ;"
+  							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient2_text}"/></span>
+                                </a>
+							  </td>
+							 </tr>
+							 </table>
+					     </td>
+                     </tr> 
+                 </table>
+             </form>
+         </div>
 
         </body>
         <%
