@@ -25,82 +25,99 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
     <xs:element name="Configuration">
         <xs:complexType>
-            <xs:all>
-                <xs:element name="database" type="xs:string"/>
-                <xs:element name="dateformat" type="xs:string"/>
-                <xs:element name="domains" minOccurs="0" maxOccurs="1"/>
+            <xs:choice>
+                <xs:element name="database" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="dateformat" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="domains"/>
                 <xs:element name="relationship" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="hierarchy" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="group" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="category" type="definition" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:all>
+                <xs:element name="hierarchy" type="definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="group" type="definition" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="category" type="definition" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
     
-    <!--xs:element name="domains">
+    <xs:element name="domains">
         <xs:complexType>
-            <xs:element name="domain" maxOccurs="unbounded"/>
-        </xs:complexType>
-    </xs:element-->
-    <xs:element name="domain">
-        <xs:complexType>
-            <xs:attribute name="name" use="required">
-                <xs:simpleType>
-                    <xs:restriction base="xs:NMTOKEN"/>
-                </xs:simpleType>
-            </xs:attribute>
+            <xs:sequence>
+                <xs:element name="domain" maxOccurs="unbounded"/>
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
-    
-    <xs:element name="definition">
-        <xs:complexType>
-            <xs:attribute name="name" use="required">
-                <xs:simpleType>
-                    <xs:restriction base="xs:NMTOKEN"/>
-                </xs:simpleType>
-            </xs:attribute>
+    <xs:complexType name="domain">
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN"/>
+            </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="source-domain">
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="target-domain">
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="plugin">
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
+    <xs:simpleType name="directionType">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0" id="short.minInclusive"/>
+            <xs:maxInclusive value="2" id="short.maxInclusive"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="definition">
             <xs:all>
-                <xs:element name="domain" type="xs:string" minOccurs="0" maxOccurs="1"/>
-                <xs:element name="source-domain" type="xs:string"/>
-                <xs:element name="target-domain" type="xs:string"/>
-                <xs:element name="direction" type="xs:string"/>
-                <xs:element name="plugin" type="xs:string"/>
+                <xs:element name="domain"/>
+                <xs:element name="source-domain"/>
+                <xs:element name="target-domain"/>
+                <xs:element name="direction" type="directionType"/>
+                <xs:element name="plugin"/>
                 <xs:element name="description" type="xs:string"/>
-                <xs:element name="predefined-attributes" type="PreAttributes"/>
-                <xs:element name="extended-attributes" type="ExAttributes"/>
+                <xs:element name="effective-from" type="xs:string"/>
+                <xs:element name="effective-to" type="xs:string"/>
+                <xs:element name="predefined-attributes" type="predefinedAttributesType"/>
+                <xs:element name="extended-attributes" type="extendedAttributesType"/>
             </xs:all>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="PreAttributes">
-        <xs:complexType>
-            <xs:element name="attribute" type="PreAttribute" maxOccurs="unbounded"/>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="PreAttribute">
-        <xs:complexType>
-            <xs:all>
-                <xs:element name="name" type="xs:string"/>
-                <xs:element name="data-type" type="xs:string"/>
-                <xs:element name="included" type="xs:boolean"/>
-                <xs:element name="required" type="xs:boolean"/>
-            </xs:all>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="ExAttributes">
-        <xs:complexType>
-            <xs:element name="attribute" type="ExAttribute" maxOccurs="unbounded"/>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="ExAttribute">
-        <xs:complexType>
-            <xs:all>
-                <xs:element name="name" type="xs:string"/>
-                <xs:element name="column-name" type="xs:string"/>
-                <xs:element name="data-type" type="xs:string"/>
-                <xs:element name="default-value" type="xs:string"/>
-                <xs:element name="searchable" type="xs:boolean"/>
-                <xs:element name="required" type="xs:boolean"/>
-            </xs:all>
-        </xs:complexType>
-    </xs:element>
+    </xs:complexType>
+    <xs:complexType name="preAttribute">
+        <xs:all>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="data-type" type="xs:string"/>
+            <xs:element name="included" type="xs:boolean"/>
+            <xs:element name="required" type="xs:boolean"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="predefinedAttributesType">
+            <xs:sequence>
+                <xs:element name="attribute" type="preAttribute" maxOccurs="unbounded"/>
+            </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="exAttribute">
+        <xs:all>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="column-name" type="xs:string"/>
+            <xs:element name="data-type" type="xs:string"/>
+            <xs:element name="default-value" type="xs:string"/>
+            <xs:element name="searchable" type="xs:boolean"/>
+            <xs:element name="required" type="xs:boolean"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="extendedAttributesType">
+        <xs:sequence>
+            <xs:element name="attribute" type="exAttribute" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
