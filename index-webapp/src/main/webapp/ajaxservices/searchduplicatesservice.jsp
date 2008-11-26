@@ -1163,8 +1163,15 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                                             %>
                                                        	     <%if(operations.isEO_Merge()) {%>
                                                                <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.source_submenu_merge}"/>"
-															   onclick="javascript:getDuplicateFormValues('multiMergeFinal<%=fac%>','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&rowCount=<%=fac%>&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                       	         <span><h:outputText value="#{msgs.source_submenu_merge}"/></span>
+															   onclick="javascript:
+																		var euids = document.getElementById('MERGE_SRC_DESTN_EUIDS<%=fac%>').value;
+																		document.getElementById('mergeFinalForm:srcDestnEuids').value=euids;
+																		document.getElementById('mergeFinalForm:rowCnt').value=<%=fac%>;
+																		var values = euids.split(',');
+																		document.getElementById('merge_destnEuid').innerHTML= values[0];
+ 																		showExtraDivs('mergeDiv',event);"
+																		>
+                                                        	         <span><h:outputText value="#{msgs.source_submenu_merge}"/></span>
                                                        	       </a>
                                                                <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
                                                         	     <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
@@ -1257,5 +1264,5 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
  <% } %>
 
 
-  <%} %>  <!-- Session check -->
+<%} %>  <!-- Session check -->
 </f:view>

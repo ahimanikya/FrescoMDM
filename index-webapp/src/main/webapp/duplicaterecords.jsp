@@ -34,6 +34,8 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
+ 
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
 <%@ page import="com.sun.mdm.index.edm.control.QwsController"  %>
 
@@ -634,14 +636,75 @@ function align(thisevent,divID) {
                  </table>
              </form>
          </div>
-
-
-
-	 
-	 </html> 
-	<script type="text/javascript">
+				<!-- Modified  on 27-11-2008, fix of bug 275 added banner and close link to confirmation pop up window -->
+         <%Operations operations  = new Operations();%>
+                         <div id="mergeDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+                             <table cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+								<th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
+								<th>
+									<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+									<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+							    </th>	
+							    </tr>
+                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                <tr>
+							    <td colspan="2" align="left"> 
+							     <nobr>
+							     <table border="0" align="center">
+								  <tr>
+								   <td align="left"><b>&nbsp;<h:outputText value="#{msgs.mergediv_popup_text}"/></b></td>
+								   <td align="left"><b><div id="merge_destnEuid"></div></b></td>
+								   <td align="left"><b>?</b></td>
+ 								  </tr>
+								 </table> 
+								 </nobr>
+								</td> 
+								</tr>
+                                <tr><td colspan="2">&nbsp;</td></tr>
+                                <tr>
+                                  <td colspan="2" align="center">
+                                            <h:form  id="mergeFinalForm">
+ 							                      <%if(operations.isEO_Merge()) {%>
+												  <table align="center">
+												  <tr>
+												  <td>&nbsp;&nbsp;</td>
+												  <td>
+														<a href="javascript:void(0)"  
+														   class="button" 
+														    title="<h:outputText value="#{msgs.ok_text_button}" />"
+                                                            onclick="javascript:
+																			var rowcnt = document.getElementById('mergeFinalForm:rowCnt').value;
+																			getFormValues('mergeFinalForm');			
+																			getDuplicateFormValues('multiMergeFinal'+rowcnt,'advancedformData');setRand(Math.random());
+																			showExtraDivs('mergeDiv',event);
+																			ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                                     <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+                                                       </a>
+												  </td>
+												  <td>
+													  <a href="javascript:void(0)"  class="button" onclick="javascript:showExtraDivs('mergeDiv',event);"  title="<h:outputText value="#{msgs.cancel_but_text}" />" >
+			                                          <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                                                      </a>
+											      </td>
+											      </tr>
+											      </table>
+												 <%}%>
+												  <input type="hidden" id="mergeFinalForm:rowCnt" title="rowCount">
+                                                  <input type="hidden" id="mergeFinalForm:srcDestnEuids" title="MERGE_SRC_DESTN_EUIDS" />
+                                                <h:inputHidden id="destinationEO" value="#{RecordDetailsHandler.destnEuid}" />
+                                                <h:inputHidden id="selectedMergeFields" value="#{RecordDetailsHandler.selectedMergeFields}" />
+                                            </h:form>
+                                        </td>
+                                    </tr>
+                                    
+                                </table>
+                        </div>  
+  	 </html> 
+<script type="text/javascript">
   makeDraggable("resolvePopupDiv");
   makeDraggable("mergeConfirmationDiv");
   makeDraggable("activeDiv");
+  makeDraggable("mergeDiv");
   </script>
 </f:view>
