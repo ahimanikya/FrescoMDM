@@ -11,3 +11,11 @@
         document.getElementById(contentId).style.display='block';
      }
  }
+function changeViewToByRelationship(contentPaneId) {
+    var contentPaneObj = dijit.byId(contentPaneId);
+    contentPaneObj.setHref("m_byrelationship_main.htm");
+}
+function changeViewToByRecord(contentPaneId) {
+    var contentPaneObj = dijit.byId(contentPaneId);
+    contentPaneObj.setHref("m_byrecord_main.htm");
+}

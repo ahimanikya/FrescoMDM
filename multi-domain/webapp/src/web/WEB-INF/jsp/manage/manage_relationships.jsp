@@ -20,7 +20,7 @@
 </script>
 
 <body class="mdwm">
-    
+    <!-- by default loading By Relationship screen -->
     <jsp:include page="/WEB-INF/jsp/manage/relationship/byrelationship/by_relationship_main.jsp" flush="true" />
     
 </body>
