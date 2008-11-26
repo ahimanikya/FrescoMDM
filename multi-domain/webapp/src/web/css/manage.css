@@ -42,7 +42,18 @@
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
 }
-  
+.DetailsTitleBar{
+    height:24px;
+    background-color: #6E828C;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#FFFFFF;
+    font-weight:bold;
+    padding-left:5px;
+    padding-top:3px;
+    vertical-align:bottom;
+}
+
 .xyz{
     
     background-color: #f4f3ee;

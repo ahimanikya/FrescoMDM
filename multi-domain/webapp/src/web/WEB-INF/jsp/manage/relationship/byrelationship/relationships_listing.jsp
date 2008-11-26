@@ -22,47 +22,48 @@
 </script>
 
 <body class="mdwm">
-<div class="MainBox">
+    
+<div class="MainBox" dojoType="dijit.layout.ContentPane">
     <div class="TitleBar"><f:message key="records_in_relationship_text" /></div>
     <div >
-           <table border="0">
+           <table border="0" width="100%">
                <tr>
-                   <td class="mainLabel" colspan="2">
+                   <td class="mainLabel" width="40%">
                        <f:message key="source_domain_text" /><f:message key="colon_symbol" />
                    </td>
-                   <td class="mainLabel" colspan="2">
-                       Comapnay
+                   <td class="mainLabel" width="60%">
+                       Comapany
                    </td>
                </tr>
                <tr>
-                   <td class="mainLabel" colspan="2">
+                   <td class="mainLabel">
                       <f:message key="relationship" /><f:message key="colon_symbol" />
                    </td>
-                   <td class="mainLabel" colspan="2">
+                   <td class="mainLabel">
                        Tracks
                    </td>
                </tr>
                <tr>
-                   <td class="mainLabel" colspan="2">
+                   <td class="mainLabel">
                        <f:message key="target_domain_text" /><f:message key="colon_symbol" />
                    </td>
-                   <td class="mainLabel" colspan="2">
+                   <td class="mainLabel">
                        UKPatient
                    </td>
                </tr>
                <tr>
-                   <td colspan="5"><img src="images/spacer.gif" height="1" width="1"></td>
+                   <td colspan="2"><img src="images/spacer.gif" height="1" width="1"></td>
                </tr>
                <tr>
-                   <td colspan="5">
+                   <td colspan="2">
                        Select Relationship to View Details
                    </td>
                </tr>
                <tr>
-                   <td colspan="5"><img src="images/spacer.gif" height="1" width="1"></td>
+                   <td colspan="2"><img src="images/spacer.gif" height="1" width="1"></td>
                </tr>
                <tr>
-                   <td>
+                   <td colspan="2">
                       <table cellspacing="0" cellpadding="0" border="0">
                            <tr>
                             <td><a href="javascript:void(0);" title="<f:message key="select_all_text" />"><img src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
@@ -77,10 +78,10 @@
                    </td>
                </tr>
                <tr>
-                   <td colspan="5"><img src="images/spacer.gif" height="1" width="1"></td>
+                   <td colspan="2"><img src="images/spacer.gif" height="1" width="1"></td>
                </tr>
                <tr>
-                   <td>
+                   <td colspan="2">
                       <table cellspacing="0" cellpadding="0" border="0">
                            <tr>
                             <td><img src="images/spacer.gif" height="1" width="30"></td>
@@ -93,8 +94,8 @@
                    </td>
                </tr>
                <tr>
-                   <td class="mainLabel" colspan="5">
-                       <div class="Details" style="height:300px;width:300px;">
+                   <td class="mainLabel" colspan="2">
+                       <div class="Details" style="height:400px;">
                            Grid goes here...............
                        </div>
                    </td>
