@@ -1259,8 +1259,8 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                     <table>
                                                                         <tr>
                                                                             <td>
-                                                                                <a title='<h:outputText value="#{msgs.ok_text_button}" />' class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
-                                                                                   <span id="confirmok"><h:outputText value="#{msgs.ok_text_button}" /></span>
+                                                                                <a title='<h:outputText value="#{msgs.source_submenu_merge}" />' class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
+                                                                                   <span id="confirmok"><h:outputText value="#{msgs.source_submenu_merge}" /></span>
                                                                                 </a>
                                                                             </td>
                                                                             <td>
