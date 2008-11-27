@@ -699,7 +699,7 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                 %>
                             <div id="mainEuidDiv<%=countMain%>">
                                 <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
+                                    <tr id="row<%=fac%>">
                                         <td><img src="images/spacer.gif" width="15"></td>
                                         <%
                                         HashMap resultArrayMapMain = new HashMap();
@@ -1220,6 +1220,16 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
             </div>
             
 
+<%if(isMultiMergeEOs || isPreviewMerge) {%>
+<%
+	String row = (request.getParameter("rowCount")!=null)?request.getParameter("rowCount"):request.getParameter("rwcnt");
+%>
+    <table><tr><td>        
+    <script>
+			window.location = "#row<%=row%>";
+	</script></td></tr>
+	</table>
+<%}%>
 
 <% } else { %> <!-- End results!= null -->
     <div class="ajaxalert">

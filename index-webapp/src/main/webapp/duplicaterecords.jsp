@@ -678,7 +678,7 @@ function align(thisevent,divID) {
 																			getFormValues('mergeFinalForm');			
 																			getDuplicateFormValues('multiMergeFinal'+rowcnt,'advancedformData');setRand(Math.random());
 																			showExtraDivs('mergeDiv',event);
-																			ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+																			ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&random='+rand+'&'+queryStr+'&rwcnt='+rowcnt,'outputdiv','');">
                                                                      <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                        </a>
 												  </td>
