@@ -1693,37 +1693,36 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						<%}%>
 
 					   <%} else {%>
-						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
-						   <script>
+						   <% if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+						    <script>
 							   if(elemType != 'HIDDEN') {
 							  
 								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
 									if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
 										thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
+                                        thisFrm.elements['<%=k%>'].readOnly = true;
+                                        thisFrm.elements['<%=k%>'].disabled = true;
 									}
 								 }
 							   }
-							</script>
-
+							 </script>
+						    <%}%>
 							<%} else {%>
 							<script>
 								if(elemType != 'HIDDEN') {
-								  thisFrm.elements['<%=k%>'].value = "<%=value%>";
+                                   thisFrm.elements['<%=k%>'].value = "<%=(value) != null ? value : ""%>";								
+                                   thisFrm.elements['<%=k%>'].readOnly = true;
+                                   thisFrm.elements['<%=k%>'].disabled = false;
 								}
 							</script>
 							<%}%>
-						<%}%>
 				   <%}%>
 
 					<%}%>
 					
-     					<script>
-                            thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = false;
- 						</script>
-   		           <%}%>
+    		     <%}%>
 <% }  else if (isEdit)  { %>
     
     <script>
@@ -1864,9 +1863,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						<%}%>
 
 					   <%} else {%>
-						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 						   <script>
 							   if(elemType != 'HIDDEN') {
 							  
@@ -1877,15 +1876,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								 }
 							   }
 							</script>
-
+  						   <%}%>
 							<%} else {%>
 							<script>
 								if(elemType != 'HIDDEN') {
-								  thisFrm.elements['<%=k%>'].value = "<%=value%>";
+								  thisFrm.elements['<%=k%>'].value = "<%=(value) != null ? value : ""%>";
 								}
 							</script>
 							<%}%>
-						<%}%>
 				   <%}%>
 
 					<%}%>

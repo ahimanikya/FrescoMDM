@@ -1543,6 +1543,9 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 				      <%}%> 
 				   <%}%> 
 			   <!-- Generate the script to populate the form -->
+				   <script>
+  					    var thisFrm = document.getElementById('<%=formName%>');
+ 					</script>
 			   
 			       <% for(int k=0;k<fcArray.length;k++) {					     
 				   %>
@@ -1555,38 +1558,36 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
                           }
                         } 
 					%> 
-					<script>
-  					    var thisFrm = document.getElementById('<%=formName%>');
-                        var elemType = thisFrm.elements['<%=k%>'].type.toUpperCase();
+				   <script>
+                         var elemType = thisFrm.elements['<%=k%>'].type.toUpperCase();
 					</script>
-					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {
-							if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
-					   <script>
-                           if(elemType != 'HIDDEN') {
-						  
+					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+					    <script>
+                            if(elemType != 'HIDDEN') {
 							for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
 								if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
 									thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
-								}
+                                    thisFrm.elements['<%=k%>'].readOnly = true;
+                                    thisFrm.elements['<%=k%>'].disabled = true;
+ 								}
 						     }
 					       }
-						   
-					  </script>
-						<%} else {%>
+ 						   
+					    </script>
+					  <%}%>
+					<%} else {%>
 						<script>
 							if(elemType != 'HIDDEN') {
-                              thisFrm.elements['<%=k%>'].value = "<%=value%>";
+								thisFrm.elements['<%=k%>'].value = "<%=(value) != null ? value : ""%>";
+                                thisFrm.elements['<%=k%>'].readOnly = true;
+                                thisFrm.elements['<%=k%>'].disabled = false;
 						    }
 						</script>
-						<%}%>
-    					<script>
-                            thisFrm.elements['<%=k%>'].readOnly = true
-                            thisFrm.elements['<%=k%>'].disabled = false;
- 						</script>
 					<%}%>
-						
-		           <%}%>
+ 						
+		          <%}%>
 
 <% } else if (isEdit) { %>  <!-- Edit Minor Object -->
     <script>
@@ -1646,28 +1647,29 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 					<script>
                          var elemType = thisFrm.elements['<%=k%>'].type.toUpperCase();
 					</script>
-					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {
-							if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
+					   <%		if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
-					   <script>
+					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+					     <script>
                            if(elemType != 'HIDDEN') {
 						  
 							for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
 								if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
 									thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
+
 								}
 						     }
 					       }
 						   
-					  </script>
-						<%} else {%>
+					     </script>
+					   <%}%>
+					 <%} else {%>
 						<script>
 							if(elemType != 'HIDDEN') {
-                              thisFrm.elements['<%=k%>'].value = "<%=value%>";
+							   thisFrm.elements['<%=k%>'].value = "<%=(value) != null ? value : ""%>";
 						    }
 						</script>
-						<%}%>
-					<%}%>
+					 <%}%>
 						
 		           <%}%>
 

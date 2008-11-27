@@ -168,6 +168,9 @@ boolean isminorObjSave = (null == minorObjSave?false:true);
 //Variables required for Edit
 String editIndex = request.getParameter("editIndex");
 boolean isEdit = (null == editIndex?false:true);
+
+String viewIndex = request.getParameter("viewIndex");
+
 boolean isMinorObjectView = (null == request.getParameter("isView")?false:true); // added  on 15-10-08 as fix of 15
 
 
@@ -463,7 +466,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
  											 if(editMinorObjectType.length>0 && editMinorObjectType ==  "<%=minorObjType%>" &&
 											 systemcodeInEdit.length>0 && systemcodeInEdit == "<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit == "<%=selectedSoLID%>" ){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
-											 else{											 											ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 else{											 											ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&viewIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 													 }'>  
 														 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 											  </a>
@@ -495,7 +498,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 										  <td valign="center" width="14px">
  					                   <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>"
 											 onclick='javascript:
-											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&viewIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 '> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
@@ -659,7 +662,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 systemcodeInEdit.length>0 && systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit=="<%=selectedSoLID%>"){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
 											 else{
-											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&viewIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
@@ -988,7 +991,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>" &&
 											 systemcodeInEdit.length>0 && systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit=="<%=selectedSoLID%>"){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
-											 else{											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 else{											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&viewIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
@@ -1235,7 +1238,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 if(editMinorObjectType.length>0 && editMinorObjectType=="<%=minorObjType%>" &&
 											 systemcodeInEdit.length>0 && systemcodeInEdit=="<%=selectedSoSystemCode%>" && lidInEdit.length>0 && lidInEdit=="<%=selectedSoLID%>"){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);}
-											 else{																						 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
+											 else{																						 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&viewIndex=<%=i%>&isView=true&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/icon_view.gif'></nobr> 
 									  </a>
@@ -1360,16 +1363,19 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.visibility = 'visible';
       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>cancelEdit').style.display = 'block'; 
      } 
-	 document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.visibility = 'hidden';
-     document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.display = 'none'; 
+	 if(document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons') != null) {
+	   document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.visibility = 'hidden';
+       document.getElementById('<%=request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID%>editSOButtons').style.display = 'none'; 
+	 }
      </script>  
    
    <%  
 				ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
  		       FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
  			   String formName = request.getParameter("MOT")+selectedSoSystemCode+":"+selectedSoLID+"SOInnerForm";
-			   int intEditIndex = new Integer(editIndex).intValue();
-			 %>
+
+			   int intEditIndex = new Integer(viewIndex).intValue();
+               %>
              <script>
  					 var thisFrm = document.getElementById('<%=formName%>');
 			 		 //editMinorObjectType = '';
@@ -1418,16 +1424,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				       %>
 						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
- 						<script>  
-                            thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = true;
+ 						<script>
 							thisFrm.elements['<%=k%>'].options.selectedIndex = 0;
 						</script>
 						<%} else {%>
-						<script>
+  						 <script>
 							if(elemType != 'HIDDEN') {
-                               thisFrm.elements['<%=k%>'].readOnly = true;
-                               thisFrm.elements['<%=k%>'].disabled = true;
  							   thisFrm.elements['<%=k%>'].value = "<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>";
 						    }
 							</script>
@@ -1436,19 +1438,15 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					    <%} else {%>
 						<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 				       %>
- 						  <script>
-                            thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = true;
-							thisFrm.elements['<%=k%>'].options.selectedIndex = 0;
+  						  <script>
+ 							thisFrm.elements['<%=k%>'].options.selectedIndex = 0;
                             thisFrm.elements['<%=k%>'].title = '';
 							</script>
   
 						<%} else {%>
-						<script>
+  						<script>
 							if(elemType != 'HIDDEN') {
-                               thisFrm.elements['<%=k%>'].readOnly = true;
-                               thisFrm.elements['<%=k%>'].disabled = true;
- 							   thisFrm.elements['<%=k%>'].value = "<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>";
+  							   thisFrm.elements['<%=k%>'].value = "<%=bundle.getString("SENSITIVE_FIELD_MASKING")%>";
                                thisFrm.elements['<%=k%>'].title = '';
 						    }
 							</script>
@@ -1462,21 +1460,16 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
-							  <script>
-								thisFrm.elements['<%=k%>'].readOnly = true;
-								thisFrm.elements['<%=k%>'].disabled = true;
-
-								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
+ 							  <script>
+ 								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
 									if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
 										thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
 									}
 								 }
  							</script>
 							<%} else {%>
-							<script>
+  							<script>
 								if(elemType != 'HIDDEN') {
-								   thisFrm.elements['<%=k%>'].readOnly = true;
-								   thisFrm.elements['<%=k%>'].disabled = true;
 								   thisFrm.elements['<%=k%>'].value = "<%=value%>";
 								}
 							</script>
@@ -1484,36 +1477,42 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						  <%}%>
 					   <%} else {%>
 
-						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
-						   <script>
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+ 						   <script>
 							   if(elemType != 'HIDDEN') {
 							  
 								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
 									if ( (thisFrm.elements['<%=k%>'].options[ii].value) ==  "<%=value%>")   {
 										thisFrm.elements['<%=k%>'].options.selectedIndex = ii;
-									}
+ 									}
 								 }
 							   }
 							</script>
-							<%} else {%>
+						   <%}%>
+							<%}else {%>
 							<script>
 								if(elemType != 'HIDDEN') {
-								  thisFrm.elements['<%=k%>'].value = "<%=value%>";
-								}
+								  thisFrm.elements['<%=k%>'].value = "<%=(value) != null ? value : ""%>";
+ 								}
 							</script>
 							<%}%>
-							<script>
-                            thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = false;
- 							</script>
-						<%}%>
-				   <%}%>
-
+ 				   <%}%>
 					<%}%>
-					
-						
+				 <!-- Fix for #238-->	
+				<% //if(!thisEoSystemObjectMap.get("Status").toString().equalsIgnoreCase("inactive") && !thisEoSystemObjectMap.get("Status").toString().equalsIgnoreCase("merged")){ %>
+ 					<script>  
+                       thisFrm.elements['<%=k%>'].readOnly = true;
+                      <%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) { %>
+                           thisFrm.elements['<%=k%>'].disabled = true;
+					  <%} else {%>
+                           thisFrm.elements['<%=k%>'].disabled = false;
+					  <%}%>
+ 					</script>
+				<%//}%>
+
+ 						
 						
 		           <%}%>
 			   
@@ -1660,10 +1659,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						  <%}%>
 					   <%} else {%>
 
-						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
 							<%	if("MenuList".equalsIgnoreCase(fcArray[k].getGuiType()) ) {
 						   %>
-						   <script>
+						   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>
+						    <script>
 							   if(elemType != 'HIDDEN') {
 							  
 								for (var ii=0; ii< thisFrm.elements['<%=k%>'].options.length; ii++)  {
@@ -1672,27 +1671,27 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									}
 								 }
 							   }
-							</script>
+							 </script>
+						    <%}%>
+
 							<%} else {%>
 							<script>
-								if(elemType != 'HIDDEN') {
-								  thisFrm.elements['<%=k%>'].value = "<%=value%>";
+								thisFrm.elements['<%=k%>'].value = "";
+ 								if(elemType != 'HIDDEN') {
+								  thisFrm.elements['<%=k%>'].value = "<%=(value) != null ? value : ""%>";
 								}
-							</script>
+  							</script>
 							<%}%>
-						<%}%>
 				   <%}%>
 
 					<%}%>
-					
-						
 						
 		           <%}%>
-					<% if(thisEoSystemObjectMap.get("Status").toString().equalsIgnoreCase("inactive")){
+					<% if(thisEoSystemObjectMap.get("Status").toString().equalsIgnoreCase("inactive") || thisEoSystemObjectMap.get("Status").toString().equalsIgnoreCase("merged")){
 					   for(int k=0;k<fcArray.length;k++) {%>
     					<script>
                             thisFrm.elements['<%=k%>'].readOnly = true;
-                            thisFrm.elements['<%=k%>'].disabled = true;
+                            thisFrm.elements['<%=k%>'].disabled = false;
  						</script>
  					  <%}%>
  					<%}%>
