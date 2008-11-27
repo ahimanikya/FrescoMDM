@@ -486,8 +486,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
  											if(editSOMinorflag=="false"){
 											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
 											else{
-											editSOMinorflag = "false";
-											setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+ 											editSOMinorflag = "false";
+											setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -684,7 +684,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
 											else{
 											 editSOMinorflag = "false";
-											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1014,7 +1014,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
 											else{
 											editSOMinorflag = "false";											
-											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
@@ -1261,7 +1261,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											showUnSavedAlert(event,editMinorObjectType,editObjectType);}
 											else{
 											editSOMinorflag = "false";											 
-											  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=sourceHandler.getSystemCodeDescription(selectedSoSystemCode)%>/<%=selectedSoLID%>");
+											  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 

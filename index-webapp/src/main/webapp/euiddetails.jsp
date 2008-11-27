@@ -415,11 +415,12 @@ if(session!=null){
         <%
 		 MasterControllerService masterControllerService = new MasterControllerService();
          String[][] lidMaskingArray = masterControllerService.getSystemCodes();
-          
+         SourceHandler sourceHandler = new SourceHandler(); 
           
         %>
         <script>
             var systemCodes = new Array();
+            var systemCodeDesc = new Array();
             var lidMasks = new Array();
         </script>
         
@@ -430,13 +431,14 @@ if(session!=null){
             if(i==0) {
          %>       
          <script>
-           systemCodes['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+           systemCodes['<%=j%>']  = "<%=lidMaskingArray[i][j]%>";
+           systemCodeDesc['<%=lidMaskingArray[i][j]%>']  = "<%=sourceHandler.getSystemCodeDescription(lidMaskingArray[i][j])%>";
          </script>      
          <%       
             } else {
          %>
          <script>
-           lidMasks ['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+           lidMasks ['<%=j%>']  = "<%=lidMaskingArray[i][j]%>";
          </script>
          <%       
             }
