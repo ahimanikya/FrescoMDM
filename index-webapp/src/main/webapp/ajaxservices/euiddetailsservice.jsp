@@ -151,7 +151,10 @@ boolean isSessionActive = true;
 			String showMergedRecordStr = request.getParameter("showMergedRecord");
 			boolean isShowMergedRecords = (null == showMergedRecordStr?false:true);
 
-            ArrayList eoArrayList = new ArrayList();
+			String mergedRecord = request.getParameter("mergedrecord"); //fix for 158 on 27-11-08
+			boolean isMergedRecord = (null == mergedRecord?false:true);
+
+			ArrayList eoArrayList = new ArrayList();
 			 ArrayList eoMergeRecords = new ArrayList();
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
     
@@ -1085,28 +1088,32 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                 <tr> 
                                                     <td valign="top" width="125px">
 													<!-- Start Added by Anil, fix for  CR 6709864-->
-													 <% if(operations.isEO_Edit()){%>
-                                                        <a  title="<h:outputText value="#{msgs.edit_euid_button_text}" />" class="button" href="javascript:void(0)"
+													 <% if(operations.isEO_Edit() && !isMergedRecord){%> <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
+                                                        <a  title="<h:outputText value="#{msgs.edit_euid_button_text}" />" class="button"                 href="javascript:void(0)"
                                                                         onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>','ajaxContent','')">
                                                             <span><h:outputText value="#{msgs.edit_euid_button_text}" /></span>
                                                         </a>  
 													 <%}%>
 													 <!-- End  fix for  CR 6709864-->
                                                    <!-- Deactive/Activate button -->
-												   <a  title="<h:outputText value="#{msgs.source_rec_deactivate_but}" />" class="button" href="javascript:void(0)"
-                                                                        onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&deactiveEO=true','targetDiv','')">
-                                                            <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
-                                                        </a>
+												   <%if(!isMergedRecord){%> <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
+													   <a  title="<h:outputText value="#{msgs.source_rec_deactivate_but}" />" class="button" href="javascript:void(0)"
+																			onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&deactiveEO=true','targetDiv','')">
+																<span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
+														</a>
+													<%}%>
                                                     </td>
                                                    </tr>
-                                                        <%}%>            
+                                                   <%}%>            
                                                     <%if (countInactive != eoSources.size() && "inactive".equalsIgnoreCase(eoStatus)) {%>
                                                     <tr>
-                                                         <td valign="top" width="125px">
+                                                        <td valign="top" width="125px">
+														 <%if(!isMergedRecord){%> <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
 														 <a  title="<h:outputText value="#{msgs.source_rec_activate_but}" />" class="button" href="javascript:void(0)"
                                                                         onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&activeEO=true','targetDiv','')">
                                                             <span><h:outputText value="#{msgs.source_rec_activate_but}" /></span>
                                                         </a>
+														<%}%>
                                                         </td>
                                                     </tr>
                                                     <tr>

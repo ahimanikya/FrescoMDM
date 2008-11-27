@@ -481,7 +481,7 @@ boolean isSessionActive = true;
 		<%if(concurrentMergeModification){%>
 			  <table>
 					<tr>
-						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+						<td><!-- Modified  on 31-10-2008 as fix of 6710694 -->
 								  <script>
   										document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%> ";
 										document.getElementById("mergeConfirmationDiv").style.visibility="visible";
@@ -494,7 +494,7 @@ boolean isSessionActive = true;
 		<%if(concurrentModification){%>
 			  <table>
 					<tr>
-						<td><!-- Modified  on 31-109-2008 as fix of 6710694 -->
+						<td><!-- Modified  on 31-10-2008 as fix of 6710694 -->
 								  <script>
   										document.getElementById("mergeConfirmationmessageDiv").innerHTML = "EUID '<%=srcDestnEuids[0]%>' <%=bundle.getString("already_updated_text")%>";
 										document.getElementById("mergeConfirmationDiv").style.visibility="visible";
@@ -598,8 +598,21 @@ boolean isSessionActive = true;
             SystemObject so = null;
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
-
-            if (!alreadyMerged && !isMergedEuid && !isPopulateMergeFields && eoArrayList != null) {
+			%>
+			<!-- Modified  on 27-11-2008 as fix of 158 -->
+            <%if (isMergeFinal) { 
+			  String[] srcDestnEuids = request.getParameter("MERGE_SRC_DESTN_EUIDS").split(",");	
+			%>
+					  <table>
+				<tr>
+					<td>
+					  <script>
+						ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=srcDestnEuids[0]%>&mergedrecord=true','mainDupSource','');
+					  </script>
+				   <td>
+				<tr>
+			</table>
+            <%} else if (!alreadyMerged && !isPopulateMergeFields && eoArrayList != null ) {
             %>  
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>

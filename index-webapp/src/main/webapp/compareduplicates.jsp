@@ -79,8 +79,9 @@
         <link type="text/css" href="./css/styles.css"  rel="stylesheet" media="screen">
         <link type="text/css" href="./css/calpopup.css" rel="stylesheet" media="screen">
         <link type="text/css" href="./css/DatePicker.css" rel="stylesheet" media="screen">
-        <link type="text/css" href="./css/balloontip.css"  rel="stylesheet" media="screen">    
-        <script type="text/javascript" src="scripts/balloontip.js"></script>       
+        <link type="text/css" href="./css/balloontip.css"  rel="stylesheet" media="screen">   
+        <link rel="stylesheet" type="text/css" href="./scripts/yui4jsf/assets/tree.css"/>   
+		<script type="text/javascript" src="scripts/balloontip.js"></script>       
         <script type="text/javascript" src="scripts/edm.js"></script>
         <script type="text/javascript" src="scripts/Validation.js"></script>
         <script type="text/javascript" src="scripts/calpopup.js"></script>
@@ -92,7 +93,19 @@
         <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
         <script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>  
+            <!-- Required for View Merge Tree -->
+        <script type="text/javascript" src="scripts/yui4jsf/yahoo/yahoo-min.js"></script>           
+		<!-- Additional source files go here -->
+		<script type="text/javascript" src="scripts/yui4jsf/core/yui4jsf-core.js"></script>
+		<script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
+		<script type="text/javascript" src="scripts/yui4jsf/treeview/treeview-min.js"></script>
+		
+		<script type="text/javascript" src="scripts/yui4jsf/yahoo-dom-event/yahoo-dom-event.js"></script>
+		<script type="text/javascript" src="scripts/yui4jsf/animation/animation-min.js"></script>                        
+		<script type="text/javascript" src="scripts/yui/dragdrop/dragdrop-min.js"></script>
+
 		<script type="text/javascript" >
+		   var euidValueArray=[];
     	   var previewEuidDivs=[];
            var rand = "";
            function setRand(thisrand)  {
@@ -102,6 +115,10 @@
            function setEOEditIndex(editIndex)   {
 				editIndexid = editIndex;
 	   	   }
+           function closeTree()    {                            
+			document.getElementById('tree').style.visibility='hidden';
+			document.getElementById('tree').style.display='none';
+           }
 		   // LID merge related global javascript variables
 		   var euids="";
 		   var popUrl="";
