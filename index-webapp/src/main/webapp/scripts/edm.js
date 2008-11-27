@@ -2322,7 +2322,6 @@ function checkDuplicateFileds(formName,field,message) {
 	  if(thisFrm.elements[i].value.length !=0 &&  field.title  != thisFrm.elements[i].title ) {
 		if(field.value == thisFrm.elements[i].value) {
  	     document.getElementById("duplicateIdsDiv").innerHTML = field.title + " '" + field.value + "' "+ message;
- 		 field.value = "";
 		 field.focus(); 
 		 field.style.backgroundColor ="#f7fbd6";
 		 field.style.border  ="1px solid #d75e33"; 
