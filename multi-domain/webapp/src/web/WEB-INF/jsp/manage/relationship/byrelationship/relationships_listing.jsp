@@ -25,37 +25,35 @@
     
 <div class="MainBox" dojoType="dijit.layout.ContentPane">
     <div class="TitleBar"><f:message key="records_in_relationship_text" /></div>
-    <div >
-           <table border="0" width="100%">
+    <div class="Content">
+           <table border="0" width="100%" >
                <tr>
-                   <td class="mainLabel" width="40%">
+                   <td class="generalTextBold" width="30%">
                        <f:message key="source_domain_text" /><f:message key="colon_symbol" />
                    </td>
-                   <td class="mainLabel" width="60%">
-                       Comapany
+                   <td class="generalTextBold" width="70%">
+                       Company
                    </td>
                </tr>
                <tr>
-                   <td class="mainLabel">
+                   <td class="generalTextBold">
                       <f:message key="relationship" /><f:message key="colon_symbol" />
                    </td>
-                   <td class="mainLabel">
+                   <td class="generalTextBold">
                        Tracks
                    </td>
                </tr>
                <tr>
-                   <td class="mainLabel">
+                   <td class="generalTextBold">
                        <f:message key="target_domain_text" /><f:message key="colon_symbol" />
                    </td>
-                   <td class="mainLabel">
+                   <td class="generalTextBold">
                        UKPatient
                    </td>
                </tr>
+               <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
                <tr>
-                   <td colspan="2"><img src="images/spacer.gif" height="1" width="1"></td>
-               </tr>
-               <tr>
-                   <td colspan="2">
+                   <td colspan="2" class="generalText">
                        Select Relationship to View Details
                    </td>
                </tr>
@@ -82,24 +80,43 @@
                </tr>
                <tr>
                    <td colspan="2">
-                      <table cellspacing="0" cellpadding="0" border="0">
-                           <tr>
-                            <td><img src="images/spacer.gif" height="1" width="30"></td>
-                            <td><img src="images/icons/actions_separator.gif" border="0" width="10" height="30"></td>
-                            <td>Source Record</td>
-                            <td><img src="images/icons/actions_separator.gif" border="0" width="10" height="30"></td>
-                            <td>Target Record</td>
-                          </tr>
+                       <div style="height:400px;">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="RecordsListing">
+                            <thead class="header">
+                                <tr>
+                                    <td>&nbsp;&nbsp;</td>
+                                    <td class="generalTextBold">Source Record</td>
+                                    <td class="generalTextBold">Target Record</td>
+                                </tr>
+                            </thead>
+                            <tbody id="recordListing">
+                                <!--<tr><td class="textdata" colspan="3" align="center"> Loading... </td></tr>-->
+                                <tr onclick="selectRecordRow(this);">
+                                    <td><input type="checkbox"></td>
+                                    <td class="generalTextBold">George Karlin</td>
+                                    <td class="generalTextBold">Center Point</td>
+                                </tr>
+                                <tr onclick="selectRecordRow(this);">
+                                    <td><input type="checkbox"></td>
+                                    <td class="generalTextBold">George Karlin</td>
+                                    <td class="generalTextBold">Center Point</td>
+                                </tr>
+                                <tr onclick="selectRecordRow(this);">
+                                    <td><input type="checkbox"></td>
+                                    <td class="generalTextBold">George Karlin</td>
+                                    <td class="generalTextBold">Center Point</td>
+                                </tr>
+                                <tr onclick="selectRecordRow(this);">
+                                    <td><input type="checkbox"></td>
+                                    <td class="generalTextBold">George Karlin</td>
+                                    <td class="generalTextBold">Center Point</td>
+                                </tr>
+                            </tbody>
                       </table>
+                      </div>
                    </td>
                </tr>
-               <tr>
-                   <td class="mainLabel" colspan="2">
-                       <div class="Details" style="height:400px;">
-                           Grid goes here...............
-                       </div>
-                   </td>
-               </tr>
+
            </table>
      </div>
 </div>

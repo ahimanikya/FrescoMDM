@@ -1,24 +1,22 @@
 /* CSS for Manage section of MDWM */
-
-.Box {
-    position: relative;
-    border-right: 2px solid #949494;
-    border-left: 2px solid #949494;
-    border-top: 2px solid #949494;
-    border-bottom: 2px solid #949494;
-    background-color: #f4f3ee;
-    padding-left: 10px; 
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top:15px;
-  }
+.generalText {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:normal;
+}
+.generalTextBold {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:bold;
+}
   
-  .MainBox {
+.MainBox {
     position: relative;
-    border: 1px solid #59707b;
+    border: 1px solid #D1C8A9;
     background-color: #f4f3ee;
-
-  }
+}
 .MainBox .TitleBar{
     height:24px;
     background-color: #6E828C;
@@ -32,16 +30,97 @@
 }
 
 .MainBox .Content{
-    background-color:#fff7de;
-    padding-left:15px;
-    padding-top:10px;
-    padding-right:15px;
-    padding-bottom:10px;
-    border-right: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
+    background-color:#FEFEE4;
+    padding-left:5px;
+    padding-top:5px;
+    padding-right:5px;
+    padding-bottom:5px;
 }
+
+.RecordsListing {
+    background-color: #F9F9F0;
+    border: 1px solid #6E828C;
+}
+.RecordsListing .header {
+    background-color: #DDDDDD;
+    text-align:left;
+    height:24px;
+}
+.RecordsListing .header .label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:normal;
+    padding-left:2px;
+    background-color: #DDDDDD;
+}
+.RecordsListing tbody {
+    background-color: #FFFFFF;
+}
+.RecordsListing tbody tr {
+    height:24px;
+    cursor:pointer;
+}
+.RecordsListing tbody tr td{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:normal;
+    border-bottom: 1px solid #F9F9F0;
+    padding-left:2px;
+}
+.RecordsListing tbody tr td input {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:normal;
+    height:20px;
+}
+
+
+.RecordDetails .label {
+    color:#829395;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:bold; 
+}
+.RecordDetails .data {
+    color:#595a55;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:bold; 
+}
+
+
+
+.palleteButton { 
+    cursor:pointer;
+}
+.button_spacing {
+    padding-left:6px;
+}
+
+.RelationshipAttributes {
+    border: 1px solid #a4936e;
+    padding-bottom:5px;
+}
+.RelationshipAttributes .Heading {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    color:#343535;
+    font-weight:bold;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+.RelationshipAttributes .label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:normal;
+}
+
+
+
 .DetailsTitleBar{
     height:24px;
     background-color: #6E828C;
@@ -54,200 +133,3 @@
     vertical-align:bottom;
 }
 
-.xyz{
-    
-    background-color: #f4f3ee;
-    color:#000000;
-    border-right: 2px solid #9f9f9f;
-    border-left: 2px solid #9f9f9f;
-    border-top: 2px solid #9f9f9f;
-    border-bottom: 2px solid #9f9f9f;
-    padding-left:10px;
-    padding-top:6px;
-    padding-right:10px;
-    padding-bottom:5px;
-}
-
-.formLabel {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:13px;
-    color:#343535;
-    font-weight:bold;
-}
-
-.custom{
-    
-    border-right: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-    
-}
-
-.predefined{
-    
-    border-right: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-    
-}
-
-/* record_details---------------->narahari */
-
-.sample {
-  color:black;  
-}
-.abc {
-  border-right: 1px solid #6E828C;
-  border-left: 1px solid #6E828C;
-  border-top: 1px solid #6E828C;
-  border-bottom: 1px solid #6E828C;
-    
-}
-.palleteButton { 
-    cursor:pointer;
-}
-.button_spacing {
-    padding-left:6px;
-}
-.MainDiv {
-    border-right: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-    padding-left:10px;
-    padding-top:5px;
-    padding-right:10px;
-    padding-bottom:10px;
-    width:75%;
-}
-
-.AttributeDiv {
-    border-right: 1px solid #59707B;
-    border-left: 1px solid #59707B;
-    border-top: 1px solid #59707B;
-    border-bottom: 1px solid #59707B;
-    padding-left:10px;
-    padding-top:5px;
-    padding-right:10px;
-    padding-bottom:10px;
-}
-
-
-.DomainDiv {
-    border-right: 1px solid #59707B;
-    border-left: 1px solid #59707B;
-    border-top: 1px solid #59707B;
-    border-bottom: 1px solid #59707B;
-    padding-left:10px;
-    padding-top:5px;
-    padding-right:10px;
-    padding-bottom:10px;
-}
-
-.MainTitleBar{
-    height:24px;
-    background-color: #6E828C;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:14px;
-    color:#FFFFFF;
-    font-weight:bold;
-    text-align:left;
-    padding-left:10px;
-    padding-top:5px;
-    padding-right:10px;
-    width:908px;
-    
-    
-}
-
-.Details{
-    
-    border: 1px solid #a4936e;
-}
-.TitleBar{
-    height:24px;
-    background-color: #A4936E;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:14px;
-    color:#FFFFFF;
-    font-weight:bold;
-    padding-left:5px;
-    padding-top:3px;
-    vertical-align:bottom;
-}
-
-.Content{
-    
-    background-color:#fefee4;
-    padding-left:10px;
-    padding-top:5px;
-    padding-right:10px;
-    padding-bottom:10px;
-    border-right: 1px solid #d1c8a9;
-    border-left: 1px solid #d1c8a9;
-    border-top: 1px solid #d1c8a9;
-    border-bottom: 1px solid #d1c8a9;
-    
-}
-
- .LeftPane {
-    color:#637881;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:14px;
-    font-weight:bold;
-}
-
- .RightPane {
-    color:#595a55;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:14px;
-    font-weight:bold;
-}
-
-.EditAttributes {
-    border: 1px solid #a4936e;
-}
-
-.AttributesTopRow {
-    border-right: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
-
-.AttributesBottomRow {
-    border-right: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
-
-.mainLabel {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:14px;
-    color:#343535;
-    font-weight:bold;
-    padding-top:5px;
-    padding-bottom:5px;
-}
-
-.subLabel {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:10px;
-    color:#343535;
-}
-
-
-.RecordDetailsTitleBar{
-    height:24px;
-    background-color: #A4936E;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:14px;
-    color:#FFFFFF;
-    font-weight:bold;
-    padding-left:5px;
-    padding-top:3px;
-    vertical-align:bottom;
-}

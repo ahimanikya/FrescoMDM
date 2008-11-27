@@ -7,7 +7,7 @@
 <div dojoType="dijit.layout.BorderContainer" splitter="true" style="width:100%; height:100%;padding:0px;border:0px;">
     <div dojoType="dijit.layout.ContentPane" region="left" gutters="false" splitter="true" 
             minSize="50"  style="width:30%;border:0px;background-color:#F9F9F0;" >
-           <div dojoType="dijit.layout.ContentPane">
+           <div dojoType="dijit.layout.ContentPane" class="generalText">
                <input type="radio" value="by_relationship" name="m_relationship" checked> By Relationship <Br>
                <input type="radio" value="by_record" name="m_relationship" onclick="changeViewToByRecord('mRelatioshipTab');"> By Record
            </div>

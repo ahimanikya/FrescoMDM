@@ -21,71 +21,78 @@
      
 </script>
 
-<div dojoType="dijit.RecordDetailsTitlePane" title="Dr. George Karlin" class="Details" 
-        onSummaryClick="showRecordFullDetails('DetailContent',false);" onDetailsClick="showRecordFullDetails('DetailContent',true);" parseOnLoad="true">
+<div dojoType="dijit.RecordDetailsTitlePane" title="Dr. George Karlin" class="MainBox" 
+        onSummaryClick="showRecordFullDetails('recordSummary','recordDetails',false);" onDetailsClick="showRecordFullDetails('recordSummary','recordDetails',true);" parseOnLoad="true">
 
     <!-- sumarry content -->
     <div class="Content">
-    <table border="0">
+        
+        <div id="recordSummary">summary</div>
+        
+        <div id="recordDetails" style="display:none;">details</div>
+        
+        
+            
+    <table border="0" class="RecordDetails">
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">First Name</td>
+            <td class="label">First Name</td>
             <td><img src="../images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">George</td>
+            <td class="data">George</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Middle Name</td>
+            <td class="label">Middle Name</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">Denise</td>
+            <td class="data">Denise</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Last Name</td>
+            <td class="label">Last Name</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">Karlin</td>
+            <td class="data">Karlin</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Gender</td>
+            <td class="label">Gender</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">Male</td>
+            <td class="data">Male</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Date of Birth</td>
+            <td class="label">Date of Birth</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">04/07/1965</td>
+            <td class="data">04/07/1965</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Profession</td>
+            <td class="label">Profession</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">Manager</td>
+            <td class="data">Manager</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Phone Home</td>
+            <td class="label">Phone Home</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">(020)123-4567</td>
+            <td class="data">(020)123-4567</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Phone Work</td>
+            <td class="label">Phone Work</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">(020)123-4445</td>
+            <td class="data">(020)123-4445</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
-            <td class="LeftPane">Address Home</td>
+            <td class="label">Address Home</td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">234 Fifth Street</td>
+            <td class="data">234 Fifth Street</td>
         </tr>
         <tr>
             <td><img src="images/spacer.gif" height="1" width="3"></td>
             <td></td>
             <td><img src="images/spacer.gif" height="1" width="60"></td>
-            <td class="RightPane">City Town,State 99999</td>
+            <td class="data">City Town,State 99999</td>
         </tr>
         <!--  detail content displays after summary -->
         <tr>
@@ -94,45 +101,45 @@
                     <table>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">First Name</td>
+                            <td class="label">First Name</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">George</td>
+                            <td class="data">George</td>
                         </tr>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">Middle Name</td>
+                            <td class="label">Middle Name</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">Denise</td>
+                            <td class="data">Denise</td>
                         </tr>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">Last Name</td>
+                            <td class="label">Last Name</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">Karlin</td>
+                            <td class="data">Karlin</td>
                         </tr>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">Gender</td>
+                            <td class="label">Gender</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">Male</td>
+                            <td class="data">Male</td>
                         </tr>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">Date of Birth</td>
+                            <td class="label">Date of Birth</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">04/07/1965</td>
+                            <td class="data">04/07/1965</td>
                         </tr>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">Profession</td>
+                            <td class="label">Profession</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">Manager</td>
+                            <td class="data">Manager</td>
                         </tr>
                         <tr>
                             <td><img src="images/spacer.gif" height="1" width="3"></td>
-                            <td class="LeftPane">Phone Home</td>
+                            <td class="label">Phone Home</td>
                             <td><img src="images/spacer.gif" height="1" width="60"></td>
-                            <td class="RightPane">(020)123-4567</td>
+                            <td class="data">(020)123-4567</td>
                         </tr>
                         
                     </table>
