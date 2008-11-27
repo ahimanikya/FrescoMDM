@@ -25,7 +25,9 @@
     dojo.require("dijit.layout.BorderContainer");
     dojo.require("dijit.TitlePane");
     dojo.require("dijit.RecordDetailsTitlePane");
-        dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.GenericTitlePane");
+    
+    dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.DateTextBox");  
     
 </script>
