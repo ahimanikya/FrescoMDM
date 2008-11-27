@@ -18,14 +18,17 @@
     dojo.require("dijit.TitlePane");
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.DateTextBox");
+    dojo.require("dijit.GenericTitlePane");
     dojo.require("dojo.parser");
 </script>
 
 
 
 <body class="mdwm">
-  <div class="MainTitleBar" style="width:917px;"><f:message key="search_for_records" /></div>
-    <table border="0" width="75%" class="abc">
+  <div class="MainBox">
+    <div class="TitleBar"><f:message key="search_for_records" /></div>
+    <div class="Content">
+    <table border="0">
         <tr>
             <td>
                 <%@ include file="/WEB-INF/jsp/manage/relationship/domain_criteria_with_results.jsp" %>
@@ -42,4 +45,6 @@
             </td>
         </tr>
     </table>
+    </div>
+    </div>
 </bodY>
