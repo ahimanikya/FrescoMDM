@@ -34,7 +34,7 @@
                 <div class="RelationshipAttributes">
                     <table border="0">
                         <tr>
-                            <td class="Heading">
+                            <td class="Heading" colspan="2">
                                 <f:message key="custom_text" /> <f:message key="attributes_text" />
                             </td>
                         </tr>
@@ -58,7 +58,7 @@
                     <table border="0">
                         <tr>
                             <td class="Heading" colspan="4">
-                                <f:message key="relationship_life_text" /> Predefined Attributes
+                                <f:message key="predefined_text" /> <f:message key="attributes_text" />
                             </td>
                         </tr>
                         <tr><td><img src="images/spacer.gif" height="4" width="1"></td></tr>
@@ -84,7 +84,7 @@
                         <tr><td><img src="images/spacer.gif" height="6" width="1"></td></tr>
 
                         <tr>
-                            <td colspan="1" class="label" valign="top">
+                            <td class="label" valign="top">
                                 &nbsp;&nbsp;<f:message key="purge_date_text" /><f:message key="colon_symbol" />
                             </td>
                             <td></td>
@@ -99,8 +99,6 @@
                 </div>
             </td>
         </tr>
-        
-        
         <tr>
             <td align="right" width="20%">
                 <table cellpadding="0" cellspacing="0" border="0">

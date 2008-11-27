@@ -18,13 +18,14 @@
     dojo.require("dijit.TitlePane");
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.DateTextBox");
+    dojo.require("dijit.GenericTitlePane");
     dojo.require("dojo.parser");
 </script>
 
 
 
 <body class="mdwm">
-<div class="MainDiv">
+<div>
     <table border="0" width="100%">
         <tr>
             <td>
