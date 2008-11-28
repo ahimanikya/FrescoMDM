@@ -25,13 +25,16 @@
 
 
 <body class="mdwm">
-  <div class="MainBox">
-    <div class="TitleBar"><f:message key="search_for_records" /></div>
-    <div class="Content">
     <table border="0" width="100%">
         <tr>
             <td>
+                <div class="MainBox">
+                 <div class="TitleBar"><f:message key="search_for_records" /></div>
+                    <div class="Content">
+
                 <%@ include file="/WEB-INF/jsp/manage/relationship/domain_criteria_with_results.jsp" %>
+                    </div>
+                </div>    
             </td>
         </tr>
         <tr>
@@ -39,12 +42,10 @@
                 <%@ include file="/WEB-INF/jsp/manage/relationship/add_relationship_attributes.jsp" %>
             </td>
         </tr>
-        <tr>
+       <tr>
             <td align="right"><input type="button" title="<f:message key="select_text" />" value="<f:message key="select_text" />"/>
                               <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" />
             </td>
         </tr>
     </table>
-    </div>
-    </div>
 </bodY>

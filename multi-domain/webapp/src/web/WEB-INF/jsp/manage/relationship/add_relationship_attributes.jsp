@@ -6,7 +6,8 @@
 
 
 
-<div dojoType="dijit.GenericTitlePane" class="MainBox" title="<f:message key="relationship_attributes_text" />">
+<div class="MainBox">
+<div class="TitleBar"><f:message key="relationship_attributes_text" /></div>
      <div class="Content">
       <table border="0">
         <tr>
@@ -79,4 +80,4 @@
         </tr>
      </table>
  </div>
-     </div>
+ </div>
