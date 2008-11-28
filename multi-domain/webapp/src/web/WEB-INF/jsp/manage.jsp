@@ -43,7 +43,8 @@
     <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
         Under construction!
     </div>
-    <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="Relationships" href="m_relationships.htm" parseOnLoad="true">
+    <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="Relationships" 
+            href="m_byrelationship_main.htm" parseOnLoad="true" onLoad="showSelectDialog(this.href);">
         
     </div>
     

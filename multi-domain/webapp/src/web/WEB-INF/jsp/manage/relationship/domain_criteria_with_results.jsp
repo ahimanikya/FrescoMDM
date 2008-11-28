@@ -5,12 +5,12 @@
 --%>
 
     <div>
-    <table>
+    <table border="0" width="100%">
         <tr>
             <td>
             <div dojoType="dijit.GenericTitlePane" class="MainBox" title="<f:message key="source_records_text" /> <f:message key="lower_from_text" /><f:message key="domain_text" /><f:message key="colon_symbol" />">
             <div class="Content">
-            <table border="0">
+            <table border="0" >
                 <tr>
                     <td class="generalTextBold" colspan="2">
                         <f:message key="select_text" /> <f:message key="the_text" /> <f:message key="search_text" /> <f:message key="type_text" />

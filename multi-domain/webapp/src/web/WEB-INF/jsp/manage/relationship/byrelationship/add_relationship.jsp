@@ -28,7 +28,7 @@
   <div class="MainBox">
     <div class="TitleBar"><f:message key="search_for_records" /></div>
     <div class="Content">
-    <table border="0">
+    <table border="0" width="100%">
         <tr>
             <td>
                 <%@ include file="/WEB-INF/jsp/manage/relationship/domain_criteria_with_results.jsp" %>

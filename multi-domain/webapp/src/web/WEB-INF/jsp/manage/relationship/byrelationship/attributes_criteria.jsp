@@ -21,7 +21,7 @@
     <tr>
         <td>
             
-           <div dojoType="dijit.GenericTitlePane" style="width:900px;" title="<f:message key="search_criteria_for_relationhship" />" <f:message key="attributes_text" /> class="MainBox" jsId="pane1">
+           <div dojoType="dijit.GenericTitlePane"  title="<f:message key="search_criteria_for_relationhship" />" <f:message key="attributes_text" /> class="MainBox" jsId="pane1">
 
             <div class="Content">
                <table border="0">

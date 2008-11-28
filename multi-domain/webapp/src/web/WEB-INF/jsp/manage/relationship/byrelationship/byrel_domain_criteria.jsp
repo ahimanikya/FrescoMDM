@@ -8,7 +8,7 @@
 <div class="MainBox">
    <div class="TitleBar"><f:message key="select_text" /> <f:message key="source_domain_text" /></div>
    <div class="Content">
-    <table border="0">
+    <table border="0"  width="100%">
     <tr>
         <td class="generalTextBold">
             &nbsp;<f:message key="source_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
@@ -21,7 +21,7 @@
     <tr>
         <td>
             
-           <div dojoType="dijit.GenericTitlePane" style="width:900px;" title="<f:message key="search_criteria_for_records" />" class="MainBox" jsId="pane1">
+           <div dojoType="dijit.GenericTitlePane" title="<f:message key="search_criteria_for_records" />" class="MainBox" jsId="pane1">
             <div class="Content">
                <table border="0">
                    <tr>
@@ -72,11 +72,13 @@
 </table>
 </div>
 </div>
+
+
 <br>
   <div class="MainBox">
     <div class="TitleBar"><f:message key="select_text" /> <f:message key="target_domain_text" /></div>
     <div class="Content">
-    <table border="0">
+    <table border="0" width="100%">
     <tr>
         <td class="generalTextBold">
             &nbsp;<f:message key="target_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
@@ -89,7 +91,7 @@
     <tr>
         <td>
             
-           <div dojoType="dijit.GenericTitlePane" style="width:900px;" title="<f:message key="search_criteria_for_records" />" class="MainBox" jsId="pane1">
+           <div dojoType="dijit.GenericTitlePane" title="<f:message key="search_criteria_for_records" />" class="MainBox" jsId="pane1">
 
             <div class="Content">
                <table border="0">
