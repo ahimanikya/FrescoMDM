@@ -7,7 +7,16 @@
   
 
 <div class="MainBox">
-   <div class="TitleBar"><f:message key="source_records_text" /> <f:message key="lower_from_text" /><f:message key="domain_text" /><f:message key="colon_symbol" /></div>
+    <div class="TitleBar">
+        <table>
+            <tr>
+                <td>
+                 <f:message key="source_records_text" /> <f:message key="lower_from_text" /><f:message key="domain_text" /><f:message key="colon_symbol" />
+               </td>
+               <td id="byrel_addSourceDomain"></td>
+            </tr>
+        </table> 
+   </div>
    <div class="Content">
     <table border="0" width="100%">
         <tr>
@@ -64,7 +73,7 @@
                            <td colspan="2"><img src="images/spacer.gif" height="1" width="6"></td>
                        </tr>
                        <tr>
-                           <td align="right" colspan="2"><input type="button" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
+                           <td align="right" colspan="2"><input type="button" onclick="addSourceDomainSearch();" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
                        </tr>
                      </table>
                    <div> 
@@ -80,22 +89,17 @@
            </tr>
            <tr>
             <td>
-                <div>
+                <div id="byrel_addSourceResults" style="display:none;">
                     <table border="1">
                         <tr>
                             <th><img src="images/spacer.gif" height="1" width="1"></th>
-                            <th class="generalTextBold"><f:message key="company_text" /> <f:message key="name_text" /></th>
-                            <th class="generalTextBold"><f:message key="duns_text" /> <f:message key="number_text" /></th>
+                            <th class="generalTextBold" id="companyid"></th>
+                            <th class="generalTextBold" id="dunsid"></th>
                         </tr>
                         <tr>
                             <td><input type="checkbox"></td>
-                            <td class="generalText">AIG</td>
-                            <td class="generalText">123456789</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="generalText">Good Ins</td>
-                            <td class="generalText">222456789</td>
+                            <td class="generalText" id="companyContent"></td>
+                            <td class="generalText" id="dunsContent"></td>
                         </tr>
                     </table>
                 </div>
@@ -110,7 +114,16 @@
  <br>
      
  <div class="MainBox"> 
- <div class="TitleBar"><f:message key="target_records_text" /> <f:message key="lower_from_text" /><f:message key="domain_text" /><f:message key="colon_symbol" /></div>
+ <div class="TitleBar">
+     <table>
+        <tr>
+            <td>
+             <f:message key="target_records_text" /> <f:message key="lower_from_text" /><f:message key="domain_text" /><f:message key="colon_symbol" />
+           </td>
+           <td id="byrel_addTargetDomain"></td>
+        </tr>
+     </table> 
+  </div>
    <div class="Content">
     <table border="0" width="100%">
         <tr>
@@ -167,7 +180,7 @@
                        <td colspan="2"><img src="images/spacer.gif" height="1" width="6"></td>
                    </tr>
                    <tr>
-                       <td align="right" colspan="2"><input type="button" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
+                       <td align="right" colspan="2"><input type="button" onclick="addTargetDomainSearch()" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
                    </tr>
                  </table>
                <div>
@@ -182,22 +195,17 @@
            </tr>
            <tr>
             <td>
-                <div>
+                <div id="byrel_addTargetResults" style="display:none;">
                     <table border="1">
                         <tr>
                             <th><img src="images/spacer.gif" height="1" width="1"></th>
-                            <th class="generalTextBold"><f:message key="company_text" /> <f:message key="name_text" /></th>
-                            <th class="generalTextBold"><f:message key="duns_text" /> <f:message key="number_text" /></th>
+                            <th class="generalTextBold" id="productId"></th>
+                            <th class="generalTextBold" id="productName"></th>
                         </tr>
                         <tr>
                             <td><input type="checkbox"></td>
-                            <td class="generalText">AIG</td>
-                            <td class="generalText">123456789</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="generalText">Good Ins</td>
-                            <td class="generalText">222456789</td>
+                            <td class="generalText" id="productIdContent"></td>
+                            <td class="generalText" id="productNameContent"></td>
                         </tr>
                     </table>
                 </div>

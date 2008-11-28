@@ -39,3 +39,8 @@
     <div dojoType="dijit.layout.ContentPane" style="width:700px;height:500px;padding:0px;"
         href="m_byrel_select_relationship.htm" parseOnLoad="true" onLoad="loadDomainsForSearch();"></div>
 </div>
+
+<div id="byrel_add" dojoType="dijit.Dialog" title="Add Relationships" style="display:none;"  >
+    <div dojoType="dijit.layout.ContentPane" style="width:700px;height:500px;padding:0px;"
+        href="m_byrel_add_relationship.htm" parseOnLoad="true"></div>
+</div>

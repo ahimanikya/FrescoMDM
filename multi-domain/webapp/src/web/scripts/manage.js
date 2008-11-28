@@ -42,6 +42,22 @@ function showByRelSelectDialog() {
 function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
 }
+function showByRelAddDialog(){
+    
+    var addDialog = dijit.byId("byrel_add");
+    var selectedSourceDomain =document.getElementById("select_sourceDomain").value;
+    var selectedTargetDomain =document.getElementById("select_targetDomain").value;
+    var selectedRelationshipDef =document.getElementById("select_relationshipDefs").value;
+    addDialog.show();
+    alert("--sourceDomain--"+selectedSourceDomain);
+    document.getElementById("byrel_addSourceDomain").innerHTML= selectedSourceDomain;
+    document.getElementById("byrel_addTargetDomain").innerHTML= selectedTargetDomain;
+    document.getElementById("byrel_addRelationshipDef").innerHTML= selectedRelationshipDef;
+    
+}
+function hideByRelAddDialog () {
+    dijit.byId('byrel_add').hide();
+}
 
 
 // Method to refresh record listing table in "By Relationship""

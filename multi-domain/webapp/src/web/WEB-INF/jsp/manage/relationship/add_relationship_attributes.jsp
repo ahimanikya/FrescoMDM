@@ -4,10 +4,17 @@
     Author     : Harish
 --%>
 
-
-
 <div class="MainBox">
-<div class="TitleBar"><f:message key="relationship_attributes_text" /></div>
+<div class="TitleBar">
+    <table>
+        <tr>
+            <td>
+             <f:message key="relationship_attributes_text" /> <f:message key="colon_symbol" />
+           </td>
+           <td id="byrel_addRelationshipDef"></td>
+        </tr>
+   </table> 
+</div>
      <div class="Content">
       <table border="0">
         <tr>

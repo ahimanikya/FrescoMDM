@@ -74,16 +74,60 @@ function searchResultsCallback(data) {
 /*
  * Scripts for Add Relationship screen <START>
  */ 
-function test() {
+
+function addSourceDomainSearch() {
     alert('getting EUIDs');
-    var domainSearch = {name:"Person"}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
-    RelationshipHandler.searchEnterprises (domainSearch, testCallback);
+    var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
+    var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
+    RelationshipHandler.searchEnterprises (domainSearch, addSourceDomainSearchCallback);
 }
-function testCallback(data) {
+function addSourceDomainSearchCallback(data) {
     if(data == null) return;
-    for(i =0;i<data.length;i++) 
-        alert(i + " EUID: " + data[i].EUID + " : " + data[i].attributes[0].name + " : " + data[i].attributes[0].value);
+    for(i =0;i<data.length;i++){
+      alert(i + " EUID: " + data[i].EUID + " : " + data[i].attributes[0].name + " : " + data[i].attributes[0].value);
+        var Heading = data[i].attributes[0].name;
+        var Content = data[i].attributes[0].value;
+        alert( " Heading: " +Heading + "  Content: "  + Content);
+        if(i==0){
+           document.getElementById("companyid").innerHTML= Heading;
+           document.getElementById("companyContent").innerHTML= Content;
+        }
+        if(i==1){
+           document.getElementById("dunsid").innerHTML= Heading;
+           document.getElementById("dunsContent").innerHTML= Content; 
+        }
+        document.getElementById("byrel_addSourceResults").style.visibility="visible";
+        document.getElementById("byrel_addSourceResults").style.display="block";
+    } 
 }
+
+function addTargetDomainSearch() {
+    alert('getting EUIDs');
+    var selectedTargetDomain = document.getElementById("select_targetDomain").value;
+    var domainSearch = {name:selectedTargetDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
+    RelationshipHandler.searchEnterprises (domainSearch, addTargetDomainSearchCallback);
+}
+function addTargetDomainSearchCallback(data) {
+    if(data == null) return;
+    for(i =0;i<data.length;i++){
+        alert(i + " EUID: " + data[i].EUID + " : " + data[i].attributes[0].name + " : " + data[i].attributes[0].value);
+        var Heading = data[i].attributes[0].name;
+        var Content = data[i].attributes[0].value;
+        alert( " Heading: " +Heading + "  Content: "  + Content);
+        if(i==0){
+           document.getElementById("productId").innerHTML= Heading;
+           document.getElementById("productIdContent").innerHTML= Content;
+        }
+        if(i==1){
+           document.getElementById("productName").innerHTML= Heading;
+           document.getElementById("productNameContent").innerHTML= Content; 
+        }
+        document.getElementById("byrel_addTargetResults").style.visibility="visible";
+        document.getElementById("byrel_addTargetResults").style.display="block";
+    } 
+}
+
+
 
 /*
  * Scripts for Add Relationship screen <END>
