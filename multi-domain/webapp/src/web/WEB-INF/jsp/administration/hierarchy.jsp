@@ -210,13 +210,17 @@
     </tr>
 </table>
 <!-- Content for Add Hierarchy -->
-<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;width:700px;" href="administer_add_hierarchydef.htm" onload="refreshCustomAttributesButtonsPalette (addhierarchy_attributesArray, 'addhierarchy');">
-
+<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;" >
+        <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;"
+            href="administer_add_hierarchydef.htm" onload="refreshCustomAttributesButtonsPalette (addhierarchy_attributesArray, 'addhierarchy');">
+        </div>
 </div>
 
 <!-- Content for Edit Hierarchy -->
-<div id="edithierarchy" dojoType="dijit.Dialog" title="Edit Hierarchy" style="display:none;width:700px;">
-    <jsp:include page="/WEB-INF/jsp/administration/edit_hierarchy.jsp" flush="true" />
+<div id="edithierarchy" dojoType="dijit.Dialog" title="Edit Hierarchy" style="display:none;">
+    <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;">
+        <jsp:include page="/WEB-INF/jsp/administration/edit_hierarchy.jsp" flush="true" />
+    </div>    
 </div>
 
 <script>

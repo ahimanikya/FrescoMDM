@@ -89,9 +89,10 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
                 var props = {
                       name: "date_attr",
                       promptMessage: "mm/dd/yyyy",
-                      invalidMessage: "Invalid date."
+                      invalidMessage: "Invalid date.",
+                      width:"150px"
                 }; 
-                var w = new dijit.form.DateTextBox(props, this.DefaultValueField);
+                this.DefaultValueField = new dijit.form.DateTextBox(props, this.DefaultValueField);
         } else if( this.AttributeTypeField.value == "boolean") {
                 this.DefaultValueField = document.createElement("select");
                 var tOption = document.createElement ("option");
@@ -136,7 +137,9 @@ function showValues (attributesArray) {
     for(i=0;i<attributesArray.length; i++) {
             attr = attributesArray[i];
             //alert(i + " > " + attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
-            msg += i + " > " + attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value + "\n";
+            msg += i + " > " + attr.IdField.value + " " + attr.AttributeNameField.value ;
+            msg += " : " +  attr.DefaultValueField.value ;
+            msg += "\n";
     }
     alert(msg);
 }

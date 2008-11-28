@@ -259,13 +259,17 @@
 
 
 <!-- Content for Add relationship -->
-<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;width:700px;" href="administer_add_relationshipdef.htm" onload="refreshCustomAttributesButtonsPalette (addrelationship_attributesArray, 'addrelationship');">
-    
+<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;" >
+    <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;"
+        href="administer_add_relationshipdef.htm" onload="refreshCustomAttributesButtonsPalette (addrelationship_attributesArray, 'addrelationship');">
+    </div>
 </div>
 
 <!-- Content for Edit relationship -->
-<div id="editrelationship" dojoType="dijit.Dialog" title="Edit Relationship" style="display:none;width:700px;" >
-    <jsp:include page="/WEB-INF/jsp/administration/edit_relationship.jsp" flush="true" />
+<div id="editrelationship" dojoType="dijit.Dialog" title="Edit Relationship" style="display:none;" >
+    <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;">
+        <jsp:include page="/WEB-INF/jsp/administration/edit_relationship.jsp" flush="true" />
+    </div>      
 </div>
 
 <script>

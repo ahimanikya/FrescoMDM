@@ -105,14 +105,15 @@ function validateRelationshipForm() {
     
     var customAttributesArray = eval(addRelationshipPrefix + "_attributesArray");
     //alert("array to use is : " + customAttributesArray);
-    
+    //showValues(customAttributesArray);
+
     var customAttributes = [];
     for(i=0;i<customAttributesArray.length; i++) {
         var attr = customAttributesArray[i];
         //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
         var  tempAttr = {};
         tempAttr.name = attr.AttributeNameField.value;
-        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
         tempAttr.isRequired = attr.RequiredField.value;
         tempAttr.searchable = attr.SearchableField.value;
@@ -121,7 +122,7 @@ function validateRelationshipForm() {
 
     relationshipdef.extendedAttributes = customAttributes;
     //alert("extended attr: " + relationshipdef.extendedAttributes);
-    
+
     RelationshipDefHandler.addRelationshipDef(relationshipdef, loadRelationshipDefs );
 
     // Close this dialog
@@ -219,7 +220,7 @@ function validateHierarchyForm() {
         //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
         var  tempAttr = {};
         tempAttr.name = attr.AttributeNameField.value;
-        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
         tempAttr.isRequired = attr.RequiredField.value;
         tempAttr.searchable = attr.SearchableField.value;
@@ -321,7 +322,7 @@ function validateEditHierarchyForm() {
         //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
         var  tempAttr = {};
         tempAttr.name = attr.AttributeNameField.value;
-        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
         tempAttr.isRequired = attr.RequiredField.value;
         tempAttr.searchable = attr.SearchableField.value;

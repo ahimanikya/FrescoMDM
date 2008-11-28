@@ -9,7 +9,7 @@
 %>
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
     <tr>
-        <td class="formLabel" width="200px">
+        <td class="formLabel" >
             <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
