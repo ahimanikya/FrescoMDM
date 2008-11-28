@@ -22,23 +22,25 @@ var byRelationshipMainPage = "m_byrelationship_main.htm";
 var byRecordMainPage = "m_byrecord_main.htm";
 function changeViewToByRelationship(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
+    contentPaneObj.destroyDescendants(false);
     contentPaneObj.setHref (byRelationshipMainPage);
     // Show the Select overlay dialog
     
 }
 function changeViewToByRecord(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
+    contentPaneObj.destroyDescendants(false);
     contentPaneObj.setHref (byRecordMainPage);
 }
 
-function showSelectDialog(currentHref) {
-    if(currentHref == byRecordMainPage) {
-        // Show select dialog for by record screen
-    } else {
-        // Show select dialog for by relationship screen
-        var selectDialog = dijit.byId("byrel_select");
-        selectDialog.show();
-    }
+function showByRelSelectDialog() {
+
+    var selectDialog = dijit.byId("byrel_select");
+    selectDialog.show();        
+
+}
+function hideByRelSelectDialog () {
+    dijit.byId('byrel_select').hide();
 }
 
 

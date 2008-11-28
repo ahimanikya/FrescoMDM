@@ -4,7 +4,7 @@
     Author     : Harish
 --%>
 
-<br>
+
 <div class="MainBox">
   <div class="TitleBar"><f:message key="select_text" /> <f:message key="relationship" /></div>
   <div class="Content">
@@ -12,8 +12,8 @@
     <tr>
         <td class="generalTextBold" colspan="3">
             &nbsp;<f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
-            <select name="Domain" title="<f:message key="name_text" />">
-                <option value="">Select Domain</option>
+            <select id="select_relationshipDefs" name="select_relationshipDefs" title="<f:message key="name_text" />">
+                <!--<option value="">Select Relationship</option>-->
             </select>
         </td>
     </tr>

@@ -12,8 +12,8 @@
     <tr>
         <td class="generalTextBold">
             &nbsp;<f:message key="source_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
-            <select name="Source Domain" title="<f:message key="source_domain_text" />">
-                <option value="">Select Domain</option>
+            <select id="select_sourceDomain" name="select_sourceDomain" title="<f:message key="source_domain_text" />"  onchange="loadRelationshipDefs();">
+                <!--<option value="">Select Domain</option>-->
             </select>
         </td>
     </tr>
@@ -73,8 +73,8 @@
 </div>
 </div>
 
+<div style="padding:3px;"></div>
 
-<br>
   <div class="MainBox">
     <div class="TitleBar"><f:message key="select_text" /> <f:message key="target_domain_text" /></div>
     <div class="Content">
@@ -82,8 +82,8 @@
     <tr>
         <td class="generalTextBold">
             &nbsp;<f:message key="target_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
-            <select name="Target Domain" title="<f:message key="target_domain_text" />">
-                <option value="">Select Domain</option>
+            <select id="select_targetDomain" name="select_targetDomain" title="<f:message key="target_domain_text" />" onchange="loadRelationshipDefs();">
+                <!--<option value="">Select Domain</option>-->
             </select>
         </td>
     </tr>

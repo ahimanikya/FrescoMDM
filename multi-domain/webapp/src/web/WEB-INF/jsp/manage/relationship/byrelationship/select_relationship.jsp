@@ -26,19 +26,22 @@
 
 <body class="mdwm">
 <div>
-    <table border="0" width="100%">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr>
             <td>
                 <%@ include file="/WEB-INF/jsp/manage/relationship/byrelationship/byrel_domain_criteria.jsp" %>
             </td>
         </tr>
+        <tr><td><img src="images/spacer.gif" height="6" width="1"></td></tr>
         <tr>
             <td>
                 <%@ include file="/WEB-INF/jsp/manage/relationship/byrelationship/attributes_criteria.jsp" %>
             </td>
         </tr>
+        <tr><td><img src="images/spacer.gif" height="6" width="1"></td></tr>
         <tr>
-            <td align="right"><input type="button" value="<f:message key="select_text" />"/> <input type="button" value="<f:message key="cancel_text" />" /></td>
+            <td align="right"><input type="button" value="<f:message key="select_text" />" onclick="searchRelationships();" /> 
+            <input type="reset" value="<f:message key="cancel_text" />" /></td>
         </tr>
     </table>
 </div>

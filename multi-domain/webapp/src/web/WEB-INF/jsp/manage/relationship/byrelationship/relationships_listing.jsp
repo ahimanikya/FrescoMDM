@@ -32,7 +32,7 @@
                        <f:message key="source_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold" width="70%">
-                       Company
+                       <div id="selectedSourceDomain" dojoType="dijit.layout.ContentPane">&nbsp;</div>
                    </td>
                </tr>
                <tr>
@@ -40,7 +40,7 @@
                       <f:message key="relationship" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold">
-                       Tracks
+                       <div id="selectedRelationshipDef" dojoType="dijit.layout.ContentPane">&nbsp;</div>
                    </td>
                </tr>
                <tr>
@@ -48,7 +48,7 @@
                        <f:message key="target_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold">
-                       UKPatient
+                       <div id="selectedTargetDomain" dojoType="dijit.layout.ContentPane"></div>
                    </td>
                </tr>
                <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
@@ -68,7 +68,7 @@
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" title="<f:message key="de_select_all_text" />" ><img src="images/icons/deselect_multiple.png" border="0"></a></td>
                             <td><img src="images/icons/actions_separator.gif" border="0"></td>
-                            <td><a href="javascript:void(0);" title="<f:message key="add_text" />..."><img src="images/icons/add_button.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="test()" title="<f:message key="add_text" />..."><img src="images/icons/add_button.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" title="<f:message key="delete_text" />"><img src="images/icons/delete_button.png" border="0"></a></td>
                           </tr>
