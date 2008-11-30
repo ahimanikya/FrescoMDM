@@ -86,7 +86,7 @@
                     <groupId>multidomain.servcies.test</groupId>
                     <artifactId>resources</artifactId>
                     <version>${mural.currentVersion}</version>
-                    <file>${basedir}/test/metadata/resources.jar</file>
+                    <file>${basedir}/test/metadata/testresources.jar</file>
                 </configuration>
             </execution>
         </executions>            
