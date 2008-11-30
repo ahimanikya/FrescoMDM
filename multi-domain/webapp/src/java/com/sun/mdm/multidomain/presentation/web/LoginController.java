@@ -65,12 +65,12 @@ public class LoginController extends BaseCommandController {
     
     if (errorMessage != null) {
         modelAndView = new ModelAndView("loginerror", "errorMessage", errorMessage);
-    } else if (pageId.equalsIgnoreCase("landingpage")) {
+    } else if (pageId.equalsIgnoreCase("administration")) {
         //TBD: optional pages
-        modelAndView = new ModelAndView("index");
-    } else {
+        modelAndView = new ModelAndView("administration");
+    } else if (pageId.equalsIgnoreCase("manage")) {
         //TBD: error page
-        modelAndView = new ModelAndView("");        
+        modelAndView = new ModelAndView("manage");        
     }
     return modelAndView;
   } 

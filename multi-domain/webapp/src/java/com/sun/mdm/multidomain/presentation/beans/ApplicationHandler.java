@@ -132,8 +132,8 @@ public class ApplicationHandler {
      * @throws ConfigException Thrown if an error occurs during processing.
      */
     public String getInitialPage() throws ConfigException {        
-        //TBD MDConfigManager.getInstance().getInitialPage();
+        //MDConfigManager.getInstance().getInitialScreenID();
         //request.setAttribute("screenObject", screenObject);
-        return "landingpage";
+        return "administration";
     }
 }

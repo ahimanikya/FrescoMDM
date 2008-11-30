@@ -28,28 +28,5 @@
     </i>
     </p>
     
-    <br>
-    <p>Main Links:</p>
-    <ul>
-        <li><a href="administration.htm">Adminstration</a></li>
-        <li><a href="manage.htm">Manage</a></li>
-    </ul>
-    <br>
-    <p>Click following links to access different functional pages:</p>    
-    <ul>    
-        <li><a href="<c:url value="relationshipdef.htm" />">Relationship Definition Management Page</a></li>
-        <li><a href="<c:url value="relationship.htm" />">Relationship Management Page</a></li>
-        <li><a href="<c:url value="hierarchydef.htm" />">Hierarchy Definition Management Page</a></li>
-        <li><a href="<c:url value="hierarchy.htm" />">Hierarchy Management Page</a></li>
-    </ul>    
-    <p>Click following links to access the DOJO Examples:</p>    
-    <ul>    
-        <li><a href="<c:url value="formdemo.htm" />">Drag and Drop Layer</a></li>
-        <li><a href="<c:url value="dnd.htm" />">Drag and Drop Items in a Layer</a></li>
-        <li><a href="<c:url value="tabs.htm" />">Tabs</a></li>
-        <li><a href="<c:url value="tree.htm" />">Tree with Sub Menu</a></li>
-        <li><a href="<c:url value="grid.htm" />">Grid</a></li>
-    </ul>    
-
     </body>
 </html>
