@@ -214,7 +214,7 @@ public class ViewBuilder {
         return rDefExt;
     }
     
-    public static RelationshipDef toRelationshipDef(RelationshipDefExt rDefExt) {
+    public static RelationshipDef buildRelationshipDef(RelationshipDefExt rDefExt) {
         RelationshipDef rDef = new RelationshipDef();        
         rDef.setName(rDefExt.getName());
         rDef.setId(0);
@@ -237,7 +237,9 @@ public class ViewBuilder {
         for (AttributeDefExt aDefExt : attributes) {
             Attribute a = new Attribute();            
             a.setName(aDefExt.getName());
-            a.setId(Long.parseLong(aDefExt.getId()));
+            if (aDefExt.getId() != null) {
+                a.setId(Long.parseLong(aDefExt.getId()));
+            }
             a.setColumnName(aDefExt.getColumnName());
             a.setType(AttributeType.valueOf(aDefExt.getDataType()));
             a.setDefaultValue(aDefExt.getDefaultValue());
