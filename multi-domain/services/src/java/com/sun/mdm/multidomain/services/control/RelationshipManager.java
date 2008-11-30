@@ -113,7 +113,7 @@ public class RelationshipManager {
         if (!TBD) {
         String relationshId = null;
         try {
-            RelationshipDef rDef = ViewBuilder.toRelationshipDef(rDefExt);
+            RelationshipDef rDef = ViewBuilder.buildRelationshipDef(rDefExt);
             relationshId = multiDomainMetaService.createRelationshipDef(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -134,7 +134,7 @@ public class RelationshipManager {
             }
     	}       
         rDefExt.setId(Long.toString(System.currentTimeMillis()));
-        rts.add(ViewBuilder.toRelationshipDef(rDefExt));     
+        rts.add(ViewBuilder.buildRelationshipDef(rDefExt));     
         return rDefExt.getId();
     }
     
@@ -147,7 +147,7 @@ public class RelationshipManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            RelationshipDef rDef = ViewBuilder.toRelationshipDef(rDefExt);
+            RelationshipDef rDef = ViewBuilder.buildRelationshipDef(rDefExt);
             multiDomainMetaService.updateRelationshipDef(rDef);
         } catch (UserException uex) {
             throw new ServiceException(uex);
@@ -162,7 +162,7 @@ public class RelationshipManager {
             if (rt.getSourceDomain().equals(rDefExt.getSourceDomain()) &&
                 rt.getTargetDomain().equals(rDefExt.getTargetDomain()) &&
                 rt.getName().equals(rDefExt.getName())) {                                      
-                RelationshipDef rDef = ViewBuilder.toRelationshipDef(rDefExt);
+                RelationshipDef rDef = ViewBuilder.buildRelationshipDef(rDefExt);
                 rts.remove(rt);
                 rts.add(rDef);
                 updated = true;
@@ -186,7 +186,7 @@ public class RelationshipManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            multiDomainMetaService.deleteRelationshipDef(ViewBuilder.toRelationshipDef(rDefExt));
+            multiDomainMetaService.deleteRelationshipDef(ViewBuilder.buildRelationshipDef(rDefExt));
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
