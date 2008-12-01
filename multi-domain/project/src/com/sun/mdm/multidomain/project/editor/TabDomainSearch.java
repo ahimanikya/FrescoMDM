@@ -473,7 +473,8 @@ private void onEditSearchType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
              mJComboSearchResult.setSelectedItem(dlg.getSelectedSearchResult());
              jScrollPaneSearchPage.setViewportView(mTableSearchType);
         }
-        searchPageModel.fireTableDataChanged();;
+        searchPageModel.fireTableDataChanged();
+        mTableSearchType.setRowSelectionInterval(selectedRow, selectedRow);
         this.enableSave();
     }
 }//GEN-LAST:event_onEditSearchType

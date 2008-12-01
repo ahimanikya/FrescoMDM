@@ -48,20 +48,10 @@ public class EntityTreeDialog extends javax.swing.JDialog {
                                 evt.getX(),
                                 evt.getY());
                         if (hitPath != null) {
+                            //TreePath[] paths = mEntityTree.getSelectionPaths();
                             EntityNode selectedNode = (EntityNode) hitPath.getLastPathComponent();
                             if (selectedNode != null) {
-                                String ePath = setTargetFieldName(selectedNode);
-                                if (mFieldGroup.isFieldAdded(ePath)) {
-                                    String warningMsg = NbBundle.getMessage(TabDomainSearch.class, "MSG_ERROR_DELETING_SEARCH_DETAIL");
-                                    NotifyDescriptor errorNotify = new NotifyDescriptor.Message(
-                                            warningMsg,
-                                            NotifyDescriptor.ERROR_MESSAGE);
-                                    DialogDisplayer.getDefault().notify(errorNotify);
-                                } else {
-                                    fieldList.add(ePath);
-                                    mSelected = true;
-                                }
-                            //onBtnOK(null);
+                                onAddField(null);
                             }
                         }
                     }
@@ -69,6 +59,26 @@ public class EntityTreeDialog extends javax.swing.JDialog {
             });        
     }
 
+    private void onAddField(java.awt.event.ActionEvent evt) {                                  
+        TreePath[] paths = mEntityTree.getSelectionPaths();
+        int[] indices = new int[paths.length];
+        int j = -1;
+        boolean bAdded = false;
+        for (int i=0; i < paths.length; i++) {
+            TreePath path = paths[i];
+            EntityNode selectedNode = (EntityNode) path.getLastPathComponent();
+            String ePath = setTargetFieldName(selectedNode);
+            if (!mFieldGroup.isFieldAdded(ePath)) {
+                fieldList.add(ePath);
+            }
+
+        }
+        
+        if (fieldList.size() > 0) {
+            mSelected = true;
+        }
+    }                                 
+    
     public boolean isSelected() {
         return this.mSelected;
     }

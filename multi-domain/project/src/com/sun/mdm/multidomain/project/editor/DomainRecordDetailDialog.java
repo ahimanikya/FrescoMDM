@@ -369,11 +369,15 @@ private void onAddGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     GroupRow newFieldGroup = new GroupRow("New Group");
     //Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
     fieldGroupModel.addRow(iInsertRow, newFieldGroup);
+    TableModelField fieldModel = new TableModelField(newFieldGroup);
+    this.jTableField.setModel(fieldModel);
     jTableFieldGroup.setModel(fieldGroupModel);
     jTableFieldGroup.clearSelection();
     jTableFieldGroup.addRowSelectionInterval(iInsertRow, iInsertRow);
     jTableFieldGroup.setEditingRow(iInsertRow);
     jTableFieldGroup.setFocusTraversalKeysEnabled(true);
+    jBtnAddField.setEnabled(true);
+    jBtnRemoveGroup.setEnabled(true);
     jBtnOK.setEnabled(setEnabledOK());
     
 }//GEN-LAST:event_onAddGroup

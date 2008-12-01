@@ -431,6 +431,8 @@ private void onAddGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
     jTableFieldGroup.addRowSelectionInterval(iInsertRow, iInsertRow);
     jTableFieldGroup.setEditingRow(iInsertRow);
     jTableFieldGroup.setFocusTraversalKeysEnabled(true);
+    jBtnAddField.setEnabled(true);
+    jBtnRemoveGroup.setEnabled(true);
 }//GEN-LAST:event_onAddGroup
 
 private void onRemoveGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveGroup
