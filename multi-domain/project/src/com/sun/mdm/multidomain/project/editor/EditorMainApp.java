@@ -453,11 +453,13 @@ public class EditorMainApp {
     public void deleteDefinitionFromDomainNode(String associatedDomain) {
         for (DomainNode node : mAlDomainNodes) {
             ArrayList <Definition> alDefinitions = node.getDefinitions();
-            int length = alDefinitions.size();
-            for (int i = length - 1; i>= 0 && i < length; i--) {
-                Definition definition = alDefinitions.get(i);
-                if (definition.getSourceDomain().equals(associatedDomain) || definition.getTargetDomain().equals(associatedDomain)) {
-                    alDefinitions.remove(i);
+            if (alDefinitions != null) {
+                int length = alDefinitions.size();
+                for (int i = length - 1; i>= 0 && i < length; i--) {
+                    Definition definition = alDefinitions.get(i);
+                    if (definition.getSourceDomain().equals(associatedDomain) || definition.getTargetDomain().equals(associatedDomain)) {
+                        alDefinitions.remove(i);
+                    }
                 }
             }
         }
