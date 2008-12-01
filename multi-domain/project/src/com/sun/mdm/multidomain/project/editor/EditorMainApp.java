@@ -472,6 +472,19 @@ public class EditorMainApp {
         al.add("DefaultPlugin");
         return al;
     }
+    
+    /** get plugin list per domain and definition type
+     * 
+     * @param domain
+     * @param type
+     * @return
+     */
+    public ArrayList <String> getPluginList(String domain, String type) {
+        //ToDo call Shant's api
+        ArrayList <String> al = new ArrayList();
+        al.add("DefaultPlugin");
+        return al;
+    }
 
     /**
      * Get saved object.xml for the domain

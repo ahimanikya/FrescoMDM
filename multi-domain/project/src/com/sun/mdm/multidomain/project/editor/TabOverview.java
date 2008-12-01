@@ -572,7 +572,7 @@ private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     private void performAddRelationship() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                final AddRelationshipDialog dialog = new AddRelationshipDialog(mAlDomainNames, mEditorMainApp.getPluginList());
+                final AddRelationshipDialog dialog = new AddRelationshipDialog(mAlDomainNames, mEditorMainApp);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosed(java.awt.event.WindowEvent e) {
                         if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
@@ -583,7 +583,7 @@ private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
                             if (mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain) != null) {
                                 //Already exists
                             } else {
-                                // add new LinkNode
+                                // add new DefinitionNode
                                 Definition definition = new Definition(definitionName, Definition.TYPE_RELATIONSHIP, sourceDomain, targetDomain, plugin, null);
                                 addDefinitionNode(definition);
                             }
@@ -598,7 +598,7 @@ private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     private void performAddHierarchy() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                final AddHierarchyDialog dialog = new AddHierarchyDialog(mAlDomainNames, mEditorMainApp.getPluginList());
+                final AddHierarchyDialog dialog = new AddHierarchyDialog(mAlDomainNames, mEditorMainApp);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosed(java.awt.event.WindowEvent e) {
                         if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
@@ -608,7 +608,7 @@ private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
                             if (mEditorMainApp.getDefinitionNode(definitionName, domain, domain) != null) {
                                 //Already exists
                             } else {
-                                // add new LinkNode
+                                // add new DefinitionNode
                                 Definition definition = new Definition(definitionName, Definition.TYPE_HIERARCHY, domain, domain, plugin, null);
                                 addDefinitionNode(definition);
                             }
@@ -653,29 +653,29 @@ private void onAddHierarchy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
     performAddHierarchy();
 }//GEN-LAST:event_onAddHierarchy
 
-public void onAddRelationship() {
-    performAddRelationship();
-}
-
-public void onViewScreenProperties() {
-    WebScreenPropertiesDialog screenDlg = new WebScreenPropertiesDialog(mEditorMainApp.getMultiDomainWebManager(false).getPageDefinition());
-    screenDlg.setVisible(true);
-    if (screenDlg.isModified()) {
-        mEditorMainApp.enableSaveAction(true);
+    public void onAddRelationship() {
+        performAddRelationship();
     }
-}
 
-public void onJNDIResProperties() {
-    JNDIPropertiesDialog screenDlg = new JNDIPropertiesDialog(mEditorMainApp.getMultiDomainWebManager(false).getJndiResources());
-    screenDlg.setVisible(true);
-    if (screenDlg.isModified()) {
-        mEditorMainApp.enableSaveAction(true);
+    public void onViewScreenProperties() {
+        WebScreenPropertiesDialog screenDlg = new WebScreenPropertiesDialog(mEditorMainApp.getMultiDomainWebManager(false).getPageDefinition());
+        screenDlg.setVisible(true);
+        if (screenDlg.isModified()) {
+            mEditorMainApp.enableSaveAction(true);
+        }
     }
-}
 
-public void onAddHierarchy() {
-    performAddHierarchy();
-}
+    public void onJNDIResProperties() {
+        JNDIPropertiesDialog screenDlg = new JNDIPropertiesDialog(mEditorMainApp.getMultiDomainWebManager(false).getJndiResources());
+        screenDlg.setVisible(true);
+        if (screenDlg.isModified()) {
+            mEditorMainApp.enableSaveAction(true);
+        }
+    }
+
+    public void onAddHierarchy() {
+        performAddHierarchy();
+    }
 
 
 

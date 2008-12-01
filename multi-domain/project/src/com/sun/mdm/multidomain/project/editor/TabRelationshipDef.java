@@ -62,7 +62,7 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jTextName.setText(mDefinition.getName());
         // Get plugin list
         //mOldPlugin = mDefinition.getPlugin();
-        ArrayList <String> alPlugins = mEditorMainApp.getPluginList();
+        ArrayList <String> alPlugins = mEditorMainApp.getPluginList(mDefinition.getSourceDomain(), Definition.TYPE_RELATIONSHIP);
         for (int i=0; alPlugins != null && i < alPlugins.size(); i++) {
             this.jComboBoxPlugin.insertItemAt(alPlugins.get(i), i);
             

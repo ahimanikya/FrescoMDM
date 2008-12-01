@@ -62,7 +62,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         mOldDefName = mDefinition.getName();
         this.jTextName.setText(mDefinition.getName());
         // Get plugin list
-        ArrayList <String> alPlugins = mEditorMainApp.getPluginList();
+        ArrayList <String> alPlugins = mEditorMainApp.getPluginList(mDefinition.getDomain(), Definition.TYPE_HIERARCHY);
         for (int i=0; alPlugins != null && i < alPlugins.size(); i++) {
             this.jComboBoxPlugin.insertItemAt(alPlugins.get(i), i);
             

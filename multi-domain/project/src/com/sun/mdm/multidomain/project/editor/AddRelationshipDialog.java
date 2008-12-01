@@ -36,18 +36,15 @@ public class AddRelationshipDialog extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
-    public static final String RELATIONSHIP = Definition.TYPE_RELATIONSHIP;
-    public static final String HIERARCHY = Definition.TYPE_HIERARCHY;
-    public static final String GROUP = Definition.TYPE_GROUP;
-    public static final String CATEGORY = Definition.TYPE_CATEGORY;
-
+    private EditorMainApp mEditorMainApp;
+    
     /** Creates new form AddDefinitionDialog */
-    public AddRelationshipDialog(ArrayList <String> alDomains, ArrayList <String> alPlugins) {
+    public AddRelationshipDialog(ArrayList <String> alDomains, EditorMainApp editorMainApp) {
         super();
         initComponents();
+        mEditorMainApp = editorMainApp;
         setTitle(org.openide.util.NbBundle.getMessage(AddRelationshipDialog.class, "TITLE_Add_Relationship")); // NOI18N
         setDomains(alDomains);
-        setPlugins(alPlugins);
         enableBtnOK();
     }
 
@@ -58,7 +55,11 @@ public class AddRelationshipDialog extends javax.swing.JDialog {
                 jComboBoxTargetDomains.insertItemAt(alDomains.get(i), i);
             }
             jComboBoxSourceDomains.setSelectedIndex(0);
-            jComboBoxTargetDomains.setSelectedIndex(0);
+            if (alDomains.size() > 1) {
+                jComboBoxTargetDomains.setSelectedIndex(1);
+            } else {
+                jComboBoxTargetDomains.setSelectedIndex(0);
+            }
         }
     }
     
@@ -238,6 +239,8 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
 }//GEN-LAST:event_onNameKeyReleased
 
 private void onSourceDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onSourceDomainSelected
+    // load plugin list per domain
+    setPlugins(mEditorMainApp.getPluginList(getSourceDomain(), Definition.TYPE_RELATIONSHIP));
     enableBtnOK();
 
 }//GEN-LAST:event_onSourceDomainSelected

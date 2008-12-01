@@ -37,14 +37,15 @@ public class AddHierarchyDialog extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
     public static final String HIERARCHY = Definition.TYPE_HIERARCHY;
+    private EditorMainApp mEditorMainApp;
 
     /** Creates new form AddDefinitionDialog */
-    public AddHierarchyDialog(ArrayList <String> alDomains, ArrayList <String> alPlugins) {
+    public AddHierarchyDialog(ArrayList <String> alDomains, EditorMainApp editorMainApp) {
         super();
         initComponents();
+        mEditorMainApp = editorMainApp;
         setTitle(org.openide.util.NbBundle.getMessage(AddHierarchyDialog.class, "TITLE_Add_Hierarchy")); // NOI18N
         setDomains(alDomains);
-        setPlugins(alPlugins);
         enableBtnOK();
     }
 
@@ -58,6 +59,7 @@ public class AddHierarchyDialog extends javax.swing.JDialog {
     }
 
     public void setPlugins(ArrayList <String> alPlugins) {
+        jComboBoxPlugins.removeAllItems();
         if (alPlugins != null && alPlugins.size() > 0) {
             for (int i=0; alPlugins != null && i < alPlugins.size(); i++) {
                 jComboBoxPlugins.insertItemAt(alPlugins.get(i), i);
@@ -207,8 +209,9 @@ private void onNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_o
 }//GEN-LAST:event_onNameKeyReleased
 
 private void onDomainSelected(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onDomainSelected
+    // load plugin list per domain
+    setPlugins(mEditorMainApp.getPluginList(getDomain(), Definition.TYPE_HIERARCHY));
     enableBtnOK();
-
 }//GEN-LAST:event_onDomainSelected
 
     private void doClose(int retStatus) {
