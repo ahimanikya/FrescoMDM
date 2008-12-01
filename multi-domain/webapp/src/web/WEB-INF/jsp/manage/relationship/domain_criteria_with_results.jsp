@@ -1,7 +1,7 @@
 <%-- 
     Document   : domain_criteria_with_results
     Created on : Nov 19, 2008, 10:10:45 AM
-    Author     : Harish
+    Author     : Harish, Narahari
 --%>
 
   
@@ -89,18 +89,8 @@
            </tr>
            <tr>
             <td>
-                <div id="byrel_addSourceResults" style="display:none;">
-                    <table border="1">
-                        <tr>
-                            <th><img src="images/spacer.gif" height="1" width="1"></th>
-                            <th class="generalTextBold" id="companyid"></th>
-                            <th class="generalTextBold" id="dunsid"></th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="generalText" id="companyContent"></td>
-                            <td class="generalText" id="dunsContent"></td>
-                        </tr>
+                <div id="byrel_addSourceResults" >
+                    <table border="1" id="AddSource_TableId">
                     </table>
                 </div>
             </td>
@@ -195,18 +185,8 @@
            </tr>
            <tr>
             <td>
-                <div id="byrel_addTargetResults" style="display:none;">
-                    <table border="1">
-                        <tr>
-                            <th><img src="images/spacer.gif" height="1" width="1"></th>
-                            <th class="generalTextBold" id="productId"></th>
-                            <th class="generalTextBold" id="productName"></th>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="generalText" id="productIdContent"></td>
-                            <td class="generalText" id="productNameContent"></td>
-                        </tr>
+                <div id="byrel_addTargetResults">
+                    <table border="1" id="AddTarget_TableId">
                     </table>
                 </div>
             </td>

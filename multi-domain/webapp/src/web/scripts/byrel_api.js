@@ -85,19 +85,32 @@ function addSourceDomainSearchCallback(data) {
     if(data == null) return;
     for(i =0;i<data.length;i++){
       alert(i + " EUID: " + data[i].EUID + " : " + data[i].attributes[0].name + " : " + data[i].attributes[0].value);
-        var Heading = data[i].attributes[0].name;
-        var Content = data[i].attributes[0].value;
-        alert( " Heading: " +Heading + "  Content: "  + Content);
+        
         if(i==0){
-           document.getElementById("companyid").innerHTML= Heading;
-           document.getElementById("companyContent").innerHTML= Content;
+            alert("hello");
+          // Create header.
+          var header = document.getElementById('AddSource_TableId').insertRow(i);
+          header.insertCell(0);
+          for(j=0; j<data[i].attributes.length; j++) {
+            header.insertCell(j+1);   
+            header.style.backgroundColor = '#f4f3ee';
+            header.cells[j+1].innerHTML  = data[i].attributes[j].name;
+          }
+          
         }
-        if(i==1){
-           document.getElementById("dunsid").innerHTML= Heading;
-           document.getElementById("dunsContent").innerHTML= Content; 
+          // create data row & columns
+          var dataRow = document.getElementById('AddSource_TableId').insertRow(i+1);
+          dataRow.insertCell(0);
+          var chkbox =  document.createElement("input");
+          chkbox.type="checkbox";
+          
+          dataRow.cells[0].appendChild (chkbox);
+          for(j=0; j<data[i].attributes.length; j++) {
+            dataRow.insertCell(j+1);
+            
+            dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
+            
         }
-        document.getElementById("byrel_addSourceResults").style.visibility="visible";
-        document.getElementById("byrel_addSourceResults").style.display="block";
     } 
 }
 
@@ -111,19 +124,31 @@ function addTargetDomainSearchCallback(data) {
     if(data == null) return;
     for(i =0;i<data.length;i++){
         alert(i + " EUID: " + data[i].EUID + " : " + data[i].attributes[0].name + " : " + data[i].attributes[0].value);
-        var Heading = data[i].attributes[0].name;
-        var Content = data[i].attributes[0].value;
-        alert( " Heading: " +Heading + "  Content: "  + Content);
         if(i==0){
-           document.getElementById("productId").innerHTML= Heading;
-           document.getElementById("productIdContent").innerHTML= Content;
+            alert("hello");
+          // Create header.
+          var header = document.getElementById('AddTarget_TableId').insertRow(i);
+          header.insertCell(0);
+          for(j=0; j<data[i].attributes.length; j++) {
+            header.insertCell(j+1);   
+            header.style.backgroundColor = '#f4f3ee';
+            header.cells[j+1].innerHTML  = data[i].attributes[j].name;
+          }
+          
         }
-        if(i==1){
-           document.getElementById("productName").innerHTML= Heading;
-           document.getElementById("productNameContent").innerHTML= Content; 
+          // create data row & columns
+          var dataRow = document.getElementById('AddTarget_TableId').insertRow(i+1);
+          dataRow.insertCell(0);
+          var chkbox =  document.createElement("input");
+          chkbox.type="checkbox";
+          
+          dataRow.cells[0].appendChild (chkbox);
+          for(j=0; j<data[i].attributes.length; j++) {
+            dataRow.insertCell(j+1);
+            
+            dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
+            
         }
-        document.getElementById("byrel_addTargetResults").style.visibility="visible";
-        document.getElementById("byrel_addTargetResults").style.display="block";
     } 
 }
 

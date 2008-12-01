@@ -12,7 +12,8 @@
 <script type='text/javascript' src='dwr/local.js'></script>
 <script type='text/javascript' src='dwr/interface/DomainHandler.js'></script>    
 <script type='text/javascript' src='dwr/interface/RelationshipDefHandler.js'></script> 
-<script type='text/javascript' src='dwr/interface/RelationshipHandler.js'></script> 
+<script type='text/javascript' src='dwr/interface/RelationshipHandler.js'></script>
+<script type="text/javascript" src="scripts/lang_utils.js" ></script>
 
 <link rel="stylesheet" type="text/css" href="css/manage.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
