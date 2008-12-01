@@ -5,6 +5,13 @@
 
 package com.sun.mdm.multidomain.project.anttasks;
 
+import com.sun.mdm.index.parser.EIndexObject;
+import com.sun.mdm.index.parser.ParserException;
+import com.sun.mdm.index.parser.Utils;
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+import com.sun.mdm.multidomain.project.generator.descriptor.JbiXmlWriter;
+import com.sun.mdm.multidomain.project.generator.domainObjects.EntityObjectWriter;
+import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,14 +21,18 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Expand;
+import org.apache.tools.ant.taskdefs.Jar;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet;
+import org.openide.util.Exceptions;
+import org.xml.sax.InputSource;
 
 /**
  *
@@ -106,9 +117,43 @@ public class MultidomainGeneratorTask extends Task {
                 mLog.severe("Could not generate MDM Multidomain Files.");
                 throw new BuildException(ex.getMessage());
             }
-
-               
         
+    }
+    
+    private void generateFiles(File objectFile) throws BuildException{
+        try {
+
+            InputSource source = new InputSource(new FileInputStream(objectFile));
+            EIndexObject eo = Utils.parseEIndexObject(source);
+
+            String projPath = getProject().getProperty("basedir");
+            File genDir = new File(projPath + File.separator + MultiDomainProjectProperties.MULTIDOMAIN_GENERATED_FOLDER);
+            //delete generated folder if there is a existing one
+            File destDir = new File(genDir, "domain-ojects/java");
+            Delete delete = (Delete) getProject().createTask("delete");
+            delete.setDir(destDir);
+            delete.init();
+            delete.setLocation(getLocation());
+            delete.execute();
+            destDir.mkdirs();
+
+            //generate object files and webservice java files
+            //at "files-generated/domain-ojects/java" directory
+            EntityObjectWriter eow = new EntityObjectWriter(destDir.getAbsolutePath(), eo);
+            eow.write();
+
+            //generate jbi.xml at "files-generated/jbi/META-INF/jbi.xml"
+            File jbiXmlFolder = new File(genDir, "/jbi/META-INF");
+            JbiXmlWriter jbrWriter = new JbiXmlWriter(jbiXmlFolder, eo.getName());
+            jbrWriter.write();
+        } catch (TemplateWriterException ex) {
+            throw new BuildException(ex.getMessage());
+        } catch (ParserException ex) {
+            throw new BuildException(ex.getMessage());
+        } catch (FileNotFoundException ex) {
+            throw new BuildException(ex.getMessage());
+        }
+
     }
     
     private void generateEbjFiles() {
@@ -129,9 +174,13 @@ public class MultidomainGeneratorTask extends Task {
         expand.setLocation(getLocation());
         expand.execute();
 
-//        String token = "_EVIEW_OBJECT_TOKEN_";
+        String token = "MULTIDOMAIN_APPLICATION_TOKEN_";
+        String earName = getProject().getProperty("jar.name");
+        int endIndex= earName.indexOf('.');
+        String value = earName.substring(0, endIndex);
+        
 //        String value = eo.getName();
-//        setEJBMappedName(token, value);
+        setEJBMappedName(token, value);
 //        setTransaction();
 //        setRoles();
 //        setSunEjbJarXML();
@@ -168,24 +217,22 @@ public class MultidomainGeneratorTask extends Task {
         expand.addPatternset(patternSet);
         expand.setLocation(getLocation());
         expand.execute();
+        
+        
+        String projPath = getProject().getProperty("basedir");
+        File srcDir = new File(projPath + "/lib");
+        FileSet srcFileSet = new FileSet();
+        srcFileSet.setDir(srcDir);
+        srcFileSet.setIncludes("resources.jar" );
+        destDir = new File(mWardir, "web/WEB-INF/lib");
+        Copy copy = (Copy) getProject().createTask("copy");
+        copy.init();
+        copy.setTodir(destDir);
+        copy.setFlatten(true);
+        copy.addFileset(srcFileSet);
+        copy.setLocation(getLocation());
+        copy.execute();
 
-//        FileSet srcFileSet = new FileSet();
-//        File srcDir = new File(mSrcdir,
-//                EviewProjectProperties.CONFIGURATION_FOLDER);
-//        destDir = new File(mWardir, "web/WEB-INF/classes");
-//        srcFileSet.setDir(srcDir);
-//                if (null != edmVersion
-//                && edmVersion.equalsIgnoreCase("master-index-edm")) {
-//            srcFileSet.setIncludes("midm.xml");
-//        } else {
-//            srcFileSet.setIncludes("edm.xml");
-//        }
-//        Copy copy = (Copy) getProject().createTask("copy");
-//        copy.init();
-//        copy.setTodir(destDir);
-//        copy.addFileset(srcFileSet);
-//        copy.setLocation(getLocation());
-//        copy.execute();
 //
 //        //set context root
 //        if (null != edmVersion && edmVersion.equalsIgnoreCase("master-index-edm")) {
@@ -253,9 +300,75 @@ public class MultidomainGeneratorTask extends Task {
         copy.execute();
 
         //make resources.jar
-//        makeResourcesJar();
+        makeResourcesJar();
         //make master-index-client.jar
 //        makeClientJar();
+    }
+    
+    private void makeResourcesJar() throws Exception {        
+        String projPath = getProject().getProperty("basedir");
+        File genDir = new File(projPath + File.separator
+                + MultiDomainProjectProperties.MULTIDOMAIN_GENERATED_FOLDER);
+        File destDir = new File(genDir,"resource");
+
+        Delete delete = (Delete) getProject().createTask("delete");
+        delete.setDir(destDir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        destDir.mkdir();
+        
+        // copy configuration file      
+        File srcDir = new File(mSrcdir,
+                MultiDomainProjectProperties.CONFIGURATION_FOLDER);
+        FileSet srcFileSet = new FileSet();
+        srcFileSet.setDir(srcDir);
+        // copy domain object.xml file
+        File srcDir2 = new File(mSrcdir,
+                MultiDomainProjectProperties.DOMAINS_FOLDER);
+        FileSet srcFileSet2 = new FileSet();
+        srcFileSet2.setDir(srcDir2);
+        srcFileSet2.setIncludes("**/object.xml");
+        
+        Copy copy = (Copy) getProject().createTask("copy");
+        copy.setTodir(destDir);
+        copy.addFileset(srcFileSet);
+        copy.addFileset(srcFileSet2);
+        copy.init();
+        copy.setLocation(getLocation());
+        copy.execute();
+        
+        // make resources.jar
+        File jarFile = new File(projPath + "/lib/resources.jar");
+        if (jarFile.exists()) {
+            jarFile.delete();
+        }
+        srcDir = new File(genDir, "resource");
+        srcFileSet = new FileSet();
+        srcFileSet.setDir(srcDir);
+        Jar jar = (Jar) getProject().createTask("jar");
+        jar.setDestFile(jarFile);
+        jar.setCompress(true);
+        jar.addFileset(srcFileSet);
+        jar.setLocation(getLocation());
+        jar.init();
+        jar.execute();
+    }
+    
+    private void setEJBMappedName(String token, String value) {
+
+        ArrayList<String> files = new ArrayList<String>();
+        String ejbFilePath = mEjbdir.getAbsolutePath()
+                + "/src/java/com/sun/mdm/multidomain/ejb/service";
+        String path = ejbFilePath + "/MultiDomainMetaServiceBean.java";
+        files.add(path);
+        path = ejbFilePath + "/MultiDomainServiceBean.java";
+        files.add(path);
+
+        for (int i = 0; i < files.size(); i++) {
+            String ejbFile = files.get(i).toString();
+            replaceToken(ejbFile, token, value);
+        }
     }
     
     private void replaceToken(String fileName, String token, String value) {
