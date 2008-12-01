@@ -198,19 +198,21 @@ boolean isSessionActive = true;
                                                                 ObjectNodeConfig[] arrObjectNodeConfig = objScreenObject.getRootObj().getChildConfigs();
                    %>
                                           <%if (countEnt == 0) {%>
-<!--Prev Navigation -->
-<td valign="top" align="right">
-<!-- not allowed -->
-<div id="prevnotallowed" style="cursor:not-allowed;visibility:hidden;height:3700px;overflow:hidden;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;background-color:#e7e7d6">
-		<table border="0" height="100%" title="<%=bundle.getString("begining")%>">
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
+<!--First Navigation --><!-- 176 fix 28-11-08 -->
+<td valign="top" align="right" height="100%">
+	<div id="first" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:100%;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+		<table border="0" height="100%" title="<%=bundle.getString("first")%>" onclick="javascript:
+		thisIdx = 0; 
+		ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=prev&random=rand'+'&'+'AMID='+pages[thisIdx],'outputdiv','');" >
+		<tr><td><img src='/<%=URI%>/images/chevrons-left.png'></td></tr> 
+		<tr><td><img src='/<%=URI%>/images/chevrons-left.png'></td></tr> 
          </table>
 	</div>
 </td>
-<td valign="top" align="right">
-<!-- not allowed -->
-	<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:3700px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+
+<!--Prev Navigation -->
+<td valign="top" align="right" height="100%">
+	<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:100%;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
 		<table border="0" height="100%" title="<%=bundle.getString("prev")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=prev&random=rand'+'&'+'AMID='+pages[--thisIdx],'outputdiv','');" >
 		<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
 		<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
@@ -817,23 +819,25 @@ boolean isSessionActive = true;
                                                     }
                                                 }%>                                 
 <!--Next Navigation -->
-<td valign="top" align="left">
-	<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:3700px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+<td valign="top" align="left" height="100%">
+	<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:100%;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
 		<table border="0" height="100%" title="<%=bundle.getString("next")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=next&random=rand'+'&'+'AMID='+pages[++thisIdx],'outputdiv','');" >
            <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
            <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
          </table>
 	</div>
-<!--- not allowed -->
 </td>
-<td valign="top" align="left">
-	<div id="nextnotallowed" style="cursor:not-allowed;visibility:hidden;height:3700px;overflow:hidden;verticle-align:top;position:relative;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
-		<table border="0" height="100%" title="<%=bundle.getString("end")%>" >
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
-           <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
+<!--Last Navigation --><!-- 176 fix 28-11-08 -->
+<td valign="top" align="left" height="100%">
+	<div id="last" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:100%;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+		<table border="0" height="100%" title="<%=bundle.getString("last")%>" onclick="javascript:
+		var indx = pages.length-1;
+		thisIdx = indx;
+		ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=next&random=rand'+'&'+'AMID='+pages[thisIdx],'outputdiv','');" >
+           <tr><td><img src='/<%=URI%>/images/chevrons-right.png' border="0"></td></tr> 
+           <tr><td><img src='/<%=URI%>/images/chevrons-right.png' border="0"></td></tr> 
          </table>
 	</div>
-<!--- not allowed -->
 </td>
 
 
@@ -926,48 +930,55 @@ boolean isSessionActive = true;
 						  </tr>
                       <%} else {%> 
 					    <tr>
+							<!--First Navigation --><!-- 176 fix 28-11-08 -->
 							<td valign="top" align="right">
-							<!-- not allowed -->
-							<div id="prevnotallowed" style="cursor:not-allowed;visibility:hidden;height:3700px;overflow:hidden;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;background-color:#e7e7d6">
-									<table border="0" height="100%" title="<%=bundle.getString("begining")%>">
-									   <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
-									   <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr>                
+								<div id="first" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:680px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+									<table border="0" height="100%" title="<%=bundle.getString("first")%>" onclick="javascript:
+									thisIdx = 0; 
+									ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=prev&random=rand'+'&'+'AMID='+pages[thisIdx],'outputdiv','');" >
+									<tr><td><img src='/<%=URI%>/images/chevrons-left.png'></td></tr> 
+									<tr><td><img src='/<%=URI%>/images/chevrons-left.png'></td></tr> 
 									 </table>
 								</div>
 							</td>
+
 							<td valign="top" align="right">
-							<!-- not allowed -->
-								<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:3700px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+ 								<div id="prev" onmouseout="changecolor(this)" style="cursor:hand;verticle-align:top;height:680px;overflow:hidden;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
 									<table border="0" height="100%" title="<%=bundle.getString("prev")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=prev&random=rand'+'&'+'AMID='+pages[--thisIdx],'outputdiv','');" >
 									<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
 									<tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
 									 </table>
 								</div>
 							</td>
+
 						    <td valign="top">
 							  <font style="color:red;overflow:hidden">
 							 <%=bundle.getString("enterprise_object_not_found_error_message")%>&nbsp;<%=bundle.getString("undo_euid_message")%>
 							   <font>
 							 </td>
+
 							<!--Next Navigation -->
 							<td valign="top" align="left">
-								<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:3700px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+								<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:680px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
 									<table border="0" height="100%" title="<%=bundle.getString("next")%>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=next&random=rand'+'&'+'AMID='+pages[++thisIdx],'outputdiv','');" >
 									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
 									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif' border="0"></td></tr> 
 									 </table>
 								</div>
-							<!--- not allowed -->
-							</td>
-							<td valign="top" align="left">
-								<div id="nextnotallowed" style="cursor:not-allowed;visibility:hidden;height:3700px;overflow:hidden;verticle-align:top;position:relative;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
-									<table border="0" height="100%" title="<%=bundle.getString("end")%>" >
-									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
-									   <tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr>                
+ 							</td>
+							<!--Last Navigation --><!-- 176 fix 28-11-08 -->
+							<td valign="top" align="left" height="100%">
+								<div id="last" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:680px;overflow:hidden;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+									<table border="0" height="100%" title="<%=bundle.getString("last")%>" onclick="javascript:
+									var indx = pages.length-1;
+									thisIdx = indx;
+									ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?operation=next&random=rand'+'&'+'AMID='+pages[thisIdx],'outputdiv','');" >
+									   <tr><td><img src='/<%=URI%>/images/chevrons-right.png' border="0"></td></tr> 
+									   <tr><td><img src='/<%=URI%>/images/chevrons-right.png' border="0"></td></tr> 
 									 </table>
 								</div>
-							<!--- not allowed -->
 							</td>
+
 						</tr>
 					  <%}%>
                         
@@ -976,79 +987,53 @@ boolean isSessionActive = true;
 <script>
 var pageOperation = '<%=request.getParameter("operation")%>';
 
- if (pages.length == 1)  {
-       document.getElementById('prevnotallowed').style.visibility = 'visible';
-       document.getElementById('prevnotallowed').style.width= '20px';
-       document.getElementById('prevnotallowed').style.height= '700px';
-
-       document.getElementById('nextnotallowed').style.visibility = 'visible';	   
-       document.getElementById('nextnotallowed').style.width = '20px';	   
-       document.getElementById('nextnotallowed').style.height = '700px';	   
-
-       document.getElementById('next').style.visibility = 'hidden';	   
-       document.getElementById('next').style.width = '0px';	   
-       document.getElementById('next').style.height = '0px';	   
-
+if (pages.length == 1)  {
+       document.getElementById('next').style.visibility = 'hidden';	  
+       document.getElementById('next').style.display = 'none';
+	   
        document.getElementById('prev').style.visibility = 'hidden';
-       document.getElementById('prev').style.width= '0px';
-       document.getElementById('prev').style.height= '700px';
+	   document.getElementById('prev').style.display = 'none';
+
+	   document.getElementById('first').style.visibility = 'hidden';
+       document.getElementById('first').style.display = 'none';
+
+       document.getElementById('last').style.visibility = 'hidden';
+       document.getElementById('last').style.display = 'hidden';
 
  } else if (thisIdx >= pages.length -1)  {
-       document.getElementById('prev').style.visibility = 'visible';
-       document.getElementById('prev').style.width = '20px';
-       document.getElementById('prev').style.height = '700px';
-
-       document.getElementById('prevnotallowed').style.visibility = 'hidden';
-       document.getElementById('prevnotallowed').style.width = '0px';
-       document.getElementById('prevnotallowed').style.height = '0px';
-
-       document.getElementById('next').style.visibility = 'hidden';	   
-       document.getElementById('next').style.width = '0px';	   
-       document.getElementById('next').style.height = '0px';	   
-
-       document.getElementById('nextnotallowed').style.visibility = 'visible';	   
-       document.getElementById('nextnotallowed').style.width = '20px';	   
-       document.getElementById('nextnotallowed').style.height = '700px';	   
- } else if (thisIdx <= 0)   {
-       document.getElementById('prev').style.visibility = 'hidden';
-       document.getElementById('prev').style.width= '0px';
-       document.getElementById('prev').style.height= '700px';
-
-       document.getElementById('prevnotallowed').style.visibility = 'visible';
-       document.getElementById('prevnotallowed').style.width= '20px';
-       document.getElementById('prevnotallowed').style.height= '700px';
-
-       document.getElementById('nextnotallowed').style.visibility = 'hidden';
-       document.getElementById('nextnotallowed').style.width = '0px';
-       document.getElementById('nextnotallowed').style.height = '0px';
-
-	   document.getElementById('next').style.visibility = 'visible';
-	   document.getElementById('next').style.width= '20px';
-	   document.getElementById('next').style.height= '700px';
- } else {
-       document.getElementById('nextnotallowed').style.visibility = 'hidden';
-       document.getElementById('nextnotallowed').style.width = '0px';
-       document.getElementById('nextnotallowed').style.height = '0px';
-
-	   document.getElementById('next').style.visibility = 'visible';
-	   document.getElementById('next').style.width= '20px';
-	   document.getElementById('next').style.height= '700px';
-
-	   document.getElementById('prevnotallowed').style.visibility = 'hidden';
-       document.getElementById('prevnotallowed').style.width = '0px';
-       document.getElementById('prevnotallowed').style.height = '0px';
+	   document.getElementById('next').style.visibility = 'hidden';
+       document.getElementById('next').style.display = 'none';
 
        document.getElementById('prev').style.visibility = 'visible';
-       document.getElementById('prev').style.width = '20px';
-       document.getElementById('prev').style.height = '700px';
+       document.getElementById('prev').style.display = 'block';
+
+	   document.getElementById('last').style.visibility = 'hidden';
+       document.getElementById('last').style.display = 'none';
+
+       document.getElementById('first').style.visibility = 'visible';
+       document.getElementById('first').style.display = 'block';
+} else if (thisIdx <= 0)   {
+	   document.getElementById('prev').style.visibility = 'hidden';
+       document.getElementById('prev').style.display = 'none';
+
+	   document.getElementById('next').style.visibility = 'visible';
+       document.getElementById('next').style.display = 'block';
+
+	   document.getElementById('first').style.visibility = 'hidden';
+       document.getElementById('first').style.display = 'none';
+
+       document.getElementById('last').style.visibility = 'visible';
+       document.getElementById('last').style.display = 'block';
+ }else if (thisIdx == 1){
+       document.getElementById('first').style.visibility = 'hidden';
+       document.getElementById('first').style.display = 'none';
+ }else  if (thisIdx == pages.length-2){
+       document.getElementById('last').style.visibility = 'hidden';
+       document.getElementById('last').style.display = 'none';
  }
-	   
-
-
-</script>
-
-        </body>
-    </html>
+ </script>
+ </body>
+ </html>
 <%}%> <!-- End session check if condition -->
 
 </f:view>
