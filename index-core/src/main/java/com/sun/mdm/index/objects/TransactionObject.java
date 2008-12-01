@@ -60,7 +60,7 @@ public class TransactionObject extends ObjectNode {
      */
     public static final String RECOVER_SURVIVOR = "Survivor";
 
-    private static String mOperationColumnName = null;  // Name of the operation column.
+    private String mOperationColumnName = "FUNCTION";  // Name of the operation column by default.
     private transient static final Logger mLogger = Logger.getLogger("TransactionObject");
     private transient static final Localizer mLocalizer = Localizer.get();
     private static ArrayList mFieldNames;       // field names
@@ -87,8 +87,8 @@ public class TransactionObject extends ObjectNode {
         setNullable("LID2", true);
         setNullable("EUID1", true);
         setNullable("EUID2", true);
-        mOperationColumnName = getOperationColumnName();
-        setNullable(mOperationColumnName, true);
+        //mOperationColumnName = getOperationColumnName();
+        setNullable("FUNCTION", true);
         setNullable("SystemUser", true);
         setNullable("TimeStamp", true);
         setNullable("SystemCode", true);
@@ -102,8 +102,8 @@ public class TransactionObject extends ObjectNode {
         setNull("LID2", true);
         setNull("EUID1", true);
         setNull("EUID2", true);
-        mOperationColumnName = getOperationColumnName();
-        setNull(mOperationColumnName, true);
+        //mOperationColumnName = getOperationColumnName();
+        setNull("FUNCTION", true);
         setNull("SystemUser", true);
         setNull("TimeStamp", true);
         setNull("SystemCode", true);
@@ -152,8 +152,8 @@ public class TransactionObject extends ObjectNode {
         setValue("LID2", lid2);
         setValue("EUID1", euid1);
         setValue("EUID2", euid2);
-        mOperationColumnName = getOperationColumnName();
-        setValue(mOperationColumnName, function);
+        //mOperationColumnName = getOperationColumnName();
+        setValue("FUNCTION", function);
         setValue("SystemUser", systemuser);
         setValue("TimeStamp", timestamp);
         setValue("SystemCode", systemcode);
@@ -247,7 +247,7 @@ public class TransactionObject extends ObjectNode {
      * @include
      */
     public String getFunction() throws ObjectException {
-        return ((String) getValue(getOperationColumnName()));
+        return ((String) getValue("FUNCTION"));
     }
     
     /**
@@ -483,12 +483,24 @@ public class TransactionObject extends ObjectNode {
      * @include
      */
     public void setFunction(Object function) throws ObjectException {
-        try {
+        
+        setValue("FUNCTION", function);
+        /*try {
             mOperationColumnName = getOperationColumnName();
             setValue(mOperationColumnName, function);
         } catch (ObjectException e) {
             throw e;
-        }
+        }*/
+    }
+    
+    public void setFunctionColumnName(String functionColumnName) {
+        
+            mOperationColumnName = functionColumnName;
+    }
+    
+    public String getFunctionColumnName() {
+        
+            return mOperationColumnName;
     }
 
     /**
@@ -691,7 +703,7 @@ public class TransactionObject extends ObjectNode {
      * @throws  ObjectException if any errors are encountered.
      * @return  ArrayList object containing the field names.
      */
-    private static String getOperationColumnName() throws ObjectException {
+    private String getOperationColumnName() throws ObjectException {
         try {
             if (mOperationColumnName == null) {
                 mOperationColumnName = 
@@ -717,14 +729,16 @@ public class TransactionObject extends ObjectNode {
         mFieldNames.add("LID2");
         mFieldNames.add("EUID1");
         mFieldNames.add("EUID2");
-        try {
+        mFieldNames.add("FUNCTION");
+        /*try {
             mOperationColumnName = getOperationColumnName();
         } catch (ObjectException e) {
             mLogger.warn(mLocalizer.x("OBJ016: Unable to retrieve operation " + 
                                       "column name: {0}", e.getMessage()));
-            return null;
+            //return null;
+        } catch (Exception e) {
         }
-        mFieldNames.add(mOperationColumnName);
+        mFieldNames.add(mOperationColumnName);*/
         mFieldNames.add("SystemUser");
         mFieldNames.add("TimeStamp");
         mFieldNames.add("SystemCode");
