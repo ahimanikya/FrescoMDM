@@ -45,7 +45,8 @@ import org.netbeans.api.project.ProjectManager;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
-
+import com.sun.mdm.multidomain.project.MultiDomainApplication;
+import com.sun.mdm.multidomain.project.nodes.*;
 
 /**
  * To get Relationship jar with dataTypeDescription.xml
@@ -84,7 +85,6 @@ public class ImportDomainAction extends CookieAction {
      * @param activatedNodes data nodes that activate the elected action
      */
     public void performAction(final Node[] activatedNodes) {
-        
     }
     
     public void perform(final EditorMainApp editorMainApp) {

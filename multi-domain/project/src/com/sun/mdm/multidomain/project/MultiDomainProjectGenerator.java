@@ -60,7 +60,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eeModule;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eePlatform;
-import org.xml.sax.InputSource;
+//import org.xml.sax.InputSource;
 //import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
 
@@ -463,34 +463,7 @@ public class MultiDomainProjectGenerator {
         }
         return folder;
     }
-    
-    /*
-     * Not used
-     */
-    private static FileObject createEviewFile(FileObject folder, String name, String data) 
-    throws MultiDomainRepositoryException {
-        try {
-            if (folder == null || name == null || data == null) {
-                return null;
-            }
-            FileObject file = folder.getFileObject(name);
-            if ( file == null) { 
-                file = folder.createData(name);  
-            }
-            FileLock fileLock = file.lock();
-            OutputStream out = file.getOutputStream(fileLock);
-            OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
-            writer.write(data);
-            writer.close();
-            fileLock.releaseLock();
-            DataObject dobj = DataObject.find(file);
-            return file;
-        } catch (IOException ex) {
-            throw new MultiDomainRepositoryException(ex);
-        }
-    }
-    
-    
+        
     private static void unZipFile(FileObject templateFO, FileObject projectRoot) throws IOException {
         InputStream templateIS = null;
         try {

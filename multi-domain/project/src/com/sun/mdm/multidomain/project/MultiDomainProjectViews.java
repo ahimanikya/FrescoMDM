@@ -49,6 +49,7 @@ import org.openide.util.actions.SystemAction;
 import org.openide.filesystems.FileObject;
 import javax.swing.Action;
 
+import com.sun.mdm.multidomain.project.nodes.MultiDomainDomainsFolderNode;
 import com.sun.mdm.multidomain.project.nodes.MultiDomainConfigurationFolderNode;
 import com.sun.mdm.multidomain.project.nodes.MultiDomainDBScriptFolderNode;
 import com.sun.mdm.multidomain.project.nodes.MultiDomainPlugInsFolderNode;
@@ -70,9 +71,11 @@ class MultiDomainProjectViews {
         private static final String WEBSERVICES_DIR = "webservicesDir"; // NOI18N
         private static final String KEY_SETUP_DIR = "setupDir"; //NOI18N
         private static final String KEY_CONFIGURATION_DIR = "configurationDir"; // NOI18N
+        private static final String KEY_DOMAINS_DIR = "domainsDir"; // NOI18N
         private static final String KEY_DBSCRIPT_DIR = "dbscriptDir"; // NOI18N
         private static final String KEY_PLUGINS_DIR = "pluginsDir"; // NOI18N
         private static final String CONFIGURATION_FOLDER_DISPLAY_NAME = "Configuration"; //NOI18N
+        private static final String DOMAINS_FOLDER_DISPLAY_NAME = "Domains"; //NOI18N
         private static final String DATABASE_SCRIPT_FOLDER_DISPLAY_NAME = "Database Script"; //NOI18N
         private static final String PLUGINS_FOLDER_DISPLAY_NAME = "Plug-ins"; //NOI18N
         
@@ -111,6 +114,7 @@ class MultiDomainProjectViews {
             DataFolder srcDir = getFolder(MultiDomainProjectProperties.SRC_DIR);
             if (srcDir != null) {
                 l.add(KEY_CONFIGURATION_DIR);
+                l.add(KEY_DOMAINS_DIR);
                 l.add(KEY_DBSCRIPT_DIR);
                 l.add(KEY_PLUGINS_DIR);
             }
@@ -154,6 +158,12 @@ class MultiDomainProjectViews {
                 FileObject configurationFolder = srcRoot.getFileObject(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
                 if (configurationFolder != null) {
                     n = new MultiDomainConfigurationFolderNode(CONFIGURATION_FOLDER_DISPLAY_NAME, DataFolder.findFolder(configurationFolder), project);
+                }
+            } else if (key == KEY_DOMAINS_DIR) {
+                
+                FileObject domainsFolder = srcRoot.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
+                if (domainsFolder != null) {
+                    n = new MultiDomainDomainsFolderNode(DOMAINS_FOLDER_DISPLAY_NAME, DataFolder.findFolder(domainsFolder));
                 }
             } else if (key == KEY_DBSCRIPT_DIR) {
                 FileObject dbscriptFolder = srcRoot.getFileObject(MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER);
