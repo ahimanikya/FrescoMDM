@@ -41,18 +41,20 @@ import com.sun.mdm.multidomain.attributes.Attribute;
 public class HierarchyNode implements Serializable {
 
     private long nodeID; // unique node identified by this id.
+    private long parentNodeID;
     private String EUID;
     private String parentEUID;
     private Date effectiveFromDate;
     private Date effectiveToDate;
     private Date purgeDate;
     private HierarchyNode parent;
-    private List<HierarchyNode> children = new ArrayList<HierarchyNode>();
-    private ObjectNode objectNode;    
+    private List<HierarchyNode> children = null;
+    private ObjectNode objectNode;
     private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
-
     private HierarchyDef hierarchyDef = null;
 
+
+    //   private AttributesValue attValues;
     /**
      * Create an instance of Hierarchy.
      */
@@ -73,6 +75,22 @@ public class HierarchyNode implements Serializable {
      */
     public void setNodeID(long nodeID) {
         this.nodeID = nodeID;
+    }
+
+    /**
+     * Get hierarchy parent-node Id.
+     * @return String Hierarchy parent-node Id.
+     */
+    public long getParentNodeID() {
+        return parentNodeID;
+    }
+
+    /**
+     * Set hierarchy parent-node Id.
+     * @param nodeID Hierarchy parent-node Id.
+     */
+    public void setParentNodeID(long nodeID) {
+        this.parentNodeID = nodeID;
     }
 
     /** 
@@ -219,18 +237,21 @@ public class HierarchyNode implements Serializable {
     }
 
     public List<HierarchyNode> getChildren() {
+        if (children == null) {
+            children = new ArrayList<HierarchyNode>();
+        }
         return children;
     }
 
     public void setChildren(List<HierarchyNode> children) {
         this.children = children;
-    }        
-    
-    public void addChild(HierarchyNode childNode) {        
+    }
+
+    public void addChild(HierarchyNode childNode) {
         childNode.setParent(parent);
         childNode.setParentEUID(parentEUID);
         children.add(childNode);
-    }        
+    }
 
     public void addChildren(List<HierarchyNode> children) {
         for (HierarchyNode cNode : children) {
@@ -238,8 +259,8 @@ public class HierarchyNode implements Serializable {
             cNode.setParentEUID(parentEUID);
             this.children.add(cNode);
         }
-    }        
-    
+    }
+
     public ObjectNode getObjectNode() {
         return this.objectNode;
     }
@@ -247,6 +268,5 @@ public class HierarchyNode implements Serializable {
     public void setObjectNode(ObjectNode objectNode) {
         this.objectNode = objectNode;
     }
-        
 }
 
