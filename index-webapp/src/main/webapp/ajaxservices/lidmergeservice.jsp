@@ -195,8 +195,10 @@ if(isShowEuid) {
 <table>
 <tr>
   <td>
-   <script> 
- 	 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=soEnterpriseObject.getEUID()%>';
+   <script>
+	 getFormValues('basicMergeformData');
+ 	 var indx = document.getElementById('basicMergeformData:sourceOption').options.selectedIndex
+  	 window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=soEnterpriseObject.getEUID()%>'+queryStr+'&fromUrl=sourcerecords.jsf&tabName=mergeTab&selectedIndex='+indx;
    </script>
   </td>
  </tr>
@@ -1204,7 +1206,8 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                 <td valign="top">
                                                                                  <%if(operations.isEO_SearchViewSBR()) {%>
                                                                                  <a href="javascript:void(0)"  
-                                                                                       onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&showEuid=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   
+                                                                                       onclick="javascript:
+																					   ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&showEuid=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   
 																					   title="<h:outputText value="#{msgs.source_rec_vieweuid_but}"/>"  class="button" ><span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
                                                                                     </a>                                                    
 																					<%}%>

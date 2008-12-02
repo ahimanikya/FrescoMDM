@@ -111,6 +111,8 @@ if(session!=null){
         <script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
 		<script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>  
         <script type="text/javascript" >
+		   var selectSysCodeId = "";
+		   var selectedLidId = "";
            var fieldNameValuesLocal="";
            var fieldNamesLocal="";
            var minorObjTypeLocal = "";
@@ -316,8 +318,9 @@ if(session!=null){
                                                                 
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                                                <h:selectOneMenu title="SystemCode" rendered="#{feildConfig.name eq 'SystemCode'}"
- onchange="javascript:setLidMaskValue(this,'basicViewformData')">
+                                                                <h:selectOneMenu id="viewEditSourceOption" title="SystemCode" rendered="#{feildConfig.name eq 'SystemCode'}" 
+																	 onchange="javascript:selectSysCodeId=this.id;
+																	 setLidMaskValue(this,'basicViewformData')">
                                                                     <f:selectItem itemLabel="" itemValue="" />
                                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                 </h:selectOneMenu>
@@ -351,7 +354,8 @@ if(session!=null){
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
 																				   maxlength="#{feildConfig.maxSize}" 
 																				   size="#{feildConfig.maxLength}"
-																				   onfocus="javascript:clear_masking_on_focus()"
+																				   onfocus="javascript:selectedLidId=this.id;
+																				   clear_masking_on_focus()"
                                                                                     rendered="#{feildConfig.name eq 'LID'}"/>
                                                                                        
                                                                     <h:inputText   required="#{feildConfig.required}" 
@@ -1316,4 +1320,85 @@ if(session!=null){
   makeDraggable("unsavedDiv");
   makeDraggable("successDiv");
  </script>
+
+  <%if(request.getParameter("back")!=null && request.getParameter("back").length()>0 && request.getParameter("tabName")!=null && request.getParameter("tabName").length()>0 && request.getParameter("tabName").equalsIgnoreCase("mergeTab")){%>
+	   <%if(request.getParameter("selectedIndex")!=null && request.getParameter("selectedIndex").length()>0){%>
+			<table><tr><td><script>
+				var indx = '<%=request.getParameter("selectedIndex")%>';
+				if(document.getElementById('basicMergeformData:sourceOption')!=null)
+				document.getElementById('basicMergeformData:sourceOption').options[indx].selected = true; ;
+			</script></dt></tr></table>
+		<%}%>
+	   <%if(request.getParameter("Local ID 1")!=null && request.getParameter("Local ID 1").length()>0){%>
+			<table><tr><td><script>
+			if(document.getElementById('basicMergeformData:LID1')!=null)
+			  document.getElementById('basicMergeformData:LID1').value= '<%=request.getParameter("Local ID 1")%>';
+			</script></dt></tr></table>
+		<%}%>
+		<%if(request.getParameter("Local ID 2")!=null && request.getParameter("Local ID 2").length()>0){%>
+			<table><tr><td><script>
+			if(document.getElementById('basicMergeformData:LID2')!=null)
+			  document.getElementById('basicMergeformData:LID2').value= '<%=request.getParameter("Local ID 2")%>';
+			</script></dt></tr></table>
+		<%}%>
+		<%if(request.getParameter("Local ID 3")!=null && request.getParameter("Local ID 3").length()>0){%>
+			<table><tr><td><script>
+			if(document.getElementById('basicMergeformData:LID3')!=null)
+			  document.getElementById('basicMergeformData:LID3').value= '<%=request.getParameter("Local ID 3")%>';
+			</script></dt></tr></table>
+		<%}%>
+		<%if(request.getParameter("Local ID 4")!=null && request.getParameter("Local ID 4").length()>0){%>
+			 <table><tr><td><script>
+			if(document.getElementById('basicMergeformData:LID4')!=null)
+			   document.getElementById('basicMergeformData:LID4').value= '<%=request.getParameter("Local ID 4")%>';
+			 </script></dt></tr></table>
+		<%}%>
+		<table><tr><td><script>
+ 			getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');
+		</script></dt></tr></table>
+  <%}%>								
+
+  <%if(request.getParameter("back")!=null && request.getParameter("back").length()>0 && request.getParameter("tabName")!=null && request.getParameter("tabName").length()>0 && request.getParameter("tabName").equalsIgnoreCase("viewEditTab")){%>
+  		<table><tr><td><script>
+			   hideDivs('sourceViewBasicSearch');
+ 		</script></dt></tr></table>
+ 	   <%if(request.getParameter("selectSysCodeId")!=null && request.getParameter("selectSysCodeId").length()>0){%>
+			<table><tr><td><script>
+				selectSysCodeId = '<%=request.getParameter("selectSysCodeId")%>';
+ 			</script></dt></tr></table>
+		<%}%>
+	   <%if(request.getParameter("selectedLidId")!=null && request.getParameter("selectedLidId").length()>0){%>
+			<table><tr><td><script>
+				selectedLidId = '<%=request.getParameter("selectedLidId")%>';
+ 			</script></dt></tr></table>
+		<%}%>
+ 	   <%if(request.getParameter("selectedIndex")!=null && request.getParameter("selectedIndex").length()>0){%>
+			<table><tr><td><script>
+				var indx = '<%=request.getParameter("selectedIndex")%>';
+				if(document.getElementById(selectSysCodeId)!=null)
+				document.getElementById(selectSysCodeId).options[indx].selected = true; 
+ 			</script></dt></tr></table>
+		<%}%>
+	   <%if(request.getParameter("Local ID")!=null && request.getParameter("Local ID").length()>0){%>
+			<table><tr><td><script>
+			if(document.getElementById(selectedLidId)!=null)
+			  document.getElementById(selectedLidId).value= '<%=request.getParameter("Local ID")%>';
+			</script></dt></tr></table>
+		<%}%>
+		<table><tr><td><script>
+ 			getFormValues('basicViewformData');
+ 			ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?'+queryStr+'&rand='+<%=rand%>+'&viewSO=true',
+			'sourceRecordSearchResult',
+			'');		
+		</script></dt></tr></table>
+		<%if(request.getParameter("editSO")!=null && request.getParameter("editSO").length()>0){%>
+			<table><tr><td><script>
+				   getFormValues('basicViewformData');
+ 				   ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?&rand='+<%=rand%>+'&editSO=true',
+				   'sourceRecordSearchResult',
+				   '');
+			</script></dt></tr></table>
+		<%}%>
+  <%}%>								
+
 </f:view>

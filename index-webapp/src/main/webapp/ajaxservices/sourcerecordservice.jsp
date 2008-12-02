@@ -357,12 +357,13 @@ boolean isSessionActive = true;
  							<a 
 							href="javascript:void(0);"
 							onclick='javascript:if(editMinorObjectType.length<1){
-									 href="/<%=URI%>/euiddetails.jsf?euid=<%=euid%>" 
+									 getFormValues("basicViewformData");
+									 var indx = document.getElementById(selectSysCodeId).selectedIndex;
+									 href="/<%=URI%>/euiddetails.jsf?euid=<%=euid%>&fromUrl=sourcerecords.jsf"+queryStr+"&selectedIndex="+indx+"&selectSysCodeId="+selectSysCodeId+"&selectedLidId="+selectedLidId+"&tabName=viewEditTab"
 									 document.getElementById("viewEuidDiv").style.visibility = "visible";
 							         document.getElementById("viewEuidDiv").style.display  = "block";
 									 }else{
 									 showUnSavedAlert(event,editMinorObjectType);
-									 
 									 }'  
 							   class="button"
 							   title="<%=bundle.getString("source_rec_vieweuid_but")%>"
@@ -1041,7 +1042,9 @@ boolean isSessionActive = true;
 									 onclick='javascript:if(editMinorObjectType.length<1){
 									 document.getElementById("viewEuidDiv").style.visibility = "visible";
 							         document.getElementById("viewEuidDiv").style.display  = "block";
-									 href="/<%=URI%>/euiddetails.jsf?euid=<%=euid%>" 
+									 getFormValues("basicViewformData");
+									 var indx = document.getElementById(selectSysCodeId).selectedIndex;
+									 href="/<%=URI%>/euiddetails.jsf?euid=<%=euid%>&fromUrl=sourcerecords.jsf"+queryStr+"&selectedIndex="+indx+"&selectSysCodeId="+selectSysCodeId+"&selectedLidId="+selectedLidId+"&tabName=viewEditTab&editSO=true"
 									 }else{
 									 showUnSavedAlert(event,editMinorObjectType);									 
 									 }' 
