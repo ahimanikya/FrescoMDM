@@ -80,7 +80,7 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
                     case STRING:
                         stmt.setString(index++, strValue);
                         break;
-                    case INTEGER:
+                    case INT:
                         Long longVal = new Long(strValue);
                         stmt.setLong(index++, longVal);
                         break;
