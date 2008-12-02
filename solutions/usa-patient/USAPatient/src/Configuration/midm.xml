@@ -1286,15 +1286,7 @@
                                 <value>true</value>
                             </parameter>
                         </search-option>
-                        <search-option>
-                            <display-name>Blocker Search</display-name>
-                            <query-builder>BLOCKER-SEARCH</query-builder>
-                            <weighted>true</weighted>
-                            <parameter>
-                                <name>UseWildCard</name>
-                                <value>false</value>
-                            </parameter>
-                        </search-option>
+                        
                     </simple-search-page>
                     <simple-search-page>
                         <screen-title>USAPatient Lookup</screen-title>
