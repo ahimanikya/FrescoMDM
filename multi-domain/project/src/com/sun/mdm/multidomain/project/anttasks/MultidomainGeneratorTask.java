@@ -6,8 +6,9 @@
 package com.sun.mdm.multidomain.project.anttasks;
 
 import com.sun.mdm.index.parser.EIndexObject;
-import com.sun.mdm.index.parser.ParserException;
-import com.sun.mdm.index.parser.Utils;
+import com.sun.mdm.multidomain.parser.ParserException;
+import com.sun.mdm.multidomain.parser.MultiDomainModel;
+import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.generator.descriptor.JbiXmlWriter;
 import com.sun.mdm.multidomain.project.generator.domainObjects.EntityObjectWriter;
@@ -89,6 +90,9 @@ public class MultidomainGeneratorTask extends Task {
         
         // need to regenerate if source files have been modified
         try {
+            
+            generateFiles();
+                    
             // generate jar file
             generateJars();
 
@@ -120,12 +124,8 @@ public class MultidomainGeneratorTask extends Task {
         
     }
     
-    private void generateFiles(File objectFile) throws BuildException{
+    private void generateFiles() throws BuildException{
         try {
-
-            InputSource source = new InputSource(new FileInputStream(objectFile));
-            EIndexObject eo = Utils.parseEIndexObject(source);
-
             String projPath = getProject().getProperty("basedir");
             File genDir = new File(projPath + File.separator + MultiDomainProjectProperties.MULTIDOMAIN_GENERATED_FOLDER);
             //delete generated folder if there is a existing one
@@ -136,24 +136,50 @@ public class MultidomainGeneratorTask extends Task {
             delete.setLocation(getLocation());
             delete.execute();
             destDir.mkdirs();
-
-            //generate object files and webservice java files
-            //at "files-generated/domain-ojects/java" directory
-            EntityObjectWriter eow = new EntityObjectWriter(destDir.getAbsolutePath(), eo);
-            eow.write();
+            //generate domain object files at "files-generated/domain-ojects/java" directory     
+            String multiDomainModelXml = mSrcdir.getAbsolutePath()+ File.separator+
+                MultiDomainProjectProperties.CONFIGURATION_FOLDER+ File.separator+
+                MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML;
+            MultiDomainModel mdModel = Utils.parseMultiDomainModel(multiDomainModelXml);
+            //ArrayList <String> domainList = mdModel.getDomainNames();
+            ArrayList <String> domainList = new ArrayList<String>();
+            domainList.add("Person");
+            for (String  domain:domainList ){
+                
+                File objectFile = new File(mSrcdir,
+                        MultiDomainProjectProperties.DOMAINS_FOLDER + 
+                        "/" + domain.trim() + "/object.xml");
+                generateDomainOjbect(destDir, objectFile);
+           
+            }           
 
             //generate jbi.xml at "files-generated/jbi/META-INF/jbi.xml"
             File jbiXmlFolder = new File(genDir, "/jbi/META-INF");
-            JbiXmlWriter jbrWriter = new JbiXmlWriter(jbiXmlFolder, eo.getName());
+            String jbiJar = getProject().getProperty("jbi.jar");
+            int endIndex= jbiJar.indexOf('.');
+            String jbiName = jbiJar.substring(0, endIndex);
+            JbiXmlWriter jbrWriter = new JbiXmlWriter(jbiXmlFolder, jbiName);
             jbrWriter.write();
+        } catch (ParserException ex) {
+            throw new BuildException(ex.getMessage());
         } catch (TemplateWriterException ex) {
             throw new BuildException(ex.getMessage());
-        } catch (ParserException ex) {
+        }
+
+    }
+    
+    private void generateDomainOjbect(File destDir, File objectFile) throws BuildException{
+        try {
+
+            InputSource source = new InputSource(new FileInputStream(objectFile));
+            EIndexObject eo = com.sun.mdm.index.parser.Utils.parseEIndexObject(source);
+            EntityObjectWriter eow = new EntityObjectWriter(destDir.getAbsolutePath(), eo);
+            eow.write();
+        } catch (com.sun.mdm.index.parser.ParserException ex) {
             throw new BuildException(ex.getMessage());
         } catch (FileNotFoundException ex) {
             throw new BuildException(ex.getMessage());
         }
-
     }
     
     private void generateEbjFiles() {
