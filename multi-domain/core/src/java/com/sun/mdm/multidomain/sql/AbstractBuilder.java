@@ -33,7 +33,7 @@ public abstract class AbstractBuilder {
 
     public abstract String getCommand();
 
-    public abstract String getWhat();
+    public abstract String getColumns();
 
     public abstract String getCriteria();
 

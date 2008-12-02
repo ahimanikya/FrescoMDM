@@ -39,7 +39,7 @@ public class DeleteBuilder extends AbstractBuilder {
     }
 
     @Override
-    public String getWhat() {
+    public String getColumns() {
         return "";
     }
 

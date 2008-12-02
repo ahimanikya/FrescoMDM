@@ -43,7 +43,7 @@ public class InsertBuilder extends AbstractBuilder {
     }
 
     @Override
-    public String getWhat() {
+    public String getColumns() {
         StringBuffer what = new StringBuffer();
         StringBuffer columns = new StringBuffer();
         StringBuffer parameters = new StringBuffer();

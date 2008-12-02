@@ -33,11 +33,11 @@ public class SQLBuilder {
         StringBuffer buffer = new StringBuffer();
         buffer.append(builder.getCommand());
         if (builder instanceof SelectBuilder) {
-            buffer.append(builder.getWhat());
+            buffer.append(builder.getColumns());
             buffer.append(builder.getTable());
         } else {
             buffer.append(builder.getTable());
-            buffer.append(builder.getWhat());
+            buffer.append(builder.getColumns());
         }
         buffer.append(builder.getCriteria());
         return buffer.toString();

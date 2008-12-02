@@ -42,7 +42,7 @@ public class SelectBuilder extends AbstractBuilder {
     }
 
     @Override
-    public String getWhat() {
+    public String getColumns() {
         StringBuffer what = new StringBuffer();
         String columnName = null;
 

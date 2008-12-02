@@ -57,7 +57,7 @@ public class UpdateBuilder extends AbstractBuilder {
     }
 
     @Override
-    public String getWhat() {
+    public String getColumns() {
         StringBuffer what = new StringBuffer();
         StringBuffer columns = new StringBuffer();
 
