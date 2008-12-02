@@ -18,6 +18,8 @@ public class HierarchyNodeDto implements Serializable {
      * This attribute maps to the column HIERARCHY_NODE_ID in the hierarchy_node table.
      */
     protected long hierarchyNodeId;
+
+    protected long parentNodeId;
     /**
      * This attribute maps to the column HIERARCHY_DEF_ID in the hierarchy_node table.
      */
@@ -68,10 +70,28 @@ public class HierarchyNodeDto implements Serializable {
     /**
      * Method 'getHierarchyDefId'
      *
-     * @return Integer
+     * @return long
      */
     public long getHierarchyDefId() {
         return hierarchyDefId;
+    }
+
+    /**
+     * Method 'setParentNodeId'
+     *
+     * @param parentId
+     */
+    public void setParentNodeId(long parentId) {
+        this.parentNodeId = parentId;
+    }
+
+     /**
+     * Method 'getParentNodeId'
+     *
+     * @return long
+     */
+    public long getParentNodeId() {
+        return parentNodeId;
     }
 
     /**
@@ -156,7 +176,7 @@ public class HierarchyNodeDto implements Serializable {
     }
 
     /**
-     * Method 'setgetHierarchyAttributes'
+     * Method 'setHierarchyAttributes'
      *
      * @param attrValues
      */
