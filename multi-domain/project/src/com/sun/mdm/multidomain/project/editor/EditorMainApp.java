@@ -465,16 +465,6 @@ public class EditorMainApp {
         }
     }
     
-    /**
-     * 
-     * @return ArrayList <String> PluginList
-     */
-    public ArrayList <String> getPluginList() {
-        ArrayList <String> al = new ArrayList();
-        al.add("DefaultPlugin");
-        return al;
-    }
-    
     /** get plugin list per domain and definition type
      * 
      * @param domain
@@ -484,7 +474,7 @@ public class EditorMainApp {
     public ArrayList <String> getPluginList(String domain, String type) {
         //ToDo call Shant's api
         ArrayList <String> al = new ArrayList();
-        al.add("DefaultPlugin");
+        al.add(type + "PluginFor" + domain);
         return al;
     }
 

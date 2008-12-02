@@ -274,6 +274,27 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         }
     }
+    
+    public void updateDomainNames(Definition definition) {
+        String definitionName = definition.getName();
+        String sourceDomain = definition.getSourceDomain();
+        String targetDomain = definition.getTargetDomain();
+        TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
+        int length = model.getRowCount();
+        for (int i=0; i < length; i++) {
+            DefinitionRow row = model.getRow(i);
+            if (row.getDefinitionName().equals(definitionName) && 
+                row.getSourceDomain().equals(targetDomain) &&
+                row.getTargetDomain().equals(sourceDomain)) {
+                row.setSourceDomain(sourceDomain);
+                row.setTargetDomain(targetDomain);
+                model.fireTableDataChanged();
+                jTableDefinitions.setRowSelectionInterval(i, i);
+                break;
+            }
+        }
+    }
+    
     /*
     public void updatePlugin(String oldPlugin, Definition definition) {
         String plugin = definition.getPlugin();

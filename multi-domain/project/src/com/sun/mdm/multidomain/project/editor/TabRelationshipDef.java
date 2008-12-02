@@ -83,7 +83,11 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         this.jTextDomain1.setText(mDefinition.getSourceDomain());
         this.jTextDomain2.setText(mDefinition.getTargetDomain());
         String direction = mDefinition.getDirection();
-        if (direction == null || direction.equals("1")) {
+        if (direction == null) {
+            this.jComboBoxDirection.setSelectedIndex(0);
+        } else if (direction.equals("2")) {
+            this.jComboBoxDirection.setSelectedIndex(2);
+        } else {
             this.jComboBoxDirection.setSelectedIndex(0);
         }
         String description = mDefinition.getDescription();
@@ -163,11 +167,12 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         jComboBoxDirection.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mEditorMainApp.enableSaveAction(true);
-                //ToDo update TabOverView
+                //update TabOverView
                 String direction = (getDirectionCode() == 2) ? Definition.BIDIRECTIONAL : Definition.ONEDIRECTION;
                 mDefinition.setDirection(direction);
                 mDefinition.setSourceDomain(getSourceDomain());
                 mDefinition.setTargetDomain(getTargetDomain());
+                mEditorMainApp.getEditorMainPanel().getTabOverview().updateDomainNames(mDefinition);
             }
         });
         
