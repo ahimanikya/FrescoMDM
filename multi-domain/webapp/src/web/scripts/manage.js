@@ -37,6 +37,20 @@ function showByRelSelectDialog() {
 
     var selectDialog = dijit.byId("byrel_select");
     selectDialog.show();        
+    
+   /* var selectedSourceDomain =document.getElementById("select_sourceDomain").options.selectedIndex;
+        alert("selectedSourceDomain "+selectedSourceDomain);
+        
+    var selectedTargetDomain =document.getElementById("select_targetDomain").value;
+    alert("selectedTargetDomain "+selectedTargetDomain);
+    var selectedRelationshipDef =document.getElementById("select_relationshipDefs").value;
+    alert("selectedRelationshipDef "+selectedRelationshipDef);
+    */
+    
+    
+    
+    
+    
 
 }
 function hideByRelSelectDialog () {
@@ -62,18 +76,37 @@ function populateAddRelationshipDefAttributes(data){
     var startDate =(getBoolean(data.startDate));
     var endDate =(getBoolean(data.endDate));
     var purgeDate =(getBoolean(data.purgeDate));
-    var rowCount = 0;
+    var CustomrowCount = 0;
+    var PredefinedrowCount = 0;  
+    
+        if(data.extendedAttributes.length >0 ){
+         var customHeading = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
+         customHeading.insertCell(0);
+         customHeading.cells[0].innerHTML="Custom Attributes";
+         for( i=0;i < data.extendedAttributes.length; i++){
+             var customContent = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
+             customContent.insertCell(i);
+             customContent.cells[i].innerHTML=data.extendedAttributes[i].name;
+            var field = document.createElement("input");
+            field.type="text";
+            field.size="5";
+            field.style.width="100px";
+            customContent.cells[i++].appendChild(field);
+             
+         }
+       }
+     
     
     
     if(startDate==true || endDate==true || startDate == true ){ // condition for Predefined Attributes
-        var FirstRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(rowCount ++);
+        var FirstRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(PredefinedrowCount ++);
         FirstRow.insertCell(0);
         FirstRow.cells[0].colSpan='4';
         FirstRow.cells[0].innerHTML="Predefined Attributes";
     }
     
-    if(startDate==true&& endDate==true){ // condition for Start and End dates
-        var SecondRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(rowCount ++);
+    if(startDate==true&& endDate==true){ // condition for Start and End dates of Predefined Attributes
+        var SecondRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(PredefinedrowCount ++);
         SecondRow.insertCell(0);
         SecondRow.insertCell(1);
         SecondRow.insertCell(2);
@@ -108,8 +141,8 @@ function populateAddRelationshipDefAttributes(data){
         }
         endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox);
         
-    } else if (startDate == true) { // condition for Start Date
-        var SecondRowStart = document.getElementById('byrel_add_predefinedAttributes').insertRow(rowCount ++);
+    } else if (startDate == true) { // condition for Start Date of Predefined Attributes
+        var SecondRowStart = document.getElementById('byrel_add_predefinedAttributes').insertRow(PredefinedrowCount ++);
         SecondRowStart.insertCell(0);
         SecondRowStart.insertCell(1);
         SecondRowStart.insertCell(2);
@@ -129,9 +162,9 @@ function populateAddRelationshipDefAttributes(data){
         }
         start_date = new dijit.form.DateTextBox(start_date_Props, start_date);
         
-    } else if(endDate == true) { // condition for End Date
+    } else if(endDate == true) { // condition for End Date of Predefined Attributes
         
-        var SecondRowEnd = document.getElementById('byrel_add_predefinedAttributes').insertRow(rowCount ++);
+        var SecondRowEnd = document.getElementById('byrel_add_predefinedAttributes').insertRow(PredefinedrowCount ++);
         SecondRowEnd.insertCell(0);
         SecondRowEnd.insertCell(1);
         SecondRowEnd.insertCell(2);
@@ -152,9 +185,9 @@ function populateAddRelationshipDefAttributes(data){
         end_date = new dijit.form.DateTextBox(end_date_Props, end_date);
         
     }
-    if(purgeDate==true ){ // condition for purge date
+    if(purgeDate==true ){ // condition for purge date of Predefined Attributes
         
-        var ThirdRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(rowCount ++);
+        var ThirdRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(PredefinedrowCount ++);
         ThirdRow.insertCell(0);
         ThirdRow.insertCell(1);
         ThirdRow.insertCell(2);

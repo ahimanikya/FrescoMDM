@@ -21,7 +21,7 @@
             <td>
                 <div class="RelationshipAttributes">
                     <table border="0" id="byrel_add_customAttributes" >
-                       <tr>
+                    <!--   <tr>
                             <td class="Heading" colspan="2">
                                 <f:message key="custom_text" /> <f:message key="attributes_text" />
                             </td>
@@ -34,7 +34,7 @@
                             <td>
                                 <input id="byrel_add_numbervisits" name="NumberVisits" title="<f:message key="number_visit_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
                             </td>
-                        </tr> 
+                        </tr> -->
                     </table>
                     
                 </div>
