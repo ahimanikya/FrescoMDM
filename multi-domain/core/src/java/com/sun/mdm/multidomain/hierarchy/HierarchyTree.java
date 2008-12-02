@@ -23,39 +23,45 @@
 package com.sun.mdm.multidomain.hierarchy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HierarchyTree implements Serializable {
 
     private HierarchyNode node;
-    private List<HierarchyNode> ancestors;
-    private List<HierarchyNode> children;
-    
-    public HierarchyTree(){        
+    private List<HierarchyNode> ancestors = null;
+    private List<HierarchyNode> children = null;
+
+    public HierarchyTree() {
     }
-    
+
     public HierarchyNode getNode() {
         return node;
     }
-    
+
     public void setNode(HierarchyNode node) {
         this.node = node;
     }
-    
+
     public List<HierarchyNode> getAncestors() {
+        if (ancestors == null) {
+            ancestors = new ArrayList<HierarchyNode>();
+        }
         return ancestors;
     }
-    
+
     public void setAncestors(List<HierarchyNode> ancestors) {
         this.ancestors = ancestors;
     }
-    
+
     public List<HierarchyNode> getChildren() {
+        if (children == null) {
+            children = new ArrayList<HierarchyNode>();
+        }
         return children;
     }
-    
+
     public void setChildren(List<HierarchyNode> children) {
         this.children = children;
     }
-    
 }
