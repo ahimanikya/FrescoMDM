@@ -422,7 +422,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>Country</field-name>
+            <field-name>AddressCountry</field-name>
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
