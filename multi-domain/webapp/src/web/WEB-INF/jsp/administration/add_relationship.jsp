@@ -184,7 +184,7 @@ function validateRelationshipForm() {
         //alert(attr.IdField.value + " " + attr.AttributeNameField.value + " : " +  attr.DefaultValueField.value);
         var  tempAttr = {};
         tempAttr.name = attr.AttributeNameField.value;
-        tempAttr.type = attr.AttributeTypeField.value;
+        tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
         tempAttr.isRequired = attr.RequiredField.value;
         tempAttr.searchable = attr.SearchableField.value;
