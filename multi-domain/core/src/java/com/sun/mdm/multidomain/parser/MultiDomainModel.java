@@ -245,31 +245,15 @@ public class MultiDomainModel {
     /**
      * @param node node
      */
-    public Domain parseDomain(Node node) {
-        Domain domain = new Domain();
-        if (node.hasChildNodes()) {
-            NodeList nl = node.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    if (mTagName.equals(((Element) nl.item(i)).getTagName())) {
-                        domain.name = getAttributeName(nl.item(i));
-                    }
-                }
-            }
-        }
-        return domain;
-    }
-    
-    /**
-     * @param node node
-     */
     public void parseDomains(Node node) {
         if (node.hasChildNodes()) {
             NodeList nl = node.getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        mDomains.addDomain(parseDomain(nl.item(i)));
+                        Domain domain = new Domain();
+                        domain.name = getAttributeName(nl.item(i));
+                        mDomains.addDomain(domain);
                     }
                 }
             }
@@ -456,10 +440,12 @@ public class MultiDomainModel {
         
         void addDomain(Domain domain) {
             alDomains.add(domain);
+            alDomainNames.add(domain.name);
         }
         
         void deleteDomain(Domain domain) {
-            alDomains.remove(domain);
+            alDomainNames.remove(domain.name);
+            alDomains.remove(domain);           
         }
         
         void deleteDomain(String name) {
@@ -467,6 +453,7 @@ public class MultiDomainModel {
                 Domain domain = (Domain) alDomains.get(i);
                 if (domain.name.equals(name)) {
                     alDomains.remove(domain);
+                    alDomainNames.remove(name);
                     break;
                 }
             }
