@@ -143,7 +143,7 @@ public class ViewBuilder {
             a.setName(aDefExt.getName());
             a.setId(Long.parseLong(aDefExt.getId()));
             a.setColumnName(aDefExt.getColumnName());
-            a.setType(AttributeType.valueOf(aDefExt.getDataType()));
+            a.setType(AttributeType.valueOf(aDefExt.getDataType().toUpperCase()));
             a.setDefaultValue(aDefExt.getDefaultValue());
             a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));
             a.setIsSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
@@ -241,7 +241,7 @@ public class ViewBuilder {
                 a.setId(Long.parseLong(aDefExt.getId()));
             }
             a.setColumnName(aDefExt.getColumnName());
-            a.setType(AttributeType.valueOf(aDefExt.getDataType()));
+            a.setType(AttributeType.valueOf(aDefExt.getDataType().toUpperCase()));
             a.setDefaultValue(aDefExt.getDefaultValue());
             a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));
             a.setIsSearchable("true".equalsIgnoreCase(aDefExt.getSearchable()));
