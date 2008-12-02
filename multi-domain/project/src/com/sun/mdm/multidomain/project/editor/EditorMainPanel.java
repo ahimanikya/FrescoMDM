@@ -189,6 +189,9 @@ public class EditorMainPanel extends JPanel implements ActionListener {
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_VIEW, currentDomainNode.getDomainViewTab(true));
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_SEARCH, currentDomainNode.getDoaminsTab(true));
         }
+        mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
+                new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                NbBundle.getMessage(EditorMainPanel.class, "MSG_Domain_Properties")));
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
 
@@ -208,6 +211,9 @@ public class EditorMainPanel extends JPanel implements ActionListener {
             mPropertiesTabbedPane.add(title, currentDefinitionNode.getDefinitionTab(true));
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentDefinitionNode.getWebManagerDefinitionTab(true));
         }
+        mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
+                new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                NbBundle.getMessage(EditorMainPanel.class, "MSG_Definition_Properties")));
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
 
@@ -221,6 +227,9 @@ public class EditorMainPanel extends JPanel implements ActionListener {
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                 NbBundle.getMessage(EditorMainPanel.class, "MSG_Properties")));
+        mEntityTreeScrollPane.setBorder(new javax.swing.border.TitledBorder(
+                new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                NbBundle.getMessage(EditorMainPanel.class, "MSG_Domain_Entity")));
 
         ArrayList<DomainNode> alDomainNodes = mEditorMainApp.getDomainNodes();
         DomainNode currentDomainNode = null; // use this to load web tabs for domain

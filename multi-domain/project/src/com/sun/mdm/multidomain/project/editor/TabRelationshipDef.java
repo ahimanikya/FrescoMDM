@@ -78,7 +78,6 @@ public class TabRelationshipDef extends javax.swing.JPanel {
             this.jComboBoxPlugin.setSelectedIndex(0);
             mDefinition.setPlugin((String) jComboBoxPlugin.getSelectedItem());
         }
-        //this.jComboBoxPlugin.setSelectedItem(definition.getPlugin());
         
         this.jTextDomain1.setText(mDefinition.getSourceDomain());
         this.jTextDomain2.setText(mDefinition.getTargetDomain());
