@@ -69,7 +69,7 @@ public class HierarchyNodeEaDto implements Serializable {
      *
      * @param eaId
      */
-    public void setEaId(Integer eaId) {
+    public void setEaId(long eaId) {
         this.eaId = eaId;
     }
 
