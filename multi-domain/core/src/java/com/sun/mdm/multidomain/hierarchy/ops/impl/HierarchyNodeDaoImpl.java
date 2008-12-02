@@ -7,6 +7,7 @@
  */
 package com.sun.mdm.multidomain.hierarchy.ops.impl;
 
+import com.sun.mdm.multidomain.attributes.AttributeType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +25,7 @@ import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.SelectBuilder;
 
 import java.util.List;
+import java.util.Map;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 
 public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDao {
@@ -65,11 +67,11 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             int index = 1;
             stmt.setLong(index++, 0);
             stmt.setLong(index++, dto.getHierarchyDefId());
+            stmt.setLong(index++, dto.getParentNodeId());
             stmt.setString(index++, dto.getEuid());
             stmt.setString(index++, dto.getParentEuid());
             stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveFromDate());
             stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveToDate());
-            System.out.println("Executing " + sqlStr + " with DTO: " + dto);
             int rows = stmt.executeUpdate();
             //reset(dto);
             rs = stmt.getGeneratedKeys();
@@ -108,20 +110,17 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             // get the user-specified connection or get a connection from the ResourceManager
             conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 
-            //System.out.println("Executing " + SQL_UPDATE + " with DTO: " + dto);
-            // stmt = conn.prepareStatement(SQL_UPDATE);
             int index = 1;
             stmt.setLong(index++, dto.getHierarchyNodeId());
             //stmt.setString(index++, dto.getSourceEuid());
-          //  stmt.setString(index++, dto.getTargetEuid());
+            //  stmt.setString(index++, dto.getTargetEuid());
             stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveFromDate());
             stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveToDate());
-           // stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getPurgeDate());
+            // stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getPurgeDate());
             stmt.setLong(14, pk);
             int rows = stmt.executeUpdate();
             //reset(dto);
             long t2 = System.currentTimeMillis();
-            System.out.println(rows + " rows affected (" + (t2 - t1) + " ms)");
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
@@ -149,12 +148,10 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             // get the user-specified connection or get a connection from the ResourceManager
             conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 
-            //System.out.println("Executing " + SQL_DELETE + " with PK: " + pk);
             // stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setLong(1, pk);
             int rows = stmt.executeUpdate();
             long t2 = System.currentTimeMillis();
-            System.out.println(rows + " rows affected (" + (t2 - t1) + " ms)");
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
@@ -180,24 +177,14 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         ResultSet rs = null;
 
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
+
             conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 
-            // construct the SQL statement
+            HierarchyDefDto hierDef = getHierarchyDef(euid);
 
-            HierarchyDefDto attrDefList = getAttributeDefs(conn, euid);
-            String sqlStr = BuildSelectSQL(attrDefList);
-            System.out.println("Executing " + sqlStr);
-            // prepare statement
-            stmt = conn.prepareStatement(sqlStr);
+            List<HierarchyNodeDto> hierNodes = getHierarchyNodes(hierDef, euid);
 
-            stmt.setLong(1, getPrimaryKey());
-            //stmt.setMaxRows(maxRows);
-
-            rs = stmt.executeQuery();
-
-            // fetch the results
-            return fetchMultiResults(rs);
+            return hierNodes;
         } catch (Exception _e) {
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
         } finally {
@@ -210,12 +197,159 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         }
     }
 
-    private HierarchyDefDto getAttributeDefs(Connection conn, String euid) throws SQLException {
+    /**
+     * Returns all rows from the HierarchyDto table that match the criteria
+     *
+     */
+    public List<HierarchyNodeDto> findChildren(long nodeId) throws HierarchyDaoException {
+        // declare variables
+        final boolean isConnSupplied = (userConn != null);
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+
+            HierarchyDefDto hierDef = getHierarchyDef(nodeId);
+
+            List<HierarchyNodeDto> hierNodes = getChildNodes(hierDef, nodeId);
+
+            return hierNodes;
+        } catch (Exception _e) {
+            throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
+        } finally {
+            ResourceManager.close(rs);
+            ResourceManager.close(stmt);
+            if (!isConnSupplied) {
+                ResourceManager.close(conn);
+            }
+
+        }
+    }
+
+    public List<HierarchyNodeDto> findAncestors(long nodeId) throws HierarchyDaoException {
+        // declare variables
+        final boolean isConnSupplied = (userConn != null);
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+
+            HierarchyDefDto hierDef = getHierarchyDef(nodeId);
+            List<HierarchyNodeDto> hierNodes = getHierarchyNodes(hierDef, nodeId);
+            HierarchyNodeDto child = hierNodes.get(0);
+            List<HierarchyNodeDto> parentNodes = new ArrayList<HierarchyNodeDto>();
+            getParentNodes(child, hierDef, parentNodes);
+
+            return parentNodes;
+        } catch (Exception _e) {
+            throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
+        } finally {
+            ResourceManager.close(rs);
+            ResourceManager.close(stmt);
+            if (!isConnSupplied) {
+                ResourceManager.close(conn);
+            }
+
+        }
+    }
+
+    /**
+     * Returns all rows from the HierarchyDto table that match the criteria
+     *
+     */
+    private void getParentNodes(HierarchyNodeDto child, HierarchyDefDto hierDef, List<HierarchyNodeDto> parentNodes) throws HierarchyDaoException {
+        // declare variables
+        final boolean isConnSupplied = (userConn != null);
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            long parentNodeId = child.getParentNodeId();
+            if (parentNodeId > 0 && child.getParentEuid() != null) {
+                conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+                SelectBuilder builder = new SelectBuilder();
+                builder.setTable(HIERARCHY_NODE.getTableName(), HIERARCHY_NODE_EAV.getTableName());
+
+                for (HIERARCHY_NODE hierNode : HIERARCHY_NODE.values()) {
+                    builder.addColumns(hierNode.prefixedColumnName);
+                }
+                for (HIERARCHY_NODE_EAV ea : HIERARCHY_NODE_EAV.values()) {
+                    builder.addColumns(ea.prefixedColumnName);
+                }
+                for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
+                    builder.addColumns(eaDto.getColumnName());
+                }
+                builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
+                builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+                String sqlStr = SQLBuilder.buildSQL(builder);
+                stmt = userConn.prepareStatement(sqlStr);
+                stmt = conn.prepareStatement(sqlStr);
+                stmt.setLong(1, parentNodeId);
+
+                rs = stmt.executeQuery();
+                HierarchyNodeDto node = fetchSingleResult(rs, hierDef);
+
+                parentNodes.add(node);
+
+                getParentNodes(node, hierDef, parentNodes);
+            }
+
+        } catch (Exception _e) {
+            throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
+        } finally {
+            ResourceManager.close(rs);
+            ResourceManager.close(stmt);
+            if (!isConnSupplied) {
+                ResourceManager.close(conn);
+            }
+
+        }
+    }
+
+
+    private List<HierarchyNodeDto> getChildNodes(HierarchyDefDto hierDef, long nodeId) throws SQLException {
+        SelectBuilder builder = new SelectBuilder();
+        builder.setTable(HIERARCHY_NODE.getTableName(), HIERARCHY_NODE_EAV.getTableName());
+
+        for (HIERARCHY_NODE hierNode : HIERARCHY_NODE.values()) {
+            builder.addColumns(hierNode.prefixedColumnName);
+        }
+        for (HIERARCHY_NODE_EAV ea : HIERARCHY_NODE_EAV.values()) {
+            builder.addColumns(ea.prefixedColumnName);
+        }
+        for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
+            builder.addColumns(eaDto.getColumnName());
+        }
+        builder.addCriteria(HIERARCHY_NODE.PARENT_NODE_ID.prefixedColumnName, null);
+        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        String sqlStr = SQLBuilder.buildSQL(builder);
+        PreparedStatement stmt = userConn.prepareStatement(sqlStr);
+        // prepare statement
+        stmt = userConn.prepareStatement(sqlStr);
+
+        stmt.setLong(1, nodeId);
+        //stmt.setMaxRows(maxRows);
+
+        ResultSet rs = stmt.executeQuery();
+        return fetchMultiResults(rs, hierDef);
+    }
+
+    // public HierarchyNodeDto getHierarchyDef(String euid) throws HierarchyDaoException {
+    // }
+    private HierarchyDefDto getHierarchyDef(String euid) throws SQLException {
         SelectBuilder selectBld = new SelectBuilder();
-        String relEATable = HIERARCHY_NODE_EA.getTableName();
-        String relTable = HIERARCHY_NODE.getTableName();
-        String relDefTable = HIERARCHY_DEF.getTableName();
-        selectBld.setTable(relDefTable, relTable, relEATable);
+        String hierDefTable = HIERARCHY_DEF.getTableName();
+        String hierEATable = HIERARCHY_NODE_EA.getTableName();
+        String hierNodeTable = HIERARCHY_NODE.getTableName();
+
+        selectBld.setTable(hierDefTable, hierNodeTable, hierEATable);
         selectBld.addColumns(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName);
         for (HIERARCHY_DEF hierDef : HIERARCHY_DEF.values()) {
             selectBld.addColumns(hierDef.prefixedColumnName);
@@ -224,64 +358,149 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             selectBld.addColumns(hierEA.prefixedColumnName);
         }
         selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE.HIERARCHY_DEF_ID.prefixedColumnName);
-        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
+        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
         selectBld.addCriteria(HIERARCHY_NODE.EUID.prefixedColumnName, null);
         String sqlStr = SQLBuilder.buildSQL(selectBld);
-        PreparedStatement stmt = conn.prepareStatement(sqlStr);
+        PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         int index = 1;
         stmt.setString(index++, euid);
         ResultSet rs = stmt.executeQuery();
-        HierarchyDefDto relDefDto = new HierarchyDefDto();
-        /*
+        HierarchyDefDto hierDefDto = new HierarchyDefDto();
+
         while (rs.next()) {
             if (rs.isFirst()) {
                 if (mPrimaryKey == 0) {
-                    mPrimaryKey = rs.getLong(RELATIONSHIP.RELATIONSHIP_ID.columnName);
+                    mPrimaryKey = rs.getLong(HIERARCHY_NODE.HIERARCHY_NODE_ID.columnName);
                 }
-                relDefDto.setHierarchyDefId(rs.getLong(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.columnName));
-                relDefDto.setHierarchyName(rs.getString(RELATIONSHIP_DEF.RELATIONSHIP_NAME.columnName));
-                relDefDto.setDescription(rs.getString(RELATIONSHIP_DEF.DESCRIPTION.columnName));
-                relDefDto.setSourceDomain(rs.getString(RELATIONSHIP_DEF.SOURCE_DOMAIN.columnName));
-                relDefDto.setTargetDomain(rs.getString(RELATIONSHIP_DEF.TARGET_DOMAIN.columnName));
-                relDefDto.setBidirectional(rs.getString(RELATIONSHIP_DEF.BIDIRECTIONAL.columnName));
-                relDefDto.setEffectiveFromReq(rs.getString(RELATIONSHIP_DEF.EFFECTIVE_FROM_REQ.columnName));
-                relDefDto.setEffectiveToReq(rs.getString(RELATIONSHIP_DEF.EFFECTIVE_TO_REQ.columnName));
-                relDefDto.setPurgeDateReq(rs.getString(RELATIONSHIP_DEF.PURGE_DATE_REQ.columnName));
-                relDefDto.setPlugIn(rs.getString(RELATIONSHIP_DEF.PLUGIN.columnName));
+                hierDefDto.setHierarchyDefId(rs.getLong(HIERARCHY_DEF.HIERARCHY_DEF_ID.columnName));
+                hierDefDto.setHierarchyName(rs.getString(HIERARCHY_DEF.HIERARCHY_NAME.columnName));
+                hierDefDto.setDescription(rs.getString(HIERARCHY_DEF.DESCRIPTION.columnName));
+                hierDefDto.setDomain(rs.getString(HIERARCHY_DEF.DOMAIN.columnName));
+                hierDefDto.setEffectiveFromDate(rs.getDate(HIERARCHY_DEF.EFFECTIVE_FROM_DATE.columnName));
+                hierDefDto.setEffectiveToDate(rs.getDate(HIERARCHY_DEF.EFFECTIVE_TO_DATE.columnName));
+                hierDefDto.setPlugIn(rs.getString(HIERARCHY_DEF.PLUGIN.columnName));
             }
-            HierarchyEaDto relEa = new HierarchyEaDto();
-            relEa.setEaId(rs.getLong(RELATIONSHIP_EA.EA_ID.columnName));
-            relEa.setHierarchyDefId(rs.getLong(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.columnName));
-            relEa.setAttributeName(rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName));
-            relEa.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
-            relEa.setColumnType(rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName));
-            relEa.setDefaultValue(rs.getString(RELATIONSHIP_EA.DEFAULT_VALUE.columnName));
-            relEa.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("Y") ? true : false);
-            relEa.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("Y") ? true : false);
-            relEa.setIsIncluded(rs.getString(RELATIONSHIP_EA.IS_INCLUDED.columnName).equalsIgnoreCase("Y") ? true : false);
-            relDefDto.getAttributeDefs().add(relEa);
+            HierarchyNodeEaDto hierNodeEa = new HierarchyNodeEaDto();
+            hierNodeEa.setEaId(rs.getLong(HIERARCHY_NODE_EA.EA_ID.columnName));
+            hierNodeEa.setHierarchyDefId(rs.getLong(HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.columnName));
+            hierNodeEa.setAttributeName(rs.getString(HIERARCHY_NODE_EA.ATTRIBUTE_NAME.columnName));
+            hierNodeEa.setColumnName(rs.getString(HIERARCHY_NODE_EA.COLUMN_NAME.columnName));
+            hierNodeEa.setColumnType(rs.getString(HIERARCHY_NODE_EA.COLUMN_TYPE.columnName));
+            hierNodeEa.setDefaultValue(rs.getString(HIERARCHY_NODE_EA.DEFAULT_VALUE.columnName));
+            hierNodeEa.setIsSearchable(rs.getString(HIERARCHY_NODE_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("Y") ? true : false);
+            hierNodeEa.setIsRequired(rs.getString(HIERARCHY_NODE_EA.IS_REQUIRED.columnName).equalsIgnoreCase("Y") ? true : false);
+            hierNodeEa.setIsIncluded(rs.getString(HIERARCHY_NODE_EA.IS_INCLUDED.columnName).equalsIgnoreCase("Y") ? true : false);
+            hierDefDto.getAttributeDefs().add(hierNodeEa);
         }
-         * */
-        return relDefDto;
+        return hierDefDto;
     }
 
-    private String BuildSelectSQL(HierarchyDefDto relDef) {
+    private List<HierarchyNodeDto> getHierarchyNodes(HierarchyDefDto hierDef, long nodeId) throws SQLException {
         SelectBuilder builder = new SelectBuilder();
-        builder.setTable(RELATIONSHIP.getTableName(), RELATIONSHIP_EAV.getTableName());
+        builder.setTable(HIERARCHY_NODE.getTableName(), HIERARCHY_NODE_EAV.getTableName());
 
-        for (RELATIONSHIP rel : RELATIONSHIP.values()) {
-            builder.addColumns(rel.prefixedColumnName);
+        for (HIERARCHY_NODE hierNode : HIERARCHY_NODE.values()) {
+            builder.addColumns(hierNode.prefixedColumnName);
         }
-        for (RELATIONSHIP_EAV ea : RELATIONSHIP_EAV.values()) {
+        for (HIERARCHY_NODE_EAV ea : HIERARCHY_NODE_EAV.values()) {
             builder.addColumns(ea.prefixedColumnName);
         }
-        for (HierarchyNodeEaDto eaDto : relDef.getAttributeDefs()) {
+        for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
             builder.addColumns(eaDto.getColumnName());
         }
-        builder.addCriteria(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, null);
-        builder.addCriteria(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, RELATIONSHIP_EAV.RELATIONSHIP_ID.prefixedColumnName);
+        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
+        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
         String sqlStr = SQLBuilder.buildSQL(builder);
-        return sqlStr;
+        PreparedStatement stmt = userConn.prepareStatement(sqlStr);
+        // prepare statement
+        stmt = userConn.prepareStatement(sqlStr);
+
+        stmt.setLong(1, nodeId);
+        //stmt.setMaxRows(maxRows);
+
+        ResultSet rs = stmt.executeQuery();
+        return fetchMultiResults(rs, hierDef);
+    }
+
+    // public HierarchyNodeDto getParentNode(String euid) throws HierarchyDaoException {
+    // }
+    private HierarchyDefDto getHierarchyDef(long nodeId) throws SQLException {
+        SelectBuilder selectBld = new SelectBuilder();
+        String hierDefTable = HIERARCHY_DEF.getTableName();
+        String hierEATable = HIERARCHY_NODE_EA.getTableName();
+        String hierNodeTable = HIERARCHY_NODE.getTableName();
+
+        selectBld.setTable(hierDefTable, hierNodeTable, hierEATable);
+        selectBld.addColumns(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName);
+        for (HIERARCHY_DEF hierDef : HIERARCHY_DEF.values()) {
+            selectBld.addColumns(hierDef.prefixedColumnName);
+        }
+        for (HIERARCHY_NODE_EA hierEA : HIERARCHY_NODE_EA.values()) {
+            selectBld.addColumns(hierEA.prefixedColumnName);
+        }
+        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE.HIERARCHY_DEF_ID.prefixedColumnName);
+        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
+        selectBld.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
+        String sqlStr = SQLBuilder.buildSQL(selectBld);
+        PreparedStatement stmt = userConn.prepareStatement(sqlStr);
+        int index = 1;
+        stmt.setLong(index++, nodeId);
+        ResultSet rs = stmt.executeQuery();
+        HierarchyDefDto hierDefDto = new HierarchyDefDto();
+
+        while (rs.next()) {
+            if (rs.isFirst()) {
+                if (mPrimaryKey == 0) {
+                    mPrimaryKey = rs.getLong(HIERARCHY_NODE.HIERARCHY_NODE_ID.columnName);
+                }
+                hierDefDto.setHierarchyDefId(rs.getLong(HIERARCHY_DEF.HIERARCHY_DEF_ID.columnName));
+                hierDefDto.setHierarchyName(rs.getString(HIERARCHY_DEF.HIERARCHY_NAME.columnName));
+                hierDefDto.setDescription(rs.getString(HIERARCHY_DEF.DESCRIPTION.columnName));
+                hierDefDto.setDomain(rs.getString(HIERARCHY_DEF.DOMAIN.columnName));
+                hierDefDto.setEffectiveFromDate(rs.getDate(HIERARCHY_DEF.EFFECTIVE_FROM_DATE.columnName));
+                hierDefDto.setEffectiveToDate(rs.getDate(HIERARCHY_DEF.EFFECTIVE_TO_DATE.columnName));
+                hierDefDto.setPlugIn(rs.getString(HIERARCHY_DEF.PLUGIN.columnName));
+            }
+            HierarchyNodeEaDto hierNodeEa = new HierarchyNodeEaDto();
+            hierNodeEa.setEaId(rs.getLong(HIERARCHY_NODE_EA.EA_ID.columnName));
+            hierNodeEa.setHierarchyDefId(rs.getLong(HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.columnName));
+            hierNodeEa.setAttributeName(rs.getString(HIERARCHY_NODE_EA.ATTRIBUTE_NAME.columnName));
+            hierNodeEa.setColumnName(rs.getString(HIERARCHY_NODE_EA.COLUMN_NAME.columnName));
+            hierNodeEa.setColumnType(rs.getString(HIERARCHY_NODE_EA.COLUMN_TYPE.columnName));
+            hierNodeEa.setDefaultValue(rs.getString(HIERARCHY_NODE_EA.DEFAULT_VALUE.columnName));
+            hierNodeEa.setIsSearchable(rs.getString(HIERARCHY_NODE_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("Y") ? true : false);
+            hierNodeEa.setIsRequired(rs.getString(HIERARCHY_NODE_EA.IS_REQUIRED.columnName).equalsIgnoreCase("Y") ? true : false);
+            hierNodeEa.setIsIncluded(rs.getString(HIERARCHY_NODE_EA.IS_INCLUDED.columnName).equalsIgnoreCase("Y") ? true : false);
+            hierDefDto.getAttributeDefs().add(hierNodeEa);
+        }
+        return hierDefDto;
+    }
+
+    private List<HierarchyNodeDto> getHierarchyNodes(HierarchyDefDto hierDef, String euid) throws SQLException {
+        SelectBuilder builder = new SelectBuilder();
+        builder.setTable(HIERARCHY_NODE.getTableName(), HIERARCHY_NODE_EAV.getTableName());
+
+        for (HIERARCHY_NODE hierNode : HIERARCHY_NODE.values()) {
+            builder.addColumns(hierNode.prefixedColumnName);
+        }
+        for (HIERARCHY_NODE_EAV ea : HIERARCHY_NODE_EAV.values()) {
+            builder.addColumns(ea.prefixedColumnName);
+        }
+        for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
+            builder.addColumns(eaDto.getColumnName());
+        }
+        builder.addCriteria(HIERARCHY_NODE.EUID.prefixedColumnName, null);
+        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        String sqlStr = SQLBuilder.buildSQL(builder);
+        PreparedStatement stmt = userConn.prepareStatement(sqlStr);
+        // prepare statement
+        stmt = userConn.prepareStatement(sqlStr);
+
+        stmt.setString(1, euid);
+        //stmt.setMaxRows(maxRows);
+
+        ResultSet rs = stmt.executeQuery();
+        return fetchMultiResults(rs, hierDef);
     }
 
     /**
@@ -315,17 +534,31 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
     }
 
     /**
+     * Fetches a single row from the result set
+     */
+    protected HierarchyNodeDto fetchSingleResult(ResultSet rs, HierarchyDefDto hierDef) throws SQLException {
+        if (rs.next()) {
+            HierarchyNodeDto dto = new HierarchyNodeDto();
+            populateDto(rs, dto, hierDef.getAttributeDefs());
+            return dto;
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
      * Fetches multiple rows from the result set
      */
-    protected List<HierarchyNodeDto> fetchMultiResults(ResultSet rs) throws SQLException {
-         ArrayList<HierarchyNodeDto> resultList = new ArrayList<HierarchyNodeDto>();
-          /*
-           while (rs.next()) {
-            HierarchyDto dto = new HierarchyDto();
-            populateDto(rs, dto, relDef.getAttributeDefs());
+    protected List<HierarchyNodeDto> fetchMultiResults(ResultSet rs, HierarchyDefDto hierDef) throws SQLException {
+        ArrayList<HierarchyNodeDto> resultList = new ArrayList<HierarchyNodeDto>();
+
+        while (rs.next()) {
+            HierarchyNodeDto dto = new HierarchyNodeDto();
+            populateDto(rs, dto, hierDef.getAttributeDefs());
             resultList.add(dto);
         }
-*/
+
         HierarchyNodeDto ret[] = new HierarchyNodeDto[resultList.size()];
 
         resultList.toArray(ret);
@@ -336,17 +569,17 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
     /**
      * Populates a DTO with data from a ResultSet
      */
-    protected void populateDto(ResultSet rs, HierarchyDefDto relDto, List<HierarchyNodeEaDto> attrDefList) throws SQLException {
-/*
-        relDto.setHierarchyId(rs.getLong(RELATIONSHIP.RELATIONSHIP_ID.columnName));
-        relDto.setHierarchyDefId(rs.getLong(RELATIONSHIP.RELATIONSHIP_DEF_ID.columnName));
-        relDto.setSourceEuid(rs.getString(RELATIONSHIP.SOURCE_EUID.columnName));
-        relDto.setTargetEuid(rs.getString(RELATIONSHIP.TARGET_EUID.columnName));
-        relDto.setEffectiveFromDate(rs.getDate(RELATIONSHIP.EFFECTIVE_FROM_DATE.columnName));
-        relDto.setEffectiveToDate(rs.getDate(RELATIONSHIP.EFFECTIVE_TO_DATE.columnName));
-        relDto.setPurgeDate(rs.getDate(RELATIONSHIP.PURGE_DATE.columnName));
-        Map attrValueList = relDto.getHierarchyAttributes();
-        for (HierarchyEaDto attr : attrDefList) {
+    protected void populateDto(ResultSet rs, HierarchyNodeDto hierNodeDto, List<HierarchyNodeEaDto> attrDefList) throws SQLException {
+
+        hierNodeDto.setHierarchyDefId(rs.getLong(HIERARCHY_NODE.HIERARCHY_DEF_ID.columnName));
+        hierNodeDto.setHierarchyNodeId(rs.getLong(HIERARCHY_NODE.HIERARCHY_NODE_ID.columnName));
+        hierNodeDto.setParentNodeId(rs.getLong(HIERARCHY_NODE.PARENT_NODE_ID.columnName));
+        hierNodeDto.setEuid(rs.getString(HIERARCHY_NODE.EUID.columnName));
+        hierNodeDto.setParentEuid(rs.getString(HIERARCHY_NODE.PARENT_EUID.columnName));
+        hierNodeDto.setEffectiveFromDate(rs.getDate(HIERARCHY_NODE.EFFECTIVE_FROM_DATE.columnName));
+        hierNodeDto.setEffectiveToDate(rs.getDate(HIERARCHY_NODE.EFFECTIVE_TO_DATE.columnName));
+        Map attrValueList = hierNodeDto.getHierarchyAttributes();
+        for (HierarchyNodeEaDto attr : attrDefList) {
             AttributeType attrType = AttributeType.valueOf(attr.getColumnType());
             String attrValue = null;
             switch (attrType) {
@@ -361,7 +594,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             }
             attrValueList.put(attr, attrValue);
         }
-*/
+
     }
 
     /**
