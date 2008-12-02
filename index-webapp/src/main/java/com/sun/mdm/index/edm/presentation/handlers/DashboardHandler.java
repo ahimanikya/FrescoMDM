@@ -56,6 +56,7 @@ import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchIterator;
 import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchSearchObject;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject;
+import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary;
 
 public class DashboardHandler  {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.DashboardHandler");
@@ -97,13 +98,80 @@ public class DashboardHandler  {
             potentialDuplicateSearchObject.setCreateEndDate(tsCurrentTime);
 
             long milliSecsInADay = 86400000L;
-
+        
+ 
             Timestamp ts24HrsBack = new Timestamp(currentTime - milliSecsInADay);
             potentialDuplicateSearchObject.setCreateStartDate(ts24HrsBack);
 
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
+            //Fix for bug 6709103 starts 
+            int count = pdPageIterArray.count();
 
-            countPotentialDuplicates = pdPageIterArray.count();
+            String[][] temp = new String[count][2];
+
+            if (pdPageIterArray != null & pdPageIterArray.count() > 0) {
+                // add all the potential duplicates to the summary array  
+                while (pdPageIterArray.hasNext()) {
+                    PotentialDuplicateSummary pds[] = pdPageIterArray.first(pdPageIterArray.count());
+                    for (int i = 0; i < pds.length; i++) {
+                        temp[i][0] = pds[i].getEUID1();
+                        temp[i][1] = pds[i].getEUID2();
+
+                    }
+                }
+            }
+
+            ArrayList arl = new ArrayList();
+
+            for (int i = 0; i < count; i++) {
+                for (int j = 0; j < 2; j++) {
+                    boolean addData = true;
+                    String data;
+
+                    for (int ii = 0; ii < arl.size(); ii++) {
+                        data = (String) arl.get(ii);
+                        if (data.equalsIgnoreCase(temp[i][j])) {
+                            addData = false;
+                            break;
+                        }
+                    }
+                    if (addData == true) {
+                        arl.add(temp[i][j]);
+                    }
+                }
+            }
+            //Code to create ArrayList
+            ArrayList arlOuter = new ArrayList();
+            for (int x = 0; x < arl.size(); x++) {
+                String id = (String) arl.get(x);
+                ArrayList arlInner = new ArrayList();
+                arlInner.add(id);
+                for (int i = 0; i < count; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        String strData = temp[i][j];
+                        if (id.equalsIgnoreCase(strData)) {
+                            if (j == 0) {
+                                if (!arlInner.contains(temp[i][1])) {
+                                    arlInner.add(temp[i][1]);
+                                }
+                            } else if (j == 1) {
+                                //if(!arlInner.contains(strData))
+                                //{arlInner.add(strData);
+                                //}
+                                if (!arlInner.contains(temp[i][0])) {
+                                    arlInner.add(temp[i][0]);
+                                }
+                            }
+                        }
+                    }
+                }
+                arlOuter.add(arlInner);
+            }
+            ArrayList finalArrayList = arlOuter;
+
+            finalArrayList = arlOuter;
+            //Fix for bug 6709103 ends 
+            countPotentialDuplicates = finalArrayList.size();
 
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
