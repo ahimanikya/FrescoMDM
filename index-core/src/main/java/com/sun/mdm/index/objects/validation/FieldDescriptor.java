@@ -220,7 +220,10 @@ public class FieldDescriptor implements FieldValidator {
                                             "parameter cannot be null."));
         }
 
-        if (field.getType() != getFieldType()) {
+        Object value = field.getValue();
+
+        //if (field.getType() != getFieldType()) {
+        if(!ObjectField.isValueValid(getFieldType(), value)) {
             throw new UnknownDataTypeException(mLocalizer.t("OBJ646: FieldDescriptor " + 
                                         "encountered an unrecognized type {0} " + 
                                         "for this field: {1}", 
@@ -235,7 +238,6 @@ public class FieldDescriptor implements FieldValidator {
             }
         }
 
-        Object value = field.getValue();
         if (value == null) {
             if (isRequired()) {
                 throw new MissingValueOnRequiredError(mLocalizer.t("OBJ648: A value " + 
