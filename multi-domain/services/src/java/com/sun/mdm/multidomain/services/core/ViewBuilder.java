@@ -141,7 +141,9 @@ public class ViewBuilder {
         for (AttributeDefExt aDefExt : attributes) {
             Attribute a = new Attribute();            
             a.setName(aDefExt.getName());
-            a.setId(Long.parseLong(aDefExt.getId()));
+            if (aDefExt.getId() != null) { 
+                a.setId(Long.parseLong(aDefExt.getId()));
+            }
             a.setColumnName(aDefExt.getColumnName());
             a.setType(AttributeType.valueOf(aDefExt.getDataType().toUpperCase()));
             a.setDefaultValue(aDefExt.getDefaultValue());
