@@ -139,6 +139,9 @@ public class MiObject {
     public ArrayList getNodes() {
         return mNodes;
     }
+    public ArrayList getRelationships() {
+        return mRelationships;
+    }
 
     /**
      * @param node node
@@ -228,6 +231,9 @@ public class MiObject {
                + mNodes 
                + "\n";
         
+        ret += "mRelationships: \n" 
+               + mRelationships 
+               + "\n";
         return ret;
     }
 }
