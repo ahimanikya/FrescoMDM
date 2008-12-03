@@ -23,6 +23,8 @@
 package com.sun.mdm.multidomain.parser;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import org.w3c.dom.DOMConfiguration;
@@ -53,7 +55,8 @@ public class MultiDomainModel {
     private final String mTagName = "name";
     private final String mTagPlugin = "plugin";
     private final String mTagDatabase = "database";
-    private final String mTagAppServer = "appserver";
+    private final String mTagDataTypes = "datatypes";
+    private final String mTagColumns = "columns";
     private final String mTagDateFormat = "dateformat";
     private final String mTagDomains = "domains";
     private final String mTagDomain = "domain";
@@ -78,6 +81,7 @@ public class MultiDomainModel {
     private final String mTagEndDate = "end-date";
     private final String mTagColumnName = "column-name";
     private final String mTagDefaultValue = "default-value";
+    private Map mMapDataTypes = new HashMap();  // datatype, columns
     private Domains mDomains = new Domains();
     private ArrayList <Definition> mAlDefinitions = new ArrayList();
     private String strDatabase;
@@ -216,6 +220,14 @@ public class MultiDomainModel {
         mAlDefinitions.add(definition);
     }
     
+    /** Get map of key:datatype entry:# of columns
+     * 
+     * @return Map mMapDatatypes
+     */
+    public Map getDatatypeMap() {
+        return this.mMapDataTypes;
+    }
+    
     /**
      * @param String domain name
      * @return Domain
@@ -241,6 +253,24 @@ public class MultiDomainModel {
     /**
      * @param node node
      */
+    public void parseDataTypes(Node node) {
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    if (mTagDataType.equals(((Element) nl.item(i)).getTagName())) {
+                        String name = getAttributeValue(nl.item(i), mTagName);
+                        String columns = getAttributeValue(nl.item(i), mTagColumns);
+                        this.mMapDataTypes.put(name, columns);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * @param node node
+     */
     public void parseDomains(Node node) {
         if (node.hasChildNodes()) {
             NodeList nl = node.getChildNodes();
@@ -248,7 +278,7 @@ public class MultiDomainModel {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagDomain.equals(((Element) nl.item(i)).getTagName())) {
                         Domain domain = new Domain();
-                        domain.name = getAttributeName(nl.item(i));
+                        domain.name = getAttributeValue(nl.item(i), mTagName);
                         mDomains.addDomain(domain);
                     }
                 }
@@ -256,14 +286,14 @@ public class MultiDomainModel {
         }
     }
 
-    public String getAttributeName(Node node) {
+    public String getAttributeValue(Node node, String attrName) {
         String val = null;
         NamedNodeMap nnm = node.getAttributes();
         if (nnm != null) {
-            Node attrName = nnm.getNamedItem(mTagName);
-            if (attrName != null) {
+            Node attrNode = nnm.getNamedItem(attrName);
+            if (attrNode != null) {
                 try {
-                    val = attrName.getNodeValue();
+                    val = attrNode.getNodeValue();
                 } catch (DOMException ex) {
                 }
             }
@@ -340,13 +370,13 @@ public class MultiDomainModel {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     if (mTagSourceDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        definition.setSourceDomain(getAttributeName(nl.item(i)));
+                        definition.setSourceDomain(getAttributeValue(nl.item(i), mTagName));
                     } else if (mTagTargetDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        definition.setTargetDomain(getAttributeName(nl.item(i)));
+                        definition.setTargetDomain(getAttributeValue(nl.item(i), mTagName));
                     } else if (mTagDomain.equals(((Element) nl.item(i)).getTagName())) {
-                        definition.setDomain(getAttributeName(nl.item(i)));
+                        definition.setDomain(getAttributeValue(nl.item(i), mTagName));
                     } else if (mTagPlugin.equals(((Element) nl.item(i)).getTagName())) {
-                        definition.setPlugin(getAttributeName(nl.item(i)));
+                        definition.setPlugin(getAttributeValue(nl.item(i), mTagName));
                     } else if (mTagDirection.equals(((Element) nl.item(i)).getTagName())) {
                         definition.setDirection(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagDescription.equals(((Element) nl.item(i)).getTagName())) {
@@ -390,6 +420,8 @@ public class MultiDomainModel {
                             strDatabase = Utils.getStrElementValue(nl.item(i));
                         } else if (mTagDateFormat.equals(((Element) nl.item(i)).getTagName())) {
                             strDateFormat = Utils.getStrElementValue(nl.item(i));
+                        } else if (mTagDataTypes.equals(((Element) nl.item(i)).getTagName())) {
+                            parseDataTypes(nl.item(i));
                         } else if (mTagDomains.equals(((Element) nl.item(i)).getTagName())) {
                             parseDomains(nl.item(i));
                         } else if (mTagRelationship.equals(((Element) nl.item(i)).getTagName())) {
