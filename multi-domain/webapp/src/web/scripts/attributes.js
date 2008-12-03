@@ -332,8 +332,8 @@ function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
             tempAttr.AttributeTypeField.value = attrValue.dataType;
             tempAttr.TypeChanged();
             tempAttr.DefaultValueField.value = attrValue.defaultValue;         
-            tempAttr.RequiredField.checked = attrValue.isRequired;
-            tempAttr.SearchableField.checked = attrValue.searchable;
+            tempAttr.RequiredField.checked = (attrValue.isRequired == "true") ? true : false;
+            tempAttr.SearchableField.checked = (attrValue.searchable == "true") ? true : false;
         }
     }
     refreshAttributesView(tableId, attributesArray);
