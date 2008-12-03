@@ -29,7 +29,7 @@ package com.sun.mdm.multidomain.attributes;
 public enum AttributeType {
 
     BOOLEAN("Boolean"),
-    CHAR("Character"),
+    CHAR("Char"),
     DATE("Date"),
     FLOAT("Float"),
     INT("Int"),
