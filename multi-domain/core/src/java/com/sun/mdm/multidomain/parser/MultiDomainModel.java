@@ -76,17 +76,13 @@ public class MultiDomainModel {
     private final String mTagIncluded = "included";
     private final String mTagStartDate = "start-date";
     private final String mTagEndDate = "end-date";
-    private final String mTagAttributeID = "attributeID";
     private final String mTagColumnName = "column-name";
     private final String mTagDefaultValue = "default-value";
-    private final String mTagValue = "value";
-    private final String mTagDeployment  = "deployment";
     private Domains mDomains = new Domains();
     private ArrayList <Definition> mAlDefinitions = new ArrayList();
     private String strDatabase;
     private String strDateFormat = "MM/dd/yyyy";
     private boolean mModified = false;
-    private static String CONFIGURATION = "Configuration";
 
 
     /**
@@ -293,8 +289,6 @@ public class MultiDomainModel {
                         attr.setSearchable(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagRequired.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setRequired(Utils.getStrElementValue(nl.item(i)));
-                    } else if (mTagAttributeID.equals(((Element) nl.item(i)).getTagName())) {
-                        attr.setAttributeID(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagIncluded.equals(((Element) nl.item(i)).getTagName())) {
                         attr.setIncluded(Utils.getStrElementValue(nl.item(i)));
                     } else if (mTagStartDate.equals(((Element) nl.item(i)).getTagName())) {
@@ -619,7 +613,7 @@ public class MultiDomainModel {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         DOMImplementation impl = builder.getDOMImplementation();
-        xmldoc = impl.createDocument(null, CONFIGURATION, null);
+        xmldoc = impl.createDocument(null, mTagConfiguration, null);
 
         Element root = xmldoc.getDocumentElement();
         root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainModel.xsd");

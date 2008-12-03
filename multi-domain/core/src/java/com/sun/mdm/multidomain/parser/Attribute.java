@@ -39,7 +39,6 @@ public class Attribute {
     String required = "true";
     String defaultValue = "";
     String dataType = "";
-    String attributeID = "";
     String included = "true";   // predefined attribute
     String startdate = "";      // ?
     String enddate = "";        // ?
@@ -73,14 +72,13 @@ public class Attribute {
      * @param attributeID
      */
     public Attribute(String name, String columnName, String dataType, String defaultValue,
-                     String searchable, String required, String attributeID) {
+                     String searchable, String required) {
         this.name = name;
         this.columnName = columnName;
         this.dataType = dataType;
         this.defaultValue = defaultValue;
         this.searchable = searchable;
         this.required = required;
-        this.attributeID = attributeID;
         this.type = TYPE_EXTENDED;
     }
        
@@ -132,14 +130,6 @@ public class Attribute {
     public void setType(String type) {
         this.type = type;
         }
-
-    public String getAttributeID() {
-        return attributeID;
-    }
-
-    public void setAttributeID(String attributeID) {
-        this.attributeID = attributeID;
-    }
 
     public String getColumnName() {
         return columnName;
