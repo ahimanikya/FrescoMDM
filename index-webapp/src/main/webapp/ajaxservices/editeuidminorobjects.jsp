@@ -536,7 +536,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
           editMainEuidHandler.getEditSOHashMapArrayList().clear();//Changed/New System objects hashmap array
           editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().clear();// ChangedNew Minor Objects hashmap Array
 		  session.removeAttribute("eoBrandNewSystemObjects"); //fix for 140
-%>
+		  session.removeAttribute("newSOMinorObjects"); //fix for 228
+		  session.removeAttribute("newSOMinorObjectsEdit"); //fix for 228
+     %>
 			   <!-- // close the Minor objects 
 			   // Close the Root node fields
 			   // Hide the Save button -->

@@ -1184,10 +1184,25 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		</table>
 	</div>   
 	<%} else {
-		 //copy the content into the minor objects
+ 		  //copy the content into the minor objects
           //add to the array list of ONLY when mandatory fields are addded
           thisMinorObjectList.add(thisMinorObject); 
-		  //editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().add(thisMinorObject);
+
+          //Fix for #228 - START
+		  //set all newly added minor objects to the SO in memory
+ 		  ArrayList newSOMinorObjects  = (session.getAttribute("newSOMinorObjects") != null ) ? (ArrayList) session.getAttribute("newSOMinorObjects") : new ArrayList();
+
+		  //set all newly added minor objects to the SO in memory
+ 		  ArrayList newSOMinorObjectsEdit  = (session.getAttribute("newSOMinorObjectsEdit") != null ) ? (ArrayList) session.getAttribute("newSOMinorObjectsEdit") : new ArrayList();
+		  
+		  newSOMinorObjects.add(thisMinorObject);
+		  newSOMinorObjectsEdit.add(thisMinorObject);
+         
+          //set all newly added minor objects to the SO in memory
+		  session.setAttribute("newSOMinorObjects",newSOMinorObjects);
+		  session.setAttribute("newSOMinorObjectsEdit",newSOMinorObjectsEdit);
+          //Fix for #228 - END
+
 		  
 	}
 	

@@ -926,14 +926,44 @@ public class EditMainEuidHandler {
 
                     //get the child object node configs
                     ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
-                    FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
 
                     //set address array list of hasmap for editing
                     ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
 
                     ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
 
-                    for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                    //fix for #228 start
+                    ArrayList newSOMinorObjects  = (ArrayList) session.getAttribute("newSOMinorObjects");
+                    ArrayList newSOMinorObjectsEdit  = (ArrayList) session.getAttribute("newSOMinorObjectsEdit");
+                    
+                    if (newSOMinorObjectsEdit != null && newSOMinorObjectsEdit.size() > 0 ) {
+                        for (int k = 0; k < newSOMinorObjectsEdit.size(); k++) {
+                            HashMap newSOMinorObjectMap = (HashMap) newSOMinorObjectsEdit.get(k);
+                               if (newSOMinorObjectMap.get(MasterControllerService.HASH_MAP_TYPE).toString().equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW) &&
+                                newSOMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equalsIgnoreCase(objectNodeConfig.getName()) &&
+                                newSOMinorObjectMap.get(MasterControllerService.LID).toString().equalsIgnoreCase(systemObject.getLID()) &&
+                                newSOMinorObjectMap.get(MasterControllerService.SYSTEM_CODE).toString().equalsIgnoreCase(systemObject.getSystemCode())) {
+                                soMinorObjectsMapArrayListEdit.add(newSOMinorObjectMap);
+                            }
+
+                        }
+                    }
+                    
+                    if (newSOMinorObjects != null && newSOMinorObjects.size() > 0 ) {
+                        for (int k = 0; k < newSOMinorObjects.size(); k++) {
+                            HashMap newSOMinorObjectMap = (HashMap) newSOMinorObjects.get(k);
+                             if (newSOMinorObjectMap.get(MasterControllerService.HASH_MAP_TYPE).toString().equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW) &&
+                                newSOMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equalsIgnoreCase(objectNodeConfig.getName()) &&
+                                newSOMinorObjectMap.get(MasterControllerService.LID).toString().equalsIgnoreCase(systemObject.getLID()) &&
+                                newSOMinorObjectMap.get(MasterControllerService.SYSTEM_CODE).toString().equalsIgnoreCase(systemObject.getSystemCode())) {
+                                soMinorObjectsMapArrayList.add(newSOMinorObjectMap);
+                            }
+
+                        }
+                     }
+                    //fix for #228 end
+		  
+                    for (int k = 0; k < soMinorObjectsMapArrayListEdit.size(); k++) {
                         HashMap minorObjectHashMapEdit = (HashMap) soMinorObjectsMapArrayListEdit.get(k);
 
                         minorObjectHashMapEdit.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
@@ -949,36 +979,8 @@ public class EditMainEuidHandler {
 
                     systemObjectHashMapOld.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListEdit); // set SO addresses as arraylist here
 
-                    String strVal = new String();
-                    for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                     for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                         HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
-                        for (int m = 0; m < minorFiledConfigs.length; m++) {
-                            FieldConfig fieldConfig = minorFiledConfigs[m];
-                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
-                            //set the menu list values here
-                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                if (value != null) {
-                                    //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                    if (fieldConfig.getUserCode() != null) {
-                                        strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                    } else {
-                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                    }
-                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
-                                }
-
-                            } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
-                                if (value != null) {
-                                    //Mask the value as per the masking 
-                                    
-                                    value = fieldConfig.mask(value.toString());                                    
-                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
-                                }
-                            }
-
-
-                        }
-
                         minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
 
                         minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
@@ -1016,6 +1018,11 @@ public class EditMainEuidHandler {
 
             //set all system objects here
             setEoSystemObjectsOld(eoSOobjectsOld);
+            
+            //fix for #228 start
+            session.removeAttribute("newSOMinorObjects");
+            session.removeAttribute("newSOMinorObjectsEdit");
+            //fix for #228 end
             
         } catch (Exception ex) {
             if (ex instanceof ValidationException) {
