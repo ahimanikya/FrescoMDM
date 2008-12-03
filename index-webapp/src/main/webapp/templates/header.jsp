@@ -355,9 +355,9 @@ String  dateFormat = ConfigManager.getDateFormat();
                  </td>
                  <td align="right">
                      <% if (session.getAttribute("user") != null) {%>
-                     <span class="greetingsmall"><nobr><%=session.getAttribute("user")%>&nbsp;</span>
+                     <span class="greetingsmall"><font color="blue"><nobr><%=session.getAttribute("user")%></font>&nbsp;</span>
                      <h:commandLink title="#{msgs.header_logout_prompt}" action="#{LoginHandler.signOutUser}" styleClass="greetingsmall">
-                         <h:outputText  value="#{msgs.header_logout_prompt}" />
+                         <font color="blue"><h:outputText  value="#{msgs.header_logout_prompt}" /></font>
                      </h:commandLink>                     
                      <%}%>             
                      <img src='images/sun-logo.png' alt="Sun Microsystems" title="Sun Microsystems"/>
