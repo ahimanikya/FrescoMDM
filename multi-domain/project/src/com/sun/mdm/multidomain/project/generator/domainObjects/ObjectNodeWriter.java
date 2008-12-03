@@ -22,20 +22,27 @@
  */
 package com.sun.mdm.multidomain.project.generator.domainObjects;
 
-import java.io.RandomAccessFile;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import com.sun.mdm.multidomain.parser.MiNodeDef;
+import com.sun.mdm.multidomain.project.generator.exception.InvalidTemplateFileException;
+import com.sun.mdm.multidomain.project.generator.exception.UnmatchedTagsException;
 import com.sun.mdm.multidomain.project.generator.TemplateWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateFileNotFoundException;
-import com.sun.mdm.index.parser.NodeDef;
-import com.sun.mdm.index.parser.ParserException;
-import com.sun.mdm.index.util.CodeGeneratorUtil;
-import java.io.File;
+import com.sun.mdm.multidomain.project.generator.CodeGeneratorUtil;
 
 
 class ObjectNodeWriter {
+    
+    private static final String DOMAIN_OBJECTS_PACKAGE_NAME = "com/sun/mdm/index/objects/domains";
+    
     private TemplateWriter mTW = null;
-    private final String mPackage = "/com/sun/mdm/index/objects";
     private ArrayList mFieldKeys;
     private ArrayList mFieldNames;
     private ArrayList mFieldNullables;
@@ -45,29 +52,31 @@ class ObjectNodeWriter {
     private String mParentName;
     private String mPath;
     private ArrayList mSecondaryList;
+    private String mDomainName;
 
 
     /**
-     * @param path template path
+     * @param path output path
      * @param parentName parent name
-     * @param eot elephant object type
+     * @param MiNodeDef MMaster Index object node definition
      * @param seclist secondary list
-     * @param installPath install path
+     * @param domainName domain name
+     * @exception TemplateFileNotFoundException Template File Not Found
      */
     public ObjectNodeWriter(String path, 
                             String parentName, 
-                            NodeDef eot, 
-                            ArrayList seclist) {
-        try {
-            if (null != seclist) {
-                mTW = new TemplateWriter("com/sun/mdm/index/project/generator/objects/ObjectNode.java.tmpl");
-            } else {
-                mTW = new TemplateWriter("com/sun/mdm/index/project/generator/objects/ObjectNodeLeaf.java.tmpl");
-            }
-        } catch (TemplateFileNotFoundException ex) {
-            ex.printStackTrace();
+                            MiNodeDef eot, 
+                            ArrayList seclist, String domainName) throws TemplateFileNotFoundException {
+        
+        if (null != seclist) {
+            mTW = new TemplateWriter("com/sun/mdm/multidomain/project/generator/domainObjects/ObjectNode.java.tmpl");
+        } else {
+            mTW = new TemplateWriter("com/sun/mdm/multidomain/project/generator/domainObjects/ObjectNodeLeaf.java.tmpl");
         }
-        mPath = path + mPackage;
+               
+        String tp = CodeGeneratorUtil.makeJavaName(domainName);
+        mDomainName = tp.toLowerCase();
+        mPath = path + "/"+ DOMAIN_OBJECTS_PACKAGE_NAME + "/" + mDomainName;
         mName = eot.getTag();
         mParentName = parentName;
         mSecondaryList = seclist;
@@ -103,39 +112,43 @@ class ObjectNodeWriter {
 
 
     /**
-     * @exception ParserException
-     * @todo Document this method
+     * @exception TemplateWriterException Template writing exception
      */
-    public void write()
-        throws ParserException {
-        ArrayList cons = null;
-        try {
-            cons = mTW.construct();
-            ArrayList values = new ArrayList();
-            values.add(mName);
-            values.add(mParentName);
-            values.add(mFieldNames);
-            values.add(mFieldObjectFieldTypes);
-            values.add(mFieldTypes);
-            values.add(mFieldKeys);
-            values.add(mFieldNullables);
-            if (null != mSecondaryList) {
-                values.add(mSecondaryList);
-            }
-
-            String res = mTW.writeConstruct((String) cons.get(0), values);
-            File outDir = new File(mPath);
-            if (!outDir.exists()){
+    public void write() throws TemplateWriterException {
+        {
+            BufferedWriter output = null;
+            try {
+                ArrayList cons = null;
+                cons = mTW.construct();
+                ArrayList values = new ArrayList();
+                values.add(mDomainName);
+                values.add(mName);
+                values.add(mParentName);
+                values.add(mFieldNames);
+                values.add(mFieldObjectFieldTypes);
+                values.add(mFieldTypes);
+                values.add(mFieldKeys);
+                values.add(mFieldNullables);
+                if (null != mSecondaryList) {
+                    values.add(mSecondaryList);
+                }
+                String res = mTW.writeConstruct((String) cons.get(0), values);
+                File outDir = new File(mPath);
                 outDir.mkdirs();
-            }
-            RandomAccessFile foutput 
-            = new RandomAccessFile(mPath + "/" + CodeGeneratorUtil.makeClassName(mName) + "Object.java", "rw");
-            foutput.write(res.getBytes("UTF-8"));
-            foutput.close();
-        } catch (TemplateWriterException e) {
-            throw new ParserException(e);
-        } catch (Exception e) {
-            throw new ParserException(e);
+                String javafile = mPath + "/" + CodeGeneratorUtil.makeClassName(mName) + "Object.java";
+                output = new BufferedWriter(new FileWriter(javafile));
+                byte[] utf8Bytes = res.getBytes("UTF-8");
+                String utf8String = new String(utf8Bytes, "UTF-8");
+                output.write(utf8String);
+                output.close();
+
+            } catch (IOException ex) {
+                throw new TemplateWriterException(ex.getMessage());
+            } catch (UnmatchedTagsException ex) {
+                throw new TemplateWriterException(ex.getMessage());
+            } catch (InvalidTemplateFileException ex) {
+                throw new TemplateWriterException(ex.getMessage());
+            }    
         }
     }
 }

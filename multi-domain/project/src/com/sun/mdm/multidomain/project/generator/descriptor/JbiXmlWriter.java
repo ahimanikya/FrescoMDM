@@ -53,12 +53,13 @@ public class JbiXmlWriter {
     public void write()
         throws TemplateWriterException {
         try {
-            String templateFileName = "com/sun/mdm/index/project/generator/descriptor/jbi.xml.tmpl";
-            mPath.mkdirs();
+            String templateFileName = "com/sun/mdm/multidomain/project/generator/descriptor/jbi.xml.tmpl";
+            
             File jbiFile = new File(mPath, "jbi.xml");
+            mPath.mkdirs();
             writeStringToFile(jbiFile, writeProject(templateFileName));
         } catch (IOException ex) {
-            new TemplateWriterException();
+            new TemplateWriterException(ex.getMessage());
         }
     }
     
@@ -85,9 +86,10 @@ public class JbiXmlWriter {
     private void writeStringToFile(File outFile, String content ) throws IOException{
 
         BufferedWriter output = new BufferedWriter(new FileWriter(outFile));
-        
+        byte[] utf8Bytes = content.getBytes("UTF-8");
+        String utf8String = new String(utf8Bytes, "UTF-8");        
         try{
-          output.write( content );
+          output.write( utf8String );
         }finally {
           output.close();
         }

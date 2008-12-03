@@ -5,7 +5,6 @@
 
 package com.sun.mdm.multidomain.project.anttasks;
 
-import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.Utils;
@@ -26,13 +25,15 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.taskdefs.Ant.Reference;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.Jar;
+import org.apache.tools.ant.taskdefs.Javac;
 import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PatternSet;
-import org.openide.util.Exceptions;
 import org.xml.sax.InputSource;
 
 /**
@@ -141,15 +142,15 @@ public class MultidomainGeneratorTask extends Task {
                 MultiDomainProjectProperties.CONFIGURATION_FOLDER+ File.separator+
                 MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML;
             MultiDomainModel mdModel = Utils.parseMultiDomainModel(multiDomainModelXml);
-            //ArrayList <String> domainList = mdModel.getDomainNames();
-            ArrayList <String> domainList = new ArrayList<String>();
-            domainList.add("Person");
+            ArrayList <String> domainList = mdModel.getDomainNames();
+            //ArrayList <String> domainList = new ArrayList<String>();
+            //domainList.add("Person");
             for (String  domain:domainList ){
                 
                 File objectFile = new File(mSrcdir,
                         MultiDomainProjectProperties.DOMAINS_FOLDER + 
                         "/" + domain.trim() + "/object.xml");
-                generateDomainOjbect(destDir, objectFile);
+                generateDomainOjbects(destDir, objectFile);
            
             }           
 
@@ -168,18 +169,54 @@ public class MultidomainGeneratorTask extends Task {
 
     }
     
-    private void generateDomainOjbect(File destDir, File objectFile) throws BuildException{
+    private void generateDomainOjbects(File destDir, File objectFile) throws BuildException{
         try {
-
-            InputSource source = new InputSource(new FileInputStream(objectFile));
-            EIndexObject eo = com.sun.mdm.index.parser.Utils.parseEIndexObject(source);
-            EntityObjectWriter eow = new EntityObjectWriter(destDir.getAbsolutePath(), eo);
+            EntityObjectWriter eow = new EntityObjectWriter(destDir.getAbsolutePath(), objectFile);
             eow.write();
-        } catch (com.sun.mdm.index.parser.ParserException ex) {
-            throw new BuildException(ex.getMessage());
-        } catch (FileNotFoundException ex) {
+        } catch (TemplateWriterException ex) {
             throw new BuildException(ex.getMessage());
         }
+    }
+    
+    private void makeDomainOjbectsJar() {
+        String projPath = getProject().getProperty("basedir");
+        File genDir = new File(projPath + File.separator + MultiDomainProjectProperties.MULTIDOMAIN_GENERATED_FOLDER);       
+        String javacDebug = getProject().getProperty("javac.debug");        
+        File destDir = new File(genDir, "domain-ojects/classes");
+        // delete old class file
+        Delete delete = (Delete) getProject().createTask("delete");
+        delete.setDir(destDir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        destDir.mkdirs();
+        
+        Javac javac = (Javac) getProject().createTask("javac");
+        Path srcDir = new Path(getProject(), genDir + "/domain-ojects/java");
+        javac.setEncoding("UTF-8");
+        javac.setSrcdir(srcDir);
+        javac.setDestdir(destDir);
+        Reference ref = new Reference();
+        ref.setProject(getProject());
+        ref.setRefId("generate.class.path");
+        javac.setClasspathRef(ref); 
+        javac.init();
+        javac.setLocation(getLocation());
+        if (null!=javacDebug &&javacDebug.equalsIgnoreCase("true")){
+            javac.setDebug(true);
+        }else{
+            javac.setDebug(false);
+        }
+        javac.execute();
+        Jar jar = (Jar) getProject().createTask("jar");
+
+        File jarFile = new File(projPath + File.separator + "lib"
+                + File.separator + "multidomain-client.jar");
+        jar.setDestFile(jarFile);
+        jar.setBasedir(destDir);
+        jar.init();
+        jar.setLocation(getLocation());
+        jar.execute();
     }
     
     private void generateEbjFiles() {
@@ -327,8 +364,8 @@ public class MultidomainGeneratorTask extends Task {
 
         //make resources.jar
         makeResourcesJar();
-        //make master-index-client.jar
-//        makeClientJar();
+        //make master-index-domain-objects.jar
+        makeDomainOjbectsJar();
     }
     
     private void makeResourcesJar() throws Exception {        

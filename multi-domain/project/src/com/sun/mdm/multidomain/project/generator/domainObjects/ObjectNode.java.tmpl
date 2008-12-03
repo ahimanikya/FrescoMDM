@@ -1,4 +1,4 @@
-[SBYNTAG:DEFINE:objname,pname,fieldname(),fieldtypename(),fieldtype(),keylist(),nulllist(),seclist()]
+[SBYNTAG:DEFINE:domainName,objname,pname,fieldname(),fieldtypename(),fieldtype(),keylist(),nulllist(),seclist()]
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -21,10 +21,15 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.index.objects;
+package com.sun.mdm.index.objects.domains.[sbyntag:domainName];
 
 import java.util.*;
-import com.sun.mdm.index.objects.exception.*;
+import com.sun.mdm.index.objects.AttributeMetaData;
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.ObjectField;
+import com.sun.mdm.index.objects.ObjectKey;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.objects.SystemObjectException;
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 

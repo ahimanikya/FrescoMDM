@@ -207,7 +207,7 @@
             <version>${netbeans.version}</version>			
         </dependency>
         <dependency>
-        	<groupId>mural</groupId>
+            <groupId>mural</groupId>
             <artifactId>multidomain-core</artifactId>
             <version>${mural.currentVersion}</version>
         </dependency>

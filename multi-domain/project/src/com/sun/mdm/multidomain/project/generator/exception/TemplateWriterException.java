@@ -23,7 +23,7 @@
 package com.sun.mdm.multidomain.project.generator.exception;
 
 
-public class TemplateWriterException extends com.sun.mdm.index.master.ProcessingException {
+public class TemplateWriterException extends Exception {
     private static final String MMSG = "template writer exception";
 
 

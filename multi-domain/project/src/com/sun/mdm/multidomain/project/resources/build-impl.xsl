@@ -165,6 +165,7 @@ is divided into following sections:
                 <path id="generate.class.path">
                     <pathelement location="${{module.install.dir}}/com-sun-mdm-multidomain-project.jar" />
                     <pathelement location="${{module.install.dir}}/ext/mdm/mdm-multidomain/multidomain-core.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/mdm/index-core.jar" />
                 </path>
                 <taskdef name="generate-mdm-multidomain-files"
                          classname="com.sun.mdm.multidomain.project.anttasks.MultidomainGeneratorTask">

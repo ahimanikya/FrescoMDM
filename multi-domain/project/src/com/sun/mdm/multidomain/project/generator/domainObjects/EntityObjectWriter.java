@@ -22,130 +22,126 @@
  */
 package com.sun.mdm.multidomain.project.generator.domainObjects;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import com.sun.mdm.index.parser.EIndexObject;
-import com.sun.mdm.index.parser.NodeDef;
-import com.sun.mdm.index.parser.ParserException;
-import com.sun.mdm.index.parser.RelationDef;
-import com.sun.mdm.index.parser.Utils;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import org.xml.sax.InputSource;
+
+import com.sun.mdm.multidomain.parser.Utils;
+import com.sun.mdm.multidomain.parser.MiObject;
+import com.sun.mdm.multidomain.parser.MiNodeDef;
+import com.sun.mdm.multidomain.parser.MiRelationDef;
+import com.sun.mdm.multidomain.parser.ParserException;
+import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
+
+
+
 
 
 public class EntityObjectWriter {
-    private EIndexObject mEIndexObject;
+    
+    private MiObject mEIndexObject;
     private String mPath;
 
-
     /**
-     * @param path template path
-     * @param eo elephant object
-     * @exception ParserException parser exception
+     * @param path output path
+     * @param eo Master Index object
      */
-    public EntityObjectWriter(String path, EIndexObject eo)
-        throws ParserException {
+    public EntityObjectWriter(String path, MiObject eo) {
         mPath = path;
         mEIndexObject = eo;
     }
     
     /**
-     * @param path template path
-     * @param File objectFile
-     * @exception ParserException parser exception
+     * @param path output path
+     * @param objectFile object.xml file
+     * @exception TemplateWriterException Template writing exception
      */
     public EntityObjectWriter(String path, File objectFile)
-        throws ParserException {
+        throws TemplateWriterException {
         try {
             mPath = path;
             InputSource source = new InputSource(new FileInputStream(objectFile));
-            mEIndexObject = Utils.parseEIndexObject(source);
+            mEIndexObject = Utils.parseMiObject(source);
+        } catch (ParserException ex) {
+            throw new TemplateWriterException(ex.getMessage());
         } catch (FileNotFoundException ex) {
-            new ParserException(ex);
+            throw new TemplateWriterException(ex.getMessage());
         }
     }
 
 
     /**
-     * @param node node definition
+     * @param node Master Index object node definition
      * @param parent parent tag
      * @param childNames child names
      * @param relations list of relations
-     * @exception ParserException parser exception
+     * @exception TemplateWriterException Template writing exception
      */
-    public void write(NodeDef node, 
+    public void write(MiNodeDef node, 
                       String parent, 
                       ArrayList childNames, 
                       ArrayList relations)
-        throws ParserException {
-        try {
-            ArrayList childList = null;
-            if (null != childNames) {
-                childList = new ArrayList();
-                childList.addAll(childNames);
-            }
+            throws TemplateWriterException {
+        
+        ArrayList childList = null;
+        if (null != childNames) {
+            childList = new ArrayList();
+            childList.addAll(childNames);
+        }
 
-            if (null != relations) {
-                for (int i = 0; i < relations.size(); i++) {
-                    RelationDef rel = (RelationDef) relations.get(i);
-                    if (null == childList) {
-                        childList = new ArrayList();
-                    }
-                    childList.add(rel.getName());
+        if (null != relations) {
+            for (int i = 0; i < relations.size(); i++) {
+                MiRelationDef rel = (MiRelationDef) relations.get(i);
+                if (null == childList) {
+                    childList = new ArrayList();
                 }
+                childList.add(rel.getName());
             }
+        }
 
-            ObjectNodeWriter onw
-                     = new ObjectNodeWriter(mPath, 
-                                            parent, 
-                                            node, 
-                                            childList);
-            onw.write();
+        ObjectNodeWriter onw
+                 = new ObjectNodeWriter(mPath, 
+                                        parent, 
+                                        node, 
+                                        childList, mEIndexObject.getApplicationName());
+        onw.write();
 
-            if (null != childNames) {
-                for (int i = 0; i < childNames.size(); i++) {
-                    write(mEIndexObject.getNode((String) childNames.get(i)), 
-                                                node.getTag(), null, null);
-                }
+        if (null != childNames) {
+            for (int i = 0; i < childNames.size(); i++) {
+                write(mEIndexObject.getNode((String) childNames.get(i)), 
+                                            node.getTag(), null, null);
             }
+        }
 
-            if (null != relations) {
-                for (int i = 0; i < relations.size(); i++) {
-                    RelationDef rel = (RelationDef) relations.get(i);
-                    write(mEIndexObject.getNode(rel.getName()), 
-                          node.getTag(), 
-                          rel.getChildren(), 
-                          rel.getRelations());
-                }
+        if (null != relations) {
+            for (int i = 0; i < relations.size(); i++) {
+                MiRelationDef rel = (MiRelationDef) relations.get(i);
+                write(mEIndexObject.getNode(rel.getName()), 
+                      node.getTag(), 
+                      rel.getChildren(), 
+                      rel.getRelations());
             }
-        } catch (ParserException e) {
-            throw e;
         }
     }
 
 
     /**
-     * @exception ParserException parser exception
+     * @exception TemplateWriterException Template writing exception
      */
-    public void write()
-        throws ParserException {
-        try {
-            ArrayList relList = mEIndexObject.getRelationships();
-            if (null != relList) {
-                for (int i = 0; i < relList.size(); i++) {
-                    RelationDef relDef = (RelationDef) relList.get(i);
-                    NodeDef node = mEIndexObject.getNode(relDef.getName());
-                    write(node, 
-                          "", 
-                          relDef.getChildren(), 
-                          relDef.getRelations());
-                }
+    public void write() throws TemplateWriterException{
+        
+        ArrayList relList = mEIndexObject.getRelationships();
+        if (null != relList) {
+            for (int i = 0; i < relList.size(); i++) {
+                MiRelationDef relDef = (MiRelationDef) relList.get(i);
+                MiNodeDef node = mEIndexObject.getNode(relDef.getName());
+                write(node, 
+                      "", 
+                      relDef.getChildren(), 
+                      relDef.getRelations());
             }
-        } catch (ParserException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ParserException(e);
         }
     }
 }
