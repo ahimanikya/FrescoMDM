@@ -313,6 +313,14 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
         String strXml = xmlHEADER + tagHeaderObject +
                 "    <database>" + mWiz.getProperty(WizardProperties.PROP_DATABASE) + "</database>\n" +
                 "    <dateformat>" + mWiz.getProperty(WizardProperties.PROP_DATE_FORMAT) + "</dateformat>\n" +
+                "    <datatypes>\n" + 
+                "        <data-type name=\"string\" columns=\"10\"/>\n" +
+                "        <data-type name=\"char\" columns=\"10\"/>\n" +
+                "        <data-type name=\"date\" columns=\"10\"/>\n" +
+                "        <data-type name=\"int\" columns=\"10\"/>\n" +
+                "        <data-type name=\"float\" columns=\"10\"/>\n" +
+                "        <data-type name=\"boolean\" columns=\"10\"/>\n" +
+                "    </datatypes>\n" +
                 "    <domains>\n    </domains>\n" +
                 tagTailObject;
 
