@@ -32,7 +32,7 @@ public enum AttributeType {
     CHAR("Character"),
     DATE("Date"),
     FLOAT("Float"),
-    INT("Integer"),
+    INT("Int"),
     STRING("String");
     
     /*
