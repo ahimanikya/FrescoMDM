@@ -111,7 +111,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
             Attribute attr = (Attribute) al.get(j);
             ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
                         attr.getDataType(), attr.getDefaultValue(),
-                        attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
+                        attr.getSearchable(), attr.getRequired());
             modelExtendedAttribute.addRow(j, row);
         }
         
@@ -436,16 +436,15 @@ final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
                 String defaultValue = dialog.getDefaultValue();
                 String searchable = dialog.getSearchable() == true ? "true" : "false";
                 String required = dialog.getRequired() == true ? "true" : "false";
-                String attributeID = ""; //dialog.getAttributeID();
                 // add new Attribute
                 Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
-                                               searchable, required, attributeID);
+                                               searchable, required);
                 mDefinitionNode.addExtendedAttribute(attr);
                 // add a new row
                 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
                 ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), attr.getColumnName(), 
                                                             attr.getDataType(), attr.getDefaultValue(),
-                                                            attr.getSearchable(), attr.getRequired(), attr.getAttributeID());
+                                                            attr.getSearchable(), attr.getRequired());
                 model.addRow(model.getRowCount(), row);
                 model.fireTableDataChanged();
                 mEditorMainApp.enableSaveAction(true);
@@ -481,7 +480,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         ExtendedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
         final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
-                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired(), row.getAttributeID());
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();
@@ -490,10 +489,9 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             String defaultValue = dialog.getDefaultValue();
             String searchable = dialog.getSearchable() == true ? "true" : "false";
             String required = dialog.getRequired() == true ? "true" : "false";
-            String attributeID = dialog.getAttributeID();
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
-                                           searchable, required, attributeID);
+                                           searchable, required);
             mDefinitionNode.updateExtendedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
@@ -514,7 +512,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         ExtendedAttributeRow row = model.getRow(idx);
         String oldName = row.getName();
         final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getColumnName(),
-                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired(), row.getAttributeID());
+                row.getDataType(), row.getDefaultValue(), row.getSearchable(), row.getRequired());
         dialog.setVisible(true);
         if (dialog.isModified()) {
             String attrName = dialog.getAttributeName();
@@ -523,10 +521,9 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             String defaultValue = dialog.getDefaultValue();
             String searchable = dialog.getSearchable() == true ? "true" : "false";
             String required = dialog.getRequired() == true ? "true" : "false";
-            String attributeID = dialog.getAttributeID();
             // Replace Attribute
             Attribute attr = new Attribute(attrName, columnName, dataType, defaultValue,
-                                           searchable, required, attributeID);
+                                           searchable, required);
             mDefinitionNode.updateExtendedAttribute(oldName, attr);
             // update row
             row.setName(attrName);
@@ -745,17 +742,15 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         private String defaultValue;
         private String searchable;
         private String required;
-        private String attributeID;
 
         public ExtendedAttributeRow(String name, String columnName, String dataType, String defaultValue,
-                String searchable, String required, String attributeID) {
+                String searchable, String required) {
             this.name = name;
             this.columnName = columnName;
             this.dataType = dataType;
             this.defaultValue = defaultValue;
             this.searchable = searchable;
             this.required = required;
-            this.attributeID = attributeID;
         }
 
         public String getName() {
@@ -790,14 +785,6 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             this.defaultValue = defaultValue;
         }
 
-        public String getAttributeID() {
-            return attributeID;
-        }
-
-        public void setAttributeID(String attributeID) {
-            this.attributeID = attributeID;
-        }
-
         public String getRequired() {
             return required;
         }
@@ -823,7 +810,6 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
                                          NbBundle.getMessage(TabHierarchyDef.class, "LBL_Attribute_Default_Value"), 
                                          NbBundle.getMessage(TabHierarchyDef.class, "LBL_Attribute_Searchable"), 
                                          NbBundle.getMessage(TabHierarchyDef.class, "LBL_Attribute_Required"), 
-                                         NbBundle.getMessage(TabHierarchyDef.class, "LBL_Attribute_ID"), 
                                         };
         ArrayList <ExtendedAttributeRow> rows;
         final static int iColName = 0;
@@ -832,7 +818,6 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         final static int iColDefaultValue = 3;
         final static int iColSearchable = 4;
         final static int iColRequired = 5;
-        final static int iColAttributeID = 6;
         
         TableModelExtendedAttribute(ArrayList rows) {
             this.rows = rows;
@@ -870,8 +855,6 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
                             return singleRow.getSearchable();
                         case iColRequired:
                             return singleRow.getRequired();
-                        case iColAttributeID:
-                            return singleRow.getAttributeID();
                         default:
                             return null;
                     }
@@ -913,9 +896,6 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
                             break;
                         case iColRequired:
                             singleRow.setRequired((String) value);
-                            break;
-                        case iColAttributeID:
-                            singleRow.setAttributeID((String) value);
                             break;
                         default:
                             return;
@@ -1007,8 +987,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             ExtendedAttributeRow row = model.getRow(i);
             Attribute attr = new Attribute(row.getName(), row.getColumnName(), 
                                            row.getDataType(), row.getDefaultValue(),
-                                           row.getSearchable(), row.getRequired(), 
-                                           row.getAttributeID());
+                                           row.getSearchable(), row.getRequired());
             al.add(attr);
         }
         return al;
