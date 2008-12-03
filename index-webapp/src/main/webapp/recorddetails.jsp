@@ -321,7 +321,7 @@ function align(thisevent,divID) {
                                                   <a href="javascript:void(0);" 
 												     title="<h:outputText value="#{feildConfig.displayName}"/>"
                                                      onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{feildConfig.name}"/>',
+												          '<h:outputText value="#{feildConfig.displayName}"/>',
 														  '<%=dateFormat%>',
 														  '<%=global_daysOfWeek%>',
 														  '<%=global_months%>',
