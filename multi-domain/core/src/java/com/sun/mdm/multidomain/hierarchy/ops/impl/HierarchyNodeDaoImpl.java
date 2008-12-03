@@ -586,7 +586,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
                 case STRING:
                     attrValue = rs.getString(attr.getColumnName());
                     break;
-                case INTEGER:
+                case INT:
                     long longVal = rs.getLong(attr.getColumnName());
                     attrValue = Long.toString(longVal);
                     break;
