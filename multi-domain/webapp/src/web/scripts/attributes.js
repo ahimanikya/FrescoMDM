@@ -331,7 +331,14 @@ function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
             tempAttr.AttributeNameField.value = attrValue.name;
             tempAttr.AttributeTypeField.value = attrValue.dataType;
             tempAttr.TypeChanged();
-            tempAttr.DefaultValueField.value = attrValue.defaultValue;         
+
+            if (attrValue.dataType == "date"){
+                var intDate = parseInt(attrValue.defaultValue);
+                // alert("date raw: "+attrValue.defaultValue + " date: "+new Date(intDate));
+                tempAttr.DefaultValueField.setValue(new Date(intDate));
+            } else {
+                tempAttr.DefaultValueField.value = attrValue.defaultValue;
+            }
             tempAttr.RequiredField.checked = (attrValue.isRequired == "true") ? true : false;
             tempAttr.SearchableField.checked = (attrValue.searchable == "true") ? true : false;
         }
