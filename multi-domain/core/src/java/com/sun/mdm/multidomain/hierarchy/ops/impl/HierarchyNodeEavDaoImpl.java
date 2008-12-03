@@ -94,7 +94,7 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
                     case STRING:
                         stmt.setString(index++, strValue);
                         break;
-                    case INTEGER:
+                    case INT:
                         Long longVal = new Long(strValue);
                         stmt.setLong(index++, longVal);
                         break;
