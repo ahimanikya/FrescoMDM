@@ -28,6 +28,7 @@
             <xs:choice minOccurs="1" maxOccurs="unbounded">
                 <xs:element name="database" type="xs:string" minOccurs="1" maxOccurs="1"/>
                 <xs:element name="dateformat" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="datatypes"/>
                 <xs:element ref="domains"/>
                 <xs:element name="relationship" type="relationshipType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="hierarchy" type="hierarchyType" minOccurs="0" maxOccurs="unbounded"/>
@@ -36,6 +37,28 @@
             </xs:choice>
         </xs:complexType>
     </xs:element>
+    <xs:element name="datatypes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="data-type" type="datatypeType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="datatypeType">
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN"/>
+            </xs:simpleType>
+	</xs:attribute>
+        <xs:attribute name="columns" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1" id="columns.minInclusive"/>
+                    <!--xs:maxInclusive value="2" id="short.maxInclusive"/-->
+                </xs:restriction>
+            </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
     <xs:element name="domains">
         <xs:complexType>
             <xs:sequence>
