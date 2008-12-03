@@ -329,7 +329,7 @@ function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
             attributesArray.push(tempAttr);
             // put values in fields
             tempAttr.AttributeNameField.value = attrValue.name;
-            tempAttr.AttributeTypeField.value = attrValue.dataType.toLowerCase();
+            tempAttr.AttributeTypeField.value = attrValue.dataType;
             tempAttr.TypeChanged();
             tempAttr.DefaultValueField.value = attrValue.defaultValue;
             // convert "true" / "false" to boolean
