@@ -90,7 +90,7 @@
     </convert>
     
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.AttributeDefExt">
-        <param name="include" value="name, columnName, searchable, isRequired, dataType, defaultValue" />
+        <param name="include" value="name, columnName, searchable, isRequired, dataType, defaultValue, id" />
     </convert>	
 
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipDefView">

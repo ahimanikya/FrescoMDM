@@ -329,10 +329,14 @@ function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
             attributesArray.push(tempAttr);
             // put values in fields
             tempAttr.AttributeNameField.value = attrValue.name;
-            tempAttr.AttributeTypeField.value = attrValue.type;
+            tempAttr.AttributeTypeField.value = attrValue.dataType.toLowerCase();
+            tempAttr.TypeChanged();
             tempAttr.DefaultValueField.value = attrValue.defaultValue;
-            tempAttr.RequiredField.value = attrValue.required;
-            tempAttr.SearchableField.value = attrValue.searchable;
+            // convert "true" / "false" to boolean
+            tempAttr.RequiredField.checked = (attrValue.isRequired == "true") ? true : false;
+            tempAttr.SearchableField.checked = (attrValue.searchable == "true") ? true : false;
+
+            
         }
     }
     refreshAttributesView(tableId, attributesArray);

@@ -115,8 +115,9 @@ function validateRelationshipForm() {
         tempAttr.name = attr.AttributeNameField.value;
         tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
-        tempAttr.isRequired = attr.RequiredField.value;
-        tempAttr.searchable = attr.SearchableField.value;
+        tempAttr.isRequired = attr.RequiredField.checked;
+        tempAttr.searchable = attr.SearchableField.checked;
+        tempAttr.id = attr.IdField.value;
         customAttributes.push(tempAttr);
     }
 
@@ -222,8 +223,9 @@ function validateHierarchyForm() {
         tempAttr.name = attr.AttributeNameField.value;
         tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
-        tempAttr.isRequired = attr.RequiredField.value;
-        tempAttr.searchable = attr.SearchableField.value;
+        tempAttr.isRequired = attr.RequiredField.checked;
+        tempAttr.searchable = attr.SearchableField.checked;
+        tempAttr.id = attr.IdField.value;
         customAttributes.push(tempAttr);
     }
 
@@ -324,8 +326,10 @@ function validateEditHierarchyForm() {
         tempAttr.name = attr.AttributeNameField.value;
         tempAttr.dataType = attr.AttributeTypeField.value;
         tempAttr.defaultValue = attr.DefaultValueField.value;
-        tempAttr.isRequired = attr.RequiredField.value;
-        tempAttr.searchable = attr.SearchableField.value;
+        tempAttr.isRequired = attr.RequiredField.checked;
+        tempAttr.searchable = attr.SearchableField.checked;
+        //alert("tempAttr.isRequired="+tempAttr.isRequired+" tempAttr.searchable"+tempAttr.searchable);
+        tempAttr.id = attr.IdField.value;
         customAttributes.push(tempAttr);
     }
 
