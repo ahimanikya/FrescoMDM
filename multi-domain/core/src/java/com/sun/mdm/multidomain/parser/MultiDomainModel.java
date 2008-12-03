@@ -519,6 +519,18 @@ public class MultiDomainModel {
         return dateFormat;
     }
     
+    private Element getDataTypesToStr(Document xmlDoc) throws Exception {
+        Element domains = xmlDoc.createElement(this.mTagDataTypes);
+        for (Object key : mMapDataTypes.keySet()) {
+            Element datatype = xmlDoc.createElement(this.mTagDataType);
+            datatype.setAttribute(mTagName, (String) key);
+            datatype.setAttribute(mTagColumns, (String) mMapDataTypes.get(key));
+            domains.appendChild(datatype);
+        }
+        
+        return domains;
+    }
+    
     private Element getDomainsToStr(Document xmlDoc) throws Exception {
         Element domains = xmlDoc.createElement(this.mTagDomains);
         for (String domainName : getDomainNames()) {
@@ -651,6 +663,7 @@ public class MultiDomainModel {
         root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainModel.xsd");
         root.appendChild(getDatabaseToStr(xmldoc));
         root.appendChild(getDateFormatToStr(xmldoc));
+        root.appendChild(getDataTypesToStr(xmldoc));
         root.appendChild(getDomainsToStr(xmldoc));
         getDefinitionsToStr(xmldoc);
         byte[] xml = transformToXML(xmldoc);
