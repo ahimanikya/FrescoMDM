@@ -99,8 +99,7 @@ public class ViewBuilder {
     
     public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) 
         throws ConfigException {
-        //TBD: need a domain-specific date format.
-        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();        
+        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForDomain(hNode.getHierarchyDef().getDomain());        
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();        
         hNodeRecord.setId(Long.toString(hNode.getNodeID()));
         hNodeRecord.setEUID(hNode.getEUID());
@@ -340,9 +339,8 @@ public class ViewBuilder {
     public static String buildHighLight(String domain, List<FieldConfig> recordIdConfigFields, EPathArrayList recordIdEPathFields, ObjectNode objectNode) 
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
-        String highLight = null;
-        //TBD: need a domain-specific date format.
-        SimpleDateFormat dateFormat = configManager.getDateFormat();
+        String highLight = null;       
+        SimpleDateFormat dateFormat = configManager.getDateFormatForDomain(domain);
         boolean hasSensitiveData = false;
         boolean getSensitiveField = true;
         try {
@@ -442,8 +440,7 @@ public class ViewBuilder {
         boolean getSensitiveField = true;
         List<ObjectRecord> records = new ArrayList<ObjectRecord>();
         
-        //TBD need a domain-specific date format.
-        SimpleDateFormat dateFormat = configManager.getDateFormat();
+        SimpleDateFormat dateFormat = configManager.getDateFormatForDomain(domain);
         DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domain);
         List<SearchResultsConfig> searchResultsConfigs = domainConfig.getSearchResultsConfigs();
           
@@ -509,8 +506,8 @@ public class ViewBuilder {
     
     public static RelationshipRecord buildRelationshipRecord(Relationship relationship) 
         throws ConfigException {
-        //TBD: need a domain-specific date format.
-        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();    
+        
+        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForMultiDomain();    
         
         RelationshipRecord relationshipRecord = new RelationshipRecord();        
         RelationshipDef type = (RelationshipDef)relationship.getRelationshipDef();
@@ -533,7 +530,7 @@ public class ViewBuilder {
     public static ObjectRecord buildObjectRecord(String domain, String EUID, ObjectNode objectNode) 
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
-        SimpleDateFormat dateFormat = configManager.getDateFormat();
+        SimpleDateFormat dateFormat = configManager.getDateFormatForDomain(domain);
         boolean hasSensitiveData = false;
         boolean getSensitiveField = true;
         try {
