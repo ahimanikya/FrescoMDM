@@ -115,7 +115,9 @@ public class MDConfigManager {
                 return mInstance;
             }
         } catch (Exception e) {
-            throw new ConfigException(e);
+            throw new ConfigException(mLocalizer.t("CFG555: Could not initialize the " +
+                                                   "MultiDomanConfigManager: {0}", 
+                                                   e.getMessage()));
         }
     }  
 
@@ -148,9 +150,11 @@ public class MDConfigManager {
                 return mInstance;
             }
         } catch (Exception e) {
-            throw new ConfigException(e);
+            throw new ConfigException(mLocalizer.t("CFG556: Could not re-initialize the " +
+                                                   "MultiDomanConfigManager: {0}", 
+                                                   e.getMessage()));
         }
-	}
+    }
 
 
     /**
