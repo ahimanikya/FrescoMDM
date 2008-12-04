@@ -119,6 +119,8 @@ function validateRelationshipForm() {
         tempAttr.searchable = attr.SearchableField.checked;
         tempAttr.id = attr.IdField.value;
         customAttributes.push(tempAttr);
+        
+        alert("administration.js: type => " + tempAttr.dataType + " value => " + tempAttr.defaultValue);
     }
 
     relationshipdef.extendedAttributes = customAttributes;
@@ -154,10 +156,6 @@ function clearAddRelationshipForm () {
     deleteAttributes( addRelationshipPrefix+'_customAttributesTable', eval(addRelationshipPrefix+'_attributesArray') );
 }
 // Script for Add Relationship Def ENDS
-
-
-
-
 
 // Script for Add Hierarchy Def STARTS
 var addHierarchyPrefix = "addhierarchy";    

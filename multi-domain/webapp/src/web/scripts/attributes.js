@@ -90,9 +90,11 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
                       name: "date_attr",
                       promptMessage: "mm/dd/yyyy",
                       invalidMessage: "Invalid date.",
+                      //constraints: "{selector:'date', datePattern:'mm/dd/yyyy'}",
                       width:"150px"
                 }; 
                 this.DefaultValueField = new dijit.form.DateTextBox(props, this.DefaultValueField);
+                
         } else if( this.AttributeTypeField.value == "boolean") {
                 this.DefaultValueField = document.createElement("select");
                 var tOption = document.createElement ("option");
@@ -331,13 +333,10 @@ function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
             tempAttr.AttributeNameField.value = attrValue.name;
             tempAttr.AttributeTypeField.value = attrValue.dataType;
             tempAttr.TypeChanged();
-
-            if (attrValue.dataType == "date"){
-                var intDate = parseInt(attrValue.defaultValue);
-                // alert("date raw: "+attrValue.defaultValue + " date: "+new Date(intDate));
-                tempAttr.DefaultValueField.setValue(new Date(intDate));
+            if (attrValue.dataType == "date") {
+              tempAttr.DefaultValueField.setValue(new Date(attrValue.defaultValue));
             } else {
-                tempAttr.DefaultValueField.value = attrValue.defaultValue;
+              tempAttr.DefaultValueField.value = attrValue.defaultValue;    
             }
             tempAttr.RequiredField.checked = (attrValue.isRequired == "true") ? true : false;
             tempAttr.SearchableField.checked = (attrValue.searchable == "true") ? true : false;
