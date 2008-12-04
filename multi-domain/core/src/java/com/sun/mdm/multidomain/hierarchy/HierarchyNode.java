@@ -50,7 +50,7 @@ public class HierarchyNode implements Serializable {
     private HierarchyNode parent;
     private List<HierarchyNode> children = null;
     private ObjectNode objectNode;
-    private Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
+    private Map<String, String> attributeValues = new HashMap<String, String>();
     private HierarchyDef hierarchyDef = null;
 
 
@@ -178,8 +178,8 @@ public class HierarchyNode implements Serializable {
      * @param attribute Attribute.
      * @param value Attribute value.
      */
-    public void setAttributeValue(Attribute attribute, String value) {
-        attributeValues.put(attribute, value);
+    public void setAttributeValue(String name, String value) {
+        attributeValues.put(name, value);
     }
 
     /**
@@ -196,7 +196,7 @@ public class HierarchyNode implements Serializable {
      * @param attribute Attribute.
      * @param value Attribute value.
      */
-    public void setAttributes(Map<Attribute, String> attributeValues) {
+    public void setAttributes(Map<String, String> attributeValues) {
         this.attributeValues = attributeValues;
     }
 
@@ -205,7 +205,7 @@ public class HierarchyNode implements Serializable {
      * @param attribute Attribute.
      * @return String Attribute value.
      */
-    public Map<Attribute, String> getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributeValues;
     }
 
