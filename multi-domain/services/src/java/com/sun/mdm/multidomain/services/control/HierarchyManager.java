@@ -358,7 +358,7 @@ public class HierarchyManager {
      */
     public String addHierarchyNode(HierarchyNodeRecord hNodeRecord) 
         throws ServiceException {
-        int hNodeId = 0;
+        long hNodeId = 0;
         if (!TBD) {    
         try {
             HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
@@ -368,7 +368,7 @@ public class HierarchyManager {
         } catch (UserException uex) {
             throw new ServiceException(uex);
         }     
-        return Integer.toString(hNodeId);
+        return Long.toString(hNodeId);
         }
         //demo 
         HierarchyNode hNode = QueryBuilder.buildHierarchyNode(hNodeRecord);
@@ -393,9 +393,9 @@ public class HierarchyManager {
             for (HierarchyNodeRecord hNodeRecord : hNodeRecords) {
                 hNodes[i++] = QueryBuilder.buildHierarchyNode(hNodeRecord);
             };
-            int[] ids = multiDomainService.addHierarchyNodes(Integer.parseInt(parentId), hNodes);
-            for (int id : ids) {
-                nodeIds.add(Integer.toString(id));
+            long[] ids = multiDomainService.addHierarchyNodes(Integer.parseInt(parentId), hNodes);
+            for (long id : ids) {
+                nodeIds.add(Long.toString(id));
             }
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
