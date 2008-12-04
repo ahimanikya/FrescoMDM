@@ -36,9 +36,9 @@ public class HierarchyNodeRecord extends AttributeList {
     private String EUID;
     private String parentId;
     private String parentEUID; 
-    private Date startDate;
-    private Date endDate;
-    private Date purgeDate;
+    private String startDate;
+    private String endDate;
+    private String purgeDate;
     private ObjectRecord objectRecord;
             
     public HierarchyNodeRecord() {
@@ -84,27 +84,27 @@ public class HierarchyNodeRecord extends AttributeList {
         this.objectRecord = objectRecord;
     }
     
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
     
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     } 
     
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
     
-    public void setPurgeDate(Date purgeDate) {
+    public void setPurgeDate(String purgeDate) {
         this.purgeDate = purgeDate;
     }
     
-    public Date getPurgeDate() {
+    public String getPurgeDate() {
         return purgeDate;
     } 
 }

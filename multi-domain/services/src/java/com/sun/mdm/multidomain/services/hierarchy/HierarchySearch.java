@@ -36,9 +36,9 @@ public class HierarchySearch extends AttributeList {
 
     private String name;    
     private String domain;        
-    private Date startDate;
-    private Date endDate;
-    private Date purgeDate;
+    private String startDate;
+    private String endDate;
+    private String purgeDate;
     
     /**
      * Create an instance of HierarchySearch.
@@ -71,27 +71,27 @@ public class HierarchySearch extends AttributeList {
         this.domain = domain;
     }
     
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
     
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
     
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
     
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     } 
     
-    public Date getPurgeDate() {
+    public String getPurgeDate() {
         return purgeDate;
     }
     
-    public void setPurgeDate(Date purgeDate) {
+    public void setPurgeDate(String purgeDate) {
         this.purgeDate = purgeDate;
     }     
     
