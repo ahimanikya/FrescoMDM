@@ -97,7 +97,7 @@
 
 <script language="javascript" 
   type="text/javascript">
-var editRelationshipPrefix = "<%=prefixToUse%>";      
+var editRelationshipPrefix = "<%=prefixToUse%>";
 function validateEditRelationshipForm() {
     var relationshipDefName = dojo.byId("relationship_edit_name").value;
     var direction = dojo.byId("relationship_edit_direction").value;
@@ -157,10 +157,14 @@ function validateEditRelationshipForm() {
         var  tempAttr = {};
         tempAttr.name = attr.AttributeNameField.value;
         tempAttr.dataType = attr.AttributeTypeField.value;
-        tempAttr.defaultValue = attr.DefaultValueField.value;
         tempAttr.isRequired = attr.RequiredField.checked;
         tempAttr.searchable = attr.SearchableField.checked;
         tempAttr.id = attr.IdField.value;
+        if (tempAttr.dataType == "date") {
+            tempAttr.defaultValue = attr.DefaultValueField.getDisplayedValue();
+        } else {
+            tempAttr.defaultValue = attr.DefaultValueField.value;
+        }
         customAttributes.push(tempAttr);
     }
 
