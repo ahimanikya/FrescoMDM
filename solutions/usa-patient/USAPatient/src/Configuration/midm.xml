@@ -1307,12 +1307,13 @@
                         </search-option>
                     </simple-search-page>
                     <simple-search-page>
-                        <screen-title>USA Patient Fuzzy Search</screen-title>
+                        <screen-title>USA Patient Blocker Search</screen-title>
                         <search-result-id>1</search-result-id>
                         <search-screen-order>2</search-screen-order>
                         <show-euid>false</show-euid>
                         <show-lid>false</show-lid>
-                        <instruction></instruction>
+                        <instruction>Enter either the First Name and Last Name;
+                         the First Name, DOB and Gender; or the SSN.</instruction>
                         <field-group>
                             <description>USAPatient</description>
                             <field-ref>USAPatient.FirstName</field-ref>

@@ -953,11 +953,13 @@
                         <screen-title>AUSPatient Search (Blocker Search)</screen-title>
                         <search-result-id>1</search-result-id>
                         <search-screen-order>2</search-screen-order>
+
+                        <show-euid>false</show-euid>
+                        <show-lid>false</show-lid>
+                        <instruction>FirstName, LastName; FirstName, DOB, Gender;
+                          MedicareNo; LastName, DOB; MiddleName, LastName; MiddleName, DOB</instruction>
                         <field-group>
-                            <description>Blocker Search</description>
-                        </field-group>
-                        <field-group>
-                            <description>AUSPatient</description>
+                            <description>AUSPatient Blocker Search Fields</description>
                             <field-ref>AUSPatient.FirstName</field-ref>
                             <field-ref>AUSPatient.MiddleName</field-ref>
                             <field-ref>AUSPatient.LastName</field-ref>

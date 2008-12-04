@@ -939,26 +939,19 @@
                         <screen-title>UKPatient Search (Blocker Search)</screen-title>
                         <search-result-id>1</search-result-id>
                         <search-screen-order>2</search-screen-order>
+                        <show-euid>false</show-euid>
+                        <show-lid>false</show-lid>
+                        <instruction>One of: FamilyName, GivenName, DOB; GivenName, Gender, DOB; DOB, Postcode; National Insurance</instruction>
                         <field-group>
-                            <description>UKPatient</description>
-                        </field-group>
-                        <field-group>
-                            <description>Name</description>
+                            <description>Blocker Search Fields</description>
                             <field-ref>UKPatient.Name.FamilyName</field-ref>
                             <field-ref>UKPatient.Name.GivenName</field-ref>
-                        </field-group>
-
-                        <field-group>
-                            <description>Address</description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
                             <field-ref>UKPatient.Address.Postcode</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>Other</description>
                             <field-ref>UKPatient.DOB</field-ref>
                             <field-ref>UKPatient.Gender</field-ref>
                             <field-ref>UKPatient.NI</field-ref>
                         </field-group>
+                        
                        
                         <search-option>
                             <display-name>Blocker Search</display-name>
