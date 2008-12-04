@@ -519,7 +519,46 @@ public class MultiDomainModel {
         return dateFormat;
     }
     
+    /**
+     * 
+     * @param datatype = one of string, date, char, boolean, int, float
+     * @param columns max number of columns
+     */
+    private void setDataTypeMaxColumns(Map datatypeColumns) {
+        for (Object datatype : datatypeColumns.keySet()) {
+            String columns = (String) datatypeColumns.get(datatype);
+            if (mMapDataTypes.containsKey(datatype)) {
+                String oldColumns = (String) mMapDataTypes.get(datatype);
+                if (Integer.valueOf(columns) > Integer.valueOf(oldColumns)) {
+                    mMapDataTypes.remove(datatype);
+                    mMapDataTypes.put(datatype, columns);
+                }
+            } else {
+                mMapDataTypes.put(datatype, columns);
+            }
+        }
+    }
+    
+    private void addDatatypeColumn(Map datatypeColumns, String datatype) {
+        String columns = "1";
+        if (datatypeColumns.containsKey(datatype)) {
+            columns = (String) datatypeColumns.get(datatype);
+            Integer i = Integer.valueOf(columns) + 1;
+            columns = Integer.toString(i);
+        }
+        datatypeColumns.put(datatype, columns);
+    }
+    
     private Element getDataTypesToStr(Document xmlDoc) throws Exception {
+        for (Definition definition : getAllDefinitions()) {
+            Map datatypeColumns = new HashMap();
+            ArrayList <Attribute> attrs = definition.getExtendedAttributes();
+            for (Attribute attr : attrs) {
+                String datatype = attr.getDataType();
+                addDatatypeColumn(datatypeColumns, datatype);
+            }
+            setDataTypeMaxColumns(datatypeColumns);
+        }
         Element domains = xmlDoc.createElement(this.mTagDataTypes);
         for (Object key : mMapDataTypes.keySet()) {
             Element datatype = xmlDoc.createElement(this.mTagDataType);
