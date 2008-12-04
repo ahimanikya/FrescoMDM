@@ -99,15 +99,23 @@ public class ViewBuilder {
     
     public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) 
         throws ConfigException {
+        //TBD: need a domain-specific date format.
+        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();        
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();        
         hNodeRecord.setId(Long.toString(hNode.getNodeID()));
         hNodeRecord.setEUID(hNode.getEUID());
         HierarchyNode parent = hNode.getParent();
         hNodeRecord.setParentId(parent != null ? Long.toString(parent.getNodeID()) : "");
-        hNodeRecord.setParentEUID(hNode.getParentEUID());
-        hNodeRecord.setStartDate(hNode.getEffectiveFromDate());
-        hNodeRecord.setEndDate(hNode.getEffectiveToDate());
-        hNodeRecord.setPurgeDate(hNode.getPurgeDate());
+        hNodeRecord.setParentEUID(hNode.getParentEUID());        
+        if (hNode.getEffectiveFromDate() != null)  {
+            hNodeRecord.setStartDate(dateFormat.format(hNode.getEffectiveFromDate()));
+        }
+        if (hNode.getEffectiveToDate() != null) {
+            hNodeRecord.setEndDate(dateFormat.format(hNode.getEffectiveToDate()));
+        }
+        if (hNode.getPurgeDate() != null) {
+            hNodeRecord.setPurgeDate(dateFormat.format(hNode.getPurgeDate()));
+        }    
         ObjectNode objectNode = hNode.getObjectNode();    
         ObjectRecord objectRecord = buildObjectRecord(hNode.getHierarchyDef().getDomain(), hNode.getEUID(), objectNode);
         hNodeRecord.setObjectRecord(objectRecord);        
@@ -333,7 +341,8 @@ public class ViewBuilder {
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
         String highLight = null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
+        //TBD: need a domain-specific date format.
+        SimpleDateFormat dateFormat = configManager.getDateFormat();
         boolean hasSensitiveData = false;
         boolean getSensitiveField = true;
         try {
@@ -347,7 +356,7 @@ public class ViewBuilder {
                 FieldConfig fieldConfig  = recordIdConfigFields.get(i);          
                 Object value = EPathAPI.getFieldValue(ePath, objectNode);                        
                 if(value instanceof java.util.Date) {
-                    String dateField = simpleDateFormat.format(value);               
+                    String dateField = dateFormat.format(value);               
                     if (value != null && hasSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                         highLight = highLight + RECORD_ID_DELIMITER + resourceBundle.getString("SENSITIVE_FIELD_MASKING");
                     } else {
@@ -401,7 +410,8 @@ public class ViewBuilder {
         return relationshipView;
     }
             
-    public static RelationshipComposite buildRelationshipComposite(MultiObject multiObject) {
+    public static RelationshipComposite buildRelationshipComposite(MultiObject multiObject) 
+        throws ConfigException {
         RelationshipComposite relationshipComposite = new RelationshipComposite();
         
         ObjectNode sourceObject = multiObject.getSourceDomainObject();
@@ -432,7 +442,8 @@ public class ViewBuilder {
         boolean getSensitiveField = true;
         List<ObjectRecord> records = new ArrayList<ObjectRecord>();
         
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
+        //TBD need a domain-specific date format.
+        SimpleDateFormat dateFormat = configManager.getDateFormat();
         DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domain);
         List<SearchResultsConfig> searchResultsConfigs = domainConfig.getSearchResultsConfigs();
           
@@ -458,7 +469,7 @@ public class ViewBuilder {
                     Object objectValue = EPathAPI.getFieldValue(ePath, objectNode);
                     String stringValue = null;
                     if(objectValue instanceof java.util.Date) {
-                        String dateField = simpleDateFormat.format(objectValue);          
+                        String dateField = dateFormat.format(objectValue);          
                         if (objectValue != null && isSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                             record.setAttributeValue(fieldConfig.getFullFieldName(), resourceBundle.getString("SENSITIVE_FIELD_MASKING"));
                         } else {
@@ -496,22 +507,25 @@ public class ViewBuilder {
         return records;
     } 
     
-    public static RelationshipRecord buildRelationshipRecord(Relationship relationship) {
-        RelationshipRecord relationshipRecord = new RelationshipRecord();
+    public static RelationshipRecord buildRelationshipRecord(Relationship relationship) 
+        throws ConfigException {
+        //TBD: need a domain-specific date format.
+        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();    
         
+        RelationshipRecord relationshipRecord = new RelationshipRecord();        
         RelationshipDef type = (RelationshipDef)relationship.getRelationshipDef();
         relationshipRecord.setId(Long.toString(relationship.getRelationshipId()));
         relationshipRecord.setSourceEUID(relationship.getSourceEUID());
         relationshipRecord.setTargetEUID(relationship.getTargetEUID());
         relationshipRecord.setName(type.getName());
         if(relationship.getEffectiveFromDate()!= null) {
-            relationshipRecord.setStartDate(relationship.getEffectiveFromDate());
+            relationshipRecord.setStartDate(dateFormat.format(relationship.getEffectiveFromDate()));
         }
         if(relationship.getEffectiveToDate()!= null) {
-            relationshipRecord.setEndDate(relationship.getEffectiveToDate());
+            relationshipRecord.setEndDate(dateFormat.format(relationship.getEffectiveToDate()));
         }
         if(relationship.getPurgeDate()!= null) {
-            relationshipRecord.setPurgeDate(relationship.getPurgeDate());
+            relationshipRecord.setPurgeDate(dateFormat.format(relationship.getPurgeDate()));
         }         
         return relationshipRecord;
     }
@@ -519,7 +533,7 @@ public class ViewBuilder {
     public static ObjectRecord buildObjectRecord(String domain, String EUID, ObjectNode objectNode) 
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(configManager.getDateFormat());
+        SimpleDateFormat dateFormat = configManager.getDateFormat();
         boolean hasSensitiveData = false;
         boolean getSensitiveField = true;
         try {
@@ -546,7 +560,7 @@ public class ViewBuilder {
                 com.sun.mdm.multidomain.services.model.Attribute attribute = 
                             new com.sun.mdm.multidomain.services.model.Attribute(); 
                 if(objectValue instanceof java.util.Date) {
-                    String dateField = simpleDateFormat.format(objectValue);          
+                    String dateField = dateFormat.format(objectValue);          
                     if (objectValue != null && hasSensitiveData && fieldConfig.isSensitive() && !getSensitiveField) { 
                         attribute.setName(fieldConfig.getFullFieldName());
                         attribute.setValue(resourceBundle.getString("SENSITIVE_FIELD_MASKING"));

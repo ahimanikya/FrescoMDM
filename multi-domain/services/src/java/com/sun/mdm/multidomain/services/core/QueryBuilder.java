@@ -283,18 +283,29 @@ public class QueryBuilder {
      * @param relationshipSearch RelationshipSearch.
      * @return Relationship Relationship.
      */
-    public static Relationship buildRelationship(RelationshipSearch relationshipSearch){
-        
-        Relationship relationship = new Relationship();
-        relationship.setEffectiveFromDate(relationshipSearch.getStartDate());
-        relationship.setEffectiveToDate(relationshipSearch.getEndDate());
-        relationship.setPurgeDate(relationshipSearch.getPurgeDate());        
-        while(relationshipSearch.hasNext()) {
-            Attribute field = relationshipSearch.next();
-            com.sun.mdm.multidomain.attributes.Attribute attribute = new com.sun.mdm.multidomain.attributes.Attribute();
-            attribute.setName(attribute.getName());
-            relationship.setAttributeValue(attribute, field.getValue());
-        }        
+    public static Relationship buildRelationship(RelationshipSearch relationshipSearch)
+        throws ConfigException {        
+        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();
+        Relationship relationship = new Relationship();        
+        try {
+            if (relationshipSearch.getStartDate() != null) {
+                relationship.setEffectiveFromDate(dateFormat.parse(relationshipSearch.getStartDate()));
+            }
+            if (relationshipSearch.getEndDate() != null) {
+                relationship.setEffectiveToDate(dateFormat.parse(relationshipSearch.getEndDate()));
+            }
+            if (relationshipSearch.getPurgeDate() != null) {
+                relationship.setPurgeDate(dateFormat.parse(relationshipSearch.getPurgeDate()));   
+            }        
+            while(relationshipSearch.hasNext()) {
+                Attribute field = relationshipSearch.next();
+                com.sun.mdm.multidomain.attributes.Attribute attribute = new com.sun.mdm.multidomain.attributes.Attribute();
+                attribute.setName(attribute.getName());
+                relationship.setAttributeValue(attribute, field.getValue());
+            }    
+        } catch (ParseException pex) {            
+            throw new ConfigException(pex);
+        }
         return relationship;
     }
     
@@ -382,26 +393,38 @@ public class QueryBuilder {
      * @param relastionshipRecord.
      * @return relastionship.
      */
-    public static Relationship buildRelationship(RelationshipRecord relastionshipRecord){
+    public static Relationship buildRelationship(RelationshipRecord relastionshipRecord)
+        throws ConfigException {
         
+        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();
         Relationship relationship = new Relationship();     
-        relationship.setRelationshipId(Integer.parseInt(relastionshipRecord.getId()));
-        relationship.setSourceEUID(relastionshipRecord.getSourceEUID());
-        relationship.setTargetEUID(relastionshipRecord.getTargetEUID());
-        relationship.setEffectiveFromDate(relastionshipRecord.getStartDate());
-        relationship.setEffectiveToDate(relastionshipRecord.getEndDate());
-        relationship.setPurgeDate(relastionshipRecord.getPurgeDate());
- 
-        relationship.getRelationshipDef().setName(relastionshipRecord.getName());
-        relationship.getRelationshipDef().setSourceDomain(relastionshipRecord.getSourceDomain());
-        relationship.getRelationshipDef().setTargetDomain(relastionshipRecord.getTargetDomain());
         
-        com.sun.mdm.multidomain.services.model.Attribute attribute1 = null;
-        while(relastionshipRecord.hasNext()) {
-            attribute1 = relastionshipRecord.next();
-            com.sun.mdm.multidomain.attributes.Attribute attribute2 = new com.sun.mdm.multidomain.attributes.Attribute();
-            attribute2.setName(attribute1.getName());
-            relationship.setAttributeValue(attribute2, attribute1.getValue());
+        try {
+            relationship.setRelationshipId(Integer.parseInt(relastionshipRecord.getId()));
+            relationship.setSourceEUID(relastionshipRecord.getSourceEUID());
+            relationship.setTargetEUID(relastionshipRecord.getTargetEUID());
+            if (relastionshipRecord.getStartDate() != null) {
+                relationship.setEffectiveFromDate(dateFormat.parse(relastionshipRecord.getStartDate()));
+            }
+            if (relastionshipRecord.getEndDate() != null) {
+                relationship.setEffectiveToDate(dateFormat.parse(relastionshipRecord.getEndDate()));
+            }
+            if (relastionshipRecord.getPurgeDate() != null) {
+                relationship.setPurgeDate(dateFormat.parse(relastionshipRecord.getPurgeDate()));
+            }
+            relationship.getRelationshipDef().setName(relastionshipRecord.getName());
+            relationship.getRelationshipDef().setSourceDomain(relastionshipRecord.getSourceDomain());
+            relationship.getRelationshipDef().setTargetDomain(relastionshipRecord.getTargetDomain());
+        
+            com.sun.mdm.multidomain.services.model.Attribute attribute1 = null;
+            while(relastionshipRecord.hasNext()) {
+                attribute1 = relastionshipRecord.next();
+                com.sun.mdm.multidomain.attributes.Attribute attribute2 = new com.sun.mdm.multidomain.attributes.Attribute();
+                attribute2.setName(attribute1.getName());
+                relationship.setAttributeValue(attribute2, attribute1.getValue());
+            }
+        } catch(ParseException pex) {            
+            throw new ConfigException(pex);
         }
         return relationship;
     } 
@@ -565,19 +588,26 @@ public class QueryBuilder {
         if (hNodeRecord == null) {
             throw new ServiceException(localizer.t("QRY503: The hNodeRecord parameter cannot be null"));
         }
-        
+  
         HierarchyNode hNode = new HierarchyNode();
-
         int nodeID = -1;
-        String id = hNodeRecord.getId();
-        if (id != null) {
-            nodeID = Integer.parseInt(id);
-        }
-        hNode.setEUID(hNodeRecord.getEUID());
-        hNode.setParentEUID(hNodeRecord.getParentEUID());
-        hNode.setEffectiveFromDate(hNodeRecord.getStartDate());
-        hNode.setEffectiveToDate(hNodeRecord.getEndDate());
-        hNode.setPurgeDate(hNodeRecord.getPurgeDate());
+        
+        try {
+            SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();        
+            String id = hNodeRecord.getId();
+            if (id != null) {
+                nodeID = Integer.parseInt(id);
+            }
+            hNode.setEUID(hNodeRecord.getEUID());
+            hNode.setParentEUID(hNodeRecord.getParentEUID());
+            hNode.setEffectiveFromDate(dateFormat.parse(hNodeRecord.getStartDate()));
+            hNode.setEffectiveToDate(dateFormat.parse(hNodeRecord.getEndDate()));
+            hNode.setPurgeDate(dateFormat.parse(hNodeRecord.getPurgeDate()));
+            } catch (ConfigException cex) {
+                throw new ServiceException(cex);            
+            } catch(ParseException pex) {
+                throw new ServiceException(pex);
+            }
         
         List<Attribute> attributeList = hNodeRecord.getAttributes();
         for (Attribute attr : attributeList) {
@@ -633,20 +663,25 @@ public class QueryBuilder {
     * @throws ServiceException if an error occurs during processing.
     */ 
    public static HierarchySearchCriteria buildHierarchySearchCriteria(HierarchySearch hNodeSearch) 
-            throws ServiceException{
+          throws ServiceException{
         
         if (hNodeSearch == null) {
             throw new ServiceException(localizer.t("QRY504: The hNodeSearch parameter cannot be null"));
-        }
+        }            
         HierarchySearchCriteria hSearchCriteria = new HierarchySearchCriteria();
-
         HierarchyNode hNode = new HierarchyNode();
+        
+        try {
+            SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormat();
 
-//        String domain = hNodeSearch.getDomain();        
-
-        hNode.setEffectiveFromDate(hNodeSearch.getStartDate());
-        hNode.setEffectiveToDate(hNodeSearch.getEndDate());
-        hNode.setPurgeDate(hNodeSearch.getPurgeDate());
+            hNode.setEffectiveFromDate(dateFormat.parse(hNodeSearch.getStartDate()));
+            hNode.setEffectiveToDate(dateFormat.parse(hNodeSearch.getEndDate()));
+            hNode.setPurgeDate(dateFormat.parse(hNodeSearch.getPurgeDate()));    
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);            
+        } catch(ParseException pex) {
+            throw new ServiceException(pex);
+        }
         
         hSearchCriteria.setHierarchyNode(hNode);
         
@@ -658,6 +693,7 @@ public class QueryBuilder {
             searchCriteria.put(attrName, value);
         }
         String name = hNodeSearch.getName();    
+        
         try {
             SystemObject systemObject = buildSystemObject(name, searchCriteria);
             hSearchCriteria.setSystemObject(systemObject);
