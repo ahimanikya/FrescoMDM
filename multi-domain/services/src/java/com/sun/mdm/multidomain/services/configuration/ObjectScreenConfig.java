@@ -109,6 +109,18 @@ public abstract class ObjectScreenConfig {
         return mSearchScreenConfigs;
     }
 
+    // returns the search screen configuration that matches the screenTitle parameter.
+    
+    public SearchScreenConfig getSearchScreenConfig(String screenTitle) { 
+        if (screenTitle != null) {
+            for (SearchScreenConfig ssc : mSearchScreenConfigs) {
+                if (screenTitle.equalsIgnoreCase(ssc.getScreenTitle()) == true)
+                    return ssc;
+            }
+        }
+        return null;
+    }
+
     // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
     
     public void setSearchScreenConfigs(ArrayList<SearchScreenConfig> searchScreenConfigs) { 
