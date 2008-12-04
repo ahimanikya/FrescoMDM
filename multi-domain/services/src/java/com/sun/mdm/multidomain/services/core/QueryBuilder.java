@@ -285,7 +285,7 @@ public class QueryBuilder {
      */
     public static Relationship buildRelationship(RelationshipSearch relationshipSearch)
         throws ConfigException {        
-        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForMultiDomain();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForMultiDomain());
         Relationship relationship = new Relationship();        
         try {
             if (relationshipSearch.getStartDate() != null) {
@@ -396,7 +396,7 @@ public class QueryBuilder {
     public static Relationship buildRelationship(RelationshipRecord relastionshipRecord)
         throws ConfigException {
         
-        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForMultiDomain();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForMultiDomain());
         Relationship relationship = new Relationship();     
         
         try {
@@ -593,7 +593,7 @@ public class QueryBuilder {
         int nodeID = -1;
         
         try {
-            SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForMultiDomain();        
+            SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForMultiDomain());        
             String id = hNodeRecord.getId();
             if (id != null) {
                 nodeID = Integer.parseInt(id);
@@ -672,7 +672,7 @@ public class QueryBuilder {
         HierarchyNode hNode = new HierarchyNode();
         
         try {
-            SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForMultiDomain();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForMultiDomain());
 
             hNode.setEffectiveFromDate(dateFormat.parse(hNodeSearch.getStartDate()));
             hNode.setEffectiveToDate(dateFormat.parse(hNodeSearch.getEndDate()));

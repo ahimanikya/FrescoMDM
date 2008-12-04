@@ -99,7 +99,8 @@ public class ViewBuilder {
     
     public static HierarchyNodeRecord buildHierarchyNodeRecord(HierarchyNode hNode) 
         throws ConfigException {
-        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForDomain(hNode.getHierarchyDef().getDomain());        
+        String domain = hNode.getHierarchyDef().getDomain();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForDomain(domain));        
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();        
         hNodeRecord.setId(Long.toString(hNode.getNodeID()));
         hNodeRecord.setEUID(hNode.getEUID());
@@ -340,7 +341,7 @@ public class ViewBuilder {
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();                
         String highLight = null;       
-        SimpleDateFormat dateFormat = configManager.getDateFormatForDomain(domain);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(configManager.getDateFormatForDomain(domain));
         boolean hasSensitiveData = false;
         boolean getSensitiveField = true;
         try {
@@ -440,7 +441,7 @@ public class ViewBuilder {
         boolean getSensitiveField = true;
         List<ObjectRecord> records = new ArrayList<ObjectRecord>();
         
-        SimpleDateFormat dateFormat = configManager.getDateFormatForDomain(domain);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(configManager.getDateFormatForDomain(domain));
         DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domain);
         List<SearchResultsConfig> searchResultsConfigs = domainConfig.getSearchResultsConfigs();
           
@@ -507,7 +508,7 @@ public class ViewBuilder {
     public static RelationshipRecord buildRelationshipRecord(Relationship relationship) 
         throws ConfigException {
         
-        SimpleDateFormat dateFormat = MDConfigManager.getInstance().getDateFormatForMultiDomain();    
+        SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForMultiDomain());    
         
         RelationshipRecord relationshipRecord = new RelationshipRecord();        
         RelationshipDef type = (RelationshipDef)relationship.getRelationshipDef();
@@ -530,7 +531,7 @@ public class ViewBuilder {
     public static ObjectRecord buildObjectRecord(String domain, String EUID, ObjectNode objectNode) 
         throws ConfigException {
         MDConfigManager configManager =  MDConfigManager.getInstance();        
-        SimpleDateFormat dateFormat = configManager.getDateFormatForDomain(domain);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(configManager.getDateFormatForDomain(domain));
         boolean hasSensitiveData = false;
         boolean getSensitiveField = true;
         try {
