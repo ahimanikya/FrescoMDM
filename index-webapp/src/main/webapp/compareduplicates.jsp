@@ -71,8 +71,9 @@
    
     <html>
         <head>
-           <!-- YAHOO Global Object source file --> 
-        <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo/yahoo-min.js" ></script>
+         <!-- YAHOO Global Object source file --> 
+         <script type="text/javascript" src="./scripts/yui/yahoo/yahoo-min.js" ></script>
+
         
         <!-- Additional source files go here -->
         

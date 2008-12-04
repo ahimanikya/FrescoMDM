@@ -122,7 +122,8 @@ boolean isSessionActive = true;
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
             <title><h:outputText value="#{msgs.application_heading}"/></title>
             <!-- YAHOO Global Object source file --> 
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo/yahoo-min.js" ></script>
+            <script type="text/javascript" src="./scripts/yui/yahoo/yahoo-min.js" ></script>
+
             <!-- Additional source files go here -->
             <link type="text/css" href="../css/styles.css"  rel="stylesheet" media="screen">
             <link type="text/css" href="../css/calpopup.css" rel="stylesheet" media="screen">
