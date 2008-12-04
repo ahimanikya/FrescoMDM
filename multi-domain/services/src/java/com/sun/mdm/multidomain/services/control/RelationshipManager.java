@@ -562,6 +562,8 @@ public class RelationshipManager {
             // need to add a new method in multiDomainService to getRelationship
             MultiObject relationshipObject = multiDomainService.getRelationship(relationship);
             relationshipComposite = ViewBuilder.buildRelationshipComposite(relationshipObject);
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);            
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch(UserException uex) {
@@ -673,6 +675,8 @@ public class RelationshipManager {
         try {
             Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
             id = multiDomainService.createRelationship(relationship);
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);                  
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
@@ -710,6 +714,8 @@ public class RelationshipManager {
         try {
             Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
             multiDomainService.updateRelationship(relationship);
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);                  
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
