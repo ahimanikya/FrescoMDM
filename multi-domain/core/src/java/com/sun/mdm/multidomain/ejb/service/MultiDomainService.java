@@ -24,27 +24,25 @@ package com.sun.mdm.multidomain.ejb.service;
 
 import java.util.List;
 
-import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
-import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
-
-import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
-import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
-import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.epath.EPathArrayList;
+import com.sun.mdm.multidomain.attributes.AttributesValue;
 import com.sun.mdm.multidomain.group.Group;
 import com.sun.mdm.multidomain.group.GroupMember;
-import com.sun.mdm.multidomain.attributes.AttributesValue;
-
-import com.sun.mdm.multidomain.query.PageIterator;
-import com.sun.mdm.multidomain.relationship.MultiObject;
-import com.sun.mdm.multidomain.query.MultiFieldValuePair;
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
+import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
+import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
+import com.sun.mdm.multidomain.query.MultiFieldValuePair;
+import com.sun.mdm.multidomain.query.PageIterator;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
+import com.sun.mdm.multidomain.relationship.MultiObject;
+import com.sun.mdm.multidomain.relationship.Relationship;
         
 /**
  * MultiDomainService interface.
@@ -202,7 +200,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public int addHierarchyNode(HierarchyNode hierarchyNode)
+    public long addHierarchyNode(HierarchyNode hierarchyNode)
             throws ProcessingException, UserException ;
     
     /**
@@ -212,7 +210,7 @@ public interface MultiDomainService {
      * @return int[] List of node Ids.
      */
     
-    public int[] addHierarchyNodes(int parentNodeId, HierarchyNode[] nodes)
+    public long[] addHierarchyNodes(int parentNodeId, HierarchyNode[] nodes)
             throws ProcessingException, UserException ;
     
     /*
@@ -231,12 +229,22 @@ public interface MultiDomainService {
 
     /**
      * Delete a hierarchy node identified by nodeid.
-     * delete all its children as well.
+     * Promote children to parent node.
      * @param hierarchyid hierarchyid that uniquely identifies hierarchy relatiolnship.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
     public void deleteHierarchyNode(int hierarchyNodeId)
+        throws ProcessingException, UserException;
+    
+    /**
+     * Delete a hierarchy node identified by nodeid.
+     * delete all its children as well.
+     * @param hierarchyid hierarchyid that uniquely identifies hierarchy relatiolnship.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an invalid parameter value is passed.
+     */
+    public void deleteHierarchy(int hierarchyNodeId)
         throws ProcessingException, UserException;
 
     /**
@@ -267,6 +275,15 @@ public interface MultiDomainService {
      */
     public HierarchyNode getHierarchyNode(long hierarchyNodeId)
         throws ProcessingException, UserException;
+    
+    /**
+     * Retrieve the root node of a hierarchy instance.
+     * 
+     * @param hierarchyDefID hierarchy def id for which root node is retrieved
+     * @return the root node, or null if empty hierarchy instance
+     */
+    public HierarchyNode getRootNode(long hierarchyDefID)
+            throws ProcessingException, UserException;
      
     /**
      * Move a set of nodes to have a new Parent
@@ -274,6 +291,14 @@ public interface MultiDomainService {
      * @param newParentNodeId new parent node id.
      */
     public void moveHierarchyNodes(int[] nodeIds, int newParentNodeId)
+            throws ProcessingException, UserException;
+    
+    /**
+     * Move a set of nodes to have a new Parent
+     * @param nodes list of nodes that are moved
+     * @param parentNode new parent node.
+     */
+    public void moveHierarchyNodes(List<HierarchyNode> nodes, HierarchyNode parentNode)
             throws ProcessingException, UserException;
    
     /**

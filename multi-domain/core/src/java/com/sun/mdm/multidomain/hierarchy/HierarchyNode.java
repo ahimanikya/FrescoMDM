@@ -23,15 +23,13 @@
 package com.sun.mdm.multidomain.hierarchy;
 
 import java.io.Serializable;
-
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.mdm.index.objects.ObjectNode;
-import com.sun.mdm.multidomain.attributes.Attribute;
 
 /**
  * HierarchyNode  class.
@@ -48,7 +46,7 @@ public class HierarchyNode implements Serializable {
     private Date effectiveToDate;
     private Date purgeDate;
     private HierarchyNode parent;
-    private List<HierarchyNode> children = null;
+    private List<HierarchyNode> children = new ArrayList<HierarchyNode>();
     private ObjectNode objectNode;
     private Map<String, String> attributeValues = new HashMap<String, String>();
     private HierarchyDef hierarchyDef = null;
