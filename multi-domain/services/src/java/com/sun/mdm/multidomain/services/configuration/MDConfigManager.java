@@ -1279,31 +1279,25 @@ public class MDConfigManager {
         public static ObjectSensitivePlugIn getObjectSensitivePlugIn() {  
 	    return mObjectSensitivePlugIn;
     }
-    
-    public static String getDateForma() {
-        return DATEFORMAT;
-    }
-    
+        
    /**
     * Gets date format for multi-domain. 
     * @return the date format defined in multi-domain definition.
     */
-    public static SimpleDateFormat getDateFormatForMultiDomain() {
+    public static String getDateFormatForMultiDomain() {
         //TBD: need to fix.
         DATEFORMAT = "MM/dd/yyyy"; 
-        dateFormat = new SimpleDateFormat(DATEFORMAT);
-        return dateFormat;
+        return DATEFORMAT;
     }
 
    /**
     * Gets date format for domain-specific. 
     * @return the date format defined in object definition.
     */    
-    public static SimpleDateFormat getDateFormatForDomain(String domain) {
+    public static String getDateFormatForDomain(String domain) {
         //TBD: need to fix.
         DATEFORMAT = "MM/dd/yyyy"; 
-        dateFormat = new SimpleDateFormat(DATEFORMAT);
-        return dateFormat;
+        return DATEFORMAT;
     }
     
     /**
