@@ -111,12 +111,12 @@ public class ViewBuilder {
         ObjectNode objectNode = hNode.getObjectNode();    
         ObjectRecord objectRecord = buildObjectRecord(hNode.getHierarchyDef().getDomain(), hNode.getEUID(), objectNode);
         hNodeRecord.setObjectRecord(objectRecord);        
-        Map<Attribute, String> extAttrs = hNode.getAttributes();
-        Iterator<Attribute> keys = extAttrs.keySet().iterator();
+        Map<String, String> extAttrs = hNode.getAttributes();
+        Iterator<String> keys = extAttrs.keySet().iterator();
         while(keys.hasNext()) {
-            Attribute key = keys.next();
-            String value = extAttrs.get(key);
-            hNodeRecord.setAttributeValue(key.getName(), value);
+            String name = keys.next();
+            String value = extAttrs.get(name);
+            hNodeRecord.setAttributeValue(name, value);
         }
         return hNodeRecord;
     }

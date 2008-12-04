@@ -55,6 +55,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
         
 import com.sun.mdm.multidomain.services.model.Attribute;
@@ -62,9 +63,11 @@ import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+import com.sun.mdm.multidomain.services.control.HierarchyManager;
 import com.sun.mdm.multidomain.services.util.Localizer;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchyNodeRecord;
 import com.sun.mdm.multidomain.services.hierarchy.HierarchySearch;
+import com.sun.mdm.multidomain.services.model.ObjectRecord;
 
 /**
  * QueryBuilder class.
@@ -76,7 +79,11 @@ public class QueryBuilder {
     private static final String LOCAL_ID_NAME = "LID";
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.QueryBuilder");
     private static Localizer localizer = Localizer.getInstance();
+    private static HierarchyManager hierarchyManager;
     
+    public QueryBuilder() throws ServiceException { 
+        hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager();
+    }
     /**
      * Build MultiDomainSearchOptions.
      * @param sourceDomainSearch SourceDomainSearch
@@ -118,9 +125,9 @@ public class QueryBuilder {
             } else if (systemCode != null && localId != null) {
                 // TBD: systemcode and localId search. how to pass it back-end.
             } else if (systemCode == null && localId != null) {
-                new ConfigException(localizer.t("SVC009: system code for simple search is not defined for localId {0}", localId));
+                new ConfigException(localizer.t("QRY001: system code for simple search is not defined for localId {0}", localId));
             } else if (systemCode != null && localId == null) {
-                new ConfigException(localizer.t("SVC010: local Id for simple search is not defined for system code {0}", systemCode));
+                new ConfigException(localizer.t("QRY002: local Id for simple search is not defined for system code {0}", systemCode));
             } 
                     
             // search result page
@@ -532,20 +539,132 @@ public class QueryBuilder {
    }
     
    /**
-    * Build HierarchyNode for the given HierarchyNodeRecord.
+    * Build HierarchyNode for the given HierarchyNodeRecord.  Only the immediate children
+    * will be instantiated.
     * @param hNodeRecord HierarchyNodeRecord.
     * @return HierarchyNode HierarchyNode.
+    * @throws ServiceException if an error occurs during processing.
     */ 
-   public static HierarchyNode buildHierarchyNode(HierarchyNodeRecord hNodeRecord) {
+    public static HierarchyNode buildHierarchyNode(HierarchyNodeRecord hNodeRecord) 
+            throws ServiceException{
+        return (buildHierarchyNode(hNodeRecord, true));
+        
+    }
+   /**
+    * Build HierarchyNode for the given HierarchyNodeRecord.
+    * @param hNodeRecord HierarchyNodeRecord.
+    * @param instantiateChildren  Set to true if immediate children are to be instantiated,
+    * false otherwise.
+    * @return HierarchyNode HierarchyNode.
+    * @throws ServiceException if an error occurs during processing.
+    */ 
+    public static HierarchyNode buildHierarchyNode(HierarchyNodeRecord hNodeRecord, 
+                                                   boolean instantiateChildren) 
+            throws ServiceException{
+        
+        if (hNodeRecord == null) {
+            throw new ServiceException(localizer.t("QRY503: The hNodeRecord parameter cannot be null"));
+        }
+        
         HierarchyNode hNode = new HierarchyNode();
-        // implement me.
+
+        int nodeID = -1;
+        String id = hNodeRecord.getId();
+        if (id != null) {
+            nodeID = Integer.parseInt(id);
+        }
+        hNode.setEUID(hNodeRecord.getEUID());
+        hNode.setParentEUID(hNodeRecord.getParentEUID());
+        hNode.setEffectiveFromDate(hNodeRecord.getStartDate());
+        hNode.setEffectiveToDate(hNodeRecord.getEndDate());
+        hNode.setPurgeDate(hNodeRecord.getPurgeDate());
+        
+        List<Attribute> attributeList = hNodeRecord.getAttributes();
+        for (Attribute attr : attributeList) {
+            String name = attr.getName();
+            String value = attr.getValue();
+            hNode.setAttributeValue(name, value);
+        }
+
+        HierarchyDef hierarchyDef = new HierarchyDef();
+        hierarchyDef.setId(nodeID);
+        hNode.setHierarchyDef(hierarchyDef);
+        
+        ObjectRecord objectRecord = hNodeRecord.getObjectRecord();
+        String objectName = objectRecord.getName();
+
+        List<Attribute> objectRecordAttributeList = objectRecord.getAttributes();
+        HashMap<String, String> searchCriteria = new HashMap<String, String>();
+        for (Attribute attr : objectRecordAttributeList) {
+            String attrName = attr.getName();
+            String value = attr.getValue();
+            searchCriteria.put(attrName, value);
+        }
+        
+        try {
+            ObjectNode objectNode = buildObjectNode(objectName, searchCriteria);
+            hNode.setObjectNode(objectNode);
+        } catch (ConfigException e) {
+            throw new ServiceException(e);
+        }
+        
+        // The HierarchyNode for the parent is not needed.  It should be handled
+        // by the backend APIs.
+
+        // We don't necessarily need to instantiate all children--just
+        // the immediate children.
+        if (instantiateChildren == true) {
+            ArrayList<HierarchyNode> children = new ArrayList();
+            List<HierarchyNodeRecord> hNodeRecordChildren = hierarchyManager.getHierarchyNodeChildren(nodeID);
+            for (HierarchyNodeRecord child : hNodeRecordChildren) {
+                HierarchyNode hierarchyNode = buildHierarchyNode(child, false);
+                children.add(hierarchyNode);
+            }
+            hNode.setChildren(children);
+        }
+
         return hNode;
    } 
    
-   public static HierarchySearchCriteria buildHierarchySearchCriteria(HierarchySearch hNodeSearch) {
+   /**  Build HierarchySearchCriteria instance for the given HierarchySearch instance.
+    * 
+    * @param hNodeSearch HierarchySearch instance.
+    * @return HierarchyNode HierarchySearchCriteria.
+    * @throws ServiceException if an error occurs during processing.
+    */ 
+   public static HierarchySearchCriteria buildHierarchySearchCriteria(HierarchySearch hNodeSearch) 
+            throws ServiceException{
+        
+        if (hNodeSearch == null) {
+            throw new ServiceException(localizer.t("QRY504: The hNodeSearch parameter cannot be null"));
+        }
         HierarchySearchCriteria hSearchCriteria = new HierarchySearchCriteria();
-        // implement me.
+
+        HierarchyNode hNode = new HierarchyNode();
+
+//        String domain = hNodeSearch.getDomain();        
+
+        hNode.setEffectiveFromDate(hNodeSearch.getStartDate());
+        hNode.setEffectiveToDate(hNodeSearch.getEndDate());
+        hNode.setPurgeDate(hNodeSearch.getPurgeDate());
+        
+        hSearchCriteria.setHierarchyNode(hNode);
+        
+        List<Attribute> attributeList = hNodeSearch.getAttributes();
+        HashMap<String, String> searchCriteria = new HashMap<String, String>();
+        for (Attribute attr : attributeList) {
+            String attrName = attr.getName();
+            String value = attr.getValue();
+            searchCriteria.put(attrName, value);
+        }
+        String name = hNodeSearch.getName();    
+        try {
+            SystemObject systemObject = buildSystemObject(name, searchCriteria);
+            hSearchCriteria.setSystemObject(systemObject);
+        } catch (ConfigException e) {
+            throw new ServiceException(e);
+        }
+        
         return hSearchCriteria;
-   }
-   
+    }
 }

@@ -22,7 +22,7 @@ public class HierarchyNodeEavDto implements Serializable {
      * This attribute maps to the column HIERARCHY_NODE_ID in the hierarchy_node_eav table.
      */
     protected long hierarchyNodeId;
-    private Map<Attribute, String> attributeValues = null;
+    private Map<String, String> attributeValues = null;
 
     /**
      * Method 'HierarchyNodeEav'
@@ -72,7 +72,7 @@ public class HierarchyNodeEavDto implements Serializable {
      * @param attribute Attribute.
      * @param value Attribute value.
      */
-    public void setAttributes(Map<Attribute, String> attributeValues) {
+    public void setAttributes(Map<String, String> attributeValues) {
         this.attributeValues = attributeValues;
     }
 
@@ -81,9 +81,9 @@ public class HierarchyNodeEavDto implements Serializable {
      * @param attribute Attribute.
      * @return String Attribute value.
      */
-    public Map<Attribute, String> getAttributes() {
+    public Map<String, String> getAttributes() {
         if (attributeValues == null) {
-            attributeValues = new HashMap<Attribute, String>();
+            attributeValues = new HashMap<String, String>();
         }
         return attributeValues;
     }

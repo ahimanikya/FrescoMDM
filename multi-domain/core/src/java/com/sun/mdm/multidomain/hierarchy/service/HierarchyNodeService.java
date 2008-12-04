@@ -208,16 +208,7 @@ public class HierarchyNodeService implements Serializable {
         while (iter.hasNext()) {
             HierarchyNodeEaDto eaDto = (HierarchyNodeEaDto) iter.next();
             String attrValue = hierDto.getHierarchyAttributes().get(eaDto);
-            Attribute attr = new Attribute();
-            attr.setId(eaDto.getEaId());
-            attr.setName(eaDto.getAttributeName());
-            attr.setColumnName(eaDto.getColumnName());
-            attr.setType(AttributeType.valueOf(eaDto.getColumnType()));
-            attr.setDefaultValue(eaDto.getDefaultValue());
-            attr.setIsIncluded(eaDto.getIsIncluded());
-            attr.setIsRequired(eaDto.getIsRequired());
-            attr.setIsSearchable(eaDto.getIsSearchable());
-            hier.getAttributes().put(attr, attrValue);
+            hier.getAttributes().put(eaDto.getAttributeName(), attrValue);
         }
     }
 }
