@@ -31,6 +31,7 @@ import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.Jar;
 import org.apache.tools.ant.taskdefs.Javac;
+import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PatternSet;
@@ -227,7 +228,7 @@ public class MultidomainGeneratorTask extends Task {
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
-
+        
         File srcFile = new File(mTemplateDir, "ejb-source.zip");
         destDir = new File(mEjbdir, "src/java");
         Expand expand = (Expand) getProject().createTask("unzip");
@@ -236,7 +237,16 @@ public class MultidomainGeneratorTask extends Task {
         expand.setDest(destDir);
         expand.setLocation(getLocation());
         expand.execute();
-
+        
+        File ejbConfDir = new File(mEjbdir, "src/conf"); 
+        File sunEjbJarXml = new File(mEjbdir, "src/java/sun-ejb-jar.xml");
+        Move move = (Move) getProject().createTask("move");
+        move.setTodir(ejbConfDir);
+        move.setFile(sunEjbJarXml);
+        move.init();
+        move.setLocation(getLocation());
+        move.execute();
+                
         String token = "MULTIDOMAIN_APPLICATION_TOKEN_";
         String earName = getProject().getProperty("jar.name");
         int endIndex= earName.indexOf('.');
@@ -354,14 +364,22 @@ public class MultidomainGeneratorTask extends Task {
         srcFileSet.setDir(srcDir);
         srcFileSet.setIncludes("multidomain/multidomain-core.jar, " +
                 "index-core.jar," + "net.java.hulp.i18n.jar" );
+        
+        //copy user plugin.jar 
+        FileSet srcFileSet2 = new FileSet();
+        File srcDir2 = new File(projPath + "/src/Plug-ins");
+        srcFileSet2.setDir(srcDir2);
+        srcFileSet2.setIncludes("*.jar" );
+        
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
         copy.setTodir(destDir);
         copy.setFlatten(true);
         copy.addFileset(srcFileSet);
+        copy.addFileset(srcFileSet2);
         copy.setLocation(getLocation());
         copy.execute();
-
+               
         //make resources.jar
         makeResourcesJar();
         //make master-index-domain-objects.jar
