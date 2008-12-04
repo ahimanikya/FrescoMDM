@@ -175,20 +175,20 @@ public class HierarchyNode implements Serializable {
 
     /**
      * Set attribute value.
-     * @param attribute Attribute.
+     * @param key Attribute key.
      * @param value Attribute value.
      */
-    public void setAttributeValue(String name, String value) {
-        attributeValues.put(name, value);
+    public void setAttributeValue(String key, String value) {
+        attributeValues.put(key, value);
     }
 
     /**
      * Get attribute value.
-     * @param attribute Attribute.
+     * @param key Attribute key.
      * @return String Attribute value.
      */
-    public String getAttributeValue(Attribute attribute) {
-        return attributeValues.get(attribute);
+    public String getAttributeValue(String key) {
+        return attributeValues.get(key);
     }
 
     /**
