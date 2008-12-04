@@ -183,14 +183,17 @@ public class HierarchyNodeService implements Serializable {
         HierarchyNodeDaoImpl dao = new HierarchyNodeDaoImpl(mConn);
         children = dao.findChildren(nodeId);
         
-        HierarchyNodeDto parent = dao.findNode(nodeId);
-               
-        for (HierarchyNodeDto child : children) {
-            HierarchyNode childNode = new HierarchyNode();
-            copyFromHierDto(childNode, child);
-            childNode.setParentEUID(parent.getParentEuid());
-            childNode.setParentNodeID(parent.getParentNodeId());
-            update(childNode);
+        HierarchyNodeDto node = dao.findNode(nodeId);
+        
+        //cannot delete root node and move children up
+        if (node.getParentEuid() != null && node.getParentNodeId() != 0) {
+            for (HierarchyNodeDto child : children) {
+                HierarchyNode childNode = new HierarchyNode();
+                copyFromHierDto(childNode, child);
+                childNode.setParentEUID(node.getParentEuid());
+                childNode.setParentNodeID(node.getParentNodeId());
+                update(childNode);
+            }
         }
     }
     
