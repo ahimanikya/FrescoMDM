@@ -24,6 +24,8 @@ package com.sun.mdm.multidomain.services.model;
 
 import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import junit.framework.TestCase;
 
 /**
@@ -40,11 +42,18 @@ public class RelationshipSearchTest extends TestCase {
     }
     
     public void test001() {
-        RelationshipSearch rs = new RelationshipSearch();
-        rs.setName("FOO");
-        Date d = new Date();
-        rs.setPurgeDate(d);
-        assertTrue("FOO".equals(rs.getName()));
-        assertTrue(d.equals(rs.getPurgeDate()));
+        try {
+            RelationshipSearch rs = new RelationshipSearch();
+            rs.setName("FOO");
+            Date d1 = new Date("10/01/2008");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            rs.setPurgeDate(dateFormat.format(d1));
+            assertTrue("FOO".equals(rs.getName()));
+            assertTrue("10/01/2008".equals(rs.getPurgeDate()));
+            Date d2 = dateFormat.parse("10/01/2008");
+            assertTrue("10/01/2008".equals(dateFormat.format(d2)));
+        } catch (ParseException pex) {            
+            fail(pex.getMessage());
+        }
     }
 }
