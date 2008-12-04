@@ -40,17 +40,14 @@ import com.sun.mdm.multidomain.parser.ConfigurationFiles;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
-import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.services.model.Domain;
 import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
-
-import org.xml.sax.InputSource;
+import java.text.SimpleDateFormat;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -74,6 +71,7 @@ public class MDConfigManager {
     private static HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
     private static HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
     private static String DATEFORMAT;
+    private static SimpleDateFormat dateFormat;
     private static MDConfigManager mInstance = null;	// instance
     private static Integer mInitialScreenID;	                // ID of the initial screen
     private static ObjectSensitivePlugIn mObjectSensitivePlugIn;
@@ -1278,22 +1276,23 @@ public class MDConfigManager {
 	}
 
     //  return the handle to the security plug-in
-	public static ObjectSensitivePlugIn getObjectSensitivePlugIn() {  
+        public static ObjectSensitivePlugIn getObjectSensitivePlugIn() {  
 	    return mObjectSensitivePlugIn;
     }
     
-    /**
-     * Gets the DATEFORMAT attribute of the ConfigManager class
-     *
-     * @return the date format defined in object definition
-     */
-    public static String getDateFormat() {
-        return DATEFORMAT;
+   /**
+    * Gets date format for multi-domain configmanager. 
+    * @return the date format defined in object definition.
+    */
+    public static SimpleDateFormat getDateFormat() {
+        //TBD: need to fix.
+        DATEFORMAT = "MM/dd/yyyy"; 
+        dateFormat = new SimpleDateFormat(DATEFORMAT);
+        return dateFormat;
     }
     
     /**
      * Gets the input mask of date in the ConfigManager class
-     *
      * @return the input mask of date based on the date format
      */
     public static String getDateInputMask() {
