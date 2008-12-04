@@ -160,7 +160,7 @@
             <field-type>string</field-type>
             <size>10</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module>STATECD</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -170,7 +170,7 @@
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -190,7 +190,7 @@
             <field-type>float</field-type>
             <size>4</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -200,7 +200,7 @@
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module>HAIRCOLR</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -210,7 +210,7 @@
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module>EYECOLOR</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -220,7 +220,7 @@
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
-            <required>false</required>
+            <required>true</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>false</key-type>
@@ -472,15 +472,15 @@
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
-            <required>true</required>
+            <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
             <key-type>true</key-type>
         </fields>
         <fields>
-            <field-name>IssueDate</field-name>
-            <field-type>date</field-type>
-            <size>12</size>
+            <field-name>PassportNum</field-name>
+            <field-type>string</field-type>
+            <size>40</size>
             <updateable>true</updateable>
             <required>true</required>
             <code-module></code-module>
@@ -488,9 +488,9 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>CardNumber</field-name>
-            <field-type>string</field-type>
-            <size>40</size>
+            <field-name>IssueDate</field-name>
+            <field-type>date</field-type>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -498,10 +498,10 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>CardIssueDate</field-name>
+            <field-name>ExpireDate</field-name>
             <field-type>date</field-type>
-            <size>12</size>
-            <updateable>true</updateable>
+            <size>32</size>
+            <updateable>false</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
@@ -509,7 +509,7 @@
         </fields>
     </nodes>
     <nodes>
-        <tag>Id</tag>
+        <tag>OtherIDs</tag>
         <fields>
             <field-name>IdType</field-name>
             <field-type>string</field-type>
@@ -863,7 +863,7 @@
         <children>Address</children>
         <children>Phone</children>
         <children>Passport</children>
-        <children>Id</children>
+        <children>OtherIDs</children>
         <children>Family</children>
         <children>Contact</children>
     </relationships>

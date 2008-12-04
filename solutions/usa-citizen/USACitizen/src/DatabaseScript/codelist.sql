@@ -42,7 +42,7 @@ declare
         tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),
         tCode('V', 'REV', 'REVERAND'),
         tCode('V', 'MR', 'MR'),
-	tCode('V', 'MRS', 'MRS'),
+	    tCode('V', 'MRS', 'MRS'),
         tCode('V', 'MISS', 'MISS'),
 
         -- ****     GENDER   ****
@@ -189,6 +189,9 @@ declare
         tCode('V', 'BROWN', 'BROWN'),
         tCode('V', 'RED', 'RED'),
         tCode('V', 'GRAY', 'GRAY'),
+        tCode('V', 'WHITE', 'WHITE'),
+        tCode('V', 'SILVER', 'SILVER'),
+        tCode('V', 'OTHER', 'OTHER'),
 
         -- ****     EYECOLOR   ****
         tCode('L', 'EYECOLOR', 'module description'),
@@ -226,12 +229,24 @@ declare
         tCode('L', 'MEMRTYPE', 'module description'),
         tCode('V', 'FA', 'FATHER'),
         tCode('V', 'MO', 'MOTHER'),
+        tCode('V', 'SP', 'SPOUSE'),
+        tCode('V', 'SO', 'SON'),
+        tCode('V', 'DA', 'DAUGHTER'),
+        tCode('V', 'BR', 'BROTHER'),
+        tCode('V', 'SI', 'SISTER'),
 
         -- ****     IDTYPE   ****
         tCode('L', 'IDTYPE', 'module description'),
         tCode('V', 'DR', 'DRIVER LICENSE'),
         tCode('V', 'ST', 'STATE ID'),
         tCode('V', 'FD', 'FEDERAL ID'),
+        tCode('V', 'SD', 'STUDENT ID'),
+        tCode('V', 'MD', 'MILITARY ID'),
+        tCode('V', 'MC', 'MEDICARE ID'),
+        tCode('V', 'CC', 'CERT. OF CITIZENSHIP'),
+        tCode('V', 'UD', 'US CITIZEN ID CARD'),
+        tCode('V', 'BC', 'BIRTH CERTIFICATE'),
+        tCode('V', 'OT', 'OTHER'),
 
         -- ****     YESNO   ****
         tCode('L', 'YESNO', 'module description'),
@@ -293,6 +308,7 @@ declare
         tCode('V', 'WI','WISCONSIN'),
         tCode('V', 'WV','WEST VIRGINIA'),
         tCode('V', 'WY','WYOMING'),
+        tCode('V', 'NA', 'OUTSIDE US'),
 
         -- ****     CONTTYPE   ****
         tCode('L', 'CONTTYPE', 'module description'),
