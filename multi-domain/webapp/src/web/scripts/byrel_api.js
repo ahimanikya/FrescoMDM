@@ -89,7 +89,47 @@ function searchRelationships() {
 }
 function searchResultsCallback(data) {
     alert("search results " + data);
+    /*for(i=0; i<data.length; i++) {
+        alert(data[i].id + " : " + data[i].sourceEUID + " : "  + data[i].sourceHighLight);
+    }*/
+    dwr.util.removeAllRows("relationshipsListing");
+    if(data == null || data.length<=0) {
+        //alert("no relationship definitions found");
+        dwr.util.addRows("relationshipsListing", [''], [function(data){return "No Relationships found.";}], {
+              cellCreator:function(options) {
+                var td = document.createElement("td");
+                td.colSpan="7"; td.align="center";
+                return td;
+              },
+              escapeHtml:false
+        });
+    }
+    dwr.util.addRows("relationshipsListing", data, relationListingFuncs, {
+        rowCreator:function(options) {
+          var row = document.createElement("tr");
+          row.onclick = function() { 
+              selectRecordRow(this); 
+              // Populate data in details section.
+              //populateSourceRecordDetails (sourceEUID);
+              //populateSourceRecordDetails ();
+              alert("Populating record details now..");
+          };
+          return row;
+        },
+        cellCreator:function(options) {
+          var td = document.createElement("td");
+          if(options.cellNum==0) td.align="center";// alert(options.cellNum);
+          return td;
+        },
+        escapeHtml:false
+      });
 }
+var relationListingFuncs = [
+    function(data) { return "<input type='checkbox' align='center' >"; },
+    function(data) { return data.sourceHighLight; },
+    function(data) { return data.targetHighLight; }
+
+];
 /*
  * Scripts for Main (listing, details) screen <END>
  */

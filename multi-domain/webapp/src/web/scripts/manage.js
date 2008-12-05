@@ -210,12 +210,12 @@ function hideByRelAddDialog () {
 
 // Method to refresh record listing table in "By Relationship""
 function selectRecordRow (objSelRow) {
-    var tempTBody = document.getElementById("recordListing");
+    // highlight the selected row
+    var tempTBody = document.getElementById("relationshipsListing");
     for(i=0; i<tempTBody.rows.length; i++) {
         if(tempTBody.rows[i] == objSelRow) 
             objSelRow.style.backgroundColor='#EBF5FF'; // change to CSS class later
         else
             tempTBody.rows[i].style.backgroundColor='#FFFFFF'; // change to CSS class later
     }
-    
 }

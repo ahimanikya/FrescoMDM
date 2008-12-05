@@ -89,7 +89,7 @@
                                     <td class="generalTextBold">Target Record</td>
                                 </tr>
                             </thead>
-                            <tbody id="recordListing">
+                            <tbody id="relationshipsListing">
                                 <!--<tr><td class="textdata" colspan="3" align="center"> Loading... </td></tr>-->
                                 <tr onclick="selectRecordRow(this);">
                                     <td><input type="checkbox"></td>
