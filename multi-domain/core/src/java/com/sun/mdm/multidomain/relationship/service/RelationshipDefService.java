@@ -24,19 +24,16 @@ package com.sun.mdm.multidomain.relationship.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.sql.Connection;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipDefDaoException;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipEaDaoException;
 import com.sun.mdm.multidomain.relationship.ops.factory.AbstractDaoFactory;
 import com.sun.mdm.multidomain.relationship.ops.factory.AbstractDaoFactory.DatabaseType;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.attributes.Attribute;
-import com.sun.mdm.multidomain.attributes.AttributeType;
-import com.sun.mdm.multidomain.relationship.RelationshipDef.DirectionMode;
-import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipEavDao;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipDefDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipEaDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDefDao;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEaDto;
 
 import java.util.List;
@@ -51,6 +48,7 @@ public class RelationshipDefService implements Serializable {
 
     private DatabaseType mDbType = null;
     private RelationshipDefDao mRelDef = null;
+    private Connection mConn = null;
 
     /**
      * Method 'RelationshipDefService'
@@ -58,13 +56,17 @@ public class RelationshipDefService implements Serializable {
      */
     public RelationshipDefService() {
         getDaoInstances();
-
     }
 
     public RelationshipDefService(DatabaseType dbtype) {
         this.mDbType = dbtype;
         getDaoInstances();
 
+    }
+
+    public RelationshipDefService(Connection conn) {
+        this.mConn = conn;
+        getDaoInstances();
     }
 
     /**
@@ -81,17 +83,11 @@ public class RelationshipDefService implements Serializable {
      * Method 'create'
      *
      */
-    public void create(RelationshipDef rel) throws RelationshipDefDaoException, RelationshipEaDaoException {
-
-        /* RelationshipDef object */
-        RelationshipDefDto relDto = new RelationshipDefDto();
-
-        copyToRelDto(rel, relDto);
-
+    public long create(RelationshipDef relDef) throws RelationshipDefDaoException, RelationshipEaDaoException {
         long relDefID = 0;
-        RelationshipDefDaoImpl relDefDao = new RelationshipDefDaoImpl();
+        RelationshipDefDaoImpl relDefDao = new RelationshipDefDaoImpl(mConn);
         try {
-            relDefID = relDefDao.insert(relDto);
+            relDefID = relDefDao.insert(relDef);
         } catch (RelationshipDefDaoException ex) {
             Logger.getLogger(RelationshipDefService.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -99,8 +95,8 @@ public class RelationshipDefService implements Serializable {
 
         /* RelationshipDef Extend Attributes */
         RelationshipEaDto attDto = new RelationshipEaDto();
-        ArrayList<Attribute> attrList = (ArrayList<Attribute>) rel.getAttributes();
-        RelationshipEaDaoImpl relEaDao = new RelationshipEaDaoImpl();
+        ArrayList<Attribute> attrList = (ArrayList<Attribute>) relDef.getAttributes();
+        RelationshipEaDaoImpl relEaDao = new RelationshipEaDaoImpl(mConn);
         for (Attribute att : attrList) {
             attDto.setRelationshipDefId(relDefID);
             attDto.setAttributeName(att.getName());
@@ -112,6 +108,7 @@ public class RelationshipDefService implements Serializable {
             attDto.setIsSearchable(att.getIsSearchable());
             relEaDao.insert(attDto);
         }
+        return relDefID;
     }
 
     /**
@@ -127,10 +124,10 @@ public class RelationshipDefService implements Serializable {
      */
     public void update(RelationshipDef rel) throws RelationshipDefDaoException {
         /* RelationshipDef object */
-        RelationshipDefDto dto = new RelationshipDefDto();
-        copyToRelDto(rel, dto);
-        RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl();
-        dao.update(dto);
+        //RelationshipDefDto dto = new RelationshipDefDto();
+        //copyToRelDto(rel, dto);
+        //RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl();
+        //dao.update(dto);
     }
 
     /**
@@ -139,62 +136,7 @@ public class RelationshipDefService implements Serializable {
      * @return RelationshipDefDto
      */
     public List<RelationshipDef> search(String sourceDomain, String targetDomain) throws RelationshipDefDaoException {
-        RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl();
-        ArrayList relDefList = new ArrayList();
-        for (RelationshipDefDto relDto : dao.search(sourceDomain, targetDomain)) {
-            RelationshipDef relDef = new RelationshipDef();
-            copyFromRelDto(relDef, relDto);
-            relDefList.add(relDef);
-        }
-        return relDefList;
-    }
-
-    /**
-     * Method 'copyTorelDto'
-     *
-     */
-    private void copyToRelDto(RelationshipDef rel, RelationshipDefDto dto) {
-        dto.setRelationshipDefId(rel.getId());
-        dto.setRelationshipName(rel.getName());
-        dto.setDescription(rel.getDescription());
-        dto.setSourceDomain(rel.getSourceDomain());
-        dto.setTargetDomain(rel.getTargetDomain());
-        if (rel.getDirection() != null) {
-            dto.setBidirectional(rel.getDirection().IsBidirectional() ? "Y" : "N");
-        }
-        dto.setEffectiveFromReq(rel.getEffectiveFromRequired() ? "Y" : "N");
-        dto.setEffectiveToReq(rel.getEffectiveToRequired() ? "Y" : "N");
-        dto.setPurgeDateReq(rel.getPurgeDateRequired() ? "Y" : "N");
-        dto.setPlugIn(rel.getPlugin());
-    }
-
-    /**
-     * Method 'copyFromrelDto'
-     *
-     */
-    private void copyFromRelDto(RelationshipDef rel, RelationshipDefDto dto) {
-        rel.setId(dto.getRelationshipDefId());
-        rel.setName(dto.getRelationshipName());
-        rel.setDescription(dto.getDescription());
-        rel.setSourceDomain(dto.getSourceDomain());
-        rel.setTargetDomain(dto.getTargetDomain());
-        rel.setDirection(dto.getBidirectional().equalsIgnoreCase("Y") ? DirectionMode.BIDIRECTIONAL : DirectionMode.UNIDIRECTIONAL);
-        rel.setEffectiveFromRequired(dto.getEffectiveFromReq().equalsIgnoreCase("Y") ? true : false);
-        rel.setEffectiveToRequired(dto.getEffectiveToReq().equalsIgnoreCase("Y") ? true : false);
-        rel.setPurgeDateRequired(dto.getPurgeDateReq().equalsIgnoreCase("Y") ? true : false);
-        rel.setPlugin(dto.getPlugIn());
-        List<RelationshipEaDto> eaDto = dto.getAttributeDefs();
-        for (RelationshipEaDto ea : eaDto) {
-            Attribute att = new Attribute();
-            att.setId(ea.getRelationshipDefId());
-            att.setName(ea.getAttributeName());
-            att.setColumnName(ea.getColumnName());
-            att.setType(AttributeType.valueOf(ea.getColumnType()));
-            att.setDefaultValue(ea.getDefaultValue());
-            att.setIsSearchable(ea.getIsSearchable());
-            att.setIsRequired(ea.getIsRequired());
-            att.setIsIncluded(ea.getIsIncluded());
-            rel.getAttributes().add(att);
-        }
+        RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl(mConn);
+        return dao.search(sourceDomain, targetDomain);
     }
 }
