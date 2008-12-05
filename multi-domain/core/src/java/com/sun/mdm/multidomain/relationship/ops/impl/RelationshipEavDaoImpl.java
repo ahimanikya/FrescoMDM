@@ -34,28 +34,35 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
     calls to this DAO, otherwise a new Connection will be allocated for each operation.
      */
     protected java.sql.Connection userConn;
-  
     /**
      * Finder methods will pass this value to the JDBC setMaxRows method
      */
     protected int maxRows;
-    
     private long mPrimaryKey = 0;
+
+    /**
+     * Method 'RelationshipNodeEavDaoImpl'
+     *
+     */
+    public RelationshipEavDaoImpl() {
+    }
+
+    /**
+     * Method 'RelationshipNodeEavDaoImpl'
+     *
+     * @param userConn
+     */
+    public RelationshipEavDaoImpl(final java.sql.Connection userConn) {
+        this.userConn = userConn;
+    }
 
     /**
      * Inserts a new row in the relationship_eav table.
      */
     public long insert(RelationshipEavDto dto) throws RelationshipEavDaoException {
         // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
         PreparedStatement stmt = null;
-        ResultSet rs = null;
-
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             InsertBuilder insertBld = new InsertBuilder();
             insertBld.setTable(RELATIONSHIP_EAV.getTableName());
             for (RELATIONSHIP_EAV eav : RELATIONSHIP_EAV.values()) {
@@ -69,7 +76,7 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
                 insertBld.addColumns(attr.getColumnName());
             }
             String sql = SQLBuilder.buildSQL(insertBld);
-            stmt = conn.prepareStatement(sql);
+            stmt = userConn.prepareStatement(sql);
             int index = 1;
             stmt.setLong(index++, 0);
             stmt.setLong(index++, dto.getRelationshipId());
@@ -77,30 +84,32 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
                 Attribute attr = attrList.get(i);
                 String strValue = (String) dto.getAttributes().get(attr);
                 switch (attr.getType()) {
+                    case BOOLEAN:
+                    case CHAR:
+                        stmt.setString(index++, strValue);
+                        break;
                     case STRING:
                         stmt.setString(index++, strValue);
                         break;
+                    case FLOAT:
+                        float floatVal = Float.valueOf(strValue.trim()).floatValue();
+                        stmt.setFloat(index++, floatVal);
                     case INT:
-                        Long longVal = new Long(strValue);
+                        long longVal = Long.valueOf(strValue.trim()).longValue();
                         stmt.setLong(index++, longVal);
+                        break;
+                    case DATE:
+                        stmt.setTimestamp(index++, java.sql.Timestamp.valueOf(strValue));
                         break;
                     default:
                 }
             }
 
-            System.out.println("Executing " + sql + " with DTO: " + dto);
             int rows = stmt.executeUpdate();
-            reset(dto);
             return rows;
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipEavDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
 
     }
@@ -119,8 +128,8 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
             // get the user-specified connection or get a connection from the ResourceManager
             conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 
-           // System.out.println("Executing " + SQL_DELETE + " with PK: " + pk);
-           // stmt = conn.prepareStatement(SQL_DELETE);
+            // System.out.println("Executing " + SQL_DELETE + " with PK: " + pk);
+            // stmt = conn.prepareStatement(SQL_DELETE);
 
             int rows = stmt.executeUpdate();
             long t2 = System.currentTimeMillis();
@@ -136,22 +145,6 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
 
         }
 
-    }
-  
-    /**
-     * Method 'RelationshipNodeEavDaoImpl'
-     *
-     */
-    public RelationshipEavDaoImpl() {
-    }
-
-    /**
-     * Method 'RelationshipNodeEavDaoImpl'
-     *
-     * @param userConn
-     */
-    public RelationshipEavDaoImpl(final java.sql.Connection userConn) {
-        this.userConn = userConn;
     }
 
     /**
@@ -225,7 +218,6 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
     protected void reset(RelationshipEavDto dto) {
     }
 
-  
     @Override
     public long getPrimaryKey() {
         throw new UnsupportedOperationException("Not supported yet.");
