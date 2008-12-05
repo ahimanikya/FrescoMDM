@@ -61,6 +61,13 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.relationship.Relationship;
 
+import com.sun.mdm.multidomain.relationship.service.RelationshipService;
+import com.sun.mdm.multidomain.query.MultiDomainQuery;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+
 /**
  * The enterprise beans implementation of MultiDomainService that is exposed to the clients.
  * @author SwaranjitDua
@@ -81,6 +88,11 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     private SessionContext sessionContext;
     
     private HierarchyNodeService hierarchyNodeService;
+
+    @Resource(  name="jdbc/MULTIDOMAIN_DATASOURCE",
+                type=javax.sql.DataSource.class,
+                mappedName="jdbc/MULTIDOMAIN_APPLICATION_TOKEN_DataSource" )
+    javax.sql.DataSource dataSource;
       
     /**
      * Set SessionContext and called by the container when the bean is created.
@@ -114,7 +126,16 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      */        
     public long createRelationship(Relationship relationship)
     throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet.");
+
+        try {
+          Connection con = dataSource.getConnection();
+          RelationshipService relService = new RelationshipService(con);
+          relService.create(relationship);
+          return 0;
+       } catch (Exception ex) {
+           throw new ProcessingException(ex);
+       }
+        
     }
 
     /**
@@ -145,7 +166,15 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      */ 
     public void updateRelationship(Relationship relationship)
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet.");
+       try {
+        Connection con = dataSource.getConnection();
+        RelationshipService relService = new RelationshipService(con);
+        relService.update(relationship);
+
+       } catch (Exception ex) {
+           throw new ProcessingException(ex);
+       }
+
     }
     
     /**
@@ -178,9 +207,15 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      */                
     public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria searchCriteria) 
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet.");
-                
-                              
+
+       try {
+        Connection con = dataSource.getConnection();
+        MultiDomainQuery mDQuery = new MultiDomainQuery();
+        return mDQuery.searchRelationships(searchOptions, searchCriteria, con);
+
+       } catch (SQLException ex) {
+           throw new ProcessingException(ex);
+       }
     }
 
     /**
