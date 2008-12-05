@@ -12,7 +12,7 @@
     <tr>
         <td class="generalTextBold" colspan="3">
             &nbsp;<f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
-            <select id="select_relationshipDefs" name="select_relationshipDefs" title="<f:message key="name_text" />">
+            <select id="select_relationshipDefs" name="select_relationshipDefs" title="<f:message key='name_text' />" onchange="getSelectRelationshipAttributes()">
                 <!--<option value="">Select Relationship</option>-->
             </select>
         </td>
@@ -27,9 +27,9 @@
                <table border="0">
                    <tr>
                        <td>
-                          <div class="RelationshipAttributes">
-                            <table border="0">
-                                <tr>
+                          <div class="RelationshipAttributes" id="select_Relationship_CustomAtrributes" style="display:none;">
+                            <table border="0" id="byrel_select_customAttributes">
+                            <!--    <tr>
                                     <td class="Heading" colspan="5">
                                         <f:message key="custom_text" /> <f:message key="attributes_text" />
                                     </td>
@@ -45,16 +45,16 @@
                                     </td>
                                     <td class="label"><f:message key="to_text" /></td>
                                     <td> <input name="To" title="<f:message key="number_visit_text" />" dojoType="dijit.form.TextBox" style="width:100px"/> </td>
-                                </tr>
+                                </tr> -->
                             </table>
                           </div>
                        </td>
                    </tr>
                    <tr>
                        <td>
-                           <div class="RelationshipAttributes">
-                                <table border="0">
-                                    <tr>
+                           <div class="RelationshipAttributes" id="select_Relationship_PredefinedAtrributes" style="display:none;">
+                                <table border="0" id="byrel_select_predefinedAttributes">
+                                <!--    <tr>
                                         <td class="Heading" colspan="4">
                                             <f:message key="predefined_text" /> <f:message key="attributes_text" />
                                         </td>
@@ -89,7 +89,7 @@
                                             <input name="Purge Date"  title="<f:message key="purge_date_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
                                             <br>mm/dd/yyyy
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                            </div>
                        </td>

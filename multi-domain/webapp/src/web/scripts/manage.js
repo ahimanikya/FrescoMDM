@@ -37,7 +37,9 @@ function showByRelSelectDialog() {
 
     var selectDialog = dijit.byId("byrel_select");
     selectDialog.show();
+    
 }
+
 function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
 }
@@ -54,7 +56,7 @@ function showByRelAddDialog(){
     
     RelationshipDefHandler.getRelationshipDefByName(selectedRelationshipDef, selectedSourceDomain, selectedTargetDomain, populateAddRelationshipDefAttributes);
     RelationshipDefHandler.getSearchTypeCriteria('Person','Advanced Person Lookup (Alpha)',sourceSearchTypeFields);
-    RelationshipDefHandler.getSearchTypeCriteria('Company','Advanced Company Lookup (Alpha)',targetSearchTypeFields);
+    RelationshipDefHandler.getSearchTypeCriteria('Company','Advanced Person Lookup (Alpha)',targetSearchTypeFields);
 }
 
 function populateAddRelationshipDefAttributes(data){
