@@ -8,6 +8,7 @@
 
 package com.sun.mdm.multidomain.hierarchy.ops.dao;
 
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeDto;
 import com.sun.mdm.multidomain.hierarchy.ops.exceptions.*;
 
@@ -16,7 +17,7 @@ public interface HierarchyNodeDao
 	/** 
 	 * Inserts a new row in the HierarchyNodeDto table.
 	 */
-	public long insert(HierarchyNodeDto dto) throws HierarchyDaoException;
+	public long insert(HierarchyNode hierNode) throws HierarchyDaoException;
 
 	/** 
 	 * Updates a single row in the HierarchyNodeDto table.
