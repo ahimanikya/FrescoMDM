@@ -393,7 +393,7 @@ var relationListingFuncs = [
  */ 
 function loadAddSearchCriteria(){
     var selectedsourceDomain = document.getElementById('select_sourceDomain').value;
-    var selectedTargetDomain = document.getElementById('select_sourceDomain').value;
+    var selectedTargetDomain = document.getElementById('select_targetDomain').value;
     RelationshipDefHandler.getDomainSearchCriteria(selectedsourceDomain, addSourceDomainCriteria);
     RelationshipDefHandler.getDomainSearchCriteria(selectedTargetDomain, addTargetDomainCriteria);
     
@@ -401,7 +401,7 @@ function loadAddSearchCriteria(){
 
 function addSourceDomainCriteria(data){
     
-    var searchTypes = new Array();
+     var searchTypes = new Array();
      var j = 0;
      var fgroups = new Array();
      document.getElementById('add_source_criteria').innerHTML='';
@@ -415,12 +415,15 @@ function addSourceDomainCriteria(data){
           opt.text = fgroups[i];
           opt.value = fgroups[i];
           document.getElementById('add_source_criteria').options.add(opt);
-      }    
+      }
+      var tempSourceSearchType = document.getElementById('add_source_criteria').value;
+      var tempSourceDomain = document.getElementById('select_sourceDomain').value;
+     RelationshipDefHandler.getSearchTypeCriteria(tempSourceDomain,tempSourceSearchType,sourceSearchTypeFields);
 }
 
 function addTargetDomainCriteria(data){
     
-    var searchTypes = new Array();
+     var searchTypes = new Array();
      var j = 0;
      var fgroups = new Array();
      document.getElementById('add_target_criteria').innerHTML='';
@@ -434,7 +437,10 @@ function addTargetDomainCriteria(data){
           opt.text = fgroups[i];
           opt.value = fgroups[i];
           document.getElementById('add_target_criteria').options.add(opt);
-      }    
+      } 
+      var tempTargetSearchType = document.getElementById('add_target_criteria').value;
+      var tempTargetDomain = document.getElementById('select_targetDomain').value;
+      RelationshipDefHandler.getSearchTypeCriteria(tempTargetDomain,tempTargetSearchType,targetSearchTypeFields);  
 }
 
 function getSourceSearchFields(searchTypeId){
@@ -479,9 +485,7 @@ function targetSearchTypeFields(data){
     document.getElementById('add_search_target_fields').innerHTML='';
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
-        alert("fieldGrp  ");
          for (var fieldCfg in data[fieldGrp])  {
-             alert("fields " + data[fieldGrp][fieldCfg].name);
              var row = document.getElementById('add_search_target_fields').insertRow(count++);
                  row.insertCell(0);
                  row.insertCell(1);
@@ -503,6 +507,7 @@ function addSourceDomainSearch() {
 }
 
 function addSourceSearchResults(data) {
+    document.getElementById('AddSource_TableId').innerHTML ='';
     if(data == null) return;
     for(i =0;i<data.length;i++){
         if(i==0){
@@ -534,6 +539,7 @@ function addTargetDomainSearch() {
 }
 
 function addTargeSearchResults(data) {
+    document.getElementById('AddTarget_TableId').innerHTML ='';
     if(data == null) return;
     for(i =0;i<data.length;i++){
         if(i==0){

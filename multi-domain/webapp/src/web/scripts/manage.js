@@ -44,19 +44,26 @@ function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
 }
 function showByRelAddDialog(){
-    
     var addDialog = dijit.byId("byrel_add");
+    addDialog.show();
+    initializeAddDialog();
+}
+
+function initializeAddDialog() {
+    //alert("add dialog ")
     var selectedSourceDomain =document.getElementById("select_sourceDomain").value;
     var selectedTargetDomain =document.getElementById("select_targetDomain").value;
     var selectedRelationshipDef =document.getElementById("select_relationshipDefs").value;
-    addDialog.show();
+
     document.getElementById("byrel_addSourceDomain").innerHTML= selectedSourceDomain;
     document.getElementById("byrel_addTargetDomain").innerHTML= selectedTargetDomain;
     document.getElementById("byrel_addRelationshipDef").innerHTML= selectedRelationshipDef;
     
     RelationshipDefHandler.getRelationshipDefByName(selectedRelationshipDef, selectedSourceDomain, selectedTargetDomain, populateAddRelationshipDefAttributes);
-    RelationshipDefHandler.getSearchTypeCriteria('Person','Advanced Person Lookup (Alpha)',sourceSearchTypeFields);
-    RelationshipDefHandler.getSearchTypeCriteria('Company','Advanced Person Lookup (Alpha)',targetSearchTypeFields);
+    // Populate search type drop down 
+    loadAddSearchCriteria();
+    //RelationshipDefHandler.getDomainSearchCriteria(selectedSourceDomain, addSourceDomainCriteria);
+    //RelationshipDefHandler.getDomainSearchCriteria(selectedTargetDomain, addTargetDomainCriteria);
 }
 
 function populateAddRelationshipDefAttributes(data){
