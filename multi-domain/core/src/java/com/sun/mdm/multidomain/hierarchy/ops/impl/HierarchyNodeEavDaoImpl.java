@@ -56,7 +56,10 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
     private long mPrimaryKey = 0;
 
     /**
-     * Inserts a new row in the hierarchy_eav table.
+     * Inserts a new row in the HierarchyNode table.
+     *
+     * @param  hierEav the hierarchy extended-attribute-value object to be persisted in the database
+     * @return the primary key for the inserted row
      */
     public long insert(HierarchyNodeEavDto dto) throws HierarchyEavDaoException {
         // declare variables
@@ -74,7 +77,6 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
             for (HIERARCHY_NODE_EAV eav : HIERARCHY_NODE_EAV.values()) {
                 insertBld.addColumns(eav.columnName);
             }
-          
             Iterator iter = dto.getAttributes().keySet().iterator();
             ArrayList<Attribute> attrList = new ArrayList<Attribute>();
             while (iter.hasNext()) {
@@ -91,19 +93,26 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
                 Attribute attr = attrList.get(i);
                 String strValue = (String) dto.getAttributes().get(attr);
                 switch (attr.getType()) {
+                    case BOOLEAN:
+                    case CHAR:
+                        stmt.setString(index++, strValue);
+                        break;
                     case STRING:
                         stmt.setString(index++, strValue);
                         break;
+                    case FLOAT:
+                        float floatVal = Float.valueOf(strValue.trim()).floatValue();
+                        stmt.setFloat(index++, floatVal);
                     case INT:
-                        Long longVal = new Long(strValue);
+                        long longVal = Long.valueOf(strValue.trim()).longValue();
                         stmt.setLong(index++, longVal);
+                        break;
+                    case DATE:
+                        stmt.setTimestamp(index++, java.sql.Timestamp.valueOf(strValue));
                         break;
                     default:
                 }
             }
-
-            System.out.println("Executing " + sql + " with DTO: " + dto);
-        
             int rows = stmt.executeUpdate();
             reset(dto);
             return rows;
@@ -152,7 +161,7 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
         }
 
     }
-  
+
     /**
      * Method 'HierarchyEavDaoImpl'
      *
@@ -228,8 +237,6 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
     protected void populateDto(HierarchyNodeEavDto dto, ResultSet rs) throws SQLException {
         //dto.setEavId(rs.getInt(COLUMN_EAV_ID));
         // dto.setHierarchyId(rs.getInt(COLUMN_RELATIONSHIP_ID));
-        
-
     }
 
     /**
@@ -238,7 +245,6 @@ public class HierarchyNodeEavDaoImpl extends AbstractDAO implements HierarchyNod
     protected void reset(HierarchyNodeEavDto dto) {
     }
 
-  
     @Override
     public long getPrimaryKey() {
         throw new UnsupportedOperationException("Not supported yet.");
