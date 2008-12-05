@@ -82,9 +82,6 @@ public class ApplicationHandler {
         
             /* initialize Service managerFactory */
             ServiceManagerFactory.Instance();
-
-            /* initialize the date format */
-            DateUtil.init();
         
             /* initialize ServiceManagerFactory */            
             ServiceManagerFactory.Instance().initialize();
