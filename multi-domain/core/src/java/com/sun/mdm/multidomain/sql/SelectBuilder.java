@@ -20,10 +20,10 @@
  * fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
 package com.sun.mdm.multidomain.sql;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -31,10 +31,9 @@ import java.util.ArrayList;
  */
 public class SelectBuilder extends AbstractBuilder {
 
-    private ArrayList<String> criteriaList = new ArrayList<String>();
-    private ArrayList<String> columnList = new ArrayList<String>();
-    private ArrayList<String> orderByList = new ArrayList<String>();
-    private ArrayList<String> groupByList = new ArrayList<String>();
+    private List<String> columns = new ArrayList<String>();
+    private List<OrderBy> orderBy = new ArrayList<OrderBy>();
+    private final List<Criteria> criteria = new ArrayList<Criteria>();
 
     @Override
     public String getCommand() {
@@ -46,101 +45,51 @@ public class SelectBuilder extends AbstractBuilder {
         StringBuffer what = new StringBuffer();
         String columnName = null;
 
-        for (int i = 0; i < columnList.size(); i++) {
-            columnName = columnList.get(i);
+        for (int i = 0; i < columns.size(); i++) {
+            columnName = columns.get(i);
             what.append(columnName);
-            if (i < columnList.size() - 1) {
+            if (i < columns.size() - 1) {
                 what.append(',');
             }
         }
         return what.toString() + " FROM ";
     }
 
-    @Override
     public String getCriteria() {
-        if (criteriaList.size() == 0) {
-            return "";
+        StringBuffer sb = new StringBuffer(" WHERE ");
+        for (Criteria crit : criteria) {
+            sb.append(crit.write());
         }
-        StringBuffer criteria = new StringBuffer();
-        String columnName = null;
-        for (int i = 0; i < criteriaList.size(); i++) {
-            columnName = criteriaList.get(i);
-            criteria.append(columnName);
-            if (i < criteriaList.size() - 1) {
-                criteria.append(" AND ");
-            }
-        }
-        StringBuffer whereClause = new StringBuffer(" WHERE ");
-        whereClause.append(criteria);
-        whereClause.append(getGroupBy());
-        whereClause.append(getOrderBy());
-        return whereClause.toString();
+        sb.append(getOrderBy());
+        return sb.toString();
     }
 
     public String getOrderBy() {
-        if (orderByList.size() == 0) {
+        if (orderBy.size() == 0) {
             return "";
         }
-        StringBuffer orderBy = new StringBuffer();
-        String columnName = null;
-
-        for (int i = 0; i < orderByList.size(); i++) {
-            columnName = orderByList.get(i);
-            orderBy.append(columnName);
-            if (i < orderByList.size() - 1) {
-                orderBy.append(',');
+        StringBuffer sb = new StringBuffer(" ORDER BY ");
+        for (int i = 0; i < orderBy.size(); i++) {
+            OrderBy order = orderBy.get(i);
+            sb.append(order.write());
+            if (i < orderBy.size() - 1) {
+                sb.append(',');
             }
         }
-        StringBuffer orderByClause = new StringBuffer(" ORDER BY ");
-        orderByClause.append(orderBy);
-        return orderByClause.toString();
+        return sb.toString();
     }
 
-    public String getGroupBy() {
-        if (groupByList.size() == 0) {
-            return "";
-        }
-        StringBuffer groupBy = new StringBuffer();
-        String columnName = null;
-
-        for (int i = 0; i < groupByList.size(); i++) {
-            columnName = groupByList.get(i);
-            groupBy.append(columnName);
-            if (i < groupByList.size() - 1) {
-                groupBy.append(',');
-            }
-        }
-        StringBuffer groupByClause = new StringBuffer(" GROUP BY ");
-        groupByClause.append(groupBy);
-        return groupByClause.toString();
-    }
-
-    public void addCriteria(String col1, String col2) {
-        StringBuffer sb = new StringBuffer(col1);
-        sb.append("=");
-        if (col2 != null) {
-            sb.append(col2);
-        } else {
-            sb.append("?");
-        }
-        criteriaList.add(sb.toString());
+    public void addCriteria(Criteria crit) {
+        criteria.add(crit);
     }
 
     public void addColumns(String columnName) {
         if (columnName != null) {
-            columnList.add(columnName);
+            columns.add(columnName);
         }
     }
 
-    public void addOrderBy(String columnName) {
-        if (columnName != null) {
-            orderByList.add(columnName);
-        }
-    }
-
-    public void addGroupBy(String columnName) {
-        if (columnName != null) {
-            groupByList.add(columnName);
-        }
+    public void addOrderBy(OrderBy order) {
+        orderBy.add(order);
     }
 }

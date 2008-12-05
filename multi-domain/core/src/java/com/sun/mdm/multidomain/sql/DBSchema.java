@@ -158,7 +158,7 @@ public final class DBSchema {
      * */
     public static enum RELATIONSHIP_EAV {
 
-        EA_ID("EA_ID"),
+        EAV_ID("EAV_ID"),
         RELATIONSHIP_ID("RELATIONSHIP_ID"),;
         public final String columnName;
         public final String prefixedColumnName;
