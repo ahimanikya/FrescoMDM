@@ -324,7 +324,11 @@ public class HierarchyManager {
     	List<HierarchyDefExt> hDefs = new ArrayList<HierarchyDefExt>();
         if (!TBD) {
         try {
-            HierarchyDef[] HierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);
+            List<HierarchyDef> hierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);
+            for (HierarchyDef hDef : hierarchyDefs) {
+                HierarchyDefExt hDefExt = ViewBuilder.buildHierarchyDefExt(hDef);
+                hDefs.add(hDefExt);
+            }
         } catch (UserException uex) {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
