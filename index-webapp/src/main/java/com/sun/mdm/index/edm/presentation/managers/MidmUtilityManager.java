@@ -1611,4 +1611,54 @@ public class MidmUtilityManager {
         return new HashMap();
     }
     
+   /** 
+     * Added  on 03/12/2008 
+     * 
+     * This method is used to get the key Types for the keyed Child objects. For Ex: Address:Home, Alias: Sam M Jack, Phone:Business
+     * 
+     * 
+     * @param minorObjectType  
+     * @param thisMinorObject  
+     * @return keyTypeValue 
+     * 
+     */
+     
+    public String getKeyTypeForMinorObjects(String minorObjectType, HashMap thisMinorObject) {
+        StringBuffer keyTypeValue = new StringBuffer();
+        //get the child object node configs
+        ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(minorObjectType);
+        FieldConfig[] keyFieldConfigs = objectNodeConfig.getKeyFieldConfigs();
+        //For Non-Keyed minor objects return null
+        if(keyFieldConfigs.length == 0 ) return null;
+        
+        //build an hashmap of minorObjectsLinkedHashMap with key type Ex: Address:Home,Phone:Office, Alias:Sam+V+Kim...etc
+        keyTypeValue.append(objectNodeConfig.getName() + ":");
+         for (int kk = 0; kk < keyFieldConfigs.length; kk++) {
+            FieldConfig fieldConfig = keyFieldConfigs[kk];
+             if (thisMinorObject.get(fieldConfig.getFullFieldName()) != null) {
+                Object value = thisMinorObject.get(fieldConfig.getFullFieldName());
+                //set the menu list values here
+                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    if (value != null) {
+                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                        if (fieldConfig.getUserCode() != null) {
+                            value = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                        } else {
+                            value = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                        }
+                    }
+                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                    if (value != null) {
+                        value = fieldConfig.mask(value.toString());
+                    }
+                }
+                keyTypeValue.append(value);
+                if (kk != keyFieldConfigs.length - 1) {
+                    keyTypeValue.append(" ");
+                }
+            }
+        }
+        return keyTypeValue.toString();
+    }
+   
 }

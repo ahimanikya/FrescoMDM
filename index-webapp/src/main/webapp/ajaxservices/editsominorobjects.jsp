@@ -55,6 +55,7 @@
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"%>
 
 <%@ page import="java.util.ResourceBundle"  %>
 
@@ -152,6 +153,8 @@ MasterControllerService masterControllerService = new MasterControllerService();
 //URI = URI.substring(1, URI.lastIndexOf("/"));
 //remove the app name 
 //URI = URI.replaceAll("/ajaxservices","");
+
+MidmUtilityManager midmUtilityManager = new MidmUtilityManager();
 
 //Variables for load
 String isLoadStr = request.getParameter("load");
@@ -888,6 +891,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <%}%>
 
 	  <% 
+	      //This is valid for keyed and unkeyed minor objects - Fix for 254 
+		  String keyTypeValueRet = midmUtilityManager.getKeyTypeForMinorObjects(request.getParameter("MOT"),tempMinorObjectMap);
+          tempMinorObjectMap.put("keyTypeValue", keyTypeValueRet); 
+
 		  boolean checkKeyTypes = false;
 		  String keyTypeValues = new String();
 		  String keyType = new String();
@@ -895,29 +902,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 FieldConfig[] fcArrayLocal = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
          for(int mo = 0; mo < thisMinorObjectList.size();mo++) {
 			 HashMap moHashMap = (HashMap)thisMinorObjectList.get(mo);
-			 if(new Integer(saveEditedValues).intValue() != mo) {
-	          for(int k=0;k<fcArrayLocal.length;k++) {
-			    if("MenuList".equalsIgnoreCase(fcArrayLocal[k].getGuiType()) && fcArrayLocal[k].isKeyType()) {
-				  String tempValue = (String) tempMinorObjectMap.get(fcArrayLocal[k].getFullFieldName());
-				  String originalValue = (String) moHashMap.get(fcArrayLocal[k].getFullFieldName());
-                  if(tempValue.equalsIgnoreCase(originalValue)) {
-                   checkKeyTypes = true;
-                     //CHECK FOR THE KEY TYPE VALUES WITH USER CODES AND VALUE LIST
-				     if (fcArrayLocal[k].getValueList() != null){  
-				       if (fcArrayLocal[k].getUserCode() != null) {  
-						 keyTypeValues = ValidationService.getInstance().getUserCodeDescription(fcArrayLocal[k].getUserCode(),originalValue);
-					   } else{
-                          keyTypeValues  = ValidationService.getInstance().getDescription(fcArrayLocal[k].getValueList(), originalValue);
-					  }
-					}
-					keyType = fcArrayLocal[k].getDisplayName();
-				  }
+			 moHashMap.put("keyTypeValue",midmUtilityManager.getKeyTypeForMinorObjects(request.getParameter("MOT"),moHashMap));
+ 			 if(new Integer(saveEditedValues).intValue() != mo) {
+ 			    //Check the key types here
+			    if(tempMinorObjectMap.get("keyTypeValue").toString().equalsIgnoreCase(moHashMap.get("keyTypeValue").toString())) { 
+				    checkKeyTypes = true;
 			    }
-	           } 
-			 }
+ 			 }
 		 }
 
          if(checkKeyTypes) {
+           String[] keysValueAlready  = thisMinorObject.get("keyTypeValue").toString().split(":");
+           String[] keysValueTemp = tempMinorObjectMap.get("keyTypeValue").toString().split(":");
 	%>
 	 <div class="ajaxalert">
 	  <table>
@@ -929,7 +925,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			<tr>
 				<td>  
 				      <ul>
-							  <%=keyType%> <b>'<%=keyTypeValues%>'</b> <%=bundle.getString("duplicate_minor_object_message_text")%>
+							  <li><%=bundle.getString("cannot_update_text")%>  <b>'<%=keysValueAlready[1]%>' <%=keysValueAlready[0]%></b> <%=bundle.getString("to_text")%> <b>'<%=keysValueTemp[1]%>' <%=keysValueTemp[0]%></b>
+							  </li>
+							  <li>
+                              <b>'<%=keysValueTemp[1]%>' <%=keysValueTemp[0]%></b> <%=bundle.getString("already_found_error_text")%> 
+							  </li>
 				      </ul>
 				<td>
 			<tr>
@@ -1135,7 +1135,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 %>
 
  <% 
-     boolean checkKeyTypes = false;
+	//Fix for #254 starts
+	//Every minor object is identified by the MINOR_OBJECT_TYPE and KEY TYPE Ex: Address:Home
+    //This is valid for keyed and unkeyed minor objects 
+	String keyTypeValueRet = midmUtilityManager.getKeyTypeForMinorObjects(request.getParameter("MOT"),thisMinorObject);
+    thisMinorObject.put("keyTypeValue", keyTypeValueRet); 
+ 	//Fix for #254 ends
+
+	 boolean checkKeyTypes = false;
 	 String keyTypeValues = new String();
 	 String keyType = new String();
 	  //Validate to check the uniqueness of the Address 
@@ -1143,29 +1150,17 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
      if (!isValidationErrorOccured) {
          for(int mo = 0; mo < thisMinorObjectList.size();mo++) {
 			 HashMap moHashMap = (HashMap)thisMinorObjectList.get(mo);
+			 moHashMap.put("keyTypeValue",midmUtilityManager.getKeyTypeForMinorObjects(request.getParameter("MOT"),moHashMap));
 			 if(new Integer(saveEditedValues).intValue() != mo) {
-	          for(int k=0;k<fcArrayLocal.length;k++) {
-			    if("MenuList".equalsIgnoreCase(fcArrayLocal[k].getGuiType()) && fcArrayLocal[k].isKeyType()) {
-				  String tempValue = (String) thisMinorObject.get(fcArrayLocal[k].getFullFieldName());
-				  String originalValue = (String) moHashMap.get(fcArrayLocal[k].getFullFieldName());
-                  if(tempValue.equalsIgnoreCase(originalValue)) {
-                   checkKeyTypes = true;
-                     //CHECK FOR THE KEY TYPE VALUES WITH USER CODES AND VALUE LIST
-				     if (fcArrayLocal[k].getValueList() != null){  
-				       if (fcArrayLocal[k].getUserCode() != null) {  
-						 keyTypeValues = ValidationService.getInstance().getUserCodeDescription(fcArrayLocal[k].getUserCode(),originalValue);
-					   } else{
-                          keyTypeValues  = ValidationService.getInstance().getDescription(fcArrayLocal[k].getValueList(), originalValue);
-					  }
-					}
-					keyType = fcArrayLocal[k].getDisplayName();
-				  }
+ 			    //Check the key types here
+			    if(thisMinorObject.get("keyTypeValue").toString().equalsIgnoreCase(moHashMap.get("keyTypeValue").toString())) { 
+				    checkKeyTypes = true;
 			    }
-	           } 
-			 }
+ 			 }
 		 }
        
          if(checkKeyTypes) {
+			 String[] keysValue  = thisMinorObject.get("keyTypeValue").toString().split(":");
 	%>
 	<div class="ajaxalert">
    	   <table>
@@ -1177,7 +1172,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			<tr>
 				<td>  
 				      <ul>
-							  <li> <%=keyType%> <b>'<%=keyTypeValues%>'</b> <%=bundle.getString("duplicate_minor_object_message_text")%></li> 
+							  <li><b>'<%=keysValue[1]%>'</b> <%=keysValue[0]%> <%=bundle.getString("duplicate_minor_object_message_text")%></li>
 				      </ul>
 				<td>
 			<tr>

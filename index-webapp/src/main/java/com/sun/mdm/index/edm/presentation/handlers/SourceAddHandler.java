@@ -671,6 +671,7 @@ public class SourceAddHandler {
                              !"SYS".equalsIgnoreCase(key) &&
                              !"MOT".equalsIgnoreCase(key) &&
                              !"editThisID".equalsIgnoreCase(key) &&
+                             !"keyTypeValue".equalsIgnoreCase(key) && //Fix for #257
                              !"minorObjSave".equalsIgnoreCase(key)) {
                              newHashMap.put(key, oldHashMap.get(key));
                          }

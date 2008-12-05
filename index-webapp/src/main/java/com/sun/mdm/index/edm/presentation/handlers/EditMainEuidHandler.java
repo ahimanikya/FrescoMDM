@@ -1316,6 +1316,8 @@ public class EditMainEuidHandler {
             for (int j = 0; j < thisMinorObjectList.size(); j++) {
                 HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
                 minorObjectMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName());
+               
+                minorObjectMap.remove("keyTypeValue"); //Fix for #254
 
                 //add minor objects for SBR here 
                 this.changedSBRArrayList.add(minorObjectMap);
@@ -1368,6 +1370,7 @@ public class EditMainEuidHandler {
                         //ignore keys like SOSYS, SOLID and LINK_KEY
                         if (!"LINK_KEY".equalsIgnoreCase(objectKey) &&
                                 !"SOSYS".equalsIgnoreCase(objectKey) &&
+                                !"keyTypeValue".equalsIgnoreCase(objectKey) && //Fix for 254
                                 !"SOLID".equalsIgnoreCase(objectKey)) {
                             minorObjectMapNew.put(objectKey, minorObjectMap.get(objectKey));
                         }
