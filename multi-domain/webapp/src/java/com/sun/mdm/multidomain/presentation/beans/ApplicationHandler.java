@@ -35,7 +35,6 @@ import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.core.ObjectFactoryRegistry;
-import com.sun.mdm.multidomain.services.security.util.DateUtil;
 import com.sun.mdm.multidomain.services.security.SecurityManager;
 import com.sun.mdm.multidomain.services.security.UserProfile;
 import com.sun.mdm.multidomain.services.model.Domain;
@@ -101,6 +100,10 @@ public class ApplicationHandler {
             /* initialize user profile */
             UserProfile userProfile = new UserProfile(request.getRemoteUser(), request);
             
+            /* initialize viewModel handle */
+            ViewModelHandler viewModelHandler = new ViewModelHandler();
+                    
+            session.setAttribute("viewModelHandler", viewModelHandler);
             session.setAttribute("userProfile", userProfile);
             session.setAttribute("user", request.getRemoteUser());
             session.setAttribute("applicationHandler", this);

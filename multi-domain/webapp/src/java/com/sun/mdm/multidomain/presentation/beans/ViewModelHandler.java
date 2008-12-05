@@ -22,10 +22,31 @@
  */
 package com.sun.mdm.multidomain.presentation.beans;
 
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+import com.sun.mdm.multidomain.services.core.ConfigException;
+import com.sun.mdm.multidomain.presentation.model.ViewModel;
+import com.sun.mdm.multidomain.presentation.model.Constants;
+
 /**
- * ViewHandler class.
+ * ViewModelHandler class.
  * @author cye
  */
-public class ViewHandler {
+public class ViewModelHandler {
 
+    MDConfigManager configManager;
+    
+    public ViewModelHandler()
+        throws ConfigException {
+        configManager = MDConfigManager.getInstance();
+    }
+    
+    public ViewModel getAddRelationshipModel() {
+        ViewModel<String> viewModel = new ViewModel<String>();
+        ViewModel.ModelObject<String> modelObject = new ViewModel.ModelObject<String>();
+        modelObject.setObject(Constants.DATE_FORMAT, configManager.getDateFormatForMultiDomain());
+        viewModel.setModelName(Constants.ADD_RELATIONSHIP);
+        viewModel.setModelObject(modelObject);
+        return viewModel;        
+    }
+    
 }
