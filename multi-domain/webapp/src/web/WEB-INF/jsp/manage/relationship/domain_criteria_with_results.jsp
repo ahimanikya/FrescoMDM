@@ -31,12 +31,20 @@
                     </tr>
                      <tr>
                            <td colspan="2">
-                              <select name="Source Domain">
-                               <option value="">Company (Alpha Search)</option>
+                              <select name="Source Domain" id="add_source_criteria" onchange="getSourceSearchFields('add_source_criteria')" title="<f:message key="select_text" /> <f:message key="the_text" /> <f:message key="search_text" /> <f:message key="type_text" />">
                               </select>
                            </td>
                        </tr>
                        <tr>
+                           <td>
+                               <div>
+                                   <table id="add_search_source_fields">
+                                       
+                                   </table>
+                               </div>
+                           </td>
+                       </tr>
+                      <!-- <tr>
                            <td class="generalTextBold" colspan="2">
                                &nbsp;<f:message key="alpha_search_text" />
                            </td>
@@ -71,7 +79,7 @@
                        </tr>
                        <tr>
                            <td colspan="2"><img src="images/spacer.gif" height="1" width="6"></td>
-                       </tr>
+                       </tr> -->
                        <tr>
                            <td align="right" colspan="2"><input type="button" onclick="addSourceDomainSearch();" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
                        </tr>
@@ -128,12 +136,20 @@
                 </tr>
                  <tr>
                        <td colspan="2">
-                          <select name="Source Domain">
-                           <option value="">Company (Alpha Search)</option>
+                          <select name="Target Domain" id="add_target_criteria" onchange="getTargetSearchFields('add_target_criteria')" title="<f:message key="select_text" /> <f:message key="the_text" /> <f:message key="search_text" /> <f:message key="type_text" />">
                           </select>
                        </td>
                    </tr>
                    <tr>
+                       <td>
+                           <div>
+                              <table id="add_search_target_fields">
+                                       
+                              </table>
+                           </div>
+                       </td>
+                   </tr>
+                <!--   <tr>
                        <td class="generalTextBold" colspan="2">
                            &nbsp;<f:message key="alpha_search_text" />
                        </td>
@@ -168,7 +184,7 @@
                    </tr>
                    <tr>
                        <td colspan="2"><img src="images/spacer.gif" height="1" width="6"></td>
-                   </tr>
+                   </tr>-->
                    <tr>
                        <td align="right" colspan="2"><input type="button" onclick="addTargetDomainSearch()" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
                    </tr>
@@ -176,7 +192,7 @@
                <div>
                </div>
            </td>
-         </tr>
+         </tr> 
         </table>
       <div class="Content">
           <table>

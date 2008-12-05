@@ -36,22 +36,7 @@ function changeViewToByRecord(contentPaneId) {
 function showByRelSelectDialog() {
 
     var selectDialog = dijit.byId("byrel_select");
-    selectDialog.show();        
-    
-   /* var selectedSourceDomain =document.getElementById("select_sourceDomain").options.selectedIndex;
-        alert("selectedSourceDomain "+selectedSourceDomain);
-        
-    var selectedTargetDomain =document.getElementById("select_targetDomain").value;
-    alert("selectedTargetDomain "+selectedTargetDomain);
-    var selectedRelationshipDef =document.getElementById("select_relationshipDefs").value;
-    alert("selectedRelationshipDef "+selectedRelationshipDef);
-    */
-    
-    
-    
-    
-    
-
+    selectDialog.show();
 }
 function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
@@ -63,13 +48,13 @@ function showByRelAddDialog(){
     var selectedTargetDomain =document.getElementById("select_targetDomain").value;
     var selectedRelationshipDef =document.getElementById("select_relationshipDefs").value;
     addDialog.show();
-    alert("--sourceDomain--"+selectedSourceDomain);
     document.getElementById("byrel_addSourceDomain").innerHTML= selectedSourceDomain;
     document.getElementById("byrel_addTargetDomain").innerHTML= selectedTargetDomain;
     document.getElementById("byrel_addRelationshipDef").innerHTML= selectedRelationshipDef;
     
     RelationshipDefHandler.getRelationshipDefByName(selectedRelationshipDef, selectedSourceDomain, selectedTargetDomain, populateAddRelationshipDefAttributes);
-    
+    RelationshipDefHandler.getSearchTypeCriteria('Person','Advanced Person Lookup (Alpha)',sourceSearchTypeFields);
+    RelationshipDefHandler.getSearchTypeCriteria('Company','Advanced Person Lookup (Alpha)',targetSearchTypeFields);
 }
 
 function populateAddRelationshipDefAttributes(data){
@@ -78,31 +63,41 @@ function populateAddRelationshipDefAttributes(data){
     var purgeDate =(getBoolean(data.purgeDate));
     var CustomrowCount = 0;
     var PredefinedrowCount = 0;  
+    document.getElementById('byrel_add_customAttributes').innerHTML="";
+    document.getElementById('byrel_add_predefinedAttributes').innerHTML="";
     
-        if(data.extendedAttributes.length >0 ){
-         var customHeading = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
-         customHeading.insertCell(0);
-         customHeading.cells[0].innerHTML="Custom Attributes";
-         for( i=0;i < data.extendedAttributes.length; i++){
+       if(data.extendedAttributes.length>0 ){
+           var customHeading = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
+           customHeading.insertCell(0);
+           customHeading.cells[0].innerHTML="Custom Attributes";
+           var j=0;
+           for(var i=0;i < data.extendedAttributes.length;i++){
              var customContent = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
-             customContent.insertCell(i);
-             customContent.cells[i].innerHTML=data.extendedAttributes[i].name;
-            var field = document.createElement("input");
-            field.type="text";
-            field.size="5";
-            field.style.width="100px";
-            customContent.cells[i++].appendChild(field);
-             
-         }
+             customContent.insertCell(0);
+             customContent.insertCell(1);
+             customContent.cells[0].innerHTML=data.extendedAttributes[i].name;
+             var field = document.createElement("input");
+             field.type="text";
+             field.size="5";
+             field.style.width="100px";
+             customContent.cells[1].appendChild(field);
+           }
        }
-     
-    
+       else{
+           
+           document.getElementById("add_Relationship_CustomAtrributes").style.visibility="hidden"
+           document.getElementById("add_Relationship_CustomAtrributes").style.display="none";
+       }
     
     if(startDate==true || endDate==true || startDate == true ){ // condition for Predefined Attributes
         var FirstRow = document.getElementById('byrel_add_predefinedAttributes').insertRow(PredefinedrowCount ++);
         FirstRow.insertCell(0);
         FirstRow.cells[0].colSpan='4';
         FirstRow.cells[0].innerHTML="Predefined Attributes";
+    }
+    else{
+        document.getElementById("add_Relationship_PredefinedAtrributes").style.visibility="hidden"
+        document.getElementById("add_Relationship_PredefinedAtrributes").style.display="none";
     }
     
     if(startDate==true&& endDate==true){ // condition for Start and End dates of Predefined Attributes

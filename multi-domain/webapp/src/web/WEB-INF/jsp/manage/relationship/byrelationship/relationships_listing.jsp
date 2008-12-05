@@ -68,7 +68,7 @@
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" title="<f:message key="de_select_all_text" />" ><img src="images/icons/deselect_multiple.png" border="0"></a></td>
                             <td><img src="images/icons/actions_separator.gif" border="0"></td>
-                            <td><a href="javascript:void(0);" onclick="showByRelAddDialog();" title="<f:message key="add_text" />..."><img src="images/icons/add_button.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="showByRelAddDialog();loadAddSearchCriteria();" title="<f:message key="add_text" />..."><img src="images/icons/add_button.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" title="<f:message key="delete_text" />"><img src="images/icons/delete_button.png" border="0"></a></td>
                           </tr>

@@ -1,7 +1,7 @@
 <%-- 
     Document   : byrel_domain_criteria
     Created on : Nov 19, 2008, 10:10:45 AM
-    Author     : Harish
+    Author     : Harish,Narahari
 --%>
 
 
@@ -12,7 +12,7 @@
     <tr>
         <td class="generalTextBold">
             &nbsp;<f:message key="source_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
-            <select id="select_sourceDomain" name="select_sourceDomain" title="<f:message key="source_domain_text" />"  onchange="loadRelationshipDefs();">
+            <select id="select_sourceDomain" name="select_sourceDomain" title="<f:message key='source_domain_text' />"  onchange="loadRelationshipDefs();loadSearchCriteria(this.id)">
                 <!--<option value="">Select Domain</option>-->
             </select>
         </td>
@@ -31,8 +31,8 @@
                    </tr>
                    <tr>
                        <td>
-                          <select name="Source Domain" title="<f:message key="select_text" /> <f:message key="the_text" /> <f:message key="search_text" /> <f:message key="type_text" />">
-                           <option value="">Company (Alpha Search)</option>
+                          <select id="select_source_criteria" name="Source Domain" title="<f:message key='select_text' /> <f:message key='the_text' /> <f:message key='search_text' /> <f:message key='type_text' />" onchange="getSearchFields()">
+                             <option value="">Company (Alpha Search)</option> 
                           </select>
                        </td>
                    </tr>

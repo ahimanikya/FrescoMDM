@@ -19,7 +19,7 @@
       <table border="0">
         <tr>
             <td>
-                <div class="RelationshipAttributes">
+                <div id="add_Relationship_CustomAtrributes" class="RelationshipAttributes">
                     <table border="0" id="byrel_add_customAttributes" >
                     <!--   <tr>
                             <td class="Heading" colspan="2">
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td>
-                <div class="RelationshipAttributes">
+                <div id="add_Relationship_PredefinedAtrributes" class="RelationshipAttributes">
                     <table border="0" id="byrel_add_predefinedAttributes">
                      <!--   <tr>
                             <td class="Heading" colspan="4">

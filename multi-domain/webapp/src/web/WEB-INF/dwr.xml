@@ -21,6 +21,8 @@
       <include method="updateRelationshipDef" />
       <include method="getRelationshipDefCount" />
       <include method="getDomainRelationshipDefsObjects" />            
+      <include method="getDomainSearchCriteria" />
+      <include method="getSearchTypeCriteria" />
     </create>
 
     <create creator="spring" javascript="RelationshipHandler" scope="session">
@@ -59,7 +61,7 @@
       <include method="updateHierarchyNode" />
       <include method="getHierarchyCount" />      
     </create>
-    
+        
     <!-- relationship definition handling -->  
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.Domain">
         <param name="include" value="name" />
@@ -138,14 +140,23 @@
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.ObjectView">
         <param name="include" value="name,EUID,highLight" />
     </convert>
+    
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.ObjectRecord">
         <param name="include" value="name,EUID,attributes" />
+    </convert>
+    
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.configuration.FieldConfig">
+        <param name="include" value="displayName,displayOrder,guiType,extraField,keyType,sensitive,maxLength,name" />
     </convert>
     
     <convert match="com.sun.mdm.multidomain.services.core.ServiceException" converter="exception">
       <param name="include" value="message,lineNumber"/>
     </convert>
     
+    <convert match="com.sun.mdm.multidomain.services.model.ManageByRelSearchCriteria" converter="exception">
+      <param name="include" value="searchScreenTitle,searchScreenOrder,searchScreenInstruction,displayName,displayOrder,maxLength,guiType,FullFieldName,FullName"/>
+    </convert>
+        
     <signatures>
         <![CDATA[
             import java.util.List;
