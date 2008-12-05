@@ -112,7 +112,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createRelationship()
      */        
-    public int createRelationship(Relationship relationship)
+    public long createRelationship(Relationship relationship)
     throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -121,7 +121,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createRelationship()
      */            
     
-    public int createRelationship(String sourceSystemCode, String sourceLID, 
+    public long createRelationship(String sourceSystemCode, String sourceLID, 
             String targetSystemCode, String targetLID, 
             AttributesValue relationshipValue)     
         throws ProcessingException, UserException {
@@ -133,7 +133,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createRelationship()
      */            
-    public int createRelationship(MultiFieldValuePair sourceMultiPairValue, MultiFieldValuePair targetMultiPairValue, 
+    public long createRelationship(MultiFieldValuePair sourceMultiPairValue, MultiFieldValuePair targetMultiPairValue, 
             AttributesValue attributesValue) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
@@ -151,7 +151,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteRelationship()
      */   
-    public void deleteRelationship(int relationshipid) 
+    public void deleteRelationship(long relationshipid) 
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -223,12 +223,12 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         }
     }
     
-    public long[] addHierarchyNodes(int parentNodeID, HierarchyNode[] nodes)
+    public long[] addHierarchyNodes(long parentNodeID, HierarchyNode[] nodes)
             throws ProcessingException, UserException {
         
         long[] ids = new long[nodes.length];
         for (int i = 0; i < nodes.length; i++) {
-            nodes[i].setParentEUID(Integer.toString(parentNodeID));
+            nodes[i].setParentEUID(Long.toString(parentNodeID));
             ids[i] = this.addHierarchyNode(nodes[i]);
         }
         
@@ -238,7 +238,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createHierarchy()
      */  
-    public int[] addHierarchyNodes(MultiFieldValuePair parentFieldValues, MultiFieldValuePair[] childFieldValues, AttributesValue attributesValue)
+    public long[] addHierarchyNodes(MultiFieldValuePair parentFieldValues, MultiFieldValuePair[] childFieldValues, AttributesValue attributesValue)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -247,7 +247,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteHierarchyNode()
      */ 
     
-    public void deleteHierarchyNode(int nodeID)
+    public void deleteHierarchyNode(long nodeID)
         throws ProcessingException, UserException {
         
         try {
@@ -261,7 +261,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteHierarchy()
      */ 
     
-    public void deleteHierarchy(int nodeId)
+    public void deleteHierarchy(long nodeId)
         throws ProcessingException, UserException {
         try {
             hierarchyNodeService.deleteHierarchy(nodeId);
@@ -294,7 +294,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
    /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#moveHierarchyNodes()
      */    
-    public void moveHierarchyNodes(int[] nodeIDs, int newParentNodeID)
+    public void moveHierarchyNodes(long[] nodeIDs, long newParentNodeID)
              throws ProcessingException, UserException {
         
         List<HierarchyNode> nodes = new ArrayList<HierarchyNode>();
@@ -303,7 +303,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         try {
             parentNode = hierarchyNodeService.getHierarchyNode(newParentNodeID);
             
-            for (int id : nodeIDs) {
+            for (long id : nodeIDs) {
                 HierarchyNode node = hierarchyNodeService.getHierarchyNode(id);
                 nodes.add(node);
             }
@@ -329,7 +329,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
    /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getHierarchyNodeChildren()
      */     
-    public List<HierarchyNode> getHierarchyNodeChildren(int hierarchyNodeId)
+    public List<HierarchyNode> getHierarchyNodeChildren(long hierarchyNodeId)
         throws ProcessingException, UserException {
         
         try {
@@ -369,7 +369,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getHierarchyTree()
      */    
-    public HierarchyTree getHierarchyTree(int hierarchyNodeId, String EUID)
+    public HierarchyTree getHierarchyTree(long hierarchyNodeId, String EUID)
         throws ProcessingException, UserException {
         
         return hierarchyNodeService.getHierarchyTree(hierarchyNodeId);   
@@ -395,7 +395,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteGroup()
      */                                            
-    public void deleteGroup(int groupId)
+    public void deleteGroup(long groupId)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -403,7 +403,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteGroupMember()
      */                                            
-    public void deleteGroupMember(int groupMemberID)
+    public void deleteGroupMember(long groupMemberID)
         throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
@@ -427,7 +427,7 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#getGroupMembers()
      */                                            
-    public ObjectNode[] getGroupMembers(int groupId, EPathArrayList fields) 
+    public ObjectNode[] getGroupMembers(long groupId, EPathArrayList fields) 
             throws ProcessingException, UserException {
         throw new ProcessingException("Not Implemented Yet.");
     }
