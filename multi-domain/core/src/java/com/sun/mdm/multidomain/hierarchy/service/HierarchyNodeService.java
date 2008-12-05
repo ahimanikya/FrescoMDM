@@ -103,7 +103,7 @@ public class HierarchyNodeService implements Serializable {
         long hierID = 0;
         HierarchyNodeDaoImpl hierDao = new HierarchyNodeDaoImpl();
         try {
-            hierID = hierDao.insert(hierDto);
+            hierID = hierDao.insert(hierNode);
         } catch (HierarchyDaoException ex) {
             Logger.getLogger(HierarchyNodeService.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -288,7 +288,7 @@ public class HierarchyNodeService implements Serializable {
         while (iter.hasNext()) {
             HierarchyNodeEaDto eaDto = (HierarchyNodeEaDto) iter.next();
             String attrValue = hierDto.getHierarchyAttributes().get(eaDto);
-            hier.getAttributes().put(eaDto.getAttributeName(), attrValue);
+            //hier.getAttributes().put(eaDto.getAttributeName(), attrValue);
         }
     }
 }
