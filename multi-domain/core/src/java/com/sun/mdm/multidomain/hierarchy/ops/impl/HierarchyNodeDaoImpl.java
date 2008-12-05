@@ -79,7 +79,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             stmt = userConn.prepareStatement(sqlStr);
             int index = 1;
             /* set primary key column to null */
-            stmt.setNull(index++, java.sql.Types.INTEGER);
+            stmt.setNull(index++, java.sql.Types.NULL);
             stmt.setLong(index++, hierNode.getHierarchyDef().getId());
             stmt.setLong(index++, hierNode.getParentNodeID());
             stmt.setString(index++, hierNode.getEUID());
