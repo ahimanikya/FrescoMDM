@@ -118,9 +118,7 @@ function validateRelationshipForm() {
         tempAttr.isRequired = attr.RequiredField.checked;
         tempAttr.searchable = attr.SearchableField.checked;
         tempAttr.id = attr.IdField.value;
-        customAttributes.push(tempAttr);
-        
-        alert("administration.js: type => " + tempAttr.dataType + " value => " + tempAttr.defaultValue);
+        customAttributes.push(tempAttr);      
     }
 
     relationshipdef.extendedAttributes = customAttributes;
