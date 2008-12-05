@@ -54,12 +54,12 @@ public interface MultiDomainService {
     /***
      * Create a relationship that associates two EUIDs in the database.     
      * @param relationshp Relationship including fixed and extended attributes associates two EUIDs.
-     * @return int Relationship identifier if the new relationship is created.
+     * @return long Relationship identifier if the new relationship is created.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source EUID or target EUID or relationship
      * is passed as a parameter.
      */
-    public int createRelationship(Relationship relationship)
+    public long createRelationship(Relationship relationship)
         throws ProcessingException, UserException;
     
     /**
@@ -69,12 +69,12 @@ public interface MultiDomainService {
      * @param targetSystemCode Target system code.
      * @param targetLID Target system record local Identifier.
      * @param relationshipValue  AttributesValue including predefined and extended attributes associates two source system records.
-     * @return int Relationship identifier if the new relationship is created.
+     * @return long Relationship identifier if the new relationship is created.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source EUID or target EUID or relationship
      * is passed as a parameter.
      */
-    public int createRelationship(String sourceSystemCode, String sourceLID, 
+    public long createRelationship(String sourceSystemCode, String sourceLID, 
                                      String targetSystemCode, String targetLID, 
                                      AttributesValue relationshipValue) 
         throws ProcessingException, UserException;
@@ -86,12 +86,12 @@ public interface MultiDomainService {
      * @param targetMultiPairValue Target MultiPairValue.
      * @param relationshipValue AttributesValue including fixed and extended attributes associates 
      * source domain and target domain entities.
-     * @return int Relationship identifier if the new relationship is created.
+     * @return long Relationship identifier if the new relationship is created.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid source MultiPairValue and target 
      * MultiPairValue or relationship is passed as a parameter.
      */
-    public int createRelationship(MultiFieldValuePair sourceMultiPairValue, MultiFieldValuePair targetMultiPairValue, 
+    public long createRelationship(MultiFieldValuePair sourceMultiPairValue, MultiFieldValuePair targetMultiPairValue, 
                                      AttributesValue relationshipValue) 
         throws ProcessingException, UserException;
     
@@ -110,7 +110,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid relationshipid is passed as a parameter.
      */
-    public void deleteRelationship(int relationshipid) 
+    public void deleteRelationship(long relationshipid) 
         throws ProcessingException, UserException;
             
     /**
@@ -196,7 +196,7 @@ public interface MultiDomainService {
     /**
      * Add hierarchyNode under parent nodeId.
      * @param hierarchyNode HierarchyNode.
-     * @return int HierarchyNodeId.
+     * @return long HierarchyNodeId.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
@@ -207,10 +207,10 @@ public interface MultiDomainService {
      * Add set of hierarchy Nodes to a parent nodeid.
      * @param parentNodeId Parent nodeId.
      * @param nodes List of HierarchyNode.
-     * @return int[] List of node Ids.
+     * @return long[] List of node Ids.
      */
     
-    public long[] addHierarchyNodes(int parentNodeId, HierarchyNode[] nodes)
+    public long[] addHierarchyNodes(long parentNodeId, HierarchyNode[] nodes)
             throws ProcessingException, UserException ;
     
     /*
@@ -219,11 +219,11 @@ public interface MultiDomainService {
      * @param parentFieldValues Parent FieldValuePair.
      * @param childFieldValues A list of child FieldValuePair.
      * @param mpdeAttributesValue nodes attributes Value. The attribute values will be used for all parent and child hierarchy associations
-     * @return int[] Hierarchy identifer which are newly created.
+     * @return long[] Hierarchy identifer which are newly created.
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public int[] addHierarchyNodes(MultiFieldValuePair parentFieldValues, MultiFieldValuePair[] childFieldValues, 
+    public long[] addHierarchyNodes(MultiFieldValuePair parentFieldValues, MultiFieldValuePair[] childFieldValues, 
     		AttributesValue nodeAttributesValue)
         throws ProcessingException, UserException;
 
@@ -234,7 +234,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public void deleteHierarchyNode(int hierarchyNodeId)
+    public void deleteHierarchyNode(long hierarchyNodeId)
         throws ProcessingException, UserException;
     
     /**
@@ -244,7 +244,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public void deleteHierarchy(int hierarchyNodeId)
+    public void deleteHierarchy(long hierarchyNodeId)
         throws ProcessingException, UserException;
 
     /**
@@ -263,7 +263,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public List<HierarchyNode> getHierarchyNodeChildren(int hierarchyNodeId)
+    public List<HierarchyNode> getHierarchyNodeChildren(long hierarchyNodeId)
         throws ProcessingException, UserException; 
        
     /**
@@ -290,7 +290,7 @@ public interface MultiDomainService {
      * @param nodeIds[] set of nodes that are moved
      * @param newParentNodeId new parent node id.
      */
-    public void moveHierarchyNodes(int[] nodeIds, int newParentNodeId)
+    public void moveHierarchyNodes(long[] nodeIds, long newParentNodeId)
             throws ProcessingException, UserException;
     
     /**
@@ -320,7 +320,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.  
      */
-    public HierarchyTree getHierarchyTree(int hierarchyNodeId, String EUID)
+    public HierarchyTree getHierarchyTree(long hierarchyNodeId, String EUID)
         throws ProcessingException, UserException;
 
     /**
@@ -352,7 +352,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public void deleteGroup(int groupId)
+    public void deleteGroup(long groupId)
         throws ProcessingException, UserException;
 
     /**
@@ -361,7 +361,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public void deleteGroupMember(int groupMemberID)
+    public void deleteGroupMember(long groupMemberID)
         throws ProcessingException, UserException;
     
     /**
@@ -391,7 +391,7 @@ public interface MultiDomainService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid parameter value is passed.
      */
-    public ObjectNode[] getGroupMembers(int groupId, EPathArrayList fields) 
+    public ObjectNode[] getGroupMembers(long groupId, EPathArrayList fields) 
             throws ProcessingException, UserException;
             
     /**
