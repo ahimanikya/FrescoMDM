@@ -671,7 +671,7 @@ public class RelationshipManager {
     public String addRelationship(RelationshipRecord relationshipRecord)
         throws ServiceException {
         if (!TBD) {
-        int id = 0;
+        long id = 0;
         try {
             Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
             id = multiDomainService.createRelationship(relationship);
@@ -682,7 +682,7 @@ public class RelationshipManager {
         } catch (UserException uex) {
             throw new ServiceException(uex);
         }
-        return Integer.toString(id);
+        return Long.toString(id);
         }
         //demo
         return relationshipRecord.toString();  

@@ -564,7 +564,7 @@ public class HierarchyManager {
         throws ServiceException {
         if (!TBD) {
         try {
-            int[] iNodeIds = new int[nodeIds.size()]; 
+            long[] iNodeIds = new long[nodeIds.size()]; 
             for(int i = 0; i < nodeIds.size(); i++) {
                 iNodeIds[i] = nodeIds.get(i).intValue();
             }
