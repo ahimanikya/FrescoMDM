@@ -905,7 +905,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 moHashMap.put("keyTypeValue",midmUtilityManager.getKeyTypeForMinorObjects(request.getParameter("MOT"),moHashMap));
  			 if(new Integer(saveEditedValues).intValue() != mo) {
  			    //Check the key types here
-			    if(tempMinorObjectMap.get("keyTypeValue").toString().equalsIgnoreCase(moHashMap.get("keyTypeValue").toString())) { 
+                if(tempMinorObjectMap.get("keyTypeValue") != null && moHashMap.get("keyTypeValue") != null && tempMinorObjectMap.get("keyTypeValue").toString().equalsIgnoreCase(moHashMap.get("keyTypeValue").toString())) { 
 				    checkKeyTypes = true;
 			    }
  			 }
@@ -1153,7 +1153,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 moHashMap.put("keyTypeValue",midmUtilityManager.getKeyTypeForMinorObjects(request.getParameter("MOT"),moHashMap));
 			 if(new Integer(saveEditedValues).intValue() != mo) {
  			    //Check the key types here
-			    if(thisMinorObject.get("keyTypeValue").toString().equalsIgnoreCase(moHashMap.get("keyTypeValue").toString())) { 
+                if(thisMinorObject.get("keyTypeValue") != null && moHashMap.get("keyTypeValue") != null && thisMinorObject.get("keyTypeValue").toString().equalsIgnoreCase(moHashMap.get("keyTypeValue").toString())) { 
 				    checkKeyTypes = true;
 			    }
  			 }
