@@ -158,9 +158,6 @@ function align(thisevent,divID) {
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
-       <tr>
-         <td><div style="padding-top:100px;color:red;" id="messages"></div></td>
-       </tr>
                 </h:form>
             </table>
    </div>            <h:form id="advancedformData" >
@@ -359,7 +356,10 @@ function align(thisevent,divID) {
                                 </tr>
                             </table>
                         </td>
-                    </tr>
+                    </tr><tr><td>&nbsp</td></tr>
+				   <tr>
+					 <td><div id="messages" class="ajaxalert" valign="bottom"></div></td>
+				   </tr>
                 </table>
             </h:form>
 			<h:panelGrid>
@@ -547,6 +547,7 @@ function align(thisevent,divID) {
   </script>
 
 </f:view>
+
 
 
 

@@ -262,8 +262,8 @@ function setRand(thisrand)  {
                                         </tr>
                                     </table>
                                 </td>
-			                    <td><div class="ajaxalert" id="messages"> </div></td>
-                            </tr>
+                            </tr><tr><td>&nbsp</td></tr>
+							<tr><td><div class="ajaxalert" id="messages"> </div></td></tr>
                         </table>			
                         <h:inputHidden id="enteredFieldValues" value="#{TransactionHandler.enteredFieldValues}"/>
                     </h:form>

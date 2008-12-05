@@ -257,7 +257,7 @@ if (duplicateFound != null && duplicateFound.length() > 0 ) {
  			<tr>
 				<td>  
 				  <script>
-				   document.getElementById("duplicateIdsDiv").innerHTML = "<%=duplicateFound%>";
+				   document.getElementById("duplicateIdsDiv").innerHTML = "<ul><li><%=duplicateFound%></li><ul>";
  			       document.getElementById("duplicateLid").value = "";
                    </script>
  				</td>  

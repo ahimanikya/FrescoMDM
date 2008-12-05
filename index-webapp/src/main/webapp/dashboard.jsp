@@ -105,11 +105,10 @@
     <td valign="top">&nbsp;</td>
     <td valign="top" align="left" >
 	<div id="duplicateIdsDiv" class="ajaxalert"></div>
-	<div id="messages" class="ajaxalert">
+ 	<div id="messages" class="ajaxalert">
 	      <%if (request.getParameter("na") != null) {%>
 		        <ul>				  
-				   <li><%=request.getParameter("na") %>
-				   </li>
+				   <li><%=request.getParameter("na") %></li>
 				</ul>
 		  <% }%>
 	</div></td>

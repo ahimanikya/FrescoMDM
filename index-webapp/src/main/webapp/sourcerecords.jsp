@@ -850,6 +850,8 @@ if(session!=null){
                                                             </td>
                                                         </tr>
                                                     </table>
+													<table><tr><td>	<div id="lidAlreadyfoundDiv" class="ajaxalert"></td></tr></table>
+
 													</div>
 													<div id="saveButtons" style="visibility:hidden;display:none">
                                                     <table>

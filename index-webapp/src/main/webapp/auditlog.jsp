@@ -269,11 +269,8 @@ function setRand(thisrand)  {
                                         </tr>
                                     </table>
                                 </td>
-                                <td valign="top">
-								   <div id="messages" class="ajaxalert">                                   
-								   </div>
-                                </td>
                             </tr>
+							<tr><td><div id="messages" class="ajaxalert"></div></td><tr>
                         </table>
                         <h:inputHidden id="enteredFieldValues" value="#{AuditLogHandler.enteredFieldValues}"/>
                     </h:form>
@@ -364,6 +361,7 @@ function setRand(thisrand)  {
     </script>
     </html>
 </f:view>
+
 
 
 

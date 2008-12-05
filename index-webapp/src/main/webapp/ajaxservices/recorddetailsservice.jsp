@@ -306,7 +306,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 		  window.location = '/<%=URI%>/compareduplicates.jsf?euids='+checkedItems+'&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
 	    } else {
 	        var messages = document.getElementById("messages");
-	        messages.innerHTML= "<ul> <li>Please select at least two EUID to compare </li> </ul>";
+	        messages.innerHTML= "<ul><li>Please select at least two EUID to compare </li> </ul>";
 	    } 
 
 		</script>
@@ -368,7 +368,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
               <% String messages = "EUID '" + euidValue + "' " + bundle.getString("euid_not_found_text"); %>     	 
  	            <script>
        		      var messages = document.getElementById("messages");
-       	          messages.innerHTML= "<%=messages%>";
+       	          messages.innerHTML= "<ul><li><%=messages%></li></ul>";
        		      messages.style.visibility="visible";
        	      </script>
        	   </td>
@@ -454,7 +454,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 
 	 <script>
 		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=messages%>";
+	     messages.innerHTML= "<ul><li><%=messages%></li></ul>";
 		 messages.style.visibility="visible";
 	 </script>
 	   </td>
@@ -474,7 +474,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 
 	 <script>
 		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=messages%>";
+	     messages.innerHTML= "<ul><li><%=messages%></li></ul>";
 		 messages.style.visibility="visible";
 	 </script>
 	   </td>
@@ -501,7 +501,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
               <% String messages = bundle.getString("enter_euid_text"); %>     	 
  	            <script>
        		      var messages = document.getElementById("messages");
-                  messages.innerHTML= "<%=messages%>";
+                  messages.innerHTML= "<ul><li><%=messages%></li></ul>";
        		      messages.style.visibility="visible";
        	      </script>
        	   </td>
@@ -675,7 +675,7 @@ if (results != null)   {
 	 </script>
 
 <% } else { %> <!-- End results!= null -->
-    <div>
+    <div class="ajaxalert">
 <p style="text-align:left;color:red;">
      <%
 		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
@@ -685,7 +685,7 @@ if (results != null)   {
 
                      FacesMessage facesMessage = (FacesMessage) messagesIter.next();
 	%>
-				 <%=  facesMessage.getSummary()%>
+			<ul><li><%=  facesMessage.getSummary()%></li></ul>
 		<%
                      msgs.append("<li>");
 					 msgs.append(facesMessage.getSummary());

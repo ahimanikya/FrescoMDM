@@ -432,9 +432,9 @@ onclick="g_Calendar.show(event,
 		%>
 		    <% if (i == 0) {%>
 			<tr> 
-			  <td>		         
+			  <td><ul><li>		         
                    <%=bundle.getString("CONFIG_ERROR")%>&nbsp;:&nbsp;<%=facesMessage.getSummary()%>
-  	          </td>
+  	          </li></ul></td>
 			</tr> 
 			<tr>
 			  <td>&nbsp;</td>

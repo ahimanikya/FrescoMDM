@@ -177,7 +177,6 @@ function align(thisevent,divID) {
                                 </td>
                             </tr>
                              <tr>
-                           <td><div style="padding-top:100px;color:red;" id="messages"></div></td>
                      </tr>
                 </h:form>
               </table>
@@ -340,9 +339,9 @@ function align(thisevent,divID) {
 				              </tr>
                             </table>
                          </h:form>
-                        </td>
-                        <td><div id="messages"></div></td>
-                    </tr>
+                        </td>				
+                    </tr><tr><td>&nbsp</td></tr>
+					<tr><td align="left"><div id="messages" class="ajaxalert"></div></td></tr>					
                 </table>
 
 			<h:panelGrid>

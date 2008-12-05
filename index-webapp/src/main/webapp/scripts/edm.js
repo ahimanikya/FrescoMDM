@@ -2321,7 +2321,7 @@ function checkDuplicateFileds(formName,field,message) {
     for(i=0; i< thisFrm.elements.length; i++)   {      
 	  if(thisFrm.elements[i].value.length !=0 &&  field.title  != thisFrm.elements[i].title ) {
 		if(field.value == thisFrm.elements[i].value) {
- 	     document.getElementById("duplicateIdsDiv").innerHTML = field.title + " '" + field.value + "' "+ message;
+ 	     document.getElementById("duplicateIdsDiv").innerHTML = "<ul><li>"+field.title + " '" + field.value + "' "+ message+"</li></ul>";
 		 field.focus(); 
 		 field.style.backgroundColor ="#f7fbd6";
 		 field.style.border  ="1px solid #d75e33"; 

@@ -1163,20 +1163,15 @@ if(isSave) {
 					   document.getElementById('validateButtons').style.display = 'none';
 				  </script>
                   <%} else {%>
-
-						<div class="ajaxalert">
-						  <table>
+				  <table>
 							<tr>
 								<td>
-									  <ul>
-											 <li>
-											  <%=sysDesc%>/<%=tempValidateLid%> <%=bundle.getString("already_found_error_text")%>
-											 </li>
-									  </ul>
+								<script>
+								document.getElementById('lidAlreadyfoundDiv').innerHTML = "<ul><li><%=sysDesc%>/<%=tempValidateLid%> <%=bundle.getString("already_found_error_text")%></li></ul>";
+								</script>
 								<td>
 							<tr>
-						</table>
-					</div>
+				 </table>
 				<%}%>
 
 

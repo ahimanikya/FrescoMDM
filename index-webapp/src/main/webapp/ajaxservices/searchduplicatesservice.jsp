@@ -225,7 +225,7 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 		   <table cellpadding="0" cellspacing="0" border="0">
 			 <tr>
 				 <td>
-                    <b><%=bundle.getString("enter_euid_text")%> </b>
+                   <ul> <li><%=bundle.getString("enter_euid_text")%></li></ul>
 				 </td>
 			 </tr>
 		   </table>
@@ -647,7 +647,7 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 		   <table cellpadding="0" cellspacing="0" border="0">
 			 <tr>
 				 <td>
-				     <% String messages = bundle.getString("pot_dup_error_text") + " '" + request.getParameter("EUID") +"' "; %>     	 <b><%=messages%> </b>
+				     <% String messages = bundle.getString("pot_dup_error_text") + " '" + request.getParameter("EUID") +"' "; %>     	 <ul><li><%=messages%> </li></ul>
 				 </td>
 			 </tr>
 		   </table>

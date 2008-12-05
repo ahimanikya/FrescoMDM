@@ -278,7 +278,6 @@ function setRand(thisrand)  {
                                </f:facet>
                             </h:dataTable>
                         </td>
-						<td><div id="messages" class="ajaxalert"> </div></td>
                     </tr>
 					<%if(countFc == 0) {%>
 					<tr>
@@ -286,7 +285,8 @@ function setRand(thisrand)  {
 					     <h:outputText value="#{msgs.search_config_error}" />
 					  </td>
 					</tr>
-					<%}%>
+					<%}%><tr><td>&nbsp</td></tr>
+					<tr><td><div id="messages" class="ajaxalert"> </div></td></tr>
                 </table>
                 <h:inputHidden id="enteredFieldValues" value="#{AssumeMatchHandler.enteredFieldValues}"/>
             </h:form>
