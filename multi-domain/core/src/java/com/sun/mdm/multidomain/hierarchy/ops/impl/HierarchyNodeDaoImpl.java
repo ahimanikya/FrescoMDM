@@ -15,7 +15,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.hierarchy.ops.dao.AbstractDAO;
 import com.sun.mdm.multidomain.hierarchy.ops.dao.HierarchyNodeDao;
@@ -23,60 +22,71 @@ import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyDefDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeEaDto;
 import com.sun.mdm.multidomain.hierarchy.ops.exceptions.HierarchyDaoException;
+import com.sun.mdm.multidomain.sql.AND;
+import com.sun.mdm.multidomain.sql.Criteria;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.MatchCriteria;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.SelectBuilder;
 import com.sun.mdm.multidomain.sql.DBSchema.HIERARCHY_DEF;
 import com.sun.mdm.multidomain.sql.DBSchema.HIERARCHY_NODE;
 import com.sun.mdm.multidomain.sql.DBSchema.HIERARCHY_NODE_EA;
 import com.sun.mdm.multidomain.sql.DBSchema.HIERARCHY_NODE_EAV;
+import com.sun.mdm.multidomain.attributes.AttributeType;
+import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
+import com.sun.mdm.multidomain.sql.NullCriteria;
 
 public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDao {
 
-    /**
-     * The factory class for this DAO has two versions of the create() method - one that
-    takes no arguments and one that takes a Connection argument. If the Connection version
-    is chosen then the connection will be stored in this attribute and will be used by all
-    calls to this DAO, otherwise a new Connection will be allocated for each operation.
-     */
     protected java.sql.Connection userConn;
-    /**
-     * Finder methods will pass this value to the JDBC setMaxRows method
-     */
     protected int maxRows;
     private long mPrimaryKey = 0;
 
     /**
-     * Inserts a new row in the HierarchyDto table.
+     * Method 'HierarchyNodeDaoImpl'
+     *
      */
-    public long insert(HierarchyNodeDto dto) throws HierarchyDaoException {
-        long t1 = System.currentTimeMillis();
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
+    public HierarchyNodeDaoImpl() {
+    }
+
+    /**
+     * Method 'HierarchyNodeDaoImpl'
+     *
+     * @param userConn
+     */
+    public HierarchyNodeDaoImpl(final java.sql.Connection userConn) {
+        this.userConn = userConn;
+    }
+
+    /**
+     * Inserts a new row in the HierarchyNode table.
+     *
+     * @param  hierNode the hierarchy-node object to be persisted in the database
+     * @return the primary key for the inserted row
+     */
+    public long insert(HierarchyNode hierNode) throws HierarchyDaoException {
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+            // Build the INSERT SQL.
             InsertBuilder builder = new InsertBuilder();
             builder.setTable(HIERARCHY_NODE.getTableName());
             for (HIERARCHY_NODE hier : HIERARCHY_NODE.values()) {
                 builder.addColumns(hier.columnName);
             }
             String sqlStr = SQLBuilder.buildSQL(builder);
-            stmt = conn.prepareStatement(sqlStr);
+            stmt = userConn.prepareStatement(sqlStr);
             int index = 1;
-            stmt.setLong(index++, 0);
-            stmt.setLong(index++, dto.getHierarchyDefId());
-            stmt.setLong(index++, dto.getParentNodeId());
-            stmt.setString(index++, dto.getEuid());
-            stmt.setString(index++, dto.getParentEuid());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveFromDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveToDate());
+            /* set primary key column to null */
+            stmt.setNull(index++, java.sql.Types.INTEGER);
+            stmt.setLong(index++, hierNode.getHierarchyDef().getId());
+            stmt.setLong(index++, hierNode.getParentNodeID());
+            stmt.setString(index++, hierNode.getEUID());
+            stmt.setString(index++, hierNode.getParentEUID());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) hierNode.getEffectiveFromDate());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) hierNode.getEffectiveToDate());
             int rows = stmt.executeUpdate();
-            //reset(dto);
             rs = stmt.getGeneratedKeys();
             if (rs != null && rs.next()) {
                 mPrimaryKey = rs.getLong(1);
@@ -85,14 +95,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
-
     }
 
     public long getPrimaryKey() {
@@ -103,16 +106,9 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
      * Updates a single row in the HierarchyDto table.
      */
     public void update(long pk, HierarchyNodeDto dto) throws HierarchyDaoException {
-        long t1 = System.currentTimeMillis();
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             int index = 1;
             stmt.setLong(index++, dto.getHierarchyNodeId());
             //stmt.setString(index++, dto.getSourceEuid());
@@ -122,48 +118,24 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             // stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getPurgeDate());
             stmt.setLong(14, pk);
             int rows = stmt.executeUpdate();
-            //reset(dto);
-            long t2 = System.currentTimeMillis();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
-
     }
 
     /**
      * Deletes a single row in the HierarchyDto table.
      */
     public void delete(long pk) throws HierarchyDaoException {
-        long t1 = System.currentTimeMillis();
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
         PreparedStatement stmt = null;
-
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             // stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setLong(1, pk);
             int rows = stmt.executeUpdate();
-            long t2 = System.currentTimeMillis();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
 
     }
@@ -173,16 +145,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
      *
      */
     public List<HierarchyNodeDto> search(String euid) throws HierarchyDaoException {
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
         try {
-
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             HierarchyDefDto hierDef = getHierarchyDef(euid);
 
             List<HierarchyNodeDto> hierNodes = getHierarchyNodes(hierDef, euid);
@@ -190,13 +153,6 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             return hierNodes;
         } catch (Exception _e) {
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(rs);
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
     }
 
@@ -205,16 +161,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
      *
      */
     public List<HierarchyNodeDto> findChildren(long nodeId) throws HierarchyDaoException {
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
         try {
-
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             HierarchyDefDto hierDef = getHierarchyDef(nodeId);
 
             List<HierarchyNodeDto> hierNodes = getChildNodes(hierDef, nodeId);
@@ -222,13 +169,6 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             return hierNodes;
         } catch (Exception _e) {
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(rs);
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
     }
 
@@ -260,16 +200,7 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
     }
     
     public List<HierarchyNodeDto> findAncestors(long nodeId) throws HierarchyDaoException {
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
         try {
-
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             HierarchyDefDto hierDef = getHierarchyDef(nodeId);
             List<HierarchyNodeDto> hierNodes = getHierarchyNodes(hierDef, nodeId);
             HierarchyNodeDto child = hierNodes.get(0);
@@ -279,13 +210,6 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
             return parentNodes;
         } catch (Exception _e) {
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(rs);
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
     }
 
@@ -295,7 +219,6 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
      */
     private void getParentNodes(HierarchyNodeDto child, HierarchyDefDto hierDef, List<HierarchyNodeDto> parentNodes) throws HierarchyDaoException {
         // declare variables
-        final boolean isConnSupplied = (userConn != null);
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -303,7 +226,6 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         try {
             long parentNodeId = child.getParentNodeId();
             if (parentNodeId > 0 && child.getParentEuid() != null) {
-                conn = isConnSupplied ? userConn : ResourceManager.getConnection();
                 SelectBuilder builder = new SelectBuilder();
                 builder.setTable(HIERARCHY_NODE.getTableName(), HIERARCHY_NODE_EAV.getTableName());
 
@@ -316,8 +238,9 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
                 for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
                     builder.addColumns(eaDto.getColumnName());
                 }
-                builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
-                builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+                Criteria c1 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+                Criteria c2 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+                builder.addCriteria(new AND(c1, c2));
                 String sqlStr = SQLBuilder.buildSQL(builder);
                 stmt = userConn.prepareStatement(sqlStr);
                 stmt = conn.prepareStatement(sqlStr);
@@ -333,16 +256,8 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
 
         } catch (Exception _e) {
             throw new HierarchyDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(rs);
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
     }
-
 
     private List<HierarchyNodeDto> getChildNodes(HierarchyDefDto hierDef, long nodeId) throws SQLException {
         SelectBuilder builder = new SelectBuilder();
@@ -357,8 +272,9 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
             builder.addColumns(eaDto.getColumnName());
         }
-        builder.addCriteria(HIERARCHY_NODE.PARENT_NODE_ID.prefixedColumnName, null);
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        Criteria c1 = new MatchCriteria(HIERARCHY_NODE.PARENT_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        Criteria c2 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        builder.addCriteria(new AND(c1, c2));
         String sqlStr = SQLBuilder.buildSQL(builder);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         // prepare statement
@@ -387,9 +303,10 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HIERARCHY_NODE_EA hierEA : HIERARCHY_NODE_EA.values()) {
             selectBld.addColumns(hierEA.prefixedColumnName);
         }
-        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE.HIERARCHY_DEF_ID.prefixedColumnName);
-        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
-        selectBld.addCriteria(HIERARCHY_NODE.EUID.prefixedColumnName, null);
+        Criteria c1 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE.HIERARCHY_DEF_ID.prefixedColumnName);
+        Criteria c2 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
+        Criteria c3 = new MatchCriteria(HIERARCHY_NODE.EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        selectBld.addCriteria(new AND(c1, c2, c3));
         String sqlStr = SQLBuilder.buildSQL(selectBld);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         int index = 1;
@@ -446,8 +363,9 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
             builder.addColumns(eaDto.getColumnName());
         }
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        Criteria c1 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        Criteria c2 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        builder.addCriteria(new AND(c1, c2));
         String sqlStr = SQLBuilder.buildSQL(builder);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         stmt = conn.prepareStatement(sqlStr);
@@ -476,14 +394,15 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
             builder.addColumns(eaDto.getColumnName());
         }
-        builder.addCriteria(HIERARCHY_NODE.PARENT_NODE_ID.prefixedColumnName, null);
-        builder.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, null);
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        Criteria c1 = new NullCriteria(HIERARCHY_NODE.PARENT_NODE_ID.prefixedColumnName, NullCriteria.OPERATOR.ISNULL);
+        Criteria c2 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        Criteria c3 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        builder.addCriteria(new AND(c1, c2, c3));
         String sqlStr = SQLBuilder.buildSQL(builder);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         stmt = conn.prepareStatement(sqlStr);
         int index = 1;
-        stmt.setNull(index++, Types.NULL);
+        //stmt.setNull(index++, Types.NULL);
         stmt.setLong(index++, hierDef.getHierarchyDefId());
 
         ResultSet rs = stmt.executeQuery();
@@ -519,8 +438,9 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
             builder.addColumns(eaDto.getColumnName());
         }
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        Criteria c1 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        Criteria c2 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        builder.addCriteria(new AND(c1, c2));
         String sqlStr = SQLBuilder.buildSQL(builder);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         // prepare statement
@@ -549,9 +469,10 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HIERARCHY_NODE_EA hierEA : HIERARCHY_NODE_EA.values()) {
             selectBld.addColumns(hierEA.prefixedColumnName);
         }
-        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE.HIERARCHY_DEF_ID.prefixedColumnName);
-        selectBld.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
-        selectBld.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, null);
+        Criteria c1 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE.HIERARCHY_DEF_ID.prefixedColumnName);
+        Criteria c2 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
+        Criteria c3 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        selectBld.addCriteria(new AND(c1, c2, c3));
         String sqlStr = SQLBuilder.buildSQL(selectBld);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         int index = 1;
@@ -600,8 +521,9 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
         for (HierarchyNodeEaDto eaDto : hierDef.getAttributeDefs()) {
             builder.addColumns(eaDto.getColumnName());
         }
-        builder.addCriteria(HIERARCHY_NODE.EUID.prefixedColumnName, null);
-        builder.addCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        Criteria c1 = new MatchCriteria(HIERARCHY_NODE.EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        Criteria c2 = new MatchCriteria(HIERARCHY_NODE.HIERARCHY_NODE_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EAV.HIERARCHY_NODE_ID.prefixedColumnName);
+        builder.addCriteria(new AND(c1, c2));
         String sqlStr = SQLBuilder.buildSQL(builder);
         PreparedStatement stmt = userConn.prepareStatement(sqlStr);
         // prepare statement
@@ -612,22 +534,6 @@ public class HierarchyNodeDaoImpl extends AbstractDAO implements HierarchyNodeDa
 
         ResultSet rs = stmt.executeQuery();
         return fetchMultiResults(rs, hierDef);
-    }
-
-    /**
-     * Method 'HierarchyNodeDaoImpl'
-     *
-     */
-    public HierarchyNodeDaoImpl() {
-    }
-
-    /**
-     * Method 'HierarchyNodeDaoImpl'
-     *
-     * @param userConn
-     */
-    public HierarchyNodeDaoImpl(final java.sql.Connection userConn) {
-        this.userConn = userConn;
     }
 
     /**
