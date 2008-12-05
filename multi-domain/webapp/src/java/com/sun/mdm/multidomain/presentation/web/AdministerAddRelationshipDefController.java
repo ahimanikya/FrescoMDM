@@ -30,6 +30,9 @@ import javax.servlet.ServletException;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
+import com.sun.mdm.multidomain.presentation.beans.ViewModelHandler;
+import com.sun.mdm.multidomain.presentation.model.ViewModel;
+import com.sun.mdm.multidomain.presentation.model.ViewModel.ModelObject;
         
 /**
  * AdministerAddRelationshipDefController class.
@@ -38,9 +41,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdministerAddRelationshipDefController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {   
-        System.out.println("\n\n\n\n-------- In AdministerAddRelationshipDefController controller");
-        String value = "add_relationship";
-        return new ModelAndView("administration/add_relationship", "add_relationship", value);
+        throws ServletException, IOException {
+        ViewModelHandler handler = (ViewModelHandler)request.getSession().getAttribute("viewModelHandler");
+        ViewModel<String> model = handler.getAddRelationshipModel();
+        String modelName = model.getModelName();
+        ModelObject<String> modelObject = model.getModelObject();
+        return new ModelAndView("administration/add_relationship", modelName, modelObject.getObjects());
     }    
 }
