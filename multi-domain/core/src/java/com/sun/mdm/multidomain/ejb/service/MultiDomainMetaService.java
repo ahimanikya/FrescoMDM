@@ -95,11 +95,11 @@ public interface MultiDomainMetaService {
     /**
      * Create a relationship Def and persist the relationship Def in the database.
      * @param relationshipDef RelationshipDef.
-     * @return String Relationship Def identifier which is newly created. 
+     * @return long Relationship Def identifier which is newly created. 
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid relationship Def is passed as a parameter.
      */
-    public String createRelationshipDef(RelationshipDef relationshipDef)  
+    public long createRelationshipDef(RelationshipDef relationshipDef)  
         throws ProcessingException, UserException;
     
     /**
