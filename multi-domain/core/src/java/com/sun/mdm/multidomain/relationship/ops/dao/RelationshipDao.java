@@ -8,6 +8,7 @@
 
 package com.sun.mdm.multidomain.relationship.ops.dao;
 
+import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 
@@ -16,7 +17,7 @@ public interface RelationshipDao
 	/** 
 	 * Inserts a new row in the RelationshipDto table.
 	 */
-	public long insert(RelationshipDto dto) throws RelationshipDaoException;
+	public long insert(Relationship rel) throws RelationshipDaoException;
 
 	/** 
 	 * Updates a single row in the RelationshipDto table.

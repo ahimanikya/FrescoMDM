@@ -7,6 +7,7 @@
  */
 package com.sun.mdm.multidomain.relationship.ops.dao;
 
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 
@@ -15,7 +16,7 @@ public interface RelationshipDefDao {
     /**
      * Inserts a new row in the relationship_def table.
      */
-    public long insert(RelationshipDefDto dto) throws RelationshipDefDaoException;
+    public long insert(RelationshipDef dto) throws RelationshipDefDaoException;
 
     /**
      * Updates a single row in the relationship_def table.
