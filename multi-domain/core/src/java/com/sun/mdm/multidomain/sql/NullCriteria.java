@@ -20,8 +20,7 @@ public class NullCriteria extends Criteria {
             this.literal = op;
         }
     }
-    public static final String IS_NOT_NULL = "IS NOT NULL";
-    public static final String IS_NULL = "IS NULL";
+ 
     private final String operator;
     private final String columnName;
 
