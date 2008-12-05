@@ -35,6 +35,7 @@ import com.sun.mdm.multidomain.services.core.ConfigException;
 
 import net.java.hulp.i18n.Logger;
 import com.sun.mdm.multidomain.presentation.util.Localizer;
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
 
 /**
  * Loginontroller class.
@@ -52,6 +53,7 @@ public class LoginController extends BaseCommandController {
     ModelAndView modelAndView = null;
     String pageId = null;
     String errorMessage = null;
+    MDConfigManager.init();
     
     try {
         applicationHandler = (ApplicationHandler)getCommand(request);
