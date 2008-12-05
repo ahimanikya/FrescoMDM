@@ -70,7 +70,7 @@ public class MDConfigManager {
     private static HashMap<Integer, ScreenObject> mScreens;
     private static HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
     private static HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
-    private static String DATEFORMAT;
+    private static String DATEFORMAT = "MM/dd/yyyy"; 
     private static SimpleDateFormat dateFormat;
     private static MDConfigManager mInstance = null;	// instance
     private static Integer mInitialScreenID;	                // ID of the initial screen
@@ -1286,7 +1286,6 @@ public class MDConfigManager {
     */
     public static String getDateFormatForMultiDomain() {
         //TBD: need to fix.
-        DATEFORMAT = "MM/dd/yyyy"; 
         return DATEFORMAT;
     }
 
@@ -1296,7 +1295,6 @@ public class MDConfigManager {
     */    
     public static String getDateFormatForDomain(String domain) {
         //TBD: need to fix.
-        DATEFORMAT = "MM/dd/yyyy"; 
         return DATEFORMAT;
     }
     
