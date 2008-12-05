@@ -218,6 +218,43 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
             }
         }
     }
+    
+    public HierarchyDefDto searchById(long hierarchyId) throws HierarchyDefDaoException {
+     // declare variables
+        final boolean isConnSupplied = (userConn != null);
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // get the user-specified connection or get a connection from the ResourceManager
+            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+
+            // construct the SQL statement
+
+            String sqlStr = BuildSelectById();
+            System.out.println("Executing " + sqlStr);
+            // prepare statement
+            stmt = conn.prepareStatement(sqlStr);
+
+            int index = 1;
+            stmt.setLong(index++, hierarchyId);
+            //stmt.setMaxRows(maxRows);
+
+            rs = stmt.executeQuery();
+
+            // fetch the results
+            return fetchSingleResult(rs);
+        } catch (Exception _e) {
+            throw new HierarchyDefDaoException("Exception: " + _e.getMessage(), _e);
+        } finally {
+            ResourceManager.close(rs);
+            ResourceManager.close(stmt);
+            if (!isConnSupplied) {
+                ResourceManager.close(conn);
+            }
+        }
+    }
 
     private String BuildSelectByDomain() {
         SelectBuilder builder = new SelectBuilder();
@@ -232,6 +269,22 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
         builder.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
         builder.addCriteria(HIERARCHY_DEF.DOMAIN.prefixedColumnName, null);
         builder.addOrderBy(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName);
+        String sqlStr = SQLBuilder.buildSQL(builder);
+        return sqlStr;
+    }
+    
+    private String BuildSelectById() {
+        SelectBuilder builder = new SelectBuilder();
+        builder.setTable(HIERARCHY_DEF.getTableName(), HIERARCHY_NODE_EA.getTableName());
+
+        for (HIERARCHY_DEF hier : HIERARCHY_DEF.values()) {
+            builder.addColumns(hier.prefixedColumnName);
+        }
+        for (HIERARCHY_NODE_EA ea : HIERARCHY_NODE_EA.values()) {
+            builder.addColumns(ea.prefixedColumnName);
+        }
+        builder.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
+        builder.addCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, null);
         String sqlStr = SQLBuilder.buildSQL(builder);
         return sqlStr;
     }

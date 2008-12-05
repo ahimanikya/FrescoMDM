@@ -22,27 +22,29 @@
  */
 package com.sun.mdm.multidomain.ejb.service;
 
-import javax.ejb.Stateless;
-import javax.ejb.SessionContext;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionAttribute;
-        
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
-        
-import com.sun.mdm.index.master.UserException;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+
 import com.sun.mdm.index.master.ProcessingException;
-        
-import com.sun.mdm.multidomain.relationship.RelationshipDef;
-import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.multidomain.group.GroupDef;
 import com.sun.mdm.multidomain.group.GroupMemberDef;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.multidomain.hierarchy.ops.exceptions.HierarchyDefDaoException;
+import com.sun.mdm.multidomain.hierarchy.service.HierarchyDefService;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 
 /**
  * The enterprise beans implementation of MultiDomainMetaService that is explpsed to the clients.
@@ -62,6 +64,7 @@ import com.sun.mdm.multidomain.group.GroupMemberDef;
 public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote, MultiDomainMetaServiceLocal {
     
     private SessionContext sessionContext;
+    private HierarchyDefService hierarchyDefService;
       
     /**
      * Set SessionContext and called by the container when the bean is created.
@@ -164,9 +167,14 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyDefs() 
      */        
-    public HierarchyDef[] getHierarchyDefs(String domain) 
+    public List<HierarchyDef> getHierarchyDefs(String domain) 
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        
+        try {
+            return hierarchyDefService.search(domain);
+        } catch (HierarchyDefDaoException e) {
+            throw new ProcessingException(e);
+        }
     }
   
     /**
@@ -174,7 +182,22 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */      
     public HierarchyDef getHierarchyDefByName(String name, String domain)
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet.");     
+        
+        List<HierarchyDef> hierarchyDefs = null;
+        
+        try {
+            hierarchyDefs = hierarchyDefService.search(domain);
+        } catch (HierarchyDefDaoException e) {
+            throw new ProcessingException(e);
+        }
+        
+        for (HierarchyDef hierarchyDef : hierarchyDefs) {
+            if (hierarchyDef.getName().equals(name)) {
+                return hierarchyDef;
+            }
+        }
+        
+        return null;
     }
      
    /**
@@ -182,7 +205,12 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */ 
     public HierarchyDef getHierarchyDefById(long hierarchyId)
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        
+        try {
+            return hierarchyDefService.searchById(hierarchyId);
+        } catch (HierarchyDefDaoException e) {
+            throw new ProcessingException(e);
+        }
     }
     
     /**
@@ -190,7 +218,13 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */        
     public String createHierarchyDef(HierarchyDef hierarchyDef)  
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        
+        try {
+            long pk = hierarchyDefService.create(hierarchyDef);
+            return Long.toString(pk);
+        } catch (Exception e) {
+            throw new ProcessingException(e);
+        }
     }
     
     /**
@@ -198,7 +232,12 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */        
     public void updateHierarchyDef(HierarchyDef hierarchyDef)  
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        
+        try {
+            hierarchyDefService.update(hierarchyDef);
+        } catch (HierarchyDefDaoException e) {
+            throw new ProcessingException(e);
+        }
     }
 
     /**
@@ -206,7 +245,12 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */        
     public void deleteHierarchyDef(HierarchyDef hierarchyDef) 
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        
+        try {
+            hierarchyDefService.delete(hierarchyDef);
+        } catch (HierarchyDefDaoException e) {
+            throw new ProcessingException(e);
+        }
     }
     
     /**
@@ -214,7 +258,25 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      */        
     public void deleteHierarchyDef(String domain, String name) 
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet."); 
+        
+        List<HierarchyDef> hierarchyDefs = null;
+        
+        try {
+            hierarchyDefs = hierarchyDefService.search(domain);
+        } catch (HierarchyDefDaoException e) {
+            throw new ProcessingException(e);
+        }
+        
+        for (HierarchyDef hierarchyDef : hierarchyDefs) {
+            if (hierarchyDef.getName().equals(name)) {
+                try {
+                    hierarchyDefService.delete(hierarchyDef);
+                } catch (HierarchyDefDaoException e) {
+                    throw new ProcessingException(e);
+                }
+            }
+        }
+        
     }
          
     /**

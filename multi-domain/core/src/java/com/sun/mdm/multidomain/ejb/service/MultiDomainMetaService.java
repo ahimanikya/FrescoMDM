@@ -22,13 +22,14 @@
  */
 package com.sun.mdm.multidomain.ejb.service;
 
-import com.sun.mdm.index.master.UserException;
-import com.sun.mdm.index.master.ProcessingException;
+import java.util.List;
 
-import com.sun.mdm.multidomain.relationship.RelationshipDef;
-import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.multidomain.group.GroupDef;
 import com.sun.mdm.multidomain.group.GroupMemberDef;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 
         
 /**
@@ -162,7 +163,7 @@ public interface MultiDomainMetaService {
      * @throws ProcessingException Thrown if an error occurs during processing.
      * @throws UserException Thrown if an invalid domain name is passed as a parameter.
      */
-    public HierarchyDef[] getHierarchyDefs(String domain) 
+    public List<HierarchyDef> getHierarchyDefs(String domain) 
         throws ProcessingException, UserException;
    
     /**

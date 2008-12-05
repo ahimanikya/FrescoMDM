@@ -79,7 +79,7 @@ public class HierarchyDefService implements Serializable {
      * Method 'create'
      *
      */
-    public void create(HierarchyDef hier) throws HierarchyDefDaoException, HierarchyEaDaoException {
+    public long create(HierarchyDef hier) throws HierarchyDefDaoException, HierarchyEaDaoException {
 
         /* HierarchyDef object */
         HierarchyDefDto hierDto = new HierarchyDefDto();
@@ -110,13 +110,17 @@ public class HierarchyDefService implements Serializable {
             attDto.setIsSearchable(att.getIsSearchable());
             hierEaDao.insert(attDto);
         }
+        
+        return hierDefID;
     }
 
     /**
      * Method 'delete'
      *
      */
-    public void delete(HierarchyDef hier) {
+    public void delete(HierarchyDef hier) throws HierarchyDefDaoException {
+        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl();
+        dao.delete(hier.getId());
     }
 
     /**
@@ -145,6 +149,16 @@ public class HierarchyDefService implements Serializable {
             hierDefList.add(hierDef);
         }
         return hierDefList;
+    }
+    
+    public HierarchyDef searchById(long hierarchyId) throws HierarchyDefDaoException {
+        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl();
+        HierarchyDef hierarchyDef = new HierarchyDef();
+        
+        HierarchyDefDto hierarchyDefDto = dao.searchById(hierarchyId);
+        copyFromHierDto(hierarchyDef, hierarchyDefDto);
+        
+        return hierarchyDef;
     }
 
     /**
