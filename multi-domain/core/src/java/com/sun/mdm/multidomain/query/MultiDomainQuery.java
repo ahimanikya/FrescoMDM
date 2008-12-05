@@ -37,6 +37,8 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.attributes.AttributesValue;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
+import com.sun.mdm.multidomain.attributes.Attribute;
 
 import com.sun.mdm.multidomain.relationship.MultiObject;
 import com.sun.mdm.multidomain.query.MultiFieldValuePair;
@@ -47,11 +49,14 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchResultIterator;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultRecord;
 import com.sun.mdm.index.ejb.master.MasterController;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+import com.sun.mdm.index.objects.SystemObject;
+import java.sql.Connection;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * This is the workhorse class for executing multi domain query.
@@ -65,24 +70,34 @@ import java.util.Map;
  * are present in that domain result set from step 1. The result of step 3 is the set of EUIDs for each domain that
  * satisfy the query.
  * 4. Retrieve the other attributes for domain that are part of MultiSearchOption from EUID result of step 3.
- * 5. combine 4 and 3 to form PageIterator of MultiObject.
+ * 5. combine 4 and 3 to form PageIterator consisting of MultiObjects.
  * @author SwaranjitDua
 */
 
-class MultiDomainQuery {
+public class MultiDomainQuery {
     
    private HashMap<String, EOSearchResultIterator> domainEUIDIterators = new HashMap<String, EOSearchResultIterator>();
    private String sourceDomain;
    private Set<String> domains;
-   private Relationship relationship;
+   private Relationship relationship; 
+   private int maxElements = 1000;
+   private static int MAX_IN_RECORDS = 1000;
+
+   Connection con = null;
+
 
     public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, 
-            MultiDomainSearchCriteria mDsearchCriteria) 
+            MultiDomainSearchCriteria mDsearchCriteria, Connection con)
         throws ProcessingException, UserException {
-                
+
+        this.con = con;
         domains = getDomains(searchOptions, mDsearchCriteria);
         sourceDomain = searchOptions.getPrimaryDomain();
         relationship = mDsearchCriteria.getRelationship();
+        if (searchOptions.getMaxElements() > 0 ) {
+            maxElements = searchOptions.getMaxElements();
+        }
+
         MasterController mc = null;
         for(String d: domains) {
             mc = getJNDI(d);
@@ -93,13 +108,19 @@ class MultiDomainQuery {
             	pushDomainEUIDs(d, it);            	            	
             }
         }
-       
+        
+     List<MultiObject> multiObjects = null;
+
+      while (true) {      
         List<Relationship> relationships = intersectEUIDs();
+        if (relationships == null || relationships.size() == 0) {
+            break;
+        }
+
+        /* Map<domain, Set<EUID>>  */
         Map<String, Set<String>> domainFilteredEUIDs = constructDomainEUIDs(relationships);
-        
-        /* convert List of relationshps to a map for a domain and list of relationships for that domain */
-        Map<String, List<Relationship>> domainRels = constructDomainRelationship(sourceDomain, relationships);
-        
+
+                 
         /* domainObjectMap of <domain,<EUID,EOSearchResultRecord>> */
         Map<String, Map<String, EOSearchResultRecord>> domainObjectMap = 
                 new HashMap<String, Map<String, EOSearchResultRecord>>();
@@ -112,10 +133,14 @@ class MultiDomainQuery {
                 domainObjectMap.put(domain, euidresult);         
             }
         }
-        
-         List<MultiObject> multiObjects = constructMultiObjects(sourceDomain, domainRels, domainObjectMap);
-         PageIterator pageIterator = new PageIterator(multiObjects);
-         return pageIterator;                            
+
+         /* convert List of relationshps to a map for a euid and list of relationships for that EUID */
+        Map<String, List<Relationship>> euidRels = constructEUIDRelationships(sourceDomain, relationships);
+
+         multiObjects = constructMultiObjects(sourceDomain, euidRels, domainObjectMap);
+       }
+       PageIterator pageIterator = new PageIterator(multiObjects);
+       return pageIterator;                            
     }
     
 
@@ -151,9 +176,9 @@ class MultiDomainQuery {
             domainObjectMap.put(d, euidObjects);
         }
         
-        Map<String, List<Relationship>> domainRels = constructDomainRelationship(sourceDomain, relationships);
+        Map<String, List<Relationship>> euidRels = constructEUIDRelationships(sourceDomain, relationships);
         
-        multiObjects = constructMultiObjects(sourceDomain, domainRels, domainObjectMap);
+        multiObjects = constructMultiObjects(sourceDomain, euidRels, domainObjectMap);
       } catch (Exception ex) {
           throwException(ex);
       }                                       
@@ -190,69 +215,13 @@ class MultiDomainQuery {
       
     }
    
-   
-    /*  combine Relationships in relationshipMap and Map of {EUID,EOSearchResultRecord} in domainObjectMap 
-     *  to a List of MultiObject.
-     * @param sDomain sourceDomain to which respect MultiObjects need to be constructed.
-     * @param relationshipMap Map of {EUID, List<Relationship>}
-     * @param domainObjectMap Map {domain, Map<EUID, EOSearchResultRecord}}
-     */
-    private List<MultiObject> constructMultiObjects(String sDomain, Map<String, List<Relationship>> relationshipMap, 
-            Map<String, Map<String, EOSearchResultRecord>> domainObjectMap) {
-        
-        List<MultiObject> multiObjects = new ArrayList<MultiObject>();
-       
-        Set<Map.Entry<String, List<Relationship>>> entries = relationshipMap.entrySet();
-        for (Map.Entry<String, List<Relationship>> entry: entries) {
-            String euid = entry.getKey();
-            ObjectNode sobject = domainObjectMap.get(sDomain).get(euid).getObject();
-            MultiObject multiObject = new MultiObject(sobject); //new MultiObject(sobject);
-            multiObjects.add(multiObject);
-            
-            List<Relationship> rels = entry.getValue();
-            Map<String, List<Relationship>> domainMap = new HashMap<String, List<Relationship>>();
-            /* transform list of Relationship rels to domainMap{domain, domain specific relationships}
-             * So the idea is for each source euid, create a MultiObject.
-             */
-            for (Relationship rel: rels) {
-              String td = rel.getRelationshipDef().getTargetDomain();
-              List<Relationship> rs  = domainMap.get(td);
-              
-              if (rs == null) { 
-                 rs = new ArrayList<Relationship>();
-                 domainMap.put(td, rs);
-              }
-              rs.add(rel);
-              
-            }
-            
-            Set<Map.Entry<String, List<Relationship>>> domainEntries = domainMap.entrySet();
-            
-            for(Map.Entry<String, List<Relationship>> e : domainEntries) {
-                String d = e.getKey();
-                List<Relationship> drels = e.getValue();
-                MultiObject.RelationshipDomain rdomain = new MultiObject.RelationshipDomain(d);
-                for (Relationship rel: drels) {
-                    String tareuid = rel.getTargetEUID();
-                    EOSearchResultRecord record = domainObjectMap.get(sDomain).get(tareuid);
-                    ObjectNode node = record.getObject();
-                    MultiObject.RelationshipObject relObject = new MultiObject.RelationshipObject(rel, node);
-                    rdomain.addRelationshipObejct(relObject);
-                }
-                multiObject.addRelationshipDomain(rdomain);
-             
-            }
-            
-        }
-        return multiObjects;
-    }
     
     /*
-     * transforms List of Relationships to a Map{EUID, List<Relationship>}
-     * The keys correspond to the euid for the input sDomain
+     * transforms List of Relationships to a Map{EUID, List<Relationship>} with respect to input domain.
+     * The keys EUID in the returned map, correspond to the euids for the input sDomain
      */
-    private Map<String, List<Relationship>> constructDomainRelationship(String sDomain, List<Relationship> relationships) {
-      Map<String, List<Relationship>> domainRels = new HashMap<String, List<Relationship>>();
+    private Map<String, List<Relationship>> constructEUIDRelationships(String sDomain, List<Relationship> relationships) {
+      Map<String, List<Relationship>> euidRels = new HashMap<String, List<Relationship>>();
       
         for (Relationship rel : relationships) {
             String sd = rel.getRelationshipDef().getSourceDomain();
@@ -266,15 +235,15 @@ class MultiDomainQuery {
             if (euid == null) {
                 continue;
             }
-            List<Relationship> rels = domainRels.get(euid);
+            List<Relationship> rels = euidRels.get(euid);
             if (rels == null) {
                 rels = new ArrayList<Relationship>();
-                domainRels.put(euid, rels);
+                euidRels.put(euid, rels);
             }
             rels.add(rel);
         }
         
-        return domainRels;
+        return euidRels;
     }
     
     /*  Take input list of relationships, separate them based on domain and retrun Map of domain and EUID set.
@@ -305,6 +274,62 @@ class MultiDomainQuery {
         }
         
         return domainEUIDs;
+    }
+
+    /*  combine Relationships in relationshipMap and Map of {EUID,EOSearchResultRecord} in domainObjectMap
+     *  to a List of MultiObject.
+     * @param sDomain sourceDomain to which respect MultiObjects need to be constructed.
+     * @param relationshipMap Map of {EUID, List<Relationship>}
+     * @param domainObjectMap Map {domain, Map<EUID, EOSearchResultRecord}}
+     */
+    private List<MultiObject> constructMultiObjects(String sDomain, Map<String, List<Relationship>> relationshipMap,
+            Map<String, Map<String, EOSearchResultRecord>> domainObjectMap) {
+
+        List<MultiObject> multiObjects = new ArrayList<MultiObject>();
+
+        Set<Map.Entry<String, List<Relationship>>> entries = relationshipMap.entrySet();
+        for (Map.Entry<String, List<Relationship>> entry: entries) {
+            String euid = entry.getKey();
+            ObjectNode sobject = domainObjectMap.get(sDomain).get(euid).getObject();
+            MultiObject multiObject = new MultiObject(sobject); //new MultiObject(sobject);
+            multiObjects.add(multiObject);
+
+            List<Relationship> rels = entry.getValue();
+            Map<String, List<Relationship>> domainMap = new HashMap<String, List<Relationship>>();
+            /* transform list of Relationship rels to domainMap{domain, domain specific relationships}
+             * So the idea is for each source euid, create a MultiObject.
+             */
+            for (Relationship rel: rels) {
+              String td = rel.getRelationshipDef().getTargetDomain();
+              List<Relationship> rs  = domainMap.get(td);
+
+              if (rs == null) {
+                 rs = new ArrayList<Relationship>();
+                 domainMap.put(td, rs);
+              }
+              rs.add(rel);
+
+            }
+
+            Set<Map.Entry<String, List<Relationship>>> domainEntries = domainMap.entrySet();
+
+            for(Map.Entry<String, List<Relationship>> e : domainEntries) {
+                String d = e.getKey();
+                List<Relationship> drels = e.getValue();
+                MultiObject.RelationshipDomain rdomain = new MultiObject.RelationshipDomain(d);
+                for (Relationship rel: drels) {
+                    String tareuid = rel.getTargetEUID();
+                    EOSearchResultRecord record = domainObjectMap.get(sDomain).get(tareuid);
+                    ObjectNode node = record.getObject();
+                    MultiObject.RelationshipObject relObject = new MultiObject.RelationshipObject(rel, node);
+                    rdomain.addRelationshipObejct(relObject);
+                }
+                multiObject.addRelationshipDomain(rdomain);
+
+            }
+
+        }
+        return multiObjects;
     }
     
     
@@ -364,7 +389,17 @@ class MultiDomainQuery {
    }
    
    
-   
+   private Set<String> getDomains(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria mDSearchCriteria) {
+       Map<String, MultiDomainSearchOptions.DomainSearchOption> options = searchOptions.getOptions();
+       Set<String> sdomainSet = mDSearchCriteria.getDomains();
+       Set<String> odomainSet = options.keySet();
+       Set<String> domainSet = new HashSet<String>();
+       domainSet.addAll(sdomainSet);
+       domainSet.addAll(odomainSet);
+       return domainSet;
+   }
+
+  
    private static class RelationshipFilter {
        private Relationship relationship;
        private boolean inSource;
@@ -381,6 +416,9 @@ class MultiDomainQuery {
           MultiDomainSearchOptions searchOptions)throws UserException, ProcessingException {
       
        Map<String, EOSearchResultRecord> resultMap = new HashMap<String, EOSearchResultRecord>();
+       if (euids == null) {
+           return resultMap;
+       }
        try {
        
        MultiDomainSearchOptions.DomainSearchOption dSearchOption = searchOptions.getOptions(domain);
@@ -391,7 +429,7 @@ class MultiDomainQuery {
                
        euids.toArray(seuids);
 
-       EOSearchResultIterator iterator = mc.searchEnterpriseObject(seuids, dsearchOptions);
+       EOSearchResultIterator iterator = searchEnterpriseObject(seuids, dsearchOptions, mc);
        
        while(iterator.hasNext()) {
            EOSearchResultRecord record = iterator.next();
@@ -417,22 +455,14 @@ class MultiDomainQuery {
                 
         EOSearchOptions dsearchOptions = new EOSearchOptions(dSearchOption.getSearchId(), epaths);
         
-        EOSearchResultIterator iterator = mc.searchEnterpriseObject(searchCriteria, dsearchOptions);
+        EOSearchResultIterator iterator = searchEnterpriseObject(searchCriteria, dsearchOptions, mc);
         
         return iterator;
                 
     }
 
    
-   private Set<String> getDomains(MultiDomainSearchOptions searchOptions, MultiDomainSearchCriteria mDSearchCriteria) {
-       Map<String, MultiDomainSearchOptions.DomainSearchOption> options = searchOptions.getOptions();
-       Set<String> sdomainSet = mDSearchCriteria.getDomains();
-       Set<String> odomainSet = options.keySet();
-       sdomainSet.addAll(odomainSet);
-       return sdomainSet;        
-   }
-   
-
+ 
 
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchRelationships()
@@ -461,7 +491,11 @@ class MultiDomainQuery {
     }
     
     List<RelationshipFilter> addFlags(List<Relationship> relList) {
+       
         List<RelationshipFilter> relFilterList = new ArrayList<RelationshipFilter>();
+        if (relList == null) {
+            return relFilterList;
+        }
         for (Relationship rel: relList) {
             RelationshipFilter relFilter = new RelationshipFilter(rel);
             relFilterList.add(relFilter);
@@ -471,15 +505,35 @@ class MultiDomainQuery {
     
     
      List<Relationship> searchRelationships(String sourceDomain, String euid) {
+         
+         List<Relationship> rels = null;
           
-          return null; // TODO call RelationshipService
+          return rels; // TODO call RelationshipService
         
      }
      
      List<Relationship> searchRelationships(String sourceDomain, Relationship relationship, 
              Map<String, Set<String>> domainEUIDs) {
-         return null;  // TODO call RelationshipService
-         //throw new Exception("NOt implemented");
+         
+         List<Relationship> rels = null;
+
+          return rels; // TODO call RelationshipService
+     }
+     
+     EOSearchResultIterator searchEnterpriseObject(EOSearchCriteria searchCriteria, EOSearchOptions searchOptions
+             ,MasterController mc) 
+         throws ProcessingException, UserException   {
+         
+                  
+         return mc.searchEnterpriseObject(searchCriteria, searchOptions);
+     
+     }
+
+     EOSearchResultIterator searchEnterpriseObject(String[] seuids, EOSearchOptions searchOptions
+             , MasterController mc) 
+         throws ProcessingException, UserException   {
+         
+         return mc.searchEnterpriseObject(seuids, searchOptions);
      }
 
      
@@ -493,6 +547,9 @@ class MultiDomainQuery {
              throw new ProcessingException(ex);             
          }
      }
+     
+     
+
    
 
 }
