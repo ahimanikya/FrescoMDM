@@ -116,6 +116,8 @@ public class EditorMainPanel extends JPanel implements ActionListener {
             "MSG_TAB_WEB_MANAGER_Domain_SEARCH");
     static final String TAB_WEB_MANAGER_PAGE_DEFINITIONS = NbBundle.getMessage(EditorMainPanel.class,
             "MSG_TAB_WEB_MANAGER_PAGE_DEFINITIONS");
+    static final ImageIcon CALENDARICON = new ImageIcon(Utilities.loadImage(
+            "com/sun/mdm/multidomain/project/resources/Calendar.png"));
     private JPopupMenu mMenu;
     private JButton mButtonAddDomain;
     private JButton mButtonAddRelationship;

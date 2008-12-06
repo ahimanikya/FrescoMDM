@@ -29,11 +29,15 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" alignment="0" min="-2" pref="436" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jTextEffectiveFrom" max="32767" attributes="1"/>
-                                  <Component id="jTextName" alignment="1" pref="164" max="32767" attributes="1"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jTextName" min="-2" pref="164" max="-2" attributes="1"/>
+                                  <Group type="102" alignment="1" attributes="1">
+                                      <Component id="jTextEffectiveFrom" max="32767" attributes="1"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButtonEffectiveFrom" linkSize="1" min="-2" pref="16" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="1">
                                       <Component id="jLabelPlugin" min="-2" pref="92" max="-2" attributes="0"/>
@@ -43,7 +47,9 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabelEffectiveTo" min="-2" pref="92" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jTextEffectiveTo" min="-2" pref="156" max="-2" attributes="0"/>
+                                      <Component id="jTextEffectiveTo" min="-2" pref="137" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButtonEffectiveTo" linkSize="1" min="-2" pref="21" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -68,7 +74,7 @@
                       <Component id="jScrollPaneExtendedAttr" alignment="0" min="-2" pref="540" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -85,7 +91,10 @@
                   <Group type="102" attributes="0">
                       <Component id="jTextName" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="jTextEffectiveFrom" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jTextEffectiveFrom" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonEffectiveFrom" linkSize="2" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -95,6 +104,7 @@
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabelEffectiveTo" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jButtonEffectiveTo" linkSize="2" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                           <Component id="jTextEffectiveTo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -286,6 +296,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextEffectiveFrom">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelEffectiveTo">
       <Properties>
@@ -295,6 +308,41 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextEffectiveTo">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonEffectiveFrom">
+      <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[16, 16]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[16, 16]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[16, 16]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onButtonEffectiveFrom"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonEffectiveTo">
+      <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[16, 16]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[16, 16]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[16, 16]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onButtonEffectiveTo"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

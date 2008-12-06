@@ -84,6 +84,8 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         String effectiveTo = mDefinition.getEffectiveTo();
         this.jTextEffectiveFrom.setText(effectiveFrom);
         this.jTextEffectiveTo.setText(effectiveTo);
+        jButtonEffectiveFrom.setIcon(EditorMainPanel.CALENDARICON);
+        jButtonEffectiveTo.setIcon(EditorMainPanel.CALENDARICON);
         
         String description = mDefinition.getDescription();
         if (description != null) {
@@ -231,6 +233,8 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jTextEffectiveFrom = new javax.swing.JTextField();
         jLabelEffectiveTo = new javax.swing.JLabel();
         jTextEffectiveTo = new javax.swing.JTextField();
+        jButtonEffectiveFrom = new javax.swing.JButton();
+        jButtonEffectiveTo = new javax.swing.JButton();
 
         jLabelName.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Name_Colon")); // NOI18N
 
@@ -305,7 +309,29 @@ public class TabHierarchyDef extends javax.swing.JPanel {
 
         jLabelEffectiveFrom.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Effective_From_Colon")); // NOI18N
 
+        jTextEffectiveFrom.setEnabled(false);
+
         jLabelEffectiveTo.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Effective_To")); // NOI18N
+
+        jTextEffectiveTo.setEnabled(false);
+
+        jButtonEffectiveFrom.setMaximumSize(new java.awt.Dimension(16, 16));
+        jButtonEffectiveFrom.setMinimumSize(new java.awt.Dimension(16, 16));
+        jButtonEffectiveFrom.setPreferredSize(new java.awt.Dimension(16, 16));
+        jButtonEffectiveFrom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onButtonEffectiveFrom(evt);
+            }
+        });
+
+        jButtonEffectiveTo.setMaximumSize(new java.awt.Dimension(16, 16));
+        jButtonEffectiveTo.setMinimumSize(new java.awt.Dimension(16, 16));
+        jButtonEffectiveTo.setPreferredSize(new java.awt.Dimension(16, 16));
+        jButtonEffectiveTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onButtonEffectiveTo(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -324,10 +350,13 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 436, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                    .add(jTextEffectiveFrom)
-                                    .add(jTextName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
-                                .add(18, 18, 18)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(jTextName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 164, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                        .add(jTextEffectiveFrom)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(jButtonEffectiveFrom, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                     .add(layout.createSequentialGroup()
                                         .add(jLabelPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -336,7 +365,9 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                                     .add(layout.createSequentialGroup()
                                         .add(jLabelEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(jTextEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 156, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
+                                        .add(jTextEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 137, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(jButtonEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                         .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                             .add(jLabelExtendedAttributes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -351,8 +382,11 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                             .add(4, 4, 4)
                             .add(jButtonEditExtendedAttribute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPaneExtendedAttr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 540, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(31, 31, 31))
+                .add(52, 52, 52))
         );
+
+        layout.linkSize(new java.awt.Component[] {jButtonEffectiveFrom, jButtonEffectiveTo}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
@@ -365,7 +399,9 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                     .add(layout.createSequentialGroup()
                         .add(jTextName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(10, 10, 10)
-                        .add(jTextEffectiveFrom, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jTextEffectiveFrom, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jButtonEffectiveFrom, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jLabelPlugin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -373,6 +409,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                         .add(8, 8, 8)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabelEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jButtonEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jTextEffectiveTo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .add(20, 20, 20)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -399,6 +436,9 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                         .add(jButtonDeleteExtendedAttribute)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
+
+        layout.linkSize(new java.awt.Component[] {jButtonEffectiveFrom, jButtonEffectiveTo}, org.jdesktop.layout.GroupLayout.VERTICAL);
+
     }// </editor-fold>//GEN-END:initComponents
 
 private void jButtonEditPredefinedAttributeonEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditPredefinedAttributeonEditPredefinedAttribute
@@ -506,6 +546,14 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
         }
 }//GEN-LAST:event_jButtonEditExtendedAttributeonEditExtendedAttribute
 
+private void onButtonEffectiveFrom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonEffectiveFrom
+    performDatePicker(true);
+}//GEN-LAST:event_onButtonEffectiveFrom
+
+private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonEffectiveTo
+    performDatePicker(false);
+}//GEN-LAST:event_onButtonEffectiveTo
+
     private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {                                         
         TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
         int idx = this.jTableExtendedAttr.getSelectedRow();
@@ -580,6 +628,8 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
     private javax.swing.JButton jButtonDeleteExtendedAttribute;
     private javax.swing.JButton jButtonEditExtendedAttribute;
     private javax.swing.JButton jButtonEditPredefinedAttribute;
+    private javax.swing.JButton jButtonEffectiveFrom;
+    private javax.swing.JButton jButtonEffectiveTo;
     private javax.swing.JComboBox jComboBoxPlugin;
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelEffectiveFrom;
@@ -991,5 +1041,28 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             al.add(attr);
         }
         return al;
+    }
+        
+    private void performDatePicker(final boolean from) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                final CalendarDialog dialog = new CalendarDialog();
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+                            java.util.Date date = dialog.getDate();
+                            java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("MM/dd/yyyy");
+                            if (from) {
+                                jTextEffectiveFrom.setText(formatter.format(date));
+                            } else {
+                                jTextEffectiveTo.setText(formatter.format(date));
+                            }
+                            mEditorMainApp.enableSaveAction(true);
+                        }
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
 }

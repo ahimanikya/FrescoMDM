@@ -1380,9 +1380,9 @@ private void onAddHierarchy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
                             case TableModelDefinition.iColIcon:
                                 setBackground(new Color(255,255,255));
                                 if (row.getDefinitionType().equals(Definition.TYPE_RELATIONSHIP)) {
-                                    setIcon(mEditorMainPanel.RELATIONSHIPICONSMALL);
+                                    setIcon(EditorMainPanel.RELATIONSHIPICONSMALL);
                                 } else if (row.getDefinitionType().equals(Definition.TYPE_HIERARCHY)) {
-                                    setIcon(mEditorMainPanel.HIERARCHYICONSMALL);
+                                    setIcon(EditorMainPanel.HIERARCHYICONSMALL);
                                 }
                                 break;
                             default:
