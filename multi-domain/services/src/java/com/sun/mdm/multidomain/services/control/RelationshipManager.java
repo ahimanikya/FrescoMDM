@@ -111,7 +111,7 @@ public class RelationshipManager {
         throws ServiceException {
         
         if (!TBD) {
-        String relationshId = null;
+        long relationshId = -1;
         try {
             RelationshipDef rDef = ViewBuilder.buildRelationshipDef(rDefExt);
             relationshId = multiDomainMetaService.createRelationshipDef(rDef);
@@ -120,7 +120,7 @@ public class RelationshipManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         } 
-        return relationshId;
+        return Long.toString(relationshId);
         }      
         // demo data
         for (RelationshipDef rt:rts) {
