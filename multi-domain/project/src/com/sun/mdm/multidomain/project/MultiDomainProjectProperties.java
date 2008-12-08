@@ -33,7 +33,7 @@ public class MultiDomainProjectProperties {
     public static final String MULTIDOMAIN_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "repository" + File.separator + "templates";
     public static final String PLUGINS = "plug-ins";
     public static final String RELATIONSHIP_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "relationship" + File.separator + PLUGINS;
-    public static final String SECURITY_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION + File.separator + "security" + File.separator + PLUGINS;
+    public static final String SECURITY_TEMPLATE_LOCATION = MODULES_MULTIDOMAIN_LOCATION + File.separator + "repository" + File.separator + "templates" + File.separator + "security";
 
     public static final String RELATIONSHIP_PLUGIN_LOCATION = RELATIONSHIP_DEPLOYMENT_LOCATION + File.separator + PLUGINS;
     public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_MULTIDOMAIN_LOCATION + File.separator + "repository" + File.separator + "schema";
@@ -47,6 +47,8 @@ public class MultiDomainProjectProperties {
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
     // Multi-Domain MDM Match Engine Folder
     public static final String SCHEMA_FOLDER = "schema"; //NOI18N
+    // Multi-Domain MDM Security Folder
+    public static final String SECURITY_FOLDER = "/"; //NOI18N    
     // Multi-Domain MDM Database Script Folder
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
     // Multi-Domain MDM Custom Plug-ins Folder
@@ -62,8 +64,8 @@ public class MultiDomainProjectProperties {
     public static final String MULTI_DOMAIN_WEB_MANAGER_XML = "MultiDomainWebManager.xml";
     public static final String MULTI_DOMAIN_WEB_MANAGER_XSD = "MultiDomainWebManager.xsd";
     
-    public static final String SECURITY_XML = SECURITY_TEMPLATE_LOCATION + File.separator + "security.xml";
-    public static final String SECURITY_XSD = "security.xsd";
+    public static final String SECURITY_XML = "mdwm-security.xml";
+    public static final String SECURITY_XSD = "mdwm-security.xsd";
     
     public static final String CREATE_RELATIONSHIPS_SQL = "CreateRelationships.sql";
     public static final String CREATE_MAPPINGS_SQL = "CreateMappings.sql";
@@ -138,5 +140,6 @@ public class MultiDomainProjectProperties {
     public static final String J2EE_PLATFORM_WSGEN_CLASSPATH="j2ee.platform.wsgen.classpath"; //NOI18N
     public static final String J2EE_PLATFORM_WSIMPORT_CLASSPATH="j2ee.platform.wsimport.classpath"; //NOI18N
     public static final String J2EE_PLATFORM_JSR109_SUPPORT = "j2ee.platform.is.jsr109"; //NOI18N
+    public static final String MDWM_CONTEXT_ROOT_TOEKN = "/MDWM"; //NOI18N
     
 }

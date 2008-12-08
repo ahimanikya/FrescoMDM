@@ -239,6 +239,9 @@ public class MultiDomainProjectGenerator {
 
             FileObject schemaFolder = getConfigSchemaFiles(folder, MultiDomainProjectProperties.SCHEMA_FOLDER, MultiDomainProjectProperties.SCHEMA_TEMPLATE_LOCATION);
             
+            // MULTI-DOMAIN MDWM Security 
+            FileObject securityFolder = getConfigSecurityFiles(folder, MultiDomainProjectProperties.SECURITY_FOLDER, MultiDomainProjectProperties.SECURITY_TEMPLATE_LOCATION);
+            
             // *** Sub folder - Database Script ***
             folder = srcRoot.createFolder(MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER); // NOI18N
             //generateDDLFiles(srcRoot);
@@ -448,6 +451,24 @@ public class MultiDomainProjectGenerator {
         return folder;
     }
 
+    private static FileObject getConfigSecurityFiles(FileObject parent, String folderName, String templateLocation) throws IOException {
+        //FileObject folder = parent.createFolder(folderName);
+        FileObject folder = parent;
+        File f = InstalledFileLocator.getDefault().locate(templateLocation, "", false);
+        if (f != null) {
+            FileObject fTemplates = FileUtil.toFileObject(f);
+            FileObject[] files = fTemplates.getChildren();
+            for (int i = 0; i < files.length; i++) {
+                FileObject file = files[i];
+                if (file.isData() &&
+                    file.getNameExt().equals(MultiDomainProjectProperties.SECURITY_XML)) {
+                    FileUtil.copyFile(file, folder, file.getName());
+                }
+            }
+        }
+        return folder;
+    }
+    
     private static FileObject getSchemaFile(FileObject parent, String folderName, String templateLocation, String schemaFile) throws IOException {
         FileObject folder = parent.createFolder(folderName);
         File f = InstalledFileLocator.getDefault().locate(templateLocation, "", false);
