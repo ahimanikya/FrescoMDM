@@ -359,12 +359,16 @@ function searchResultsCallback(data) {
     dwr.util.addRows("relationshipsListing", data, relationListingFuncs, {
         rowCreator:function(options) {
           var row = document.createElement("tr");
+          row.indexId = options.rowIndex;
           row.onclick = function() { 
               selectRecordRow(this); 
               // Populate data in details section.
-              //populateSourceRecordDetails (sourceEUID);
-              //populateSourceRecordDetails ();
-              alert("Populating record details now..");
+              //alert("Populating record details now.." + this.indexId);
+              var relationships = document.getElementsByName("relationship_id");
+              if(relationships != null) {
+                   //alert("relationship id " + relationships[this.indexId].value);
+                   populateRelationshipDetails (relationships[this.indexId].value);
+              }
           };
           return row;
         },
@@ -377,11 +381,22 @@ function searchResultsCallback(data) {
       });
 }
 var relationListingFuncs = [
-    function(data) { return "<input type='checkbox' align='center' >"; },
+    function(data) { return "<input type='checkbox' align='center' id='relationship_id' name='relationship_id' value='"+data.id+"' >" ; },
     function(data) { return data.sourceHighLight; },
     function(data) { return data.targetHighLight; }
 
 ];
+
+function populateRelationshipDetails(relationshipId) {
+    alert("populating relationship details for relationship id " + relationshipId);
+    var sourceDomain = document.getElementById("select_sourceDomain").value;
+    var targetDomain = document.getElementById("select_targetDomain").value;
+    var relationshipDef = document.getElementById("select_relationshipDefs").value;
+    RelationshipHandler.getRelationship (relationshipDef, relationshipId,sourceDomain,targetDomain, populateRelationshipDetails_Callback);
+}
+function populateRelationshipDetails_Callback (data) {
+    alert("relationship details got: " + data);
+}
 /*
  * Scripts for Main (listing, details) screen <END>
  */
