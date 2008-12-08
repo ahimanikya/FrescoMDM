@@ -338,8 +338,8 @@ public class NewProjectIterator implements WizardDescriptor.InstantiatingIterato
         multiDomainWebManager.addDefaultPageDefinitions();        
         //create JNDI for multi-domain service
         String projName = (String) mWiz.getProperty(WizardProperties.NAME);
-        String metaDataName = "ejb/" + projName + "_MultiDomainMetaService";
-        String serviceName = "ejb/" + projName + "_MultiDomainService";
+        String metaDataName = "ejb/" + projName + "MultiDomainMetaService";
+        String serviceName = "ejb/" + projName + "MultiDomainService";
         RelationshipJDNIResources metaDataService = new RelationshipJDNIResources(metaDataName, "MultiDomainMetaService", "com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService", "MultiDomain Meta Service" );
         RelationshipJDNIResources service = new RelationshipJDNIResources(serviceName, "MultiDomainService", "com.sun.mdm.multidomain.ejb.service.MultiDomainService", "MultiDomain Service" );
         multiDomainWebManager.getJndiResources().addJNDIResource(metaDataService);
