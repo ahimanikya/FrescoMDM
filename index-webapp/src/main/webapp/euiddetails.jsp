@@ -247,7 +247,7 @@ if(session!=null){
 						   <%} else {%>
 							 <td>	
                                 <FORM>
-			               		<a href="#" 
+			               		<a href="javascript:void(0)" 
 								   onclick="history.back()" 
 								   class="button" 
 								   title="<h:outputText  value="#{msgs.back_button_text}"/>" >
