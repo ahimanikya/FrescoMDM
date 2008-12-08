@@ -35,9 +35,10 @@ if(prefix == null) prefix = "pre" + d.getTime();
         <div id="<%=prefix%>RecordSummaryDiv" cellpadding="2">
             <table border="0" class="RecordDetails" id="<%=prefix%>RecordInSummary">
                 <tr>
-                    <td class="label">First Name</td>
-                    <td class="data">George</td>
+                    <td class="label">&nbsp;</td>
+                    <td class="data">&nbsp;</td>
                 </tr>
+                <!--
                 <tr>
                     <td class="label">Middle Name</td>
                     <td class="data">Denise</td>
@@ -70,10 +71,16 @@ if(prefix == null) prefix = "pre" + d.getTime();
                     <td class="label">Address Home</td>
                     <td class="data">234 Fifth Street, City Town,State 99999</td>
                 </tr>
+                -->
           </table>
       </div>
       <div id="<%=prefix%>RecordDetailDiv" class="RecordDetails" style="display:none;">
               <table border="0" class="RecordDetails" id="<%=prefix%>RecordInDetail">
+              <tr>
+                    <td class="label">&nbsp;</td>
+                    <td class="data">&nbsp;</td>
+                </tr>
+                <!--
                 <tr>
                     <td class="label">First Name</td>
                     <td class="data">George</td>
@@ -134,6 +141,7 @@ if(prefix == null) prefix = "pre" + d.getTime();
                     <td class="label">Mother Name</td>
                     <td class="data">Flavia</td>
                 </tr>
+                -->
            </table>
         </div>
     </div>
