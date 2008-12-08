@@ -325,6 +325,7 @@ function selectTargetSearchTypeFields(data){
 /*
  * Scripts for Main (listing, details) screen <START>
  */
+var summaryFields = {}; // To hold summary fields for domains.
 function searchRelationships() {
     var sourceDomain = document.getElementById("select_sourceDomain").value;
     var targetDomain = document.getElementById("select_targetDomain").value;
@@ -343,14 +344,37 @@ function searchRelationships() {
     var targetDomainSearch = {name: targetDomain};
     var relationshipDefSearch = {name: relationshipDef};
     
+    // Load fields for summary display for source & target domain
+    DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
+      loadSummaryFields(dataFromServer, sourceDomain); }
+    });
+    DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
+      loadSummaryFields(dataFromServer, targetDomain); }
+    });
+
     RelationshipHandler.searchRelationships (sourceDomainSearch, targetDomainSearch, relationshipDefSearch, searchResultsCallback);
 
 }
+function loadSummaryFields(data, domainName) {
+    if(domainName == null) return;
+    var fieldsList = []; var i=0;
+    for (var fieldGrp in data)  {
+        for (var fields in data[fieldGrp])  {
+          //alert(fieldGrp + " : "+data[fieldGrp][fields].name);
+          fieldsList[i ++] = data[fieldGrp][fields].name;
+        }
+     }
+     //alert(fieldsList);
+     summaryFields[domainName] = fieldsList;
+}
+
+var cachedSearchResults = null; // Store the search results (relationships);
 function searchResultsCallback(data) {
     //alert("search results " + data);
     /*for(i=0; i<data.length; i++) {
         alert(data[i].id + " : " + data[i].sourceEUID + " : "  + data[i].sourceHighLight);
     }*/
+    cachedSearchResults = data;
     dwr.util.removeAllRows("relationshipsListing");
     if(data == null || data.length<=0) {
         //alert("no relationship definitions found");
@@ -374,7 +398,7 @@ function searchResultsCallback(data) {
               var relationships = document.getElementsByName("relationship_id");
               if(relationships != null) {
                    //alert("relationship id " + relationships[this.indexId].value);
-                   populateRelationshipDetails (relationships[this.indexId].value);
+                   populateRelationshipDetails (relationships[this.indexId].value, this.indexId);
               }
           };
           return row;
@@ -394,21 +418,97 @@ var relationListingFuncs = [
 
 ];
 
-function populateRelationshipDetails(relationshipId) {
-    alert("populating relationship details for relationship id: " + relationshipId);
-    var sourceDomain = document.getElementById("select_sourceDomain").value;
-    var targetDomain = document.getElementById("select_targetDomain").value;
-    var relationshipDef = document.getElementById("select_relationshipDefs").value;
+function populateRelationshipDetails(relationshipId, indexNum) {
+    //alert("populating relationship details for relationship id: " + relationshipId);
+    var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
+    var targetPane = dijit.byId("targetRecordDetailsTitlePane");
+    if(cachedSearchResults != null && cachedSearchResults[indexNum]!= null) {
+        sourcePane.attr("title",cachedSearchResults[indexNum].sourceHighLight);
+        targetPane.attr("title",cachedSearchResults[indexNum].targetHighLight);
+    }  
+    var sourceDomain = cachedSearchResults[indexNum].sourceDomain;
+    var targetDomain = cachedSearchResults[indexNum].targetDomain;
+    var relationshipDef = cachedSearchResults[indexNum].name;
     var relationshipView = {name:relationshipDef, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
     RelationshipHandler.getRelationship (relationshipView, populateRelationshipDetails_Callback);
 }
+
 function populateRelationshipDetails_Callback (data) {
-    //alert("relationship details got.");
+    var summaryFieldCount = 0;
+    //alert("Source summary fields: " + data.sourceRecord.name + " : " + summaryFields[data.sourceRecord.name]); 
+    //alert("Targer summary fields: " + data.targetRecord.name + " : " + summaryFields[data.targetRecord.name]); 
+    // For testing, hardcoding..
+    summaryFields[data.sourceRecord.name].push("FirstName");
+    summaryFields[data.targetRecord.name].push("FirstName");
+    
+    // Populate source record details
+    var sourceRecordDetails =  data.sourceRecord.attributes;
+    dwr.util.removeAllRows("sourceRecordInSummary");    
+    dwr.util.removeAllRows("sourceRecordInDetail");
+    summaryFieldCount = 0;
+    for(i=0; i<sourceRecordDetails.length; i++) {
+        var fieldName = sourceRecordDetails[i].name;
+        var fieldValue = sourceRecordDetails[i].value;
+        
+        //alert(i + " : " +  fieldName + " : " + fieldValue );
+        var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
+        var sourceDetailTable = document.getElementById('sourceRecordInDetail');
+        
+        var recordFieldRow = sourceDetailTable.insertRow(i);
+        recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+        recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+        recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+        recordFieldRow.cells[1].innerHTML = fieldValue;
+
+        //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
+        var isSummaryField = summaryFields[data.sourceRecord.name].contains(fieldName);
+        if( isSummaryField ) {
+          recordFieldRow= sourceSummaryTable.insertRow(summaryFieldCount);
+          recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+          recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+          recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+          recordFieldRow.cells[1].innerHTML = fieldValue;
+          summaryFieldCount ++;
+        }
+    }
+    
+    // Populate target record Details
+    var targetRecordDetails =  data.targetRecord.attributes;
+    dwr.util.removeAllRows("targetRecordInSummary");    
+    dwr.util.removeAllRows("targetRecordInDetail");
+    summaryFieldCount = 0;
+    for(i=0; i<targetRecordDetails.length; i++) {
+        var fieldName = targetRecordDetails[i].name;
+        var fieldValue = targetRecordDetails[i].value;
+        
+        //alert(i + " : " +  fieldName + " : " + fieldValue );
+        var targetSummaryTable = document.getElementById('targetRecordInSummary');
+        var targetDetailTable = document.getElementById('targetRecordInDetail');
+        
+        var recordFieldRow = targetDetailTable.insertRow(i);
+        recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+        recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+        recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+        recordFieldRow.cells[1].innerHTML = fieldValue;
+
+        //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
+        var isSummaryField = summaryFields[data.targetRecord.name].contains(fieldName);
+        if( isSummaryField ) {
+          recordFieldRow= targetSummaryTable.insertRow(summaryFieldCount);
+          recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+          recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+          recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+          recordFieldRow.cells[1].innerHTML = fieldValue;
+          summaryFieldCount ++;
+        }
+    }    
+return;
     alert("Source record: " + data.sourceRecord.attributes[0].name + " : " + data.sourceRecord.attributes[0].value);
     alert("Target record: " + data.targetRecord.attributes[0].name + " : " + data.targetRecord.attributes[0].value);
     alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
     alert("relationship attributes " + data.relationshipRecord.attributes.length);
 }
+
 /*
  * Scripts for Main (listing, details) screen <END>
  */

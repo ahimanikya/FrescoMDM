@@ -4,8 +4,14 @@
     Author     : Harish
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%@ page import="java.util.Date" %>
 <link rel="stylesheet" type="text/css" href="css/manage.css" media="screen"/>
+<%
+String prefix = (String) request.getParameter("prefix");
+Date d = new Date();
 
+if(prefix == null) prefix = "pre" + d.getTime();
+%>
 <style type="text/css">
             @import "scripts/dijit/themes/mdwm/mdwm.css";
 </style>
@@ -21,13 +27,13 @@
      
 </script>
 
-<div dojoType="dijit.RecordDetailsTitlePane" title="Dr. George Karlin" class="MainBox" 
-        onSummaryClick="showRecordFullDetails('recordSummary','recordDetails',false);" onDetailsClick="showRecordFullDetails('recordSummary','recordDetails',true);" parseOnLoad="true">
+<div dojoType="dijit.RecordDetailsTitlePane" title="Dr. George Karlin" id ="<%=prefix%>RecordDetailsTitlePane" class="MainBox" 
+        onSummaryClick="showRecordFullDetails('<%=prefix%>RecordSummaryDiv','<%=prefix%>RecordDetailDiv',false);" onDetailsClick="showRecordFullDetails('<%=prefix%>RecordSummaryDiv','<%=prefix%>RecordDetailDiv',true);" parseOnLoad="true">
 
     <!-- sumarry content -->
     <div class="Content" style="padding-left:5px;">
-        <div id="recordSummary">
-            <table border="0" class="RecordDetails">
+        <div id="<%=prefix%>RecordSummaryDiv" cellpadding="2">
+            <table border="0" class="RecordDetails" id="<%=prefix%>RecordInSummary">
                 <tr>
                     <td class="label">First Name</td>
                     <td class="data">George</td>
@@ -66,8 +72,8 @@
                 </tr>
           </table>
       </div>
-      <div id="recordDetails" class="RecordDetails" style="display:none;">
-              <table border="0" class="RecordDetails">
+      <div id="<%=prefix%>RecordDetailDiv" class="RecordDetails" style="display:none;">
+              <table border="0" class="RecordDetails" id="<%=prefix%>RecordInDetail">
                 <tr>
                     <td class="label">First Name</td>
                     <td class="data">George</td>
