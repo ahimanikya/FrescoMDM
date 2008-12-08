@@ -1,8 +1,3 @@
-<%-- 
-    Document   : select_hierarchy
-    Created on : Nov 19, 2008, 10:10:45 AM
-    Author     : Harish
---%>
 
 <%-- 
     Document   : Main screen for Manage - By Relationship 
@@ -24,5 +19,6 @@
     <div dojoType="dijit.layout.ContentPane" gutters="false" region="center" splitter="true" 
             style="border:0px;background-color:#F9F9F0;">
         Under construction...
+        
     </div>
 </div>

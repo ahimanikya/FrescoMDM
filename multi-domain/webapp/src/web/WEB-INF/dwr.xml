@@ -9,6 +9,11 @@
       <param name="beanName" value="DomainHandler"/>
       <include method="getDomains" />
     </create>
+    <create creator="spring" javascript="DomainScreenHandler" scope="session">
+      <param name="beanName" value="DomainScreenHandler"/>
+      <include method="getSummaryFields" />
+      <include method="getSearchResultFields" />
+    </create>    
 
     <create creator="spring" javascript="RelationshipDefHandler" scope="session">
       <param name="beanName" value="RelationshipDefHandler"/>

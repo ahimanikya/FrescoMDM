@@ -49,7 +49,8 @@
       -->
     <bean id="DomainHandler" class="com.sun.mdm.multidomain.presentation.beans.DomainHandler">
     </bean>
-    
+    <bean id="DomainScreenHandler" class="com.sun.mdm.multidomain.presentation.beans.DomainScreenHandler">
+    </bean>    
     <bean id="RelationshipDefHandler" class="com.sun.mdm.multidomain.presentation.beans.RelationshipDefHandler">
     </bean>
     

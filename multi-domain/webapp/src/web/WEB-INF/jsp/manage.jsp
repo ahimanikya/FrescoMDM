@@ -14,7 +14,7 @@
 <script type='text/javascript' src='dwr/interface/RelationshipDefHandler.js'></script> 
 <script type='text/javascript' src='dwr/interface/RelationshipHandler.js'></script>
 <script type="text/javascript" src="scripts/lang_utils.js" ></script>
-
+<script type='text/javascript' src='dwr/interface/DomainScreenHandler.js'></script> 
 <link rel="stylesheet" type="text/css" href="css/manage.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
 <script type='text/javascript' src='scripts/mdwm.js'></script>
@@ -52,7 +52,7 @@
 <div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:800px;">
             
     <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
-        Under construction!
+        Under construction!<input type="button" onclick="test();" value="Test">
     </div>
     <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="Relationships" 
             href="m_byrelationship_main.htm" parseOnLoad="true" onLoad="showByRelSelectDialog();">

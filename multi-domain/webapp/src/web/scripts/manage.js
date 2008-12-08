@@ -1,4 +1,9 @@
-
+function test() {
+    DomainScreenHandler.getSummaryFields("Person",testCB);
+}
+function testCB(data) {
+    alert(data);
+}
 // Manage screen related scripts
 
  function showRecordFullDetails(summaryId, detailsId, showDetailsFlag){
