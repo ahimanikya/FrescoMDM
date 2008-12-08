@@ -10,6 +10,7 @@ import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.generator.descriptor.JbiXmlWriter;
+import com.sun.mdm.multidomain.project.generator.descriptor.AppXmlWriter;
 import com.sun.mdm.multidomain.project.generator.domainObjects.EntityObjectWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
 import java.io.BufferedReader;
@@ -35,10 +36,9 @@ import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PatternSet;
-import org.xml.sax.InputSource;
 
 /**
- *
+ * MultidomainGeneratorTask class.
  * @author jlu
  */
 public class MultidomainGeneratorTask extends Task {
@@ -93,11 +93,11 @@ public class MultidomainGeneratorTask extends Task {
         // need to regenerate if source files have been modified
         try {
             
-            generateFiles();
-                    
+            generateFiles();                    
+            
             // generate jar file
             generateJars();
-
+            
             // put ejb files in ebj project
             generateEbjFiles();
 
@@ -107,7 +107,8 @@ public class MultidomainGeneratorTask extends Task {
 
             // put the web files into war project
             generateWarFiles();
-            } catch (Exception ex) {
+            
+         } catch (Exception ex) {
 //                String mode = System.getProperty("run.mode");
 //                if (mode == null || !mode.equals("debug")) {
 //                   //delete "files-generated" folder when generation fails
@@ -122,7 +123,7 @@ public class MultidomainGeneratorTask extends Task {
 //                }
                 mLog.severe("Could not generate MDM Multidomain Files.");
                 throw new BuildException(ex.getMessage());
-            }
+          }
         
     }
     
@@ -162,6 +163,16 @@ public class MultidomainGeneratorTask extends Task {
             String jbiName = jbiJar.substring(0, endIndex);
             JbiXmlWriter jbrWriter = new JbiXmlWriter(jbiXmlFolder, jbiName);
             jbrWriter.write();
+            
+            //generate application.xml   
+            String appXmlFolderPath = mSrcdir.getAbsolutePath()+ File.separator + "conf";
+            File appXmlFolder = new File(appXmlFolderPath);
+            String ejbName = getProject().getProperty("ejb.dir") + ".jar";
+            String warName = getProject().getProperty("war.dir") + ".war";
+            String appName = ejbName.substring(0, ejbName.length() - 8); //TBD fix me
+            AppXmlWriter appWriter = new AppXmlWriter(appXmlFolder, appName, ejbName, warName);
+            appWriter.write();
+            
         } catch (ParserException ex) {
             throw new BuildException(ex.getMessage());
         } catch (TemplateWriterException ex) {
@@ -279,10 +290,10 @@ public class MultidomainGeneratorTask extends Task {
         patternSet.setExcludes("**/META-INF/**");
         
         patternSet.setExcludes("WEB-INF/classes/**/*.java");
-//        patternSet.setExcludes("**/edm.xml");
-//        patternSet.setExcludes("**/object.xml");
-//        patternSet.setExcludes("**/roles.xml");
-//        patternSet.setExcludes("**/midm.xml");
+        //patternSet.setExcludes("**/edm.xml");
+        //patternSet.setExcludes("**/object.xml");
+        //patternSet.setExcludes("**/roles.xml");
+        //patternSet.setExcludes("**/midm.xml");
         Expand expand = (Expand) getProject().createTask("unzip");
         expand.init();
         expand.setSrc(srcFile);
@@ -306,13 +317,13 @@ public class MultidomainGeneratorTask extends Task {
         copy.setLocation(getLocation());
         copy.execute();
 
-//
-//        //set context root
-//        if (null != edmVersion && edmVersion.equalsIgnoreCase("master-index-edm")) {
-//            String token = "/SunEdm";
-//            String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
-//            replaceToken(sunWebXml, token, "/"+applicationName+"MIDM" );         
-//        }               
+        //set context root
+	String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
+        String appName = getProject().getProperty("jar.name"); // TBD fix me 
+	replaceToken(sunWebXml, 
+                     MultiDomainProjectProperties.MDWM_CONTEXT_ROOT_TOEKN, 
+                     "/" + appName.substring(0, appName.length() - 4) + "MDWM");   
+                  
     }
     
     private void addEjbLib() throws FileNotFoundException, IOException {
@@ -400,17 +411,16 @@ public class MultidomainGeneratorTask extends Task {
         destDir.mkdir();
         
         // copy configuration file      
-        File srcDir = new File(mSrcdir,
-                MultiDomainProjectProperties.CONFIGURATION_FOLDER);
+        File srcDir = new File(mSrcdir, MultiDomainProjectProperties.CONFIGURATION_FOLDER);
         FileSet srcFileSet = new FileSet();
         srcFileSet.setDir(srcDir);
+        
         // copy domain object.xml file
-        File srcDir2 = new File(mSrcdir,
-                MultiDomainProjectProperties.DOMAINS_FOLDER);
+        File srcDir2 = new File(mSrcdir, MultiDomainProjectProperties.DOMAINS_FOLDER);
         FileSet srcFileSet2 = new FileSet();
         srcFileSet2.setDir(srcDir2);
         srcFileSet2.setIncludes("**/object.xml");
-        
+                
         Copy copy = (Copy) getProject().createTask("copy");
         copy.setTodir(destDir);
         copy.addFileset(srcFileSet);
@@ -418,7 +428,7 @@ public class MultidomainGeneratorTask extends Task {
         copy.init();
         copy.setLocation(getLocation());
         copy.execute();
-        
+                        
         // make resources.jar
         File jarFile = new File(projPath + "/lib/resources.jar");
         if (jarFile.exists()) {
