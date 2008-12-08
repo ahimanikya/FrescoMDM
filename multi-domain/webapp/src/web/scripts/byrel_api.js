@@ -392,10 +392,14 @@ function populateRelationshipDetails(relationshipId) {
     var sourceDomain = document.getElementById("select_sourceDomain").value;
     var targetDomain = document.getElementById("select_targetDomain").value;
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
-    RelationshipHandler.getRelationship (relationshipDef, relationshipId,sourceDomain,targetDomain, populateRelationshipDetails_Callback);
+    var relationshipView = {name:relationshipDef, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
+    RelationshipHandler.getRelationship (relationshipView, populateRelationshipDetails_Callback);
 }
 function populateRelationshipDetails_Callback (data) {
-    alert("relationship details got: " + data);
+    alert("relationship details got.");
+    alert("Source record: " + data.sourceRecord.attributes[0].name + " : " + data.sourceRecord.attributes[0].value);
+    alert("Target record: " + data.targetRecord.attributes[0].name + " : " + data.targetRecord.attributes[0].value);
+    alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
 }
 /*
  * Scripts for Main (listing, details) screen <END>
