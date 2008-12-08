@@ -407,6 +407,7 @@ function populateRelationshipDetails_Callback (data) {
     alert("Source record: " + data.sourceRecord.attributes[0].name + " : " + data.sourceRecord.attributes[0].value);
     alert("Target record: " + data.targetRecord.attributes[0].name + " : " + data.targetRecord.attributes[0].value);
     alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
+    alert("relationship attributes " + data.relationshipRecord.attributes.length);
 }
 /*
  * Scripts for Main (listing, details) screen <END>
