@@ -37,6 +37,8 @@ import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.WebDefinition;
 import com.sun.mdm.multidomain.parser.ConfigurationFiles;
+import com.sun.mdm.multidomain.parser.JNDIResources;
+import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
 
@@ -1257,15 +1259,44 @@ public class MDConfigManager {
 	    return null;
 	}
 
-	
-	// testing--raymond tam
-	// RESUME HERE
-    public static JndiResource getJndiResource(String id) {
-        return null;
+    /**
+     * Get JndiResource for the given resource id.
+     * @param id Identifier of JndiResource.
+     * @return JndiResource
+     */    
+    public static JndiResource getJndiResource(String id) 
+        throws ConfigException {
+        JndiResource jndiResource = null;
+        if (id == null) {
+            throw new ConfigException("Invalid JndiResource id:null");
+        }
+        JNDIResources jndiResources = mDWMInstance.getJndiResources();
+        List<RelationshipJDNIResources> rJndiResources = jndiResources.getJDNIResources();
+        for (RelationshipJDNIResources rJndiResource : rJndiResources) {
+            if (id.equals(rJndiResource.getID())) { 
+                jndiResource = new JndiResource();
+                jndiResource.setId(rJndiResource.getID());
+                jndiResource.setName(rJndiResource.getJNDIName());
+                jndiResource.setType(rJndiResource.getResourceType());
+                jndiResource.setDescription(rJndiResource.getDescription());
+                break;  
+            } else if (id.equals(rJndiResource.getID())) {
+                jndiResource = new JndiResource();
+                jndiResource.setId(rJndiResource.getID());
+                jndiResource.setName(rJndiResource.getJNDIName());
+                jndiResource.setType(rJndiResource.getResourceType());
+                jndiResource.setDescription(rJndiResource.getDescription());
+                break;                  
+            }
+        }
+        if (jndiResource == null) {
+            throw new ConfigException("Failed to find JndiResource for the given id: " + id);
+        }
+        return jndiResource;
     }
     
-	// testing--raymond tam
-	// RESUME HERE
+    // testing--raymond tam
+    // RESUME HERE
     public static Properties getJndiProperties() {
         return null;
     }
