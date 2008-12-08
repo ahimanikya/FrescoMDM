@@ -441,27 +441,29 @@ function populateRelationshipDetails_Callback (data) {
     summaryFields[data.sourceRecord.name].push("FirstName");
     summaryFields[data.targetRecord.name].push("FirstName");
     
+    var fieldName, fieldValue;
+     var recordFieldRow,isSummaryField;
     // Populate source record details
     var sourceRecordDetails =  data.sourceRecord.attributes;
     dwr.util.removeAllRows("sourceRecordInSummary");    
     dwr.util.removeAllRows("sourceRecordInDetail");
     summaryFieldCount = 0;
     for(i=0; i<sourceRecordDetails.length; i++) {
-        var fieldName = sourceRecordDetails[i].name;
-        var fieldValue = sourceRecordDetails[i].value;
+        fieldName = sourceRecordDetails[i].name;
+        fieldValue = sourceRecordDetails[i].value;
         
         //alert(i + " : " +  fieldName + " : " + fieldValue );
         var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
         var sourceDetailTable = document.getElementById('sourceRecordInDetail');
         
-        var recordFieldRow = sourceDetailTable.insertRow(i);
+        recordFieldRow = sourceDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
         recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
         recordFieldRow.cells[0].innerHTML = fieldName + ": ";
         recordFieldRow.cells[1].innerHTML = fieldValue;
 
         //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
-        var isSummaryField = summaryFields[data.sourceRecord.name].contains(fieldName);
+        isSummaryField = summaryFields[data.sourceRecord.name].contains(fieldName);
         if( isSummaryField ) {
           recordFieldRow= sourceSummaryTable.insertRow(summaryFieldCount);
           recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
@@ -478,21 +480,21 @@ function populateRelationshipDetails_Callback (data) {
     dwr.util.removeAllRows("targetRecordInDetail");
     summaryFieldCount = 0;
     for(i=0; i<targetRecordDetails.length; i++) {
-        var fieldName = targetRecordDetails[i].name;
-        var fieldValue = targetRecordDetails[i].value;
+        fieldName = targetRecordDetails[i].name;
+        fieldValue = targetRecordDetails[i].value;
         
         //alert(i + " : " +  fieldName + " : " + fieldValue );
         var targetSummaryTable = document.getElementById('targetRecordInSummary');
         var targetDetailTable = document.getElementById('targetRecordInDetail');
         
-        var recordFieldRow = targetDetailTable.insertRow(i);
+        recordFieldRow = targetDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
         recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
         recordFieldRow.cells[0].innerHTML = fieldName + ": ";
         recordFieldRow.cells[1].innerHTML = fieldValue;
 
         //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
-        var isSummaryField = summaryFields[data.targetRecord.name].contains(fieldName);
+        isSummaryField = summaryFields[data.targetRecord.name].contains(fieldName);
         if( isSummaryField ) {
           recordFieldRow= targetSummaryTable.insertRow(summaryFieldCount);
           recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
@@ -501,8 +503,9 @@ function populateRelationshipDetails_Callback (data) {
           recordFieldRow.cells[1].innerHTML = fieldValue;
           summaryFieldCount ++;
         }
-    }    
-return;
+    }
+    // Populate relationship attributes.
+    return;
     alert("Source record: " + data.sourceRecord.attributes[0].name + " : " + data.sourceRecord.attributes[0].value);
     alert("Target record: " + data.targetRecord.attributes[0].name + " : " + data.targetRecord.attributes[0].value);
     alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
