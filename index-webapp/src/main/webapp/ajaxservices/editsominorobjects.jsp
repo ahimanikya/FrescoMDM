@@ -1710,6 +1710,29 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
   <%
 				   SystemObject systemObject = masterControllerService.getSystemObject(selectedSoSystemCode,selectedSoLID);
 
+				  //Fix for #136
+				  //Check if the system object has active links, if so prompt the user with a proper message 
+    			  HashMap linkedSOFieldsHashMapFromDB  = editMainEuidHandler.getLinkedSOFieldsHashMapFromDB();
+				  boolean hasActiveLinks  = (linkedSOFieldsHashMapFromDB != null ) ?	linkedSOFieldsHashMapFromDB.containsValue(selectedSoSystemCode+":"+selectedSoLID) :false;
+                   
+				   HashMap unLinksHashMap  = new HashMap();
+
+				  //Remove all the links before deactivating - Fix for #136
+                  if(linkedSOFieldsHashMapFromDB != null && hasActiveLinks) {
+                     Object[] keyset = linkedSOFieldsHashMapFromDB.keySet().toArray();
+                     for (int i = 0; i < linkedSOFieldsHashMapFromDB.size(); i++) {
+                       if (linkedSOFieldsHashMapFromDB.get(keyset[i]).toString().equalsIgnoreCase(selectedSoSystemCode+":"+selectedSoLID)) {
+                           unLinksHashMap.put(keyset[i],linkedSOFieldsHashMapFromDB.get(keyset[i]));
+					   }
+					 }
+  				     //set UnlinkedFields HashMap By User
+	                 editMainEuidHandler.setUnLinkedFieldsHashMapByUser(unLinksHashMap);
+
+		             //Save the links selected
+	     	          String sucessMessage = editMainEuidHandler.saveUnLinksSelected();
+ 				   }
+				   //Fix ends for #136
+				   
 				   //Deactivate System Object
 				   masterControllerService.deactivateSystemObject(systemObject);
 				   
@@ -1724,7 +1747,6 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                        countDeactive++;
 					 }
 				   }
-			   
   %>
 
 <%if(itemsSource.size() == countDeactive) {%> <!-- if all system objects are either merged/deactivated navigate to the euid details page-->

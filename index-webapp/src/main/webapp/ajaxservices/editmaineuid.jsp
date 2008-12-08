@@ -112,6 +112,20 @@ boolean isSessionActive = true;
 
     <% //Fix for #247
 	   EnterpriseObject eoBefore = midmUtilityManager.getEnterpriseObject(euidVal);
+
+	   //Fix for #136 Start
+	   Collection itemsSource = eoBefore.getSystemObjects();//eoBefore
+       Iterator iterSources = itemsSource.iterator();
+		int countDeactive = 0;
+		//count the deactive/merged System Objects
+		while (iterSources.hasNext()) {
+            SystemObject systemObjectLocal = (SystemObject) iterSources.next();
+             if(!"active".equalsIgnoreCase(systemObjectLocal.getStatus())) {
+              countDeactive++;
+			}
+		}
+	   //Fix for #136 ends
+
 	   boolean isDeactivated = false; 
 		if("inactive".equalsIgnoreCase(eoBefore.getStatus()) ) {
 			isDeactivated = true;
@@ -1600,8 +1614,15 @@ if(session!=null){
 		  <table>
 		  	  <tr>
 				 <td colspan="2">
-				        <%if("active".equalsIgnoreCase(soStatus)) {%>
-					      <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+				       <%if("active".equalsIgnoreCase(soStatus)) {%>
+                         <%if( countDeactive == itemsSource.size() - 1) {%> <!-- if all system objects are either merged/deactivated navigate to the euid details page-->
+                            <script>
+				              //inactiveEOMessage
+			                  document.getElementById('inactiveEOMessage').innerHTML = "<%=bundle.getString("so_deactive_confirm_2")%>";
+							 
+				            </script>
+                         <%}%>
+                         <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){document.getElementById('DEACTIVATE_SOLID').value='<h:outputText value="#{eoSystemObjectMap['LID']}"/>';document.getElementById('DEACTIVATE_SOSYS').value='<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>';showExtraDivs('deactivateSODiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                <span><h:outputText value="#{msgs.source_rec_deactivate_but}"/></span>
                             </a>
 						<%} else if("New".equalsIgnoreCase(soStatus)){%>
@@ -1883,7 +1904,50 @@ if(session!=null){
                 </form>
             </div> 
 
+            <!-- Fix for #136 Start-->
+            <!-- confirmation window for the SO deactivate/activate -->
+			<div id="deactivateSODiv" class="confirmPreview" style="TOP:620px;LEFT:450px;height:100px;VISIBILITY:hidden;display:none;">
+               <form id="deactivateSOForm">
+  				<input type="hidden" id="DEACTIVATE_SOLID" name="SOLID" title="SOLID"/>
+				<input type="hidden" id="DEACTIVATE_SOSYS" name="SOSYS" title="SOSYS"/>
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th align="right">
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('deactivateSODiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
 
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('deactivateSODiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<nobr><b><%=bundle.getString("so_deactive_confirm_1")%></b></nobr> 
+							<nobr><b><div id="inactiveEOMessage"></div></b></nobr> 
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+ 									<a  class="button"  href="javascript:void(0)"  title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:getFormValues('deactivateSOForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactivateSO=true','euidFinalErrorMessages','');document.getElementById('deactivateSODiv').style.visibility='hidden';document.getElementById('deactivateSODiv').style.display='none';">       	<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+								<td>
+								<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />" onclick="javascript:showExtraDivs('deactivateSODiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+								</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+            <!-- Fix for #136 ends-->
   
         </body>
     </html>
@@ -1895,6 +1959,7 @@ if(session!=null){
 	dd_lock=new YAHOO.util.DD("lockSBRDiv");
 	dd_unlock=new YAHOO.util.DD("unlockSBRDiv");
 	dd_unsavedDiv=new YAHOO.util.DD("unsavedDiv");	
+	dd_deactivateSODiv=new YAHOO.util.DD("deactivateSODiv");
 	</script>
     </f:view>
     <%} %>  <!-- Session check -->
