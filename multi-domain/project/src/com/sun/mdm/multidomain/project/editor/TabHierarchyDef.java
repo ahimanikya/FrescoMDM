@@ -1053,10 +1053,13 @@ private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
                             java.util.Date date = dialog.getDate();
                             String df = mEditorMainApp.getMultiDomainModel(false).getDateFormat();
                             java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat(df);
+                            String dateStr = formatter.format(date);
                             if (from) {
-                                jTextEffectiveFrom.setText(formatter.format(date));
+                                jTextEffectiveFrom.setText(dateStr);
+                                mDefinition.setEffectiveFrom(dateStr);
                             } else {
-                                jTextEffectiveTo.setText(formatter.format(date));
+                                jTextEffectiveTo.setText(dateStr);
+                                mDefinition.setEffectiveTo(dateStr);
                             }
                             mEditorMainApp.enableSaveAction(true);
                         }
