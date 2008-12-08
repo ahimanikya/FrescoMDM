@@ -61,9 +61,10 @@ function populateSelectRelationshipDefAttributes(data){
     var purgeDate =(getBoolean(data.purgeDate));
     var CustomrowCount = 0;
     var PredefinedrowCount = 0;  
-    document.getElementById('byrel_select_customAttributes').innerHTML="";
-    document.getElementById('byrel_select_predefinedAttributes').innerHTML="";
-    
+    //document.getElementById('byrel_select_customAttributes').innerHTML="";
+    //document.getElementById('byrel_select_predefinedAttributes').innerHTML="";
+    dwr.util.removeAllRows("byrel_select_customAttributes");
+    dwr.util.removeAllRows("byrel_select_predefinedAttributes");
     if(data.extendedAttributes.length>0 ){
            var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);

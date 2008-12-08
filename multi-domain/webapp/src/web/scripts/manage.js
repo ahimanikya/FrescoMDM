@@ -51,7 +51,7 @@ function hideByRelSelectDialog () {
 function showByRelAddDialog(){
     var addDialog = dijit.byId("byrel_add");
     addDialog.show();
-    initializeAddDialog();
+    //initializeAddDialog();
 }
 
 function initializeAddDialog() {
@@ -77,9 +77,10 @@ function populateAddRelationshipDefAttributes(data){
     var purgeDate =(getBoolean(data.purgeDate));
     var CustomrowCount = 0;
     var PredefinedrowCount = 0;  
-    document.getElementById('byrel_add_customAttributes').innerHTML="";
-    document.getElementById('byrel_add_predefinedAttributes').innerHTML="";
-    
+   // document.getElementById('byrel_add_customAttributes').innerHTML="";
+   // document.getElementById('byrel_add_predefinedAttributes').innerHTML="";
+    dwr.util.removeAllRows("byrel_add_customAttributes");
+    dwr.util.removeAllRows("byrel_add_predefinedAttributes");
        if(data.extendedAttributes.length>0 ){
            var customHeading = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
