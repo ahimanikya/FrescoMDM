@@ -19,7 +19,7 @@ public class CalendarDialog extends javax.swing.JDialog {
 
     /** Creates new form CalendarDialog */
     public CalendarDialog() {
-        super();
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
         jScrollPaneCalendar.setViewportView(datePicker);
     }
@@ -46,6 +46,7 @@ public class CalendarDialog extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         jScrollPaneCalendar = new javax.swing.JScrollPane();
 
+        setTitle(org.openide.util.NbBundle.getMessage(CalendarDialog.class, "Title_Calendar")); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -95,7 +96,8 @@ public class CalendarDialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-408)/2, (screenSize.height-334)/2, 408, 334);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
