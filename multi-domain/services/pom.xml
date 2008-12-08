@@ -36,7 +36,13 @@
       	<includes>
         	<include>com/**</include>
         </includes>
-      </resource> 
+      </resource>
+   		<resource>
+    		<directory>src/java</directory>
+      	<includes>
+        	<include>com/sun/mdm/multidomain/services/security/operations.xml</include>
+        </includes>
+      </resource>        
     </resources>
     <plugins>
     	<plugin>
