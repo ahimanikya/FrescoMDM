@@ -212,8 +212,7 @@ function selectSourceSearchTypes(data)   {
    var searchTypes = new Array();
    var j = 0;
    var fgroups = new Array();
-   //document.getElementById('select_source_searchtypes').innerHTML='';
-   dwr.util.removeAllRows("select_source_searchtypes");
+   dwr.util.removeAllOptions("select_source_searchtypes");
    for (var searchType in data)  {
       searchTypes[j++] = searchType;
    }
@@ -238,7 +237,7 @@ function selectTargetSearchTypes(data)   {
    var j = 0;
    var fgroups = new Array();
    //document.getElementById('select_target_searchtypes').innerHTML='';
-   dwr.util.removeAllRows("select_target_searchtypes");
+   dwr.util.removeAllOptions("select_target_searchtypes");
    for (var searchType in data)  {
       searchTypes[j++] = searchType;
    }
@@ -429,7 +428,7 @@ function addSourceDomainCriteria(data){
      var j = 0;
      var fgroups = new Array();
      //document.getElementById('add_source_criteria').innerHTML='';
-     dwr.util.removeAllRows("add_source_criteria");
+     dwr.util.removeAllOptions("add_source_criteria");
      for (var searchType in data)  {
         searchTypes[j++] = searchType;
      }
@@ -452,7 +451,7 @@ function addTargetDomainCriteria(data){
      var j = 0;
      var fgroups = new Array();
      //document.getElementById('add_target_criteria').innerHTML='';
-     dwr.util.removeAllRows("add_target_criteria");
+     dwr.util.removeAllOptions("add_target_criteria");
      for (var searchType in data)  {
         searchTypes[j++] = searchType;
      }
