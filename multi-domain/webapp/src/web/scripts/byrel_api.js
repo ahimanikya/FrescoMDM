@@ -211,7 +211,8 @@ function selectSourceSearchTypes(data)   {
    var searchTypes = new Array();
    var j = 0;
    var fgroups = new Array();
-   document.getElementById('select_source_searchtypes').innerHTML='';
+   //document.getElementById('select_source_searchtypes').innerHTML='';
+   dwr.util.removeAllRows("select_source_searchtypes");
    for (var searchType in data)  {
       searchTypes[j++] = searchType;
    }
@@ -235,7 +236,8 @@ function selectTargetSearchTypes(data)   {
    var searchTypes = new Array();
    var j = 0;
    var fgroups = new Array();
-   document.getElementById('select_target_searchtypes').innerHTML='';
+   //document.getElementById('select_target_searchtypes').innerHTML='';
+   dwr.util.removeAllRows("select_target_searchtypes");
    for (var searchType in data)  {
       searchTypes[j++] = searchType;
    }
@@ -261,7 +263,8 @@ function selectSourceSearchTypeFields(data){
     var fieldGroups = new Array();
     var j = 0;
     var count = 0;
-    document.getElementById('select_search_source_fields').innerHTML='';
+    //document.getElementById('select_search_source_fields').innerHTML='';
+    dwr.util.removeAllRows("select_search_source_fields");
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
          for (var fieldCfg in data[fieldGrp])  {
@@ -290,7 +293,8 @@ function selectTargetSearchTypeFields(data){
     var fieldGroups = new Array();
     var j = 0;
     var count = 0;
-    document.getElementById('select_search_target_fields').innerHTML='';
+    //document.getElementById('select_search_target_fields').innerHTML='';
+    dwr.util.removeAllRows("select_search_target_fields");
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
          for (var fieldCfg in data[fieldGrp])  {
@@ -388,7 +392,7 @@ var relationListingFuncs = [
 ];
 
 function populateRelationshipDetails(relationshipId) {
-    alert("populating relationship details for relationship id " + relationshipId);
+    alert("populating relationship details for relationship id: " + relationshipId);
     var sourceDomain = document.getElementById("select_sourceDomain").value;
     var targetDomain = document.getElementById("select_targetDomain").value;
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
@@ -396,7 +400,7 @@ function populateRelationshipDetails(relationshipId) {
     RelationshipHandler.getRelationship (relationshipView, populateRelationshipDetails_Callback);
 }
 function populateRelationshipDetails_Callback (data) {
-    alert("relationship details got.");
+    //alert("relationship details got.");
     alert("Source record: " + data.sourceRecord.attributes[0].name + " : " + data.sourceRecord.attributes[0].value);
     alert("Target record: " + data.targetRecord.attributes[0].name + " : " + data.targetRecord.attributes[0].value);
     alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
@@ -423,7 +427,8 @@ function addSourceDomainCriteria(data){
      var searchTypes = new Array();
      var j = 0;
      var fgroups = new Array();
-     document.getElementById('add_source_criteria').innerHTML='';
+     //document.getElementById('add_source_criteria').innerHTML='';
+     dwr.util.removeAllRows("add_source_criteria");
      for (var searchType in data)  {
         searchTypes[j++] = searchType;
      }
@@ -445,7 +450,8 @@ function addTargetDomainCriteria(data){
      var searchTypes = new Array();
      var j = 0;
      var fgroups = new Array();
-     document.getElementById('add_target_criteria').innerHTML='';
+     //document.getElementById('add_target_criteria').innerHTML='';
+     dwr.util.removeAllRows("add_target_criteria");
      for (var searchType in data)  {
         searchTypes[j++] = searchType;
      }
@@ -472,7 +478,8 @@ function sourceSearchTypeFields(data){
     var fieldGroups = new Array();
     var j = 0;
     var count = 0;
-    document.getElementById('add_search_source_fields').innerHTML='';
+    //document.getElementById('add_search_source_fields').innerHTML='';
+    dwr.util.removeAllRows("add_search_source_fields");
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
          for (var fieldCfg in data[fieldGrp])  {
@@ -501,7 +508,8 @@ function targetSearchTypeFields(data){
     var fieldGroups = new Array();
     var j = 0;
     var count = 0;
-    document.getElementById('add_search_target_fields').innerHTML='';
+    //document.getElementById('add_search_target_fields').innerHTML='';
+    dwr.util.removeAllRows("add_search_target_fields");
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
          for (var fieldCfg in data[fieldGrp])  {
@@ -526,7 +534,8 @@ function addSourceDomainSearch() {
 }
 
 function addSourceSearchResults(data) {
-    document.getElementById('AddSource_TableId').innerHTML ='';
+    //document.getElementById('AddSource_TableId').innerHTML ='';
+    dwr.util.removeAllRows("AddSource_TableId");
     if(data == null) return;
     for(i =0;i<data.length;i++){
         if(i==0){
@@ -558,7 +567,8 @@ function addTargetDomainSearch() {
 }
 
 function addTargeSearchResults(data) {
-    document.getElementById('AddTarget_TableId').innerHTML ='';
+    //document.getElementById('AddTarget_TableId').innerHTML ='';
+    dwr.util.removeAllRows("AddTarget_TableId");
     if(data == null) return;
     for(i =0;i<data.length;i++){
         if(i==0){
