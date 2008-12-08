@@ -580,11 +580,15 @@ public class RelationshipManager {
         ObjectRecord sr = new ObjectRecord();
         sr.setName(relationshipView.getSourceDomain());
         sr.add(new com.sun.mdm.multidomain.services.model.Attribute("Foo1","Foo1"));
+        sr.add(new com.sun.mdm.multidomain.services.model.Attribute("FirstName","Foo1"));
+        sr.add(new com.sun.mdm.multidomain.services.model.Attribute("LastName","Foo1"));        
         rsc.setSourceRecord(sr);
         
         ObjectRecord tr = new ObjectRecord();
         tr.setName(relationshipView.getSourceDomain());
         tr.add(new com.sun.mdm.multidomain.services.model.Attribute("Foo2","Foo2"));
+        tr.add(new com.sun.mdm.multidomain.services.model.Attribute("FirstName","Foo2"));
+        tr.add(new com.sun.mdm.multidomain.services.model.Attribute("LastName","Foo2"));      
         rsc.setTargetRecord(tr);
         
         RelationshipRecord rs = new RelationshipRecord();
