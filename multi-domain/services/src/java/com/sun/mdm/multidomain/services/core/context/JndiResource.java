@@ -30,6 +30,9 @@ import java.io.Serializable;
  */
 public class JndiResource implements Serializable{
     
+    public static final String MULTIDOMAIN_META_SERVICE = "MultiDomainMetaService";
+    public static final String MULTIDOMAIN_SERVICE = "MultiDomainService";
+          
     private String id; //id
     private String name; //jndi-name
     private String type; //res-type
