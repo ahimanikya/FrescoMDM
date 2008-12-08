@@ -59,6 +59,7 @@
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="javax.faces.context.FacesContext"  %>
+<%@ page import="javax.faces.application.FacesMessage" %>
 
 <f:view>
 <%
@@ -128,8 +129,10 @@ SourceHandler sourceHandler = new SourceHandler();
  FieldConfig[] rootFieldConfigArray = (FieldConfig[]) sourceHandler.getAllNodeFieldConfigs().get(rootNodeName);
  ObjectNodeConfig[] arrObjectNodeConfig = objScreenObject.getRootObj().getChildConfigs();
  String epathValue = new String();
+ 
+ Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 %>
-
+<%if(previewAMEO  != null) {%>
                                                 <div id="previewPane" class="blue">
                                                         <table border="0" width="100%" cellspacing="0" cellpadding="0">
                                                             <tr>
@@ -321,6 +324,47 @@ SourceHandler sourceHandler = new SourceHandler();
 											        </table>
 												</div>
 
+<%} else {%>
+	  <% boolean alreadyUndoMatch = false;%>
+      <div id="ajaxalert"> 
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); 
+	                             %>
+								<%if(facesMessage.getSummary().indexOf("MDM-MI-MSC582") != -1 ) {
+									alreadyUndoMatch = true;
+								}			                    
+								%>
+                                								
+							    <%if(!alreadyUndoMatch){%>
+ 				                  <li style="color:red"><%= facesMessage.getSummary() %></li>
+ 						      <% } %>
+ 						 <% } %>
+
+						<%if(alreadyUndoMatch){%>
+							  <table>
+									<tr>
+										<td><!-- Modified  on 12-08-2008 as fix of Issue# 111 -->
+												  <script>
+														document.getElementById("undoInformationDivMessage").innerHTML = " Assumed Match record could not be undone. Assumed Match ID '<%=amSourcesID%>' has already been undone.";
+														document.getElementById("undoInformationDiv").style.visibility="visible";
+														document.getElementById("undoInformationDiv").style.display="block";
+												  </script>
+									   <td>
+									<tr>
+								</table>
+						<%}%>
+
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+
+<%}%> <!-- Assume match preview condition Fix for Issue#111-->
 <%}%> <!-- End session check if condition -->
 <script>
   var undoPreviewButton = document.getElementById("undoPreviewButton<%=divId%>");

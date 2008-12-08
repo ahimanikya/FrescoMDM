@@ -194,6 +194,47 @@ var thisIdx=0;
 <script>
   ajaxURL('/<%=URI%>/ajaxservices/AMdetails.jsf?random=rand'+'&'+'AMID=<%=amid%>','outputdiv','')
 </script>
+<!-- Fix for Issue #111 Starts -->
+		       <div id="undoInformationDiv" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
+             <form id="undoForm" name="activeMerge" >
+                 <table cellspacing="0" cellpadding="0" border="0">
+ 					 <tr>
+					     <th title="<%=bundle.getString("move")%>">&nbsp;<h:outputText value="#{msgs.popup_information_text}"/></th> 
+					     <th>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('mergeConfirmationDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+						</th>
+					  </tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr>
+					     <td colspan="2" ><b><div id="undoInformationDivMessage"></div></b></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2" border="2"  align="right" valign="top" >
+                            <table align="center">
+						      <tr>
+							  <td>&nbsp;</td>
+							  <td>
+                              <a title="<h:outputText value="#{msgs.source_inpatient2_text}"/>"
+                                href="javascript:void(0)"
+                                onclick="window.location = '<%=URL%>' ;"
+  							    class="button" >
+                                <span><h:outputText value="#{msgs.source_inpatient1_text}"/></span>
+                                </a>
+							  </td>
+							 </tr>
+							 </table>
+					     </td>
+                     </tr> 
+                 </table>
+             </form>
+         </div>
+<script type="text/javascript">
+     makeDraggable("undoInformationDiv");
+  	
+</script>
+<!-- Fix for Issue #111 Ends-->
         </body>
     </html>
 </f:view>

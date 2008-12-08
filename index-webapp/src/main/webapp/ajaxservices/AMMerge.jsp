@@ -58,6 +58,7 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+<%@ page import="javax.faces.application.FacesMessage" %>
 
 <f:view>
 <%
@@ -98,7 +99,9 @@ boolean isSessionActive = true;
         AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
 		String newEuid = assumeMatchHandler.undoMatch(undoAssumedMatchId);
 		String mainEUIDAssume= request.getParameter("mainEUID");
+		Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 %>
+<%if(newEuid != null ) {%>
 											       <table border="0" cellpadding="0" cellspacing="0" >
 											         <tr><th title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
 													 <th>
@@ -134,8 +137,46 @@ boolean isSessionActive = true;
 											           </td>
 											         </tr>
 											        </table>
+<%}else {%>
+		 <% boolean alreadyUndoMatch = false;%>
+      
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+								<%if(facesMessage.getSummary().indexOf("MDM-MI-MSC522") != -1 || facesMessage.getSummary().indexOf("MDM-MI-MSC522") != -1) {
+									alreadyUndoMatch = true;
+								}			                    
+								%>
+                                								
+							    <%if(!alreadyUndoMatch){%>
+ 				                  <li><%= facesMessage.getSummary() %></li>
+ 						      <% } %>
+ 						 <% } %>
 
-<%}%> <!-- End session check if condition -->
+						<%if(alreadyUndoMatch){%>
+							  <table>
+									<tr>
+										<td><!-- Modified  on 12-08-2008 as fix of Issue# 111 -->
+												  <script>
+														document.getElementById("undoInformationDivMessage").innerHTML = " <%=bundle.getString("am_undone_text_1")%> '<%=undoAssumedMatchId%>' <%=bundle.getString("am_undone_text_2")%>";
+														document.getElementById("undoInformationDiv").style.visibility="visible";
+														document.getElementById("undoInformationDiv").style.display="block";
+												  </script>
+									   <td>
+									<tr>
+								</table>
+						<%}%>
+
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+<%}%>
+ <%}%> <!-- End session check if condition -->
 
 
 
