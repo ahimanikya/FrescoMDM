@@ -1268,7 +1268,7 @@ public class MDConfigManager {
         throws ConfigException {
         JndiResource jndiResource = null;
         if (id == null) {
-            throw new ConfigException("Invalid JndiResource id:null");
+            throw new ConfigException(mLocalizer.t("CFG557: Invalid JndiResource id:null"));
         }
         JNDIResources jndiResources = mDWMInstance.getJndiResources();
         List<RelationshipJDNIResources> rJndiResources = jndiResources.getJDNIResources();
@@ -1290,7 +1290,7 @@ public class MDConfigManager {
             }
         }
         if (jndiResource == null) {
-            throw new ConfigException("Failed to find JndiResource for the given id: " + id);
+            throw new ConfigException(mLocalizer.t("CFG558: Failed to find JndiResource for the given id:{0}", id));
         }
         return jndiResource;
     }
