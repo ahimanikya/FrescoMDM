@@ -38,7 +38,9 @@ function exceptionHandler(message) {
   }
   
   function updateRelationshipDefs(data) {
+
       dwr.util.removeAllOptions("select_relationshipDefs");
+      if(data == null) return;
       dwr.util.addOptions("select_relationshipDefs", data, "name");
       //dwr.util.setValue("select_relationshipDefs", data[0].name); 
       var selectSourceDomain = document.getElementById("select_sourceDomain").value;
@@ -205,10 +207,12 @@ function populateSelectRelationshipDefAttributes(data){
   
   function loadSelectSourceSearchTypes(id)   {
       var sourceDomain = document.getElementById(id).value;
+      alert("getting domain search criteria for " + sourceDomain);
       RelationshipDefHandler.getDomainSearchCriteria(sourceDomain, selectSourceSearchTypes);
   }
   
 function selectSourceSearchTypes(data)   {
+    alert("got search types " + data);
    var searchTypes = new Array();
    var j = 0;
    var fgroups = new Array();
