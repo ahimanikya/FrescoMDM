@@ -1,8 +1,28 @@
+function testResults(){
+    
+    DomainScreenHandler.getSearchResultFields("Company",testResultsBack);
+}
+
+function testResultsBack(data){
+    alert(data);
+    for (var fieldGrp in data)  {
+        for (var fields in data[fieldGrp])  {
+          alert("Search Results"+fieldGrp + " : "+data[fieldGrp][fields].name);
+        }
+     }
+    
+}
+
 function test() {
     DomainScreenHandler.getSummaryFields("Person",testCB);
 }
 function testCB(data) {
     alert(data);
+     for (var fieldGrp in data)  {
+        for (var fields in data[fieldGrp])  {
+          alert(fieldGrp + " : "+data[fieldGrp][fields].name);
+        }
+     }
 }
 // Manage screen related scripts
 

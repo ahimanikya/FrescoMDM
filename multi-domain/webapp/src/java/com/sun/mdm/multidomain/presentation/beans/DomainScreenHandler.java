@@ -25,8 +25,10 @@ package com.sun.mdm.multidomain.presentation.beans;
 import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
-import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager; 
 import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
+import com.sun.mdm.multidomain.services.configuration.SearchResultsSummaryConfig;
+import com.sun.mdm.multidomain.services.configuration.SearchResultsConfig;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -55,18 +57,60 @@ public class DomainScreenHandler {
     }
     
     // Return list of fields for Summary, for the specified domain parameter
-    public List<String> getSummaryFields (String domain) throws ServiceException ,Exception{
-        System.out.println("getting summary fields");
-        return null;
+    public HashMap getSummaryFields(String domain) throws ServiceException ,Exception     {
+        System.out.println("Getteing records summary fields for domain " + domain);
+        HashMap recordSummaryGroup = new HashMap();
+        DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
+        
+        //Get the Search Records Summary for the domain
+        ArrayList recordSummaryConfigs = domainScreenConfig.getSearchResultsSummaryConfigs();
+        
+        // For Stub demo
+        //Field Config Group Array
+         
+        ArrayList recordSummaryFields = new ArrayList();        
+        FieldConfig fieldConfig1 = new FieldConfig(null,null,"Person.FirstName","Person.FirstName","textbox",10);
+        recordSummaryFields.add(fieldConfig1);
+        
+        FieldConfig fieldConfig2 = new FieldConfig(null,null,"Person.LastName","Person.LastName","textbox",10);
+        recordSummaryFields.add(fieldConfig2);
+        
+        FieldConfig fieldConfig3 = new FieldConfig(null,null,"Person.Gender","Person.Gender","textbox",10);
+        recordSummaryFields.add(fieldConfig3);
+        
+        recordSummaryGroup.put("1",recordSummaryFields);
+        return recordSummaryGroup;
     }
 
     
     // Return list of fields for Search result, for the specified domain parameter
-    public List<String> getSearchResultFields (String domain) throws ServiceException ,Exception{
+    public HashMap getSearchResultFields (String domain) throws ServiceException ,Exception{
         System.out.println("getting search result fields");
-        return null;
+        
+        HashMap searchResultFieldGroup = new HashMap();
+        DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
+        //Get the Search Results for the domain
+        ArrayList searchResultsConfigs = domainScreenConfig.getSearchResultsConfigs();
+        
+        for (int j = 0; j < searchResultsConfigs.size(); j++)   { 
+            System.out.println("-------searchScreenConfigs.size()------" +searchResultsConfigs.size());
+            SearchResultsConfig searchResultsConfig = (SearchResultsConfig)searchResultsConfigs.get(j);
+                  ArrayList fieldGroupArray = searchResultsConfig.getFieldGroupConfigs();
+                  for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
+                      System.out.println("-------fieldGroupArray.size()------" +fieldGroupArray.size());
+                      FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
+                      ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();                 
+                      ArrayList searchResultsFields = new ArrayList();        
+                      for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
+                          System.out.println("-------fieldconfigsGroup.size()------" +fieldconfigsGroup.size());
+                            FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
+                            searchResultsFields.add(fieldConfig);
+                      }
+                      searchResultFieldGroup.put(k,searchResultsFields);
+              }             
+           }
+        return searchResultFieldGroup;
     }
-  
 }
 
 

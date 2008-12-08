@@ -52,7 +52,7 @@
 <div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:800px;">
             
     <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
-        Under construction!<input type="button" onclick="test();" value="Test">
+        Under construction!<input type="button" onclick="test();" value="Test"> <input type="button" onclick="testResults();" value="Test Results">
     </div>
     <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="Relationships" 
             href="m_byrelationship_main.htm" parseOnLoad="true" onLoad="showByRelSelectDialog();">
