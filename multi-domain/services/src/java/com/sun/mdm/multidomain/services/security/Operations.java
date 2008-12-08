@@ -93,7 +93,7 @@ public class Operations {
      
     public static final String READ = "read"; 
     public static final String WRITE = "write";
-    public static final String OPERATIONS_META = "/operations.xml";
+    public static final String OPERATIONS_META = "com/sun/mdm/multidomain/services/security/operations.xml";
     private static List<String> operationsByName = new ArrayList<String>();
     private static Map<String, List<ACL.Entry>> methodsByOperation = new HashMap<String, List<ACL.Entry>>(); 
     private static boolean parsed = false;
@@ -111,7 +111,7 @@ public class Operations {
     public static void parser() 
         throws ConfigException { 
         if (!parsed) {
-            InputStream  operationsDef = Operations.class.getResourceAsStream(OPERATIONS_META); 
+            InputStream  operationsDef = Operations.class.getClassLoader().getResourceAsStream(OPERATIONS_META); 
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 // docFactory.setValidating(true);
