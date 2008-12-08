@@ -1051,7 +1051,8 @@ private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
                     public void windowClosed(java.awt.event.WindowEvent e) {
                         if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
                             java.util.Date date = dialog.getDate();
-                            java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("MM/dd/yyyy");
+                            String df = mEditorMainApp.getMultiDomainModel(false).getDateFormat();
+                            java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat(df);
                             if (from) {
                                 jTextEffectiveFrom.setText(formatter.format(date));
                             } else {
