@@ -94,7 +94,12 @@
                                     <fileset dir="${basedir}/../core/target">
                                         <include name="multidomain-core.jar"></include>                  
                                     </fileset>
-                                </copy>  
+                                </copy>      
+                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain/repository/templates/security">
+                	<fileset dir="${basedir}/../services/src/resources">
+                  	<include name="mdwm-security.xml"></include>
+                  </fileset>
+                </copy>                
 								<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain/repository/schema">
 									<fileset dir="${basedir}/../core/src/resources/schema">
 										<include name="**/*.xsd"></include>
