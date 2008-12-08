@@ -24,7 +24,7 @@
            <div dojoType="dijit.GenericTitlePane"  title="<f:message key="search_criteria_for_relationhship" /> <f:message key="attributes_text" />" class="MainBox" jsId="pane1">
 
             <div class="Content">
-               <table border="0">
+               <table border="0" width="100%">
                    <tr>
                        <td>
                           <div class="RelationshipAttributes" id="select_Relationship_CustomAtrributes" style="display:none;">

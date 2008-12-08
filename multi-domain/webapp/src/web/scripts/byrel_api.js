@@ -38,9 +38,8 @@ function exceptionHandler(message) {
   }
   
   function updateRelationshipDefs(data) {
-
       dwr.util.removeAllOptions("select_relationshipDefs");
-      if(data == null) return;
+      if(data == null || data == "") return;
       dwr.util.addOptions("select_relationshipDefs", data, "name");
       //dwr.util.setValue("select_relationshipDefs", data[0].name); 
       var selectSourceDomain = document.getElementById("select_sourceDomain").value;
@@ -71,6 +70,8 @@ function populateSelectRelationshipDefAttributes(data){
            var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
            customHeading.cells[0].innerHTML="Custom Attributes";
+           customHeading.cells[0].colSpan = "5";
+           
            var j=0;
            for(var i=0;i < data.extendedAttributes.length;i++){
              var customContent = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
@@ -207,12 +208,10 @@ function populateSelectRelationshipDefAttributes(data){
   
   function loadSelectSourceSearchTypes(id)   {
       var sourceDomain = document.getElementById(id).value;
-      alert("getting domain search criteria for " + sourceDomain);
       RelationshipDefHandler.getDomainSearchCriteria(sourceDomain, selectSourceSearchTypes);
   }
   
 function selectSourceSearchTypes(data)   {
-    alert("got search types " + data);
    var searchTypes = new Array();
    var j = 0;
    var fgroups = new Array();
@@ -348,7 +347,7 @@ function searchRelationships() {
 
 }
 function searchResultsCallback(data) {
-    alert("search results " + data);
+    //alert("search results " + data);
     /*for(i=0; i<data.length; i++) {
         alert(data[i].id + " : " + data[i].sourceEUID + " : "  + data[i].sourceHighLight);
     }*/
