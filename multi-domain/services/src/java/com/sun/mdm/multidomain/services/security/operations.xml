@@ -46,22 +46,53 @@
   </operation>
   	
   <operation name="Relationship_History_Read">
+ 		<method name="Domain_getDomains" action= "read" />
   </operation>
   	
  	<!-- Hierarchy --> 	
  	<operation name="HierarchyDef_ReadWrite">
+ 		<method name="Domain_getDomains" action= "read" />
+		<method name="HierarchyDef_getHierarchyDefs" action="read" />
+		<method name="HierarchyDef_getHierarchyDefByName" action="read" />
+		<method name="HierarchyDef_addHierarchyDef" action="write" />
+		<method name="HierarchyDef_updateHierarchyDef" action="write" />
+		<method name="HierarchyDef_deleteHierarchyDef" action="write" />
+		<method name="HierarchyDef_getHierarchyDefCount" action="read" />		
   </operation>
   
  	<operation name="HierarchyDef_Read">
+ 		<method name="Domain_getDomains" action= "read" />
+		<method name="HierarchyDef_getHierarchyDefs" action="read" />
+		<method name="HierarchyDef_getHierarchyDefByName" action="read" />
+		<method name="HierarchyDef_getHierarchyDefCount" action="read" />		 	
   </operation>
   	
  	<operation name="Hierarchy_ReadWrite">
+ 		<method name="Domain_getDomains" action= "read" />
+		<method name="Hierarchy_getHierarchyNodeCount" action="read" />
+		<method name="Hierarchy_addHierarchyNode" action="write" />
+		<method name="Hierarchy_addHierarchyNodes" action="write" />
+		<method name="Hierarchy_deleteHierarchyNode" action="write" />
+		<method name="Hierarchy_updateHierarchyNode" action="write" />		 	
+		<method name="Hierarchy_getHierarchyNode" action="read" />
+		<method name="Hierarchy_getHierarchyNodeChildren" action="read" />		 			
+		<method name="Hierarchy_moveHierarchyNodes" action="write" />		 			
+		<method name="Hierarchy_searchHierarchyNodes" action="read" />		 			
+		<method name="Hierarchy_getHierarchyTree" action="read" />		 			
   </operation>
   
   <operation name="Hierarchy_Read">
+ 		<method name="Domain_getDomains" action= "read" />
+ 		<method name="Domain_getDomains" action= "read" />
+		<method name="Hierarchy_getHierarchyNodeCount" action="read" />
+		<method name="Hierarchy_getHierarchyNode" action="read" />
+		<method name="Hierarchy_getHierarchyNodeChildren" action="read" />		 			
+		<method name="Hierarchy_searchHierarchyNodes" action="read" />		 			
+		<method name="Hierarchy_getHierarchyTree" action="read" />		 			  
   </operation>
   	
   <operation name="Hierarchy_History_Read">
+ 		<method name="Domain_getDomains" action= "read" />  
   </operation>
     	
   <!-- Group -->
