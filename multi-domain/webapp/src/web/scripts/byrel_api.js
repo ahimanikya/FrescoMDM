@@ -511,7 +511,22 @@ function populateRelationshipDetails_Callback (data) {
     alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
     alert("relationship attributes " + data.relationshipRecord.attributes.length);
 }
-
+function deleteRelationships() {
+    var relationships = document.getElementsByName("relationship_id")
+    
+    if(relationships == null || relationships.length <=0 ) return;
+    for(i=0; i<relationships.length; i++) {
+        if(relationships[i].checked) {
+            alert("deleting relationship with id: " + relationships[i].value );
+            // Make DWR call to delete relationship
+            RelationshipHandler.deleteRelationship({id: relationships[i].value}, deleteRelationshipCB);
+        }
+    }
+    
+}
+function deleteRelationshipCB (data){ 
+    //alert("Deleted " + data);
+}
 /*
  * Scripts for Main (listing, details) screen <END>
  */
