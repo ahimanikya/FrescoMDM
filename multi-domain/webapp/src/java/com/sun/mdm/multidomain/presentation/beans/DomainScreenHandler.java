@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
-import com.sun.mdm.multidomain.services.control.RelationshipManager;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
 import java.util.HashMap;
@@ -45,15 +44,12 @@ import java.util.HashMap;
  * @author cye,Narahari
  */
 public class DomainScreenHandler {
-
-    private RelationshipManager relationshipManager;
     
     /**
      * Create an instance of RelationshipDefHandler.
      */
     public DomainScreenHandler() 
         throws ServiceException { 
-        relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
     }
     
     // Return list of fields for Summary, for the specified domain parameter

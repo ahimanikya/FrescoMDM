@@ -49,9 +49,18 @@ public class RelationshipDefHandler {
     /**
      * Create an instance of RelationshipDefHandler.
      */
-    public RelationshipDefHandler() 
-        throws ServiceException { 
-        relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();
+    public RelationshipDefHandler() {
+    }
+    
+    /**
+     * Initialize RelationshipManager
+     * @throws ServiceException Thrown if an error occurs during processing. 
+     */
+    private void initialize() 
+        throws ServiceException {
+        if (relationshipManager == null) {
+            relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager(); 
+        }
     }
     
     /**
@@ -65,6 +74,7 @@ public class RelationshipDefHandler {
         throws ServiceException {                
         List<RelationshipDefExt> types = null;
         try {
+            initialize();
             types = relationshipManager.getRelationshipDefs(sourceDomain, targetDomain);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -87,6 +97,7 @@ public class RelationshipDefHandler {
         throws ServiceException {                
         RelationshipDefExt type = null;
         try {
+            initialize();
             type = relationshipManager.getRelationshipDefByName(name, sourceDomain, targetDomain);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -104,6 +115,7 @@ public class RelationshipDefHandler {
         throws ServiceException {                
         RelationshipDefExt type = null;
         try {
+            initialize();
             type = relationshipManager.getRelationshipDefById(relationshipDefId);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -115,6 +127,7 @@ public class RelationshipDefHandler {
         throws ServiceException {
         List<DomainRelationshipDefsObject> relationshipDefs = null;
         try {
+            initialize();
             relationshipDefs = relationshipManager.getDomainRelationshipDefsObjects(domain);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -132,6 +145,7 @@ public class RelationshipDefHandler {
         throws ServiceException {                
         List<RelationshipDefExt> types = null;
         try {
+            initialize();
             types = relationshipManager.getRelationshipDefs(domain);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -152,6 +166,7 @@ public class RelationshipDefHandler {
         throws ServiceException {        
         String RelationshipDefId = null;
         try {
+            initialize();
             RelationshipDefId = relationshipManager.addRelationshipDef(rDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -167,6 +182,7 @@ public class RelationshipDefHandler {
     public void updateRelationshipDef(RelationshipDefExt rDefExt) 
         throws ServiceException {        
         try {
+            initialize();
             relationshipManager.updateRelationshipDef(rDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -181,6 +197,7 @@ public class RelationshipDefHandler {
     public void deleteRelationshipDef(RelationshipDefExt rDefExt) 
         throws ServiceException {        
         try {
+            initialize();
             relationshipManager.deleteRelationshipDef(rDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -197,6 +214,7 @@ public class RelationshipDefHandler {
         throws ServiceException { 
         int count = 0;
         try {
+            initialize();
             count = relationshipManager.getRelationshipDefCount(domain);
         } catch(ServiceException svcex) {
             throw svcex;

@@ -46,9 +46,18 @@ public class HierarchyHandler {
     /**
      * Create an instance of HierarchyHandler.
      */    
-    public HierarchyHandler() 
-        throws ServiceException { 
-        hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager();
+    public HierarchyHandler() {
+    }
+    
+    /**
+     * Initialize HierarchyHandler.
+     * @throws ServiceException Thrown if an error occurs during processing. 
+     */
+    private void initialize() 
+        throws ServiceException {
+        if (hierarchyManager == null) {
+            hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager(); 
+        }
     }
     
     /**
@@ -61,6 +70,7 @@ public class HierarchyHandler {
         throws ServiceException {
         int count = 0;
         try {
+            initialize();
             count = hierarchyManager.getHierarchyNodeCount(hDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -78,6 +88,7 @@ public class HierarchyHandler {
         throws ServiceException {
         String hNodeId = null;
         try {
+            initialize();
             hNodeId = hierarchyManager.addHierarchyNode(hNodeRecord);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -96,6 +107,7 @@ public class HierarchyHandler {
         throws ServiceException {
         List<String> ids = new ArrayList<String>();
         try {
+            initialize();
             ids = hierarchyManager.addHierarchyNodes(parentId, hNodeRecords);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -111,6 +123,7 @@ public class HierarchyHandler {
     public void deleteHierarchyNode(int hierarchyNodeId) 
         throws ServiceException {
         try {
+            initialize();
             hierarchyManager.deleteHierarchyNode(hierarchyNodeId);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -125,6 +138,7 @@ public class HierarchyHandler {
     public void updateHierarchyNode(HierarchyNodeRecord hNodeRecord) 
         throws ServiceException {
         try {
+            initialize();
             hierarchyManager.updateHierarchyNode(hNodeRecord);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -141,6 +155,7 @@ public class HierarchyHandler {
         throws ServiceException {
         HierarchyNodeRecord hNodeRecord = new HierarchyNodeRecord();
         try {
+            initialize();
             hNodeRecord = hierarchyManager.getHierarchyNode(hierarchyNodeId);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -158,6 +173,7 @@ public class HierarchyHandler {
         throws ServiceException {
         List<HierarchyNodeRecord> children = new ArrayList<HierarchyNodeRecord>();
         try {
+            initialize();
             children = hierarchyManager.getHierarchyNodeChildren(hierarchyNodeId);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -174,6 +190,7 @@ public class HierarchyHandler {
     public void moveHierarchyNodes(List<Integer> nodeIds, int newParentNodeId)
         throws ServiceException {     
         try {
+            initialize();
             hierarchyManager.moveHierarchyNodes(nodeIds, newParentNodeId);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -191,6 +208,7 @@ public class HierarchyHandler {
         throws ServiceException {
         List<HierarchyNodeView> hNodeViews = new ArrayList<HierarchyNodeView>();
         try {
+            initialize();
             hNodeViews = hierarchyManager.searchHierarchyNodes(dSearch, hNodeSearch);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -209,6 +227,7 @@ public class HierarchyHandler {
         throws ServiceException {
         HierarchyTreeView hTreeView = new HierarchyTreeView();
         try {
+            initialize();
             hTreeView = hierarchyManager.getHierarchyTree(nodeId, EUID);
         } catch(ServiceException svcex) {
             throw svcex;

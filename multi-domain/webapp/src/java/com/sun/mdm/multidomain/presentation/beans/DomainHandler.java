@@ -41,11 +41,20 @@ public class DomainHandler {
     /**
      * Create an instance of DomainHandler.
      */
-    public DomainHandler()
-        throws ServiceException { 
-        metaDataManager = ServiceManagerFactory.Instance().createMetaDataManager();  
+    public DomainHandler() {  
     }
-        
+    
+    /**
+     * Initialize MetaDataManager.
+     * @throws ServiceException Thrown if an error occurs during processing. 
+     */
+    private void initialize() 
+        throws ServiceException {
+        if (metaDataManager == null) {
+            metaDataManager = ServiceManagerFactory.Instance().createMetaDataManager(); 
+        }
+    }
+    
     /**
      * Get a list of domains.
      * @return List<Domain> List of domain. 
@@ -55,6 +64,7 @@ public class DomainHandler {
         throws ServiceException {        
         List<Domain> domains = null;
         try {
+            initialize();
             domains = metaDataManager.getDomains();
         } catch(ServiceException sex) {
            throw sex;

@@ -41,9 +41,18 @@ public class HierarchyDefHandler {
     /**
      * Create an instance of HierarchyTypeHandler.
      */
-    public HierarchyDefHandler() 
-        throws ServiceException { 
-        hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager();
+    public HierarchyDefHandler() {
+    }
+    
+    /**
+     * Initialize HierarchyHandler.
+     * @throws ServiceException Thrown if an error occurs during processing. 
+     */
+    private void initialize() 
+        throws ServiceException {
+        if (hierarchyManager == null) {
+            hierarchyManager = ServiceManagerFactory.Instance().createHierarchyManager(); 
+        }
     }
     
    /**
@@ -56,6 +65,7 @@ public class HierarchyDefHandler {
         throws ServiceException { 
         List<HierarchyDefExt> types = null;
         try {
+            initialize();
             types = hierarchyManager.getHierarchyDefs(domain);
         } catch(ServiceException sex) {
             throw sex;
@@ -76,6 +86,7 @@ public class HierarchyDefHandler {
         throws ServiceException {                
         HierarchyDefExt type = null;
         try {
+            initialize();
             type = hierarchyManager.getHierarchyDefByName(name, domain);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -93,6 +104,7 @@ public class HierarchyDefHandler {
         throws ServiceException {                
         HierarchyDefExt type = null;
         try {
+            initialize();
             type = hierarchyManager.getHierarchyDefById(hierarchyId);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -110,6 +122,7 @@ public class HierarchyDefHandler {
         throws ServiceException {        
         String HierarchyDefId = null;
         try {
+            initialize();
             HierarchyDefId = hierarchyManager.addHierarchyDef(hDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -125,6 +138,7 @@ public class HierarchyDefHandler {
     public void updateHierarchyDef(HierarchyDefExt hDefExt) 
         throws ServiceException {        
         try {
+            initialize();
             hierarchyManager.updateHierarchyDef(hDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -139,6 +153,7 @@ public class HierarchyDefHandler {
     public void deleteHierarchyDef(HierarchyDefExt hDefExt) 
         throws ServiceException {        
         try {
+            initialize();
             hierarchyManager.deleteHierarchyDef(hDefExt);
         } catch(ServiceException svcex) {
             throw svcex;
@@ -155,6 +170,7 @@ public class HierarchyDefHandler {
         throws ServiceException { 
         int count = 0;
         try {
+            initialize();
             count = hierarchyManager.getHierarchyDefCount(domain);
         } catch(ServiceException svcex) {
             throw svcex;

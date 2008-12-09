@@ -48,10 +48,19 @@ public class RelationshipHandler {
     /**
      * Create an instance of RelationshipHandler.
      */
-    public RelationshipHandler() 
-        throws ServiceException {  
-        relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager();        
+    public RelationshipHandler() {
     } 
+    
+    /**
+     * Initialize RelationshipManager
+     * @throws ServiceException Thrown if an error occurs during processing. 
+     */
+    private void initialize() 
+        throws ServiceException {
+        if (relationshipManager == null) {
+            relationshipManager = ServiceManagerFactory.Instance().createRelationshipManager(); 
+        }
+    }
     
     /**
      * Search relationships for the given domain and relationship search options and criteria.
@@ -65,6 +74,7 @@ public class RelationshipHandler {
                                                       DomainSearch targetDomainSearch, 
                                                       RelationshipSearch relationshipSearch)
         throws ServiceException { 
+        initialize();
         return relationshipManager.searchRelationships(sourceDomainSearch, 
                                                        targetDomainSearch, 
                                                        relationshipSearch);        
@@ -78,6 +88,7 @@ public class RelationshipHandler {
      */
     public DomainRelationshipsObject searchDomainRelationshipsByRecord(DomainSearch domainSearch)
         throws ServiceException {
+        initialize();
         return relationshipManager.searchRelationshipsByRecord(domainSearch);        
     }
 
@@ -88,7 +99,8 @@ public class RelationshipHandler {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public RelationshipComposite getRelationship(RelationshipView relationship)
-        throws ServiceException {   
+        throws ServiceException {  
+        initialize();
         return relationshipManager.getRelationship(relationship);
     }
     
@@ -100,7 +112,8 @@ public class RelationshipHandler {
      */
     public List<ObjectRecord> searchEnterprises(DomainSearch domainSearch)
         throws ServiceException {
-         return relationshipManager.searchEnterprises(domainSearch);    
+        initialize();
+        return relationshipManager.searchEnterprises(domainSearch);    
     }
     
     /**
@@ -111,6 +124,7 @@ public class RelationshipHandler {
      */
     public ObjectRecord getEnterprise(ObjectView object)
         throws ServiceException {
+        initialize();
         return relationshipManager.getEnterprise(object);
     }
     
@@ -121,7 +135,8 @@ public class RelationshipHandler {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public String addRelationship(RelationshipRecord relationship)
-        throws ServiceException {     
+        throws ServiceException {  
+        initialize();
         return  relationshipManager.addRelationship(relationship);
     }
     
@@ -132,6 +147,7 @@ public class RelationshipHandler {
      */
     public void deleteRelationship(RelationshipView relationship)
         throws ServiceException {
+        initialize();
         relationshipManager.deleteRelationship(relationship);
     }
     
@@ -142,6 +158,7 @@ public class RelationshipHandler {
      */
     public void updateRelationship(RelationshipRecord relationship)
         throws ServiceException {
+        initialize();
         relationshipManager.updateRelationship(relationship);
     }
 }
