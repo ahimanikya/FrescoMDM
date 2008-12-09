@@ -62,13 +62,19 @@
         </tr>
         <tr>
             <td>
-                <div class="RelationshipAttributes">
+                <div class="RelationshipAttributes" id="editPredefinedAttributesDiv" style="display:none;">
                     <table border="0">
                         <tr>
                             <td class="Heading" colspan="4">
                                 <f:message key="predefined_text" /> <f:message key="attributes_text" />
                             </td>
                         </tr>
+                        <tr>
+                            <td class="label" colspan="4">
+                                <table border="0" id="editPredefinedAttributesTable"></table>
+                            </td>
+                        </tr>
+                        <!--
                         <tr><td><img src="images/spacer.gif" height="4" width="1"></td></tr>
                         <tr>
                             <td class="label" valign="top">
@@ -101,6 +107,7 @@
                                 <br>mm/dd/yyyy
                             </td>
                         </tr>
+                        -->
 
                     </table>
                     
@@ -111,7 +118,7 @@
             <td align="right" width="20%">
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td><input type="button" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/></td>
+                        <td><input type="button" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/ onclick="updateRelationship();"></td>
                         <td class="button_spacing"></td>
                         <td><input type="button" title="<f:message key="revert_text" />" value="<f:message key="revert_text" />" /></td>
                     </tr>

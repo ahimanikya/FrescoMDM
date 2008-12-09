@@ -58,13 +58,18 @@
                    <tr>
                        <td>
                            <div class="RelationshipAttributes" id="select_Relationship_PredefinedAtrributes" style="display:none;">
-                                <table border="0" id="byrel_select_predefinedAttributes">
-                                <!--    <tr>
-                                        <td class="Heading" colspan="4">
+                                <table border="0" >
+                                   <tr>
+                                        <td class="Heading">
                                             <f:message key="predefined_text" /> <f:message key="attributes_text" />
                                         </td>
                                     </tr>
-                                    <tr><td><img src="images/spacer.gif" height="4" width="1"></td></tr>
+                                    <tr>
+                                        <td class="label">
+                                            <table border="0" id="byrel_select_predefinedAttributes"></table>
+                                        </td>
+                                    </tr>
+                                <!--     <tr><td><img src="images/spacer.gif" height="4" width="1"></td></tr>
                                     <tr>
                                         <td class="label" valign="top">
                                             &nbsp;&nbsp;<f:message key="effective_text" /><f:message key="colon_symbol" />

@@ -67,7 +67,7 @@ function populateSelectRelationshipDefAttributes(data){
     dwr.util.removeAllRows("byrel_select_customAttributes");
     dwr.util.removeAllRows("byrel_select_predefinedAttributes");
     if(data.extendedAttributes.length>0 ){
-           createCustomAttributesSection ("byrel_select_customAttributes", data.extendedAttributes, "select");
+           createCustomAttributesSection ("byrel_select_customAttributes", data.extendedAttributes, "select_custom");
            /* var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
            customHeading.cells[0].innerHTML="Custom Attributes";
@@ -93,6 +93,15 @@ function populateSelectRelationshipDefAttributes(data){
            document.getElementById("select_Relationship_CustomAtrributes").style.visibility="hidden"
            document.getElementById("select_Relationship_CustomAtrributes").style.display="none";
        }
+       if(startDate==true || endDate==true || purgeDate == true ){ 
+          createPredefinedAttributesSection ("byrel_select_predefinedAttributes", data, "select_predefined");
+          document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="visible"
+          document.getElementById("select_Relationship_PredefinedAtrributes").style.display="";
+      } else{
+          document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="hidden"
+          document.getElementById("select_Relationship_PredefinedAtrributes").style.display="none";
+      }
+      /*
     if(startDate==true || endDate==true || startDate == true ){ // condition for Predefined Attributes
         var FirstRow = document.getElementById('byrel_select_predefinedAttributes').insertRow(PredefinedrowCount ++);
         FirstRow.insertCell(0);
@@ -205,6 +214,7 @@ function populateSelectRelationshipDefAttributes(data){
         }
         Purge_date = new dijit.form.DateTextBox(purge_date_Props, Purge_date);
     }
+    */
 }
   
   function loadSelectSourceSearchTypes(id)   {
@@ -443,7 +453,7 @@ function populateRelationshipDetails(relationshipId, indexNum) {
     var relationshipView = {name:relationshipDef, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
     RelationshipHandler.getRelationship (relationshipView, populateRelationshipDetails_Callback);
 }
-
+var cachedRelationshipRecordDetails ;
 function populateRelationshipDetails_Callback (data) {
     var summaryFieldCount = 0;
     //alert("Source summary fields: " + data.sourceRecord.name + " : " + summaryFields[data.sourceRecord.name]); 
@@ -452,6 +462,8 @@ function populateRelationshipDetails_Callback (data) {
     summaryFields[data.sourceRecord.name].push("FirstName");
     summaryFields[data.targetRecord.name].push("FirstName");
     
+    // Cache the relationship record details for further use.
+    cachedRelationshipRecordDetails = data;
     var fieldName, fieldValue;
      var recordFieldRow,isSummaryField;
     // Populate source record details
@@ -524,14 +536,25 @@ function populateRelationshipDetails_Callback (data) {
     var customAttributes = relationshipDef.extendedAttributes;
     var recordCustomAttributes = data.relationshipRecord.attributes;
     
-    
     if(customAttributes != null && customAttributes.length > 0) {
-        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit");
-        populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit");
+        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom");
+        populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
         document.getElementById("editCustomAttributesDiv").style.display = "";
     } else {
         document.getElementById("editCustomAttributesDiv").style.display = "none";
     }
+    //data.relationshipRecord.endDate = "12/20/2008";
+    //data.relationshipRecord.purgeDate = "12/30/2008";
+    if(startDate==true || endDate==true || purgeDate == true ){ 
+        createPredefinedAttributesSection ("editPredefinedAttributesTable", relationshipDef,"edit_predefined");
+        populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
+        document.getElementById("editPredefinedAttributesDiv").style.visibility="visible"
+        document.getElementById("editPredefinedAttributesDiv").style.display="";
+    } else{
+        document.getElementById("editPredefinedAttributesDiv").style.visibility="hidden"
+        document.getElementById("editPredefinedAttributesDiv").style.display="none";
+    }
+    
     //alert(document.getElementById("edit_salary"));
     return;
 }
@@ -755,23 +778,24 @@ function addTargeSearchResults(data) {
 }
 
 function ByRelAddRelationship(){
-    var startDateField = document.getElementById('predefinedStartDate');
-    var endDateField = document.getElementById('predefinedEndDate');
-    var purgeDateField = document.getElementById('predefinedPurgeDate');
+    
+    var startDateField = document.getElementById('add_predefined_startDate');
+    var endDateField = document.getElementById('add_predefined_endDate');
+    var purgeDateField = document.getElementById('add_predefined_purgeDate');
     var startDate,endDate,purgeDate;
     if(startDateField != null)
      {
-           startDate =  document.getElementById('predefinedStartDate').value
+           startDate =  document.getElementById('add_predefined_startDate').value
      }
      if(endDateField != null)
      {
-           endDate =  document.getElementById('predefinedEndDate').value;
+           endDate =  document.getElementById('add_predefined_endDate').value;
      }
      if(purgeDateField != null)
      {
-           purgeDate =  document.getElementById('predefinedPurgeDate').value;
+           purgeDate =  document.getElementById('add_predefined_purgeDate').value;
      }
-    
+    alert(startDate);
    var SourceDomain = document.getElementById("select_sourceDomain").value;
    var TargetDomain = document.getElementById("select_targetDomain").value;
    var RelationshipDefName = document.getElementById("select_relationshipDefs").value;
@@ -781,7 +805,7 @@ function ByRelAddRelationship(){
     for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
       var attributeName = relationshipDef.extendedAttributes[cc].name;
       //alert("attributeName---"+attributeName);
-      var attributeValue =  document.getElementById("add_" + relationshipDef.extendedAttributes[cc].name).value;
+      var attributeValue =  document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name).value;
       //alert("attributeValue---"+attributeValue);
       relationshipCustomAttributes.push( {attributeName : attributeValue} );
      }
@@ -823,6 +847,22 @@ function ByRelAddRelationship(){
 function addRelationshipCB(data) {
     alert("New relationship record added, id is : " + data);
 }
+
+
+function updateRelationship () {
+    var sourceDomain = cachedRelationshipRecordDetails.sourceRecord.name;
+    var sourceEUID = cachedRelationshipRecordDetails.sourceRecord.EUID;
+    var targetDomain = cachedRelationshipRecordDetails.targetRecord.name;
+    var targetEUID = cachedRelationshipRecordDetails.sourceRecord.name;
+    alert("source EUID " + sourceEUID);
+    // Get attributes. Predefined & Custom from edit screen
+    
+    // Make DWR API Call to updateRelationship
+    
+
+}
+
+
 /*
  * Scripts for Add Relationship screen <END>
  */
