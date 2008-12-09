@@ -28,13 +28,18 @@
                    <tr>
                        <td>
                           <div class="RelationshipAttributes" id="select_Relationship_CustomAtrributes" style="display:none;">
-                            <table border="0" id="byrel_select_customAttributes">
-                            <!--    <tr>
+                            <table border="0" >
+                               <tr>
                                     <td class="Heading" colspan="5">
                                         <f:message key="custom_text" /> <f:message key="attributes_text" />
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="Heading" colspan="5">
+                                        <table border="0" id="byrel_select_customAttributes"></table>
+                                    </td>
+                                </tr>
+                                 <!--<tr>
                                     <td class="label">
                                         &nbsp;&nbsp;<f:message key="number_visit_text" /><f:message key="colon_symbol" />
                                     </td>

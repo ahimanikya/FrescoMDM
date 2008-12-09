@@ -67,7 +67,8 @@ function populateSelectRelationshipDefAttributes(data){
     dwr.util.removeAllRows("byrel_select_customAttributes");
     dwr.util.removeAllRows("byrel_select_predefinedAttributes");
     if(data.extendedAttributes.length>0 ){
-           var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
+           createCustomAttributesSection ("byrel_select_customAttributes", data.extendedAttributes, "select");
+           /* var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
            customHeading.cells[0].innerHTML="Custom Attributes";
            customHeading.cells[0].colSpan = "5";
@@ -83,7 +84,7 @@ function populateSelectRelationshipDefAttributes(data){
              field.size="5";
              field.style.width="100px";
              customContent.cells[1].appendChild(field);
-           }
+           }*/
            document.getElementById("select_Relationship_CustomAtrributes").style.visibility="visible"
            document.getElementById("select_Relationship_CustomAtrributes").style.display="block";
        }
@@ -515,11 +516,24 @@ function populateRelationshipDetails_Callback (data) {
         }
     }
     // Populate relationship attributes.
-    var relationshipDef = cachedRelationshipDefs["worksfor"];
-    alert(data.relationshipRecord.attributes[0].name + " : " + relationshipDef.extendedAttributes[0].name);
+    var relationshipDef = cachedRelationshipDefs[data.relationshipRecord.name];
+    
+    var startDate = getBoolean(relationshipDef.startDate);
+    var endDate = getBoolean(relationshipDef.endDate);
+    var purgeDate = getBoolean(relationshipDef.purgeDate);
+    var customAttributes = relationshipDef.extendedAttributes;
+    var recordCustomAttributes = data.relationshipRecord.attributes;
+    
+    
+    if(customAttributes != null && customAttributes.length > 0) {
+        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit");
+        populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit");
+        document.getElementById("editCustomAttributesDiv").style.display = "";
+    } else {
+        document.getElementById("editCustomAttributesDiv").style.display = "none";
+    }
+    //alert(document.getElementById("edit_salary"));
     return;
-    //alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
-    alert("relationship attributes " + data.relationshipRecord.attributes.length);
 }
 function deleteRelationships() {
     var relationships = document.getElementsByName("relationship_id")

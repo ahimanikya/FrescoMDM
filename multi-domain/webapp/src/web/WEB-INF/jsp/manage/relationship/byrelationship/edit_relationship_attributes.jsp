@@ -31,13 +31,21 @@
       <table border="0" width="100%">
         <tr>
             <td>
-                <div class="RelationshipAttributes">
+                <div class="RelationshipAttributes" id="editCustomAttributesDiv" style="display:none;">
                     <table border="0">
                         <tr>
                             <td class="Heading" colspan="2">
                                 <f:message key="custom_text" /> <f:message key="attributes_text" />
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <table border="0" id="editCustomAttributesTable" cellspacing="3">
+                                    
+                                </table>
+                            </td>
+                        </tr>
+                        <!--
                         <tr>
                             <td class="label">
                                 &nbsp;&nbsp;<f:message key="number_visit_text" /><f:message key="colon_symbol" />
@@ -46,7 +54,7 @@
                             <td>
                                 <input name="Number Visits" title="<f:message key="number_visit_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
                             </td>
-                        </tr>
+                        </tr>-->
                     </table>
                     
                 </div>

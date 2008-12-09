@@ -99,9 +99,11 @@ function populateAddRelationshipDefAttributes(data){
     var PredefinedrowCount = 0;  
    // document.getElementById('byrel_add_customAttributes').innerHTML="";
    // document.getElementById('byrel_add_predefinedAttributes').innerHTML="";
-    dwr.util.removeAllRows("byrel_add_customAttributes");
+    //dwr.util.removeAllRows("byrel_add_customAttributes");
     dwr.util.removeAllRows("byrel_add_predefinedAttributes");
        if(data.extendedAttributes.length>0 ){
+           createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add");
+           /*
            var customHeading = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
            customHeading.cells[0].innerHTML="Custom Attributes";
@@ -117,6 +119,9 @@ function populateAddRelationshipDefAttributes(data){
              field.style.width="100px";
              customContent.cells[1].appendChild(field);
            }
+        */
+           document.getElementById("add_Relationship_CustomAtrributes").style.visibility="visible"
+           document.getElementById("add_Relationship_CustomAtrributes").style.display="";
        }
        else{
            
@@ -253,4 +258,60 @@ function selectRecordRow (objSelRow) {
         else
             tempTBody.rows[i].style.backgroundColor='#FFFFFF'; // change to CSS class later
     }
+}
+
+// Function to create the UI for custom attributes section.
+// Can be used for Add, select & edit relationship attributes screens   
+function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
+   // alert("CREATING custom attributes section for: " + tableId);
+     var editCustomAttrFuncs = [
+      function(data) { return data; },
+      function(data) { return data; }
+    ];
+    dwr.util.removeAllRows(tableId);
+    if(attributesArray != null && attributesArray.length > 0) {
+      dwr.util.addRows(tableId, attributesArray, editCustomAttrFuncs, {
+          rowCreator:function(options) {
+            var row = document.createElement("tr");
+            return row;
+          },
+          cellCreator:function(options) {
+            var td = document.createElement("td");
+            var tempData = options.data;
+            if(options.cellNum == 1) {
+                var field = document.createElement("input");
+                field.type ="text";
+                field.name = prefixToUse + "_" + tempData.name;
+                field.id = prefixToUse + "_" + tempData.name;
+                td.appendChild (field);
+                /*var date_props = {
+                  name: "date_field",
+                  promptMessage: "mm/dd/yyyy",
+                  invalidMessage: "Invalid date.",
+                  width:"100px"
+                }
+                date_field = new dijit.form.DateTextBox(date_props, field);
+                */
+                options.data = null;
+            } else {
+                options.data = "<span class='label'>" + tempData.name +  "</span>";
+            }            
+            return td;
+          },
+          escapeHtml:false
+        });
+    } else {
+    }
+}
+
+// Function to populate data in custom attributes section, used in Edit relationship attributes section.
+function populateCustomAttributesValues (attributesArray, attributesValuesArray, prefixToUse) {
+  //alert("POPULATING data for custom attributes");
+  for(i=0; i<attributesValuesArray.length; i++) {
+      //alert(attributesValuesArray[i].name + " : " + attributesValuesArray[i].value);
+      var fieldObj = document.getElementById(prefixToUse + "_" + attributesValuesArray[i].name );
+      if(fieldObj != null) {
+          fieldObj.value = attributesValuesArray[i].value;
+      }
+  }
 }

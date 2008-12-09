@@ -20,13 +20,18 @@
         <tr>
             <td>
                 <div id="add_Relationship_CustomAtrributes" class="RelationshipAttributes">
-                    <table border="0" id="byrel_add_customAttributes" >
-                    <!--   <tr>
+                    <table border="0" >
+                       <tr>
                             <td class="Heading" colspan="2">
                                 <f:message key="custom_text" /> <f:message key="attributes_text" />
                             </td>
                         </tr>
                         <tr>
+                            <td class="Heading" colspan="2">
+                                <table border="0" id="byrel_add_customAttributes" ></table>
+                            </td>
+                        </tr>
+                       <!-- <tr>
                             <td class="label">
                                 &nbsp;&nbsp;<f:message key="number_visit_text" /><f:message key="colon_symbol" /> <f:message key="mandatory_symbol" />
                             </td>
