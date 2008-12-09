@@ -40,7 +40,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <table border="0" id="editCustomAttributesTable" cellspacing="3">
+                                <table border="0" id="editCustomAttributesTable" cellspacing="0">
                                     
                                 </table>
                             </td>
