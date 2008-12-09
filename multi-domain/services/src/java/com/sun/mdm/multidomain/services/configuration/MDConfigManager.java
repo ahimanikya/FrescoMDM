@@ -31,6 +31,7 @@ import com.sun.mdm.multidomain.parser.PageDefinition;
 import com.sun.mdm.multidomain.parser.PageRelationType;
 import com.sun.mdm.multidomain.parser.SimpleSearchType;
 import com.sun.mdm.multidomain.parser.FieldGroup;
+import com.sun.mdm.multidomain.parser.ChildElementIterator;
 import com.sun.mdm.multidomain.parser.RelationFieldReference;
 import com.sun.mdm.multidomain.parser.SearchOptions;
 import com.sun.mdm.multidomain.parser.SearchDetail;
@@ -39,8 +40,10 @@ import com.sun.mdm.multidomain.parser.WebDefinition;
 import com.sun.mdm.multidomain.parser.ConfigurationFiles;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
+import com.sun.mdm.multidomain.services.security.util.NodeUtil;
+import com.sun.mdm.multidomain.parser.JNDIResources;
+import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 
-import com.sun.mdm.multidomain.services.configuration.util.NodeUtil;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.services.model.Domain;
@@ -48,10 +51,9 @@ import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
 
-import org.xml.sax.InputSource;
+import java.text.SimpleDateFormat;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -105,7 +107,8 @@ public class MDConfigManager {
 //    private static HashMap<String, ObjectNodeConfig> mObjNodeConfigMap;
     private static HashMap<String, HashMap> mDomainObjNodeConfigMap;  // hashmap of domains and subhashmaps
     private static DocumentBuilder builder;
-    private static String DATEFORMAT;
+    private static String DATEFORMAT = "MM/dd/yyyy"; 
+    private static SimpleDateFormat dateFormat;
     private static MDConfigManager mInstance = null;	// instance
     private static Integer mInitialScreenID;	                // ID of the initial screen
     private static ObjectSensitivePlugIn mObjectSensitivePlugIn;
@@ -1605,15 +1608,44 @@ public class MDConfigManager {
 	    return null;
 	}
 
-	
-	// testing--raymond tam
-	// RESUME HERE
-    public static JndiResource getJndiResource(String id) {
-        return null;
+    /**
+     * Get JndiResource for the given resource id.
+     * @param id Identifier of JndiResource.
+     * @return JndiResource
+     */    
+    public static JndiResource getJndiResource(String id) 
+        throws ConfigException {
+        JndiResource jndiResource = null;
+        if (id == null) {
+            throw new ConfigException(mLocalizer.t("CFG600: Invalid JndiResource id:null"));
+        }
+        JNDIResources jndiResources = mDWMInstance.getJndiResources();
+        List<RelationshipJDNIResources> rJndiResources = jndiResources.getJDNIResources();
+        for (RelationshipJDNIResources rJndiResource : rJndiResources) {
+            if (id.equals(rJndiResource.getID())) { 
+                jndiResource = new JndiResource();
+                jndiResource.setId(rJndiResource.getID());
+                jndiResource.setName(rJndiResource.getJNDIName());
+                jndiResource.setType(rJndiResource.getResourceType());
+                jndiResource.setDescription(rJndiResource.getDescription());
+                break;  
+            } else if (id.equals(rJndiResource.getID())) {
+                jndiResource = new JndiResource();
+                jndiResource.setId(rJndiResource.getID());
+                jndiResource.setName(rJndiResource.getJNDIName());
+                jndiResource.setType(rJndiResource.getResourceType());
+                jndiResource.setDescription(rJndiResource.getDescription());
+                break;                  
+            }
+        }
+        if (jndiResource == null) {
+            throw new ConfigException(mLocalizer.t("CFG601: Failed to find JndiResource for the given id:{0}", id));
+        }
+        return jndiResource;
     }
-    
-	// testing--raymond tam
-	// RESUME HERE
+
+    // testing--raymond tam
+    // RESUME HERE
     public static Properties getJndiProperties() {
         return null;
     }
@@ -1628,15 +1660,24 @@ public class MDConfigManager {
 	    return mObjectSensitivePlugIn;
     }
     
-    /**
-     * Gets the DATEFORMAT attribute of the ConfigManager class
-     *
-     * @return the date format defined in object definition
-     */
-    public static String getDateFormat() {
+   /**
+    * Gets date format for multi-domain. 
+    * @return the date format defined in multi-domain definition.
+    */
+    public static String getDateFormatForMultiDomain() {
+        //TBD: need to fix.
         return DATEFORMAT;
     }
-    
+
+   /**
+    * Gets date format for domain-specific. 
+    * @return the date format defined in object definition.
+    */    
+    public static String getDateFormatForDomain(String domain) {
+        //TBD: need to fix.
+        return DATEFORMAT;
+    }
+
     /**
      * Gets the input mask of date in the ConfigManager class
      *
