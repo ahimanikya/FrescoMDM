@@ -120,14 +120,9 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
      * Updates a single row in the relationship_def table.
      */
     public int update(RelationshipDefDto dto) throws RelationshipDefDaoException {
-
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
             UpdateBuilder builder = new UpdateBuilder();
             builder.setTable(RELATIONSHIP_DEF.getTableName());
             for (RELATIONSHIP_DEF rel : RELATIONSHIP_DEF.values()) {
@@ -141,7 +136,7 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             }
             String sqlStr = SQLBuilder.buildSQL(builder);
             System.out.println("Executing " + sqlStr + " with DTO: " + dto);
-            stmt = conn.prepareStatement(sqlStr);
+            stmt = userConn.prepareStatement(sqlStr);
 
             int index = 1;
             stmt.setString(index++, dto.getRelationshipName());
@@ -162,12 +157,6 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
     }
 
@@ -175,31 +164,13 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
      * Deletes a single row in the relationship_def table.
      */
     public void delete(long pk) throws RelationshipDefDaoException {
-        long t1 = System.currentTimeMillis();
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
-
-            // stmt = conn.prepareStatement(SQL_DELETE);
-
             int rows = stmt.executeUpdate();
-            long t2 = System.currentTimeMillis();
-            System.out.println(rows + " rows affected (" + (t2 - t1) + " ms)");
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
         }
 
     }
@@ -209,20 +180,14 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
      *
      */
     public List<RelationshipDef> search(String sourceDomain, String targetDomain) throws RelationshipDefDaoException {
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
             // construct the SQL statement
             String sqlStr = BuildSelectByDomains();
             // prepare statement
-            stmt = conn.prepareStatement(sqlStr);
+            stmt = userConn.prepareStatement(sqlStr);
 
             int index = 1;
             stmt.setString(index++, sourceDomain);
@@ -234,13 +199,41 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             return fetchMultiResults(rs);
         } catch (Exception _e) {
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(rs);
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
+        }
+    }
 
+    /**
+     * Returns all rows from the RelationshipDto table that match the criteria
+     *
+     */
+    public RelationshipDef[] getRelationshipDefs() throws RelationshipDefDaoException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        SelectBuilder selBuilder = new SelectBuilder();
+        selBuilder.setTable(RELATIONSHIP_DEF.getTableName(), RELATIONSHIP_EA.getTableName());
+
+        // Build  SELECT SQL
+        for (RELATIONSHIP_DEF relDef : RELATIONSHIP_DEF.values()) {
+            selBuilder.addColumns(relDef.prefixedColumnName);
+        }
+        // Build  SELECT SQL
+        for (RELATIONSHIP_EA relEa : RELATIONSHIP_EA.values()) {
+            selBuilder.addColumns(relEa.prefixedColumnName);
+        }
+        Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
+        selBuilder.addCriteria(c1);
+        String sqlStr = SQLBuilder.buildSQL(selBuilder);
+        try {
+            // prepare statement
+            stmt = userConn.prepareStatement(sqlStr);
+            rs = stmt.executeQuery();
+            // fetch the results
+            List<RelationshipDef> relDefs = fetchMultiResults(rs);
+
+            return relDefs.toArray(new RelationshipDef[0]);
+
+        } catch (Exception _e) {
+            throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
         }
     }
 

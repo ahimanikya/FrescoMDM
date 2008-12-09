@@ -218,11 +218,6 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
     protected void reset(RelationshipEavDto dto) {
     }
 
-    @Override
-    public long getPrimaryKey() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public void update(long pk, RelationshipEavDto dto) throws RelationshipEavDaoException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
