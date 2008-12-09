@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipDaoException;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipEavDaoException;
 import com.sun.mdm.multidomain.relationship.ops.factory.AbstractDaoFactory;
@@ -38,7 +42,6 @@ import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDao;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDto;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEavDto;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipEavDaoImpl;
-
 /**
  *
  * @author davidp
@@ -49,6 +52,8 @@ public class RelationshipService implements Serializable {
     private RelationshipDao mRelDef = null;
     private RelationshipEavDao mRelEav = null;
     private Connection mConn = null;
+    private Map<String, Set<String>> sourceMap = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> targetMap = new HashMap<String, Set<String>>();
 
     /**
      * Method 'RelationshipService'
@@ -128,11 +133,31 @@ public class RelationshipService implements Serializable {
     /**
      * Method 'search'
      *
-     * @return RelationshipDto
+     * @return List Relationship
      */
     public List<Relationship> search(String sourceEUID, String targetEUID) throws RelationshipDaoException {
         RelationshipDaoImpl dao = new RelationshipDaoImpl(mConn);
-        return dao.search(sourceEUID, targetEUID);
+        return dao.searchByEuids(sourceEUID, targetEUID);
+    }
+
+    /**
+     * Method 'search'
+     *
+     * @return List Relationship
+     */
+    public List<Relationship> searchRelationShips(String domain, String euid) throws RelationshipDaoException {
+        RelationshipDaoImpl dao = new RelationshipDaoImpl(mConn);
+        return dao.searchByDomainEuid(domain, euid);
+    }
+
+    /**
+     * Method 'search'
+     *
+     * @return List Relationship
+     */
+    public List<Relationship> searchRelationShips(Map<String, Set<String>> sourceMap, Map<String, Set<String>> targetMap) throws RelationshipDaoException {
+        RelationshipDaoImpl dao = new RelationshipDaoImpl(mConn);
+        return dao.searchByDomainEuid(sourceMap, targetMap);
     }
 
     /**

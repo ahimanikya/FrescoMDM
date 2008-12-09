@@ -133,10 +133,19 @@ public class RelationshipDefService implements Serializable {
     /**
      * Method 'search'
      *
-     * @return RelationshipDefDto
+     * @return RelationshipDef
      */
     public List<RelationshipDef> search(String sourceDomain, String targetDomain) throws RelationshipDefDaoException {
         RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl(mConn);
         return dao.search(sourceDomain, targetDomain);
+    }
+
+    /**
+     * Method 'search'
+     *
+     * @return RelationshipDef[]
+     */
+    public RelationshipDef[] getRelationshipDefs() throws RelationshipDefDaoException {
+        return new RelationshipDefDaoImpl(mConn).getRelationshipDefs();
     }
 }
