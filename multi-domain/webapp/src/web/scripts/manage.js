@@ -115,6 +115,8 @@ function populateAddRelationshipDefAttributes(data){
              customContent.cells[0].innerHTML=data.extendedAttributes[i].name;
              var field = document.createElement("input");
              field.type="text";
+             field.id = "add_" + data.extendedAttributes[i].name;
+             field.name= "add_" + data.extendedAttributes[i].name;
              field.size="5";
              field.style.width="100px";
              customContent.cells[1].appendChild(field);
@@ -150,8 +152,10 @@ function populateAddRelationshipDefAttributes(data){
         SecondRow.cells[0].innerHTML="Effective";
         SecondRow.cells[1].innerHTML="From";
         var startDate_textBox = document.createElement("input");
-        startDate_textBox.type="text";
-        startDate_textBox.size="5";
+        startDate_textBox.type = "text";
+        startDate_textBox.name = "startDate";
+        startDate_textBox.id = "predefinedStartDate";
+        startDate_textBox.size = "5";
         startDate_textBox.style.width="100px";
         SecondRow.cells[2].appendChild(startDate_textBox);
         var startProps = {
@@ -165,6 +169,8 @@ function populateAddRelationshipDefAttributes(data){
         SecondRow.cells[3].innerHTML="To";
         var endDate_textBox = document.createElement("input");
         endDate_textBox.type="text";
+        endDate_textBox.name = "endDate";
+        endDate_textBox.id = "predefinedEndDate";
         endDate_textBox.size="5";
         endDate_textBox.style.width="100px";
         SecondRow.cells[4].appendChild(endDate_textBox);
@@ -186,6 +192,8 @@ function populateAddRelationshipDefAttributes(data){
         SecondRowStart.cells[1].innerHTML="From";
         var start_date = document.createElement("input");
         start_date.type="text";
+        start_date.name = "startDate";
+        start_date.id = "predefinedStartDate";
         start_date.size="5";
         start_date.style.width="100px";
         SecondRowStart.cells[2].appendChild(start_date);
@@ -208,6 +216,8 @@ function populateAddRelationshipDefAttributes(data){
         SecondRowEnd.cells[1].innerHTML="To";
         var end_date = document.createElement("input");
         end_date.type="text";
+        end_date.name = "endDate";
+        end_date.id = "predefinedEndDate";
         end_date.size="5";
         end_date.style.width="100px";
         SecondRowEnd.cells[2].appendChild(end_date);
@@ -230,6 +240,9 @@ function populateAddRelationshipDefAttributes(data){
         ThirdRow.cells[1].innerHTML="Purge Date";
         var Purge_date= document.createElement("input");
         Purge_date.type="text";
+        Purge_date.name = "purgeDate";
+        Purge_date.id = "predefinedPurgeDate";
+        Purge_date.value = "true";
         Purge_date.size="5";
         Purge_date.style.width="100px";
         ThirdRow.cells[2].appendChild(Purge_date);

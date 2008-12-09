@@ -93,7 +93,8 @@
       <div class="Content">
           <table>
            <tr>
-             <td class="generalText"><f:message key="select_records_to_include_in_the_relationship_text" /></td>
+               <td class="generalText"><div id="sourceResultsSuccess" style="display:none;"><f:message key="select_records_to_include_in_the_relationship_text" /></div></td>
+               <td class="generalText"><div id="sourceResultsFailure" style="display:none;">No Records Found</div></td>
            </tr>
            <tr>
             <td>
@@ -197,7 +198,8 @@
       <div class="Content">
           <table>
            <tr>
-             <td class="generalText"><f:message key="select_records_to_include_in_the_relationship_text" /></td>
+               <td class="generalText"><div id="targetResultsSuccess" style="display:none;"><f:message key="select_records_to_include_in_the_relationship_text" /></div></td>
+               <td class="generalText"><div id="targetResultsFailure" style="display:none;">No Records Found</div></td>
            </tr>
            <tr>
             <td>

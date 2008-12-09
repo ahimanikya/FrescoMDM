@@ -682,27 +682,35 @@ function addSourceDomainSearch() {
 function addSourceSearchResults(data) {
     //document.getElementById('AddSource_TableId').innerHTML ='';
     dwr.util.removeAllRows("AddSource_TableId");
-    if(data == null) return;
-    for(i =0;i<data.length;i++){
+    if(data == null){
+       document.getElementById('sourceResultsFailure').style.visibility='visible'; 
+       document.getElementById('sourceResultsFailure').style.display='block'; 
+    }else{
+       document.getElementById('sourceResultsSuccess').style.visibility='visible'; 
+       document.getElementById('sourceResultsSuccess').style.display='block'; 
+       for(i =0;i<data.length;i++) {
         if(i==0){
           var header = document.getElementById('AddSource_TableId').insertRow(i);
           header.insertCell(0);
-          for(j=0; j<data[i].attributes.length; j++) {
+            for(j=0; j<data[i].attributes.length; j++) {
             header.insertCell(j+1);   
             header.style.backgroundColor = '#f4f3ee';
             header.cells[j+1].innerHTML  = data[i].attributes[j].name;
-          }
-        }
+         }
+       }
           var dataRow = document.getElementById('AddSource_TableId').insertRow(i+1);
           dataRow.insertCell(0);
           var chkbox =  document.createElement("input");
-          chkbox.type="checkbox";
+          chkbox.type = "checkbox";
+          chkbox.name = "addSourceCheckBox";
+          chkbox.value = data[i].EUID;
           dataRow.cells[0].appendChild (chkbox);
           for(j=0; j<data[i].attributes.length; j++) {
             dataRow.insertCell(j+1);
             dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
-        }
-    } 
+          }
+       } 
+   }
 }
 
 function addTargetDomainSearch() {
@@ -714,9 +722,14 @@ function addTargetDomainSearch() {
 
 function addTargeSearchResults(data) {
     //document.getElementById('AddTarget_TableId').innerHTML ='';
-    dwr.util.removeAllRows("AddTarget_TableId");
-    if(data == null) return;
-    for(i =0;i<data.length;i++){
+    dwr.util.removeAllRows("AddTarget_TableId"); //addRelationshipButton
+    if(data == null){
+       document.getElementById('targetResultsFailure').style.visibility='visible'; 
+       document.getElementById('targetResultsFailure').style.display='block'; 
+    }else{
+       document.getElementById('targetResultsSuccess').style.visibility='visible'; 
+       document.getElementById('targetResultsSuccess').style.display='block';  
+        for(i =0;i<data.length;i++){
         if(i==0){
           var header = document.getElementById('AddTarget_TableId').insertRow(i);
           header.insertCell(0);
@@ -729,18 +742,87 @@ function addTargeSearchResults(data) {
           var dataRow = document.getElementById('AddTarget_TableId').insertRow(i+1);
           dataRow.insertCell(0);
           var chkbox =  document.createElement("input");
-          chkbox.type="checkbox";
+          chkbox.type = "checkbox";
+          chkbox.name = "addTargetCheckBox";
+          chkbox.value = data[i].EUID;
           dataRow.cells[0].appendChild (chkbox);
           for(j=0; j<data[i].attributes.length; j++) {
             dataRow.insertCell(j+1);
             dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
-        }
-    } 
+         }
+      }
+   } 
 }
 
+function ByRelAddRelationship(){
+    var startDateField = document.getElementById('predefinedStartDate');
+    var endDateField = document.getElementById('predefinedEndDate');
+    var purgeDateField = document.getElementById('predefinedPurgeDate');
+    var startDate,endDate,purgeDate;
+    if(startDateField != null)
+     {
+           startDate =  document.getElementById('predefinedStartDate').value
+     }
+     if(endDateField != null)
+     {
+           endDate =  document.getElementById('predefinedEndDate').value;
+     }
+     if(purgeDateField != null)
+     {
+           purgeDate =  document.getElementById('predefinedPurgeDate').value;
+     }
+    
+   var SourceDomain = document.getElementById("select_sourceDomain").value;
+   var TargetDomain = document.getElementById("select_targetDomain").value;
+   var RelationshipDefName = document.getElementById("select_relationshipDefs").value;
+   var relationshipCustomAttributes = [];
+   var relationshipDef = cachedRelationshipDefs[RelationshipDefName];
+   
+    for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
+      var attributeName = relationshipDef.extendedAttributes[cc].name;
+      //alert("attributeName---"+attributeName);
+      var attributeValue =  document.getElementById("add_" + relationshipDef.extendedAttributes[cc].name).value;
+      //alert("attributeValue---"+attributeValue);
+      relationshipCustomAttributes.push( {attributeName : attributeValue} );
+     }
+    
+   var sourceCheckBox = false; 
+   var targerCheckBox = false;
+   var sourceCheckedArray = document.getElementsByName("addSourceCheckBox"); 
+   var targetCheckedArray = document.getElementsByName("addTargetCheckBox"); 
+   
+    for(i=0;i<sourceCheckedArray.length; i++) {
+        if(sourceCheckedArray[i].checked) {
+            sourceCheckBox = true;
+            var sourceRecordEUID = sourceCheckedArray[i].value;
+            for(j=0;j<targetCheckedArray.length; j++) {
+              if(targetCheckedArray[j].checked) {
+                  
+                targerCheckBox = true;
+                var targetRecordEUID = targetCheckedArray[j].value;
+                var newRelationshipRecord = {};
+                
+                newRelationshipRecord.name = RelationshipDefName;
+                newRelationshipRecord.sourceDomain = SourceDomain;
+                newRelationshipRecord.sourceEUID = sourceRecordEUID;
+                newRelationshipRecord.targetDomain = TargetDomain;
+                newRelationshipRecord.targetEUID = targetRecordEUID;
+                
+                newRelationshipRecord.startDate = startDate;
+                newRelationshipRecord.endDate = endDate;
+                newRelationshipRecord.purgeDate = purgeDate;
+                newRelationshipRecord.attributes = relationshipCustomAttributes ;
+                    
+                RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB)
+              }    
+            }   
+
+        }    
+   }
+}
+function addRelationshipCB(data) {
+    alert("New relationship record added, id is : " + data);
+}
 /*
  * Scripts for Add Relationship screen <END>
  */
-
-
-
