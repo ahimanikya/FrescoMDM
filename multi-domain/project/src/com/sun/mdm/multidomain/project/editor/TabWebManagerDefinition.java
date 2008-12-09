@@ -24,8 +24,9 @@ import org.openide.util.NbBundle;
  */
 public class TabWebManagerDefinition extends javax.swing.JPanel {
     
-    private ArrayList<Definition> mRelationshipTypes = null;
+    private JTable mTablePredefinedAttrs;
     private JTable mTableFields;
+    private JTable mTableOnFocus;
     private boolean mModified = false;
     private EditorMainApp mEditorMainApp = null;
     private Definition mDefinition = null;
@@ -35,31 +36,19 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
     public TabWebManagerDefinition(EditorMainApp editorMainApp, Definition definition) {
         
         mEditorMainApp = editorMainApp;
-        //mRelationshipTypes = relationshipTypes;
         mDefinition = definition;
         initComponents();
-        mTableFields = new JTable();
+        
+        
         if (mDefinition != null) {
             createRelationshipTypes();
             this.jTextFieldDefinitionName.setText(mDefinition.getName());
+        } else {
+            mTablePredefinedAttrs = new JTable();
+            mTableFields = new JTable();
         }
         jTxtDisplayOrder.setEditable(false);
         this.jTextFieldDefinitionName.setEditable(false);
-        
-
-        mTableFields.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                retreiveFieldProperties();
-            }
-         
-        });
-        
-        ListSelectionModel rowSM = mTableFields.getSelectionModel();
-        rowSM.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                retreiveFieldProperties();
-            }
-        });
         
         jTxtInputMask.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -73,41 +62,20 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             }
         });
         
-        mTableFields.addMouseListener(new java.awt.event.MouseAdapter() {
+        mTablePredefinedAttrs.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-                    int iSelectedRow = mTableFields.getSelectedRow();
-                    int lastRow = mTableFields.getRowCount() - 1;
-                    String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
-                    if (fieldName != null) {
-                        FieldAttributeRow mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
-                        //mTableFields.clearSelection();
-                        if (mSelectedRow != null) {
-                            jTxtDisplayName.setText(mSelectedRow.getDisplayName());
-                            if (mSelectedRow.getDisplayOrder() != iSelectedRow + 1) {
-                                mSelectedRow.setDisplayOrder(iSelectedRow + 1);
-                                jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1));
-                            }
-                            jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
-                            jTxtDataType.setText(mSelectedRow.getValueType());
-                            jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
-                            //jRBKeyValue.setSelected(mSelectedRow.getKeyType());
-                        }
-                    }
-                    jBtnUp.setEnabled(true);
-                    jBtnDown.setEnabled(true);
-                    
-                    if ( iSelectedRow == 0) {
-                        jBtnUp.setEnabled(false);
-                    } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
-                        jBtnDown.setEnabled(false);
-                    }
+                    retreiveFieldProperties(false);
                 }
             });
-            
-         //jTxtDisplayName.addActionListener(l);
-            
 
+        mTableFields.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    retreiveFieldProperties(true);
+                }
+            });
+
+        mTablePredefinedAttrs.setRowSelectionInterval(0, 0);
+        retreiveFieldProperties(false);
     }
     
 
@@ -115,7 +83,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         String fieldName = modelAttr.getName();
         String displayName = modelAttr.getName();
         int displayFieldOrder = mTableFields.getRowCount() + 1;
-        int maxLen = 1;
+        int maxLen = 32;
         String guiType = "TextBox";
         String valueList = modelAttr.getType();
         String valueType = modelAttr.getType();
@@ -129,20 +97,30 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
 
     }
     
-    private void retreiveFieldProperties() {
-        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-        int iSelectedRow = mTableFields.getSelectedRow();
-        if (iSelectedRow >= 0 && iSelectedRow < mTableFields.getRowCount()) {
-            int lastRow = mTableFields.getRowCount() - 1;
+    private void retreiveFieldProperties(boolean extended) {
+        if (extended) {
+            mTableOnFocus = mTableFields;
+            mTablePredefinedAttrs.clearSelection();
+        } else {
+            mTableOnFocus = mTablePredefinedAttrs;
+            mTableFields.clearSelection();
+        }
+        
+        TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
+        int iSelectedRow = mTableOnFocus.getSelectedRow();
+        if (iSelectedRow >= 0 && iSelectedRow < mTableOnFocus.getRowCount()) {
+            int lastRow = mTableOnFocus.getRowCount() - 1;
             String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
             if (fieldName != null) {
-                FieldAttributeRow mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
-                //mTableFields.clearSelection();
+                FieldAttributeRow mSelectedRow = ((TableModelRelationshipField) mTableOnFocus.getModel()).findRelTypeByFieldName(fieldName);
+                //table.clearSelection();
                 if (mSelectedRow != null) {
                     jTxtDisplayName.setText(mSelectedRow.getDisplayName());
                     if (mSelectedRow.getDisplayOrder() != iSelectedRow + 1) {
                         mSelectedRow.setDisplayOrder(iSelectedRow + 1);
                         jTxtDisplayOrder.setText(String.valueOf(iSelectedRow + 1));
+                    } else {
+                        jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
                     }
                     jTxtDataType.setText(mSelectedRow.getValueType());
                     jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
@@ -151,13 +129,18 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                     this.jRBSensitive.setSelected(mSelectedRow.isSensitive());
                 }
             }
-            jBtnUp.setEnabled(true);
-            jBtnDown.setEnabled(true);
             this.jPanelFieldProperties.setVisible(true);
+            if (extended) {
+                jBtnUp.setEnabled(true);
+                jBtnDown.setEnabled(true);
 
-            if (iSelectedRow == 0) {
+                if (iSelectedRow == 0) {
+                    jBtnUp.setEnabled(false);
+                } else if (iSelectedRow == mTableOnFocus.getRowCount() - 1) {
+                    jBtnDown.setEnabled(false);
+                }
+            } else {
                 jBtnUp.setEnabled(false);
-            } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
                 jBtnDown.setEnabled(false);
             }
         }
@@ -166,92 +149,56 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
     private void createRelationshipTypes() {
         WebDefinition relType = (WebDefinition) mDefinition;
         String relationType = relType.getName();
-
-        createFieldRefs(relType);
-    /**
-        if (mRelationshipTypes != null && mRelationshipTypes.size() > 0) {
-            
-        } else {
-            ArrayList<RelationFieldReference> fieldRefs = new ArrayList<RelationFieldReference>();
-            TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(fieldRefs);
-            mTableFields = new JTable(mTableFieldRefs);
-        }
-             */ 
+        createPredefinedFieldRefs(relType);
+        createExtendedFieldRefs(relType);
     }
     
-    private void createFieldRefs(WebDefinition relType) {
-            //ArrayList<RelationFieldReference> fieldRefs = relType.getPredefinedFieldRefs();
-            ArrayList<FieldAttributeRow> attrs = new ArrayList<FieldAttributeRow>();
-            for (RelationFieldReference field : relType.getPredefinedFieldRefs()) {
-                String fieldName = field.getFieldName();
-                String displayName = field.getFieldDisplayName();
-                int displayFieldOrder = field.getDisplayOrder();
-                int maxLen = field.getMaxLength();
-                String guiType = field.getGuiType();
-                String valueList = field.getValueList();
-                String valueType = field.getValueType();
-                boolean senstive = field.isSensitive();
-                String inputMask = field.getInputMask();
-                String valueMask = field.getOutputMask();
+    private void createPredefinedFieldRefs(WebDefinition relType) {
+        ArrayList<FieldAttributeRow> attrs = new ArrayList<FieldAttributeRow>();
+        for (RelationFieldReference field : relType.getPredefinedFieldRefs()) {
+            String fieldName = field.getFieldName();
+            String displayName = field.getFieldDisplayName();
+            int displayFieldOrder = field.getDisplayOrder();
+            int maxLen = field.getMaxLength();
+            String guiType = field.getGuiType();
+            String valueList = field.getValueList();
+            String valueType = field.getValueType();
+            boolean senstive = field.isSensitive();
+            String inputMask = field.getInputMask();
+            String valueMask = field.getOutputMask();
 
-                FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
+            FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
                         maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask);
-                attrs.add(row);
-            }
-            for (RelationFieldReference field : relType.getExtendedRelFieldRefs()) {
-                String fieldName = field.getFieldName();
-                String displayName = field.getFieldDisplayName();
-                int displayFieldOrder = field.getDisplayOrder();
-                int maxLen = field.getMaxLength();
-                String guiType = field.getGuiType();
-                String valueList = field.getValueList();
-                String valueType = field.getValueType();
-                boolean senstive = field.isSensitive();
-                String inputMask = field.getInputMask();
-                String valueMask = field.getOutputMask();
+            attrs.add(row);
+        }
+        TableModelRelationshipField model = new TableModelRelationshipField(attrs);
+        mTablePredefinedAttrs = new JTable(model);
+        this.jScrollPanePredefinedAttrs.setViewportView(mTablePredefinedAttrs);
+    }
+    
+    private void createExtendedFieldRefs(WebDefinition relType) {
+        ArrayList<FieldAttributeRow> attrs = new ArrayList<FieldAttributeRow>();
+        for (RelationFieldReference field : relType.getExtendedRelFieldRefs()) {
+            String fieldName = field.getFieldName();
+            String displayName = field.getFieldDisplayName();
+            int displayFieldOrder = field.getDisplayOrder();
+            int maxLen = field.getMaxLength();
+            String guiType = field.getGuiType();
+            String valueList = field.getValueList();
+            String valueType = field.getValueType();
+            boolean senstive = field.isSensitive();
+            String inputMask = field.getInputMask();
+            String valueMask = field.getOutputMask();
 
-
-                FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
+            FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
                         maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask);
-                attrs.add(row);
-            }
-            TableModelRelationshipField mTableFieldRefs = new TableModelRelationshipField(attrs);
-            mTableFields = new JTable(mTableFieldRefs);
-            mTableFields.getTableHeader().setReorderingAllowed(false);
-            mTableFields.setRowSelectionAllowed(true);
-            if (attrs.size() > 0 ) {
-                mTableFields.setRowSelectionInterval(0, 0);
-                jScrollPane1.setViewportView(mTableFields);
-                int iSelectedRow = mTableFields.getSelectedRow();
-                TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-                String fieldName = (String) model.getValueAt(iSelectedRow, model.iColFieldName);
-                if (fieldName != null) {
-                    FieldAttributeRow mSelectedRow = ((TableModelRelationshipField) mTableFields.getModel()).findRelTypeByFieldName(fieldName);
-                    //mTableFields.clearSelection();
-                    if (mSelectedRow != null) {
-                        jTxtDisplayName.setText(mSelectedRow.getDisplayName());
-                        jTxtDisplayOrder.setText(String.valueOf(mSelectedRow.getDisplayOrder()));
-                        jTxtMaxLength.setText(String.valueOf(mSelectedRow.getMaxLength()));
-                        jTxtDataType.setText(mSelectedRow.getValueType());
-                        this.jTxtInputMask.setText(mSelectedRow.getInputMask());
-                        this.jTxtValueMask.setText(mSelectedRow.getValueMask());
-                        this.jRBSensitive.setSelected(mSelectedRow.isSensitive());
-                    }
-
-                    this.jPanelFieldProperties.setVisible(true);
-
-                    jBtnUp.setEnabled(true);
-                    jBtnDown.setEnabled(true);
-
-                    if (iSelectedRow == 0) {
-                        jBtnUp.setEnabled(false);
-                    } else if (iSelectedRow == mTableFields.getRowCount() - 1) {
-                        jBtnDown.setEnabled(false);
-                    }
-
-                }
-            }
-        
+            attrs.add(row);
+        }
+        TableModelRelationshipField model = new TableModelRelationshipField(attrs);
+        mTableFields = new JTable(model);
+        mTableFields.getTableHeader().setReorderingAllowed(false);
+        mTableFields.setRowSelectionAllowed(true);
+        this.jScrollPaneExtendedAttrs.setViewportView(mTableFields);
     }
     
     public void addRelationFieldReference(RelationFieldReference field) {
@@ -273,8 +220,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         model.addRow(rowCount, row);
         model.fireTableDataChanged();
         mTableFields.setRowSelectionInterval(rowCount, rowCount);
-        retreiveFieldProperties();
-        
+        retreiveFieldProperties(true);        
     }
     
     public void deleteRelationFieldReference(String attrName) {
@@ -283,10 +229,11 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         int length = model.getRowCount();
         int removedRow = model.findRowByFieldName(attrName);
         model.removeRow(removedRow);
+        model.fireTableDataChanged();
         if (selectedRow == removedRow) {
             mTableFields.setRowSelectionInterval(0, 0);
-            retreiveFieldProperties();
-        } 
+            retreiveFieldProperties(true);
+        }
     }
     
     private void clearFieldProperties() {
@@ -300,6 +247,11 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         
     }
     
+    /** Update extended attribute reference when changes occurred
+     *  Only affect extended attributes
+     * @param attrName
+     * @param field
+     */
     public void updateRelationFieldReference(String attrName, RelationFieldReference field) {
         TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
         int length = model.getRowCount();
@@ -323,42 +275,38 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
         jLabelRelTypes = new javax.swing.JLabel();
-        onOK = new javax.swing.JButton();
-        onCancel = new javax.swing.JButton();
+        jTextFieldDefinitionName = new javax.swing.JTextField();
+        jScrollPanePredefinedAttrs = new javax.swing.JScrollPane();
+        jScrollPaneExtendedAttrs = new javax.swing.JScrollPane();
         jBtnUp = new javax.swing.JButton();
         jBtnDown = new javax.swing.JButton();
-        jTextFieldDefinitionName = new javax.swing.JTextField();
         jPanelFieldProperties = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelDisplayName = new javax.swing.JLabel();
         jTxtDisplayName = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelDisplayOrder = new javax.swing.JLabel();
         jTxtDisplayOrder = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelMaxLength = new javax.swing.JLabel();
         jTxtMaxLength = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelDataType = new javax.swing.JLabel();
         jTxtDataType = new javax.swing.JTextField();
         jLabelInputMask = new javax.swing.JLabel();
         jTxtInputMask = new javax.swing.JTextField();
         jLabelValueMask = new javax.swing.JLabel();
         jTxtValueMask = new javax.swing.JTextField();
         jRBSensitive = new javax.swing.JRadioButton();
+        onOK = new javax.swing.JButton();
+        onCancel = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELDS"))); // NOI18N
-
         jLabelRelTypes.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Links_Defined")); // NOI18N
 
-        onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_OK")); // NOI18N
-        onOK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onOKActionPerformed(evt);
-            }
-        });
+        jTextFieldDefinitionName.setEditable(false);
 
-        onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Cancel")); // NOI18N
+        jScrollPanePredefinedAttrs.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_PREDEFINED_ATTRS"))); // NOI18N
+
+        jScrollPaneExtendedAttrs.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_EXTENDED_ATTRS"))); // NOI18N
 
         jBtnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sun/mdm/multidomain/project/resources/UpArrow.jpg"))); // NOI18N
         jBtnUp.addActionListener(new java.awt.event.ActionListener() {
@@ -374,11 +322,9 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             }
         });
 
-        jTextFieldDefinitionName.setEditable(false);
-
         jPanelFieldProperties.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_PROPERTIES"))); // NOI18N
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
+        jLabelDisplayName.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_DISPLAY_NAME")); // NOI18N
 
         jTxtDisplayName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -386,11 +332,11 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
+        jLabelDisplayOrder.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_DISPLAY_ORDER")); // NOI18N
 
         jTxtDisplayOrder.setEditable(false);
 
-        jLabel3.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
+        jLabelMaxLength.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_MAX_LEN")); // NOI18N
 
         jTxtMaxLength.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -398,7 +344,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_TYPE")); // NOI18N
+        jLabelDataType.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_TYPE")); // NOI18N
 
         jTxtDataType.setEditable(false);
         jTxtDataType.addActionListener(new java.awt.event.ActionListener() {
@@ -435,14 +381,15 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         jPanelFieldPropertiesLayout.setHorizontalGroup(
             jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelFieldPropertiesLayout.createSequentialGroup()
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jRBSensitive, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                .addContainerGap()
+                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jRBSensitive, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .add(jLabelMaxLength, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .add(jLabelDataType, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .add(jLabelDisplayOrder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jTxtDisplayOrder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -456,36 +403,46 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         jPanelFieldPropertiesLayout.setVerticalGroup(
             jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanelFieldPropertiesLayout.createSequentialGroup()
-                .add(115, 115, 115)
-                .add(jTxtInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(133, Short.MAX_VALUE))
-            .add(jPanelFieldPropertiesLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTxtDisplayName)
-                    .add(jLabel1))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTxtDisplayOrder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTxtMaxLength, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTxtDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTxtValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jRBSensitive)
-                .add(82, 82, 82))
+                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanelFieldPropertiesLayout.createSequentialGroup()
+                        .add(104, 104, 104)
+                        .add(jTxtInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanelFieldPropertiesLayout.createSequentialGroup()
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jTxtDisplayName)
+                            .add(jLabelDisplayName))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jTxtDisplayOrder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabelDisplayOrder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jTxtMaxLength, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabelMaxLength, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jTxtDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabelDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jTxtValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jRBSensitive)))
+                .add(93, 93, 93))
         );
+
+        onOK.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_OK")); // NOI18N
+        onOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onOKActionPerformed(evt);
+            }
+        });
+
+        onCancel.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Cancel")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -495,21 +452,24 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 107, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(11, 11, 11)
+                        .add(jLabelRelTypes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 96, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jTextFieldDefinitionName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(layout.createSequentialGroup()
-                            .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(onCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 88, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(layout.createSequentialGroup()
-                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 194, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(jScrollPanePredefinedAttrs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 176, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jScrollPaneExtendedAttrs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 178, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(18, 18, 18)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(layout.createSequentialGroup()
+                                .add(onOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(onCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 88, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(jPanelFieldProperties, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -521,50 +481,28 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelRelTypes)
-                    .add(jTextFieldDefinitionName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(92, 92, 92)
-                        .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanelFieldProperties, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jTextFieldDefinitionName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelRelTypes))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(layout.createSequentialGroup()
+                        .add(jScrollPanePredefinedAttrs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(jBtnUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jBtnDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(65, 65, 65))
+                            .add(jScrollPaneExtendedAttrs, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
+                    .add(jPanelFieldProperties, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(onCancel)
                     .add(onOK))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-private void onRBSensitive(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRBSensitive
-// TODO add your handling code here:
-    int selectedRow = mTableFields.getSelectedRow();
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-    FieldAttributeRow fieldRef = model.getRow(selectedRow);
-    fieldRef.setSensitive(this.jRBSensitive.isSelected());
-    
-}//GEN-LAST:event_onRBSensitive
-
-private void onDisplayNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDisplayNameActionPerformed
-// TODO add your handling code here:            
-    int selectedRow = mTableFields.getSelectedRow();
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-    FieldAttributeRow fieldRef = model.getRow(selectedRow);
-    fieldRef.setDisplayName(this.jTxtDisplayName.getText());
-}//GEN-LAST:event_onDisplayNameActionPerformed
-
-private void onMaxLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onMaxLengthActionPerformed
-// TODO add your handling code here:
-    int selectedRow = mTableFields.getSelectedRow();
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-    FieldAttributeRow fieldRef = model.getRow(selectedRow);
-    fieldRef.setMaxLength(Integer.valueOf(this.jTxtMaxLength.getText()).intValue());
-    
-}//GEN-LAST:event_onMaxLengthActionPerformed
 
 private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOKActionPerformed
 // TODO add your handling code here:
@@ -572,7 +510,84 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     if (mDefinition instanceof WebDefinition) {
         ((WebDefinition) mDefinition).getExtendedRelFieldRefs().clear();
         ((WebDefinition) mDefinition).getPredefinedFieldRefs().clear();
-        TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+        setRelFieldRefs(this.mTablePredefinedAttrs);
+        setRelFieldRefs(this.mTableFields);
+    }
+    mEditorMainApp.enableSaveAction(true);
+}//GEN-LAST:event_onOKActionPerformed
+
+private void onRBSensitive(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRBSensitive
+// TODO add your handling code here:
+    int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setSensitive(this.jRBSensitive.isSelected());
+}//GEN-LAST:event_onRBSensitive
+
+private void onValueMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onValueMask
+// TODO add your handling code here:
+    int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setValueMask(this.jTxtValueMask.getText());
+}//GEN-LAST:event_onValueMask
+
+private void onInputMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onInputMask
+// TODO add your handling code here:
+}//GEN-LAST:event_onInputMask
+
+private void onjTxtDataType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onjTxtDataType
+// TODO add your handling code here:
+}//GEN-LAST:event_onjTxtDataType
+
+private void onMaxLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onMaxLengthActionPerformed
+// TODO add your handling code here:
+    int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setMaxLength(Integer.valueOf(this.jTxtMaxLength.getText()).intValue());
+}//GEN-LAST:event_onMaxLengthActionPerformed
+
+private void onDisplayNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDisplayNameActionPerformed
+// TODO add your handling code here:            
+    int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setDisplayName(this.jTxtDisplayName.getText());
+}//GEN-LAST:event_onDisplayNameActionPerformed
+
+private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDownBtn
+// TODO add your handling code here:
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    int iSelectedRow = mTableFields.getSelectedRow();
+    FieldAttributeRow movedRow = model.getRow(iSelectedRow);
+    model.removeRow(iSelectedRow);
+    FieldAttributeRow previousRow = model.getRow(iSelectedRow);
+    previousRow.setDisplayOrder(iSelectedRow + 1);
+    iSelectedRow++;
+    movedRow.setDisplayOrder(iSelectedRow + 1);
+    model.addRow(iSelectedRow, movedRow);
+    jTxtDisplayOrder.setText(String.valueOf(movedRow.getDisplayOrder()));
+    mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+}//GEN-LAST:event_onDownBtn
+
+private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
+// TODO add your handling code here:
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    int iSelectedRow = mTableFields.getSelectedRow();
+    FieldAttributeRow movedUpRow = model.getRow(iSelectedRow);
+    FieldAttributeRow movedDownow = model.getRow(iSelectedRow - 1);
+    movedUpRow.setDisplayOrder(iSelectedRow);
+    model.removeRow(iSelectedRow);
+    iSelectedRow--;
+    model.addRow(iSelectedRow, movedUpRow);
+    mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    movedDownow.setDisplayOrder(iSelectedRow + 1);
+    jTxtDisplayOrder.setText(String.valueOf(movedUpRow.getDisplayOrder()));
+}//GEN-LAST:event_onUpBtn
+
+    private void setRelFieldRefs(JTable table) {
+        TableModelRelationshipField model = (TableModelRelationshipField) table.getModel();
         int rowCount = model.getRowCount();
         for (FieldAttributeRow row : model.fieldRows) {
 
@@ -597,76 +612,22 @@ private void onOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             
         }
     }
-    mEditorMainApp.enableSaveAction(true);
-}//GEN-LAST:event_onOKActionPerformed
-
-private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
-// TODO add your handling code here:
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-    int iSelectedRow = mTableFields.getSelectedRow();
-    FieldAttributeRow movedUpRow = model.getRow(iSelectedRow);
-    FieldAttributeRow movedDownow = model.getRow(iSelectedRow - 1);
-    movedUpRow.setDisplayOrder(iSelectedRow);
-    model.removeRow(iSelectedRow);
-    iSelectedRow--;
-    model.addRow(iSelectedRow, movedUpRow);
-    mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
-    movedDownow.setDisplayOrder(iSelectedRow + 1);
-    jTxtDisplayOrder.setText(String.valueOf(movedUpRow.getDisplayOrder()));
-    
-
-    
-}//GEN-LAST:event_onUpBtn
-
-private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDownBtn
-// TODO add your handling code here:
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-    int iSelectedRow = mTableFields.getSelectedRow();
-    FieldAttributeRow movedRow = model.getRow(iSelectedRow);
-    model.removeRow(iSelectedRow);
-    FieldAttributeRow previousRow = model.getRow(iSelectedRow);
-    previousRow.setDisplayOrder(iSelectedRow + 1);
-    iSelectedRow++;
-    movedRow.setDisplayOrder(iSelectedRow + 1);
-    model.addRow(iSelectedRow, movedRow);
-    jTxtDisplayOrder.setText(String.valueOf(movedRow.getDisplayOrder()));
-    mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
-    
-}//GEN-LAST:event_onDownBtn
-
-private void onjTxtDataType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onjTxtDataType
-// TODO add your handling code here:
-}//GEN-LAST:event_onjTxtDataType
 
 private void setInputMask() {
-     int selectedRow = mTableFields.getSelectedRow();
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+     int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
     FieldAttributeRow fieldRef = model.getRow(selectedRow);
     fieldRef.setInputMask(this.jTxtInputMask.getText());
   
 }
 
 private void setValueMask() {
-    int selectedRow = mTableFields.getSelectedRow();
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
+    int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
     FieldAttributeRow fieldRef = model.getRow(selectedRow);
     fieldRef.setValueMask(this.jTxtValueMask.getText());
 
 }
-
-private void onInputMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onInputMask
-// TODO add your handling code here:
-    
-}//GEN-LAST:event_onInputMask
-
-private void onValueMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onValueMask
-// TODO add your handling code here:
-    int selectedRow = mTableFields.getSelectedRow();
-    TableModelRelationshipField model = (TableModelRelationshipField) mTableFields.getModel();
-    FieldAttributeRow fieldRef = model.getRow(selectedRow);
-    fieldRef.setValueMask(this.jTxtValueMask.getText());
-    
-}//GEN-LAST:event_onValueMask
 
     class FieldAttributeRow {
         private String name;
@@ -791,7 +752,7 @@ private void onValueMask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onVa
     }
 
 class TableModelRelationshipField extends AbstractTableModel {
-        private	String columnNames [] = {NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_RELATIONSHIP_TYPES_FILED"),                                           
+        private	String columnNames [] = {NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_Attribute_Name"),                                           
                                         };
         ArrayList<FieldAttributeRow> fieldRows;
         final static int iColFieldName = 0;
@@ -910,16 +871,17 @@ class TableModelRelationshipField extends AbstractTableModel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnDown;
     private javax.swing.JButton jBtnUp;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelDataType;
+    private javax.swing.JLabel jLabelDisplayName;
+    private javax.swing.JLabel jLabelDisplayOrder;
     private javax.swing.JLabel jLabelInputMask;
+    private javax.swing.JLabel jLabelMaxLength;
     private javax.swing.JLabel jLabelRelTypes;
     private javax.swing.JLabel jLabelValueMask;
     private javax.swing.JPanel jPanelFieldProperties;
     private javax.swing.JRadioButton jRBSensitive;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneExtendedAttrs;
+    private javax.swing.JScrollPane jScrollPanePredefinedAttrs;
     private javax.swing.JTextField jTextFieldDefinitionName;
     private javax.swing.JTextField jTxtDataType;
     private javax.swing.JTextField jTxtDisplayName;
