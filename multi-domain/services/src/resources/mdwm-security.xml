@@ -5,6 +5,7 @@
     <roles>
         <role>
             <role-name>MultiDomain.Admin</role-name>
+            <role-ref>MultiDomain.Admin</role-ref>
             <role-ref>MultiDomain.Relationship.Admin</role-ref>                
             <role-ref>MultiDomain.Hierarchy.Admin</role-ref>                
             <role-ref>MultiDomain.Group.Admin</role-ref>                
@@ -25,6 +26,18 @@
         </role>
         
         <!-- Relationship -->
+        <role>
+            <role-name>MultiDomain.Admin</role-name>
+            <operations>
+                <name>RelationshipDef_ReadWrite</name>          
+                <name>Relationship_ReadWrite</name>
+                <name>Relationship_History_Read</name>
+                <name>HierarchyDef_ReadWrite</name>          
+                <name>Hierarchy_ReadWrite</name>
+                <name>Hierarchy_History_Read</name>                
+            </operations>
+        </role>
+        
         <role>
             <role-name>MultiDomain.Relationship.Admin</role-name>
             <operations>
@@ -51,7 +64,7 @@
             </operations>
         </role>
 
-        <!-- Hierarchy  -->
+        <!-- Hierarchy  -->          
         <role>
             <role-name>MultiDomain.Hierarchy.Admin</role-name>
             <operations>
