@@ -153,7 +153,6 @@ public class HierarchyManager {
     public String addHierarchyDef(HierarchyDefExt hDefExt) 
         throws ServiceException {
         String hDefId = null;
-        if (!TBD) {
         try {
             HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
             hDefId = multiDomainMetaService.createHierarchyDef(hDef);
@@ -161,13 +160,7 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
-        }  
         }
-        //demo
-        hDefExt.setId(Long.toString(System.currentTimeMillis()));
-        hds.add(ViewBuilder.buildHierarchyDef(hDefExt));
-        hDefId = hDefExt.getId();
-        
         return hDefId;
     }
     
@@ -178,7 +171,6 @@ public class HierarchyManager {
      */
     public void updateHierarchyDef(HierarchyDefExt hDefExt)
         throws ServiceException {
-        if (!TBD) {
         try {
             HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
             multiDomainMetaService.updateHierarchyDef(hDef);
@@ -187,24 +179,6 @@ public class HierarchyManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }   
-        }
-        // demo data
-        boolean updated = false;
-        for (HierarchyDef rt:hds) {
-            if (rt.getDomain().equals(hDefExt.getDomain()) &&
-                rt.getName().equals(hDefExt.getName())) {                 
-                HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
-                hds.remove(rt);
-                hds.add(hDef);
-                updated = true;
-                break;
-             }
-    	}
-        if (!updated) {
-        throw new ServiceException("Invalid HierarchyDef:"  + 
-                                   " domain:" + hDefExt.getDomain() +
-                                   " name:" + hDefExt.getName());
-        }        
     }
     
     /**
@@ -214,7 +188,6 @@ public class HierarchyManager {
      */
     public void deleteHierarchyDef(HierarchyDefExt hDefExt)
         throws ServiceException {
-        if (!TBD) {
         try {
             HierarchyDef hDef = ViewBuilder.buildHierarchyDef(hDefExt);
             multiDomainMetaService.deleteHierarchyDef(hDef);
@@ -223,24 +196,6 @@ public class HierarchyManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }   
-        }
-         // demo data
-        boolean deleted = false;
-        List<HierarchyDef> temp = new ArrayList<HierarchyDef>();
-        for (HierarchyDef rt:hds) {
-            if (rt.getDomain().equals(hDefExt.getDomain()) &&
-                rt.getName().equals(hDefExt.getName())) {                      
-                deleted = true;
-             } else {
-                temp.add(rt);
-             }
-    	}
-        if (!deleted) {
-        throw new ServiceException("Invalid HierarchyDef:"  + 
-                                   " domain:" + hDefExt.getDomain() +
-                                   " name:" + hDefExt.getName());
-        }   
-        hds = temp;       
     }   
     
     /**
@@ -263,7 +218,6 @@ public class HierarchyManager {
     public HierarchyDefExt getHierarchyDefByName(String name, String domain) 
         throws ServiceException {                
         HierarchyDefExt hDefExt = null;
-        if (!TBD) {
         try {
             HierarchyDef hDef = multiDomainMetaService.getHierarchyDefByName(name, domain);
             hDefExt = ViewBuilder.buildHierarchyDefExt(hDef);
@@ -272,15 +226,6 @@ public class HierarchyManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }
-        }
-         //demo
-        for (HierarchyDef rt:hds) {
-            if (rt.getName().equals(name) &&
-                rt.getDomain().equals(domain)) { 
-                hDefExt = ViewBuilder.buildHierarchyDefExt(rt);
-                break;
-            }
-    	}        
         return hDefExt;
     }
     
@@ -293,7 +238,6 @@ public class HierarchyManager {
     public HierarchyDefExt getHierarchyDefById(long hierarchyId) 
         throws ServiceException {                
         HierarchyDefExt hDefExt = null;
-        if (!TBD) {
         try {
             HierarchyDef hDef = multiDomainMetaService.getHierarchyDefById(hierarchyId);
             hDefExt = ViewBuilder.buildHierarchyDefExt(hDef);
@@ -301,15 +245,7 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
-        }     
-        }
-        //demo
-        for (HierarchyDef rt:hds) {
-            if (rt.getId() == hierarchyId) {
-                hDefExt = ViewBuilder.buildHierarchyDefExt(rt);
-                break;
-            }
-    	}             
+        }        
         return hDefExt;
     }
     
@@ -322,7 +258,6 @@ public class HierarchyManager {
     public List<HierarchyDefExt> getHierarchyDefs(String domain) 
         throws ServiceException {
     	List<HierarchyDefExt> hDefs = new ArrayList<HierarchyDefExt>();
-        if (!TBD) {
         try {
             List<HierarchyDef> hierarchyDefs = multiDomainMetaService.getHierarchyDefs(domain);
             for (HierarchyDef hDef : hierarchyDefs) {
@@ -333,14 +268,7 @@ public class HierarchyManager {
             throw new ServiceException(uex);
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
-        }   
         }
-    	// demo data	
-    	for (HierarchyDef rt:hds) {
-            if (rt.getDomain().equals(domain)) {
-                hDefs.add(ViewBuilder.buildHierarchyDefExt(rt));	
-            }
-    	}       
     	return hDefs;
     }
     

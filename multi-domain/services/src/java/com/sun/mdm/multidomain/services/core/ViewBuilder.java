@@ -250,7 +250,11 @@ public class ViewBuilder {
             if (aDefExt.getId() != null) {
                 a.setId(Long.parseLong(aDefExt.getId()));
             }
-            a.setColumnName(aDefExt.getColumnName());
+            if (aDefExt.getColumnName() != null) {
+                a.setColumnName(aDefExt.getColumnName());
+            } else {
+                a.setColumnName(aDefExt.getName());
+            }
             a.setType(AttributeType.valueOf(aDefExt.getDataType().toUpperCase()));
             a.setDefaultValue(aDefExt.getDefaultValue());
             a.setIsRequired("true".equalsIgnoreCase(aDefExt.getIsRequired()));

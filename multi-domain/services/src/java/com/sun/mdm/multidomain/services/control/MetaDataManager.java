@@ -70,11 +70,8 @@ public class MetaDataManager {
      * @return List<Domain> List of Domain.
      * @exception ServiceException Thrown if an error occurs during processing.
      */
-    public List<Domain> getDomains() throws ServiceException {
-        
+    public List<Domain> getDomains() throws ServiceException {      
         List<Domain> domains = new ArrayList<Domain>();
-        //TBD
-        /*
         try {
             String[] domainNames = multiDomainMetaService.getDomains();
             for(String domain : domainNames) {
@@ -82,19 +79,7 @@ public class MetaDataManager {
             }
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
-        }
-        */
-    	// demo data
-        domains.add(new Domain("Person"));
-        domains.add(new Domain("Company"));
-        domains.add(new Domain("Product")); 
-        domains.add(new Domain("Employee")); 
-        domains.add(new Domain("Customer"));         
-        domains.add(new Domain("Doctor"));                 
-        domains.add(new Domain("Patient"));                         
-        domains.add(new Domain("Hospital"));  
-        domains.add(new Domain("Account"));          
-        domains.add(new Domain("Order"));                  
+        }              
         return domains;
     }
          
@@ -104,7 +89,7 @@ public class MetaDataManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
      public String getMuliDomainSystemInfo() throws ServiceException {
-    	// demo data    	
+    	// TBD	
     	return "mutli-domain service build 2.0 running on localhost:8080";
      }
         
@@ -115,7 +100,7 @@ public class MetaDataManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<SystemDefinition> getDomainSystemDefinition(String domain) throws ServiceException {
-    	// demo data
+    	// TBD
     	SystemDefinition sd1 = new SystemDefinition();
     	sd1.setSystemCode("SystemA");
     	sd1.setDescription("Source system A");

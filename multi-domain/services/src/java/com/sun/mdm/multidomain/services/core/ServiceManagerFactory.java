@@ -73,11 +73,8 @@ public class ServiceManagerFactory {
 	public void initialize() throws ServiceException {
             if (!isInitialized) {
                 serviceLocator = ServiceLocator.getInstance();
-                //TBD
-                if (TBD == true) {
-                    multiDomainService = serviceLocator.getMultiDomainService();
-                    multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
-                }
+                multiDomainService = serviceLocator.getMultiDomainService();
+                multiDomainMetaService = serviceLocator.getMultiDomainMetaService();                
                 isInitialized = true;
     		logger.info(localizer.x("SVC003: ServiceManagerFactory initialization completed."));                
            }

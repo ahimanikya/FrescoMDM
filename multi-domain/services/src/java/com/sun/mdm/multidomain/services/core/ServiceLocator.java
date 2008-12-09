@@ -112,13 +112,14 @@ public class ServiceLocator {
     public MultiDomainMetaService getMultiDomainMetaService()  
     	throws ServiceException { 
     	if (multiDomainMetaService == null) {
-            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getJndiResource("MultiDomainMetaService");
-            jndiResource.setName("ejb/MULTIDOMAIN_APPLICATION_TOKEN_MultiDomainMetaService");
-            Properties jndiProperties = new Properties(); //TBD: MDConfigManager.getJndiProperties();                
-            String jndiName =  jndiResource.getName();
             try {
+                JndiResource jndiResource = MDConfigManager.getJndiResource(JndiResource.MULTIDOMAIN_META_SERVICE);
+                Properties jndiProperties = MDConfigManager.getJndiProperties();                
+                String jndiName =  jndiResource.getName();
                 Object object = getInitialContext(jndiProperties).lookup(jndiName);
                 multiDomainMetaService = (MultiDomainMetaService)object;
+            } catch (ConfigException cex) {
+                throw new ServiceException(cex); 
             } catch (NamingException nex) {
                 throw new ServiceException(nex);    	
             }
@@ -133,14 +134,15 @@ public class ServiceLocator {
      */
     public MultiDomainService getMultiDomainService()  
     	throws ServiceException { 
-    	if (multiDomainService == null) {    		
-            JndiResource jndiResource = new JndiResource(); //TBD: MDConfigManager.getJndiResource(MultiDomainService);
-             jndiResource.setName("ejb/MULTIDOMAIN_APPLICATION_TOKEN_MultiDomainService");
-             Properties jndiProperties = new Properties(); //TBD: MDConfigManager.getJndiProperties();                
-            String jndiName =  jndiResource.getName();  
+    	if (multiDomainService == null) { 
             try {
+                JndiResource jndiResource = MDConfigManager.getJndiResource(JndiResource.MULTIDOMAIN_SERVICE);
+                Properties jndiProperties = MDConfigManager.getJndiProperties();                
+                String jndiName =  jndiResource.getName();  
                 Object object = getInitialContext(jndiProperties).lookup(jndiName);
                 multiDomainService = (MultiDomainService)object;
+            } catch (ConfigException cex) {
+                throw new ServiceException(cex); 
             } catch (NamingException nex) {
                 throw new ServiceException(nex);    	
             }           
