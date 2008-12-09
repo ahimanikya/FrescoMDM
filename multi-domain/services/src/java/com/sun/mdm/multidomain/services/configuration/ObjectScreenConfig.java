@@ -223,7 +223,7 @@ public abstract class ObjectScreenConfig {
             throws Exception {  
                 
         SearchResultsConfig sRC = getSearchResultsConfig(searchResultsConfigId);
-        int searchResultSummaryConfigID = sRC.getSearchResultsDetailID();
+        int searchResultSummaryConfigID = sRC.getSearchResultsDetailsID();
 
         Iterator<SearchResultsSummaryConfig> iter = mSearchResultsSummaryConfigs.iterator();	
         while(iter.hasNext()) {
@@ -242,7 +242,7 @@ public abstract class ObjectScreenConfig {
 
     
         SearchResultsConfig sRC = getSearchResultsConfig(searchResultsConfigId);
-        int searchResultDetailsConfigID = sRC.getSearchResultsDetailID();
+        int searchResultDetailsConfigID = sRC.getSearchResultsDetailsID();
         Iterator<SearchResultDetailsConfig> iter = mSearchResultDetailsConfigs.iterator();	
         while(iter.hasNext()) {
             SearchResultDetailsConfig sRDC = iter.next();

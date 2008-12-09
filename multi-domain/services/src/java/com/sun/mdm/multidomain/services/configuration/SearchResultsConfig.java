@@ -28,11 +28,6 @@
  */
 package com.sun.mdm.multidomain.services.configuration;
 
-import com.sun.mdm.index.util.Localizer;
-import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
-import net.java.hulp.i18n.Logger;
-
 import java.util.Iterator;
 import java.util.ArrayList;
 
@@ -45,16 +40,13 @@ import java.util.ArrayList;
  */
 public class SearchResultsConfig implements java.io.Serializable {
 
-    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.configuration.SearchResultsConfig");
-    private static transient final Localizer mLocalizer = Localizer.get();
-    
-    public static int DISABLED = -1;       // indicates if a search result summary or search 
+    public static int DISABLED = -1;        // indicates if a search result summary or search 
                                             // result detail screen is disabled.
     private ObjectNodeConfig mRootObj;      // object configuration
     private String mDisplayName;            // display name
     private int mSearchResultsID;           // search result screen configuration ID
-    private int mSearchResultsSummaryID;     // search result summary screen configuration ID
-    private int mSearchResultsDetailID;      // search result details screen configuration ID
+    private int mSearchResultsSummaryID;    // search result summary screen configuration ID
+    private int mSearchResultsDetailsID;    // search result details screen configuration ID
     private int mMaxRecords;                // maximum number of records to be returned
                                             // in a search
     private int mPageSize;                  // maximum number of records to be displayed
@@ -73,26 +65,8 @@ public class SearchResultsConfig implements java.io.Serializable {
         mRootObj = rootObj;
         mDisplayName = displayName;
         mSearchResultsID = searchResultsID;
-        // RESUME HERE
-        // is this required?
-/*        
-        if ((searchResultsSummaryID >= 0 && searchResultDetailsID >= 0) ||
-            (searchResultsSummaryID < 0 && searchResultDetailsID < 0))  {
-                
-            throw new Exception(mLocalizer.t("CFG531: Either Search Results Summary or " +
-                                             "Search Result Details must be defined. "));
-        }
-        if (searchResultsSummaryID >= 0)  {
-            mSearchResultsSummaryID = searchResultsSummaryID;
-            mSearchResultsDetailID = DISABLED;
-        }
-        if (searchResultDetailsID >= 0)  {
-            mSearchResultsDetailID = searchResultDetailsID;
-            mSearchResultsSummaryID = DISABLED;
-        }
- */
         mSearchResultsSummaryID = searchResultsSummaryID;
-        mSearchResultsDetailID = searchResultDetailsID;
+        mSearchResultsDetailsID = searchResultDetailsID;
         mPageSize = pageSize;
         mMaxRecords = maxRecords;
         mShowEUID = showEUID;
@@ -157,14 +131,14 @@ public class SearchResultsConfig implements java.io.Serializable {
     }
     
     /**
-     * Getter for the mSearchResultsDetailID attribute
+     * Getter for the mSearchResultsDetailsID attribute
      *
      * @return The unique identifier for a SearchResultDetailsConfig
      * object.  This is used to determine which SearchResultDetailsConfig object
      * to use for displaying the results of a search.
      */
-    public int getSearchResultsDetailID() {
-        return mSearchResultsDetailID;
+    public int getSearchResultsDetailsID() {
+        return mSearchResultsDetailsID;
     }
     
 
