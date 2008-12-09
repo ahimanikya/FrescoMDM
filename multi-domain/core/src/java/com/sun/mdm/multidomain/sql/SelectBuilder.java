@@ -31,8 +31,8 @@ import java.util.List;
  */
 public class SelectBuilder extends AbstractBuilder {
 
-    private List<String> columns = new ArrayList<String>();
-    private List<OrderBy> orderBy = new ArrayList<OrderBy>();
+    private final List<String> columns = new ArrayList<String>();
+    private final List<OrderBy> orderBy = new ArrayList<OrderBy>();
     private final List<Criteria> criteria = new ArrayList<Criteria>();
 
     @Override
@@ -56,6 +56,9 @@ public class SelectBuilder extends AbstractBuilder {
     }
 
     public String getCriteria() {
+        if (criteria.size() == 0) {
+            return "";
+        }
         StringBuffer sb = new StringBuffer(" WHERE ");
         for (Criteria crit : criteria) {
             sb.append(crit.write());
@@ -80,7 +83,9 @@ public class SelectBuilder extends AbstractBuilder {
     }
 
     public void addCriteria(Criteria crit) {
-        criteria.add(crit);
+        if (crit != null) {
+            criteria.add(crit);
+        }
     }
 
     public void addColumns(String columnName) {
@@ -90,6 +95,8 @@ public class SelectBuilder extends AbstractBuilder {
     }
 
     public void addOrderBy(OrderBy order) {
-        orderBy.add(order);
+        if (order != null) {
+            orderBy.add(order);
+        }
     }
 }
