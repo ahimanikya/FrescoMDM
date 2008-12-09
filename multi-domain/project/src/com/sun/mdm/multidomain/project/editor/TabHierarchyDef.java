@@ -511,6 +511,8 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             }
             model.fireTableDataChanged();
             mEditorMainApp.enableSaveAction(true);
+            jButtonDeleteExtendedAttribute.setEnabled(false);
+            jButtonEditExtendedAttribute.setEnabled(false);
         }
 }//GEN-LAST:event_jButtonDeleteExtendedAttributeonRemoveExtendedAttribute
 
