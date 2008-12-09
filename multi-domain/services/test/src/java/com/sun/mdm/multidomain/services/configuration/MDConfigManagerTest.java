@@ -50,7 +50,7 @@ public class MDConfigManagerTest extends TestCase {
         configManager = MDConfigManager.init();        
         if (configManager == null) { 
             System.out.println("Error: could not initialize the MDConfigmanager.");
-            assert (false);
+            assertTrue (false);
         }
 
     }
@@ -67,9 +67,9 @@ public class MDConfigManagerTest extends TestCase {
                 System.out.println("Error: expected "  + DOMAIN_SCREEN_CONFIGS_SIZE +
                                    " domain screen configurations but actually" +
                                    " retrieved " + size + " domain screen configurations.");
-                assert(false);
+                assertTrue(false);
             } else {
-                assert(true);
+                assertTrue(true);
                 // TODO
                 // count the screens for each domain screen configuration
             }
@@ -87,7 +87,7 @@ public class MDConfigManagerTest extends TestCase {
                 System.out.println("Error: expected "  + RELATIONSHIP_SCREEN_CONFIGS_SIZE +
                                    " relationship screen configurations but actually" +
                                    " retrieved " + size + " relationship screen configurations.");
-                assert(false);
+                assertTrue(false);
             } else {
                 
                 int relationshipConfigCount = 0;
@@ -104,7 +104,7 @@ public class MDConfigManagerTest extends TestCase {
                                        "but actually retrieved " + relationshipConfigCount + 
                                        " relationship screen configuration instances.");
                 } else {
-                    assert(true);
+                    assertTrue(true);
                 }
             }
         } catch(Exception ex) {
@@ -121,7 +121,7 @@ public class MDConfigManagerTest extends TestCase {
                 System.out.println("Error: expected "  + PAGE_DEF_CONFIG_SIZE +
                                    " screen object configurations but actually" +
                                    " retrieved " + size + " screen object configurations.");
-                assert(false);
+                assertTrue(false);
             } else {
                 // check the initial screen
                 int initialScreenID = configManager.getInitialScreenID();
@@ -129,7 +129,7 @@ public class MDConfigManagerTest extends TestCase {
                     System.out.println("Error: expected top level page definition"  +
                                        " to have an initial subscreen ID of "+ PAGE_DEF_INITIAL_SCREEN_ID +
                                        " but actually retrieved " + initialScreenID);
-                    assert(false);
+                    assertTrue(false);
                 }
                 Collection<ScreenObject> values = screenObjects.values();
                 for (ScreenObject scrObj : values) {
@@ -138,14 +138,14 @@ public class MDConfigManagerTest extends TestCase {
                         System.out.println("Error: expected an initial subscreen ID of " + 
                                            PAGE_DEF_INITIAL_SUBSCREEN_ID +
                                            " but actually retrieved " + initialSubscreenID);
-                        assert(false);
+                        assertTrue(false);
                     } else {
                         Collection<ScreenObject> subscreens = scrObj.getSubscreens();
                         int subscreenCount = subscreens.size();
                         if (subscreenCount != PAGE_DEF_SUBSCREEN_CONFIG_SIZE) {
                             System.out.println("Error: expected " + PAGE_DEF_SUBSCREEN_CONFIG_SIZE +
                                                " subscreens but actually retrieved " + subscreenCount);
-                            assert(false);
+                            assertTrue(false);
                         } else {
                             ArrayList<ScreenObject> subScreensList = new ArrayList<ScreenObject>(subscreens);
                             int expectedPageSize = 15;
@@ -159,7 +159,7 @@ public class MDConfigManagerTest extends TestCase {
                                                    " to have a page size of " + 
                                                    expectedPageSize + " but retrieved " +
                                                    " a page size of " + pageSize);
-                                assert(false);
+                                assertTrue(false);
                             }
                             int maxRecords = scrObj.getMaxRecords();
                             if (maxRecords != expectedMaxRecords) {
@@ -167,7 +167,7 @@ public class MDConfigManagerTest extends TestCase {
                                                    " to have a max records of " + 
                                                    expectedMaxRecords + " but retrieved " +
                                                    " a page size of " + maxRecords);
-                                assert(false);
+                                assertTrue(false);
                             }
 
                             String viewpath = scrObj.getViewPath();
@@ -176,7 +176,7 @@ public class MDConfigManagerTest extends TestCase {
                                                    " to have a view path of " + 
                                                    expectedViewPath + " but retrieved " +
                                                    " a view path of " + viewpath);
-                                assert(false);
+                                assertTrue(false);
                             }
                             
                             scrObj = subScreensList.get(1);
@@ -189,7 +189,7 @@ public class MDConfigManagerTest extends TestCase {
                                                    " to have a page size of " + 
                                                    expectedPageSize + " but retrieved " +
                                                    " a page size of " + pageSize);
-                                assert(false);
+                                assertTrue(false);
                             }
                             maxRecords = scrObj.getMaxRecords();
                             if (maxRecords != expectedMaxRecords) {
@@ -197,7 +197,7 @@ public class MDConfigManagerTest extends TestCase {
                                                    " to have a max records of " + 
                                                    expectedMaxRecords + " but retrieved " +
                                                    " a page size of " + maxRecords);
-                                assert(false);
+                                assertTrue(false);
                             }
                             viewpath = scrObj.getViewPath();
                             if (expectedViewPath.compareTo(viewpath) != 0) {
@@ -205,10 +205,10 @@ public class MDConfigManagerTest extends TestCase {
                                                    " to have a view path of " + 
                                                    expectedViewPath + " but retrieved " +
                                                    " a view path of " + viewpath);
-                                assert(false);
+                                assertTrue(false);
                             }
                             
-                            assert(true);
+                            assertTrue(true);
                         }
                     }
                 }
