@@ -1213,7 +1213,7 @@
                 <subscreen-configurations>
                     <subscreen>
                         <enable>true</enable>
-                        <root-object>unknown</root-object>
+                        <root-object>USAPatient</root-object>
                         <tab-name>Summary</tab-name>
                         <screen-id>0</screen-id>
                         <display-order>0</display-order>
@@ -1222,7 +1222,7 @@
                     </subscreen>
                     <subscreen>
                         <enable>true</enable>
-                        <root-object>unknown</root-object>
+                        <root-object>USAPatient</root-object>
                         <tab-name>Reports</tab-name>
                         <screen-id>1</screen-id>
                         <display-order>1</display-order>
@@ -1231,7 +1231,7 @@
                     </subscreen>
                     <subscreen>
                         <enable>true</enable>
-                        <root-object>unknown</root-object>
+                        <root-object>USAPatient</root-object>
                         <tab-name>Compare EUIDs</tab-name>
                         <screen-id>2</screen-id>
                         <display-order>2</display-order>
@@ -1240,7 +1240,7 @@
                     </subscreen>
                     <subscreen>
                         <enable>true</enable>
-                        <root-object>unknown</root-object>
+                        <root-object>USAPatient</root-object>
                         <tab-name>Lookup EUID</tab-name>
                         <screen-id>3</screen-id>
                         <display-order>3</display-order>
