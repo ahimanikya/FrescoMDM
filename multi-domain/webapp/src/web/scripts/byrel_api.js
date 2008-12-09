@@ -326,6 +326,7 @@ function selectTargetSearchTypeFields(data){
  * Scripts for Main (listing, details) screen <START>
  */
 var summaryFields = {}; // To hold summary fields for domains.
+var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
 function searchRelationships() {
     var sourceDomain = document.getElementById("select_sourceDomain").value;
     var targetDomain = document.getElementById("select_targetDomain").value;
@@ -351,6 +352,11 @@ function searchRelationships() {
     DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
       loadSummaryFields(dataFromServer, targetDomain); }
     });
+    
+    RelationshipDefHandler.getRelationshipDefByName(
+      relationshipDef, sourceDomain, targetDomain, { callback:function(dataFromServer) {
+      loadRelationshipDefAttributes(dataFromServer, relationshipDef);}
+    });
 
     RelationshipHandler.searchRelationships (sourceDomainSearch, targetDomainSearch, relationshipDefSearch, searchResultsCallback);
 
@@ -366,6 +372,10 @@ function loadSummaryFields(data, domainName) {
      }
      //alert(fieldsList);
      summaryFields[domainName] = fieldsList;
+}
+function loadRelationshipDefAttributes (data, relationshipDefName) {
+    //alert("relationship def: " + data);
+    cachedRelationshipDefs[relationshipDefName] = data;
 }
 
 var cachedSearchResults = null; // Store the search results (relationships);
@@ -505,10 +515,10 @@ function populateRelationshipDetails_Callback (data) {
         }
     }
     // Populate relationship attributes.
+    var relationshipDef = cachedRelationshipDefs["worksfor"];
+    alert(data.relationshipRecord.attributes[0].name + " : " + relationshipDef.extendedAttributes[0].name);
     return;
-    alert("Source record: " + data.sourceRecord.attributes[0].name + " : " + data.sourceRecord.attributes[0].value);
-    alert("Target record: " + data.targetRecord.attributes[0].name + " : " + data.targetRecord.attributes[0].value);
-    alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
+    //alert("Relationship: " + data.relationshipRecord.attributes[0].name + " : " + data.relationshipRecord.attributes[0].value);
     alert("relationship attributes " + data.relationshipRecord.attributes.length);
 }
 function deleteRelationships() {
