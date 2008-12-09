@@ -28,15 +28,4 @@ public interface RelationshipDao
 	 * Deletes a single row in the RelationshipDto table.
 	 */
 	public void delete(long pk) throws RelationshipDaoException;
-
-	/** 
-	 * Sets the value of maxRows
-	 */
-	public void setMaxRows(int maxRows);
-
-	/** 
-	 * Gets the value of maxRows
-	 */
-	public int getMaxRows();
-
 }

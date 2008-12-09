@@ -10,8 +10,6 @@ import java.sql.*;
  */
 public abstract class AbstractDAO {
 
-    public abstract long getPrimaryKey();
-
     public byte[] getBlobColumn(ResultSet rs, int columnIndex)
             throws SQLException {
         try {
