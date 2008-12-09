@@ -81,6 +81,11 @@
                                         <include name="net.java.hulp.i18n.jar"></include>
                                     </fileset>
                                 </copy>      
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm">
+                                    <fileset dir="${basedir}/../../index-core/target">
+                                        <include name="index-core.jar"></include>
+                                    </fileset>
+                                </copy>                                      
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain">
                                     <fileset dir="${basedir}/../webapp/target">
                                         <include name="multidomain-webapp.war"></include>
