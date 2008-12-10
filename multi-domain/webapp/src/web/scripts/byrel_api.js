@@ -823,7 +823,6 @@ function ByRelAddRelationship(){
      {
            purgeDate =  document.getElementById('add_predefined_purgeDate').value;
      }
-    alert(startDate);
    var SourceDomain = document.getElementById("select_sourceDomain").value;
    var TargetDomain = document.getElementById("select_targetDomain").value;
    var RelationshipDefName = document.getElementById("select_relationshipDefs").value;
@@ -832,9 +831,22 @@ function ByRelAddRelationship(){
    
     for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
       var attributeName = relationshipDef.extendedAttributes[cc].name;
-      //alert("attributeName---"+attributeName);
+      var attributeId = document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name);
       var attributeValue =  document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name).value;
-      //alert("attributeValue---"+attributeValue);
+      var attributeType = relationshipDef.extendedAttributes[cc].dataType;
+        if(getBoolean(relationshipDef.extendedAttributes[cc].isRequired)) {
+          if( isEmpty (attributeValue) ) {
+              alert("Enter value for " + attributeName );
+              attributeId.focus();
+              return ;
+          }
+      }
+      if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
+          alert(attributeValue + " is not a valid value for " + attributeName + " attribute");
+          attributeId.focus();
+          return;
+      }
+      
       relationshipCustomAttributes.push( {attributeName : attributeValue} );
      }
     
@@ -865,7 +877,7 @@ function ByRelAddRelationship(){
                 newRelationshipRecord.purgeDate = purgeDate;
                 newRelationshipRecord.attributes = relationshipCustomAttributes ;
                     
-                RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB)
+                RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB);
               }    
             }   
 
@@ -911,7 +923,7 @@ function updateRelationship () {
       var attributeId = document.getElementById("edit_custom_" + relationshipDefAttributes[i].name);
       var attributeValue =  document.getElementById("edit_custom_" + relationshipDefAttributes[i].name).value;
       var attributeType = relationshipDefAttributes[i].dataType;
-      //var requiredFields = relationshipDefAttributes[i].isRequired;
+      
       if(getBoolean(relationshipDefAttributes[i].isRequired)) {
           if( isEmpty (attributeValue) ) {
               alert("Enter value for " + attributeName );
@@ -924,7 +936,6 @@ function updateRelationship () {
           attributeId.focus();
           return;
       }
-      //validateCustomAttributes(attributeName,attributeId,attributeValue,requiredFields);
       updateRelationshipCustomAttributes.push( {attributeName : attributeValue} );
      }
 
@@ -941,7 +952,7 @@ function updateRelationship () {
       updateRelaltionshipRecords.purgeDate = purgeDate;
       updateRelaltionshipRecords.attributes = updateRelationshipCustomAttributes ;
 
-      RelationshipHandler.addRelationship(updateRelaltionshipRecords,updateRelationshipCB)
+      RelationshipHandler.addRelationship(updateRelaltionshipRecords,updateRelationshipCB);
 
 }
 
