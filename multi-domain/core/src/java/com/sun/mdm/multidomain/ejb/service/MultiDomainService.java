@@ -112,6 +112,9 @@ public interface MultiDomainService {
      */
     public void deleteRelationship(long relationshipid) 
         throws ProcessingException, UserException;
+
+     public void deleteRelationship(Relationship relationship)
+        throws ProcessingException, UserException;
             
     /**
      * Delete an existing relationship for the given source system LID and target system LID and relationship.
