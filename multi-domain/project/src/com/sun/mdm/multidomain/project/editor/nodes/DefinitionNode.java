@@ -187,7 +187,7 @@ public class DefinitionNode extends AbstractNode {
         mDefinition.addExtendedAttribute(newAttr);
         int displayOrder = mWebDefinition.getExtendedRelFieldRefs().size() + 1;
         RelationFieldReference fieldRef = new RelationFieldReference(newAttr.getName(), newAttr.getName(),
-                displayOrder, 1, "TextBox", null, newAttr.getDataType(), false);
+                displayOrder, 32, "TextBox", null, newAttr.getDataType(), false);
         mWebDefinition.addExtendedRelFieldRef(fieldRef);
         mTabWebManagerDefinition.addRelationFieldReference(fieldRef);
     }
