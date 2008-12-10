@@ -42,14 +42,7 @@
                           <Component id="jBtnDown" alignment="1" min="-2" pref="30" max="-2" attributes="1"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="onOK" linkSize="1" min="-2" pref="57" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="onCancel" linkSize="1" min="-2" pref="88" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jPanelFieldProperties" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jPanelFieldProperties" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -81,12 +74,7 @@
                   </Group>
                   <Component id="jPanelFieldProperties" alignment="0" min="-2" max="-2" attributes="1"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="onCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="onOK" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -242,9 +230,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtDisplayName">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onDisplayNameActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelDisplayOrder">
           <Properties>
@@ -266,9 +251,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtMaxLength">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onMaxLengthActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelDataType">
           <Properties>
@@ -281,9 +263,6 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onjTxtDataType"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelInputMask">
           <Properties>
@@ -293,9 +272,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtInputMask">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onInputMask"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelValueMask">
           <Properties>
@@ -305,9 +281,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtValueMask">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onValueMask"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRBSensitive">
           <Properties>
@@ -321,22 +294,5 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="onOK">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_OK" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onOKActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="onCancel">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Cancel" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
   </SubComponents>
 </Form>
