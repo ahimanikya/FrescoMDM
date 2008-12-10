@@ -42,7 +42,8 @@ public final class DBSchema {
         HIERARCHY_DEF("HIERARCHY_DEF", "HIERARCHY_DEF_ID"),
         HIERARCHY_NODE_EA("HIERARCHY_NODE_EA", "EA_ID"),
         HIERARCHY_NODE("HIERARCHY_NODE", "HIERARCHY_NODE_ID"),
-        HIERARCHY_NODE_EAV("HIERARCHY_NODE_EAV", "EA_ID"),;
+        HIERARCHY_NODE_EAV("HIERARCHY_NODE_EAV", "EA_ID"),
+        DOMAINS("DOMAINS", "DOMAIN_NAME"),;
         public final String tableName;
         public final String pkColumnName;
 
@@ -306,8 +307,38 @@ public final class DBSchema {
     }
 
     /*
+     * Columns for DOMAINS table
+     * */
+    public static enum DOMAINS {
+
+        DOMAIN_NAME("DOMAIN_NAME"),
+        CONTEXT_FACTORY("CONTEXT_FACTORY"),
+        URL("URL"),
+        PRINCIPAL("PRINCIPAL"),
+        CREDENTIAL("CREDENTIAL"),;
+        public final String columnName;
+        public final String prefixedColumnName;
+
+        DOMAINS(String col) {
+            this.columnName = col;
+            StringBuffer sb = new StringBuffer(getTableName());
+            sb.append(".");
+            sb.append(col);
+            this.prefixedColumnName = sb.toString();
+        }
+
+        public static String getTableName() {
+            return DBTable.DOMAINS.tableName;
+        }
+
+        public static String getPKColumName() {
+            return DBTable.DOMAINS.pkColumnName;
+        }
+    }
+    /*
      * No instantiation
      * */
+
     private DBSchema() {
     }
 }
