@@ -314,6 +314,17 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
       function(data) { return data; },
       function(data) { return data; }
     ];
+
+    // Destroy previously created widgets.
+    if(attributesArray != null && attributesArray.length > 0) {
+        for(i=0; i<attributesArray.length; i++) {            
+            var fName =  prefixToUse + "_" + attributesArray[i].name;
+            //alert("destroying " + fName);
+            if(dijit.byId(fName) != undefined && dijit.byId(fName) != null ) {
+               dijit.byId(fName).destroy();
+            }
+        }
+    }
     dwr.util.removeAllRows(tableId);
     if(attributesArray != null && attributesArray.length > 0) {
       dwr.util.addRows(tableId, attributesArray, editCustomAttrFuncs, {
