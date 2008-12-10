@@ -43,8 +43,7 @@ with the Sun Java System Application Server or GlassFish Admin Console.</p><p>Pe
 
 <div class="indent"><a name="dsgn_eview-database-driv_t"></a><h3>Step 1: Add the MySQL or Oracle Driver to the Application Server</h3>
 
-<hr><p><b>Note - </b>MySQL is only supported in Java CAPS 6 Update 1.</p>
-<hr>
+
 <p>If you are using a MySQL or Oracle database, you need to
 manually install or copy the database driver to the application server environment. If
 you are using a SQL Server database, you can skip this step.</p><p>For Oracle, you can either install the driver on the application server or
@@ -56,8 +55,6 @@ MySQL from Java. You can access the driver at <a href="http://dev.mysql.com/down
 
 <div class="indent"><a name="dsgn_eview-database-pool_t"></a><h3>Step 2: Create two JDBC Connection Pools</h3>
 
-<hr><p><b>Note - </b>MySQL is only supported in Java CAPS 6 Update 1.</p>
-<hr>
 <p>The JDBC connection pools provide connections to the master index database. You need
 to create two connection pools that are configured in the same way.</p><p>Before proceeding, make sure you have the relevant information about the master index
 database (such as the database name, URL, and administrator login credentials).</p>
