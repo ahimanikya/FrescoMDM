@@ -28,7 +28,7 @@
     <div class="Content">
            <table border="0" width="100%" >
                <tr>
-                   <td class="generalTextBold" width="30%">
+                   <td class="generalTextBold" width="30%" >
                        <f:message key="source_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold" width="70%">

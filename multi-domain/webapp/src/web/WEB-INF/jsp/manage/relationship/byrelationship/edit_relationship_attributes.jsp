@@ -21,11 +21,8 @@
 
 </script>
 <body class="mdwm">
-<div dojoType="dijit.GenericTitlePane" class="MainBox"  
-    title="<f:message key="relationship_attributes_text" /><f:message key="colon_symbol" /> Centerpoint --> George Karlin">
-   <!-- <div class="TitleBar" title="<f:message key="relationship_attributes_text" />">
-    <f:message key="relationship_attributes_text" /><f:message key="colon_symbol" /></div>
-    -->
+<div dojoType="dijit.GenericTitlePane" class="MainBox"  id="relationshipRecordDetailsPane"
+    title="<f:message key="relationship_attributes_text" /><f:message key="colon_symbol" />">
     
     <div class="Content">
       <table border="0" width="100%">

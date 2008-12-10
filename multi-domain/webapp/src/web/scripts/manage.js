@@ -24,6 +24,20 @@ function testCB(data) {
         }
      }
 }
+
+// General functions for Manage Relationship Screens
+
+// function to get HTML view of the relationship def name, along with direction icon.
+function getRelationshipDefDirectionIcon (isBiDirection) {
+    var strHTML = "";
+    if(getBoolean (isBiDirection) ) {
+        strHTML += "<img src='images/icons/relationship-both.png' hspace='3'>";
+    } else {
+        strHTML += "<img src='images/icons/relationship-right.png' hspace='3'>";
+    }
+    return strHTML;
+}
+
 // Manage screen related scripts
 
  function showRecordFullDetails(summaryId, detailsId, showDetailsFlag){

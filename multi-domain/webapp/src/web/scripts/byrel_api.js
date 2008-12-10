@@ -344,6 +344,20 @@ function searchRelationships() {
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
     
     hideByRelSelectDialog(); // hide the select dialog...
+    //
+    // Load fields for summary display for source & target domain
+    DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
+      loadSummaryFields(dataFromServer, sourceDomain); }
+    });
+    DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
+      loadSummaryFields(dataFromServer, targetDomain); }
+    });
+    
+    RelationshipDefHandler.getRelationshipDefByName(
+      relationshipDef, sourceDomain, targetDomain, { callback:function(dataFromServer) {
+      cacheRelationshipDefAttributes(dataFromServer, relationshipDef);}
+    });
+    
     //alert(sourceDomain + "\n" + targetDomain + "\n" + relationshipDef);
     document.getElementById("selectedSourceDomain").innerHTML = sourceDomain;
     document.getElementById("selectedRelationshipDef").innerHTML = relationshipDef;
@@ -357,20 +371,6 @@ function searchRelationships() {
     var sourceDomainSearch = {name: sourceDomain}; 
     var targetDomainSearch = {name: targetDomain};
     var relationshipDefSearch = {name: relationshipDef};
-    
-    // Load fields for summary display for source & target domain
-    DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
-      loadSummaryFields(dataFromServer, sourceDomain); }
-    });
-    DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
-      loadSummaryFields(dataFromServer, targetDomain); }
-    });
-    
-    RelationshipDefHandler.getRelationshipDefByName(
-      relationshipDef, sourceDomain, targetDomain, { callback:function(dataFromServer) {
-      loadRelationshipDefAttributes(dataFromServer, relationshipDef);}
-    });
-
     RelationshipHandler.searchRelationships (sourceDomainSearch, targetDomainSearch, relationshipDefSearch, searchResultsCallback);
 
 }
@@ -386,10 +386,22 @@ function loadSummaryFields(data, domainName) {
      //alert(fieldsList);
      summaryFields[domainName] = fieldsList;
 }
-function loadRelationshipDefAttributes (data, relationshipDefName) {
+function cacheRelationshipDefAttributes (data, relationshipDefName) {
     //alert("relationship def: " + data);
     cachedRelationshipDefs[relationshipDefName] = data;
+    
+    // Update the view with relationship Name along with direction icon.
+    var strHTML = "<table cellspacing='0' cellpadding='0'><tr><td valign='middle'>" + relationshipDefName;
+    strHTML += "</td><td valign='middle'>";
+    if(getBoolean (data.biDirection) ) {
+        strHTML += "<img src='images/icons/relationship-both.png' hspace='3'>";
+    } else {
+        strHTML += "<img src='images/icons/relationship-right.png' hspace='3'>";
+    }
+    strHTML +="</td></tr></table>";
+    document.getElementById("selectedRelationshipDef").innerHTML = strHTML;
 }
+
 
 var cachedSearchResults = null; // Store the search results (relationships);
 function searchResultsCallback(data) {
@@ -443,18 +455,31 @@ var relationListingFuncs = [
 
 function populateRelationshipDetails(relationshipId, indexNum) {
     //alert("populating relationship details for relationship id: " + relationshipId);
+    var sourceDomain = cachedSearchResults[indexNum].sourceDomain;
+    var targetDomain = cachedSearchResults[indexNum].targetDomain;
+    var relationshipDefName = cachedSearchResults[indexNum].name;
+    
     var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
     var targetPane = dijit.byId("targetRecordDetailsTitlePane");
     if(cachedSearchResults != null && cachedSearchResults[indexNum]!= null) {
         sourcePane.attr("title",cachedSearchResults[indexNum].sourceHighLight);
         targetPane.attr("title",cachedSearchResults[indexNum].targetHighLight);
-    }  
-    var sourceDomain = cachedSearchResults[indexNum].sourceDomain;
-    var targetDomain = cachedSearchResults[indexNum].targetDomain;
-    var relationshipDef = cachedSearchResults[indexNum].name;
-    var relationshipView = {name:relationshipDef, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
+        var relationshipDef = cachedRelationshipDefs[relationshipDefName];
+    
+        var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
+        var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>Relationship Attributes: ";
+        strRecordPaneTitleHTML += cachedSearchResults[indexNum].sourceHighLight;
+        strRecordPaneTitleHTML += " " + relationshipDef.name ;
+        strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
+        strRecordPaneTitleHTML += " " + cachedSearchResults[indexNum].targetHighLight;
+        strRecordPaneTitleHTML += "</td></tr></table>"
+        relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
+    }
+
+    var relationshipView = {name:relationshipDefName, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
     RelationshipHandler.getRelationship (relationshipView, populateRelationshipDetails_Callback);
 }
+
 var cachedRelationshipRecordDetails ;
 function populateRelationshipDetails_Callback (data) {
     var summaryFieldCount = 0;
@@ -531,6 +556,7 @@ function populateRelationshipDetails_Callback (data) {
     }
     // Populate relationship attributes.
     var relationshipDef = cachedRelationshipDefs[data.relationshipRecord.name];
+
     
     var startDate = getBoolean(relationshipDef.startDate);
     var endDate = getBoolean(relationshipDef.endDate);
