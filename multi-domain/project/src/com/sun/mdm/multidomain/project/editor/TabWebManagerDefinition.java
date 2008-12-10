@@ -569,6 +569,7 @@ private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDown
     model.addRow(iSelectedRow, movedRow);
     jTxtDisplayOrder.setText(String.valueOf(movedRow.getDisplayOrder()));
     mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    jBtnUp.setEnabled(true);
 }//GEN-LAST:event_onDownBtn
 
 private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
@@ -584,6 +585,7 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
     mTableFields.setRowSelectionInterval(iSelectedRow, iSelectedRow);
     movedDownow.setDisplayOrder(iSelectedRow + 1);
     jTxtDisplayOrder.setText(String.valueOf(movedUpRow.getDisplayOrder()));
+    jBtnDown.setEnabled(true);
 }//GEN-LAST:event_onUpBtn
 
     private void setRelFieldRefs(JTable table) {
