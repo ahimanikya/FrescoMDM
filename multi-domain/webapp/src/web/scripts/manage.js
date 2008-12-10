@@ -324,23 +324,54 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
           cellCreator:function(options) {
             var td = document.createElement("td");
             var tempData = options.data;
+            
             if(options.cellNum == 1) {
-                var field = document.createElement("input");
-                field.type ="text";
-                field.name = prefixToUse + "_" + tempData.name;
-                field.id = prefixToUse + "_" + tempData.name;
-                td.appendChild (field);
-                /*var date_props = {
-                  name: "date_field",
-                  promptMessage: "mm/dd/yyyy",
-                  invalidMessage: "Invalid date.",
-                  width:"100px"
-                }
-                date_field = new dijit.form.DateTextBox(date_props, field);
-                */
-                options.data = null;
+               if(tempData.dataType=="date"){
+                   var datefield = document.createElement("input");
+                    // This should be date field...
+                    datefield.type = "text";
+                    datefield.name = prefixToUse + "_" + tempData.name;
+                    datefield.id = prefixToUse + "_" + tempData.name;
+                    datefield.size = 5; 
+                    datefield.style.width = "100px";
+                    td.appendChild(datefield);
+                    var props = {
+                          name: "custom_date_attr",
+                          promptMessage: "mm/dd/yyyy",
+                          invalidMessage: "Invalid date.",
+                          //constraints: "{selector:'date', datePattern:'mm/dd/yyyy'}",
+                          width:"150px"
+                    }; 
+                    datefield = new dijit.form.DateTextBox(props, datefield);
+                    
+               }else if(tempData.dataType == "boolean"){
+                var booleanField = document.createElement("select");
+                var tOption = document.createElement ("option");
+                tOption.text = "true"; 
+                tOption.value = "true";
+                var fOption = document.createElement ("option");
+                fOption.text = "false"; 
+                fOption.value = "false";
+                booleanField.options[0] = tOption;
+                booleanField.options[1] = fOption;
+                booleanField.name = prefixToUse + "_" + tempData.name;
+                booleanField.id = prefixToUse + "_" + tempData.name;
+                td.appendChild(booleanField);
+               }
+               else{
+                  var field = document.createElement("input");
+                  field.type ="text";
+                  field.name = prefixToUse + "_" + tempData.name;
+                  field.id = prefixToUse + "_" + tempData.name;
+                  td.appendChild (field);
+               }
+                  options.data = null;
             } else {
-                options.data = "<span class='label'>" + tempData.name +  "</span>";
+                if(getBoolean(tempData.isRequired) == true){
+                   options.data = "<span class='label'>" + tempData.name + " *" +  "</span>"; 
+                }else{
+                   options.data = "<span class='label'>" + tempData.name +  "</span>";
+                }
             }            
             return td;
           },
@@ -348,6 +379,7 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
         });
     } else {
     }
+   
 }
 
 // Function to populate data in custom attributes section, used in Edit relationship attributes section.

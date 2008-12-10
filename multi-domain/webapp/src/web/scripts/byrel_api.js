@@ -908,10 +908,26 @@ function updateRelationship () {
      }
     for(i =0; i < relationshipDefAttributes.length; i++) {
       var attributeName = relationshipDefAttributes[i].name;
+      var attributeId = document.getElementById("edit_custom_" + relationshipDefAttributes[i].name);
       var attributeValue =  document.getElementById("edit_custom_" + relationshipDefAttributes[i].name).value;
+      var attributeType = relationshipDefAttributes[i].dataType;
+      //var requiredFields = relationshipDefAttributes[i].isRequired;
+      if(getBoolean(relationshipDefAttributes[i].isRequired)) {
+          if( isEmpty (attributeValue) ) {
+              alert("Enter value for " + attributeName );
+              attributeId.focus();
+              return ;
+          }
+      }
+      if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
+          alert(attributeValue + " is not a valid value for " + attributeName + " attribute");
+          attributeId.focus();
+          return;
+      }
+      //validateCustomAttributes(attributeName,attributeId,attributeValue,requiredFields);
       updateRelationshipCustomAttributes.push( {attributeName : attributeValue} );
      }
-    
+
     // Make DWR API Call to updateRelationship
     
       updateRelaltionshipRecords.name = relationshipDef;
@@ -932,6 +948,33 @@ function updateRelationship () {
 function updateRelationshipCB(data){
     alert("Relationship Attributes Updated......   "+data)
 }
+
+function isValidCustomAttribute(attributeType, attributeValue) {
+    // Implement validation based on type.
+    if(isEmpty(attributeValue)) return true;
+     if(attributeType == "date" ||attributeType == "boolean" ){
+         return true;
+      }else if(attributeType == "int" ) {
+          if( ! isInteger(attributeValue)){
+              return false;
+          }
+      } else if(attributeType == "float" ) {
+         if( isNaN(attributeValue)){
+              return false;
+          }          
+      }else if(attributeType == "char"){
+          if(attributeValue.length == 1){
+              return true;
+          }
+          else{
+              return false;
+          }
+      } else { 
+          return true; 
+      }
+      return true;
+}
+
 
 /*
  * Scripts for Add Relationship screen <END>

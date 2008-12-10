@@ -61,3 +61,13 @@ Array.prototype.contains = function (element) {
   }
   return false;
 }
+    
+
+function isEmpty (value) {
+    if(value == null || value == "") return true;
+    return false;
+}
+function isInteger(value) {
+    if(value == null) return true;
+    return  (value.toString().search(/^-?[0-9]+$/) == 0);
+}
