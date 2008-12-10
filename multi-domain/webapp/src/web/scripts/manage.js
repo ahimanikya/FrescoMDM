@@ -60,7 +60,6 @@ function _deleteChildWidgets( parentId) {
     var parentObj = dijit.byId(parentId);
     if(parentObj == null) return;
     var childWidgets = parentObj.getDescendants();
-    alert(" >>> " + childWidgets.length);
     for (i=0; i<childWidgets.length; i++) {
         childWidgets[i].destroyRecursive(false);
     }
