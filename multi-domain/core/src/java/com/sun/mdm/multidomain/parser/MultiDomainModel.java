@@ -539,7 +539,7 @@ public class MultiDomainModel {
         }
     }
     
-    private void addDatatypeColumn(Map datatypeColumns, String datatype) {
+    private String addDatatypeColumn(Map datatypeColumns, String datatype) {
         String columns = "1";
         if (datatypeColumns.containsKey(datatype)) {
             columns = (String) datatypeColumns.get(datatype);
@@ -547,6 +547,7 @@ public class MultiDomainModel {
             columns = Integer.toString(i);
         }
         datatypeColumns.put(datatype, columns);
+        return columns;
     }
     
     private Element getDataTypesToStr(Document xmlDoc) throws Exception {
@@ -555,15 +556,16 @@ public class MultiDomainModel {
             ArrayList <Attribute> attrs = definition.getExtendedAttributes();
             for (Attribute attr : attrs) {
                 String datatype = attr.getDataType();
-                addDatatypeColumn(datatypeColumns, datatype);
+                String columns = addDatatypeColumn(datatypeColumns, datatype);
+                attr.setColumnName(datatype.toUpperCase() + "_" + columns);
             }
             setDataTypeMaxColumns(datatypeColumns);
         }
         Element domains = xmlDoc.createElement(this.mTagDataTypes);
         for (Object key : mMapDataTypes.keySet()) {
             Element datatype = xmlDoc.createElement(this.mTagDataType);
-            datatype.setAttribute(mTagName, (String) key);
             datatype.setAttribute(mTagColumns, (String) mMapDataTypes.get(key));
+            datatype.setAttribute(mTagName, (String) key);
             domains.appendChild(datatype);
         }
         
@@ -668,8 +670,9 @@ public class MultiDomainModel {
             eName.appendChild(xmlDoc.createTextNode(attr.getName()));
             attrElm.appendChild(eName);
             
+            String columnName = attr.getColumnName();
             Element eColumnName = xmlDoc.createElement(mTagColumnName);
-            eColumnName.appendChild(xmlDoc.createTextNode(attr.getColumnName()));
+            eColumnName.appendChild(xmlDoc.createTextNode(columnName));
             attrElm.appendChild(eColumnName);
             
             Element eDataType = xmlDoc.createElement(mTagDataType);
