@@ -14,7 +14,7 @@
                            <input type="radio" value="by_relationship" name="m_relationship" checked> By Relationship <Br>
                            <input type="radio" value="by_record" name="m_relationship" onclick="changeViewToByRecord('mRelatioshipTab');"> By Record
                        </td>
-                       <td><input type="button" value="Select" onclick="showByRelSelectDialog();"></td>
+                       <td><input type="button" value="Select" onclick="showSelectDialog();"></td>
                    </tr>
                </table>
                

@@ -56,9 +56,11 @@ function changeViewToByRecord(contentPaneId) {
     _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRecordMainPage);
 }
-function _deleteChildWidgets( contentPaneId) {
-    var contentPaneObj = dijit.byId(contentPaneId);
-    var childWidgets = contentPaneObj.getDescendants();
+function _deleteChildWidgets( parentId) {
+    var parentObj = dijit.byId(parentId);
+    if(parentObj == null) return;
+    var childWidgets = parentObj.getDescendants();
+    alert(" >>> " + childWidgets.length);
     for (i=0; i<childWidgets.length; i++) {
         childWidgets[i].destroyRecursive(false);
     }
@@ -355,12 +357,20 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
     var purgeDate =(getBoolean(dataObj.purgeDate));
     
     //alert(startDate + "," + endDate +", " + purgeDate);
+
+    // Destroy the datetextbox widgets if already registered
+    if(dijit.byId(prefixToUse + "_startDate") != undefined && dijit.byId(prefixToUse + "_startDate") != null ) {
+      dijit.byId(prefixToUse + "_startDate").destroy();
+    }
+    if(dijit.byId(prefixToUse + "_endDate") != undefined && dijit.byId(prefixToUse + "_endDate") != null ) {
+      dijit.byId(prefixToUse + "_endDate").destroy();
+    }
+    if(dijit.byId(prefixToUse + "_purgeDate") != undefined && dijit.byId(prefixToUse + "_purgeDate") != null ) {
+      dijit.byId(prefixToUse + "_purgeDate").destroy();
+    }    
+
     dwr.util.removeAllRows(tableId);
     PredefinedrowCount = 0;
-    var temp = document.getElementById(prefixToUse + "_startDate");
-    var temp2 = dijit.byId(prefixToUse + "_startDate");
-    alert(temp2);
-    //alert(prefixToUse + "_startDate : " + temp);
     if(startDate==true&& endDate==true){ // condition for Start and End dates of Predefined Attributes
         var SecondRow = document.getElementById(tableId).insertRow(PredefinedrowCount ++);
         SecondRow.insertCell(0);
@@ -385,7 +395,6 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
             width:"100px"
         }
         startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
-        
         SecondRow.cells[3].innerHTML="To";
         var endDate_textBox = document.createElement("input");
         endDate_textBox.type="text";
@@ -401,7 +410,6 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
             width:"100px"
         }
         endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox);
-        
     } else if (startDate == true) { // condition for Start Date of Predefined Attributes
         var SecondRowStart = document.getElementById(tableId).insertRow(PredefinedrowCount ++);
         SecondRowStart.insertCell(0);
