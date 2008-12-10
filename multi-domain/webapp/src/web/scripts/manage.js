@@ -47,23 +47,32 @@ var byRelationshipMainPage = "m_byrelationship_main.htm";
 var byRecordMainPage = "m_byrecord_main.htm";
 function changeViewToByRelationship(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
-    contentPaneObj.destroyDescendants(false);
+    _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRelationshipMainPage);
-    // Show the Select overlay dialog
     
 }
 function changeViewToByRecord(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
-    contentPaneObj.destroyDescendants(false);
+    _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRecordMainPage);
 }
-
-function showByRelSelectDialog() {
-
-    var selectDialog = dijit.byId("byrel_select");
-    selectDialog.show();
-    
+function _deleteChildWidgets( contentPaneId) {
+    var contentPaneObj = dijit.byId(contentPaneId);
+    var childWidgets = contentPaneObj.getDescendants();
+    for (i=0; i<childWidgets.length; i++) {
+        childWidgets[i].destroyRecursive(false);
+    }
 }
+
+function showSelectDialog() {
+    var selectDialog = dijit.byId("byrel_select");
+    if(selectDialog != null)
+      selectDialog.show();
+}
+//function showByRelSelectDialog() {
+//    var selectDialog = dijit.byId("byrel_select");
+//    selectDialog.show();
+//}
 
 function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
@@ -349,6 +358,8 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
     dwr.util.removeAllRows(tableId);
     PredefinedrowCount = 0;
     var temp = document.getElementById(prefixToUse + "_startDate");
+    var temp2 = dijit.byId(prefixToUse + "_startDate");
+    alert(temp2);
     //alert(prefixToUse + "_startDate : " + temp);
     if(startDate==true&& endDate==true){ // condition for Start and End dates of Predefined Attributes
         var SecondRow = document.getElementById(tableId).insertRow(PredefinedrowCount ++);

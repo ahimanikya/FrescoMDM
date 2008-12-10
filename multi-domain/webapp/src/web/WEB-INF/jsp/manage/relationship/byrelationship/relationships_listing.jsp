@@ -32,7 +32,7 @@
                        <f:message key="source_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold" width="70%">
-                       <div id="selectedSourceDomain" dojoType="dijit.layout.ContentPane">&nbsp;</div>
+                       <div id="selectedSourceDomain" >&nbsp;</div>
                    </td>
                </tr>
                <tr>
@@ -40,7 +40,7 @@
                       <f:message key="relationship" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold">
-                       <div id="selectedRelationshipDef" dojoType="dijit.layout.ContentPane">&nbsp;</div>
+                       <div id="selectedRelationshipDef">&nbsp;</div>
                    </td>
                </tr>
                <tr>
@@ -48,7 +48,7 @@
                        <f:message key="target_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold">
-                       <div id="selectedTargetDomain" dojoType="dijit.layout.ContentPane"></div>
+                       <div id="selectedTargetDomain"></div>
                    </td>
                </tr>
                <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>

@@ -345,10 +345,12 @@ function searchRelationships() {
     
     hideByRelSelectDialog(); // hide the select dialog...
     //alert(sourceDomain + "\n" + targetDomain + "\n" + relationshipDef);
-
-    dijit.byId("selectedSourceDomain").setContent (sourceDomain);
-    dijit.byId("selectedRelationshipDef").setContent (relationshipDef);
-    dijit.byId("selectedTargetDomain").setContent (targetDomain);
+    document.getElementById("selectedSourceDomain").innerHTML = sourceDomain;
+    document.getElementById("selectedRelationshipDef").innerHTML = relationshipDef;
+    document.getElementById("selectedTargetDomain").innerHTML = targetDomain;
+    //dijit.byId("selectedSourceDomain").setContent (sourceDomain);
+    //dijit.byId("selectedRelationshipDef").setContent (relationshipDef);
+    //dijit.byId("selectedTargetDomain").setContent (targetDomain);
     
     // make DWR call to search for relationships
     // [TBD] need to include search criteria attributes as well.
