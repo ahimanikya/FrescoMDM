@@ -24,8 +24,10 @@
 package com.sun.mdm.multidomain.project.editor;
 
 import org.openide.util.NbBundle;
+import org.openide.util.Utilities;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.ImageIcon;
 
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
@@ -39,6 +41,12 @@ import com.sun.mdm.multidomain.parser.Attribute;
  * @author  kkao
  */
 public class TabRelationshipDef extends javax.swing.JPanel {
+    static final ImageIcon RIGHTDIRECTIONICON = new ImageIcon(Utilities.loadImage(
+            "com/sun/mdm/multidomain/project/resources/Rightdirection.png"));
+    static final ImageIcon LEFTDIRECTIONICON = new ImageIcon(Utilities.loadImage(
+            "com/sun/mdm/multidomain/project/resources/Leftdirection.png"));
+    static final ImageIcon BIDIRECTIONICON = new ImageIcon(Utilities.loadImage(
+            "com/sun/mdm/multidomain/project/resources/Bidirection.png"));
     EditorMainApp mEditorMainApp;
     DefinitionNode mDefinitionNode;
     Definition mDefinition;
@@ -74,6 +82,10 @@ public class TabRelationshipDef extends javax.swing.JPanel {
         this.jTextDomain1.setText(mDefinition.getSourceDomain());
         this.jTextDomain2.setText(mDefinition.getTargetDomain());
         String direction = mDefinition.getDirection();
+        
+        jComboBoxDirection.setModel(new javax.swing.DefaultComboBoxModel(new ImageIcon[] { RIGHTDIRECTIONICON, LEFTDIRECTIONICON, BIDIRECTIONICON }));
+        jComboBoxDirection.setPreferredSize(new java.awt.Dimension(55, 22));
+        jComboBoxDirection.setVerifyInputWhenFocusTarget(false);
         if (direction == null) {
             this.jComboBoxDirection.setSelectedIndex(0);
         } else if (direction.equals("2")) {
