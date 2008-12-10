@@ -5,14 +5,17 @@
 
 package com.sun.mdm.multidomain.project.anttasks;
 
-import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
+//import com.sun.mdm.multidomain.parser.ParserException;
+//import com.sun.mdm.multidomain.parser.Utils;
+import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.generator.descriptor.JbiXmlWriter;
 import com.sun.mdm.multidomain.project.generator.descriptor.AppXmlWriter;
 import com.sun.mdm.multidomain.project.generator.domainObjects.EntityObjectWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
+import com.sun.mdm.multidomain.project.generator.persistence.DDLWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,6 +39,7 @@ import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PatternSet;
+import org.xml.sax.InputSource;
 
 /**
  * MultidomainGeneratorTask class.
@@ -93,20 +97,35 @@ public class MultidomainGeneratorTask extends Task {
         // need to regenerate if source files have been modified
         try {
             
+
+            //generateFiles();
+                    
             generateFiles();                    
             
             // generate jar file
-            generateJars();
+            //generateJars();
             
             // put ejb files in ebj project
-            generateEbjFiles();
+            //generateEbjFiles();
 
             // add lib to ejb project by modifing ejb project's
             // project.properties file.
-            addEjbLib();
+            //addEjbLib();
 
             // put the web files into war project
-            generateWarFiles();
+            //generateWarFiles();
+            
+             File objectFile = new File(mSrcdir,
+                        MultiDomainProjectProperties.CONFIGURATION_FOLDER
+                                + File.separator + MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML);
+                InputSource source = new InputSource(new FileInputStream(
+                        objectFile));
+                MultiDomainModel mo = Utils.parseMultiDomainModel(source);
+               // String applicationName = eo.getName();
+
+            
+            generateDBFiles(mo);
+            
             
          } catch (Exception ex) {
 //                String mode = System.getProperty("run.mode");
@@ -190,6 +209,66 @@ public class MultidomainGeneratorTask extends Task {
         }
     }
     
+
+    private void generateDBFiles(MultiDomainModel multiDomainObj) throws BuildException{
+        try {
+
+           // multiDomainObj.get
+            String tmpl = getDDLWriterTemplate(multiDomainObj.getDatabase(), "CreateMultiDomain.sql.tmpl");
+            File outPath = new File(mSrcdir,
+                    MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + "CreateMultiDomain.sql");
+            DDLWriter tdw = new DDLWriter(outPath.getAbsolutePath(), multiDomainObj, tmpl);
+            tdw.write(true);
+
+            tmpl = getDDLWriterTemplate(multiDomainObj.getDatabase(), "DropMultiDomain.sql.tmpl");
+            File outDropPath = new File(mSrcdir,
+                    MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + "DropMultiDomain.sql");
+            tdw = new DDLWriter(outDropPath.getAbsolutePath(), multiDomainObj, tmpl);
+            tdw.write(true);
+        } catch (Exception ex) {
+            throw new BuildException(ex.getMessage());
+        } 
+    }
+  
+    /**
+     * Get the DDLWriter template depending on the database vendor type
+     * 
+     * @param db
+     *            database vendor type
+     * @param template
+     *            template name
+     * @return relative path of the DDLWriter template
+     */
+    private static String getDDLWriterTemplate(String db, String template) {
+        // we need to trim whitespaces since "SQL Server" has a space in it
+        return "com/sun/mdm/multidomain/project/generator/persistence/templates/"
+                + trimSpaces(db).toLowerCase() + "/" + template;
+    }    
+
+    /**
+     * Trim all the white spaces.
+     * 
+     * @param str string whose white spaces to be removed
+     * @return a string without any white space
+     */
+    private static String trimSpaces(String str) {
+        if (str == null) {
+            return null;
+        }
+        String tmp = "";
+        for (int i = 0, j = 0; j > -1; i = j + 1) {
+            j = str.indexOf(' ', i);
+            if (j == -1) {
+                // last substriing
+                tmp += str.substring(i);
+            } else {
+                tmp += str.substring(i, j);
+            }
+        }
+        return tmp;
+    }
+ 
+
     private void makeDomainOjbectsJar() {
         String projPath = getProject().getProperty("basedir");
         File genDir = new File(projPath + File.separator + MultiDomainProjectProperties.MULTIDOMAIN_GENERATED_FOLDER);       
@@ -231,6 +310,7 @@ public class MultidomainGeneratorTask extends Task {
         jar.execute();
     }
     
+
     private void generateEbjFiles() {
 
         File destDir = new File(mEjbdir, "src/java/com/sun/mdm/multidomain/ejb/service");
@@ -496,8 +576,6 @@ public class MultidomainGeneratorTask extends Task {
             }
         }
     }
-
-    
     
 }
 

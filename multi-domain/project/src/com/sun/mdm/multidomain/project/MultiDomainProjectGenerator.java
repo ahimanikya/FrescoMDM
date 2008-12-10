@@ -245,11 +245,12 @@ public class MultiDomainProjectGenerator {
             // *** Sub folder - Database Script ***
             folder = srcRoot.createFolder(MultiDomainProjectProperties.DATABASE_SCRIPT_FOLDER); // NOI18N
             //generateDDLFiles(srcRoot);
+            /**
             str = getDBScriptMultiDomainModel();
             repository.createConfigurationFile(folder, MultiDomainProjectProperties.CREATE_RELATIONSHIPS_SQL, str);        
             str = getDBScriptAttributeMappings();
-            repository.createConfigurationFile(folder, MultiDomainProjectProperties.CREATE_MAPPINGS_SQL, str);                
-            
+            repository.createConfigurationFile(folder, MultiDomainProjectProperties.CREATE_MAPPINGS_SQL, str);    
+             */                         
             folder = srcRoot.createFolder(MultiDomainProjectProperties.RELATIONSHIP_PLUGINS_FOLDER); // NOI18N
     }
     

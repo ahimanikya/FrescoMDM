@@ -55,6 +55,23 @@ public class TemplateWriter {
     private final String mSQLSetEndTag = "[SBYNTAG:SQLSETLIST-END]";
     private String mTemplateBuffer;
     private String mTemplateFileName;
+    
+    private final String mRelationshipColTag = "<repeat-relationship-eav>";
+    private final String mEndRelationshipColTag = "</repeat-relationship-eav>";
+    private final String mHierarchyColTag = "<repeat-hierarchy-eav>";
+    private final String mEndHierarchyColTag = "</repeat-hierarchy-eav>";
+    private final String mColumnTag = "<column-name>";
+
+    private final String mIndexColTag = "<repeat-index>";
+    private final String mEndIndexColTag = "</repeat-index>";
+    private final String mInsertRelDefTag = "<repeat-definition-relationship>";
+    private final String mEndInsertRelDefTag = "</repeat-definition-relationship>";
+    private final String mInsertHierDefTag = "<repeat-definition-hierarchy>";
+    private final String mEndInsertHierDefTag = "</repeat-definition-hierarchy>";
+    private final String mInsertDomainTag = "<repeat-domain>";
+    private final String mEndInsertDomainTag = "</repeat-domain>";
+    
+    
 
     private final int ORACLE = 0;       // Oracle processing
     private final int SQLSERVER= 1;     // SQL Server processing
@@ -198,24 +215,102 @@ public class TemplateWriter {
         throws InvalidTemplateFileException {
         ArrayList ret = new ArrayList();
 
-        if (!mTemplateBuffer.startsWith(mDefineTag)) {
-            throw new InvalidTemplateFileException(mTemplateFileName);
-        }
 
-        mTemplateBuffer 
-            = mTemplateBuffer.substring(mDefineTag.length(), 
-                                        mTemplateBuffer.length());
-        int idx = mTemplateBuffer.indexOf(mDefineTag);
-        while (idx >= 0) {
-            ret.add(mDefineTag + mTemplateBuffer.substring(0, idx));
-            mTemplateBuffer = 
-            mTemplateBuffer.substring(idx + mDefineTag.length(), 
-                                      mTemplateBuffer.length());
-            idx = mTemplateBuffer.indexOf(mDefineTag);
+        int idx = mTemplateBuffer.indexOf(mRelationshipColTag);
+        if (idx <= 0) {
+            ret.add(mTemplateBuffer.substring(0));
+            return ret;
         }
-        ret.add(mDefineTag + mTemplateBuffer);
+        
+        ret.add(mTemplateBuffer.substring(0, idx));
+            
+        idx = mTemplateBuffer.indexOf("<column-name> <column-type>,");
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx , mTemplateBuffer.length());
+        idx = mTemplateBuffer.indexOf(mEndRelationshipColTag);
+        ret.add(mTemplateBuffer.substring(0, idx));
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx + mEndRelationshipColTag.length(), mTemplateBuffer.length());
+        idx = mTemplateBuffer.indexOf(mHierarchyColTag);
+        ret.add(mTemplateBuffer.substring(0, idx));
+            
+        idx = mTemplateBuffer.indexOf("<column-name> <column-type>,");
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx , mTemplateBuffer.length());
+        idx = mTemplateBuffer.indexOf(mEndHierarchyColTag);
 
+        ret.add(mTemplateBuffer.substring(0, idx));
+
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx + mEndHierarchyColTag.length(), mTemplateBuffer.length());
+        idx = mTemplateBuffer.indexOf(mIndexColTag);
+        
+        ret.add(mTemplateBuffer.substring(0, idx));
+        
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx, mTemplateBuffer.length());
+        
+        idx = mTemplateBuffer.indexOf(mEndIndexColTag);
+
+        ret.add(mTemplateBuffer.substring(0 + mIndexColTag.length(), idx));
+        
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx + mEndIndexColTag.length(), mTemplateBuffer.length());
+
+        idx = mTemplateBuffer.indexOf(mIndexColTag);
+
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx, mTemplateBuffer.length());
+        
+        idx = mTemplateBuffer.indexOf(mEndIndexColTag);
+
+        ret.add(mTemplateBuffer.substring(0 + mIndexColTag.length(), idx));
+        
+        idx = mTemplateBuffer.indexOf(mInsertDomainTag);
+
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx + mInsertDomainTag.length(), mTemplateBuffer.length());
+        
+        idx = mTemplateBuffer.indexOf(mEndInsertDomainTag);
+        
+        ret.add(mTemplateBuffer.substring(0, idx));
+
+        idx = mTemplateBuffer.indexOf(mInsertRelDefTag);
+
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx + mInsertRelDefTag.length(), mTemplateBuffer.length());
+        
+        idx = mTemplateBuffer.indexOf(mEndInsertRelDefTag);
+        
+        ret.add(getInsertRefDefiition(mTemplateBuffer.substring(0, idx)));
+        
+        idx = mTemplateBuffer.indexOf(mInsertHierDefTag);
+        mTemplateBuffer =
+                mTemplateBuffer.substring(idx + mInsertHierDefTag.length(), mTemplateBuffer.length());
+        
+        idx = mTemplateBuffer.indexOf(mEndInsertHierDefTag);
+
+        ret.add(getInsertRefDefiition(mTemplateBuffer.substring(0, idx)));
+        
+        
         return ret;
+        
+    }
+    
+    private ArrayList getInsertRefDefiition(String tempBuffer) {
+            ArrayList insertArray = new ArrayList();           
+            int idx = -1;
+            idx = tempBuffer.indexOf("INSERT INTO ");
+            tempBuffer = tempBuffer.substring(idx);
+            idx = tempBuffer.indexOf("<repeat-definition-");
+            insertArray.add(tempBuffer.substring(0, idx));
+            tempBuffer = tempBuffer.substring(idx);
+            idx = tempBuffer.indexOf("INSERT INTO ");
+            tempBuffer = tempBuffer.substring(idx);
+            idx = tempBuffer.indexOf(");");
+            insertArray.add(tempBuffer.substring(0, idx + ");".length()) + "\r\n");
+            
+            return insertArray;
     }
 
 
@@ -586,6 +681,10 @@ public class TemplateWriter {
     }
 
 
+    public String writeConstruct(String construct){
+        String ret= "";
+        return ret;
+    }
     /**
      * @param construct construct
      * @param values values

@@ -1,0 +1,159 @@
+CREATE TABLE DOMAINS
+(
+    DOMAIN_NAME           VARCHAR(255) NOT NULL,
+    CONTEXT_FACTORY       VARCHAR(255),
+    URL                   VARCHAR(255),
+    PRINCIPAL             VARCHAR(255),
+    CREDENTIAL            VARCHAR(255),
+    PRIMARY KEY(DOMAIN_NAME)   
+)ENGINE=InnoDB;
+
+CREATE TABLE RELATIONSHIP_DEF
+(
+    RELATIONSHIP_DEF_ID    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    RELATIONSHIP_NAME      VARCHAR(128) NOT NULL,
+    DESCRIPTION            VARCHAR(255),
+    SOURCE_DOMAIN          VARCHAR(128) NOT NULL,
+    TARGET_DOMAIN          VARCHAR(128) NOT NULL,
+    BIDIRECTIONAL          ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_FROM_REQ     ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_TO_REQ       ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    PURGE_DATE_REQ         ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_FROM_INCL    ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_TO_INCL      ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    PURGE_DATE_INCL        ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    PLUGIN		           VARCHAR(255),
+    PRIMARY KEY (RELATIONSHIP_DEF_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE RELATIONSHIP_EA
+(
+    EA_ID                  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    RELATIONSHIP_DEF_ID    INTEGER UNSIGNED NOT NULL,
+    ATTRIBUTE_NAME         VARCHAR(128) NOT NULL,
+    COLUMN_NAME	           VARCHAR(128) NOT NULL,
+    COLUMN_TYPE	           VARCHAR(128) NOT NULL,
+    DEFAULT_VALUE          VARCHAR(255),
+    IS_SEARCHABLE          ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    IS_REQUIRED            ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    PRIMARY KEY (EA_ID),
+    FOREIGN KEY (RELATIONSHIP_DEF_ID) REFERENCES RELATIONSHIP_DEF(RELATIONSHIP_DEF_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE RELATIONSHIP
+(
+    RELATIONSHIP_ID       INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    RELATIONSHIP_DEF_ID   INTEGER UNSIGNED NOT NULL,
+    SOURCE_EUID           VARCHAR(128) NOT NULL,
+    TARGET_EUID           VARCHAR(128) NOT NULL,
+    EFFECTIVE_FROM_DATE   DATETIME,
+    EFFECTIVE_TO_DATE     DATETIME,
+    PURGE_DATE            DATETIME,
+    PRIMARY KEY (RELATIONSHIP_ID),
+    FOREIGN KEY (RELATIONSHIP_DEF_ID) REFERENCES RELATIONSHIP_DEF(RELATIONSHIP_DEF_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE RELATIONSHIP_EAV 
+(
+    EAV_ID                INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    RELATIONSHIP_ID       INTEGER UNSIGNED NOT NULL,
+    <repeat-relationship-eav>
+    <column-name> <column-type>,
+    </repeat-relationship-eav>
+    PRIMARY KEY (EAV_ID),
+    FOREIGN KEY (RELATIONSHIP_ID) REFERENCES RELATIONSHIP(RELATIONSHIP_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE HIERARCHY_DEF
+(
+    HIERARCHY_DEF_ID      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    HIERARCHY_NAME        VARCHAR(128) NOT NULL,
+    DOMAIN                VARCHAR(128) NOT NULL,
+    DESCRIPTION           VARCHAR(255),
+    EFFECTIVE_FROM_DATE   DATETIME, 
+    EFFECTIVE_TO_DATE     DATETIME, 
+    EFFECTIVE_FROM_REQ    ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_TO_REQ      ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_FROM_INCL   ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    EFFECTIVE_TO_INCL     ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    PLUGIN		          VARCHAR(255),
+    PRIMARY KEY (HIERARCHY_DEF_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE HIERARCHY_NODE_EA
+(
+    EA_ID               INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    HIERARCHY_DEF_ID    INTEGER UNSIGNED NOT NULL,
+    ATTRIBUTE_NAME      VARCHAR(128) NOT NULL,
+    COLUMN_NAME	        VARCHAR(128) NOT NULL,
+    COLUMN_TYPE	        VARCHAR(128) NOT NULL,
+    DEFAULT_VALUE       VARCHAR(255),
+    IS_SEARCHABLE       ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    IS_REQUIRED         ENUM('T', 'F') DEFAULT 'F' NOT NULL,
+    PRIMARY KEY (EA_ID),
+    FOREIGN KEY (HIERARCHY_DEF_ID) REFERENCES HIERARCHY_DEF(HIERARCHY_DEF_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE HIERARCHY_NODE
+(
+    HIERARCHY_NODE_ID    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    HIERARCHY_DEF_ID     INTEGER UNSIGNED NOT NULL,
+    PARENT_NODE_ID       INTEGER,
+    EUID                 VARCHAR(128) NOT NULL,
+    PARENT_EUID          VARCHAR(128),
+    EFFECTIVE_FROM_DATE  DATETIME, 
+    EFFECTIVE_TO_DATE    DATETIME, 
+    PRIMARY KEY (HIERARCHY_NODE_ID),
+    FOREIGN KEY (HIERARCHY_DEF_ID) REFERENCES HIERARCHY_DEF(HIERARCHY_DEF_ID)
+)ENGINE=InnoDB;
+
+CREATE TABLE HIERARCHY_NODE_EAV (
+    EAV_ID              INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    HIERARCHY_NODE_ID   INTEGER UNSIGNED NOT NULL,
+    <repeat-hierarchy-eav>
+    <column-name> <column-type>,
+    </repeat-hierarchy-eav>
+    PRIMARY KEY (EAV_ID),
+    FOREIGN KEY (HIERARCHY_NODE_ID) REFERENCES HIERARCHY_NODE(HIERARCHY_NODE_ID)
+)ENGINE=InnoDB;
+
+CREATE INDEX RELATIONSHIP_EA_FK1 on RELATIONSHIP_EA (RELATIONSHIP_DEF_ID);
+
+CREATE INDEX RELATIONSHIP_FK1 on RELATIONSHIP (RELATIONSHIP_DEF_ID);
+
+CREATE INDEX RELATIONSHIP_EAV_FK1 on RELATIONSHIP_EAV (RELATIONSHIP_ID);
+
+CREATE INDEX HIERARCHY_NODE_EA_FK1 on HIERARCHY_NODE_EA (HIERARCHY_DEF_ID);
+
+CREATE INDEX HIERARCHY_NODE_FK1 on HIERARCHY_NODE (HIERARCHY_DEF_ID);
+
+CREATE INDEX HIERARCHY_NODE_EAV_FK1 on HIERARCHY_NODE_EAV (HIERARCHY_NODE_ID);
+ 
+-- ****   Indices for searchable extended attributes   ****
+<repeat-index>
+CREATE INDEX RELATIONSHIP_EAV_<column-name>_IDX on RELATIONSHIP_EAV (<column-name>);
+</repeat-index>
+    
+<repeat-index>
+CREATE INDEX HIERARCHY_NODE_EAV_<column-name>_IDX on HIERARCHY_NODE_EAV (<column-name>);
+</repeat-index>
+
+<repeat-domain>
+INSERT INTO DOMAINS (DOMAIN_NAME) VALUES ('<domain_name>');
+</repeat-domain>
+
+<repeat-relationship>
+<comment> INSERT INTO RELATIONSHIP_DEF VALUES (null, '<relationship_name>', '<description>',  '<source_domain>', '<target_domain>', '<bi_directional>', '<effective_from_req>', '<effective_to_req>', '<purge_date_req>', '<effective_from_incl>', '<effective_to_incl>', '<purge_date_incl>', '<plugin>');
+select @RELATIONSHIP_DEF_ID:=RELATIONSHIP_DEF_ID as RELATIONSHIP_DEF_ID from RELATIONSHIP_DEF where RELATIONSHIP_DEF_ID = last_insert_id();
+<repeat-definition-relationship-ea>
+<comment> INSERT INTO RELATIONSHIP_EA VALUES (null, @RELATIONSHIP_DEF_ID, '<attribute_name>', '<column_name>', '<column_type>', '<default_value>', '<is_searchable>', '<is_required>');
+</repeat-definition-relationship-ea>
+</repeat-definition-relationship>
+
+<repeat-definition-hierarchy>
+<comment> INSERT INTO HIERARCHY_DEF VALUES (null, '<hierarchy_name>', '<domain>', '<hierarchy_description>', <effective_from_date>, <effective_to_date>, '<effective_from_req>', '<effective_to_req>', '<effective_from_incl>', '<effective_to_incl>', '<plugin>');
+select @HIERARCHY_DEF_ID:=HIERARCHY_DEF_ID as HIERARCHY_DEF_ID from HIERARCHY_DEF where HIERARCHY_DEF_ID = last_insert_id();
+<repeat-definition-hierarchy-ea>
+<comment> INSERT INTO HIERARCHY_NODE_EA VALUES (null, @HIERARCHY_DEF_ID, '<attribute_name>', '<column_name>', '<column_type>', '<default_value>', '<is_searchable>', '<is_required>');
+</repeat-definition-hierarchy-ea>
+</repeat-definition-hierarchy>
