@@ -7,7 +7,7 @@
     </Property>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,0,-7,0,0,1,36"/>
+    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,0,-43,0,0,1,36"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="0"/>
     <SyntheticProperty name="generateSize" type="boolean" value="true"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
@@ -26,7 +26,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
@@ -37,18 +37,16 @@
                   <Component id="jCheckBoxSearchable" alignment="0" pref="264" max="32767" attributes="1"/>
                   <Component id="jCheckBoxRequired" alignment="0" pref="264" max="32767" attributes="1"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jLabelName" max="32767" attributes="1"/>
                           <Component id="jLabelDefaultValue" alignment="0" max="32767" attributes="1"/>
-                          <Component id="jLabelName" alignment="0" max="32767" attributes="1"/>
-                          <Component id="jLabelColumnName" alignment="0" max="32767" attributes="1"/>
                           <Component id="jLabelDataType" alignment="0" pref="84" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextFieldDefaultValue" alignment="0" pref="176" max="32767" attributes="1"/>
-                          <Component id="jTextFieldColumnName" alignment="0" pref="176" max="32767" attributes="1"/>
-                          <Component id="jComboBoxDataType" alignment="0" pref="176" max="32767" attributes="1"/>
                           <Component id="jTextFieldName" alignment="0" pref="176" max="32767" attributes="1"/>
+                          <Component id="jTextFieldDefaultValue" alignment="0" pref="176" max="32767" attributes="1"/>
+                          <Component id="jComboBoxDataType" alignment="0" pref="176" max="32767" attributes="1"/>
                       </Group>
                   </Group>
               </Group>
@@ -61,15 +59,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelName" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                   <Component id="jTextFieldName" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                  <Component id="jLabelName" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabelColumnName" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="jTextFieldColumnName" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelDataType" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
                   <Component id="jComboBoxDataType" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -79,7 +72,7 @@
                   <Component id="jLabelDefaultValue" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="jTextFieldDefaultValue" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jCheckBoxSearchable" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jCheckBoxRequired" min="-2" max="-2" attributes="0"/>
@@ -88,7 +81,7 @@
                   <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -113,13 +106,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelColumnName">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Column_Name_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelName">
       <Properties>
@@ -160,11 +146,6 @@
           <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_Default_Value_Colon" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldColumnName">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onColumnNameKeyReleased"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldDefaultValue">
       <Events>
