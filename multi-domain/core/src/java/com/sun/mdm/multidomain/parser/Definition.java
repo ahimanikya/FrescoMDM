@@ -103,6 +103,30 @@ public class Definition {
         return mRelPredefinedAttrs;
     }
     
+    public boolean getPredefinedRequiredVal(String attrName) {
+        for (Attribute attr : predefinedAttributes) {
+           if (attr.getName().equals(attrName)) {
+                //attr.setName(newAttr.getName());
+                return Boolean.valueOf(attr.getRequired()).booleanValue();
+            }
+        }
+        
+        return false;
+
+    }  
+    
+    public boolean getPredefinedIncludedVal(String attrName) {
+        for (Attribute attr : predefinedAttributes) {
+           if (attr.getName().equals(attrName)) {
+                //attr.setName(newAttr.getName());
+                return Boolean.valueOf(attr.getIncluded()).booleanValue();
+            }
+        }
+        
+        return false;
+
+    }    
+    
     public void addPredefinedFieldRef(RelationFieldReference fieldRef) {
         mRelPredefinedAttrs.add(fieldRef);
     }
