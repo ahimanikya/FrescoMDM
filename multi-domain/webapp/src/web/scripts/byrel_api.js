@@ -850,18 +850,60 @@ function addRelationshipCB(data) {
 
 
 function updateRelationship () {
+    
+    var updateRelaltionshipRecords = {};
+    var updateRelationshipCustomAttributes = [];
     var sourceDomain = cachedRelationshipRecordDetails.sourceRecord.name;
     var sourceEUID = cachedRelationshipRecordDetails.sourceRecord.EUID;
     var targetDomain = cachedRelationshipRecordDetails.targetRecord.name;
-    var targetEUID = cachedRelationshipRecordDetails.sourceRecord.name;
-    alert("source EUID " + sourceEUID);
+    var targetEUID = cachedRelationshipRecordDetails.targetRecord.EUID;
+    var relationshipDef = cachedRelationshipRecordDetails.relationshipRecord.name;
+    
+    var relationshipDefAttributes = cachedRelationshipDefs[relationshipDef].extendedAttributes;
+    
     // Get attributes. Predefined & Custom from edit screen
+    var startDateField = document.getElementById('edit_predefined_startDate');
+    var endDateField = document.getElementById('edit_predefined_endDate');
+    var purgeDateField = document.getElementById('edit_predefined_purgeDate');
+    var startDate,endDate,purgeDate;
+    if(startDateField != null)
+     {
+           startDate =  document.getElementById('edit_predefined_startDate').value
+     }
+     if(endDateField != null)
+     {
+           endDate =  document.getElementById('edit_predefined_endDate').value;
+     }
+     if(purgeDateField != null)
+     {
+           purgeDate =  document.getElementById('edit_predefined_purgeDate').value;
+     }
+    for(i =0; i < relationshipDefAttributes.length; i++) {
+      var attributeName = relationshipDefAttributes[i].name;
+      var attributeValue =  document.getElementById("edit_custom_" + relationshipDefAttributes[i].name).value;
+      updateRelationshipCustomAttributes.push( {attributeName : attributeValue} );
+     }
     
     // Make DWR API Call to updateRelationship
     
+      updateRelaltionshipRecords.name = relationshipDef;
+      updateRelaltionshipRecords.sourceDomain = sourceDomain;
+      updateRelaltionshipRecords.sourceEUID = sourceEUID;
+      updateRelaltionshipRecords.targetDomain = targetDomain;
+      updateRelaltionshipRecords.targetEUID = targetEUID;
+
+      updateRelaltionshipRecords.startDate = startDate;
+      updateRelaltionshipRecords.endDate = endDate;
+      updateRelaltionshipRecords.purgeDate = purgeDate;
+      updateRelaltionshipRecords.attributes = updateRelationshipCustomAttributes ;
+
+      RelationshipHandler.addRelationship(updateRelaltionshipRecords,updateRelationshipCB)
 
 }
 
+function updateRelationshipCB(data){
+    alert("Relationship Attributes Updated......   "+data)
+}
 
 /*
  * Scripts for Add Relationship screen <END>
