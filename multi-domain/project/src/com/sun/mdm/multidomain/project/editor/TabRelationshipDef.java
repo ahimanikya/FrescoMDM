@@ -23,18 +23,10 @@
 
 package com.sun.mdm.multidomain.project.editor;
 
-import javax.swing.JComboBox;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import org.openide.util.NbBundle;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
-import javax.swing.table.TableColumn;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
-//import javax.swing.table.TableRowSorter;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 import java.awt.Toolkit;
