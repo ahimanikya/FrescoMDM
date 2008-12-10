@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Defining Connection Pools for the Nightly and Stable Builds</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Describes the new way to set up connection pools for the 
+nightly and stable builds of Master Index Studio">
+   <meta name="date" content="2008-12-10">
+   <meta name="author" content="Carol Thom">
+   
+   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+
+</head>
+ 
+<body>
+   
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+   
+   <a name="top"></a>
+   <h1>Defining Connection Pools for the Nightly and Stable Builds</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: December 2008</div>
+
+   <div class="maincontent">
+      
+
+<a name="dsgn_eview-database-con_p"></a>
+
+<h2>Defining the Database Connection Pools</h2>
+<p><a name="indexterm-201"></a>Each master index application requires two database connection pools; one for the master controller
+and one for the sequence manager. To set up the connection pools, you
+need to create the connection pools and then define a JDBC resource for
+each. This section provides general instructions for setting up the connection pools. For
+more information about the procedures in this section, see the online help provided
+with the Sun Java System Application Server or GlassFish Admin Console.</p><p>Perform the following steps to define database connectivity through the application server:</p>
+<ul><li><p><a href="#dsgn_eview-database-driv_t">Step 1: Add the MySQL or Oracle Driver to the Application Server</a></p></li>
+<li><p><a href="#dsgn_eview-database-pool_t">Step 2: Create two JDBC Connection Pools</a></p></li>
+<li><p><a href="#dsgn_eview-database-res_t">Step 3: Create the JDBC Resources</a></p></li></ul>
+
+
+<div class="indent"><a name="dsgn_eview-database-driv_t"></a><h3>Step 1: Add the MySQL or Oracle Driver to the Application Server</h3>
+
+<hr><p><b>Note - </b>MySQL is only supported in Java CAPS 6 Update 1.</p>
+<hr>
+<p>If you are using a MySQL or Oracle database, you need to
+manually install or copy the database driver to the application server environment. If
+you are using a SQL Server database, you can skip this step.</p><p>For Oracle, you can either install the driver on the application server or
+copy the  <tt>ojdbc14.jar</tt> file from your Oracle client installation (<tt></tt><i>Oracle_client</i><tt>\jdbc\lib</tt>) to <tt></tt><i>app_server_home</i><tt>\lib</tt>. To install
+the driver, see the documentation for the Sun Java System Application Server.</p><p>For MySQL, download and extract the latest MySQL Connector/J &ndash; for connecting to
+MySQL from Java. You can access the driver at <a href="http://dev.mysql.com/downloads">the MySQL downloads page</a>. Copy <tt>mysql-connector-java-5.1.6-bin.jar</tt> to
+<tt></tt><i>app_server_home</i><tt>\lib</tt>.</p><p>Once the driver is installed or copied, continue to <a href="#dsgn_eview-database-pool_t">Step 2: Create two JDBC Connection Pools</a>.</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-database-pool_t"></a><h3>Step 2: Create two JDBC Connection Pools</h3>
+
+<hr><p><b>Note - </b>MySQL is only supported in Java CAPS 6 Update 1.</p>
+<hr>
+<p>The JDBC connection pools provide connections to the master index database. You need
+to create two connection pools that are configured in the same way.</p><p>Before proceeding, make sure you have the relevant information about the master index
+database (such as the database name, URL, and administrator login credentials).</p>
+
+<a name="gentextid-2143"></a><h5>To Create the JDBC Connection Pools</h5>
+<h6>Before You Begin</h6><p>If you are using an Oracle or MySQL database, add the database driver
+to the application server environment, as described in <a href="#dsgn_eview-database-driv_t">Step 1: Add the MySQL or Oracle Driver to the Application Server</a>.</p><ol>
+<li><b>Log in to the Sun Java System Application Server Admin Console.</b><p>You can access the console from the Services window in NetBeans. </p></li>
+<li><b>In the left portion of the Admin Console, expand Resources, expand JDBC, and
+then select Connection Pools.</b></li>
+<li><b>On the Create Connection Pool page, click New.</b></li>
+<li><b>In the Name field, enter a name for the connection pool. </b></li>
+<li><b>In the Resource Type field, select the Java class for the type of
+transactions the master index application processes.</b>
+<ul><li><p><tt>javax.sql.DataSource</tt> &ndash; Use this class if the master index application is using local transactions only.</p></li>
+<li><p><tt>javax.sql.XADataSource</tt> &ndash; Use this class if the master index application transactions are distributed, either within the application or across applications.</p></li>
+<li><p><tt>javax.sql.ConnectionPoolDataSource</tt> &ndash; Use this class if the master index application is using local transactions only. This class provides possible performance improvements.</p></li></ul>
+</li>
+<li><b>In the Database Vendor field, select the database platform used by the master
+index database.</b></li>
+<li><b>Click Next.</b></li>
+<li><b>In the DataSource Classname field, accept the default class or enter a new
+one to use.</b></li>
+<li><b>Modify the Pool Settings properties according to your business practices.</b></li>
+<li><b>Modify the Connection Validation properties according to your business practices.</b></li>
+<li><b>Modify the Transaction properties according to whether the application supports transactional processing.</b>
+<hr><p><b>Note - </b>Make sure you configure Transaction properties to match the transaction mode you specified for
+the master index application and the connection pool Resource Type you selected.</p>
+<hr>
+</li>
+<li><b>In the additional properties section, enter the values for the master index database.
+Be sure to enter the following information at a minimum (you might need
+to create some of these properties):</b>
+<ul><li><p>URL &ndash; The URL that points to the database. The syntax of the URL is:</p>
+<ul><li><p>For Oracle, <tt>jdbc:oracle:thin:@<i>host</i>:<i>port</i>:<i>database_name</i></tt>.</p></li>
+<li><p>For SQL Server, <tt>jdbc:sqlserver://<i>server</i>:<i>port</i>;databaseName=<i>database</i></tt></p></li>
+<li><p>For MySQL, <tt>jdbc:mysql://<i>server</i>:<i>port</i>:<i>database_name</i></tt></p></li></ul>
+</li>
+<li><p>user &ndash; The login ID for the user you created in <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a>.</p></li>
+<li><p>password &ndash; The password for the above user.</p></li>
+<li><p>DatabaseName &ndash; For MySQL only, enter the name of the database.</p></li>
+<li><p>ImplicitCachingEnabled &ndash; An indicator of whether implicit statement caching is enabled. Set this property to <tt><b>true</b></tt>. This is not required for MySQL.</p></li>
+<li><p>MaxStatements &ndash; The maximum number of statements in the cache. Set this property to <tt><b>1000</b></tt>. This is not required for MySQL.</p></li></ul>
+</li>
+<li><b>Follow the previous steps again to create another connection pool for the sequence
+manager.</b></li>
+<li><b>Continue to <a href="#dsgn_eview-database-res_t">Step 3: Create the JDBC Resources</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-database-res_t"></a><h3>Step 3: Create the JDBC Resources</h3>
+<p>A JDBC resource (also known as a data source) gives the master
+index application the ability to connect to the database. Two JDBC resources are required.</p>
+
+<a name="gentextid-2228"></a><h5>To Create the JDBC Resources</h5>
+<h6>Before You Begin</h6><p>Create the JDBC connection pools, as described in <a href="#dsgn_eview-database-pool_t">Step 2: Create two JDBC Connection Pools</a>.</p><ol>
+<li><b>In the left portion of the Admin Console, expand Resources, expand JDBC, and
+then select JDBC Resources.</b></li>
+<li><b>On the Create JDBC Resource page, click New.</b></li>
+<li><b>In the JNDI Name field, enter a unique name for the JDBC
+resource.</b><p>The name must be in the form <tt><b>jdbc/</tt><i>application_name</i><tt>DataSource</b></tt>, where <i>application_name</i> is the
+name of the master index application. For example, <tt><b>jdbc/PersonDataSource</b></tt>.</p></li>
+<li><b>In the Pool Name field, enter the name of the first JDBC
+connection pool you created in <a href="#dsgn_eview-database-pool_t">Step 2: Create two JDBC Connection Pools</a>. </b></li>
+<li><b>(Optional) In the Description field, enter a brief description of the resource.</b></li>
+<li><b>In the Status field, select the Enabled check box.</b></li>
+<li><b>Click OK.</b></li>
+<li><b>Repeat the previous steps to create a JDBC resource for the sequence manager
+with these guidelines:</b>
+<ul><li><p>In the Pool Name field, enter the name of the <b>second</b> JDBC connection pool you created.</p></li>
+<li><p>The name of the JDBC resource must be in the form <tt><b>jdbc/</tt><i>application_name</i><tt>SequenceDataSource</b></tt>, where <i>application_name</i> is the name of the master index application. For example, <tt><b>jdbc/PersonSequenceDataSource</b></tt>.</p></li></ul>
+</li></ol></div>
+
+   </div>
+
+
+
+</body>
+</html>
