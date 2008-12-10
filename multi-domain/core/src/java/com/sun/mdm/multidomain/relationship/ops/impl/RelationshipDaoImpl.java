@@ -126,7 +126,6 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         PreparedStatement stmt = null;
 
         try {
-
             // stmt = conn.prepareStatement(SQL_UPDATE);
             int index = 1;
             stmt.setLong(index++, dto.getRelationshipId());
