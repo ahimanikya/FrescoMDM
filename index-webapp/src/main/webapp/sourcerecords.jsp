@@ -146,6 +146,8 @@ if(session!=null){
                 enableallfields(formName);
                 setEditIndex("-1");
 				editMinorObjectType = '';
+				unsavedEditMinorObjectType='';
+                hideDivs("inactiveHeaders");showDivs("activeHeaders");
 		        document.getElementById(thisDiv).style.visibility = 'hidden';
 		        document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/> '+ minorObject;
@@ -168,7 +170,68 @@ if(session!=null){
 			document.getElementById("unsavedDiv").style.display="block";
 		}
 
-             var URI_VAL = '<%=URI%>';
+
+// added on 08-12-08 as fix of 221 and 219
+function showUnSavedRootNodeInnerTabAlert(thisEvent){
+	document.getElementById("unsavedMessageDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_root_node_message}"/>";
+	showExtraTabDivs("unsavedDiv",thisEvent);
+ }
+// added on 08-12-08 as fix of 221 and 219
+function showUnSavedRootNodeAlert(thisEvent){
+	document.getElementById("unsavedMessageDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_root_node_message}"/>";
+	showExtraRootNodeDivs("unsavedDiv",thisEvent);
+ }
+// added on 08-12-08 as fix of 221 and 219
+function showUnSavedTabAlert(thisEvent,editMinorObjectType){
+	document.getElementById("unsavedMessageDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_message_part_I}"/> '"+editMinorObjectType+"' <h:outputText value="#{msgs.unsaved_message_part_III}"/>";
+	showExtraTabDivs("unsavedDiv",thisEvent);
+ }
+ function showExtraRootNodeDivs(divId,thisEvent)  {
+    var y;
+    var x;   
+    if(document.getElementById(divId).style.visibility == 'hidden') {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+           x = thisEvent.clientX + document.body.scrollLeft;
+           y = thisEvent.clientY + document.body.scrollTop;
+        }
+		 document.getElementById(divId).style.top = (y);
+		 document.getElementById(divId).style.left = x;
+		 //document.getElementById(divId).z-index = 15;
+		} else {
+	   document.getElementById(divId).style.visibility = "hidden";
+	   document.getElementById(divId).style.display = "none";
+	  }
+}
+
+// added on 08-12-08 as fix of 221 and 219
+function showExtraTabDivs(divId,thisEvent)  {
+    var y;
+    var x;   
+    if(document.getElementById(divId).style.visibility == 'hidden') {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+           x = thisEvent.clientX + document.body.scrollLeft;
+           y = thisEvent.clientY + document.body.scrollTop;
+        }
+		 document.getElementById(divId).style.top = (y-110);
+		 document.getElementById(divId).style.left = x;
+		 //document.getElementById(divId).z-index = 15;
+		} else {
+	   document.getElementById(divId).style.visibility = "hidden";
+	   document.getElementById(divId).style.display = "none";
+	  }
+}
+
+         var URI_VAL = '<%=URI%>';
 	     var RAND_VAL = '<%=rand%>';
    </script>
         <!--there is no custom header content for this example-->
@@ -181,8 +244,44 @@ if(session!=null){
          validLid = "Validated";
         } 
     %>
-     <body class="yui-skin-sam">
+     <body class="yui-skin-sam" >
     
+			        <!-- Added on 09-12-2008 fix of 221 -->
+  		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;Z-INDEX:1000;">
+               <form id="unsavedDivForm">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="unsavedMessageDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:showExtraDivs('unsavedDiv',event);">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+
 
         <div id="mainContent" style="overflow:hidden;"> 
         <div id="sourcerecords">
@@ -195,61 +294,95 @@ if(session!=null){
                                 <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
-                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab" onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab" onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+									else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+									}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
                                 <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+								else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
                                 <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li>
                                     <a title ="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"
-									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+									else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+									}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
                                 <li class="selected"><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+								else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+							    }"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
                                 <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>"  href="#mergeTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+								else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li>
                                     <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"
-									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+									else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+									}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
                                 <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
                                 <li class="selected"><a  title ="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+								else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
                                     <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"
-									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+									onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+									else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+									}"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
                                 <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+								else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
                                 <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"
-								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedAlert(event,editMinorObjectType);}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
+								onclick="javascript:if(editMinorObjectType.length>1){showUnSavedTabAlert(event,editMinorObjectType);}
+								else if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeInnerTabAlert(event);
+								}"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%}%>  
                             </ul>  
@@ -411,6 +544,7 @@ if(session!=null){
 																<!--  modified  on 24-09-08 to incorparate with ajax call-->
 														<a title="<h:outputText value="#{msgs.patdetails_search_button2}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" 
 														onclick="javascript:if(editMinorObjectType.length<1){
+														unsavedRootNodeValues='';
 														getFormValues('<h:outputText value="#{childNodesName}"/>basicViewformData');
 														ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?'+queryStr+'&rand='+<%=rand%>+'&viewSO=true',
 														'sourceRecordSearchResult',
@@ -775,7 +909,9 @@ if(session!=null){
                        <table cellpadding="0" cellspacing="0" border="0">
 						<tr>
 						<td>
- 						   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType='';getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+ 						   <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType='';
+						   hideDivs('inactiveHeaders');showDivs('activeHeaders');						   
+						   getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
                            <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/> </span>
                            </a>
 						</td>
@@ -835,7 +971,12 @@ if(session!=null){
   																<!-- modified  on 22-09-08 added for editMinorObjectType.length validation -->
                                                                     <a title ="<h:outputText value="#{msgs.validate_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"													
-																	   onclick="javascript:if(editMinorObjectType.length<1){getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');
+																	   onclick="javascript:if(editMinorObjectType.length<1){
+																	    if(unsavedRootNodeValues.length<1){
+																	      getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');
+																		 }else{
+																			showUnSavedRootNodeAlert(event);
+																		 }
 																	   }else{showUnSavedAlert(event,editMinorObjectType)}" >  
 <!--- Validate Button -->
                                                                          <span><h:outputText value="#{msgs.validate_button_text}"/></span>
@@ -986,7 +1127,10 @@ if(session!=null){
                                                                        <a title="<h:outputText value="#{msgs.source_merge_button}"/>"
                                                                           href="javascript:void(0)"
                                                                           onclick="javascript:if(editMinorObjectType.length<1){
-																		  getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');}else{showUnSavedAlert(event,editMinorObjectType)}"  
+																			if(unsavedRootNodeValues.length<1){
+																			  getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');
+																				}else{ showUnSavedRootNodeAlert(event);}
+																			 }else{showUnSavedAlert(event,editMinorObjectType)}"  
                                                                           class="button" >
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </a>                                     
@@ -1123,45 +1267,7 @@ if(session!=null){
 		<input type="hidden" id="EditIndexFormID" value="-1" />
 </form>
 
-
-         <!-- Added on 07-10-2008 for all information popups -->
-  		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
-               <form id="unsavedDivForm">
-                <table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
-				<th>
-				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
-
-                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
-				</th>
-				</tr>
-                    <tr><td colspan="2">&nbsp;</td></tr>    
-					<tr>
-						<td colspan="2">
-							<b><div id="unsavedMessageDiv"></div></b>
-						</td>
-					</tr>
-					<tr><td colspan="2">&nbsp;</td></tr>    
-					<tr id="actions">
-					  <td colspan="2" align="center">
-					    <table align="center">
-							<tr>
-								<td>
-									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:showExtraDivs('unsavedDiv',event);">                          
-										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
-									</a>
-								</td>
-							</tr>
-						</table>
-					  </td>
-					</tr>
-                </table> 
-                </form>
-            </div> 
-
 </body>
-
         <%
           String[][] lidMaskingArray = sourceAddHandler.getAllSystemCodes();
           

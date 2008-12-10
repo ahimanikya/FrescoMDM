@@ -47,6 +47,40 @@
 
 <script>
  var tabTitles=[];
+ var unsavedEditMinorObjectType = '';
+ var unsavedRootNodeValues='';
+	function showUnSavedRootNodeTabAlert(thisEvent){
+			document.getElementById("unsavedMessageTopTabDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_root_node_message}"/>";
+		    showExtraTopTabDivs("unsavedTopTabDiv",thisEvent);
+	}
+		
+	function showUnSavedTopTabAlert(thisEvent,unsavedEditMinorObjectType){
+		document.getElementById("unsavedMessageTopTabDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_message_part_I}"/> '"+unsavedEditMinorObjectType+"' <h:outputText value="#{msgs.unsaved_message_part_III}"/>";
+		showExtraTopTabDivs("unsavedTopTabDiv",thisEvent);
+	 }
+	
+	// added on 08-12-08 as fix of 221 and 219
+	function showExtraTopTabDivs(divId,thisEvent)  {
+		var y;
+		var x;   
+		if(document.getElementById(divId).style.visibility == 'hidden') {
+			document.getElementById(divId).style.visibility = "visible";
+			document.getElementById(divId).style.display = "block";
+			if (thisEvent.pageX || thisEvent.pageY) {
+				x = thisEvent.pageX;
+				y = thisEvent.pageY;
+			} else if (thisEvent.clientX || thisEvent.clientY) {
+			   x = thisEvent.clientX + document.body.scrollLeft;
+			   y = thisEvent.clientY + document.body.scrollTop;
+			}
+			 document.getElementById(divId).style.top = y+30;
+			 document.getElementById(divId).style.left = x;
+			} else {
+		   document.getElementById(divId).style.visibility = "hidden";
+		   document.getElementById(divId).style.display = "none";
+		  }
+	}
+
 </script>
 <%
 //set locale value
@@ -370,6 +404,7 @@ String  dateFormat = ConfigManager.getDateFormat();
              <td colspan="2">
                  <div id="header">
                                   <h:form id="tabsForm" title="tabsForm">
+								 <div id="activeHeaders" style="visibility:visible;display:block">
                                  <%                                  
                                  for(int i=0;i<allScreensArrayOrdered.length;i++){  
                                   %> 
@@ -382,26 +417,60 @@ String  dateFormat = ConfigManager.getDateFormat();
                                     <%ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
                                     ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());                                    
                                   %>
+									  <%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
 
-								  <%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
-
-                                       <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbuttonselected" 
-									   onclick="javascript:highlighTabs('tabsForm',event)"
-                                                  actionListener="#{NavigationHandler.setHeaderByTabName}" > 
-                                          <f:attribute name="screenId" value="<%=screenID%>"/>
-                                          <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" ><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
-                                      </h:commandLink>
-								 <%} else {%>
-                                       <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbutton" 
-									   onclick="javascript:highlighTabs('tabsForm',event)"
-                                                  actionListener="#{NavigationHandler.setHeaderByTabName}" > 
-                                          <f:attribute name="screenId" value="<%=screenID%>"/>
-                                          <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>"><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
-                                      </h:commandLink>
-								 <%}%>
+										   <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbuttonselected" 
+										   onclick="javascript:highlighTabs('tabsForm',event)"
+													  actionListener="#{NavigationHandler.setHeaderByTabName}" > 
+											  <f:attribute name="screenId" value="<%=screenID%>"/>
+											  <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" ><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+										  </h:commandLink>
+									 <%} else {%>
+										   <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbutton" 
+										    onclick="javascript:highlighTabs('tabsForm',event)"
+													  actionListener="#{NavigationHandler.setHeaderByTabName}" > 
+											  <f:attribute name="screenId" value="<%=screenID%>"/>
+											  <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>"><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+										  </h:commandLink>
+									 <%}%>
                                  <%}%>
 								<%}%>
-                                 </h:form>
+								 </div>
+								 <div id="inactiveHeaders" style="visibility:hidden;display:none">
+                                 <%                                  
+                                 for(int i=0;i<allScreensArrayOrdered.length;i++){  
+                                  %> 
+                                  <% 
+                                  if (allScreensArrayOrdered[i]!=null){%>
+								  <script>
+									  tabTitles.push("<%=allScreensArrayOrdered[i].getDisplayTitle()%>");
+								  </script>
+
+                                    <%ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
+                                    ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());                                    
+                                  %>
+									<%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
+										 <a href="#" title="<%=displayTitleVE%>" class ="navbuttonselected" 
+											   onclick="javascript:if(unsavedEditMinorObjectType.length>0){
+											                         showUnSavedTopTabAlert(event,unsavedEditMinorObjectType);}
+											                       else if(unsavedRootNodeValues.length>0){
+												                       showUnSavedRootNodeAlert(event);}"> 
+ 												  <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" ><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+										</a>
+									<%}else{%>
+										   <a href="#" class ="navbutton" title = "<%=allScreensArrayOrdered[i].getDisplayTitle()%>"
+											   onclick="javascript:if(unsavedEditMinorObjectType.length>0){
+											                         showUnSavedTopTabAlert(event,unsavedEditMinorObjectType);}
+											                       else if(unsavedRootNodeValues.length>0){
+												                       showUnSavedRootNodeAlert(event);}"> 
+ 											  <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>">
+											  <%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+										  </a>
+									<%}%>
+								  <%}%>
+								<%}%>
+								 </div>
+                                  </h:form>
 
 				 </div>
 		     </td>
@@ -437,5 +506,40 @@ var yui_prev_var  = "<%=bundle.getString("yui_dt_prev_text")%>";
 var yui_next_var  = "<%=bundle.getString("yui_dt_next_text")%>";
 var yui_first_var  = "<%=bundle.getString("yui_dt_first_text")%>";
 var yui_last_var  = "<%=bundle.getString("yui_dt_last_text")%>";
+makeDraggable("unsavedTopTabDiv");
 </script>
 </div>
+  		 <div id="unsavedTopTabDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+               <form id="unsavedDivForm">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedTopTabDiv',event);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedTopTabDiv',event);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="unsavedMessageTopTabDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:showExtraDivs('unsavedTopTabDiv',event);">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 

@@ -339,7 +339,9 @@ boolean isSessionActive = true;
 									   title="<%=bundle.getString("source_rec_edit_but")%>"
 									   onclick="javascript:if(editMinorObjectType.length<1){
 									   getFormValues('basicViewformData');
-									   ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?&rand='+<%=rand%>+'&editSO=true',
+									   if(unsavedRootNodeValues.length<1){
+					 				    hideDivs('inactiveHeaders');showDivs('activeHeaders');}
+  									   ajaxMinorObjects('/<%=URI%>/ajaxservices/sourcerecordservice.jsf?&rand='+<%=rand%>+'&editSO=true',
 									   'sourceRecordSearchResult',
 									   event);
 									   }else{
@@ -408,7 +410,7 @@ boolean isSessionActive = true;
 		systemObjectAsHashMap = sourceAddHandler.getNewSOHashMap();
 
  	%>
- 
+  
 	 
 			 <div id="sourceViewBasicSearch2">
 			<!-- Start Status div-->
@@ -416,7 +418,7 @@ boolean isSessionActive = true;
 				<table border=0 width="100%">
 					<tr>
 						<td>
-							<h:form>
+							<h:form id="editrecordsForm">
 								<table border="0" cellpadding="1" cellspacing="1" width="100%">
 
 						<tr>
@@ -426,8 +428,10 @@ boolean isSessionActive = true;
 							   class="button"
 							   onclick="javascript:
 							   if(editMinorObjectType.length<1){
-							   showDivs('sourceViewBasicSearch');
-							   hideDivs('sourceRecordSearchResult');
+								if(unsavedRootNodeValues.length<1){
+								  showDivs('sourceViewBasicSearch');
+								  hideDivs('sourceRecordSearchResult');
+								 }else{	showUnSavedRootNodeAlert(event);}
  							   }else{showUnSavedAlert(event,editMinorObjectType)}"
 							   title="<%=bundle.getString("back_button_text")%>">							   
 										<span><%=bundle.getString("back_button_text")%></span>								
@@ -494,13 +498,14 @@ boolean isSessionActive = true;
 										</h:outputText>													  
 										<h:outputText rendered="#{!fieldConfigPerAdd.required}">
 											<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-										</h:outputText>													  
-										<h:outputText value="#{fieldConfigPerAdd.displayName}" />
+										</h:outputText>											 		  
+										<h:outputText value="#{fieldConfigPerAdd.displayName}"/>
 										<h:outputText value=":"/>
 									  </h:column>
 									<!--Rendering HTML Select Menu List-->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
-										<h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
+										<h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" onchange="javascript:unsavedRootNodeValues='true';
+										 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
 														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
 											<f:selectItem itemLabel="" itemValue="" />
 											<f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
@@ -516,7 +521,8 @@ boolean isSessionActive = true;
 										</h:selectOneMenu>
 										<h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" 
 														 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
-														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
+														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}"  onchange="javascript:unsavedRootNodeValues='true';
+										 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');">
 											<f:selectItem itemLabel="" itemValue="" />
 											<f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
 										</h:selectOneMenu>      
@@ -528,7 +534,7 @@ boolean isSessionActive = true;
 										<h:inputText label="#{fieldConfigPerAdd.displayName}"  
 													 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
 													 title="#{fieldConfigPerAdd.fullFieldName}"
-													 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
+													 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}');"
 													 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
 													 maxlength="#{fieldConfigPerAdd.maxSize}" 
 													 size="#{fieldConfigPerAdd.maxLength}" 
@@ -540,12 +546,13 @@ boolean isSessionActive = true;
 													 value="#{msgs.SENSITIVE_FIELD_MASKING}"
 													 readonly="true"
 													 disabled="true"
+													 onblur="javascript:"
 													rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] ne null}"/>	
 
 										<h:inputText label="#{fieldConfigPerAdd.displayName}"  
 													 readonly="true"
 													 disabled="true"
-													rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' &&  !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] eq null}"/>	
+ 													rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' &&  !Operations.field_VIP && SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName] eq null}"/>	
 
 									</h:column>                     
 
@@ -554,11 +561,13 @@ boolean isSessionActive = true;
 													 id="fieldConfigIdTextbox"  
 													 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
 													 title="#{fieldConfigPerAdd.fullFieldName}"
-													 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
-													 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
+													 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}');"
+													 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}');unsavedRootNodeValues='true';
+									 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
 													 maxlength="#{fieldConfigPerAdd.maxSize}" 
 													 size="#{fieldConfigPerAdd.maxLength}" 
-													 onkeyup="javascript:qws_field_on_key_up(this)" 
+													 onkeyup="javascript:qws_field_on_key_up(this);unsavedRootNodeValues='true';
+										 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');" 
 													 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
 									</h:column>                     
 									<!--Rendering Updateable HTML Text boxes date fields-->
@@ -627,7 +636,7 @@ boolean isSessionActive = true;
 										<nobr>
 											<input type="text" 
 													value="<h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}"/>"
-												   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
+ 												   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
 												   readonly="true" 
 												   disabled="true" 
 												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxSize}"/>"
@@ -642,8 +651,8 @@ boolean isSessionActive = true;
 										<h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
 														 title="#{fieldConfigPerAdd.fullFieldName}"
 														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-														 id="fieldConfigIdTextArea"   
-														 required="#{fieldConfigPerAdd.required}"
+														 id="fieldConfigIdTextArea"  
+ 														 required="#{fieldConfigPerAdd.required}"
 														  />
 									</h:column>
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive }" >
@@ -651,13 +660,13 @@ boolean isSessionActive = true;
 														 readonly="true"
 														 disabled="true"
 														 value="#{msgs.SENSITIVE_FIELD_MASKING}" 
-														 required="#{fieldConfigPerAdd.required}"
+ 														 required="#{fieldConfigPerAdd.required}"
 														 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] eq 'true' && !Operations.field_VIP}"
 														 />
 										<h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
 														 title="#{fieldConfigPerAdd.fullFieldName}"
 														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}" 
-														 required="#{fieldConfigPerAdd.required}"
+ 														 required="#{fieldConfigPerAdd.required}"
 														 rendered="#{SourceAddHandler.newSOHashMap['hasSensitiveData'] ne 'true' || Operations.field_VIP}"
 														 />
 									</h:column>
@@ -821,21 +830,33 @@ boolean isSessionActive = true;
 															   <table>
 															     <tr>
 																   <td>
-															   <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType='';getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');
+															   <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:editMinorObjectType='';unsavedEditMinorObjectType='';
+															   if(unsavedRootNodeValues.length<1){
+																hideDivs('inactiveHeaders');showDivs('activeHeaders');
+															   }
+															   getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');
 															   ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=systemObjectAsHashMap.get("LID")%>&SYS=<%=systemObjectAsHashMap.get("SYSTEM_CODE")%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event);
 															   ">
 																		 <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
 																	 </a>     
 																	 </td>
 																	 <td>
-																	  <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:editMinorObjectType='';ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
+																	  <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:editMinorObjectType='';
+																	  unsavedEditMinorObjectType='';alert(unsavedRootNodeValues);
+																	  if(unsavedRootNodeValues.length<1){
+																	  hideDivs('inactiveHeaders');showDivs('activeHeaders');}
+																	  ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
 																		   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 																	   </h:outputLink> 
 																	 </td>
 																	 <td>
 																	   <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelEdit">
 																		  <a href="javascript:void(0);" 
-																			 onclick="javascript:editMinorObjectType='';setEditIndex('-1');cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>');"	
+																			 onclick="javascript:editMinorObjectType='';
+																			 unsavedEditMinorObjectType='';
+																			 if(unsavedRootNodeValues.length<1){
+																			 hideDivs('inactiveHeaders');showDivs('activeHeaders');}
+																			 setEditIndex('-1');cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>');"	
 																			 class="button"
 																		     title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>">
 <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
@@ -1013,6 +1034,8 @@ boolean isSessionActive = true;
 									   title="<%=bundle.getString("source_rec_save_but")%>"
 										onclick="javascript:if(editMinorObjectType.length<1){
 										getFormValues('BasicSearchFieldsForm');
+										unsavedRootNodeValues='';
+  					 				    hideDivs('inactiveHeaders');showDivs('activeHeaders');
 										ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&save=true&rand=<%=rand%>','editFormValidate','');
 										}else{showUnSavedAlert(event,editMinorObjectType)}">
 									   <span><%=bundle.getString("source_rec_save_but")%></span>
@@ -1026,7 +1049,11 @@ boolean isSessionActive = true;
 									   <a href="javascript:void(0)" 
 									   class="button"  
 									   title="<%=bundle.getString("cancel_but_text")%>"	
-									   onClick="javaScript:editMinorObjectType='';setEditIndex('-1');
+									   onClick="javaScript:editMinorObjectType='';
+									   unsavedEditMinorObjectType='';
+									   unsavedRootNodeValues='';
+ 									   hideDivs('inactiveHeaders');showDivs('activeHeaders');
+ 									   setEditIndex('-1');
 									   showDivs('sourceViewBasicSearch');hideDivs('sourceRecordSearchResult');">
 									   <span><%=bundle.getString("cancel_but_text")%></span>
 									   </a>  
@@ -1040,6 +1067,9 @@ boolean isSessionActive = true;
 									 <a 
 									 href="javascript:void(0);"
 									 onclick='javascript:if(editMinorObjectType.length<1){
+									 if(unsavedRootNodeValues.length>0){
+											showUnSavedRootNodeAlert(event);
+										 }
 									 document.getElementById("viewEuidDiv").style.visibility = "visible";
 							         document.getElementById("viewEuidDiv").style.display  = "block";
 									 getFormValues("basicViewformData");

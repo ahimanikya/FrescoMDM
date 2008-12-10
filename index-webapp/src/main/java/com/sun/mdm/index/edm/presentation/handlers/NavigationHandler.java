@@ -32,7 +32,6 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.servlet.http.HttpSession;
@@ -42,7 +41,6 @@ import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
-import net.java.hulp.i18n.LocalizationSupport;
 
 public  class NavigationHandler {
     
@@ -229,6 +227,15 @@ public  class NavigationHandler {
         session.removeAttribute("singleSystemObjectLID");   
         session.removeAttribute("soHashMapArrayList");
         session.removeAttribute("eocomparision");
+
+        //Fix for 221 start
+        HttpSession session1 = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        SourceAddHandler  sourceAddHandler   = (SourceAddHandler)session1.getAttribute("SourceAddHandler");
+        sourceAddHandler.getNewSOHashMap().clear();
+        sourceAddHandler.getNewSOMinorObjectsHashMapArrayList().clear();
+        //Fix for 221 ends
+        
+
         //return headertabName;
     }
     public String  getMIDM_PROP( ){

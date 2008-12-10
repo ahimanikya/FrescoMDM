@@ -515,6 +515,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType);
 											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");
+											 unsavedEditMinorObjectType="<%=minorObjType%>";
+ 											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -664,7 +666,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 onclick='javascript: 
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");tabName="viewEditTab";
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");
+											 unsavedEditMinorObjectType="<%=minorObjType%>";											 hideDivs("activeHeaders");showDivs("inactiveHeaders");									
+											 tabName="viewEditTab";
 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -948,7 +952,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 onclick='javascript:
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");tabName="viewEditTab";
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");
+												unsavedEditMinorObjectType="<%=minorObjType%>";
+												hideDivs("activeHeaders");showDivs("inactiveHeaders");
+											 tabName="viewEditTab";
 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1144,7 +1151,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 onclick='javascript:
 											 if(editMinorObjectType.length>1 && editMinorObjectType!="<%=minorObjType%>" ){
 											 showUnSavedAlert(event,editMinorObjectType);
-											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");tabName="viewEditTab";
+											 }else{ setMinorObjectAddressType("<%=minorObjType%>","<%=i%>");
+											 unsavedEditMinorObjectType="<%=minorObjType%>";
+											 tabName="viewEditTab";
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 

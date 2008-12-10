@@ -511,6 +511,9 @@ if(isSave) {
 											 onclick='javascript:
 											 if(editMinorObjectType.length<1){
 											 setMinorObjectAddressType("<%=minorObjType%>","<%=thisIndex%>");
+											 unsavedEditMinorObjectType="<%=minorObjType%>";
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
+											 unsavedMinorObject = "<%=minorObjType%>";
 											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -766,7 +769,9 @@ if(isSave) {
 											 onclick='javascript:
 											 if(editMinorObjectType.length<1){
 											 setMinorObjectAddressType("<%=minorObjType%>","<%=thisIndex%>");
-											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
+											 unsavedEditMinorObjectType="<%=minorObjType%>";
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
+ 											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -945,6 +950,8 @@ if(isSave) {
 											 onclick='javascript:
 											  if(editMinorObjectType.length<1){
 											 setMinorObjectAddressType("<%=minorObjType%>","<%=thisIndex%>");
+											 unsavedEditMinorObjectType="<%=minorObjType%>";
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }else{showUnSavedAlert(event,editMinorObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
