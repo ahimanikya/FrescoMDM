@@ -286,12 +286,13 @@ function selectSourceSearchTypeFields(data){
              var row = document.getElementById('select_search_source_fields').insertRow(count++);
                  row.insertCell(0);
                  row.insertCell(1);
-                 row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name;
+                 
                  var field = document.createElement("input");
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
                  if(data[fieldGrp][fieldCfg].length != 1){
+                  row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name;   
                   row.cells[1].appendChild(field);   
                  }       
          }
@@ -318,12 +319,13 @@ function selectTargetSearchTypeFields(data){
              var row = document.getElementById('select_search_target_fields').insertRow(count++);
                  row.insertCell(0);
                  row.insertCell(1);
-                 row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name;
+                 
                  var field = document.createElement("input");
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
                  if(data[fieldGrp][fieldCfg].length != 1){
+                  row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name;   
                   row.cells[1].appendChild(field);   
                  }      
          }
@@ -718,12 +720,15 @@ function sourceSearchTypeFields(data){
              var row = document.getElementById('add_search_source_fields').insertRow(count++);
                  row.insertCell(0);
                  row.insertCell(1);
-                 row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name;
                  var field = document.createElement("input");
                  field.type="text";
                  field.size="5";
+                 field.name="addSourceSearchFieldName";
+                 field.id="addSourceSearchFieldId";
+                 field.xyz = data[fieldGrp][fieldCfg].name;
                  field.style.width="100px";
                  if(data[fieldGrp][fieldCfg].length != 1){
+                    row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name; 
                     row.cells[1].appendChild(field); 
                  }       
          }
@@ -749,12 +754,13 @@ function targetSearchTypeFields(data){
              var row = document.getElementById('add_search_target_fields').insertRow(count++);
                  row.insertCell(0);
                  row.insertCell(1);
-                 row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name;
+                 
                  var field = document.createElement("input");
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
                  if(data[fieldGrp][fieldCfg].length != 1){
+                    row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name; 
                     row.cells[1].appendChild(field);
                  }
          }
@@ -764,6 +770,11 @@ function targetSearchTypeFields(data){
 function addSourceDomainSearch() {
     var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
     var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
+    var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
+    alert("addSourceSearchFieldNames length  " +addSourceSearchFieldNames.length);
+    for(i=0;i<addSourceSearchFieldNames.length;i++){
+        alert("name  " +addSourceSearchFieldNames[i].xyz +" :  value" +addSourceSearchFieldNames[i].value);
+    }
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
 
@@ -861,6 +872,8 @@ function ByRelAddRelationship(){
    var startDateRequireField = (getBoolean(relationshipDef.startDateRequired)); 
    var endDateRequireField = (getBoolean(relationshipDef.endDateRequired)); 
    var purgeDateRequireField = (getBoolean(relationshipDef.purgeDateRequired));
+   var s=0;
+   var t=0;
     
     for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
       var attributeName = relationshipDef.extendedAttributes[cc].name;
@@ -919,7 +932,8 @@ function ByRelAddRelationship(){
    var sourceCheckBox = false; 
    var targerCheckBox = false;
    var sourceCheckedArray = document.getElementsByName("addSourceCheckBox"); 
-   var targetCheckedArray = document.getElementsByName("addTargetCheckBox"); 
+   var targetCheckedArray = document.getElementsByName("addTargetCheckBox");
+   
     for(i=0;i<sourceCheckedArray.length; i++) {
         if(sourceCheckedArray[i].checked) {
             s++;
@@ -931,7 +945,6 @@ function ByRelAddRelationship(){
                 targerCheckBox = true;
                 var targetRecordEUID = targetCheckedArray[j].value;
                 var newRelationshipRecord = {};
-                
                 newRelationshipRecord.name = RelationshipDefName;
                 newRelationshipRecord.sourceDomain = SourceDomain;
                 newRelationshipRecord.sourceEUID = sourceRecordEUID;
@@ -941,14 +954,15 @@ function ByRelAddRelationship(){
                 newRelationshipRecord.startDate = startDate;
                 newRelationshipRecord.endDate = endDate;
                 newRelationshipRecord.purgeDate = purgeDate;
-                newRelationshipRecord.attributes = relationshipCustomAttributes ;
-                    
+                newRelationshipRecord.attributes = relationshipCustomAttributes ; 
                 RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB);
               }    
-            }   
-
-        }    
-   }  
+            }     
+        }       
+   } 
+    if(s == 0 || t == 0 ) {
+       alert("Select Atleast one Record from each Domain results");    
+    }        
 }
 function addRelationshipCB(data) {
     alert("New relationship record added, id is : " + data);
