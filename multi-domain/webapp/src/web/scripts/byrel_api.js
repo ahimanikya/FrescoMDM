@@ -348,6 +348,19 @@ function searchRelationships() {
     var targetDomain = document.getElementById("select_targetDomain").value;
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
     
+   if(sourceDomain == null || sourceDomain == "") {
+       alert("Select source domain.");
+       return false;
+   }
+   if(targetDomain == null || targetDomain == "") {
+       alert("Select target domain.");
+       return false;
+   }   
+   if(relationshipDef == null || relationshipDef == "") {
+       alert("Select a relationshipDef from the list.");
+       return false;
+   }
+   
   /*/  var RelationshipDefNmae = cachedRelationshipDefs[relationshipDef];
     for(c =0; c < RelationshipDefNmae.extendedAttributes.length; c++) {
       var attributeName = RelationshipDefNmae.extendedAttributes[c].name;
@@ -362,6 +375,7 @@ function searchRelationships() {
       
      }
     */ 
+
     hideByRelSelectDialog(); // hide the select dialog...
     //
     // Load fields for summary display for source & target domain
@@ -429,7 +443,7 @@ function searchResultsCallback(data) {
         alert(data[i].id + " : " + data[i].sourceEUID + " : "  + data[i].sourceHighLight);
     }*/
     cachedSearchResults = data;
-    dwr.util.removeAllRows("relationshipsListing");
+ //   dwr.util.removeAllRows("relationshipsListing");
     if(data == null || data.length<=0) {
         //alert("no relationship definitions found");
         dwr.util.addRows("relationshipsListing", [''], [function(data){return "No Relationships found.";}], {
@@ -464,9 +478,14 @@ function searchResultsCallback(data) {
         },
         escapeHtml:false
       });
+   
+    refreshRelationshipsListingButtonsPalette ();
+
+   
 }
+
 var relationListingFuncs = [
-    function(data) { return "<input type='checkbox' align='center' id='relationship_id' name='relationship_id' value='"+data.id+"' >" ; },
+    function(data) { return "<input type='checkbox' align='center' id='relationship_id' name='relationship_id' value='"+data.id+"' onclick='refreshRelationshipsListingButtonsPalette();' >" ; },
     function(data) { return data.sourceHighLight; },
     function(data) { return data.targetHighLight; }
 

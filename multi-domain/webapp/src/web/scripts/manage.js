@@ -1,3 +1,19 @@
+// initialize icons
+var deleteButtonEnabled = new Image();
+deleteButtonEnabled.src = "images/icons/delete_button.png";
+var deleteButtonDisabled = new Image();
+deleteButtonDisabled.src = "images/icons/delete_button_faded.png";
+
+var selectAllButtonEnabled = new Image();
+selectAllButtonEnabled.src = "images/icons/select_multiple.png";
+var selectAllButtonDisabled = new Image();
+selectAllButtonDisabled.src = "images/icons/select_multiple_faded.png";
+
+var deselectAllButtonEnabled = new Image();
+deselectAllButtonEnabled.src = "images/icons/deselect_multiple.png";
+var deselectAllButtonDisabled = new Image();
+deselectAllButtonDisabled.src = "images/icons/deselect_multiple_faded.png";   
+            
 function testResults(){
     
     DomainScreenHandler.getSearchResultFields("Company",testResultsBack);
@@ -585,4 +601,53 @@ function populatePredefinedAttributesValues(dataObj, dataObjValues, prefixToUse)
           purgeDateObj.value = dataObjValues.purgeDate;
       }
     }    
+}
+
+
+
+function selectAllRelationships () {
+    var chkboxes = document.getElementsByName("relationship_id");
+    for(i=0;i<chkboxes.length; i++) {
+        chkboxes[i].checked = true;
+    }
+    refreshRelationshipsListingButtonsPalette();
+}
+function deselectAllRelationships () {
+    var chkboxes = document.getElementsByName("relationship_id");
+    for(i=0;i<chkboxes.length; i++) {
+        chkboxes[i].checked = false;
+    }
+    refreshRelationshipsListingButtonsPalette();
+}
+
+function refreshRelationshipsListingButtonsPalette () {
+    var selectedChoices = 0;
+    var chkboxes = document.getElementsByName("relationship_id");
+    for(i=0;i<chkboxes.length; i++) {
+        if(chkboxes[i].checked )
+            selectedChoices ++;
+    }
+
+    var imgDeleteButtonObj = dojo.byId("imgDeleteRelationshipListing");
+    if(imgDeleteButtonObj != null) {
+        if(selectedChoices > 0)
+            imgDeleteButtonObj.src =   deleteButtonEnabled.src;
+        else
+            imgDeleteButtonObj.src =   deleteButtonDisabled.src;
+    }
+    var imgSelectAllButtonObj = dojo.byId("imgSelectAllRelationshipListing");
+    if(imgSelectAllButtonObj != null ) {
+        if(selectedChoices != chkboxes.length)
+            imgSelectAllButtonObj.src =   selectAllButtonEnabled.src;
+        else
+            imgSelectAllButtonObj.src =   selectAllButtonDisabled.src;
+    }
+    var imgDeSelectAllButtonObj = dojo.byId("imgDeselectAllRelationshipListing");
+    if(imgDeSelectAllButtonObj != null ) {
+        if(selectedChoices > 0)
+            imgDeSelectAllButtonObj.src =   deselectAllButtonEnabled.src;
+        else
+            imgDeSelectAllButtonObj.src =   deselectAllButtonDisabled.src;
+    }
+
 }

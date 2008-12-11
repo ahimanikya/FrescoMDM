@@ -64,13 +64,13 @@
                    <td colspan="2">
                       <table cellspacing="0" cellpadding="0" border="0">
                            <tr>
-                            <td><a href="javascript:void(0);" title="<f:message key="select_all_text" />"><img src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="selectAllRelationships();" title="<f:message key="select_all_text" />"><img id="imgSelectAllRelationshipListing" src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
-                            <td><a href="javascript:void(0);" title="<f:message key="de_select_all_text" />" ><img src="images/icons/deselect_multiple.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="deselectAllRelationships();" title="<f:message key="de_select_all_text" />" ><img id="imgDeselectAllRelationshipListing" src="images/icons/deselect_multiple.png" border="0"></a></td>
                             <td><img src="images/icons/actions_separator.gif" border="0"></td>
                             <td><a href="javascript:void(0);" onclick="showByRelAddDialog();" title="<f:message key="add_text" />..."><img src="images/icons/add_button.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
-                            <td><a href="javascript:void(0);" onclick="deleteRelationships();" title="<f:message key="delete_text" />"><img src="images/icons/delete_button.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="deleteRelationships();" title="<f:message key="delete_text" />"><img id="imgDeleteRelationshipListing" src="images/icons/delete_button.png" border="0"></a></td>
                           </tr>
                       </table>
                    </td>
@@ -84,33 +84,19 @@
                       <table cellspacing="0" cellpadding="0" border="0" width="100%" class="RecordsListing">
                             <thead class="header">
                                 <tr>
-                                    <td>&nbsp;&nbsp;</td>
-                                    <td class="generalTextBold">Source Record</td>
-                                    <td class="generalTextBold">Target Record</td>
+                                    <th>&nbsp;&nbsp;</th>
+                                    <th class="generalTextBold">Source Record</th>
+                                    <th class="generalTextBold">Target Record</th>
                                 </tr>
                             </thead>
                             <tbody id="relationshipsListing">
                                 <!--<tr><td class="textdata" colspan="3" align="center"> Loading... </td></tr>-->
-                                <tr onclick="selectRecordRow(this);">
+                               <!-- <tr onclick="selectRecordRow(this);">
                                     <td><input type="checkbox"></td>
                                     <td class="generalTextBold">George Karlin</td>
                                     <td class="generalTextBold">Center Point</td>
-                                </tr>
-                                <tr onclick="selectRecordRow(this);">
-                                    <td><input type="checkbox"></td>
-                                    <td class="generalTextBold">George Karlin</td>
-                                    <td class="generalTextBold">Center Point</td>
-                                </tr>
-                                <tr onclick="selectRecordRow(this);">
-                                    <td><input type="checkbox"></td>
-                                    <td class="generalTextBold">George Karlin</td>
-                                    <td class="generalTextBold">Center Point</td>
-                                </tr>
-                                <tr onclick="selectRecordRow(this);">
-                                    <td><input type="checkbox"></td>
-                                    <td class="generalTextBold">George Karlin</td>
-                                    <td class="generalTextBold">Center Point</td>
-                                </tr>
+                                </tr>-->
+
                             </tbody>
                       </table>
                       </div>
