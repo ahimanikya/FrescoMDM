@@ -186,14 +186,16 @@ public class EditorMainPanel extends JPanel implements ActionListener {
     }
 
     public void loadDomainProperties(DomainNode currentDomainNode) {
+        String title = NbBundle.getMessage(EditorMainPanel.class, "MSG_Domain_Properties");
         mPropertiesTabbedPane.removeAll();
         if (currentDomainNode != null) {
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_VIEW, currentDomainNode.getDomainViewTab(true));
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_SEARCH, currentDomainNode.getDoaminsTab(true));
+            title +=  " - " + currentDomainNode.getName();
         }
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                NbBundle.getMessage(EditorMainPanel.class, "MSG_Domain_Properties")));
+                title));
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
 
