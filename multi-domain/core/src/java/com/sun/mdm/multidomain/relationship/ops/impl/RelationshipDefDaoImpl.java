@@ -39,6 +39,7 @@ import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipDefDaoException;
 import com.sun.mdm.multidomain.sql.AND;
 import com.sun.mdm.multidomain.sql.Criteria;
+import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
 import com.sun.mdm.multidomain.sql.MatchCriteria;
@@ -163,11 +164,29 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
     /**
      * Deletes a single row in the relationship_def table.
      */
-    public void delete(long pk) throws RelationshipDefDaoException {
+    public void delete(long relDefId) throws RelationshipDefDaoException {
         PreparedStatement stmt = null;
 
         try {
+            userConn.setAutoCommit(false);
+            // Build DELELE SQL for RELATIONSHIP_EA table
+            DeleteBuilder eaDelBld = new DeleteBuilder();
+            eaDelBld.setTable(RELATIONSHIP_EA.getTableName());
+            eaDelBld.addCriteria(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.columnName);
+            String sqlStr = SQLBuilder.buildSQL(eaDelBld);
+            stmt = userConn.prepareStatement(sqlStr);
+            stmt.setLong(1, relDefId);
             int rows = stmt.executeUpdate();
+
+            // Build DELETE SQL for RELATIONSHIP_DEF table
+            DeleteBuilder relDelBld = new DeleteBuilder();
+            relDelBld.setTable(RELATIONSHIP_DEF.getTableName());
+            relDelBld.addCriteria(RELATIONSHIP_DEF.getPKColumName());
+            sqlStr = SQLBuilder.buildSQL(relDelBld);
+            stmt = userConn.prepareStatement(sqlStr);
+            stmt.setLong(1, relDefId);
+            rows = stmt.executeUpdate();
+            userConn.commit();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
