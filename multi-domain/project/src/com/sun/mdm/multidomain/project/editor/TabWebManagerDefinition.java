@@ -251,6 +251,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         model.addRow(rowCount, row);
         model.fireTableDataChanged();
         mTableExtendedAttrs.setRowSelectionInterval(rowCount, rowCount);
+        mTableExtendedAttrs.scrollRectToVisible(mTableExtendedAttrs.getCellRect(rowCount, 0, false));
         mMapRelationFieldReference.put(fieldName, field);
         retreiveFieldProperties(true);        
     }
@@ -265,6 +266,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         model.fireTableDataChanged();
         if (selectedRow == removedRow) {
             mTableExtendedAttrs.setRowSelectionInterval(0, 0);
+            mTableExtendedAttrs.scrollRectToVisible(mTableExtendedAttrs.getCellRect(0, 0, false));
             retreiveFieldProperties(true);
         }
     }
