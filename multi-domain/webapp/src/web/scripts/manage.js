@@ -13,7 +13,9 @@ var deselectAllButtonEnabled = new Image();
 deselectAllButtonEnabled.src = "images/icons/deselect_multiple.png";
 var deselectAllButtonDisabled = new Image();
 deselectAllButtonDisabled.src = "images/icons/deselect_multiple_faded.png";   
-            
+
+var isByRelSelectDialogLoaded = false; // Global flag to find out if Select dialog is already loaded for ByRelationship screen
+var isByRelAddDialogLoaded = false; // Global flag to find out if Add dialog is already loaded for ByRelationship screen
 function testResults(){
     
     DomainScreenHandler.getSearchResultFields("Company",testResultsBack);
@@ -99,6 +101,8 @@ function showSelectDialog() {
     var selectDialog = dijit.byId("byrel_select");
     if(selectDialog != null)
       selectDialog.show();
+  
+    if(isByRelSelectDialogLoaded) loadDomainsForSearch();
 }
 //function showByRelSelectDialog() {
 //    var selectDialog = dijit.byId("byrel_select");
@@ -111,10 +115,11 @@ function hideByRelSelectDialog () {
 function showByRelAddDialog(){
     var addDialog = dijit.byId("byrel_add");
     addDialog.show();
-    //initializeAddDialog();
+    if(isByRelAddDialogLoaded) initializeAddDialog();
 }
 
 function initializeAddDialog() {
+    isByRelAddDialogLoaded = true;
     //alert("add dialog ")
     var selectedSourceDomain =document.getElementById("select_sourceDomain").value;
     var selectedTargetDomain =document.getElementById("select_targetDomain").value;

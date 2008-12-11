@@ -98,7 +98,7 @@
            </tr>
            <tr>
             <td>
-                <div id="byrel_addSourceResults" >
+                <div id="byrel_addSourceResults" style="display:none;">
                     <table border="1" >
                         <tbody id="AddSource_TableId"></tbody>
                     </table>
@@ -204,8 +204,9 @@
            </tr>
            <tr>
             <td>
-                <div id="byrel_addTargetResults">
-                    <table border="1" id="AddTarget_TableId">
+                <div id="byrel_addTargetResults" style="display:none;">
+                    <table border="1" >
+                        <tbody id="AddTarget_TableId"></tbody>
                     </table>
                 </div>
             </td>

@@ -16,9 +16,11 @@ var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshi
  * Scripts for Select/Search screen <START>
  */ 
   function loadDomainsForSearch () {
+      isByRelSelectDialogLoaded = true;
       DomainHandler.getDomains(updateSelectDomains);
   }
   function updateSelectDomains(data) {
+      dwr.util.removeAllOptions("select_sourceDomain");
       dwr.util.addOptions("select_sourceDomain", data, "name");
       dwr.util.setValue("select_sourceDomain", data[0].name); 
       dwr.util.addOptions("select_targetDomain", data, "name");
@@ -813,10 +815,15 @@ function addSourceDomainSearch() {
     var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
     var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
+    
+    domainSearch["type"] = "BLOCKER-SEARCH"; // put search type.
+    
     alert("addSourceSearchFieldNames length  " + addSourceSearchFieldNames.length);
     for(i=0;i<addSourceSearchFieldNames.length;i++){
-        alert("name  " +addSourceSearchFieldNames[i].domainFieldName +" :  value " +addSourceSearchFieldNames[i].value);
+      //  alert("name  " +addSourceSearchFieldNames[i].domainFieldName +" :  value " +addSourceSearchFieldNames[i].value);
+      domainSearch[addSourceSearchFieldNames[i].domainFieldName] = addSourceSearchFieldNames[i].value; 
     }
+    alert(addSourceSearchFieldNames[0].domainFieldName + " : " + domainSearch[addSourceSearchFieldNames[0].domainFieldName]);
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
 
@@ -825,9 +832,14 @@ function addSourceSearchResults(data) {
     if(data == null){
        document.getElementById('sourceResultsFailure').style.visibility='visible'; 
        document.getElementById('sourceResultsFailure').style.display='block'; 
+       document.getElementById('byrel_addSourceResults').style.visibility='hidden'; 
+       document.getElementById('byrel_addSourceResults').style.display='none';   
     }else{
        document.getElementById('sourceResultsSuccess').style.visibility='visible'; 
        document.getElementById('sourceResultsSuccess').style.display='block'; 
+       document.getElementById('byrel_addSourceResults').style.visibility='visible'; 
+       document.getElementById('byrel_addSourceResults').style.display='block';   
+        
        for(i =0;i<data.length;i++) {
         if(i==0){
           var header = document.getElementById('AddSource_TableId').insertRow(i);
@@ -878,9 +890,13 @@ function addTargeSearchResults(data) {
     if(data == null){
        document.getElementById('targetResultsFailure').style.visibility='visible'; 
        document.getElementById('targetResultsFailure').style.display='block'; 
+       document.getElementById('byrel_addTargetResults').style.visibility='hidden'; 
+       document.getElementById('byrel_addTargetResults').style.display='none';
     }else{
        document.getElementById('targetResultsSuccess').style.visibility='visible'; 
-       document.getElementById('targetResultsSuccess').style.display='block';  
+       document.getElementById('targetResultsSuccess').style.display='block';
+       document.getElementById('byrel_addTargetResults').style.visibility='visible'; 
+       document.getElementById('byrel_addTargetResults').style.display='block';       
         for(i =0;i<data.length;i++){
         if(i==0){
           var header = document.getElementById('AddTarget_TableId').insertRow(i);
@@ -1078,7 +1094,7 @@ function updateRelationship () {
            startDate =  document.getElementById('edit_predefined_startDate').value;
            if(startDateRequire == true){
                if( isEmpty (startDate) ) {
-              alert("Enter value for Effective From"  );
+              alert(message_validation_enterValueFor + " " + message_effectiveFrom  );
               startDateField.focus();
               return ;
            }
