@@ -36,7 +36,9 @@
                                 </tr>
                                 <tr>
                                     <td class="Heading" colspan="5">
-                                        <table border="0" id="byrel_select_customAttributes"></table>
+                                        <table border="0" >
+                                            <tbody id="byrel_select_customAttributes"></tbody>
+                                        </table>
                                     </td>
                                 </tr>
                                  <!--<tr>
@@ -66,7 +68,9 @@
                                     </tr>
                                     <tr>
                                         <td class="label">
-                                            <table border="0" id="byrel_select_predefinedAttributes"></table>
+                                            <table border="0" >
+                                                <tbody id="byrel_select_predefinedAttributes"></tbody>
+                                            </table>
                                         </td>
                                     </tr>
                                 <!--     <tr><td><img src="images/spacer.gif" height="4" width="1"></td></tr>

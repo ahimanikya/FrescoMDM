@@ -38,8 +38,8 @@
                        <tr>
                            <td>
                                <div>
-                                   <table id="add_search_source_fields">
-                                       
+                                   <table >
+                                       <tbody id="add_search_source_fields"></tbody>
                                    </table>
                                </div>
                            </td>
@@ -99,7 +99,8 @@
            <tr>
             <td>
                 <div id="byrel_addSourceResults" >
-                    <table border="1" id="AddSource_TableId">
+                    <table border="1" >
+                        <tbody id="AddSource_TableId"></tbody>
                     </table>
                 </div>
             </td>

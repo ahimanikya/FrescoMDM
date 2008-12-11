@@ -37,8 +37,8 @@
                    <tr>
                        <td>
                            <div>
-                               <table id="select_search_source_fields">
-
+                               <table border="0">
+                                   <tbody id="select_search_source_fields"></tbody>
                                </table>
                            </div>
                        </td>
@@ -115,8 +115,8 @@
                    <tr>
                        <td>
                            <div>
-                               <table id="select_search_target_fields">
-
+                               <table >
+                                   <tbody id="select_search_target_fields"></tbody>
                                </table>
                            </div>
                        </td>

@@ -341,6 +341,7 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
             }
         }
     }
+    
     dwr.util.removeAllRows(tableId);
     if(attributesArray != null && attributesArray.length > 0) {
       dwr.util.addRows(tableId, attributesArray, editCustomAttrFuncs, {
@@ -351,7 +352,6 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
           cellCreator:function(options) {
             var td = document.createElement("td");
             var tempData = options.data;
-            
             if(options.cellNum == 1) {
                if(tempData.dataType=="date"){
                    var datefield = document.createElement("input");
@@ -392,14 +392,15 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
                   field.id = prefixToUse + "_" + tempData.name;
                   td.appendChild (field);
                }
-                  options.data = null;
+               options.data = null;
             } else {
                 if(getBoolean(tempData.isRequired) == true){
                    options.data = "<span class='label'>" + tempData.name + " *" +  "</span>"; 
                 }else{
                    options.data = "<span class='label'>" + tempData.name +  "</span>";
                 }
-            }            
+                td.innerHTML = options.data;
+            }  
             return td;
           },
           escapeHtml:false

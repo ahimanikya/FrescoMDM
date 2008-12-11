@@ -718,19 +718,23 @@ function sourceSearchTypeFields(data){
         fieldGroups[j++] = fieldGrp;
          for (var fieldCfg in data[fieldGrp])  {
              var row = document.getElementById('add_search_source_fields').insertRow(count++);
-                 row.insertCell(0);
-                 row.insertCell(1);
-                 var field = document.createElement("input");
-                 field.type="text";
-                 field.size="5";
-                 field.name="addSourceSearchFieldName";
-                 field.id="addSourceSearchFieldId";
-                 field.xyz = data[fieldGrp][fieldCfg].name;
-                 field.style.width="100px";
-                 if(data[fieldGrp][fieldCfg].length != 1){
-                    row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name; 
-                    row.cells[1].appendChild(field); 
-                 }       
+             row.insertCell(0);
+             row.insertCell(1);
+             var field ;//= document.createElement("input");
+             try{
+                 field = document.createElement('<input type="text" name="addSourceSearchFieldName" />');
+              }catch(err){
+                 field = document.createElement("input");
+              }
+             field.type="text";
+             field.size="5";
+             field.name="addSourceSearchFieldName";
+             field.domainFieldName = data[fieldGrp][fieldCfg].name;
+             field.style.width="100px";
+             if(data[fieldGrp][fieldCfg].length != 1){
+                row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name; 
+                row.cells[1].appendChild(field); 
+             }       
          }
         
      }
@@ -771,9 +775,9 @@ function addSourceDomainSearch() {
     var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
     var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
-    alert("addSourceSearchFieldNames length  " +addSourceSearchFieldNames.length);
+    alert("addSourceSearchFieldNames length  " + addSourceSearchFieldNames.length);
     for(i=0;i<addSourceSearchFieldNames.length;i++){
-        alert("name  " +addSourceSearchFieldNames[i].xyz +" :  value" +addSourceSearchFieldNames[i].value);
+        alert("name  " +addSourceSearchFieldNames[i].domainFieldName +" :  value" +addSourceSearchFieldNames[i].value);
     }
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
