@@ -126,6 +126,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
                 } else if (!newName.equals(mOldDefName)) {
                     mDefinition.setName(newName);
                     mEditorMainApp.getEditorMainPanel().getTabOverview().updateDefinitionName(mOldDefName, mDefinition);
+                    mEditorMainApp.getEditorMainPanel().updatePropertiesScrollPaneTitle(newName);
                     mDefinitionNode.updateDefinitionName(newName);
                     mOldDefName = jTextName.getText();
                 }

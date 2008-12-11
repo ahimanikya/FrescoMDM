@@ -191,7 +191,7 @@ public class EditorMainPanel extends JPanel implements ActionListener {
         if (currentDomainNode != null) {
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_VIEW, currentDomainNode.getDomainViewTab(true));
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_Domain_SEARCH, currentDomainNode.getDoaminsTab(true));
-            title +=  " - " + currentDomainNode.getName();
+            title += " - " + currentDomainNode.getName();
         }
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
@@ -200,9 +200,10 @@ public class EditorMainPanel extends JPanel implements ActionListener {
     }
 
     public void loadDefinitionProperties(DefinitionNode currentDefinitionNode) {
+        String title = "Unknown";
+        String titleProperties = NbBundle.getMessage(EditorMainPanel.class, "MSG_Definition_Properties");
         mPropertiesTabbedPane.removeAll();
         if (currentDefinitionNode != null) {
-            String title = "Unknown";
             if (currentDefinitionNode.getType().equals(Definition.TYPE_RELATIONSHIP)) {
                 title = TAB_RELATIONSHIP;
             } else if (currentDefinitionNode.getType().equals(Definition.TYPE_HIERARCHY)) {
@@ -214,13 +215,21 @@ public class EditorMainPanel extends JPanel implements ActionListener {
             }
             mPropertiesTabbedPane.add(title, currentDefinitionNode.getDefinitionTab(true));
             mPropertiesTabbedPane.add(TAB_WEB_MANAGER_PAGE_DEFINITIONS, currentDefinitionNode.getWebManagerDefinitionTab(true));
+            titleProperties += " - " +  currentDefinitionNode.getName();
         }
         mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                NbBundle.getMessage(EditorMainPanel.class, "MSG_Definition_Properties")));
+                titleProperties));
         mPropertiesScrollPane.setViewportView(mPropertiesTabbedPane);
     }
 
+    public void updatePropertiesScrollPaneTitle(String defName) {
+        String titleProperties = NbBundle.getMessage(EditorMainPanel.class, "MSG_Definition_Properties") + " - " +  defName;
+        mPropertiesScrollPane.setBorder(new javax.swing.border.TitledBorder(
+                new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                titleProperties));
+    }
+    
     private JSplitPane createSplitPane() {
         // Put tree and table in a split pane splitPane
         mMultiViewPane = new JScrollPane();
