@@ -206,7 +206,7 @@ public class DDLWriter {
             String tempStr = insertStrTemplate;
             tempStr = tempStr.replaceAll("<attribute_name>", attr.getName());
             tempStr = tempStr.replaceAll("<column_name>", attr.getColumnName());
-            tempStr = tempStr.replaceAll("<column_type>", attr.getDataType());
+            tempStr = tempStr.replaceAll("<column_type>", attr.getDataType().toUpperCase());
             tempStr = tempStr.replaceAll("<default_value>", attr.getDefaultValue());
             tempStr = tempStr.replaceAll("<is_searchable>", attr.isSearchable() ?  "T" : "F");
             tempStr = tempStr.replaceAll("<is_required>", attr.isRequired() ?  "T" : "F");
