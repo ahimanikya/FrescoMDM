@@ -59,22 +59,26 @@ public class DomainScreenHandler {
         DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
         
         //Get the Search Records Summary for the domain
-        ArrayList recordSummaryConfigs = domainScreenConfig.getSearchResultsSummaryConfigs();
+        ArrayList recordSummaryResultsConfigs = domainScreenConfig.getSearchResultsSummaryConfigs();
         
-        // For Stub demo
-        //Field Config Group Array
-         
-        ArrayList recordSummaryFields = new ArrayList();        
-        FieldConfig fieldConfig1 = new FieldConfig(null,null,"Person.FirstName","Person.FirstName","textbox",10);
-        recordSummaryFields.add(fieldConfig1);
-        
-        FieldConfig fieldConfig2 = new FieldConfig(null,null,"Person.LastName","Person.LastName","textbox",10);
-        recordSummaryFields.add(fieldConfig2);
-        
-        FieldConfig fieldConfig3 = new FieldConfig(null,null,"Person.Gender","Person.Gender","textbox",10);
-        recordSummaryFields.add(fieldConfig3);
-        
-        recordSummaryGroup.put("1",recordSummaryFields);
+        for (int j = 0; j < recordSummaryResultsConfigs.size(); j++)   {
+            SearchResultsSummaryConfig searchResultsSummaryConfig = (SearchResultsSummaryConfig)recordSummaryResultsConfigs.get(j);
+                  ArrayList fieldGroupArray = searchResultsSummaryConfig.getFieldGroupConfigs();
+                  System.out.println("-------fieldGroupArray.size()------" +fieldGroupArray.size());
+                  for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
+                      
+                      FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
+                      ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();  
+                      System.out.println("-------fieldconfigsGroup.size()------" +fieldconfigsGroup.size());
+                      ArrayList recordSummaryResultsFields = new ArrayList();        
+                      for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
+                          
+                            FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
+                            recordSummaryResultsFields.add(fieldConfig);
+                      }
+                      recordSummaryGroup.put(k,recordSummaryResultsFields);
+              }
+           }
         return recordSummaryGroup;
     }
 
