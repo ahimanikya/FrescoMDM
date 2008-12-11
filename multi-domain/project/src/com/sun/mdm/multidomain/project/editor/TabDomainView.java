@@ -171,14 +171,17 @@ private void enableSave() {
         jPanelRecordHighLightLayout.setHorizontalGroup(
             jPanelRecordHighLightLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanelRecordHighLightLayout.createSequentialGroup()
-                .addContainerGap()
                 .add(jPanelRecordHighLightLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jCBIncludeEUID)
+                    .add(jPanelRecordHighLightLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanelRecordHighLightLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jCBIncludeEUID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 186, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelRecordHighLightLayout.createSequentialGroup()
+                        .add(250, 250, 250)
                         .add(jBtnAddHighLightField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jBtnRmvHighLightField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 407, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnRmvHighLightField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -187,15 +190,13 @@ private void enableSave() {
         jPanelRecordHighLightLayout.setVerticalGroup(
             jPanelRecordHighLightLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanelRecordHighLightLayout.createSequentialGroup()
-                .addContainerGap()
                 .add(jCBIncludeEUID)
-                .add(7, 7, 7)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanelRecordHighLightLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnRmvHighLightField)
-                    .add(jBtnAddHighLightField))
-                .addContainerGap())
+                    .add(jBtnAddHighLightField)))
         );
 
         jPanelDomainSummary.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_DOMAIN_RECORD_SUMMARY_PROPERTIES"))); // NOI18N
@@ -238,18 +239,19 @@ private void enableSave() {
         jPanelDomainSummary.setLayout(jPanelDomainSummaryLayout);
         jPanelDomainSummaryLayout.setHorizontalGroup(
             jPanelDomainSummaryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelDomainSummaryLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 412, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
-            .add(jPanelDomainSummaryLayout.createSequentialGroup()
-                .add(161, 161, 161)
-                .add(jBtnAddSummayGroup, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jBtnRmvSummaryGroup, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jBtnEditSummaryGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(28, 28, 28))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelDomainSummaryLayout.createSequentialGroup()
+                .add(jPanelDomainSummaryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanelDomainSummaryLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
+                    .add(jPanelDomainSummaryLayout.createSequentialGroup()
+                        .add(161, 161, 161)
+                        .add(jBtnAddSummayGroup, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnRmvSummaryGroup, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnEditSummaryGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         jPanelDomainSummaryLayout.linkSize(new java.awt.Component[] {jBtnAddSummayGroup, jBtnEditSummaryGroup, jBtnRmvSummaryGroup}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -257,14 +259,13 @@ private void enableSave() {
         jPanelDomainSummaryLayout.setVerticalGroup(
             jPanelDomainSummaryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanelDomainSummaryLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 98, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 8, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanelDomainSummaryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnAddSummayGroup)
                     .add(jBtnRmvSummaryGroup)
-                    .add(jBtnEditSummaryGroup))
-                .addContainerGap())
+                    .add(jBtnEditSummaryGroup)))
         );
 
         jPanelRecordDetail.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabDomainView.class, "LBL_DOMAIN_RECORD_DETAIL_PROPERTIES"))); // NOI18N
@@ -307,33 +308,34 @@ private void enableSave() {
         jPanelRecordDetail.setLayout(jPanelRecordDetailLayout);
         jPanelRecordDetailLayout.setHorizontalGroup(
             jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelRecordDetailLayout.createSequentialGroup()
-                .add(jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanelRecordDetailLayout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelRecordDetailLayout.createSequentialGroup()
+                .add(jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanelRecordDetailLayout.createSequentialGroup()
                         .addContainerGap()
-                        .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 415, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
                     .add(jPanelRecordDetailLayout.createSequentialGroup()
-                        .add(170, 170, 170)
+                        .add(161, 161, 161)
                         .add(jBtnAddDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jBtnRemoveDetail, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jBtnEditDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(23, 23, 23))
+                .addContainerGap())
         );
 
         jPanelRecordDetailLayout.linkSize(new java.awt.Component[] {jBtnAddDetail, jBtnEditDetail, jBtnRemoveDetail}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         jPanelRecordDetailLayout.setVerticalGroup(
             jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelRecordDetailLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 12, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelRecordDetailLayout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 146, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanelRecordDetailLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnEditDetail)
                     .add(jBtnRemoveDetail)
-                    .add(jBtnAddDetail)))
+                    .add(jBtnAddDetail)
+                    .add(jBtnEditDetail))
+                .add(7, 7, 7))
         );
 
         jTxtDomain.setEditable(false);
@@ -343,40 +345,31 @@ private void enableSave() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanelRecordHighLight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(layout.createSequentialGroup()
-                                .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 77, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                    .add(layout.createSequentialGroup()
-                        .add(10, 10, 10)
-                        .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
-                        .add(10, 10, 10)
-                        .add(jPanelDomainSummary, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(226, 226, 226))
+                        .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 99, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanelDomainSummary, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanelRecordHighLight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
-
-        layout.linkSize(new java.awt.Component[] {jPanelDomainSummary, jPanelRecordDetail, jPanelRecordHighLight}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
-
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(26, 26, 26)
+                    .add(jTxtDomain, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
                 .add(jPanelRecordHighLight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jPanelDomainSummary, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jPanelRecordDetail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(34, 34, 34))
+                .add(75, 75, 75))
         );
     }// </editor-fold>//GEN-END:initComponents
 
