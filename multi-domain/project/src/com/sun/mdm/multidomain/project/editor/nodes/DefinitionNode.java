@@ -198,7 +198,7 @@ public class DefinitionNode extends AbstractNode {
      */
     public void deleteExtendedAttribute(String attrName) {
         mDefinition.deleteExtendedAttribute(attrName);
-        mWebDefinition.deleteExtendedAttribute(attrName);
+        mWebDefinition.deleteExtendedRelFieldRef(attrName);
         mTabWebManagerDefinition.deleteRelationFieldReference(attrName);
     }
     
