@@ -10,6 +10,8 @@ function exceptionHandler(message) {
     alert("Exception: " + message);
 }
 
+
+var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
 /*
  * Scripts for Select/Search screen <START>
  */ 
@@ -63,12 +65,19 @@ function populateSelectRelationshipDefAttributes(data){
     var purgeDate =(getBoolean(data.purgeDate));
     var CustomrowCount = 0;
     var PredefinedrowCount = 0;  
+    cachedRelationshipDefs[data.name] = data;
     //document.getElementById('byrel_select_customAttributes').innerHTML="";
     //document.getElementById('byrel_select_predefinedAttributes').innerHTML="";
     dwr.util.removeAllRows("byrel_select_customAttributes");
     dwr.util.removeAllRows("byrel_select_predefinedAttributes");
     if(data.extendedAttributes.length>0 ){
-           createCustomAttributesSection ("byrel_select_customAttributes", data.extendedAttributes, "select_custom");
+          var searchableCustomAttributes = [] ;
+          for(i=0; i<data.extendedAttributes.length; i++) {
+              if( getBoolean(data.extendedAttributes[i].searchable) ) {
+                  searchableCustomAttributes.push(data.extendedAttributes[i]);
+              }
+          }
+           createCustomAttributesSection ("byrel_select_customAttributes", searchableCustomAttributes, "select_custom", false);
            /* var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
            customHeading.cells[0].innerHTML="Custom Attributes";
@@ -356,7 +365,7 @@ function selectTargetSearchTypeFields(data){
  * Scripts for Main (listing, details) screen <START>
  */
 var summaryFields = {}; // To hold summary fields for domains.
-var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
+
 function searchRelationships() {
     var sourceDomain = document.getElementById("select_sourceDomain").value;
     var targetDomain = document.getElementById("select_targetDomain").value;
@@ -378,29 +387,27 @@ function searchRelationships() {
     var selectSourceSearchFieldNames = document.getElementsByName('selectSourceSearchFieldName');
     alert("selectSourceSearchFieldNames length  " + selectSourceSearchFieldNames.length);
     for(i=0;i<selectSourceSearchFieldNames.length;i++){
-        alert("name  " +selectSourceSearchFieldNames[i].domainFieldName +" :  value " +selectSourceSearchFieldNames[i].value);
+      //  alert("name  " +selectSourceSearchFieldNames[i].domainFieldName +" :  value " +selectSourceSearchFieldNames[i].value);
     }
     
     var selectTargetSearchFieldNames = document.getElementsByName('selectTargetSearchFieldName');
     alert("selectTargetSearchFieldNames length  " + selectTargetSearchFieldNames.length);
     for(i=0;i<selectTargetSearchFieldNames.length;i++){
-        alert("name  " +selectTargetSearchFieldNames[i].domainFieldName +" :  value " +selectTargetSearchFieldNames[i].value);
+      //  alert("name  " +selectTargetSearchFieldNames[i].domainFieldName +" :  value " +selectTargetSearchFieldNames[i].value);
     }
-    
-  /*/  var RelationshipDefNmae = cachedRelationshipDefs[relationshipDef];
-    for(c =0; c < RelationshipDefNmae.extendedAttributes.length; c++) {
-      var attributeName = RelationshipDefNmae.extendedAttributes[c].name;
-      var attributeId = document.getElementById("select_custom_" + RelationshipDefNmae.extendedAttributes[c].name);
-      var attributeValue =  document.getElementById("select_custom_" + RelationshipDefNmae.extendedAttributes[c].name).value;
-      var attributeType = RelationshipDefNmae.extendedAttributes[c].dataType;
+    var relationshipDefObj = cachedRelationshipDefs[relationshipDef];
+    for(c =0; c < relationshipDefObj.extendedAttributes.length; c++) {
+      var attributeName = relationshipDefObj.extendedAttributes[c].name;
+      if(document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name) == null) continue;
+      var attributeId = document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name);
+      var attributeValue =  document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name).value;
+      var attributeType = relationshipDefObj.extendedAttributes[c].dataType;
       if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
           alert(attributeValue + " is not a valid value for " + attributeName + " attribute");
           attributeId.focus();
           return;
       }
-      
      }
-    */ 
 
     hideByRelSelectDialog(); // hide the select dialog...
     //
@@ -629,7 +636,7 @@ function populateRelationshipDetails_Callback (data) {
     var recordCustomAttributes = data.relationshipRecord.attributes;
     
     if(customAttributes != null && customAttributes.length > 0) {
-        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom");
+        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom", true);
         populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
         document.getElementById("editCustomAttributesDiv").style.display = "";
     } else {

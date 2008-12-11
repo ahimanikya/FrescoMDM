@@ -142,7 +142,7 @@ function populateAddRelationshipDefAttributes(data){
     //dwr.util.removeAllRows("byrel_add_customAttributes");
     dwr.util.removeAllRows("byrel_add_predefinedAttributes");
        if(data.extendedAttributes.length>0 ){
-           createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add_custom");
+           createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add_custom", true);
            /*
            var customHeading = document.getElementById('byrel_add_customAttributes').insertRow(CustomrowCount ++);
            customHeading.insertCell(0);
@@ -324,13 +324,13 @@ function selectRecordRow (objSelRow) {
 
 // Function to create the UI for custom attributes section.
 // Can be used for Add, select & edit relationship attributes screens   
-function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
+function createCustomAttributesSection (tableId, attributesArray, prefixToUse, showRequiredSymbol ) {
    // alert("CREATING custom attributes section for: " + tableId);
      var editCustomAttrFuncs = [
       function(data) { return data; },
       function(data) { return data; }
     ];
-
+    if(showRequiredSymbol == null) showRequiredSymbol = true;
     // Destroy previously created widgets.
     if(attributesArray != null && attributesArray.length > 0) {
         for(i=0; i<attributesArray.length; i++) {            
@@ -394,7 +394,7 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse) {
                }
                options.data = null;
             } else {
-                if(getBoolean(tempData.isRequired) == true){
+                if(getBoolean(tempData.isRequired) == true && showRequiredSymbol){
                    options.data = "<span class='label'>" + tempData.name + " *" +  "</span>"; 
                 }else{
                    options.data = "<span class='label'>" + tempData.name +  "</span>";
