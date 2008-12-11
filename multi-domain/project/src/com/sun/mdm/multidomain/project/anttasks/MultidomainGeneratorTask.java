@@ -102,46 +102,43 @@ public class MultidomainGeneratorTask extends Task {
                     
             generateFiles();                    
             
-            // generate jar file
-            //generateJars();
+            //generate jar file
+            generateJars();
             
-            // put ejb files in ebj project
-            //generateEbjFiles();
+            //put ejb files in ebj project
+            generateEbjFiles();
 
-            // add lib to ejb project by modifing ejb project's
+            //add lib to ejb project by modifing ejb project's
             // project.properties file.
-            //addEjbLib();
+            addEjbLib();
 
-            // put the web files into war project
-            //generateWarFiles();
+            //put the web files into war project
+            generateWarFiles();
             
-             File objectFile = new File(mSrcdir,
-                        MultiDomainProjectProperties.CONFIGURATION_FOLDER
+            File objectFile = new File(mSrcdir, MultiDomainProjectProperties.CONFIGURATION_FOLDER
                                 + File.separator + MultiDomainProjectProperties.MULTI_DOMAIN_MODEL_XML);
-                InputSource source = new InputSource(new FileInputStream(
-                        objectFile));
-                MultiDomainModel mo = Utils.parseMultiDomainModel(source);
-               // String applicationName = eo.getName();
+            InputSource source = new InputSource(new FileInputStream(objectFile));
+            MultiDomainModel mo = Utils.parseMultiDomainModel(source);
+            // String applicationName = eo.getName();
 
-            
             generateDBFiles(mo);
             
             
          } catch (Exception ex) {
-//                String mode = System.getProperty("run.mode");
-//                if (mode == null || !mode.equals("debug")) {
-//                   //delete "files-generated" folder when generation fails
-//                   String projPath = getProject().getProperty("basedir");
-//                   File destDir = new File(projPath,
-//                   EviewProjectProperties.EVIEW_GENERATED_FOLDER);
-//                   Delete delete = (Delete) getProject().createTask("delete");
-//                   delete.setDir(destDir);
-//                   delete.init();
-//                   delete.setLocation(getLocation());
-//                   delete.execute();
-//                }
-                mLog.severe("Could not generate MDM Multidomain Files.");
-                throw new BuildException(ex.getMessage());
+//         String mode = System.getProperty("run.mode");
+//         if (mode == null || !mode.equals("debug")) {
+//         //delete "files-generated" folder when generation fails
+//         String projPath = getProject().getProperty("basedir");
+//         File destDir = new File(projPath,
+//         EviewProjectProperties.EVIEW_GENERATED_FOLDER);
+//         Delete delete = (Delete) getProject().createTask("delete");
+//         delete.setDir(destDir);
+//         delete.init();
+//         delete.setLocation(getLocation());
+//         delete.execute();
+//         }
+           mLog.severe("Could not generate MDM Multidomain Files.");
+           throw new BuildException(ex.getMessage());
           }
         
     }
