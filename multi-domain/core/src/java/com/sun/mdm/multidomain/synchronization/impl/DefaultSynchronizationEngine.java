@@ -25,7 +25,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         rules = new HashMap<String, Map<String, Rule>>();
     }
 
-    @Override
     public Rule deleteRule(String domain, String ruleName) {
         Map<String, Rule> domainRules = rules.get(domain);
         
@@ -36,7 +35,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         return null;
     }
 
-    @Override
     public void deleteRules(String domain) {
         Map<String, Rule> domainRules = rules.get(domain);
         
@@ -46,7 +44,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         
     }
 
-    @Override
     public void executeAllRules(AttributesDef attributesDef,
             String sourceEUID, String eventType) {
         
@@ -59,7 +56,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         }
     }
 
-    @Override
     public void executeRule(String domain, String ruleName,
             AttributesDef attributesDef, String sourceEUID, String eventType)  {
 
@@ -73,7 +69,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         execute(rule, attributesDef, sourceEUID, eventType);
     }
 
-    @Override
     public void executeRules(String domain, AttributesDef attributesDef, String sourceEUID,
             String eventType) {
         
@@ -98,7 +93,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         }
     }
     
-    @Override
     public Rule getRule(String domain, String ruleName) {
         Map<String, Rule> domainRules = rules.get(domain);
         
@@ -109,7 +103,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         return null;
     }
 
-    @Override
     public Collection<Rule> getRulesByDomain(String domain) {
         Map<String, Rule> domainRules = rules.get(domain);
         
@@ -136,13 +129,11 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         return listOfRules;
     }
 
-    @Override
     public void loadRules(File ruleArtifact) {
         // TODO Auto-generated method stub
         
     }
 
-    @Override
     public void registerRule(String domain, Rule rule) {
         Map<String, Rule> domainRules = rules.get(domain);
   
@@ -154,7 +145,6 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         domainRules.put(rule.getName(), rule);
     }
 
-    @Override
     public boolean ruleExists(String domain, String ruleName) {
         Map<String, Rule> domainRules = rules.get(domain);
         
@@ -165,19 +155,16 @@ public class DefaultSynchronizationEngine  implements SynchronizationEngine {
         return false;
     }
 
-    @Override
     public void start() {
         // TODO Auto-generated method stub
         
     }
 
-    @Override
     public void stop() {
         // TODO Auto-generated method stub
         
     }
 
-    @Override
     public Set<String> getDomains() {
         return rules.keySet();
     }
