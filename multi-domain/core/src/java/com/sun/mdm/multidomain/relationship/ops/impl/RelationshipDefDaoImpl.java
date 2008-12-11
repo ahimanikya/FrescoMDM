@@ -96,6 +96,9 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             stmt.setString(index++, relDef.getEffectiveFromRequired() ? "T" : "F");
             stmt.setString(index++, relDef.getEffectiveFromRequired() ? "T" : "F");
             stmt.setString(index++, relDef.getPurgeDateRequired() ? "T" : "F");
+            stmt.setString(index++, relDef.getEffectiveFrom() ? "T" : "F");
+            stmt.setString(index++, relDef.getEffectiveTo() ? "T" : "F");
+            stmt.setString(index++, relDef.getPurgeDate() ? "T" : "F");
             stmt.setString(index++, relDef.getPlugin());
 
             int rows = stmt.executeUpdate();
