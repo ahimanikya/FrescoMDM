@@ -189,7 +189,7 @@ public class DDLWriter {
         } else if (dbType.equalsIgnoreCase(SQL_SERVER_DB_TYPE) == true) {
             
         } else if (dbType.equalsIgnoreCase(MYSQL_DB_TYPE) == true) {
-            dbDate = "STR_TO_DATE('" + dateStr + "', '%m/%d/%y')";
+            dbDate = "STR_TO_DATE('" + dateStr + "', '%m/%d/%Y')";
         }
         
         return dbDate;
