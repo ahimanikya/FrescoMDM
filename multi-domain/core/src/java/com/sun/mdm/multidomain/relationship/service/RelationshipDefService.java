@@ -115,7 +115,8 @@ public class RelationshipDefService implements Serializable {
      * Method 'delete'
      *
      */
-    public void delete(RelationshipDef rel) {
+    public void delete(RelationshipDef relDef) throws RelationshipDefDaoException {
+        new RelationshipDefDaoImpl(mConn).delete(relDef.getId());
     }
 
     /**
