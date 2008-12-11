@@ -1,7 +1,7 @@
 <%-- 
     Document   : add_relationship
     Created on : Nov 19, 2008, 10:10:45 AM
-    Author     : Harish
+    Author     : Harish,Narahari
 --%>
 
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
@@ -43,7 +43,7 @@
             </td>
         </tr>
        <tr>
-            <td align="right"><input type="button" id="ByRelAddRelationshipButton" onclick="ByRelAddRelationship()" title="<f:message key="add_text" />" value="<f:message key="add_text" />"/>
+            <td align="right"><input type="button" id="ByRelAddRelationshipButton" disabled = "true" onclick="ByRelAddRelationship()" title="<f:message key="add_text" />" value="<f:message key="add_text" />"/>
                               <input type="button" onclick="hideByRelAddDialog()" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" />
             </td>
         </tr>

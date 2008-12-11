@@ -4,6 +4,8 @@
  */ 
 
 dwr.engine.setErrorHandler(exceptionHandler);
+var addSourceResultsLength ;
+var addTargetResultsLength ;
 function exceptionHandler(message) {
     alert("Exception: " + message);
 }
@@ -289,7 +291,9 @@ function selectSourceSearchTypeFields(data){
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
-                 row.cells[1].appendChild(field);
+                 if(data[fieldGrp][fieldCfg].length != 1){
+                  row.cells[1].appendChild(field);   
+                 }       
          }
         
      }
@@ -319,7 +323,9 @@ function selectTargetSearchTypeFields(data){
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
-                 row.cells[1].appendChild(field);
+                 if(data[fieldGrp][fieldCfg].length != 1){
+                  row.cells[1].appendChild(field);   
+                 }      
          }
         
      }
@@ -637,7 +643,6 @@ function addSourceDomainCriteria(data){
      var searchTypes = new Array();
      var j = 0;
      var fgroups = new Array();
-     //document.getElementById('add_source_criteria').innerHTML='';
      dwr.util.removeAllOptions("add_source_criteria");
      for (var searchType in data)  {
         searchTypes[j++] = searchType;
@@ -660,7 +665,6 @@ function addTargetDomainCriteria(data){
      var searchTypes = new Array();
      var j = 0;
      var fgroups = new Array();
-     //document.getElementById('add_target_criteria').innerHTML='';
      dwr.util.removeAllOptions("add_target_criteria");
      for (var searchType in data)  {
         searchTypes[j++] = searchType;
@@ -688,7 +692,6 @@ function sourceSearchTypeFields(data){
     var fieldGroups = new Array();
     var j = 0;
     var count = 0;
-    //document.getElementById('add_search_source_fields').innerHTML='';
     dwr.util.removeAllRows("add_search_source_fields");
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
@@ -701,7 +704,9 @@ function sourceSearchTypeFields(data){
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
-                 row.cells[1].appendChild(field);
+                 if(data[fieldGrp][fieldCfg].length != 1){
+                    row.cells[1].appendChild(field); 
+                 }       
          }
         
      }
@@ -718,7 +723,6 @@ function targetSearchTypeFields(data){
     var fieldGroups = new Array();
     var j = 0;
     var count = 0;
-    //document.getElementById('add_search_target_fields').innerHTML='';
     dwr.util.removeAllRows("add_search_target_fields");
      for (var fieldGrp in data)  {
         fieldGroups[j++] = fieldGrp;
@@ -731,20 +735,20 @@ function targetSearchTypeFields(data){
                  field.type="text";
                  field.size="5";
                  field.style.width="100px";
-                 row.cells[1].appendChild(field);
+                 if(data[fieldGrp][fieldCfg].length != 1){
+                    row.cells[1].appendChild(field);
+                 }
          }
      }
 }
 
 function addSourceDomainSearch() {
-    alert('getting EUIDs');
     var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
     var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
 
 function addSourceSearchResults(data) {
-    //document.getElementById('AddSource_TableId').innerHTML ='';
     dwr.util.removeAllRows("AddSource_TableId");
     if(data == null){
        document.getElementById('sourceResultsFailure').style.visibility='visible'; 
@@ -774,19 +778,20 @@ function addSourceSearchResults(data) {
             dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
           }
        } 
+       addSourceResultsLength = document.getElementsByName("addSourceCheckBox").length;  
+      
    }
+   enableByRelAddButton();
 }
 
 function addTargetDomainSearch() {
-    alert('getting EUIDs');
     var selectedTargetDomain = document.getElementById("select_targetDomain").value;
     var domainSearch = {name:selectedTargetDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     RelationshipHandler.searchEnterprises (domainSearch, addTargeSearchResults);
 }
 
 function addTargeSearchResults(data) {
-    //document.getElementById('AddTarget_TableId').innerHTML ='';
-    dwr.util.removeAllRows("AddTarget_TableId"); //addRelationshipButton
+    dwr.util.removeAllRows("AddTarget_TableId"); 
     if(data == null){
        document.getElementById('targetResultsFailure').style.visibility='visible'; 
        document.getElementById('targetResultsFailure').style.display='block'; 
@@ -815,7 +820,10 @@ function addTargeSearchResults(data) {
             dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
          }
       }
-   } 
+      addTargetResultsLength = document.getElementsByName("addTargetCheckBox").length;  
+      
+   }
+   enableByRelAddButton();
 }
 
 function ByRelAddRelationship(){
@@ -889,14 +897,10 @@ function ByRelAddRelationship(){
            } 
           }    
      }
-    
-    
    var sourceCheckBox = false; 
    var targerCheckBox = false;
    var sourceCheckedArray = document.getElementsByName("addSourceCheckBox"); 
    var targetCheckedArray = document.getElementsByName("addTargetCheckBox"); 
-   var s=0;
-   var t=0;
     for(i=0;i<sourceCheckedArray.length; i++) {
         if(sourceCheckedArray[i].checked) {
             s++;
@@ -934,13 +938,15 @@ function addRelationshipCB(data) {
 
 function updateRelationship () {
     
-    var updateRelaltionshipRecords = {};
+    var updateRelaltionshipRecord = {};
     var updateRelationshipCustomAttributes = [];
+    
     var sourceDomain = cachedRelationshipRecordDetails.sourceRecord.name;
     var sourceEUID = cachedRelationshipRecordDetails.sourceRecord.EUID;
     var targetDomain = cachedRelationshipRecordDetails.targetRecord.name;
     var targetEUID = cachedRelationshipRecordDetails.targetRecord.EUID;
     var relationshipDef = cachedRelationshipRecordDetails.relationshipRecord.name;
+    var relationshipRecordId = cachedRelationshipRecordDetails.relationshipRecord.id;
     var relationshipPredefined = cachedRelationshipDefs[relationshipDef];
     var relationshipDefAttributes = cachedRelationshipDefs[relationshipDef].extendedAttributes;
     
@@ -1010,19 +1016,19 @@ function updateRelationship () {
           }      
      }
     // Make DWR API Call to updateRelationship
-    
-      updateRelaltionshipRecords.name = relationshipDef;
-      updateRelaltionshipRecords.sourceDomain = sourceDomain;
-      updateRelaltionshipRecords.sourceEUID = sourceEUID;
-      updateRelaltionshipRecords.targetDomain = targetDomain;
-      updateRelaltionshipRecords.targetEUID = targetEUID;
+      updateRelaltionshipRecord.name = relationshipDef;
+      updateRelaltionshipRecord.id = relationshipRecordId; 
+      updateRelaltionshipRecord.sourceDomain = sourceDomain;
+      updateRelaltionshipRecord.sourceEUID = sourceEUID;
+      updateRelaltionshipRecord.targetDomain = targetDomain;
+      updateRelaltionshipRecord.targetEUID = targetEUID;
 
-      updateRelaltionshipRecords.startDate = startDate;
-      updateRelaltionshipRecords.endDate = endDate;
-      updateRelaltionshipRecords.purgeDate = purgeDate;
-      updateRelaltionshipRecords.attributes = updateRelationshipCustomAttributes ;
+      updateRelaltionshipRecord.startDate = startDate;
+      updateRelaltionshipRecord.endDate = endDate;
+      updateRelaltionshipRecord.purgeDate = purgeDate;
+      updateRelaltionshipRecord.attributes = updateRelationshipCustomAttributes ;
 
-      RelationshipHandler.addRelationship(updateRelaltionshipRecords,updateRelationshipCB);
+      RelationshipHandler.updateRelationship(updateRelaltionshipRecord,updateRelationshipCB);
 
 }
 
@@ -1056,6 +1062,11 @@ function isValidCustomAttribute(attributeType, attributeValue) {
       return true;
 }
  
+function enableByRelAddButton(){
+    if(addSourceResultsLength > 0 && addTargetResultsLength >0 ){
+          document.getElementById("ByRelAddRelationshipButton").disabled = false;
+    }
+}
 
 /*
  * Scripts for Add Relationship screen <END>
