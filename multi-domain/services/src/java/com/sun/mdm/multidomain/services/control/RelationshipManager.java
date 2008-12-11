@@ -244,13 +244,13 @@ public class RelationshipManager {
     public List<RelationshipDefExt> getRelationshipDefs(String sourceDomain, String targetDomain) 
         throws ServiceException {
  
-        List<RelationshipDefExt> RelationshipDefs = new ArrayList<RelationshipDefExt>();
+        List<RelationshipDefExt> relationshipDefs = new ArrayList<RelationshipDefExt>();
         try {
             RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs(sourceDomain, targetDomain);
             for (RelationshipDef relationship : relationships) {
                 if(sourceDomain.equals(relationship.getSourceDomain()) ||
                    targetDomain.equals(relationship.getTargetDomain())) {                    
-                   RelationshipDefs.add(ViewBuilder.buildRelationshipDefExt(relationship)); 
+                   relationshipDefs.add(ViewBuilder.buildRelationshipDefExt(relationship)); 
                 }
             }
          } catch(UserException uex) {
@@ -258,7 +258,7 @@ public class RelationshipManager {
         } catch(ProcessingException pex) {
             throw new ServiceException(pex);
         }
-    	return RelationshipDefs;
+    	return relationshipDefs;
     }
         
     private void init(){
