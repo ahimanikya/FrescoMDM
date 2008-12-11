@@ -411,6 +411,9 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
     var startDate =(getBoolean(dataObj.startDate));
     var endDate =(getBoolean(dataObj.endDate));
     var purgeDate =(getBoolean(dataObj.purgeDate));
+    var startDateRequired = (getBoolean(dataObj.startDateRequired));
+    var endDateRequired = (getBoolean(dataObj.endDateRequired));
+    var purgeDateRequired = (getBoolean(dataObj.purgeDateRequired));
     
     //alert(startDate + "," + endDate +", " + purgeDate);
 
@@ -435,7 +438,11 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         SecondRow.insertCell(3);
         SecondRow.insertCell(4);
         SecondRow.cells[0].innerHTML="Effective";
-        SecondRow.cells[1].innerHTML="From";
+        if(startDateRequired == true){
+          SecondRow.cells[1].innerHTML="From *";   
+        }else{
+          SecondRow.cells[1].innerHTML="From";      
+        }
         var startDate_textBox = document.createElement("input");
         startDate_textBox.type = "text";
         startDate_textBox.name = prefixToUse + "_startDate";
@@ -451,7 +458,12 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
             width:"100px"
         }
         startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
-        SecondRow.cells[3].innerHTML="To";
+        if(endDateRequired == true){
+          SecondRow.cells[3].innerHTML="To *";   
+        }else{
+          SecondRow.cells[3].innerHTML="To";      
+        }
+        
         var endDate_textBox = document.createElement("input");
         endDate_textBox.type="text";
         endDate_textBox.name = prefixToUse + "_endDate";
@@ -465,7 +477,7 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
             invalidMessage: "Invalid date.",
             width:"100px"
         }
-        endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox);
+        endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox); 
     } else if (startDate == true) { // condition for Start Date of Predefined Attributes
         var SecondRowStart = document.getElementById(tableId).insertRow(PredefinedrowCount ++);
         SecondRowStart.insertCell(0);
@@ -473,7 +485,11 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         SecondRowStart.insertCell(2);
         
         SecondRowStart.cells[0].innerHTML="Effective";
-        SecondRowStart.cells[1].innerHTML="From";
+        if(startDateRequired == true){
+          SecondRowStart.cells[1].innerHTML="From *";   
+        }else{
+          SecondRowStart.cells[1].innerHTML="From";      
+        }
         var start_date = document.createElement("input");
         start_date.type="text";
         start_date.name = prefixToUse + "_startDate";
@@ -497,7 +513,11 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         SecondRowEnd.insertCell(2);
         
         SecondRowEnd.cells[0].innerHTML="Effective";
-        SecondRowEnd.cells[1].innerHTML="To";
+        if(endDateRequired == true){
+          SecondRowEnd.cells[1].innerHTML="To *";   
+        }else{
+          SecondRowEnd.cells[1].innerHTML="To";      
+        }
         var end_date = document.createElement("input");
         end_date.type="text";
         end_date.name = prefixToUse + "_endDate";
@@ -520,8 +540,13 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         ThirdRow.insertCell(0);
         ThirdRow.insertCell(1);
         ThirdRow.insertCell(2);
-        ThirdRow.cells[1].innerHTML=" ";
         ThirdRow.cells[0].innerHTML="Purge Date";
+        if(purgeDateRequired == true){
+          ThirdRow.cells[0].innerHTML="Purge Date *";
+        }else{
+          ThirdRow.cells[0].innerHTML="Purge Date";
+        }
+        ThirdRow.cells[1].innerHTML=" ";
         var Purge_date= document.createElement("input");
         Purge_date.type="text";
         Purge_date.name = prefixToUse + "_purgeDate";

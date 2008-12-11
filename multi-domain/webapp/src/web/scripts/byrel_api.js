@@ -4,7 +4,6 @@
  */ 
 
 dwr.engine.setErrorHandler(exceptionHandler);
-
 function exceptionHandler(message) {
     alert("Exception: " + message);
 }
@@ -343,6 +342,20 @@ function searchRelationships() {
     var targetDomain = document.getElementById("select_targetDomain").value;
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
     
+  /*/  var RelationshipDefNmae = cachedRelationshipDefs[relationshipDef];
+    for(c =0; c < RelationshipDefNmae.extendedAttributes.length; c++) {
+      var attributeName = RelationshipDefNmae.extendedAttributes[c].name;
+      var attributeId = document.getElementById("select_custom_" + RelationshipDefNmae.extendedAttributes[c].name);
+      var attributeValue =  document.getElementById("select_custom_" + RelationshipDefNmae.extendedAttributes[c].name).value;
+      var attributeType = RelationshipDefNmae.extendedAttributes[c].dataType;
+      if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
+          alert(attributeValue + " is not a valid value for " + attributeName + " attribute");
+          attributeId.focus();
+          return;
+      }
+      
+     }
+    */ 
     hideByRelSelectDialog(); // hide the select dialog...
     //
     // Load fields for summary display for source & target domain
@@ -811,24 +824,17 @@ function ByRelAddRelationship(){
     var endDateField = document.getElementById('add_predefined_endDate');
     var purgeDateField = document.getElementById('add_predefined_purgeDate');
     var startDate,endDate,purgeDate;
-    if(startDateField != null)
-     {
-           startDate =  document.getElementById('add_predefined_startDate').value
-     }
-     if(endDateField != null)
-     {
-           endDate =  document.getElementById('add_predefined_endDate').value;
-     }
-     if(purgeDateField != null)
-     {
-           purgeDate =  document.getElementById('add_predefined_purgeDate').value;
-     }
+    
    var SourceDomain = document.getElementById("select_sourceDomain").value;
    var TargetDomain = document.getElementById("select_targetDomain").value;
    var RelationshipDefName = document.getElementById("select_relationshipDefs").value;
    var relationshipCustomAttributes = [];
    var relationshipDef = cachedRelationshipDefs[RelationshipDefName];
-   
+    
+   var startDateRequireField = (getBoolean(relationshipDef.startDateRequired)); 
+   var endDateRequireField = (getBoolean(relationshipDef.endDateRequired)); 
+   var purgeDateRequireField = (getBoolean(relationshipDef.purgeDateRequired));
+    
     for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
       var attributeName = relationshipDef.extendedAttributes[cc].name;
       var attributeId = document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name);
@@ -849,19 +855,56 @@ function ByRelAddRelationship(){
       
       relationshipCustomAttributes.push( {attributeName : attributeValue} );
      }
+     
+    if(startDateField != null)
+     {
+           startDate =  document.getElementById('add_predefined_startDate').value;
+           if(startDateRequireField == true){
+              if( isEmpty (startDate) ) {
+              alert("Enter value for Effective From" );
+              startDateField.focus();
+              return ;
+            } 
+          }     
+     }
+     if(endDateField != null)
+     {
+           endDate =  document.getElementById('add_predefined_endDate').value;
+           if(endDateRequireField == true){
+             if( isEmpty (endDate) ) {
+              alert("Enter value for Effective To");
+              endDateField.focus();
+              return ;
+           }  
+          }     
+     }
+     if(purgeDateField != null)
+     {
+           purgeDate =  document.getElementById('add_predefined_purgeDate').value;
+           if(purgeDateRequireField == true){
+              if( isEmpty (purgeDate) ) {
+              alert("Enter value for purgeDate" );
+              purgeDateField.focus();
+              return ;
+           } 
+          }    
+     }
+    
     
    var sourceCheckBox = false; 
    var targerCheckBox = false;
    var sourceCheckedArray = document.getElementsByName("addSourceCheckBox"); 
    var targetCheckedArray = document.getElementsByName("addTargetCheckBox"); 
-   
+   var s=0;
+   var t=0;
     for(i=0;i<sourceCheckedArray.length; i++) {
         if(sourceCheckedArray[i].checked) {
+            s++;
             sourceCheckBox = true;
             var sourceRecordEUID = sourceCheckedArray[i].value;
             for(j=0;j<targetCheckedArray.length; j++) {
               if(targetCheckedArray[j].checked) {
-                  
+                  t++;
                 targerCheckBox = true;
                 var targetRecordEUID = targetCheckedArray[j].value;
                 var newRelationshipRecord = {};
@@ -882,7 +925,7 @@ function ByRelAddRelationship(){
             }   
 
         }    
-   }
+   }  
 }
 function addRelationshipCB(data) {
     alert("New relationship record added, id is : " + data);
@@ -898,7 +941,7 @@ function updateRelationship () {
     var targetDomain = cachedRelationshipRecordDetails.targetRecord.name;
     var targetEUID = cachedRelationshipRecordDetails.targetRecord.EUID;
     var relationshipDef = cachedRelationshipRecordDetails.relationshipRecord.name;
-    
+    var relationshipPredefined = cachedRelationshipDefs[relationshipDef];
     var relationshipDefAttributes = cachedRelationshipDefs[relationshipDef].extendedAttributes;
     
     // Get attributes. Predefined & Custom from edit screen
@@ -906,18 +949,12 @@ function updateRelationship () {
     var endDateField = document.getElementById('edit_predefined_endDate');
     var purgeDateField = document.getElementById('edit_predefined_purgeDate');
     var startDate,endDate,purgeDate;
-    if(startDateField != null)
-     {
-           startDate =  document.getElementById('edit_predefined_startDate').value
-     }
-     if(endDateField != null)
-     {
-           endDate =  document.getElementById('edit_predefined_endDate').value;
-     }
-     if(purgeDateField != null)
-     {
-           purgeDate =  document.getElementById('edit_predefined_purgeDate').value;
-     }
+    
+    // Get Predefined Required Fileds
+    var startDateRequire = (getBoolean(relationshipPredefined.startDateRequired));
+    var endDateRequire = (getBoolean(relationshipPredefined.endDateRequired));
+    var purgeDateRequire = (getBoolean(relationshipPredefined.purgeDateRequired));
+    
     for(i =0; i < relationshipDefAttributes.length; i++) {
       var attributeName = relationshipDefAttributes[i].name;
       var attributeId = document.getElementById("edit_custom_" + relationshipDefAttributes[i].name);
@@ -938,7 +975,40 @@ function updateRelationship () {
       }
       updateRelationshipCustomAttributes.push( {attributeName : attributeValue} );
      }
-
+     
+    if(startDateField != null)
+     {   
+           startDate =  document.getElementById('edit_predefined_startDate').value;
+           if(startDateRequire == true){
+               if( isEmpty (startDate) ) {
+              alert("Enter value for Effective From"  );
+              startDateField.focus();
+              return ;
+           }
+         }    
+     }
+     if(endDateField != null)
+     {   
+           endDate =  document.getElementById('edit_predefined_endDate').value;
+           if(endDateRequire == true){
+               if( isEmpty (endDate) ) {
+              alert("Enter value for Effective To"  );
+              endDateField.focus();
+              return ;
+            }
+         }      
+     }
+     if(purgeDateField != null)
+     {
+           purgeDate =  document.getElementById('edit_predefined_purgeDate').value;
+           if(purgeDateRequire == true){
+               if( isEmpty (purgeDate) ) {
+              alert("Enter value for Purge Date"  );
+              purgeDateField.focus();
+              return ;
+            }
+          }      
+     }
     // Make DWR API Call to updateRelationship
     
       updateRelaltionshipRecords.name = relationshipDef;
@@ -985,7 +1055,7 @@ function isValidCustomAttribute(attributeType, attributeValue) {
       }
       return true;
 }
-
+ 
 
 /*
  * Scripts for Add Relationship screen <END>
