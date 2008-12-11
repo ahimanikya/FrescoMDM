@@ -62,7 +62,7 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="91" max="32767" attributes="0"/>
+              <EmptySpace pref="89" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -142,11 +142,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jTxtDisplayOrder" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jTxtMaxLength" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                       <Component id="jTxtDisplayName" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                       <Component id="jTxtDataType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                       <Component id="jTxtInputMask" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                       <Component id="jTxtValueMask" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="jSpinnerMaxLength" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -159,7 +159,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
                           <Component id="jTxtInputMask" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="51" max="-2" attributes="0"/>
+                          <EmptySpace pref="52" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -173,8 +173,8 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTxtMaxLength" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelMaxLength" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                              <Component id="jSpinnerMaxLength" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -192,7 +192,7 @@
                           <Component id="jRBSensitive" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -225,8 +225,6 @@
               <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_FIELD_REF_MAX_LEN" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </Property>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTxtMaxLength">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelDataType">
           <Properties>
@@ -267,6 +265,13 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRBSensitive"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JSpinner" name="jSpinnerMaxLength">
+          <Properties>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+              <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
