@@ -489,6 +489,11 @@ private void onDownBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDown
     model.addRow(iSelectedRow, movedRow);
     jTxtDisplayOrder.setText(String.valueOf(movedRow.getDisplayOrder()));
     mTableExtendedAttrs.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    mTableExtendedAttrs.scrollRectToVisible(mTableExtendedAttrs.getCellRect(iSelectedRow, 0, false));
+    if (iSelectedRow == model.getRowCount() - 1) {
+        jBtnDown.setEnabled(false);
+    }
+
     jBtnUp.setEnabled(true);
 }//GEN-LAST:event_onDownBtn
 
@@ -502,8 +507,12 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
     iSelectedRow--;
     model.addRow(iSelectedRow, movedUpRow);
     mTableExtendedAttrs.setRowSelectionInterval(iSelectedRow, iSelectedRow);
+    mTableExtendedAttrs.scrollRectToVisible(mTableExtendedAttrs.getCellRect(iSelectedRow, 0, false));
     movedDownow.setDisplayOrder(iSelectedRow + 1);
     jTxtDisplayOrder.setText(String.valueOf(movedUpRow.getDisplayOrder()));
+    if (iSelectedRow == 0) {
+        jBtnUp.setEnabled(false);
+    }
     jBtnDown.setEnabled(true);
 }//GEN-LAST:event_onUpBtn
 
