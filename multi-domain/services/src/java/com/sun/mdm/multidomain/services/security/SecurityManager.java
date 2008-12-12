@@ -220,6 +220,12 @@ public class SecurityManager {
                 // Add any role-ref
                 if (roleRef != null) {
                     roleRefs.add(roleRef);
+                    // can not reliably get operations for role_ref here 
+                    // as there is no gareentee that they have been read at this
+                    // point.  
+                    //
+                    // in fact it is more likely that the role_ref is a forward 
+                    // refereence and that they have not been read. 
                 }
             } else if (element.getTagName().equalsIgnoreCase(OPERATIONS)) {
                 ArrayList newOperations 
@@ -242,6 +248,8 @@ public class SecurityManager {
             mRoleRefs.put(roleName, role);
         }
     }
+    
+   
 
     /**
      * Parses an INHERITANCE block and returns an ArrayList of inherited
@@ -355,15 +363,14 @@ public class SecurityManager {
         // Retrieve all roles for this UserProfile and then
         // retrieve all available operations for each role.
         ArrayList allAvailableOperations = new ArrayList();
+        ArrayList processedRoles =  new ArrayList();
+      
         String rolesList[] = userprofile.getRoles(); // to be defined
         if (rolesList.length > 0) {
             for (int i = 0; i < rolesList.length; i++) {
-                Role role = (Role) mRoleOperations.get(rolesList[i]);
-                ArrayList operations = role.getOperations();
-                Iterator iter = operations.iterator();
-                while (iter.hasNext()) {
-                    allAvailableOperations.add((String) iter.next());
-                }
+               processedRoles.add(rolesList[i]);
+               addOperationsCheckProcessedRoles(rolesList[i],processedRoles,
+                       allAvailableOperations);
             }
             String operationsList[] = new String[allAvailableOperations.size()];
             for (int i = 0; i < allAvailableOperations.size(); i++) {
@@ -373,6 +380,46 @@ public class SecurityManager {
         } else {
             return null;
         }
+    }
+    
+     /**
+     *  Add operations as defined by a role-ref
+     *
+     * @param roleName
+     * @param processedRoles role refs that have already been processed 
+     * @param allAvailableOperations the list of operations for a specified role 
+     * @returns the updated list of operations. this is the same as the updated
+      * passed in allAvailableOperations
+     * operations for a specified userprofile.
+     */
+    private ArrayList addOperationsCheckProcessedRoles(String roleName,
+            ArrayList processedRoles, ArrayList allAvailableOperations) {
+        Role role = (Role) mRoleOperations.get(roleName);
+        if (role != null) {
+            ArrayList operations = role.getOperations();
+            Iterator iter = operations.iterator();
+            while (iter.hasNext()) {
+                String operation = (String) iter.next();
+                if (!allAvailableOperations.contains(operation)) {
+                    allAvailableOperations.add(operation);
+                }
+            }
+        }
+        // process each role ref
+        Role ref = (Role) mRoleRefs.get(roleName);
+        if (ref != null) {
+            ArrayList refs = ref.getOperations();
+            Iterator iter = refs.iterator();
+            while (iter.hasNext()) {
+                String refRole = (String) iter.next();
+                if (!processedRoles.contains(refRole)) {
+                    addOperationsCheckProcessedRoles(refRole, processedRoles,
+                            allAvailableOperations);
+                    processedRoles.add(refRole);
+                }
+            }
+        }
+        return allAvailableOperations;
     }
     
     /**

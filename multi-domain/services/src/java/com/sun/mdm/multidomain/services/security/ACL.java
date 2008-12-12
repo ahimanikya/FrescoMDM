@@ -60,9 +60,11 @@ public class ACL {
         if (operations != null) {
             for (String operation : operations) {
                 List<ACL.Entry> methods = Operations.getMethods(operation);
-                for (ACL.Entry method : methods) {
-                    if (!entries.contains(method)) {
-                        entries.add(method);
+                if (methods != null) {
+                    for (ACL.Entry method : methods) {
+                        if (!entries.contains(method)) {
+                            entries.add(method);
+                        }
                     }
                 }
             }      
