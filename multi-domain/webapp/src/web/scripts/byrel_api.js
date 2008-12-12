@@ -10,6 +10,9 @@ function exceptionHandler(message) {
     alert("Exception: " + message);
 }
 
+var isSelectSourceDomainCriteriaApplied = false;
+var isSelectTargetDomainCriteriaApplied = false;
+var isSelectRelationshipDefAttributeCriteriaApplied = false;
 
 var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
 /*
