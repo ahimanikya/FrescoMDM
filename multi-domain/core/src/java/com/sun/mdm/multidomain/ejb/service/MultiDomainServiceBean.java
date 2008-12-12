@@ -265,14 +265,18 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             return hierarchyNodeService.addHierarchyNode(hierarchyNode);
         } catch (HierarchyDaoException e) {
             throw new ProcessingException(e);
         } catch (HierarchyEavDaoException e) {
             throw new ProcessingException(e);
+        } catch (SQLException e) {
+            throw new ProcessingException(e);
         }
     }
-    
+
     public long[] addHierarchyNodes(long parentNodeID, HierarchyNode[] nodes)
             throws ProcessingException, UserException {
         
@@ -299,12 +303,17 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     
     public void deleteHierarchyNode(long nodeID)
         throws ProcessingException, UserException {
-        
+
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             hierarchyNodeService.deleteHierarchyNode(nodeID);
         } catch (HierarchyDaoException e) {
             throw new ProcessingException(e);
+        }  catch (SQLException e) {
+            throw new ProcessingException(e);
         }
+
     }
     
     /**
@@ -314,10 +323,15 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     public void deleteHierarchy(long nodeId)
         throws ProcessingException, UserException {
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             hierarchyNodeService.deleteHierarchy(nodeId);
-        } catch (HierarchyDaoException e) {
+        }   catch (HierarchyDaoException e) {
+            throw new ProcessingException(e);
+        }   catch (SQLException e) {
             throw new ProcessingException(e);
         }
+        
     }
 
 
@@ -327,10 +341,15 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     public void updateHierarchyNode(HierarchyNode hierarchyNode)
         throws ProcessingException, UserException {
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             hierarchyNodeService.update(hierarchyNode);
-        } catch (HierarchyDaoException e) {
+        }  catch (HierarchyDaoException e) {
+            throw new ProcessingException(e);
+        }  catch (SQLException e) {
             throw new ProcessingException(e);
         }
+
     }
        
     /**
@@ -351,15 +370,18 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         HierarchyNode parentNode = null;
         
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             parentNode = hierarchyNodeService.getHierarchyNode(newParentNodeID);
             
             for (long id : nodeIDs) {
                 HierarchyNode node = hierarchyNodeService.getHierarchyNode(id);
                 nodes.add(node);
-            }
-            
+            }            
             moveHierarchyNodes(nodes, parentNode);
         } catch (HierarchyDaoException e) {
+            throw new ProcessingException(e);
+        } catch (SQLException e) {
             throw new ProcessingException(e);
         }
     }
@@ -370,10 +392,16 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     public void moveHierarchyNodes(List<HierarchyNode> nodes, HierarchyNode parentNode)
              throws ProcessingException, UserException {
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             hierarchyNodeService.moveHierarchyNodes(nodes, parentNode);
+            
         } catch (HierarchyDaoException e) {
             throw new ProcessingException(e);
+        } catch (SQLException e) {
+            throw new ProcessingException(e);
         }
+
     }
   
    /**
@@ -383,8 +411,12 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             return hierarchyNodeService.getChildren(hierarchyNodeId);
         } catch (HierarchyDaoException e) {
+            throw new ProcessingException(e);
+        } catch (SQLException e) {
             throw new ProcessingException(e);
         }
     } 
@@ -395,10 +427,14 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     public HierarchyNode getHierarchyNode(long hierarchyNodeId)
         throws ProcessingException, UserException {
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             return hierarchyNodeService.getHierarchyNode(hierarchyNodeId);
         } catch (HierarchyDaoException e) {
             throw new ProcessingException(e);
-        }        
+        } catch (SQLException e) {
+            throw new ProcessingException(e);
+        }
     }
     
     /**
@@ -410,10 +446,14 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
     public HierarchyNode getRootNode(long hierarchyDefID)
         throws ProcessingException, UserException {
         try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
             return hierarchyNodeService.getRootNode(hierarchyDefID);
         } catch (HierarchyDaoException e) {
             throw new ProcessingException(e);
-        }        
+        } catch (SQLException e) {
+            throw new ProcessingException(e);
+        }
     }
     
     /**
@@ -421,9 +461,14 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      */    
     public HierarchyTree getHierarchyTree(long hierarchyNodeId, String EUID)
         throws ProcessingException, UserException {
-        
-        return hierarchyNodeService.getHierarchyTree(hierarchyNodeId);   
-    }    
+        try {
+            Connection con = dataSource.getConnection();
+            HierarchyNodeService hierarchyNodeService = new HierarchyNodeService(con);
+            return hierarchyNodeService.getHierarchyTree(hierarchyNodeId);
+        }  catch (SQLException e) {
+            throw new ProcessingException(e);
+        }
+     }
     
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#createGroup()
