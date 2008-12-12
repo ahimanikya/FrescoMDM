@@ -12,5 +12,6 @@ package com.sun.mdm.multidomain.parser;
 public class ConfigurationFiles {
     public static final String RELATIONSHIP_WEB_MANAGER_XML = "MultiDomainWebManager.xml";
     public static final String RELATIONSHIP_WEB_MANAGER_XSD = "MultiDomainWebManager.xsd";
+    public static final String MULTI_DOMAIN_MODEL_XML = "MultiDomainModel.xml";
 
 }
