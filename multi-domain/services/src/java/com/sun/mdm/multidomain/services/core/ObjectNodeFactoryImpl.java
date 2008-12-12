@@ -70,6 +70,15 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
     }   
 
     /**
+     * Retrieve the objectDef value.
+     * 
+     * @returns  Value of the objectDef attribute.
+     */
+    public ObjectDefinition getObjectDefinition() {
+        return objectDef;
+    }
+
+    /**
      * Initailzation.
      */
     private void initialize() {

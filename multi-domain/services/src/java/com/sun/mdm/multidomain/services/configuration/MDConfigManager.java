@@ -22,6 +22,7 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.parser.MultiDomainWebManager;
+import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.DomainRecordID;
@@ -38,6 +39,7 @@ import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.WebDefinition;
 import com.sun.mdm.multidomain.parser.ConfigurationFiles;
+import com.sun.mdm.multidomain.parser.RelationshipProperty;
 import com.sun.mdm.multidomain.services.core.ConfigException;
 import com.sun.mdm.multidomain.services.core.context.JndiResource;
 import com.sun.mdm.multidomain.services.security.util.NodeUtil;
@@ -47,8 +49,13 @@ import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.services.model.Domain;
-import com.sun.mdm.index.util.ObjectSensitivePlugIn;
+import com.sun.mdm.multidomain.services.model.ObjectDefinition;
+import com.sun.mdm.multidomain.services.core.ObjectFactory;
+import com.sun.mdm.multidomain.services.core.ObjectFactoryImpl;
+import com.sun.mdm.multidomain.services.core.ObjectNodeFactoryImpl;
+import com.sun.mdm.multidomain.services.core.ObjectFactoryRegistry;
 import com.sun.mdm.index.objects.ObjectField;
+import com.sun.mdm.index.util.ObjectSensitivePlugIn;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
@@ -103,16 +110,16 @@ public class MDConfigManager {
     private static HashMap<Integer, ScreenObject> mScreens;
     private static HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
     private static HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
-// resume here    
-//    private static HashMap<String, ObjectNodeConfig> mObjNodeConfigMap;
     private static HashMap<String, HashMap> mDomainObjNodeConfigMap;  // hashmap of domains and subhashmaps
     private static DocumentBuilder builder;
-    private static String DATEFORMAT = "MM/dd/yyyy"; 
-    private static SimpleDateFormat dateFormat;
+    private static String DEFAULT_MDWM_DATEFORMAT = "MM/dd/yyyy";    // default value
+    private static String mDateFormat = null;
     private static MDConfigManager mInstance = null;	// instance
     private static Integer mInitialScreenID;	                // ID of the initial screen
     private static ObjectSensitivePlugIn mObjectSensitivePlugIn;
     private static MultiDomainWebManager mDWMInstance = null;
+    private static MultiDomainModel mMDMInstance = null;
+    private static Properties mJNDIProperties = null;
     private static boolean TBD = true;
 
 
@@ -141,7 +148,7 @@ public class MDConfigManager {
                     return mInstance;
                 }
                 
-                // read the configuration XML file
+                // read the MultiDomainWebManager configuration XML file
                 mDWMInstance = getMultiDomainWebManager();
                 
                 mInstance = new MDConfigManager();
@@ -156,6 +163,11 @@ public class MDConfigManager {
                 configureGroups();
                 configurePageDefinitions();
 
+                // read the MultiDomainModel configuration XML file
+                mMDMInstance = getMultiDomainModel();
+                configureDateFormats();
+                configureJNDIProperties();
+                
                 return mInstance;
             }
         } catch (Exception e) {
@@ -178,7 +190,7 @@ public class MDConfigManager {
                     return mInstance;
                 }
 
-                // read the configuration XML file
+                // read the MultiDomainWebManager configuration XML file
                 mDWMInstance = getMultiDomainWebManager();
                 
                 mScreens = new HashMap<Integer, ScreenObject>();
@@ -191,6 +203,10 @@ public class MDConfigManager {
                 configureGroups();
                 configurePageDefinitions();
 
+                // read the MultiDomainModel configuration XML file
+                mMDMInstance = getMultiDomainModel();
+                configureDateFormats();
+                configureJNDIProperties();
                 return mInstance;
             }
         } catch (Exception e) {
@@ -210,8 +226,39 @@ public class MDConfigManager {
 	public static MDConfigManager getInstance() throws ConfigException {
 	    return mInstance;
 	}
+        
+    /** Parses MultiDomainModel.xml.
+     *
+     * @throws ConfigException if an exception is encountered.
+     * @return the MultiDomainModel
+     */    
+    public static MultiDomainModel getMultiDomainModel() throws ConfigException {
+        
+        InputStream in;
+        String configFileName = ConfigurationFiles.MULTI_DOMAIN_MODEL_XML;
+        try {
+            in = MDConfigManager.class.getClassLoader().getResourceAsStream(configFileName);
+        } catch (Exception e) {
+            throw new ConfigException(mLocalizer.t("CFG573: Could not open the " +
+                                                   "MultiDomanModel configuration " +
+                                                   "file ({0}): {1}", 
+                                                   configFileName, 
+                                                   e.getMessage()));
+        }
+        try {
+            InputSource source = new InputSource(in);
+            return (Utils.parseMultiDomainModel(source));
+        } catch (Exception e) {
+            throw new ConfigException(mLocalizer.t("CFG552: Could not parse the " +
+                                                   "MultiDomanWebManager configuration " +
+                                                   "file ({0}): {1}", 
+                                                   configFileName, 
+                                                   e.getMessage()));
+        }
+    }
 
-    /** Parses MultiDomainWebManager.xml and returns com.sun.mdm.index.parser.MultiDomainWebManage.
+
+    /** Parses MultiDomainWebManager.xml.
      *
      * @throws ConfigException if an exception is encountered.
      * @return the MultiDomainWebManager
@@ -294,7 +341,7 @@ public class MDConfigManager {
     private static void convertDomainMIDMConfig(String domainName) throws ConfigException {   
         
         if (domainName == null || domainName.length() == 0) {
-            throw new ConfigException(mLocalizer.t("CFG557: The name of the domain " +
+            throw new ConfigException(mLocalizer.t("CFG557: The domain name " +
                                                    "cannot be null or zero length."));
         }
         
@@ -324,7 +371,7 @@ public class MDConfigManager {
 
                 if (element.getTagName().startsWith(NODE_TAG)) {
                   try {
-                    ObjectNodeConfig objNodeConfig = buildObjectNodeConfig(element);
+                    ObjectNodeConfig objNodeConfig = buildObjectNodeConfig(element, domainName);
 
                     // build a node
                     objNodeConfigMap.put(objNodeConfig.getName(), objNodeConfig);
@@ -348,11 +395,12 @@ public class MDConfigManager {
      * Builds the object node configuration
      *
      * @param element The XML element to processes.
+     * @param domainName  The domain name.
      * @return An object representing the configuration for a domain.
      * @throws ConfigException if an error is encountered.
      */
     
-    private static ObjectNodeConfig buildObjectNodeConfig(Element element) throws ConfigException {
+    private static ObjectNodeConfig buildObjectNodeConfig(Element element, String domainName) throws ConfigException {
 
         String objName;
         String attr;
@@ -445,7 +493,7 @@ public class MDConfigManager {
 
                         // if value type is date set the date input mask automatically, based on date format
                         if (valueTypeStr.equals("date")) {
-                            inputMask = getDateInputMask();
+                            inputMask = getDateInputMask(domainName);
                         }
                     }
 
@@ -686,11 +734,10 @@ public class MDConfigManager {
         if (relFieldRef.getValueType() != null) {
             valueTypeStr = relFieldRef.getValueType();
 
-            // RESUME HERE
             // if value type is date set the date input mask automatically, based on date format
-//            if (valueTypeStr.equals("date")) {
-//                inputMask = getDateInputMask();
-//            }
+            if (valueTypeStr.equals("date")) {
+                inputMask = getDateInputMaskForMultiDomain();
+            }
         }
 
         int valueType = getMetaType(valueTypeStr);
@@ -1048,6 +1095,44 @@ public class MDConfigManager {
             addScreen(scrObj);
         }
 
+    }
+    
+    /**
+     * Configures the date formats for the RelationshipWebManager.
+     *
+     * @throws ConfigException if an error is encountered
+     */
+    private static void configureDateFormats() throws ConfigException {
+        
+        // Assign the date format.  If it is not found, the default format is used.
+        mDateFormat = mMDMInstance.getDateFormat();
+        if (mDateFormat == null) {
+            mDateFormat = DEFAULT_MDWM_DATEFORMAT;
+            mLogger.info(mLocalizer.x("CFG001: The date format is not defined in " + 
+                                      "the MultiDomainModel configuration file."  +
+                                      "The date format is set to the default format: {0} ", 
+                                      DEFAULT_MDWM_DATEFORMAT));
+        }
+    }
+    
+    /**
+     * Configures the JNDI properties  for the RelationshipWebManager.
+     *
+     * @throws ConfigException if an error is encountered
+     */
+    private static void configureJNDIProperties() throws ConfigException {
+        JNDIResources jndiResources = mDWMInstance.getJndiResources();
+        List<RelationshipProperty> properties = jndiResources.getProperties();
+        if (properties != null) {
+            for (RelationshipProperty relationshipProp : properties) {
+                String name =  relationshipProp.getPropertyName();
+                String value = relationshipProp.getPropertyValue();
+                if (mJNDIProperties == null) {
+                    mJNDIProperties = new Properties();
+                }
+                mJNDIProperties.setProperty(name, value);
+            }
+        }
     }
     
     /**
@@ -1597,16 +1682,17 @@ public class MDConfigManager {
     /**
      * Sets the ID of the initial screen.
      *
-     * @param The ID of the initial screen.
+     * @param initialScreenID  The ID of the initial screen.
      * @throws ConfigException if an error is encountered
      */    
 	public static void setInitialScreenID(Integer initialScreenID) {
 	    mInitialScreenID = initialScreenID;
 	}
 	
-	public String getMasterControllerJndi() {  //  return the jndi name for the master controller
-	    return null;
-	}
+// testing--raymond tam        
+//	public String getMasterControllerJndi() {  //  return the jndi name for the master controller
+//	    return null;
+//	}
 
     /**
      * Get JndiResource for the given resource id.
@@ -1644,20 +1730,31 @@ public class MDConfigManager {
         return jndiResource;
     }
 
-    // testing--raymond tam
-    // RESUME HERE
+    /**
+     * Retrieves the JNDI Properties
+     * 
+     * @return JNDI Properties.
+     */    
     public static Properties getJndiProperties() {
-        return null;
+        return mJNDIProperties;
     }
 
-    //  set the handle to the security plug-in
-	public static void setObjectSensitivePlugIn(ObjectSensitivePlugIn plugIn) {  
-	    mObjectSensitivePlugIn = plugIn;
-	}
+    /**
+     * Sets the security plug-in.
+     *
+     * @param plugIn  Security plug-in.
+     */    
+    public static void setObjectSensitivePlugIn(ObjectSensitivePlugIn plugIn) {  
+        mObjectSensitivePlugIn = plugIn;
+    }
 
-    //  return the handle to the security plug-in
-	public static ObjectSensitivePlugIn getObjectSensitivePlugIn() {  
-	    return mObjectSensitivePlugIn;
+    /**
+     * Retrieves the security plug-in.
+     *
+     * @return  The security plug-in.
+     */    
+    public static ObjectSensitivePlugIn getObjectSensitivePlugIn() {  
+        return mObjectSensitivePlugIn;
     }
     
    /**
@@ -1665,57 +1762,84 @@ public class MDConfigManager {
     * @return the date format defined in multi-domain definition.
     */
     public static String getDateFormatForMultiDomain() {
-        //TBD: need to fix.
-        return DATEFORMAT;
+        return mDateFormat;
     }
 
    /**
-    * Gets date format for domain-specific. 
+    * Gets date format for a specific domain.
+    * 
+    * @param domainName  Name of the domain.
     * @return the date format defined in object definition.
+    * @throws ConfigException if an error is encountered.
     */    
-    public static String getDateFormatForDomain(String domain) {
-        //TBD: need to fix.
-        return DATEFORMAT;
+    public static String getDateFormatForDomain(String domainName) 
+            throws ConfigException {
+        if (domainName == null || domainName.length() == 0) {
+            throw new ConfigException(mLocalizer.t("CFG571: The domain name " +
+                                                   "cannot be null or zero length."));
+        }
+        ObjectNodeFactoryImpl objectNodeFactory = (ObjectNodeFactoryImpl) ObjectFactoryRegistry.lookup(domainName);
+        ObjectDefinition objDef = objectNodeFactory.getObjectDefinition();
+        return (objDef.getDateFormat());
     }
-
+    
+    // For relationship date attribute  input mask,  to be simplified, should be one input mask and value mask for all predefined and extended date attributes. 
+    public static String getDateInputMaskForMultiDomain() {
+        String dateFormat = mDateFormat;
+        if (dateFormat == null || dateFormat.length() == 0) {
+            dateFormat = DEFAULT_MDWM_DATEFORMAT;
+            mLogger.info(mLocalizer.x("CFG002: The date format is not defined in " + 
+                                      "the MultiDomainModel configuration file."  +
+                                      "The date format is set to the default format: {0} ", 
+                                      DEFAULT_MDWM_DATEFORMAT));
+        }
+        return (getDateInputMask(dateFormat));
+    }
+    
+    // testing--raymond tam
+    // is this needed?
+    public static String getDateInputMaskForDomain(String domainName) 
+            throws ConfigException {
+        if (domainName == null || domainName.length() == 0) {
+            throw new ConfigException(mLocalizer.t("CFG572: The name of the domain " +
+                                                   "cannot be null or zero length."));
+        }
+        String dateFormat = getDateFormatForDomain(domainName);
+        return (getDateInputMask(dateFormat));
+    }
+    
     /**
-     * Gets the input mask of date in the ConfigManager class
+     * Gets the input mask of date in the MDConfigManager class
      *
      * @return the input mask of date based on the date format
      */
+// testing--raymond tam
+/*    
     public static String getDateInputMask() {
-        String format = DATEFORMAT;
+        String format = DEFAULT_MDWM_DATEFORMAT;
+        String dateMask = format.replace('M', 'D');
+        dateMask = dateMask.replace('d', 'D');
+        dateMask = dateMask.replace('y', 'D');
+        return dateMask;
+    }
+*/    
+    /**
+     * Gets the input mask of date in the MDConfigManager class
+     *
+     * @param dateFormat  Date format.
+     * @return the input mask of date based on the date format
+     */
+    public static String getDateInputMask(String dateFormat) {
+        if (dateFormat == null || dateFormat.length() == 0) {
+            return null;
+        }
+        String format = dateFormat;
         String dateMask = format.replace('M', 'D');
         dateMask = dateMask.replace('d', 'D');
         dateMask = dateMask.replace('y', 'D');
         return dateMask;
     }
 
-    /**
-     * Retrieve the name of the root object for a domain from an ArrayList of
-     * FieldConfigGroup instances. 
-     * 
-     * @param fieldConfigGroups  ArrayList of FieldConfigGroup instances.
-     * @returns  The name of the root object.  This will be in every FieldConfig object.
-     * @throws ConfigException if an error is encountered.
-     */
-    private static String retrieveRootObjectName(ArrayList<FieldConfigGroup> fieldConfigGroups) 
-            throws ConfigException {
-        if (fieldConfigGroups == null || fieldConfigGroups.size() == 0) {
-            throw new ConfigException(mLocalizer.t("CFG563: Could not retrieve the " +
-                                                   "root object name because the fieldConfigGroups " +
-                                                   "parameter is either null or an empty List."));
-        }
-        FieldConfigGroup fcg = fieldConfigGroups.get(0);
-        ArrayList<FieldConfig> fieldConfigs = fcg.getFieldConfigs();
-        if (fieldConfigs == null || fieldConfigs.size() == 0) {
-            throw new ConfigException(mLocalizer.t("CFG564: Could not retrieve the " +
-                                                   "root object name because the field configurations " +
-                                                   "are either null or empty."));
-        }
-        FieldConfig fc = fieldConfigs.get(0);
-        return (fc.getRootObj());
-    }
 
     // validate that the date format is supported or not
     private static boolean isDateFormatValid(String format) {
@@ -1795,6 +1919,32 @@ public class MDConfigManager {
         }
 
         return ObjectField.OBJECTMETA_UNDEFINED_TYPE;
+    }
+    
+    /**
+     * Retrieve the name of the root object for a domain from an ArrayList of
+     * FieldConfigGroup instances. 
+     * 
+     * @param fieldConfigGroups  ArrayList of FieldConfigGroup instances.
+     * @returns  The name of the root object.  This will be in every FieldConfig object.
+     * @throws ConfigException if an error is encountered.
+     */
+    private static String retrieveRootObjectName(ArrayList<FieldConfigGroup> fieldConfigGroups) 
+            throws ConfigException {
+        if (fieldConfigGroups == null || fieldConfigGroups.size() == 0) {
+            throw new ConfigException(mLocalizer.t("CFG563: Could not retrieve the " +
+                                                   "root object name because the fieldConfigGroups " +
+                                                   "parameter is either null or an empty List."));
+        }
+        FieldConfigGroup fcg = fieldConfigGroups.get(0);
+        ArrayList<FieldConfig> fieldConfigs = fcg.getFieldConfigs();
+        if (fieldConfigs == null || fieldConfigs.size() == 0) {
+            throw new ConfigException(mLocalizer.t("CFG564: Could not retrieve the " +
+                                                   "root object name because the field configurations " +
+                                                   "are either null or empty."));
+        }
+        FieldConfig fc = fieldConfigs.get(0);
+        return (fc.getRootObj());
     }
     
 }

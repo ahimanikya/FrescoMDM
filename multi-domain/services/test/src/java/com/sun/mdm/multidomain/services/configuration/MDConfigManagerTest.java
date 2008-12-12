@@ -23,9 +23,15 @@
 package com.sun.mdm.multidomain.services.configuration;
 
 import com.sun.mdm.multidomain.services.core.ConfigException;
+import com.sun.mdm.multidomain.services.model.ObjectDefinition;
+import com.sun.mdm.multidomain.services.core.ObjectFactory;
+import com.sun.mdm.multidomain.services.core.ObjectDefinitionBuilder;
+import com.sun.mdm.multidomain.services.core.ObjectFactoryRegistry;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 
@@ -36,15 +42,7 @@ import junit.framework.TestCase;
 public class MDConfigManagerTest extends TestCase {
     
     private static MDConfigManager configManager = null;
-    private static int DOMAIN_SCREEN_CONFIGS_SIZE = 5;
-    private static int RELATIONSHIP_SCREEN_CONFIGS_SIZE = 5;
-    private static int RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE = 7;
-    private static int HIERARCHY_SCREEN_CONFIGS_SIZE = 0;
-    private static int PAGE_DEF_CONFIG_SIZE = 1;
-    private static int PAGE_DEF_SUBSCREEN_CONFIG_SIZE = 2;
-    private static int PAGE_DEF_INITIAL_SCREEN_ID = 0;
-    private static int PAGE_DEF_INITIAL_SUBSCREEN_ID = 0;
-
+    
     public MDConfigManagerTest (String name) throws ConfigException {
         super(name);
         configManager = MDConfigManager.init();        
@@ -62,9 +60,10 @@ public class MDConfigManagerTest extends TestCase {
         try {
             // count the number of domain screen configurations
             HashMap<String, DomainScreenConfig> domainScreenConfigs = configManager.getDomainScreenConfigs();
+            int domainScreenConfigsSize = 5;
             int size = domainScreenConfigs.size();
-            if (size != DOMAIN_SCREEN_CONFIGS_SIZE) {
-                System.out.println("Error: expected "  + DOMAIN_SCREEN_CONFIGS_SIZE +
+            if (size != domainScreenConfigsSize) {
+                System.out.println("Error: expected "  + domainScreenConfigsSize +
                                    " domain screen configurations but actually" +
                                    " retrieved " + size + " domain screen configurations.");
                 assertTrue(false);
@@ -82,9 +81,10 @@ public class MDConfigManagerTest extends TestCase {
         try {
             // count the number of relationship screen configurations
             HashMap<String, RelationshipScreenConfig> relationshipScreenConfigs = configManager.getRelationshipScreenConfigs();
+            int relationshipScreenConfigsSize = 5;
             int size = relationshipScreenConfigs.size();
-            if (size != RELATIONSHIP_SCREEN_CONFIGS_SIZE) {
-                System.out.println("Error: expected "  + RELATIONSHIP_SCREEN_CONFIGS_SIZE +
+            if (size != relationshipScreenConfigsSize) {
+                System.out.println("Error: expected "  + relationshipScreenConfigsSize +
                                    " relationship screen configurations but actually" +
                                    " retrieved " + size + " relationship screen configurations.");
                 assertTrue(false);
@@ -98,8 +98,9 @@ public class MDConfigManagerTest extends TestCase {
                                 = rsc.getRelationships().values();
                     relationshipConfigCount += relConfigs.size();
                 }
-                if (relationshipConfigCount != RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE) {
-                    System.out.println("Error: expected "  + RELATIONSHIP_SCREEN_CONFIG_INSTANCES_SIZE +
+                int relationshipScreenConfigInstancesSize = 7;
+                if (relationshipConfigCount != relationshipScreenConfigInstancesSize) {
+                    System.out.println("Error: expected "  + relationshipScreenConfigInstancesSize +
                                        " relationship screen configuration instances " + 
                                        "but actually retrieved " + relationshipConfigCount + 
                                        " relationship screen configuration instances.");
@@ -117,33 +118,37 @@ public class MDConfigManagerTest extends TestCase {
             // count the number of screens
             HashMap<Integer, ScreenObject> screenObjects = configManager.getScreens();
             int size = screenObjects.size();
-            if (size != PAGE_DEF_CONFIG_SIZE) {
-                System.out.println("Error: expected "  + PAGE_DEF_CONFIG_SIZE +
+            int pageDefConfigSize = 1;
+            if (size != pageDefConfigSize) {
+                System.out.println("Error: expected "  + pageDefConfigSize +
                                    " screen object configurations but actually" +
                                    " retrieved " + size + " screen object configurations.");
                 assertTrue(false);
             } else {
                 // check the initial screen
                 int initialScreenID = configManager.getInitialScreenID();
-                if (initialScreenID != PAGE_DEF_INITIAL_SCREEN_ID) {
+                int pageDefInitialScreenID = 0;
+                if (initialScreenID != pageDefInitialScreenID) {
                     System.out.println("Error: expected top level page definition"  +
-                                       " to have an initial subscreen ID of "+ PAGE_DEF_INITIAL_SCREEN_ID +
+                                       " to have an initial subscreen ID of "+ pageDefInitialScreenID +
                                        " but actually retrieved " + initialScreenID);
                     assertTrue(false);
                 }
                 Collection<ScreenObject> values = screenObjects.values();
                 for (ScreenObject scrObj : values) {
                     int initialSubscreenID = scrObj.getInitialSubscreenID();
-                    if (initialSubscreenID != PAGE_DEF_INITIAL_SUBSCREEN_ID) {
+                    int pageDefInitialSubscreenID = 0;
+                    if (initialSubscreenID != pageDefInitialSubscreenID) {
                         System.out.println("Error: expected an initial subscreen ID of " + 
-                                           PAGE_DEF_INITIAL_SUBSCREEN_ID +
+                                           pageDefInitialSubscreenID +
                                            " but actually retrieved " + initialSubscreenID);
                         assertTrue(false);
                     } else {
                         Collection<ScreenObject> subscreens = scrObj.getSubscreens();
                         int subscreenCount = subscreens.size();
-                        if (subscreenCount != PAGE_DEF_SUBSCREEN_CONFIG_SIZE) {
-                            System.out.println("Error: expected " + PAGE_DEF_SUBSCREEN_CONFIG_SIZE +
+                        int pageDefSubscreenConfigSize = 2;
+                        if (subscreenCount != pageDefSubscreenConfigSize) {
+                            System.out.println("Error: expected " + pageDefSubscreenConfigSize +
                                                " subscreens but actually retrieved " + subscreenCount);
                             assertTrue(false);
                         } else {
@@ -218,4 +223,34 @@ public class MDConfigManagerTest extends TestCase {
         }        
     }
     
+    public void testDateFormats() {
+        try {
+            String dateFormat = configManager.getDateFormatForMultiDomain();
+            String multiDomainDateFormat = "MM/dd/yyyy";
+            if (dateFormat.compareTo(multiDomainDateFormat) != 0) {
+                System.out.println("Error: expected multi-domain date format to be " + 
+                                   multiDomainDateFormat + " but retrieved " + dateFormat);
+                assertTrue(false);
+            }
+            
+            ObjectDefinitionBuilder builder = new ObjectDefinitionBuilder();
+            InputStream  stream = ObjectFactory.class.getResourceAsStream("/domains/Person/object.xml");      
+            ObjectDefinition person = builder.parse(stream);
+            
+            ObjectFactory objectFactory = ObjectFactoryRegistry.lookup("Person");        
+            
+            objectFactory.create("Person");
+
+            dateFormat = configManager.getDateFormatForDomain("Person");
+            String personDomainDateFormat = "MM/dd/yyyy";
+            if (dateFormat.compareTo(personDomainDateFormat) != 0) {
+                System.out.println("Error: expected  person domain date format to be " + 
+                                   personDomainDateFormat + " but retrieved " + dateFormat);
+                assertTrue(false);
+            }
+            
+        } catch(Exception ex) {
+            fail(ex.getMessage());
+        }        
+    }
 }
