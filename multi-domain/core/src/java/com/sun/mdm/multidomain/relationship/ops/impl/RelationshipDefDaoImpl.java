@@ -171,7 +171,6 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         PreparedStatement stmt = null;
 
         try {
-            userConn.setAutoCommit(false);
             // Build DELELE SQL for RELATIONSHIP_EA table
             DeleteBuilder eaDelBld = new DeleteBuilder();
             eaDelBld.setTable(RELATIONSHIP_EA.getTableName());
@@ -189,7 +188,6 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             stmt = userConn.prepareStatement(sqlStr);
             stmt.setLong(1, relDefId);
             rows = stmt.executeUpdate();
-            userConn.commit();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
