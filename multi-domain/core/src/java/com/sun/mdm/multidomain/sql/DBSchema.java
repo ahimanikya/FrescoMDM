@@ -67,6 +67,9 @@ public final class DBSchema {
         EFFECTIVE_FROM_REQ("EFFECTIVE_FROM_REQ"),
         EFFECTIVE_TO_REQ("EFFECTIVE_TO_REQ"),
         PURGE_DATE_REQ("PURGE_DATE_REQ"),
+        EFFECTIVE_FROM_INCL("EFFECTIVE_FROM_INCL"),
+        EFFECTIVE_TO_INCL("EFFECTIVE_TO_INCL"),
+        PURGE_DATE_INCL("PURGE_DATE_INCL"),
         PLUGIN("PLUGIN"),;
         public final String columnName;
         public final String prefixedColumnName;
