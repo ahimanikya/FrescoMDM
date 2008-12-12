@@ -106,7 +106,7 @@ function populateSelectRelationshipDefAttributes(data){
            document.getElementById("select_Relationship_CustomAtrributes").style.display="none";
        }
        if(startDate==true || endDate==true || purgeDate == true ){ 
-          createPredefinedAttributesSection ("byrel_select_predefinedAttributes", data, "select_predefined");
+          createPredefinedAttributesSection ("byrel_select_predefinedAttributes", data, "select_predefined", false);
           document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="visible"
           document.getElementById("select_Relationship_PredefinedAtrributes").style.display="";
       } else{
@@ -685,7 +685,7 @@ function populateRelationshipDetails_Callback (data) {
     //data.relationshipRecord.endDate = "12/20/2008";
     //data.relationshipRecord.purgeDate = "12/30/2008";
     if(startDate==true || endDate==true || purgeDate == true ){ 
-        createPredefinedAttributesSection ("editPredefinedAttributesTable", relationshipDef,"edit_predefined");
+        createPredefinedAttributesSection ("editPredefinedAttributesTable", relationshipDef,"edit_predefined", true);
         populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
         document.getElementById("editPredefinedAttributesDiv").style.visibility="visible"
         document.getElementById("editPredefinedAttributesDiv").style.display="";

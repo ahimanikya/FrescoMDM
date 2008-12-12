@@ -176,7 +176,7 @@ function populateAddRelationshipDefAttributes(data){
            document.getElementById("add_Relationship_CustomAtrributes").style.display="none";
        }
        if(startDate==true || endDate==true || purgeDate == true ){ 
-          createPredefinedAttributesSection ("byrel_add_predefinedAttributes", data, "add_predefined");
+          createPredefinedAttributesSection ("byrel_add_predefinedAttributes", data, "add_predefined", true);
           document.getElementById("add_Relationship_PredefinedAtrributes").style.visibility="visible"
           document.getElementById("add_Relationship_PredefinedAtrributes").style.display="";
       } else{
@@ -428,8 +428,9 @@ function populateCustomAttributesValues (attributesArray, attributesValuesArray,
 }
 // Function to create Predefined attributes section
 // Used in Add, Select & Edit Relationship Attributes screens
-function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
+function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showRequiredSymbol) {
     //alert("CREATING Predefined attributes section : " + tableId);
+    if(showRequiredSymbol == null) showRequiredSymbol = true;
     var startDate =(getBoolean(dataObj.startDate));
     var endDate =(getBoolean(dataObj.endDate));
     var purgeDate =(getBoolean(dataObj.purgeDate));
@@ -460,7 +461,7 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         SecondRow.insertCell(3);
         SecondRow.insertCell(4);
         SecondRow.cells[0].innerHTML="Effective";
-        if(startDateRequired == true){
+        if(startDateRequired == true && showRequiredSymbol){
           SecondRow.cells[1].innerHTML="From *";   
         }else{
           SecondRow.cells[1].innerHTML="From";      
@@ -480,7 +481,7 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
             width:"100px"
         }
         startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
-        if(endDateRequired == true){
+        if(endDateRequired == true && showRequiredSymbol){
           SecondRow.cells[3].innerHTML="To *";   
         }else{
           SecondRow.cells[3].innerHTML="To";      
@@ -507,7 +508,7 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         SecondRowStart.insertCell(2);
         
         SecondRowStart.cells[0].innerHTML="Effective";
-        if(startDateRequired == true){
+        if(startDateRequired == true && showRequiredSymbol){
           SecondRowStart.cells[1].innerHTML="From *";   
         }else{
           SecondRowStart.cells[1].innerHTML="From";      
@@ -535,7 +536,7 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         SecondRowEnd.insertCell(2);
         
         SecondRowEnd.cells[0].innerHTML="Effective";
-        if(endDateRequired == true){
+        if(endDateRequired == true && showRequiredSymbol){
           SecondRowEnd.cells[1].innerHTML="To *";   
         }else{
           SecondRowEnd.cells[1].innerHTML="To";      
@@ -563,7 +564,7 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse) {
         ThirdRow.insertCell(1);
         ThirdRow.insertCell(2);
         ThirdRow.cells[0].innerHTML="Purge Date";
-        if(purgeDateRequired == true){
+        if(purgeDateRequired == true && showRequiredSymbol){
           ThirdRow.cells[0].innerHTML="Purge Date *";
         }else{
           ThirdRow.cells[0].innerHTML="Purge Date";
