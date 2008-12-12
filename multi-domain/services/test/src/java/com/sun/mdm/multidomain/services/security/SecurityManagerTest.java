@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.multidomain.services.security;
 
+import java.util.List;
 import junit.framework.TestCase;
 
 /**
@@ -30,7 +31,7 @@ import junit.framework.TestCase;
  */
 public class SecurityManagerTest extends TestCase {
     
-    public static int ROLE_COUNT = 13;
+    public static int ROLE_COUNT = 12;
     
     public SecurityManagerTest (String name) {
         super(name);
@@ -45,14 +46,63 @@ public class SecurityManagerTest extends TestCase {
             String roles[] = securityManager.getAllRoles();
             if (roles.length == ROLE_COUNT) {
                 System.out.println("Roles parsed successfully.");
-                assert(true);
+                assertTrue(true);
             } else {
                 System.out.println("Error: expected " + ROLE_COUNT + " roles but " +
-                                   "actually processed " + roles.length + "roles.");
-                assert(false);
+                                   "actually processed " + roles.length + " roles.");
+                assertTrue(false);
             }
         } catch(Exception ex) {
             fail(ex.getMessage());
         }        
     }
+    
+   public void test002() {
+        try {
+            SecurityManager securityManager = SecurityManager.getInstance().init();    
+            String roles[] = securityManager.getAllRoles();
+            if (roles.length == ROLE_COUNT) {
+                System.out.println("Roles parsed successfully.");
+                assertTrue(true);
+            } else {
+                System.out.println("Error: expected " + ROLE_COUNT + " roles but " +
+                                   "actually processed " + roles.length + " roles.");
+                assertTrue(false);
+            }
+            UserProfile userprofile = new UserProfile("test", "MultiDomain.Admin");
+            String[] operationsByName = securityManager.getOperations(userprofile);
+            if (operationsByName != null && operationsByName.length == 9) {
+               assertTrue(true); 
+            } else {
+                fail("operations is null.");
+            }    
+     
+        } catch(Exception ex) {
+            fail(ex.getMessage());
+        }        
+    }  
+   
+    public void test003() {
+        try {
+            SecurityManager securityManager = SecurityManager.getInstance().init();    
+            String roles[] = securityManager.getAllRoles();
+            if (roles.length == ROLE_COUNT) {
+                System.out.println("Roles parsed successfully.");
+                assertTrue(true);
+            } else {
+                System.out.println("Error: expected " + ROLE_COUNT + " roles but " +
+                                   "actually processed " + roles.length + "roles.");
+                 assertTrue(false);
+            }
+         
+            List<String> operations = securityManager.getOperationsforRole("MultiDomain.Admin");
+            if (operations != null && operations.size() == 9) {
+               assertTrue(true);  
+            } else {
+                fail("operations is null.");
+            }    
+        } catch(Exception ex) {
+            fail(ex.getMessage());
+        }        
+    }     
 }
