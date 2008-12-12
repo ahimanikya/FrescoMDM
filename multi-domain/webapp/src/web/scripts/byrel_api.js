@@ -438,8 +438,23 @@ function searchRelationships() {
     // [TBD] need to include search criteria attributes as well.
     var sourceDomainSearch = {name: sourceDomain}; 
     var targetDomainSearch = {name: targetDomain};
-    var relationshipDefSearch = {name: relationshipDef};
-    RelationshipHandler.searchRelationships (sourceDomainSearch, targetDomainSearch, relationshipDefSearch, searchResultsCallback);
+    var relationshipDefSearch = {name: relationshipDef, sourceDomain: sourceDomain, targetDomain: targetDomain};
+    
+    // use search criteria fieds for Source domain
+    //sourceDomainSearch["Person.FirstName"] = value;
+    
+    // use search criteria fields for Target domain
+    // targetDomainSearch["company.companyname"] = value;
+    
+   // use relationshipdef attributes for relationshipDefSearch
+   var searchCustomAttributes = {};
+   searchCustomAttributes["salary"] = "1000";
+   relationshipDefSearch.startDate = "start date value";
+   relationshipDefSearch.endDate = "start date value";
+   relationshipDefSearch.purgeDate = "start date value";
+   relationshipDefSearch.attributes = searchCustomAttributes;
+   
+   RelationshipHandler.searchRelationships (sourceDomainSearch, targetDomainSearch, relationshipDefSearch, searchResultsCallback);
 
 }
 function loadSummaryFields(data, domainName) {
@@ -693,47 +708,29 @@ function loadAddSearchCriteria(){
 }
 
 function addSourceDomainCriteria(data){
-    
-     var searchTypes = new Array();
-     var j = 0;
-     var fgroups = new Array();
      dwr.util.removeAllOptions("add_source_criteria");
      for (var searchType in data)  {
-        searchTypes[j++] = searchType;
-     }
-     var str = new String(searchTypes);
-     fgroups = str.split(',');
-     for(i=0;i<fgroups.length;i++){
           var opt =  document.createElement("option");
-          opt.text = fgroups[i];
-          opt.value = fgroups[i];
+          opt.text = searchType;
+          opt.value = searchType;
           document.getElementById('add_source_criteria').options.add(opt);
       }
-      var tempSourceSearchType = document.getElementById('add_source_criteria').value;
-      var tempSourceDomain = document.getElementById('select_sourceDomain').value;
+     var tempSourceSearchType = document.getElementById('add_source_criteria').value;
+     var tempSourceDomain = document.getElementById('select_sourceDomain').value;
      RelationshipDefHandler.getSearchTypeCriteria(tempSourceDomain,tempSourceSearchType,sourceSearchTypeFields);
 }
 
 function addTargetDomainCriteria(data){
-    
-     var searchTypes = new Array();
-     var j = 0;
-     var fgroups = new Array();
      dwr.util.removeAllOptions("add_target_criteria");
      for (var searchType in data)  {
-        searchTypes[j++] = searchType;
+        var opt =  document.createElement("option");
+        opt.text = searchType;
+        opt.value = searchType;
+        document.getElementById('add_target_criteria').options.add(opt);
      }
-     var str = new String(searchTypes);
-     fgroups = str.split(',');
-     for(i=0;i<fgroups.length;i++){
-          var opt =  document.createElement("option");
-          opt.text = fgroups[i];
-          opt.value = fgroups[i];
-          document.getElementById('add_target_criteria').options.add(opt);
-      } 
-      var tempTargetSearchType = document.getElementById('add_target_criteria').value;
-      var tempTargetDomain = document.getElementById('select_targetDomain').value;
-      RelationshipDefHandler.getSearchTypeCriteria(tempTargetDomain,tempTargetSearchType,targetSearchTypeFields);  
+    var tempTargetSearchType = document.getElementById('add_target_criteria').value;
+    var tempTargetDomain = document.getElementById('select_targetDomain').value;
+    RelationshipDefHandler.getSearchTypeCriteria(tempTargetDomain,tempTargetSearchType,targetSearchTypeFields);  
 }
 
 function getSourceSearchFields(searchTypeId){
@@ -743,13 +740,20 @@ function getSourceSearchFields(searchTypeId){
 }
   
 function sourceSearchTypeFields(data){
-    var fieldGroups = new Array();
-    var j = 0;
-    var count = 0;
     dwr.util.removeAllRows("add_search_source_fields");
-     for (var fieldGrp in data)  {
-        fieldGroups[j++] = fieldGrp;
-         for (var fieldCfg in data[fieldGrp])  {
+    // create a hidden field, put the querybuilder value in it. hidden field name=addSourceQueryBuilder.
+    hiddenField = document.createElement("input");
+    hiddenField.type = "hidden";
+    hiddenField.id = "addSourceQueryBuilder";
+    hiddenField.name = "addSourceQueryBuilder";
+    hiddenField.value = data.queryBuilder;
+    document.getElementById('add_search_source_fields').appendChild(hiddenField);
+    var count = 0;
+    
+     var fieldGroups = data.fieldGroups;
+     for (var fieldGrp in fieldGroups)  {
+        for(i=0; i<fieldGroups[fieldGrp].length; i++) {
+             fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('add_search_source_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1);
@@ -762,12 +766,10 @@ function sourceSearchTypeFields(data){
              field.type="text";
              field.size="5";
              field.name="addSourceSearchFieldName";
-             field.domainFieldName = data[fieldGrp][fieldCfg].name;
+             field.domainFieldName = fieldCfg.name;
              field.style.width="100px";
-             if(data[fieldGrp][fieldCfg].length != 1){
-                row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name; 
-                row.cells[1].appendChild(field); 
-             }       
+             row.cells[0].innerHTML = fieldCfg.name; 
+             row.cells[1].appendChild(field); 
          }
         
      }
@@ -781,32 +783,36 @@ function getTargetSearchFields(searchTypeId){
 }
 
 function targetSearchTypeFields(data){
-    var fieldGroups = new Array();
-    var j = 0;
     var count = 0;
     dwr.util.removeAllRows("add_search_target_fields");
-     for (var fieldGrp in data)  {
-        fieldGroups[j++] = fieldGrp;
-         for (var fieldCfg in data[fieldGrp])  {
+    // create a hidden field, put the querybuilder value in it. hidden field name=addTargetQueryBuilder.
+    hiddenField = document.createElement("input");
+    hiddenField.type = "hidden";
+    hiddenField.id = "addTargetQueryBuilder";
+    hiddenField.name = "addTargetQueryBuilder";
+    hiddenField.value = data.queryBuilder;
+    document.getElementById('add_search_target_fields').appendChild(hiddenField);
+    
+    var fieldGroups = data.fieldGroups;
+     for (var fieldGrp in fieldGroups)  {
+        for(i=0; i<fieldGroups[fieldGrp].length; i++) {
+             fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('add_search_target_fields').insertRow(count++);
-                 row.insertCell(0);
-                 row.insertCell(1); 
-                 var field ; //= document.createElement("input");
-                 try{
-                      field = document.createElement('<input type="text" name="addTargetSearchFieldName" />');
-                 }catch(err){
-                      field = document.createElement("input");
-                 }
-                     
-                 field.type="text";
-                 field.size="5";
-                 field.name="addTargetSearchFieldName";
-                 field.domainFieldName = data[fieldGrp][fieldCfg].name;
-                 field.style.width="100px";
-                 if(data[fieldGrp][fieldCfg].length != 1){
-                    row.cells[0].innerHTML = data[fieldGrp][fieldCfg].name; 
-                    row.cells[1].appendChild(field);
-                 }
+             row.insertCell(0);
+             row.insertCell(1); 
+             var field ; //= document.createElement("input");
+             try{
+                  field = document.createElement('<input type="text" name="addTargetSearchFieldName" />');
+             }catch(err){
+                  field = document.createElement("input");
+             }
+             field.type="text";
+             field.size="5";
+             field.name="addTargetSearchFieldName";
+             field.domainFieldName = fieldCfg.name ;
+             field.style.width="100px";
+             row.cells[0].innerHTML = fieldCfg.name; 
+             row.cells[1].appendChild(field); 
          }
      }
 }
@@ -815,15 +821,12 @@ function addSourceDomainSearch() {
     var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
     var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
-    
-    domainSearch["type"] = "BLOCKER-SEARCH"; // put search type.
-    
-    alert("addSourceSearchFieldNames length  " + addSourceSearchFieldNames.length);
+    var qBuilder = document.getElementById("addSourceQueryBuilder").value;
+    domainSearch["type"] = qBuilder; // put search type.
     for(i=0;i<addSourceSearchFieldNames.length;i++){
-      //  alert("name  " +addSourceSearchFieldNames[i].domainFieldName +" :  value " +addSourceSearchFieldNames[i].value);
       domainSearch[addSourceSearchFieldNames[i].domainFieldName] = addSourceSearchFieldNames[i].value; 
+      //alert("name  "+addSourceSearchFieldNames[i].domainFieldName +" value   " + addSourceSearchFieldNames[i].value );
     }
-    alert(addSourceSearchFieldNames[0].domainFieldName + " : " + domainSearch[addSourceSearchFieldNames[0].domainFieldName]);
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
 
@@ -878,11 +881,12 @@ function addSourceSearchResults(data) {
 function addTargetDomainSearch() {
     var selectedTargetDomain = document.getElementById("select_targetDomain").value;
     var domainSearch = {name:selectedTargetDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
-  
     var addTargetSearchFieldNames = document.getElementsByName('addTargetSearchFieldName');
-    alert("addSourceSearchFieldNames length  " + addTargetSearchFieldNames.length);
+    var qBuilder = document.getElementById("addTargetQueryBuilder").value;
+    domainSearch["type"] = qBuilder;
     for(i=0;i<addTargetSearchFieldNames.length;i++){
-        alert("name  " +addTargetSearchFieldNames[i].domainFieldName +" :  value " +addTargetSearchFieldNames[i].value);
+        domainSearch[addTargetSearchFieldNames[i].domainFieldName] = addTargetSearchFieldNames[i].value; 
+        //alert("name  "+addTargetSearchFieldNames[i].domainFieldName +" value   " + addTargetSearchFieldNames[i].value );
     }
     RelationshipHandler.searchEnterprises (domainSearch, addTargeSearchResults);
 }
