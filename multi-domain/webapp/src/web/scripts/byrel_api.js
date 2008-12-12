@@ -24,6 +24,7 @@ var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshi
   }
   function updateSelectDomains(data) {
       dwr.util.removeAllOptions("select_sourceDomain");
+      dwr.util.removeAllOptions("select_targetDomain");
       dwr.util.addOptions("select_sourceDomain", data, "name");
       dwr.util.setValue("select_sourceDomain", data[0].name); 
       dwr.util.addOptions("select_targetDomain", data, "name");
