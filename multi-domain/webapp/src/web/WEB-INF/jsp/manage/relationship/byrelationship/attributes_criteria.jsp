@@ -28,7 +28,7 @@
                    <tr>
                        <td>
                           <div class="RelationshipAttributes" id="select_Relationship_CustomAtrributes" style="display:none;">
-                            <table border="0" >
+                            <table border="0" width="100%" >
                                <tr>
                                     <td class="Heading" colspan="5">
                                         <f:message key="custom_text" /> <f:message key="attributes_text" />
@@ -60,7 +60,7 @@
                    <tr>
                        <td>
                            <div class="RelationshipAttributes" id="select_Relationship_PredefinedAtrributes" style="display:none;">
-                                <table border="0" >
+                                <table border="0" width="100%">
                                    <tr>
                                         <td class="Heading">
                                             <f:message key="predefined_text" /> <f:message key="attributes_text" />

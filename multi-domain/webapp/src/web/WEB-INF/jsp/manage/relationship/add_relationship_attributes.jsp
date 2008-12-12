@@ -16,11 +16,11 @@
    </table> 
 </div>
      <div class="Content">
-      <table border="0">
+      <table border="0" width="100%">
         <tr>
             <td>
                 <div id="add_Relationship_CustomAtrributes" class="RelationshipAttributes">
-                    <table border="0" >
+                    <table border="0" width="100%" >
                        <tr>
                             <td class="Heading" colspan="2">
                                 <f:message key="custom_text" /> <f:message key="attributes_text" />
@@ -50,7 +50,7 @@
         <tr>
             <td>
                 <div id="add_Relationship_PredefinedAtrributes" class="RelationshipAttributes">
-                    <table border="0">
+                    <table border="0" width="100%">
                         <tr>
                             <td class="Heading">
                                 <f:message key="predefined_text" /><f:message key="attributes_text" />

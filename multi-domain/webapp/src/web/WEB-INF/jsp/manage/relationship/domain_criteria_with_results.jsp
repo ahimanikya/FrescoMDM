@@ -99,7 +99,7 @@
            <tr>
             <td>
                 <div id="byrel_addSourceResults" style="display:none;">
-                    <table border="1" >
+                    <table border="0" class="DomainSearchResults" >
                         <tbody id="AddSource_TableId"></tbody>
                     </table>
                 </div>
@@ -145,8 +145,8 @@
                    <tr>
                        <td>
                            <div>
-                              <table id="add_search_target_fields">
-                                       
+                              <table >
+                                  <tbody id="add_search_target_fields"></tbody>
                               </table>
                            </div>
                        </td>
@@ -205,7 +205,7 @@
            <tr>
             <td>
                 <div id="byrel_addTargetResults" style="display:none;">
-                    <table border="1" >
+                    <table border="0" class="DomainSearchResults">
                         <tbody id="AddTarget_TableId"></tbody>
                     </table>
                 </div>

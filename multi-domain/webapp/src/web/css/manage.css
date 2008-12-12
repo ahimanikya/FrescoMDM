@@ -121,6 +121,40 @@
 
 
 
+.DomainSearchResults {
+    background-color: #F9F9F0;
+    border: 1px solid #6E828C;
+}
+.DomainSearchResults .header {
+    background-color: #DDDDDD;
+    text-align:left;
+    height:24px;
+}
+.DomainSearchResults .header .label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:bold;
+    padding-left:2px;
+    background-color: #DDDDDD;
+}
+.DomainSearchResults tbody {
+    background-color: #FFFFFF;
+}
+.DomainSearchResults tbody tr {
+    height:22px;
+}
+.DomainSearchResults tbody tr td{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#343535;
+    font-weight:normal;
+    border-bottom: 1px solid #F9F9F0;
+    padding-left:2px;
+}
+
+
+
 .DetailsTitleBar{
     height:24px;
     background-color: #6E828C;
