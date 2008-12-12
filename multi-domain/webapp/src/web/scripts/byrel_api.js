@@ -235,19 +235,11 @@ function populateSelectRelationshipDefAttributes(data){
   }
   
 function selectSourceSearchTypes(data)   {
-   var searchTypes = new Array();
-   var j = 0;
-   var fgroups = new Array();
-   dwr.util.removeAllOptions("select_source_searchtypes");
+   dwr.util.removeAllOptions("select_source_searchtypes"); 
    for (var searchType in data)  {
-      searchTypes[j++] = searchType;
-   }
-   var str = new String(searchTypes);
-   fgroups = str.split(',');
-   for(i=0;i<fgroups.length;i++){
         var opt =  document.createElement("option");
-        opt.text = fgroups[i];
-        opt.value = fgroups[i];
+        opt.text = searchType;
+        opt.value = searchType;
         document.getElementById('select_source_searchtypes').options.add(opt);
     }
     selectSourceSearchFields('select_source_searchtypes');
@@ -259,23 +251,14 @@ function loadSelectTargetSearchTypes(id)   {
   }
   
 function selectTargetSearchTypes(data)   {
-   var searchTypes = new Array();
-   var j = 0;
-   var fgroups = new Array();
-   //document.getElementById('select_target_searchtypes').innerHTML='';
-   dwr.util.removeAllOptions("select_target_searchtypes");
+   dwr.util.removeAllOptions("select_target_searchtypes"); 
    for (var searchType in data)  {
-      searchTypes[j++] = searchType;
-   }
-   var str = new String(searchTypes);
-   fgroups = str.split(',');
-   for(i=0;i<fgroups.length;i++){
         var opt =  document.createElement("option");
-        opt.text = fgroups[i];
-        opt.value = fgroups[i];
+        opt.text = searchType;
+        opt.value = searchType;
         document.getElementById('select_target_searchtypes').options.add(opt);
     }
-    selectTargetSearchFields('select_target_searchtypes');
+    selectSourceSearchFields('select_target_searchtypes');
 }
 
 function selectSourceSearchFields(searchTypeId){
@@ -749,7 +732,6 @@ function sourceSearchTypeFields(data){
     hiddenField.value = data.queryBuilder;
     document.getElementById('add_search_source_fields').appendChild(hiddenField);
     var count = 0;
-    
      var fieldGroups = data.fieldGroups;
      for (var fieldGrp in fieldGroups)  {
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
@@ -823,10 +805,16 @@ function addSourceDomainSearch() {
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
     var qBuilder = document.getElementById("addSourceQueryBuilder").value;
     domainSearch["type"] = qBuilder; // put search type.
+    var domainAttributes = [];
     for(i=0;i<addSourceSearchFieldNames.length;i++){
-      domainSearch[addSourceSearchFieldNames[i].domainFieldName] = addSourceSearchFieldNames[i].value; 
-      //alert("name  "+addSourceSearchFieldNames[i].domainFieldName +" value   " + addSourceSearchFieldNames[i].value );
+        var tempFieldName = addSourceSearchFieldNames[i].domainFieldName;
+        var tempFieldValue = addSourceSearchFieldNames[i].value ;
+        var tempMap = {} ;
+        tempMap[tempFieldName] = tempFieldValue;
+        alert(tempFieldName);
+        domainAttributes.push( tempMap );
     }
+    domainSearch.attributes = domainAttributes;
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
 
@@ -884,10 +872,16 @@ function addTargetDomainSearch() {
     var addTargetSearchFieldNames = document.getElementsByName('addTargetSearchFieldName');
     var qBuilder = document.getElementById("addTargetQueryBuilder").value;
     domainSearch["type"] = qBuilder;
+    var domainAttributes = [];
     for(i=0;i<addTargetSearchFieldNames.length;i++){
-        domainSearch[addTargetSearchFieldNames[i].domainFieldName] = addTargetSearchFieldNames[i].value; 
-        //alert("name  "+addTargetSearchFieldNames[i].domainFieldName +" value   " + addTargetSearchFieldNames[i].value );
+        var tempFieldName = addTargetSearchFieldNames[i].domainFieldName;
+        var tempFieldValue = addTargetSearchFieldNames[i].value ;
+        var tempMap = {} ;
+        tempMap[tempFieldName] = tempFieldValue;
+        alert(tempFieldName);
+        domainAttributes.push( tempMap );
     }
+    domainSearch.attributes = domainAttributes;
     RelationshipHandler.searchEnterprises (domainSearch, addTargeSearchResults);
 }
 
