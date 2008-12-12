@@ -83,23 +83,6 @@ function populateSelectRelationshipDefAttributes(data){
               }
           }
            createCustomAttributesSection ("byrel_select_customAttributes", searchableCustomAttributes, "select_custom", false);
-           /* var customHeading = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
-           customHeading.insertCell(0);
-           customHeading.cells[0].innerHTML="Custom Attributes";
-           customHeading.cells[0].colSpan = "5";
-           
-           var j=0;
-           for(var i=0;i < data.extendedAttributes.length;i++){
-             var customContent = document.getElementById('byrel_select_customAttributes').insertRow(CustomrowCount ++);
-             customContent.insertCell(0);
-             customContent.insertCell(1);
-             customContent.cells[0].innerHTML=data.extendedAttributes[i].name;
-             var field = document.createElement("input");
-             field.type="text";
-             field.size="5";
-             field.style.width="100px";
-             customContent.cells[1].appendChild(field);
-           }*/
            document.getElementById("select_Relationship_CustomAtrributes").style.visibility="visible"
            document.getElementById("select_Relationship_CustomAtrributes").style.display="block";
        }
@@ -116,120 +99,6 @@ function populateSelectRelationshipDefAttributes(data){
           document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="hidden"
           document.getElementById("select_Relationship_PredefinedAtrributes").style.display="none";
       }
-      /*
-    if(startDate==true || endDate==true || startDate == true ){ // condition for Predefined Attributes
-        var FirstRow = document.getElementById('byrel_select_predefinedAttributes').insertRow(PredefinedrowCount ++);
-        FirstRow.insertCell(0);
-        FirstRow.cells[0].colSpan='4';
-        FirstRow.cells[0].innerHTML="Predefined Attributes";
-        document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="visible"
-        document.getElementById("select_Relationship_PredefinedAtrributes").style.display="block";
-    }
-    else{
-        document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="hidden"
-        document.getElementById("select_Relationship_PredefinedAtrributes").style.display="none";
-    }  
-    if(startDate==true&& endDate==true){ // condition for Start and End dates of Predefined Attributes
-        var SecondRow = document.getElementById('byrel_select_predefinedAttributes').insertRow(PredefinedrowCount ++);
-        SecondRow.insertCell(0);
-        SecondRow.insertCell(1);
-        SecondRow.insertCell(2);
-        SecondRow.insertCell(3);
-        SecondRow.insertCell(4);
-        SecondRow.cells[0].innerHTML="Effective";
-        SecondRow.cells[1].innerHTML="From";
-        var startDate_textBox = document.createElement("input");
-        startDate_textBox.type="text";
-        startDate_textBox.size="5";
-        startDate_textBox.style.width="100px";
-        SecondRow.cells[2].appendChild(startDate_textBox);
-        var startProps = {
-            name: "start_date_textbox",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
-            width:"100px"
-        }
-        startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
-        
-        SecondRow.cells[3].innerHTML="To";
-        var endDate_textBox = document.createElement("input");
-        endDate_textBox.type="text";
-        endDate_textBox.size="5";
-        endDate_textBox.style.width="100px";
-        SecondRow.cells[4].appendChild(endDate_textBox);
-        var endProps = {
-            name: "end_date_textbox",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
-            width:"100px"
-        }
-        endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox);
-        
-    } else if (startDate == true) { // condition for Start Date of Predefined Attributes
-        var SecondRowStart = document.getElementById('byrel_select_predefinedAttributes').insertRow(PredefinedrowCount ++);
-        SecondRowStart.insertCell(0);
-        SecondRowStart.insertCell(1);
-        SecondRowStart.insertCell(2);
-        
-        SecondRowStart.cells[0].innerHTML="Effective";
-        SecondRowStart.cells[1].innerHTML="From";
-        var start_date = document.createElement("input");
-        start_date.type="text";
-        start_date.size="5";
-        start_date.style.width="100px";
-        SecondRowStart.cells[2].appendChild(start_date);
-        var start_date_Props = {
-            name: "start_date",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
-            width:"100px"
-        }
-        start_date = new dijit.form.DateTextBox(start_date_Props, start_date);
-        
-    } else if(endDate == true) { // condition for End Date of Predefined Attributes
-        
-        var SecondRowEnd = document.getElementById('byrel_select_predefinedAttributes').insertRow(PredefinedrowCount ++);
-        SecondRowEnd.insertCell(0);
-        SecondRowEnd.insertCell(1);
-        SecondRowEnd.insertCell(2);
-        
-        SecondRowEnd.cells[0].innerHTML="Effective";
-        SecondRowEnd.cells[1].innerHTML="To";
-        var end_date = document.createElement("input");
-        end_date.type="text";
-        end_date.size="5";
-        end_date.style.width="100px";
-        SecondRowEnd.cells[2].appendChild(end_date);
-        var end_date_Props = {
-            name: "end_date",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
-            width:"100px"
-        }
-        end_date = new dijit.form.DateTextBox(end_date_Props, end_date);
-    }
-    if(purgeDate==true ){ // condition for purge date of Predefined Attributes
-        
-        var ThirdRow = document.getElementById('byrel_select_predefinedAttributes').insertRow(PredefinedrowCount ++);
-        ThirdRow.insertCell(0);
-        ThirdRow.insertCell(1);
-        ThirdRow.insertCell(2);
-        ThirdRow.cells[0].innerHTML=" ";
-        ThirdRow.cells[1].innerHTML="Purge Date";
-        var Purge_date= document.createElement("input");
-        Purge_date.type="text";
-        Purge_date.size="5";
-        Purge_date.style.width="100px";
-        ThirdRow.cells[2].appendChild(Purge_date);
-        var purge_date_Props = {
-            name: "purge_date",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
-            width:"100px"
-        }
-        Purge_date = new dijit.form.DateTextBox(purge_date_Props, Purge_date);
-    }
-    */
 }
   
   function loadSelectSourceSearchTypes(id)   {
@@ -360,6 +229,9 @@ function selectTargetSearchTypeFields(data){
 var summaryFields = {}; // To hold summary fields for domains.
 
 function searchRelationships() {
+    isSelectTargetDomainCriteriaApplied = false;
+    isSelectSourceDomainCriteriaApplied = false;
+    isSelectRelationshipDefAttributeCriteriaApplied = false;
     var sourceDomain = document.getElementById("select_sourceDomain").value;
     var targetDomain = document.getElementById("select_targetDomain").value;
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
@@ -408,6 +280,7 @@ function searchRelationships() {
         var tempMap = {} ;
         tempMap[sourceTempFieldName] = sourceTempFieldValue;
         sourceDomainAttributes.push( tempMap );
+        if(!isEmpty(sourceTempFieldValue)) isSelectSourceDomainCriteriaApplied = true;
     }
     sourceDomainSearch.attributes = sourceDomainAttributes;
     
@@ -416,14 +289,15 @@ function searchRelationships() {
     targetDomainSearch["type"] = taragetqBuilder; // put search type.
     var targetDomainAttributes = [];
     for(i=0;i<selectTargetSearchFieldNames.length;i++){
+        
         var targetTempFieldName = selectTargetSearchFieldNames[i].domainFieldName;
         var targetTempFieldValue = selectTargetSearchFieldNames[i].value ;
         var targetTempMap = {} ;
         tempMap[targetTempFieldName] = targetTempFieldValue;
         targetDomainAttributes.push( targetTempMap );
+        if(!isEmpty(targetTempFieldValue)) isSelectTargetDomainCriteriaApplied = true;
     }
     targetDomainSearch.attributes = targetDomainAttributes;
-    
    // relationshipdef attributes for relationshipDefSearch
    var searchCustomAttributes = [];
    
@@ -438,6 +312,7 @@ function searchRelationships() {
           CustomAttributeId.focus();
           return;
       }
+      if(!isEmpty(CustomAttributeValue)) isSelectRelationshipDefAttributeCriteriaApplied = true;
       searchCustomAttributes.push( {CustomAttributeName : CustomAttributeValue} );
      }
    var startDateField = document.getElementById('select_predefined_startDate');
@@ -447,14 +322,17 @@ function searchRelationships() {
    if(startDateField != null)
      {
            startDate =  document.getElementById('select_predefined_startDate').value;
+           if(!isEmpty(startDate)) isSelectRelationshipDefAttributeCriteriaApplied = true;
      }
      if(endDateField != null)
      {
            endDate =  document.getElementById('select_predefined_endDate').value;
+           if(!isEmpty(endDate)) isSelectRelationshipDefAttributeCriteriaApplied = true;
      }
      if(purgeDateField != null)
      {
            purgeDate =  document.getElementById('select_predefined_purgeDate').value;
+           if(!isEmpty(purgeDate)) isSelectRelationshipDefAttributeCriteriaApplied = true;
      }
     relationshipDefSearch.startDate =startDate;
     relationshipDefSearch.endDate = endDate;
@@ -462,7 +340,12 @@ function searchRelationships() {
     relationshipDefSearch.attributes = searchCustomAttributes;
 
     hideByRelSelectDialog(); // hide the select dialog...
-    //
+    
+    displayDiv("selectSourceDomainFilterImg", isSelectSourceDomainCriteriaApplied);
+    displayDiv("selectTargetDomainFilterImg", isSelectTargetDomainCriteriaApplied);
+    displayDiv("selectRelationshipDefFilterImg", isSelectRelationshipDefAttributeCriteriaApplied);
+
+
     // Load fields for summary display for source & target domain
     DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
       loadSummaryFields(dataFromServer, sourceDomain); }

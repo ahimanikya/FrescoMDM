@@ -38,38 +38,11 @@
                        <td>
                            <div>
                                <table border="0">
-                                   <tbody id="select_search_source_fields"></tbody>
+                                   <tbody id="select_search_source_fields" class="DomainSearchField"></tbody>
                                </table>
                            </div>
                        </td>
                     </tr>
-               <!--    <tr>
-                       <td class="generalTextBold">
-                           &nbsp;<f:message key="alpha_search_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalTextBold">
-                           &nbsp;&nbsp;<f:message key="name_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalText">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="company_text" /> <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;
-                           <input name="Company Name" title="<f:message key="company_text" /> <f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalTextBold">
-                           &nbsp;&nbsp;<f:message key="duns_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalText">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="duns_text" /> <f:message key="number_text" /><f:message key="colon_symbol" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                           <input name="Duns Number" title="<f:message key="duns_text" /> <f:message key="number_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
-                       </td>
-                   </tr>-->
                </table>
             </div>
            </div>
@@ -116,38 +89,11 @@
                        <td>
                            <div>
                                <table >
-                                   <tbody id="select_search_target_fields"></tbody>
+                                   <tbody id="select_search_target_fields" class="DomainSearchField"></tbody>
                                </table>
                            </div>
                        </td>
                     </tr>
-                <!--   <tr>
-                       <td class="generalTextBold">
-                           &nbsp;<f:message key="alpha_search_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalTextBold">
-                           &nbsp;&nbsp;<f:message key="name_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalText">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="company_text" /> <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;
-                           <input name="Company Name" title="<f:message key="company_text" /> <f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalTextBold">
-                           &nbsp;&nbsp;<f:message key="duns_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalText">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="duns_text" /> <f:message key="number_text" /><f:message key="colon_symbol" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                           <input name="Duns Number" title="<f:message key="duns_text" /> <f:message key="number_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
-                       </td>
-                   </tr> -->
                </table>
             </div>
            </div>

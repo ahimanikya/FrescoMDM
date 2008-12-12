@@ -32,7 +32,12 @@
                        <f:message key="source_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold" width="70%">
-                       <div id="selectedSourceDomain" >&nbsp;</div>
+                       <table cellspacing="0" cellpadding="0"  width="100%" >
+                           <tr>
+                               <td class="selectedDataBox" width="70%"><div id="selectedSourceDomain" >&nbsp;</div></td>
+                               <td align="left"><div id="selectSourceDomainFilterImg" style="display:none;"><img src="images/icons/filter.png" title="Search Criteria Applied"></div></td>
+                           </tr>
+                       </table>
                    </td>
                </tr>
                <tr>
@@ -40,7 +45,12 @@
                       <f:message key="relationship" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold">
-                       <div id="selectedRelationshipDef">&nbsp;</div>
+                       <table cellspacing="0" cellpadding="0" width="100%">
+                           <tr>
+                               <td class="selectedDataBox" width="70%"><div id="selectedRelationshipDef" >&nbsp;</div></td>
+                               <td align="left"><div id="selectRelationshipDefFilterImg" style="display:none;"><img src="images/icons/filter.png" title="Search Criteria Applied"></div></td>
+                           </tr>
+                       </table>                       
                    </td>
                </tr>
                <tr>
@@ -48,7 +58,12 @@
                        <f:message key="target_domain_text" /><f:message key="colon_symbol" />
                    </td>
                    <td class="generalTextBold">
-                       <div id="selectedTargetDomain"></div>
+                       <table cellspacing="0" cellpadding="0" width="100%">
+                           <tr>
+                               <td class="selectedDataBox" width="70%"><div id="selectedTargetDomain" >&nbsp;</div></td>
+                               <td align="left"><div id="selectTargetDomainFilterImg" style="display:none;"><img src="images/icons/filter.png" title="Search Criteria Applied"></div></td>
+                           </tr>
+                       </table>
                    </td>
                </tr>
                <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>

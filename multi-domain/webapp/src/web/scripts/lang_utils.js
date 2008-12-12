@@ -71,3 +71,22 @@ function isInteger(value) {
     if(value == null) return true;
     return  (value.toString().search(/^-?[0-9]+$/) == 0);
 }
+
+function showDiv (divId) {
+    var divObj = document.getElementById(divId);
+    if(divObj != null) {
+        divObj.style.visibility="visible";
+        divObj.style.display = "block";
+    }
+}
+function hideDiv (divId) {
+    var divObj = document.getElementById(divId);
+    if(divObj != null) {
+        divObj.style.visibility="hidden";
+        divObj.style.display = "none";
+    }    
+}
+function displayDiv (divId, flagShow) {
+    if(flagShow) showDiv (divId);
+    else hideDiv(divId);
+}

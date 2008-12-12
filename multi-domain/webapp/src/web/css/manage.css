@@ -153,7 +153,33 @@
     padding-left:2px;
 }
 
+.selectedDataBox {
+    padding:2px;
+    padding-left:3px;
+    background-color:#F9F7DE;
+    height:24px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:bold;
+    border:1px solid #7F9DB9;        
+}
 
+.DomainSearchField {
+    padding:0px;
+}
+.DomainSearchField .groupName {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#5A50F2;
+    font-weight:bold;    
+}
+.DomainSearchField tr td {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:normal;    
+}
 
 .DetailsTitleBar{
     height:24px;

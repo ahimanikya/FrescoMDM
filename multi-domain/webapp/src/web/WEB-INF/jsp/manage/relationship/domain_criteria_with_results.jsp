@@ -39,47 +39,11 @@
                            <td>
                                <div>
                                    <table >
-                                       <tbody id="add_search_source_fields"></tbody>
+                                       <tbody id="add_search_source_fields" class="DomainSearchField"></tbody>
                                    </table>
                                </div>
                            </td>
                        </tr>
-                      <!-- <tr>
-                           <td class="generalTextBold" colspan="2">
-                               &nbsp;<f:message key="alpha_search_text" />
-                           </td>
-                       </tr>
-                       <tr>
-                           <td class="generalTextBold" colspan="2">
-                               &nbsp;&nbsp;<f:message key="name_text" />
-                           </td>
-                       </tr>
-                       <tr>
-                           <td class="generalText">
-                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="company_text" /> <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;
-
-                           </td>
-                           <td>
-                              <input name="Company Name" title="<f:message key="company_text" /> <f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/>  
-                           </td>
-                       </tr>
-                       <tr>
-                           <td class="generalTextBold" colspan="2">
-                               &nbsp;&nbsp;<f:message key="duns_text" />
-                           </td>
-                       </tr>
-                       <tr>
-                           <td class="generalText">
-                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="duns_text" /> <f:message key="number_text" /><f:message key="colon_symbol" />
-
-                           </td>
-                           <td>
-                              <input name="Duns Number" title="<f:message key="duns_text" /> <f:message key="number_text" />" dojoType="dijit.form.TextBox" style="width:150px"/>  
-                           </td>
-                       </tr>
-                       <tr>
-                           <td colspan="2"><img src="images/spacer.gif" height="1" width="6"></td>
-                       </tr> -->
                        <tr>
                            <td align="right" colspan="2"><input type="button" onclick="addSourceDomainSearch();" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
                        </tr>
@@ -146,47 +110,11 @@
                        <td>
                            <div>
                               <table >
-                                  <tbody id="add_search_target_fields"></tbody>
+                                  <tbody id="add_search_target_fields" class="DomainSearchField"></tbody>
                               </table>
                            </div>
                        </td>
                    </tr>
-                <!--   <tr>
-                       <td class="generalTextBold" colspan="2">
-                           &nbsp;<f:message key="alpha_search_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalTextBold" colspan="2">
-                           &nbsp;&nbsp;<f:message key="name_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalText">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="company_text" /> <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;
-                           
-                       </td>
-                       <td>
-                          <input name="Company Name" title="<f:message key="company_text" /> <f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/>  
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalTextBold" colspan="2">
-                           &nbsp;&nbsp;<f:message key="duns_text" />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="generalText">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<f:message key="duns_text" /> <f:message key="number_text" /><f:message key="colon_symbol" />
-                           
-                       </td>
-                       <td>
-                          <input name="Duns Number" title="<f:message key="duns_text" /> <f:message key="number_text" />" dojoType="dijit.form.TextBox" style="width:150px"/>  
-                       </td>
-                   </tr>
-                   <tr>
-                       <td colspan="2"><img src="images/spacer.gif" height="1" width="6"></td>
-                   </tr>-->
                    <tr>
                        <td align="right" colspan="2"><input type="button" onclick="addTargetDomainSearch()" title="<f:message key="search_text" />" value="<f:message key="search_text" />"/> <input type="button" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" /></td>
                    </tr>
