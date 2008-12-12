@@ -43,7 +43,7 @@ import java.util.ArrayList;
 public class Role {
     
     private String mName = null;
-    private ArrayList mOperations = null;   // An ArrayList of Operation names.
+    private ArrayList<String> mOperations = null;   // An ArrayList of Operation names.
     
     /** Creates a new instance of Role */
     
@@ -55,7 +55,7 @@ public class Role {
      * @param name Name of the role.
      * @param operations Valid operations for this role.
      */
-    public Role(String name, ArrayList operations) {
+    public Role(String name, ArrayList<String> operations) {
         mName = name;
         if (mOperations == null) {
             mOperations = new ArrayList(operations.size());
@@ -87,8 +87,8 @@ public class Role {
      * @returns Value of the name member.
      */
     public String[] getOperationsArray() {
-        return (String[]) mOperations.toArray();
-        
+        String[] operations = new String[0];
+        return mOperations.toArray(operations);
     }
     
     /** 

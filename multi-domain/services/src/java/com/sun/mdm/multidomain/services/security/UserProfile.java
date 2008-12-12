@@ -29,7 +29,7 @@
 package com.sun.mdm.multidomain.services.security;
 
 import javax.servlet.http.HttpServletRequest;
-import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,52 +39,65 @@ import java.util.Arrays;
 public class UserProfile {
 
     private String mUserName;
-    private String[] mRoles;
+    private List<String> mRoles = new ArrayList<String>();
     private String[] mOperations;
     private ACL mACL;
 
-    /** Constructor
-     *
+    /** Constructor.
      * @param userName User name.
      * @param request HTTP request handle.
      * @throws Exception if an error is encountered
-     */
-    
-    public UserProfile(String userName, HttpServletRequest request) throws Exception {
-        mUserName = userName;
+     */ 
+    public UserProfile(String userName, HttpServletRequest request) 
+        throws Exception {
         
+        mUserName = userName; 
         // initialize the security manager if necessary.
         if (SecurityManager.getInstance() == null) {
             SecurityManager.init();
         }
         // set the roles for this Userprofile
         String allRoles[] = SecurityManager.getInstance().getAllRoles();
-        //mRoles = new String[1];
-        ArrayList mRolesList = new ArrayList();
         for (int i = 0, j = 0; i < allRoles.length; i++) {
             if(request.isUserInRole(allRoles[i])) {               
-                mRolesList.add(allRoles[i]);
+                mRoles.add(allRoles[i]);
             }
-        }
-        
-        mRoles = new String[mRolesList.size()];
-        
-        for (int j = 0; j < mRolesList.size(); j++) {
-             mRoles[j] = (String) mRolesList.get(j);
         }
         mOperations = SecurityManager.getInstance().getOperations(this);
         mACL = new ACL(Arrays.asList(mOperations));
     }
 
+    /**
+     *  Constructor.
+     * @param userName User name.
+     * @param role Role name.
+     * @throws Exception If an error is encountered
+     */
+    public UserProfile(String userName, String role) 
+        throws Exception {
+         mUserName = userName;
+         mRoles.add(role);
+         mOperations = SecurityManager.getInstance().getOperations(this);
+         mACL = new ACL(Arrays.asList(mOperations));        
+    }
+     
     /** 
      * Retrieves all the roles assigned to a UserProfile instance
-     *
      * @return String array of all the roles
      */
     public String[] getRoles() {
-        return mRoles;
+        String[] roles = new String[mRoles.size()];
+        return mRoles.toArray(roles);
     }
 
+    /**
+     * Add a new into the user profile.
+     * @param role Role name.
+     */
+    public void setRole(String role) {
+        mRoles.add(role);
+    }
+    
     /** 
      * Retrieves all operations for the roles assigned to a UserProfile instance.
      *
@@ -108,13 +121,20 @@ public class UserProfile {
 
     /**
      * Returns the mUserName attribute for a UserProfile instance.
-     *
      * @return the user name
      */
     public String getUserName() {
         return mUserName;
     }
 
+    /**
+     * Set userName.
+     * @param userName User name.
+     */
+    public void setUserName(String userName) {
+        mUserName = userName;;
+    }
+    
     /**
      * Checks if an operation is allowed for a UserProfile instance.
      *

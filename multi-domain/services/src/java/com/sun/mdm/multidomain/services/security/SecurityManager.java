@@ -51,9 +51,11 @@ import java.io.BufferedReader;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.Map;
-
+import java.util.Map.Entry;
+        
 /**
  * Read roles config xml
  *
@@ -65,7 +67,6 @@ public class SecurityManager {
     public static final String OR = "or";       // OR conditional
     public static final String AND = "and";     // AND conditional
     
-    // logger
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.multidomain.services.security.SecurityManager");
     private transient static final Localizer mLocalizer = Localizer.get();
     
@@ -109,9 +110,7 @@ public class SecurityManager {
                 return instance;
             }
             instance = new SecurityManager();
-          
-//            ObjectFactory.init();
-            
+                      
             try {
                 instance.read();
             } catch (Exception e) {
@@ -182,6 +181,20 @@ public class SecurityManager {
                 }
             }
         }
+        
+        Iterator<Map.Entry<String, Role>> roleRefs = mRoleRefs.entrySet().iterator(); 
+        while (roleRefs.hasNext()) {
+            Map.Entry<String, Role> roleRef = roleRefs.next();
+            if (!mRoleOperations.containsKey(roleRef.getKey())) {
+                 ArrayList<String> operations = new ArrayList<String>();
+                 String[] roleNames = roleRef.getValue().getOperationsArray();
+                 for (int i = 0; i < roleNames.length; ++i) {
+                      ArrayList<String> opers = getOperationsforRole(roleNames[i]);
+                      operations.addAll(opers);
+                 }
+                 mRoleOperations.put(roleRef.getKey(), new Role(roleRef.getKey(), operations));
+            }
+        }        
     }
     
     /**
@@ -249,8 +262,6 @@ public class SecurityManager {
         }
     }
     
-   
-
     /**
      * Parses an INHERITANCE block and returns an ArrayList of inherited
      * operations.  Excluded operations are omitted.
@@ -334,8 +345,7 @@ public class SecurityManager {
     }
 
     /**
-     *  Retrieve all valid operations for a specified role name.
-     *
+     * Retrieve all valid operations for a specified role name.
      * @param roleName Role name whose operations will be returned.
      * @throws Exception if an error is encountered.
      * @returns a String array containing all the valid
@@ -353,24 +363,23 @@ public class SecurityManager {
     
     /**
      *  Retrieve all valid operations for a specified userprofile.
-     *
      * @param userprofile  User profile for the current user.
      * @returns a String array containing all the valid
      * operations for a specified userprofile.
      */
-    public String[] getOperations(UserProfile userprofile) {
-        
+    public String[] getOperations(UserProfile userprofile) {   
         // Retrieve all roles for this UserProfile and then
         // retrieve all available operations for each role.
         ArrayList allAvailableOperations = new ArrayList();
-        ArrayList processedRoles =  new ArrayList();
-      
         String rolesList[] = userprofile.getRoles(); // to be defined
         if (rolesList.length > 0) {
             for (int i = 0; i < rolesList.length; i++) {
-               processedRoles.add(rolesList[i]);
-               addOperationsCheckProcessedRoles(rolesList[i],processedRoles,
-                       allAvailableOperations);
+                Role role = (Role) mRoleOperations.get(rolesList[i]);
+                ArrayList operations = role.getOperations();
+                Iterator iter = operations.iterator();
+                while (iter.hasNext()) {
+                    allAvailableOperations.add((String) iter.next());
+                }
             }
             String operationsList[] = new String[allAvailableOperations.size()];
             for (int i = 0; i < allAvailableOperations.size(); i++) {
@@ -383,8 +392,7 @@ public class SecurityManager {
     }
     
      /**
-     *  Add operations as defined by a role-ref
-     *
+     * Add operations as defined by a role-ref
      * @param roleName
      * @param processedRoles role refs that have already been processed 
      * @param allAvailableOperations the list of operations for a specified role 
@@ -424,15 +432,12 @@ public class SecurityManager {
     
     /**
      *  Retrieve all defined roles.
-     *
      * @returns a String array containing all the defined roles.
      */
     public String[] getAllRoles() {
         
         Set roleOperationSet = mRoleOperations.entrySet();
-        Set roleRefsSet = mRoleRefs.entrySet();
-        
-        String[] roleList = new String[roleOperationSet.size() + roleRefsSet.size()];
+        String[] roleList = new String[roleOperationSet.size()];
         int i = 0;
         Iterator roleOpSetIter = roleOperationSet.iterator();
         while (roleOpSetIter.hasNext()) {
@@ -441,19 +446,11 @@ public class SecurityManager {
             roleList[i] = roleName;
             i++;
         }
-        Iterator roleRefSetIter = roleRefsSet.iterator();
-        while (roleRefSetIter.hasNext()) {
-            Map.Entry mapEntry = (Map.Entry) roleRefSetIter.next();
-            String roleName = (String) mapEntry.getKey();
-            roleList[i] = roleName;
-            i++;
-        }
         return roleList;
     }
     
     /**
-     *  Retrieve a role with the matching role name.
-     *
+     * Retrieve a role with the matching role name.
      * @returns a role with the matching role name.
      */
     public Role getRole(String roleName) {
@@ -464,22 +461,4 @@ public class SecurityManager {
         return role;
     }
     
-    /**
-     * @param args the command line arguments
-     */
-/*    
-    public static void main(String[] args) throws Exception {
-        // TODO code application logic here      
-        String userid = "eview";
-        String password = "eview";
-        try {
-            logon(userid, password);
-        } catch (UserException e) {
-            System.out.println("Login unsuccessful for user: " + userid);
-        }
-        SecurityManager.init();
-        System.out.println("All done.  Bye Bye.");
- 
-    }
-*/    
 }
