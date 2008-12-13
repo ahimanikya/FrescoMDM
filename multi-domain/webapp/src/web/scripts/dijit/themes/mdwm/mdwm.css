@@ -1644,3 +1644,73 @@
     padding-top:3px;
     vertical-align:bottom;
 }
+.mdwm .Paginator {
+    border: 1px solid #000000;
+    background-color:#F9F9F0;
+    padding:2px;
+    height:24px;
+}
+.mdwm .Paginator .firstPageIcon {
+    background-image: url('images/pagination_first.gif');
+    cursor:pointer;
+    width:23px; height:20px;
+}
+.mdwm .Paginator .firstPageIcon_Disabled {
+    background-image: url('images/pagination_first_dis.gif');
+    width:23px; height:20px;
+    cursor:normal;
+}
+.mdwm .Paginator .prevPageIcon {
+    background-image: url('images/pagination_prev.gif');
+    cursor:pointer;
+    width:23px; height:20px;
+}
+.mdwm .Paginator .prevPageIcon_Disabled {
+    background-image: url('images/pagination_prev_dis.gif');
+    width:23px; height:20px;
+    cursor:normal;
+}
+.mdwm .Paginator .nextPageIcon {
+    background-image: url('images/pagination_next.gif');
+    cursor:pointer;
+    width:23px; height:20px;
+}
+.mdwm .Paginator .nextPageIcon_Disabled {
+    background-image: url('images/pagination_next_dis.gif');
+    cursor:normal;
+    width:23px; height:20px;
+}
+.mdwm .Paginator .lastPageIcon {
+    background-image: url('images/pagination_last.gif');
+    cursor:pointer;
+    width:23px; height:20px;
+}
+.mdwm .Paginator .lastPageIcon_Disabled {
+    background-image: url('images/pagination_last_dis.gif');
+    cursor:normal;
+    width:23px; height:20px;
+}
+.mdwm .Paginator .infoDisplay {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:normal;
+    padding-left:5px;
+}
+.mdwm .Paginator .pageGoToButton{
+    height:23px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+}
+.mdwm .Paginator .pageNumberTextField {
+    height:14px;width:24px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;  
+}
+.mdwm .Paginator .TotalPageInfo {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#000000;
+    font-weight:normal;
+    padding-right:5px;
+}
