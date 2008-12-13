@@ -15,6 +15,11 @@ var isSelectTargetDomainCriteriaApplied = false;
 var isSelectRelationshipDefAttributeCriteriaApplied = false;
 
 var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
+
+var cachedSearchResults = new Array(); // Store the search results (relationships);
+var intRelationshipItemsPerPage = 10;
+var intRelationshipMaxResultSize = 100;
+
 /*
  * Scripts for Select/Search screen <START>
  */ 
@@ -382,7 +387,7 @@ function loadSummaryFields(data, domainName) {
 function cacheRelationshipDefAttributes (data, relationshipDefName) {
     //alert("relationship def: " + data);
     cachedRelationshipDefs[relationshipDefName] = data;
-    
+
     // Update the view with relationship Name along with direction icon.
     var strHTML = "<table cellspacing='0' cellpadding='0'><tr><td valign='middle'>" + relationshipDefName;
     strHTML += "</td><td valign='middle'>";
@@ -395,15 +400,43 @@ function cacheRelationshipDefAttributes (data, relationshipDefName) {
     document.getElementById("selectedRelationshipDef").innerHTML = strHTML;
 }
 
-
-var cachedSearchResults = null; // Store the search results (relationships);
 function searchResultsCallback(data) {
-    //alert("search results " + data);
-    /*for(i=0; i<data.length; i++) {
-        alert(data[i].id + " : " + data[i].sourceEUID + " : "  + data[i].sourceHighLight);
-    }*/
-    cachedSearchResults = data;
- //   dwr.util.removeAllRows("relationshipsListing");
+    cachedSearchResults = []; // clear the cache array.
+    // Cache the search results.
+    for(i=0; i<data.length; i++) {
+        cachedSearchResults.push(data[i]);
+        // for testing pagination, adding more records ....
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
+    }
+    //alert("cached search results length " + cachedSearchResults.length);
+    displaySearchResults(1, intRelationshipItemsPerPage); 
+    // Show pagination
+    var paginator = dijit.byId("relationshipsSearchResultPaginator");
+    paginator.currentPage = 1;
+    paginator.totalPages = Math.ceil(cachedSearchResults.length / intRelationshipItemsPerPage) ;
+
+    paginator.refresh();
+    
+}
+function searchResultsRefresh(currentPage) {
+    displaySearchResults(currentPage, 10);
+}
+function displaySearchResults ( currentPage, itemsPerPage) {
+    data = cachedSearchResults;
+    var relationListingFuncs = [
+      function(data) { return "<input type='checkbox' align='center' id='relationship_id' name='relationship_id' value='"+data.id+"' onclick='refreshRelationshipsListingButtonsPalette();' >" ; },
+      function(data) { return data.sourceHighLight; },
+      function(data) { return data.targetHighLight; }
+    ];
+    dwr.util.removeAllRows("relationshipsListing");
     if(data == null || data.length<=0) {
         //alert("no relationship definitions found");
         dwr.util.addRows("relationshipsListing", [''], [function(data){return "No Relationships found.";}], {
@@ -414,11 +447,28 @@ function searchResultsCallback(data) {
               },
               escapeHtml:false
         });
+        return;
     }
-    dwr.util.addRows("relationshipsListing", data, relationListingFuncs, {
+    // show only records that should go in current page.
+    var resultsToShow = new Array();
+    var itemsFrom = 0, itemsTill = 10;
+    itemsFrom = (currentPage-1) * itemsPerPage;
+    if(itemsFrom > data.length) itemsFrom = 0;
+    itemsTill = itemsFrom + itemsPerPage;
+    
+    if(itemsTill > data.length) itemsTill = data.length;
+   // alert(itemsFrom + " : " + itemsTill);
+    for(i=itemsFrom; i<itemsTill; i++) {
+        resultsToShow.push(data[i]);
+    }
+    var uniqueIndexId = itemsFrom;
+    dwr.util.addRows("relationshipsListing", resultsToShow, relationListingFuncs, {
         rowCreator:function(options) {
           var row = document.createElement("tr");
-          row.indexId = options.rowIndex;
+          //row.indexId = options.rowIndex;
+          row.indexId = uniqueIndexId;
+          uniqueIndexId ++;
+
           row.onclick = function() { 
               selectRecordRow(this); 
               // Populate data in details section.
@@ -426,7 +476,7 @@ function searchResultsCallback(data) {
               var relationships = document.getElementsByName("relationship_id");
               if(relationships != null) {
                    //alert("relationship id " + relationships[this.indexId].value);
-                   populateRelationshipDetails (relationships[this.indexId].value, this.indexId);
+                   populateRelationshipDetails (cachedSearchResults[this.indexId].id, this.indexId);
               }
           };
           return row;
@@ -437,19 +487,11 @@ function searchResultsCallback(data) {
           return td;
         },
         escapeHtml:false
-      });
-   
-    refreshRelationshipsListingButtonsPalette ();
-
-   
+      });  
+      refreshRelationshipsListingButtonsPalette ();      
 }
 
-var relationListingFuncs = [
-    function(data) { return "<input type='checkbox' align='center' id='relationship_id' name='relationship_id' value='"+data.id+"' onclick='refreshRelationshipsListingButtonsPalette();' >" ; },
-    function(data) { return data.sourceHighLight; },
-    function(data) { return data.targetHighLight; }
 
-];
 
 function populateRelationshipDetails(relationshipId, indexNum) {
     //alert("populating relationship details for relationship id: " + relationshipId);
