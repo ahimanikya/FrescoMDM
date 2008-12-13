@@ -37,8 +37,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <table border="0" id="editCustomAttributesTable" cellspacing="0">
-                                    
+                                <table border="0"  cellspacing="0">
+                                    <tbody id="editCustomAttributesTable"></tbody>
                                 </table>
                             </td>
                         </tr>

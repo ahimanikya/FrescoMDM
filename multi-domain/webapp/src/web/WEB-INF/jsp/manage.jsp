@@ -40,7 +40,7 @@
     
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.DateTextBox");  
-    
+    dojo.require("dijit.Paginator");
 </script>
 </head>
 <body class="mdwm">

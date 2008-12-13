@@ -19,6 +19,8 @@
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.DateTextBox");
     dojo.require("dojo.parser");
+    
+                          
 </script>
 
 <body class="mdwm">
@@ -114,6 +116,8 @@
 
                             </tbody>
                       </table>
+                      <div dojoType="dijit.Paginator" id="relationshipsSearchResultPaginator" align="right"
+                        totalPages="0" currentPage="0" navigationFunction="searchResultsRefresh"></div>
                       </div>
                    </td>
                </tr>
