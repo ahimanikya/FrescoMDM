@@ -90,7 +90,7 @@ public class OutboundXSDBuilder {
         + "<xsd:element name=\"OutMsg\">" + LINEFEED
         + "<xsd:complexType>" + LINEFEED
         + "<xsd:sequence>" + LINEFEED
-        + "<xsd:element ref=\"tns:SBR\" minOccurs=\"1\" maxOccurs=\"1\"/>" + LINEFEED
+        + "<xsd:element ref=\"tns:SBR\" minOccurs=\"1\" maxOccurs=\"2\"/>" + LINEFEED
         +  "</xsd:sequence>" + LINEFEED
         + "<xsd:attribute name=\"Event\" use=\"required\">" + LINEFEED
         + "<xsd:simpleType>" + LINEFEED
