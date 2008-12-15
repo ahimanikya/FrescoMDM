@@ -327,6 +327,28 @@ public interface MasterControllerCore {
 			EOSearchOptions searchOptions) throws ProcessingException,
 			UserException;
 
+    /**
+     * Returns an iterator of objects that match the given search criteria and
+     * options. Criteria consists of a array of EUID's, and options consists of
+     * a query builder id as well as other aspects of how the search should be
+     * conducted. This is similar to searchEnterpriseObject API, except ObjectNode that are
+     * created are not concrete but generic ObjectNode that though have all concrete specific attributes.
+     * e.g. instead of PersonObject, ObjectNode is created that has PersonObject like attributes.
+     *
+     * @param Euids
+     *            EUID's to search for.
+     * @param searchOptions
+     *            Search options.
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                Invalid parameters
+     * @return Iterator of search results.
+     */
+    public EOSearchResultIterator searchEnterpriseGenericObject(String Euids[],
+            EOSearchOptions searchOptions) throws ProcessingException,
+            UserException;
+
 	/**
 	 * Returns the enterprise object associated with the specified EUID. If no
 	 * matching enterprise object is found, this method returns null.
