@@ -121,9 +121,9 @@ function showByRelAddDialog(){
 function initializeAddDialog() {
     isByRelAddDialogLoaded = true;
     //alert("add dialog ")
-    var selectedSourceDomain =document.getElementById("select_sourceDomain").value;
-    var selectedTargetDomain =document.getElementById("select_targetDomain").value;
-    var selectedRelationshipDef =document.getElementById("select_relationshipDefs").value;
+    var selectedSourceDomain = currentSelectedSourceDomain; //document.getElementById("select_sourceDomain").value;
+    var selectedTargetDomain = currentSelectedTargetDomain; //document.getElementById("select_targetDomain").value;
+    var selectedRelationshipDef = currentSelectedRelationshipDef; //document.getElementById("select_relationshipDefs").value;
 
     document.getElementById("byrel_addSourceDomain").innerHTML= selectedSourceDomain;
     document.getElementById("byrel_addTargetDomain").innerHTML= selectedTargetDomain;
