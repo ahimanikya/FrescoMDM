@@ -54,7 +54,7 @@
 
     An example of overriding the target for project execution could look like this:
 
-        <target name="run" depends="MultiDomain-Core-Services-impl.jar">
+        <target name="run" depends="core-impl.jar">
             <exec dir="bin" executable="launcher.exe">
                 <arg file="${dist.jar}"/>
             </exec>
@@ -66,4 +66,15 @@
     nbproject/build-impl.xml file. 
 
     -->
+   <target name="-pre-jar">
+        <!-- Empty placeholder for easier customization. -->
+        <!-- You can override this target in the ../build.xml file. -->
+        <echo message="remove MultiDomainMetaServiceBean.class and MultiDomainServiceBean.class from ${build.classes.dir}" />
+        <delete>
+            <fileset dir="${build.classes.dir}" >
+                <include name="com/sun/mdm/multidomain/ejb/service/MultiDomainMetaServiceBean.class" />
+                <include name="com/sun/mdm/multidomain/ejb/service/MultiDomainServiceBean.class" />           
+            </fileset>
+        </delete>
+    </target>   
 </project>
