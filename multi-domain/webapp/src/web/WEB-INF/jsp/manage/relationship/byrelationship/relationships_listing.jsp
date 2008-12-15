@@ -116,7 +116,7 @@
 
                             </tbody>
                       </table>
-                      <div dojoType="dijit.Paginator" id="relationshipsSearchResultPaginator" align="right"
+                      <div dojoType="dijit.Paginator" id="relationshipsSearchResultPaginator"
                         totalPages="0" currentPage="0" navigationFunction="searchResultsRefresh"></div>
                       </div>
                    </td>

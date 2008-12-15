@@ -24,6 +24,8 @@ var cachedSearchResults = new Array(); // Store the search results (relationship
 var intRelationshipItemsPerPage = 10;
 var intRelationshipMaxResultSize = 100;
 
+var intDomainSearchResultsItemsPerPage = 5; // Number of items to be shown in search results (Add dialog)
+
 var summaryFields = {}; // To hold summary fields for domains.
 var searchResultsFields = {}; // To hold the list of search results fields to be used, per domain.
 /*
@@ -452,9 +454,7 @@ function searchResultsCallback(data) {
     var paginator = dijit.byId("relationshipsSearchResultPaginator");
     paginator.currentPage = 1;
     paginator.totalPages = Math.ceil(cachedSearchResults.length / intRelationshipItemsPerPage) ;
-
-    paginator.refresh();
-    
+    paginator.refresh();  
 }
 function searchResultsRefresh(currentPage) {
     displaySearchResults(currentPage, 10);
@@ -817,8 +817,18 @@ function addSourceDomainSearch() {
     RelationshipHandler.searchEnterprises (domainSearch, addSourceSearchResults);
 }
 
+var cachedSourceDomainSearchResults = null; // to cache the search results for SOURCE domain (Add dialog)
+var cachedTaretDomainSearchResults = null; // to cache the search results for TARGET domain (Add dialog)
+
 function addSourceSearchResults(data) {
-    dwr.util.removeAllRows("AddSource_TableId");
+    cachedSourceDomainSearchResults = []; // clear the cache array.
+    for(i=0; i<data.length; i++) {
+        cachedSourceDomainSearchResults.push(data[i]);
+        // For testing pagination, adding more records 
+        cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
+        cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
+        cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
+    }
     if(data == null){
        document.getElementById('sourceResultsFailure').style.visibility='visible'; 
        document.getElementById('sourceResultsFailure').style.display='block'; 
@@ -829,49 +839,75 @@ function addSourceSearchResults(data) {
        document.getElementById('sourceResultsSuccess').style.display='block'; 
        document.getElementById('byrel_addSourceResults').style.visibility='visible'; 
        document.getElementById('byrel_addSourceResults').style.display='block';   
-
-       var fieldsToShowInSearchResults = searchResultsFields[currentSelectedSourceDomain];
-       fieldsToShowInSearchResults.push("LastName"); fieldsToShowInSearchResults.push("FirstName"); // For testing purpose only.
-       var columnCount = 0;
-       for(i =0;i<data.length;i++) {
-          if(i==0){
-              columnCount = 0;
-              var header = document.getElementById('AddSource_TableId').insertRow(i);
-              header.className = "header";
-              header.insertCell(columnCount++);
-              for(j=0; j<data[i].attributes.length; j++) {
-                if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
-                header.insertCell(columnCount);
-                header.cells[columnCount].className = "label";
-                header.cells[columnCount].innerHTML  = data[i].attributes[j].name;
-                columnCount++;
-              }
-         }
-         columnCount = 0;
-          var dataRow = document.getElementById('AddSource_TableId').insertRow(i+1);
-          dataRow.insertCell(columnCount);
-          var chkbox ; //=  document.createElement("input");
-           try{
-                chkbox = document.createElement('<input type="checkbox" name="addSourceCheckBox" />');
-           }catch(err){
-                chkbox = document.createElement("input");
-           }
-          chkbox.type = "checkbox";
-          chkbox.name = "addSourceCheckBox";
-          chkbox.value = data[i].EUID;
-          dataRow.cells[columnCount].appendChild (chkbox);
-          columnCount++;
-          for(j=0; j<data[i].attributes.length; j++) {
-            if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
-            dataRow.insertCell(columnCount);
-            dataRow.cells[columnCount].innerHTML = data[i].attributes[j].value;
-            columnCount++;
-          }
-       } 
-       addSourceResultsLength = document.getElementsByName("addSourceCheckBox").length;  
-      
+       
+        addSourceSearchResults_Display (1, intDomainSearchResultsItemsPerPage);
+        var paginator = dijit.byId("add_sourceDomainSearchPaginator");
+        paginator.currentPage = 1;
+        paginator.totalPages = Math.ceil(cachedSourceDomainSearchResults.length / intDomainSearchResultsItemsPerPage) ;
+        paginator.refresh();  
+    
+       addSourceResultsLength = document.getElementsByName("addSourceCheckBox").length;
    }
    enableByRelAddButton();
+}
+function addSourceSearchResults_Display_Refresh (currentPage) {
+    addSourceSearchResults_Display(currentPage, intDomainSearchResultsItemsPerPage);
+}
+function addSourceSearchResults_Display (currentPage, itemsPerPage) {
+    data = cachedSourceDomainSearchResults;
+    dwr.util.removeAllRows("AddSource_TableId");
+    var fieldsToShowInSearchResults = searchResultsFields[currentSelectedSourceDomain];
+    fieldsToShowInSearchResults.push("LastName"); fieldsToShowInSearchResults.push("FirstName"); // For testing purpose only.
+    
+    // show only records that should go in current page.
+    var resultsToShow = new Array();
+    var itemsFrom = 0, itemsTill = 10;
+    itemsFrom = (currentPage-1) * itemsPerPage;
+    if(itemsFrom > data.length) itemsFrom = 0;
+    itemsTill = itemsFrom + itemsPerPage;
+    
+    if(itemsTill > data.length) itemsTill = data.length;
+   // alert("records from " + itemsFrom + " : " + itemsTill);
+    for(i=itemsFrom; i<itemsTill; i++) {
+        resultsToShow.push(data[i]);
+    }
+    
+    var columnCount = 0;
+    for(i =0;i<resultsToShow.length;i++) {
+      if(i==0){
+          columnCount = 0;
+          var header = document.getElementById('AddSource_TableId').insertRow(i);
+          header.className = "header";
+          header.insertCell(columnCount++);
+          for(j=0; j<resultsToShow[i].attributes.length; j++) {
+            if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
+            header.insertCell(columnCount);
+            header.cells[columnCount].className = "label";
+            header.cells[columnCount].innerHTML  = resultsToShow[i].attributes[j].name;
+            columnCount++;
+          }
+     }
+      columnCount = 0;
+      var dataRow = document.getElementById('AddSource_TableId').insertRow(i+1);
+      dataRow.insertCell(columnCount);
+      var chkbox ; //=  document.createElement("input");
+      try{
+          chkbox = document.createElement('<input type="checkbox" name="addSourceCheckBox" />');
+      }catch(err){
+          chkbox = document.createElement("input");
+      }
+      chkbox.type = "checkbox";
+      chkbox.name = "addSourceCheckBox";
+      chkbox.value = resultsToShow[i].EUID;
+      dataRow.cells[columnCount].appendChild (chkbox);
+      columnCount++;
+      for(j=0; j<resultsToShow[i].attributes.length; j++) {
+          if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
+          dataRow.insertCell(columnCount);
+          dataRow.cells[columnCount].innerHTML = resultsToShow[i].attributes[j].value;
+          columnCount++;
+      }
+    }        
 }
 
 function addTargetDomainSearch() {
@@ -894,7 +930,12 @@ function addTargetDomainSearch() {
 }
 
 function addTargeSearchResults(data) {
-    dwr.util.removeAllRows("AddTarget_TableId"); 
+    cachedTaretDomainSearchResults = [];
+    for(i=0; i<data.length; i++) {
+        cachedTaretDomainSearchResults.push(data[i]);
+        // For testing pagination, adding more records 
+        cachedTaretDomainSearchResults.push(data[i]);cachedTaretDomainSearchResults.push(data[i]);
+    }
     if(data == null){
        document.getElementById('targetResultsFailure').style.visibility='visible'; 
        document.getElementById('targetResultsFailure').style.display='block'; 
@@ -906,50 +947,74 @@ function addTargeSearchResults(data) {
        document.getElementById('byrel_addTargetResults').style.visibility='visible'; 
        document.getElementById('byrel_addTargetResults').style.display='block';      
        
-        var fieldsToShowInSearchResults = searchResultsFields[currentSelectedTargetDomain];   
-        fieldsToShowInSearchResults.push("LastName"); // For testing purpose only. need to be removed later.        
-        var columnCount = 0;
-        for(i =0;i<data.length;i++){
-          if(i==0){
-            columnCount = 0;
-            var header = document.getElementById('AddTarget_TableId').insertRow(i);
-            header.className = "header";
-            header.insertCell(columnCount++);
-            
-            for(j=0; j<data[i].attributes.length; j++) {
-              if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
-              header.insertCell(columnCount);   
-              header.cells[columnCount].className = "label";
-              header.cells[columnCount].innerHTML  = data[i].attributes[j].name;
-              columnCount ++;
-            }
-          }
-          columnCount = 0;
-          var dataRow = document.getElementById('AddTarget_TableId').insertRow(i+1);
-          dataRow.insertCell(columnCount);
-          var chkbox ; //=  document.createElement("input");
-          try{
-                chkbox = document.createElement('<input type="checkbox" name="addTargetCheckBox" />');
-           }catch(err){
-                chkbox = document.createElement("input");
-           }
-           
-          chkbox.type = "checkbox";
-          chkbox.name = "addTargetCheckBox";
-          chkbox.value = data[i].EUID;
-          dataRow.cells[columnCount].appendChild (chkbox);
-          columnCount ++;
-          for(j=0; j<data[i].attributes.length; j++) {
-            if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
-            dataRow.insertCell(columnCount);
-            dataRow.cells[columnCount].innerHTML = data[i].attributes[j].value;
-            columnCount++;
-         }
-      }
-      addTargetResultsLength = document.getElementsByName("addTargetCheckBox").length;  
-      
+      addTargeSearchResults_Display(1, intDomainSearchResultsItemsPerPage);
+      var paginator = dijit.byId("add_targetDomainSearchPaginator");
+      paginator.currentPage = 1;
+      paginator.totalPages = Math.ceil(cachedTaretDomainSearchResults.length / intDomainSearchResultsItemsPerPage) ;
+      paginator.refresh();  
+
+      addTargetResultsLength = document.getElementsByName("addTargetCheckBox").length;
    }
    enableByRelAddButton();
+}
+function addTargeSearchResults_Display_Refresh (currentPage) {
+    addTargeSearchResults_Display (currentPage, intDomainSearchResultsItemsPerPage);
+}
+function addTargeSearchResults_Display(currentPage, itemsPerPage) {
+    data = cachedTaretDomainSearchResults;
+    dwr.util.removeAllRows("AddTarget_TableId");     
+    var fieldsToShowInSearchResults = searchResultsFields[currentSelectedTargetDomain];   
+    fieldsToShowInSearchResults.push("LastName"); // For testing purpose only. need to be removed later.
+    // show only records that should go in current page.
+    var resultsToShow = new Array();
+    var itemsFrom = 0, itemsTill = 10;
+    itemsFrom = (currentPage-1) * itemsPerPage;
+    if(itemsFrom > data.length) itemsFrom = 0;
+    itemsTill = itemsFrom + itemsPerPage;
+    
+    if(itemsTill > data.length) itemsTill = data.length;
+   // alert("records from " + itemsFrom + " : " + itemsTill);
+    for(i=itemsFrom; i<itemsTill; i++) {
+        resultsToShow.push(data[i]);
+    }    
+    var columnCount = 0;
+    for(i =0;i<resultsToShow.length;i++){
+        if(i==0){
+          columnCount = 0;
+          var header = document.getElementById('AddTarget_TableId').insertRow(i);
+          header.className = "header";
+          header.insertCell(columnCount++);
+
+          for(j=0; j<resultsToShow[i].attributes.length; j++) {
+            if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
+            header.insertCell(columnCount);   
+            header.cells[columnCount].className = "label";
+            header.cells[columnCount].innerHTML  = resultsToShow[i].attributes[j].name;
+            columnCount ++;
+          }
+        }
+        columnCount = 0;
+        var dataRow = document.getElementById('AddTarget_TableId').insertRow(i+1);
+        dataRow.insertCell(columnCount);
+        var chkbox ; //=  document.createElement("input");
+        try{
+              chkbox = document.createElement('<input type="checkbox" name="addTargetCheckBox" />');
+         }catch(err){
+              chkbox = document.createElement("input");
+         }
+
+        chkbox.type = "checkbox";
+        chkbox.name = "addTargetCheckBox";
+        chkbox.value = resultsToShow[i].EUID;
+        dataRow.cells[columnCount].appendChild (chkbox);
+        columnCount ++;
+        for(j=0; j<resultsToShow[i].attributes.length; j++) {
+          if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
+          dataRow.insertCell(columnCount);
+          dataRow.cells[columnCount].innerHTML = resultsToShow[i].attributes[j].value;
+          columnCount++;
+       }
+    }    
 }
 
 function ByRelAddRelationship(){

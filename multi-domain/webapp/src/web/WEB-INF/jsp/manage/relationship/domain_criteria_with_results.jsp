@@ -66,6 +66,8 @@
                     <table border="0" class="DomainSearchResults" >
                         <tbody id="AddSource_TableId"></tbody>
                     </table>
+                    <div dojoType="dijit.Paginator" id="add_sourceDomainSearchPaginator"
+                        totalPages="0" currentPage="0" navigationFunction="addSourceSearchResults_Display_Refresh"></div>
                 </div>
             </td>
           </tr>
@@ -136,6 +138,8 @@
                     <table border="0" class="DomainSearchResults">
                         <tbody id="AddTarget_TableId"></tbody>
                     </table>
+                    <div dojoType="dijit.Paginator" id="add_targetDomainSearchPaginator"
+                        totalPages="0" currentPage="0" navigationFunction="addTargeSearchResults_Display_Refresh"></div>
                 </div>
             </td>
           </tr>
