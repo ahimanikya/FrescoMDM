@@ -37,6 +37,7 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.multidomain.attributes.AttributesValue;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.relationship.service.RelationshipService;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.attributes.Attribute;
 
@@ -48,6 +49,7 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultIterator;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultRecord;
 import com.sun.mdm.index.ejb.master.MasterController;
+import com.sun.mdm.multidomain.ejb.service.MasterIndexLocator;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.index.objects.SystemObject;
 import java.sql.Connection;
@@ -59,7 +61,7 @@ import java.util.Map;
 import java.util.Date;
 
 /**
- * This is the workhorse class for executing multi domain query.
+ * Workhorse class for executing multi domain query.
  * To search for relationships that has filter conditions across multi domains, goes through these steps -
  * 1.  Search EUIDs for each domain using search criteria for that domain specified in input MultiDomainSearchCriteria.
  * 2.  Take the EUIDs from step 1 and use these as 'IN' clause of EUIDS to search Relationship. Also combine the IN clause
@@ -86,7 +88,7 @@ public class MultiDomainQuery {
    Connection con = null;
 
 
-    public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, 
+   public PageIterator<MultiObject> searchRelationships(MultiDomainSearchOptions searchOptions, 
             MultiDomainSearchCriteria mDsearchCriteria, Connection con)
         throws ProcessingException, UserException {
 
@@ -100,10 +102,11 @@ public class MultiDomainQuery {
 
         MasterController mc = null;
         for(String d: domains) {
-            mc = getJNDI(d);
+           
             EOSearchCriteria searchCriteria = mDsearchCriteria.getDomainSearchCriteria(d);
                    
-            if ( searchCriteria != null) {        
+            if ( searchCriteria != null) {
+                mc = getJNDI(d, con);
             	EOSearchResultIterator it = searchEUIDs(d, mc, searchCriteria, searchOptions);
             	pushDomainEUIDs(d, it);            	            	
             }
@@ -126,8 +129,9 @@ public class MultiDomainQuery {
                 new HashMap<String, Map<String, EOSearchResultRecord>>();
         
         for(String domain: domains) {
-            mc  = getJNDI(domain);
-            if ( searchOptions.getOptions(domain) != null ) {        
+            
+            if ( searchOptions.getOptions(domain) != null ) {
+                mc  = getJNDI(domain, con);
                 Set<String> euids = domainFilteredEUIDs.get(domain);
             	Map<String, EOSearchResultRecord> euidresult = searchObjects(domain, mc, euids, searchOptions);
                 domainObjectMap.put(domain, euidresult);         
@@ -155,10 +159,10 @@ public class MultiDomainQuery {
      * @throws com.sun.mdm.index.master.UserException
      */
     public List<MultiObject> getRelationships(MultiDomainSearchOptions searchOptions, 
-            String euid, String sourceDomain ) 
+            String euid, String sourceDomain, Connection con )
         throws ProcessingException, UserException {
         List<MultiObject> multiObjects = null;
-        try {
+     try {
               
         List<Relationship> relationships = searchRelationships(sourceDomain, euid);
         
@@ -169,7 +173,7 @@ public class MultiDomainQuery {
         Map<String, Map<String, EOSearchResultRecord>> domainObjectMap = 
                 new HashMap<String, Map<String, EOSearchResultRecord>>();
         for(String d: domains) {
-            MasterController mc = getJNDI(d);
+            MasterController mc = getJNDI(d, con);
             Set<String> euids = domainEUIDs.get(d);
             Map<String, EOSearchResultRecord> euidObjects = 
             searchObjects(d, mc, euids, searchOptions);
@@ -195,15 +199,17 @@ public class MultiDomainQuery {
    private List<Relationship> intersectEUIDs() throws UserException, ProcessingException {
         
       Map<String, Set<String>> domainEUIDs = new HashMap<String, Set<String>>(); // Map - {domain, Set<EUIDs>}
-      
+      Map<String, Set<String>> sourceEUIDs = new HashMap<String, Set<String>>();
       for(String d: domains) {
-     //  if (!d.equals(sourceDomain)) {
-         Set<String> euids = getDomainEUIDs(d);
-         domainEUIDs.put(d,euids);
-       //}        
+          Set<String> euids = getDomainEUIDs(d);
+          if (!d.equals(sourceDomain)) {
+            domainEUIDs.put(d,euids);
+          } else {
+            sourceEUIDs.put(d, euids);
+          }
       }
       
-      List<Relationship> relList = searchRelationships(sourceDomain, relationship, domainEUIDs);
+      List<Relationship> relList = searchRelationships(sourceDomain, relationship, sourceEUIDs, domainEUIDs);
       
       List<RelationshipFilter> relFlagList = addFlags(relList);
       
@@ -325,9 +331,7 @@ public class MultiDomainQuery {
                     rdomain.addRelationshipObejct(relObject);
                 }
                 multiObject.addRelationshipDomain(rdomain);
-
             }
-
         }
         return multiObjects;
     }
@@ -345,7 +349,6 @@ public class MultiDomainQuery {
             euids.add(euid);
         }
         
-       
       } catch (Exception ex) {
             throwException(ex);
       }
@@ -476,19 +479,20 @@ public class MultiDomainQuery {
     /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#searchEnterprises()
      */                    
-    public EOSearchResultIterator searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria)
-        throws ProcessingException, UserException {
-        
-         MasterController mc = getJNDI(domain);
+    public EOSearchResultIterator searchEnterprises(String domain, EOSearchOptions searchOptions, EOSearchCriteria searchCriteria,
+            Connection con)
+        throws ProcessingException, UserException {        
+         MasterController mc = getJNDI(domain, con);
          EOSearchResultIterator results = mc.searchEnterpriseObject(searchCriteria, searchOptions);
          return results;
     }
     
     
-    MasterController getJNDI(String domain) {
-       return null;
-      
+    MasterController getJNDI(String domain, Connection con) throws ProcessingException {
+       MasterIndexLocator mcLocator = new MasterIndexLocator();
+       return mcLocator.getMasterController(domain, con);
     }
+    
     
     List<RelationshipFilter> addFlags(List<Relationship> relList) {
        
@@ -504,20 +508,30 @@ public class MultiDomainQuery {
     }
     
     
-     List<Relationship> searchRelationships(String sourceDomain, String euid) {
-         
-         List<Relationship> rels = null;
-          
-          return rels; // TODO call RelationshipService
-        
+     List<Relationship> searchRelationships(String sourceDomain, String euid)
+     throws ProcessingException {
+         try {
+           RelationshipService relService = new RelationshipService(con);
+           List<Relationship> rels = relService.searchRelationShips(sourceDomain, euid);
+           return rels;
+         } catch (Exception e) {
+            throw new ProcessingException(e);
+         }
      }
      
      List<Relationship> searchRelationships(String sourceDomain, Relationship relationship, 
-             Map<String, Set<String>> domainEUIDs) {
-         
-         List<Relationship> rels = null;
+             Map<String, Set<String>> sourceEUIDs, Map<String, Set<String>> domainEUIDs)
+             throws ProcessingException {
 
-          return rels; // TODO call RelationshipService
+        try {
+         RelationshipService relService = new RelationshipService(con);
+
+         List<Relationship> rels = relService.searchRelationShips(sourceEUIDs, domainEUIDs);
+
+          return rels;
+        } catch (Exception e) {
+            throw new ProcessingException(e);
+        }
      }
      
      EOSearchResultIterator searchEnterpriseObject(EOSearchCriteria searchCriteria, EOSearchOptions searchOptions
@@ -547,9 +561,6 @@ public class MultiDomainQuery {
              throw new ProcessingException(ex);             
          }
      }
-     
-     
-
-   
+        
 
 }
