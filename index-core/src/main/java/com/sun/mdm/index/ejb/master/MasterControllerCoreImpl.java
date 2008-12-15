@@ -57,6 +57,7 @@ import com.sun.mdm.index.ejb.page.PageData;
 import com.sun.mdm.index.query.AssembleDescriptor;
 import com.sun.mdm.index.query.Condition;
 import com.sun.mdm.index.query.EOSearchResultAssembler;
+import com.sun.mdm.index.query.EOGenericResultAssembler;
 import com.sun.mdm.index.query.QMIterator;
 import com.sun.mdm.index.query.QueryHelper;
 import com.sun.mdm.index.query.QueryManager;
@@ -3659,6 +3660,120 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         }
         return retIterator;
     }
+    
+     /**
+     * Returns an iterator of objects that match the given search criteria and
+     * options. Criteria consists of a array of EUID's, and options consists of
+     * a query builder id as well as other aspects of how the search should be
+     * conducted. This is similar to searchEnterpriseObject API, except ObjectNode that are
+     * created are not concrete but generic ObjectNode that though have all concrete specific attributes.
+     * e.g. instead of PersonObject, ObjectNode is created that has PersonObject like attributes.
+     *
+     * @param Euids
+     *            EUID's to search for.
+     * @param searchOptions
+     *            Search options.
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                Invalid parameters
+     * @return Iterator of search results.
+     */
+    public EOSearchResultIterator searchEnterpriseGenericObject(String Euids[],
+            EOSearchOptions searchOptions) throws ProcessingException,
+            UserException {
+
+        EOSearchResultIterator retIterator = null;
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("searchEnterpriseGenericObject(): search options:\n" + searchOptions);
+            mLogger.fine(searchOptions);
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < Euids.length; i++) {
+            sb.append(Euids[i]).append(',');
+        }
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("searchEnterpriseGenericObject(): EUIDs to retrieve:"
+                    + sb.toString());
+        }
+
+        QMIterator iterator = null;
+        try {
+            PageAdapter adapter = null;
+
+            // Determine max number of elements to retrieve. Server side limits
+            // override client side request if server limit is smaller.
+            int maxElements = searchOptions.getMaxElements();
+            int maxConfigElements = Constants.DEFAULT_MAX_ELEMENTS;
+            if (maxElements == 0) {
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("searchEnterpriseGenericObject(): setting max elements to default "
+                                    + maxConfigElements);
+                }
+                maxElements = maxConfigElements;
+            }
+
+            // Build query object
+            EPathArrayList fieldArrayList = searchOptions.getFieldsToRetrieve();
+            String[] fieldArray = fieldArrayList.toStringArray();
+            String objPath = getObjectPath(fieldArray);
+            String euidPath = objPath + "." + "EUID";
+
+            QueryObject queryObject = new QueryObject();
+            queryObject.setSelect(fieldArray);
+            queryObject.addCondition(new Condition(euidPath, "IN", Euids));
+
+            // Set factory
+            AssembleDescriptor assdesc = new AssembleDescriptor();
+            EOGenericResultAssembler factory = new EOGenericResultAssembler();
+            assdesc.setAssembler(factory);
+            assdesc.setResultValueObjectType(factory.getValueMetaNode(objPath));
+            queryObject.setAssembleDescriptor(assdesc);
+            iterator = mQuery.executeAssemble(queryObject);
+
+            adapter = new IteratorPageAdapter(iterator, maxElements);
+
+            // If result set is small enough, send all results to client without
+            // going through PageData session bean
+            int pageSize = searchOptions.getPageSize();
+            // disable PageData due to serializable bug
+            if (adapter.count() < 2 * pageSize) {
+                EOSearchResultRecord resultRecord[] = new EOSearchResultRecord[adapter
+                        .count()];
+                int i = 0;
+                while (adapter.hasNext()) {
+                    resultRecord[i++] = (EOSearchResultRecord) adapter.next();
+                }
+                retIterator = new EOSearchResultIterator(resultRecord);
+
+            } else {
+            	Context jndiContext = new InitialContext();
+                PageData pd = (PageData) jndiContext
+                        .lookup(JNDINames.EJB_REF_PAGEDATA);
+                pd.setPageAdapter(adapter);
+                retIterator = new EOSearchResultIterator(pd, pageSize,
+                        maxElements);
+            }
+
+            iterator.close();
+        } catch (Exception t) {
+            throwProcessingException(t);
+        } finally {
+            try {
+                if (iterator != null) {
+                    iterator.close();
+                }
+            } catch (Exception ex) {
+                throw new ProcessingException(mLocalizer.t("MSC5391: searchEnterpriseGenericObject() " +
+                                            "encountered an error: {0}", ex));
+            }
+        }
+        return retIterator;
+    }
+
+
+    
+    
 
     /**
      * Determines the path of the root object that will be returned based on the
