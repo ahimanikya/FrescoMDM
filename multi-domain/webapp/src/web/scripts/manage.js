@@ -82,16 +82,18 @@ function getRelationshipDefDirectionIcon (isBiDirection) {
 
 var byRelationshipMainPage = "m_byrelationship_main.htm";
 var byRecordMainPage = "m_byrecord_main.htm";
+var currentView = "by_rel";
 function changeViewToByRelationship(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
     _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRelationshipMainPage);
-    
+    currentView = "by_rel";    
 }
 function changeViewToByRecord(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
     _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRecordMainPage);
+    currentView = "by_rec";
 }
 function _deleteChildWidgets( parentId) {
     var parentObj = dijit.byId(parentId);
@@ -103,16 +105,16 @@ function _deleteChildWidgets( parentId) {
 }
 
 function showSelectDialog() {
+    if(currentView != null && currentView == "by_rel")
+      showByRelSelectDialog ();
+}
+function showByRelSelectDialog() {
     var selectDialog = dijit.byId("byrel_select");
     if(selectDialog != null)
       selectDialog.show();
   
     if(isByRelSelectDialogLoaded) loadDomainsForSearch();
 }
-//function showByRelSelectDialog() {
-//    var selectDialog = dijit.byId("byrel_select");
-//    selectDialog.show();
-//}
 
 function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
