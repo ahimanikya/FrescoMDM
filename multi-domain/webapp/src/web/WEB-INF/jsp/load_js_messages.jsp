@@ -11,7 +11,20 @@ JSP files loads all the messages from message.properties, which will be used in 
 -->
 <script>
     
-    var message_effectiveFrom = "Effective From";
-    var message_validation_enterValueFor = "Enter value for";
+    //var message_effectiveFroms = "Effective From";
+    //var message_validation_enterValueFor = "Enter value for";
+    
+    function getMessageForI18N (strKey) {
+        if(strKey ==null && messages[strKey] == null)
+            return "";
+        else return messages [strKey];
+    }
+
+    var messages = {};
+    messages ["effectiveFrom"] = "Effective From";
+    messages ["enterValueFor"] = "Enter value for";    
+    
+    
+
 
 </script>

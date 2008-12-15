@@ -20,6 +20,8 @@ var cachedSearchResults = new Array(); // Store the search results (relationship
 var intRelationshipItemsPerPage = 10;
 var intRelationshipMaxResultSize = 100;
 
+var summaryFields = {}; // To hold summary fields for domains.
+var searchResultsFields = {}; // To hold the list of search results fields to be used, per domain.
 /*
  * Scripts for Select/Search screen <START>
  */ 
@@ -232,7 +234,7 @@ function selectTargetSearchTypeFields(data){
 /*
  * Scripts for Main (listing, details) screen <START>
  */
-var summaryFields = {}; // To hold summary fields for domains.
+
 
 function searchRelationships() {
     isSelectTargetDomainCriteriaApplied = false;
@@ -360,6 +362,15 @@ function searchRelationships() {
       loadSummaryFields(dataFromServer, targetDomain); }
     });
     
+    // Load fields for search results display for source & target domain, and store it for future use.
+    DomainScreenHandler.getSearchResultFields(sourceDomain, { callback:function(dataFromServer) {
+      loadSearchResultFields(dataFromServer, sourceDomain); }
+    });    
+    DomainScreenHandler.getSearchResultFields(targetDomain, { callback:function(dataFromServer) {
+      loadSearchResultFields(dataFromServer, targetDomain); }
+    });   
+    
+    // Load relationship definition data, and store it for future use.
     RelationshipDefHandler.getRelationshipDefByName(
       relationshipDef, sourceDomain, targetDomain, { callback:function(dataFromServer) {
       cacheRelationshipDefAttributes(dataFromServer, relationshipDef);}
@@ -383,6 +394,19 @@ function loadSummaryFields(data, domainName) {
      }
      //alert(fieldsList);
      summaryFields[domainName] = fieldsList;
+}
+function loadSearchResultFields(data, domainName) {
+    if(domainName == null) return;
+    var fieldsList = []; var i=0;
+    for (var fieldGrp in data)  {
+        for (var fields in data[fieldGrp])  {
+          //alert(fieldGrp + " : "+data[fieldGrp][fields].name);
+          fieldsList[i ++] = data[fieldGrp][fields].name;
+        }
+     }
+     //alert(fieldsList);
+     searchResultsFields[domainName] = fieldsList;    
+   //  alert("fields loaded: " + searchResultsFields[domainName]);
 }
 function cacheRelationshipDefAttributes (data, relationshipDefName) {
     //alert("relationship def: " + data);
@@ -770,7 +794,7 @@ function targetSearchTypeFields(data){
 
 function addSourceDomainSearch() {
     var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
-    var domainSearch = {name:selectedSourceDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
+    var domainSearch = {name:selectedSourceDomain}; 
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
     var qBuilder = document.getElementById("addSourceQueryBuilder").value;
     domainSearch["type"] = qBuilder; // put search type.
@@ -780,7 +804,7 @@ function addSourceDomainSearch() {
         var tempFieldValue = addSourceSearchFieldNames[i].value ;
         var tempMap = {} ;
         tempMap[tempFieldName] = tempFieldValue;
-        alert(tempFieldName);
+        //alert(tempFieldName);
         domainAttributes.push( tempMap );
     }
     domainSearch.attributes = domainAttributes;
@@ -799,7 +823,8 @@ function addSourceSearchResults(data) {
        document.getElementById('sourceResultsSuccess').style.display='block'; 
        document.getElementById('byrel_addSourceResults').style.visibility='visible'; 
        document.getElementById('byrel_addSourceResults').style.display='block';   
-        
+  //     alert(data[0].name);
+  //     alert("fields from configuration: " + searchResultsFields[data.name]);
        for(i =0;i<data.length;i++) {
         if(i==0){
             var header = document.getElementById('AddSource_TableId').insertRow(i);
@@ -810,6 +835,7 @@ function addSourceSearchResults(data) {
               // header.style.backgroundColor = '#f4f3ee';
               header.cells[j+1].className = "label";
               header.cells[j+1].innerHTML  = data[i].attributes[j].name;
+              //alert(j + " : " + data[i].attributes[j].name);
             }
        }
           var dataRow = document.getElementById('AddSource_TableId').insertRow(i+1);
@@ -847,7 +873,7 @@ function addTargetDomainSearch() {
         var tempFieldValue = addTargetSearchFieldNames[i].value ;
         var tempMap = {} ;
         tempMap[tempFieldName] = tempFieldValue;
-        alert(tempFieldName);
+        //alert(tempFieldName);
         domainAttributes.push( tempMap );
     }
     domainSearch.attributes = domainAttributes;
@@ -1047,7 +1073,7 @@ function updateRelationship () {
       
       if(getBoolean(relationshipDefAttributes[i].isRequired)) {
           if( isEmpty (attributeValue) ) {
-              alert("Enter value for " + attributeName );
+              alert(getMessageForI18N("enterValueFor") + " " + attributeName );
               attributeId.focus();
               return ;
           }
@@ -1065,7 +1091,7 @@ function updateRelationship () {
            startDate =  document.getElementById('edit_predefined_startDate').value;
            if(startDateRequire == true){
                if( isEmpty (startDate) ) {
-              alert(message_validation_enterValueFor + " " + message_effectiveFrom  );
+              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("effectiveFrom")  );
               startDateField.focus();
               return ;
            }
