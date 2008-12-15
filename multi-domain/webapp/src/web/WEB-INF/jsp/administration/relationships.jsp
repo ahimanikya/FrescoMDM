@@ -93,7 +93,7 @@
 
     
     var relationListingDataFuncs = [
-        function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.name+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },
+        function(data) { return "<input type='checkbox' align='center' name='chkRelationshipDef' value='"+data.id+"' onclick='refreshRelationshipDefsButtonsPalette();'>"; },
         function(data) { return data.name; },
         function(data) { 
             //data.description ="testing only this is only testing, testing only this is only testing, testing only this is only testing";
@@ -196,29 +196,23 @@
                                         <tr>
                                         <th width="5%"  valign="bottom" class="label">
                                             &nbsp;
-                                        </th>
-                                        
+                                        </th>                                        
                                         <th width="20%" valign="bottom" class="label">
                                             Name
                                         </th>
                                         <th width="20%" valign="bottom" class="label">
                                             Descrpition
-                                        </th>
-                                        
+                                        </th>                                        
                                         <th width="10%" valign="bottom" class="label">
                                             Direction
-                                        </th>
-                                        
+                                        </th>                                        
                                         <th width="10%" valign="bottom" class="label">
                                             Plugin 
-                                        </th>
-                                        
+                                        </th>                                        
                                         <th width="25%" valign="bottom" class="label">
                                             Attributes
-                                        </th> 
-                                        
-                                        <th width="10%">&nbsp;</th>
-                                        
+                                        </th>                                         
+                                        <th width="10%">&nbsp;</th>                                        
                                         </tr>
                                     </thead>
                                     <tbody id="relListing">
@@ -339,10 +333,8 @@ function deleteRelationshipDefs () {
     var targetDomain=document.getElementById("selectTargetDomain").value;
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked) {
-            //alert('deleting ' + chkboxes[i].value);
             // Make DWR call to delete
-            relationshipdef = {name:chkboxes[i].value, sourceDomain:sourceDomain, targetDomain:targetDomain};
-            //alert("delete a relationshipdef " + relationshipdef);
+            relationshipdef = {id:chkboxes[i].value};
             RelationshipDefHandler.deleteRelationshipDef(relationshipdef, loadRelationshipDefs);
         }
     }
