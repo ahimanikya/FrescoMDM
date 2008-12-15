@@ -829,23 +829,27 @@ function addSourceSearchResults(data) {
        document.getElementById('sourceResultsSuccess').style.display='block'; 
        document.getElementById('byrel_addSourceResults').style.visibility='visible'; 
        document.getElementById('byrel_addSourceResults').style.display='block';   
-  //     alert(data[0].name);
-  //     alert("fields from configuration: " + searchResultsFields[data.name]);
+
+       var fieldsToShowInSearchResults = searchResultsFields[currentSelectedSourceDomain];
+       fieldsToShowInSearchResults.push("LastName"); fieldsToShowInSearchResults.push("FirstName"); // For testing purpose only.
+       var columnCount = 0;
        for(i =0;i<data.length;i++) {
-        if(i==0){
-            var header = document.getElementById('AddSource_TableId').insertRow(i);
-            header.className = "header";
-            header.insertCell(0);
-            for(j=0; j<data[i].attributes.length; j++) {
-              header.insertCell(j+1);
-              // header.style.backgroundColor = '#f4f3ee';
-              header.cells[j+1].className = "label";
-              header.cells[j+1].innerHTML  = data[i].attributes[j].name;
-              //alert(j + " : " + data[i].attributes[j].name);
-            }
-       }
+          if(i==0){
+              columnCount = 0;
+              var header = document.getElementById('AddSource_TableId').insertRow(i);
+              header.className = "header";
+              header.insertCell(columnCount++);
+              for(j=0; j<data[i].attributes.length; j++) {
+                if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
+                header.insertCell(columnCount);
+                header.cells[columnCount].className = "label";
+                header.cells[columnCount].innerHTML  = data[i].attributes[j].name;
+                columnCount++;
+              }
+         }
+         columnCount = 0;
           var dataRow = document.getElementById('AddSource_TableId').insertRow(i+1);
-          dataRow.insertCell(0);
+          dataRow.insertCell(columnCount);
           var chkbox ; //=  document.createElement("input");
            try{
                 chkbox = document.createElement('<input type="checkbox" name="addSourceCheckBox" />');
@@ -855,10 +859,13 @@ function addSourceSearchResults(data) {
           chkbox.type = "checkbox";
           chkbox.name = "addSourceCheckBox";
           chkbox.value = data[i].EUID;
-          dataRow.cells[0].appendChild (chkbox);
+          dataRow.cells[columnCount].appendChild (chkbox);
+          columnCount++;
           for(j=0; j<data[i].attributes.length; j++) {
-            dataRow.insertCell(j+1);
-            dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
+            if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
+            dataRow.insertCell(columnCount);
+            dataRow.cells[columnCount].innerHTML = data[i].attributes[j].value;
+            columnCount++;
           }
        } 
        addSourceResultsLength = document.getElementsByName("addSourceCheckBox").length;  
@@ -897,34 +904,46 @@ function addTargeSearchResults(data) {
        document.getElementById('targetResultsSuccess').style.visibility='visible'; 
        document.getElementById('targetResultsSuccess').style.display='block';
        document.getElementById('byrel_addTargetResults').style.visibility='visible'; 
-       document.getElementById('byrel_addTargetResults').style.display='block';       
+       document.getElementById('byrel_addTargetResults').style.display='block';      
+       
+        var fieldsToShowInSearchResults = searchResultsFields[currentSelectedTargetDomain];   
+        fieldsToShowInSearchResults.push("LastName"); // For testing purpose only. need to be removed later.        
+        var columnCount = 0;
         for(i =0;i<data.length;i++){
-        if(i==0){
-          var header = document.getElementById('AddTarget_TableId').insertRow(i);
-          header.className = "header";
-          header.insertCell(0);
-          for(j=0; j<data[i].attributes.length; j++) {
-            header.insertCell(j+1);   
-            //header.style.backgroundColor = '#f4f3ee';
-            header.cells[j+1].className = "label";
-            header.cells[j+1].innerHTML  = data[i].attributes[j].name;
+          if(i==0){
+            columnCount = 0;
+            var header = document.getElementById('AddTarget_TableId').insertRow(i);
+            header.className = "header";
+            header.insertCell(columnCount++);
+            
+            for(j=0; j<data[i].attributes.length; j++) {
+              if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
+              header.insertCell(columnCount);   
+              header.cells[columnCount].className = "label";
+              header.cells[columnCount].innerHTML  = data[i].attributes[j].name;
+              columnCount ++;
+            }
           }
-        }
+          columnCount = 0;
           var dataRow = document.getElementById('AddTarget_TableId').insertRow(i+1);
-          dataRow.insertCell(0);
+          dataRow.insertCell(columnCount);
           var chkbox ; //=  document.createElement("input");
           try{
                 chkbox = document.createElement('<input type="checkbox" name="addTargetCheckBox" />');
            }catch(err){
                 chkbox = document.createElement("input");
            }
+           
           chkbox.type = "checkbox";
           chkbox.name = "addTargetCheckBox";
           chkbox.value = data[i].EUID;
-          dataRow.cells[0].appendChild (chkbox);
+          dataRow.cells[columnCount].appendChild (chkbox);
+          columnCount ++;
           for(j=0; j<data[i].attributes.length; j++) {
-            dataRow.insertCell(j+1);
-            dataRow.cells[j+1].innerHTML = data[i].attributes[j].value;
+            if(! fieldsToShowInSearchResults.contains (data[i].attributes[j].name)) continue;
+            dataRow.insertCell(columnCount);
+            dataRow.cells[columnCount].innerHTML = data[i].attributes[j].value;
+            columnCount++;
          }
       }
       addTargetResultsLength = document.getElementsByName("addTargetCheckBox").length;  
