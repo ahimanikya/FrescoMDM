@@ -29,6 +29,7 @@ import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.Parameter;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.SelectBuilder;
 import com.sun.mdm.multidomain.sql.UpdateBuilder;
@@ -140,7 +141,7 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
             deleteBld.setTable(DOMAINS.getTableName());
             for (DOMAINS d : DOMAINS.values()) {
                 if (d.columnName.equalsIgnoreCase(DOMAINS.getPKColumName())) {
-                    deleteBld.addCriteria(d.columnName);
+                    deleteBld.addCriteria(new Parameter(d.columnName));
                 }
             }
             String sqlStr = SQLBuilder.buildSQL(deleteBld);

@@ -29,6 +29,7 @@ import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.Parameter;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.UpdateBuilder;
 import java.sql.Connection;
@@ -38,6 +39,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author David Peh
+ */
 public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEaDao {
 
     protected Connection mConn;
@@ -83,7 +88,6 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
             stmt.setString(index++, dto.getDefaultValue());
             stmt.setString(index++, dto.getIsSearchable() ? "T" : "F");
             stmt.setString(index++, dto.getIsRequired() ? "T" : "F");
-            stmt.setString(index++, dto.getIsIncluded() ? "T" : "F");
             int rows = stmt.executeUpdate();
             stmt.close();
             return rows;
@@ -123,9 +127,8 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
             stmt.setString(index++, dto.getColumnName());
             stmt.setString(index++, dto.getColumnType());
             stmt.setString(index++, dto.getDefaultValue());
-            stmt.setString(index++, dto.getIsSearchable() ? "Y" : "N");
-            stmt.setString(index++, dto.getIsRequired() ? "Y" : "N");
-            stmt.setString(index++, dto.getIsIncluded() ? "Y" : "N");
+            stmt.setString(index++, dto.getIsSearchable() ? "T" : "F");
+            stmt.setString(index++, dto.getIsRequired() ? "T" : "F");
             stmt.setLong(10, pk);
             int rows = stmt.executeUpdate();
         } catch (Exception _e) {
@@ -147,7 +150,7 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
             deleteBld.setTable(RELATIONSHIP_DEF.getTableName());
             for (RELATIONSHIP_DEF rd : RELATIONSHIP_DEF.values()) {
                 if (rd.columnName.equalsIgnoreCase(RELATIONSHIP_DEF.getPKColumName())) {
-                    deleteBld.addCriteria(rd.columnName);
+                    deleteBld.addCriteria(new Parameter(rd.columnName));
                 }
             }
             String sqlStr = SQLBuilder.buildSQL(deleteBld);

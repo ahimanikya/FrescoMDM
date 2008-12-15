@@ -50,6 +50,10 @@ import com.sun.mdm.multidomain.sql.SelectBuilder;
 import java.util.Iterator;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 
+/**
+ *
+ * @author David Peh
+ */
 public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao {
 
     /**
@@ -442,9 +446,8 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         attr.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
         attr.setType(AttributeType.valueOf(rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName)));
         attr.setDefaultValue(rs.getString(RELATIONSHIP_EA.DEFAULT_VALUE.columnName));
-        attr.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("Y") ? true : false);
-        attr.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("Y") ? true : false);
-        attr.setIsIncluded(rs.getString(RELATIONSHIP_EA.IS_INCLUDED.columnName).equalsIgnoreCase("Y") ? true : false);
+        attr.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("T") ? true : false);
+        attr.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("T") ? true : false);
         relDef.getAttributes().add(attr);
     }
 }
