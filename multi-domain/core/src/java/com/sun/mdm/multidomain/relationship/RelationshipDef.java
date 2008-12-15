@@ -22,10 +22,7 @@
  */
 package com.sun.mdm.multidomain.relationship;
 
-import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.attributes.AttributesDef;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.Serializable;
 
 /**
