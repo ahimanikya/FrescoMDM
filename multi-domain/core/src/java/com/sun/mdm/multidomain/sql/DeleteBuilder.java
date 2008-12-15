@@ -20,18 +20,19 @@
  * fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
 package com.sun.mdm.multidomain.sql;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * @author davidp
+ * @author David Peh
  */
 public class DeleteBuilder extends AbstractBuilder {
 
     private ArrayList<String> criteriaList = new ArrayList<String>();
+    private final List<Criteria> criteria = new ArrayList<Criteria>();
 
     @Override
     public String getCommand() {
@@ -43,29 +44,22 @@ public class DeleteBuilder extends AbstractBuilder {
         return "";
     }
 
+   
     @Override
     public String getCriteria() {
-        if (criteriaList.size() == 0) {
+        if (criteria.size() == 0) {
             return "";
         }
-        StringBuffer criteria = new StringBuffer();
-        String columnName = null;
-        for (int i = 0; i < criteriaList.size(); i++) {
-            columnName = criteriaList.get(i);
-            criteria.append(columnName);
-            criteria.append("=?");
-            if (i < criteriaList.size() - 1) {
-                criteria.append(" AND ");
-            }
+        StringBuffer sb = new StringBuffer(" WHERE ");
+        for (Criteria crit : criteria) {
+            sb.append(crit.write());
         }
-        StringBuffer whereClause = new StringBuffer(" WHERE ");
-        whereClause.append(criteria);
-        return whereClause.toString();
+        return sb.toString();
     }
 
-    public void addCriteria(String criterion) {
-        if (criterion != null) {
-            criteriaList.add(criterion);
+       public void addCriteria(Criteria crit) {
+        if (crit != null) {
+            criteria.add(crit);
         }
     }
 }
