@@ -1376,7 +1376,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					<%}%>
 						
 		           <%}%>
-			       
+			        <%for(int k=0;k<fcArray.length;k++) {			//Fix for #257 starts%>
+					   <%if(!fcArray[k].isUpdateable()) {%>
+					  <%if(!thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {%>
+                         thisFrm.elements[<%=k%>].readOnly = true;
+				       <%}%>
+				     <%}%>
+				   <%} //Fix for #257 ends here %>
+                    
 			   </script>
 	<!-- Validate System Object and LID -->
 <% } else if (isValidate) {  %> 

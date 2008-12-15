@@ -504,7 +504,8 @@ boolean isSessionActive = true;
 									  </h:column>
 									<!--Rendering HTML Select Menu List-->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
-										<h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" onchange="javascript:unsavedRootNodeValues='true';
+										<h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}"  readonly="#{!fieldConfigPerAdd.updateable}"
+										                 onchange="javascript:unsavedRootNodeValues='true';
 										 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
 														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
 											<f:selectItem itemLabel="" itemValue="" />
@@ -568,7 +569,9 @@ boolean isSessionActive = true;
 													 size="#{fieldConfigPerAdd.maxLength}" 
 													 onkeyup="javascript:qws_field_on_key_up(this);unsavedRootNodeValues='true';
 										 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');" 
-													 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
+													 onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"
+													 readonly="#{!fieldConfigPerAdd.updateable}"
+													 />
 									</h:column>                     
 									<!--Rendering Updateable HTML Text boxes date fields-->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && !fieldConfigPerAdd.sensitive}">
@@ -581,6 +584,7 @@ boolean isSessionActive = true;
 												   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
 												   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxSize}"/>"
                                                    size="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+                                                   readonly="<h:outputText value="#{!fieldConfigPerAdd.updateable}"/>"
 												   onblur="javascript:validate_date(this,'<%=dateFormat%>')"
 												   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
 												   onkeyup="javascript:qws_field_on_key_up(this)" >
@@ -653,6 +657,7 @@ boolean isSessionActive = true;
 														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
 														 id="fieldConfigIdTextArea"  
  														 required="#{fieldConfigPerAdd.required}"
+														 readonly="#{!fieldConfigPerAdd.updateable}" 
 														  />
 									</h:column>
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6 && fieldConfigPerAdd.sensitive }" >
