@@ -1129,6 +1129,10 @@ function ByRelAddRelationship(){
 }
 function addRelationshipCB(data) {
     alert("New relationship record added, id is : " + data);
+    hideByRelAddDialog();
+    
+    // refresh the relationship listing 
+    searchRelationships();
 }
 
 
