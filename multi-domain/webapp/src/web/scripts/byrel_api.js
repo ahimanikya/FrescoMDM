@@ -684,7 +684,13 @@ function loadAddSearchCriteria(){
     var selectedTargetDomain = currentSelectedTargetDomain;
     RelationshipDefHandler.getDomainSearchCriteria(selectedsourceDomain, addSourceDomainCriteria);
     RelationshipDefHandler.getDomainSearchCriteria(selectedTargetDomain, addTargetDomainCriteria);
-    
+    // Set title of add dialog
+    var relationshipDef = cachedRelationshipDefs[currentSelectedRelationshipDef];
+    var addDialogObj = dijit.byId("byrel_add"); 
+    strTitleHTML = "<span style='vertical-align:middle;'>Add Relationship: " + currentSelectedSourceDomain ;
+    strTitleHTML += " " + currentSelectedRelationshipDef + getRelationshipDefDirectionIcon(relationshipDef.biDirection) ;
+    strTitleHTML += " " + currentSelectedTargetDomain + "</span>";      
+    addDialogObj.attr("title", strTitleHTML);    
 }
 
 function addSourceDomainCriteria(data){
