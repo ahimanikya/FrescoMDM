@@ -14,6 +14,10 @@ var isSelectSourceDomainCriteriaApplied = false;
 var isSelectTargetDomainCriteriaApplied = false;
 var isSelectRelationshipDefAttributeCriteriaApplied = false;
 
+var currentSelectedSourceDomain = ""; // Holds the current selected source domain
+var currentSelectedTargetDomain = ""; // Holds the current selected target domain. 
+var currentSelectedRelationshipDef = ""; //Holds the current selected relationshipDef.
+   
 var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
 
 var cachedSearchResults = new Array(); // Store the search results (relationships);
@@ -256,7 +260,9 @@ function searchRelationships() {
        alert("Select a relationshipDef from the list.");
        return false;
    }
-   
+   currentSelectedSourceDomain = sourceDomain ;
+   currentSelectedTargetDomain = targetDomain ;
+   currentSelectedRelationshipDef = relationshipDef;
     var selectSourceSearchFieldNames = document.getElementsByName('selectSourceSearchFieldName');
     var selectTargetSearchFieldNames = document.getElementsByName('selectTargetSearchFieldName');
 
@@ -676,8 +682,8 @@ function deleteRelationshipCB (data){
  * Scripts for Add Relationship screen <START>
  */ 
 function loadAddSearchCriteria(){
-    var selectedsourceDomain = document.getElementById('select_sourceDomain').value;
-    var selectedTargetDomain = document.getElementById('select_targetDomain').value;
+    var selectedsourceDomain = currentSelectedSourceDomain;
+    var selectedTargetDomain = currentSelectedTargetDomain;
     RelationshipDefHandler.getDomainSearchCriteria(selectedsourceDomain, addSourceDomainCriteria);
     RelationshipDefHandler.getDomainSearchCriteria(selectedTargetDomain, addTargetDomainCriteria);
     
@@ -692,7 +698,7 @@ function addSourceDomainCriteria(data){
           document.getElementById('add_source_criteria').options.add(opt);
       }
      var tempSourceSearchType = document.getElementById('add_source_criteria').value;
-     var tempSourceDomain = document.getElementById('select_sourceDomain').value;
+     var tempSourceDomain = currentSelectedSourceDomain;
      RelationshipDefHandler.getSearchTypeCriteria(tempSourceDomain,tempSourceSearchType,sourceSearchTypeFields);
 }
 
@@ -705,12 +711,12 @@ function addTargetDomainCriteria(data){
         document.getElementById('add_target_criteria').options.add(opt);
      }
     var tempTargetSearchType = document.getElementById('add_target_criteria').value;
-    var tempTargetDomain = document.getElementById('select_targetDomain').value;
+    var tempTargetDomain = currentSelectedTargetDomain;
     RelationshipDefHandler.getSearchTypeCriteria(tempTargetDomain,tempTargetSearchType,targetSearchTypeFields);  
 }
 
 function getSourceSearchFields(searchTypeId){
-      var sourceDomain = document.getElementById('select_sourceDomain').value;
+      var sourceDomain = currentSelectedSourceDomain;
       var searchType = document.getElementById(searchTypeId).value;
       RelationshipDefHandler.getSearchTypeCriteria(sourceDomain, searchType,sourceSearchTypeFields);
 }
@@ -752,7 +758,7 @@ function sourceSearchTypeFields(data){
 
 function getTargetSearchFields(searchTypeId){
     
-      var targetDomain = document.getElementById('select_targetDomain').value;
+      var targetDomain = currentSelectedTargetDomain;
       var targetsearchType = document.getElementById(searchTypeId).value;
       RelationshipDefHandler.getSearchTypeCriteria(targetDomain, targetsearchType,targetSearchTypeFields);
 }
@@ -793,7 +799,7 @@ function targetSearchTypeFields(data){
 }
 
 function addSourceDomainSearch() {
-    var selectedSourceDomain = document.getElementById("select_sourceDomain").value;
+    var selectedSourceDomain = currentSelectedSourceDomain;
     var domainSearch = {name:selectedSourceDomain}; 
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
     var qBuilder = document.getElementById("addSourceQueryBuilder").value;
@@ -862,7 +868,7 @@ function addSourceSearchResults(data) {
 }
 
 function addTargetDomainSearch() {
-    var selectedTargetDomain = document.getElementById("select_targetDomain").value;
+    var selectedTargetDomain = currentSelectedTargetDomain;
     var domainSearch = {name:selectedTargetDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     var addTargetSearchFieldNames = document.getElementsByName('addTargetSearchFieldName');
     var qBuilder = document.getElementById("addTargetQueryBuilder").value;
@@ -934,9 +940,9 @@ function ByRelAddRelationship(){
     var purgeDateField = document.getElementById('add_predefined_purgeDate');
     var startDate,endDate,purgeDate;
     
-   var SourceDomain = document.getElementById("select_sourceDomain").value;
-   var TargetDomain = document.getElementById("select_targetDomain").value;
-   var RelationshipDefName = document.getElementById("select_relationshipDefs").value;
+   var SourceDomain = currentSelectedSourceDomain;
+   var TargetDomain = currentSelectedTargetDomain;
+   var RelationshipDefName = currentSelectedRelationshipDef;
    var relationshipCustomAttributes = [];
    var relationshipDef = cachedRelationshipDefs[RelationshipDefName];
     
