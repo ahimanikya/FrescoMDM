@@ -41,7 +41,7 @@
         <tr><td><img src="images/spacer.gif" height="6" width="1"></td></tr>
         <tr>
             <td align="right"><input type="button" value="<f:message key="select_text" />" onclick="searchRelationships();" /> 
-            <input type="reset" value="<f:message key="cancel_text" />" onclick="hideByRelSelectDialog();" /></td>
+            <input type="reset" value="<f:message key="cancel_text" />" onclick="hideByRelSelectDialog();refreshRelationshipsListingButtonsPalette();" /></td>
         </tr>
     </table>
 </div>

@@ -14,6 +14,11 @@ deselectAllButtonEnabled.src = "images/icons/deselect_multiple.png";
 var deselectAllButtonDisabled = new Image();
 deselectAllButtonDisabled.src = "images/icons/deselect_multiple_faded.png";   
 
+var addButtonEnabled = new Image();
+addButtonEnabled.src = "images/icons/add_button.png";
+var addButtonDisabled = new Image();
+addButtonDisabled.src = "images/icons/add_button_faded.png";   
+
 var isByRelSelectDialogLoaded = false; // Global flag to find out if Select dialog is already loaded for ByRelationship screen
 var isByRelAddDialogLoaded = false; // Global flag to find out if Add dialog is already loaded for ByRelationship screen
 function testResults(){
@@ -113,6 +118,8 @@ function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
 }
 function showByRelAddDialog(){
+    if(currentSelectedSourceDomain == null || currentSelectedTargetDomain==null || currentSelectedRelationshipDef==null)
+        return;
     var addDialog = dijit.byId("byrel_add");
     addDialog.show();
     if(isByRelAddDialogLoaded) initializeAddDialog();
@@ -510,5 +517,13 @@ function refreshRelationshipsListingButtonsPalette () {
         else
             imgDeSelectAllButtonObj.src =   deselectAllButtonDisabled.src;
     }
-
+    
+    var imgAddButtonObj = dojo.byId("imgAddRelationshipListing");
+    if(imgAddButtonObj != null) {
+        if(currentSelectedSourceDomain != null && currentSelectedTargetDomain!=null && currentSelectedRelationshipDef!=null) {
+            imgAddButtonObj.src =   addButtonEnabled.src;
+        } else {
+            imgAddButtonObj.src =   addButtonDisabled.src;
+        }
+    }
 }

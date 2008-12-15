@@ -14,9 +14,9 @@ var isSelectSourceDomainCriteriaApplied = false;
 var isSelectTargetDomainCriteriaApplied = false;
 var isSelectRelationshipDefAttributeCriteriaApplied = false;
 
-var currentSelectedSourceDomain = ""; // Holds the current selected source domain
-var currentSelectedTargetDomain = ""; // Holds the current selected target domain. 
-var currentSelectedRelationshipDef = ""; //Holds the current selected relationshipDef.
+var currentSelectedSourceDomain = null; // Holds the current selected source domain
+var currentSelectedTargetDomain = null; // Holds the current selected target domain. 
+var currentSelectedRelationshipDef = null; //Holds the current selected relationshipDef.
    
 var cachedRelationshipDefs = {}; // To hold relationshipDef data for relationshipDef Name.
 
