@@ -227,7 +227,9 @@ public class ViewBuilder {
     public static RelationshipDef buildRelationshipDef(RelationshipDefExt rDefExt) {
         RelationshipDef rDef = new RelationshipDef();        
         rDef.setName(rDefExt.getName());
-        rDef.setId(0);
+        if(rDefExt.getId() != null) {
+            rDef.setId(Long.parseLong(rDefExt.getId()));
+        }
         rDef.setSourceDomain(rDefExt.getSourceDomain());
         rDef.setTargetDomain(rDefExt.getTargetDomain());        
         rDef.setDirection("true".equalsIgnoreCase(rDefExt.getBiDirection()) ? 
