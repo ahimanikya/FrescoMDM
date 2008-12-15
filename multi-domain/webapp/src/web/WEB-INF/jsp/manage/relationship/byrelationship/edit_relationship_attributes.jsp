@@ -24,7 +24,7 @@
 <div dojoType="dijit.GenericTitlePane" class="MainBox"  id="relationshipRecordDetailsPane"
     title="<f:message key="relationship_attributes_text" /><f:message key="colon_symbol" />">
     
-    <div class="Content">
+    <div class="Content" id="editAttributesDiv" style="display:none;">
       <table border="0" width="100%">
         <tr>
             <td>

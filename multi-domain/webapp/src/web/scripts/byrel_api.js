@@ -97,21 +97,16 @@ function populateSelectRelationshipDefAttributes(data){
               }
           }
            createCustomAttributesSection ("byrel_select_customAttributes", searchableCustomAttributes, "select_custom", false);
-           document.getElementById("select_Relationship_CustomAtrributes").style.visibility="visible"
-           document.getElementById("select_Relationship_CustomAtrributes").style.display="block";
+           displayDiv ("select_Relationship_CustomAtrributes", true);
        }
        else{
-           
-           document.getElementById("select_Relationship_CustomAtrributes").style.visibility="hidden"
-           document.getElementById("select_Relationship_CustomAtrributes").style.display="none";
+           displayDiv ("select_Relationship_CustomAtrributes", false);
        }
        if(startDate==true || endDate==true || purgeDate == true ){ 
           createPredefinedAttributesSection ("byrel_select_predefinedAttributes", data, "select_predefined", false);
-          document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="visible"
-          document.getElementById("select_Relationship_PredefinedAtrributes").style.display="";
+          displayDiv ("select_Relationship_PredefinedAtrributes", true);
       } else{
-          document.getElementById("select_Relationship_PredefinedAtrributes").style.visibility="hidden"
-          document.getElementById("select_Relationship_PredefinedAtrributes").style.display="none";
+          displayDiv ("select_Relationship_PredefinedAtrributes", false);
       }
 }
   
@@ -633,26 +628,29 @@ function populateRelationshipDetails_Callback (data) {
     var purgeDate = getBoolean(relationshipDef.purgeDate);
     var customAttributes = relationshipDef.extendedAttributes;
     var recordCustomAttributes = data.relationshipRecord.attributes;
+    var blnShowEditAttributesSection = false;
     
     if(customAttributes != null && customAttributes.length > 0) {
         createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom", true);
         populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
-        document.getElementById("editCustomAttributesDiv").style.display = "";
+        displayDiv("editCustomAttributesDiv", true);
+        blnShowEditAttributesSection = true;
     } else {
-        document.getElementById("editCustomAttributesDiv").style.display = "none";
+        displayDiv("editCustomAttributesDiv", false);
     }
     //data.relationshipRecord.endDate = "12/20/2008";
     //data.relationshipRecord.purgeDate = "12/30/2008";
     if(startDate==true || endDate==true || purgeDate == true ){ 
         createPredefinedAttributesSection ("editPredefinedAttributesTable", relationshipDef,"edit_predefined", true);
         populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
-        document.getElementById("editPredefinedAttributesDiv").style.visibility="visible"
-        document.getElementById("editPredefinedAttributesDiv").style.display="";
+        displayDiv("editPredefinedAttributesDiv", true);
+        blnShowEditAttributesSection = true;
     } else{
-        document.getElementById("editPredefinedAttributesDiv").style.visibility="hidden"
-        document.getElementById("editPredefinedAttributesDiv").style.display="none";
+        displayDiv("editPredefinedAttributesDiv", false);
     }
     
+    if(blnShowEditAttributesSection) displayDiv("editAttributesDiv", true);
+    else displayDiv("editAttributesDiv", false);
     //alert(document.getElementById("edit_salary"));
     return;
 }
@@ -829,16 +827,15 @@ function addSourceSearchResults(data) {
         cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
         cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
     }
-    if(data == null){
-       document.getElementById('sourceResultsFailure').style.visibility='visible'; 
-       document.getElementById('sourceResultsFailure').style.display='block'; 
-       document.getElementById('byrel_addSourceResults').style.visibility='hidden'; 
-       document.getElementById('byrel_addSourceResults').style.display='none';   
+
+    if(data == null){ 
+       displayDiv("sourceResultsFailure", true);
+       displayDiv("sourceResultsSuccess", false);
+       displayDiv("byrel_addSourceResults", false);
     }else{
-       document.getElementById('sourceResultsSuccess').style.visibility='visible'; 
-       document.getElementById('sourceResultsSuccess').style.display='block'; 
-       document.getElementById('byrel_addSourceResults').style.visibility='visible'; 
-       document.getElementById('byrel_addSourceResults').style.display='block';   
+       displayDiv("sourceResultsSuccess", true);
+       displayDiv("sourceResultsFailure", false);
+       displayDiv("byrel_addSourceResults", true);
        
         addSourceSearchResults_Display (1, intDomainSearchResultsItemsPerPage);
         var paginator = dijit.byId("add_sourceDomainSearchPaginator");
@@ -937,15 +934,13 @@ function addTargeSearchResults(data) {
         cachedTaretDomainSearchResults.push(data[i]);cachedTaretDomainSearchResults.push(data[i]);
     }
     if(data == null){
-       document.getElementById('targetResultsFailure').style.visibility='visible'; 
-       document.getElementById('targetResultsFailure').style.display='block'; 
-       document.getElementById('byrel_addTargetResults').style.visibility='hidden'; 
-       document.getElementById('byrel_addTargetResults').style.display='none';
+       displayDiv("targetResultsFailure", true);
+       displayDiv("targetResultsSuccess", false);
+       displayDiv("byrel_addTargetResults", false);
     }else{
-       document.getElementById('targetResultsSuccess').style.visibility='visible'; 
-       document.getElementById('targetResultsSuccess').style.display='block';
-       document.getElementById('byrel_addTargetResults').style.visibility='visible'; 
-       document.getElementById('byrel_addTargetResults').style.display='block';      
+       displayDiv("targetResultsFailure", false);
+       displayDiv("targetResultsSuccess", true);
+       displayDiv("byrel_addTargetResults", true);
        
       addTargeSearchResults_Display(1, intDomainSearchResultsItemsPerPage);
       var paginator = dijit.byId("add_targetDomainSearchPaginator");

@@ -65,18 +65,11 @@ function getRelationshipDefDirectionIcon (isBiDirection) {
 
  function showRecordFullDetails(summaryId, detailsId, showDetailsFlag){
      if(! showDetailsFlag){
-        document.getElementById(detailsId).style.visibility='hidden';
-        document.getElementById(detailsId).style.display='none';
-        
-        document.getElementById(summaryId).style.visibility='visible';
-        document.getElementById(summaryId).style.display='block';
-     }
-     else{
-        document.getElementById(detailsId).style.visibility='visible';
-        document.getElementById(detailsId).style.display='block';
-        
-        document.getElementById(summaryId).style.visibility='hidden';
-        document.getElementById(summaryId).style.display='none';         
+        displayDiv (detailsId, false);
+        displayDiv (summaryId, true);
+     }else{  
+        displayDiv (detailsId, true);
+        displayDiv (summaryId, false);        
      }
  }
 
@@ -157,21 +150,15 @@ function populateAddRelationshipDefAttributes(data){
     dwr.util.removeAllRows("byrel_add_predefinedAttributes");
        if(data.extendedAttributes.length>0 ){
            createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add_custom", true);
-           document.getElementById("add_Relationship_CustomAtrributes").style.visibility="visible"
-           document.getElementById("add_Relationship_CustomAtrributes").style.display="";
-       }
-       else{
-           
-           document.getElementById("add_Relationship_CustomAtrributes").style.visibility="hidden"
-           document.getElementById("add_Relationship_CustomAtrributes").style.display="none";
+           displayDiv ("add_Relationship_CustomAtrributes", true);
+       }else{
+           displayDiv ("add_Relationship_CustomAtrributes", false);
        }
        if(startDate==true || endDate==true || purgeDate == true ){ 
           createPredefinedAttributesSection ("byrel_add_predefinedAttributes", data, "add_predefined", true);
-          document.getElementById("add_Relationship_PredefinedAtrributes").style.visibility="visible"
-          document.getElementById("add_Relationship_PredefinedAtrributes").style.display="";
+          displayDiv ("add_Relationship_PredefinedAtrributes", true);
       } else{
-          document.getElementById("add_Relationship_PredefinedAtrributes").style.visibility="hidden"
-          document.getElementById("add_Relationship_PredefinedAtrributes").style.display="none";
+          displayDiv ("add_Relationship_PredefinedAtrributes", false);
       }    
 }
 function hideByRelAddDialog () {
