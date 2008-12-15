@@ -24,7 +24,7 @@ package com.sun.mdm.multidomain.sql;
 
 /**
  *
- * @author davidp
+ * @author David Peh
  */
 public final class DBSchema {
 
@@ -103,8 +103,7 @@ public final class DBSchema {
         COLUMN_TYPE("COLUMN_TYPE"),
         DEFAULT_VALUE("DEFAULT_VALUE"),
         IS_SEARCHABLE("IS_SEARCHABLE"),
-        IS_REQUIRED("IS_REQUIRED"),
-        IS_INCLUDED("IS_INCLUDED"),;
+        IS_REQUIRED("IS_REQUIRED"),;
         public final String columnName;
         public final String prefixedColumnName;
 
@@ -195,6 +194,10 @@ public final class DBSchema {
         DOMAIN("DOMAIN"),
         EFFECTIVE_FROM_DATE("EFFECTIVE_FROM_DATE"),
         EFFECTIVE_TO_DATE("EFFECTIVE_TO_DATE"),
+        EFFECTIVE_FROM_REQ("EFFECTIVE_FROM_REQ"),
+        EFFECTIVE_TO_REQ("EFFECTIVE_TO_REQ"),
+        EFFECTIVE_FROM_INCL("EFFECTIVE_FROM_INCL"),
+        EFFECTIVE_TO_INCL("EFFECTIVE_TO_INCL"),
         PLUGIN("PLUGIN"),;
         public String columnName;
         public String prefixedColumnName;
@@ -228,8 +231,7 @@ public final class DBSchema {
         COLUMN_TYPE("COLUMN_TYPE"),
         DEFAULT_VALUE("DEFAULT_VALUE"),
         IS_SEARCHABLE("IS_SEARCHABLE"),
-        IS_REQUIRED("IS_REQUIRED"),
-        IS_INCLUDED("IS_INCLUDED"),;
+        IS_REQUIRED("IS_REQUIRED"),;
         public String columnName;
         public String prefixedColumnName;
 
