@@ -5,7 +5,6 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>MultiDomain-Web-Tier-Services</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <explicit-platform explicit-source-supported="true"/>
             <source-roots>
                 <root id="src.java.dir" name="MultiDomain Web-Tier Source Packages"/>
                 <root id="src.resources.dir" name="Resources Packages"/>
@@ -19,9 +18,9 @@
                 <foreign-project>MultiDomain-Core-Services</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
-                <target>dist</target>
+                <target>jar</target>
                 <clean-target>clean</clean-target>
-                <id>dist</id>
+                <id>jar</id>
             </reference>
         </references>
     </configuration>
