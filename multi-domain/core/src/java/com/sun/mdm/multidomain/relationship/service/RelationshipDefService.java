@@ -103,7 +103,6 @@ public class RelationshipDefService implements Serializable {
             attDto.setColumnName(att.getColumnName());
             attDto.setColumnType(att.getType().name());
             attDto.setDefaultValue(att.getDefaultValue());
-            attDto.setIsIncluded(att.getIsIncluded());
             attDto.setIsRequired(att.getIsRequired());
             attDto.setIsSearchable(att.getIsSearchable());
             relEaDao.insert(attDto);
