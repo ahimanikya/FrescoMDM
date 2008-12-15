@@ -853,34 +853,6 @@ public class RecordDetailsHandler extends ScreenConfiguration {
 
             HashMap eoHashMap = eoHashMap = (HashMap) midmUtilityManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT_CODES");
  
-            String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
-
-            HashMap updatedEoMap = new HashMap();
-
-            //when user modifies the person fields the only  update the enterprise object
-            if (selectedFieldsValue.length > 1) {
-                updatedEoMap.put(MasterControllerService.HASH_MAP_TYPE, eoHashMap.get(MasterControllerService.HASH_MAP_TYPE));
-                updatedEoMap.put(MasterControllerService.MINOR_OBJECT_ID, eoHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
-                //Modify destination EO values with selected values 
-                for (int i = 0; i < selectedFieldsValue.length; i++) {
-                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
-                    //if blank value is entered overwrite the value with null
-                    if (sourceEuidFull[1] != null && "null".equalsIgnoreCase(sourceEuidFull[1])) {
-                        updatedEoMap.put(sourceEuidFull[0], null);
-                    } else {
-                        updatedEoMap.put(sourceEuidFull[0], sourceEuidFull[1]);
-                    }
-
-                }
-                //Modify CHANGED sbr values here
-                masterControllerService.modifySBR(destinationEO.getSBR(), updatedEoMap);
-
-                masterControllerService.updateEnterpriseObject(destinationEO);
-
-                //get the modifed EO and merge it
-                destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
-            }
- 
             this.destnRootNodeHashMap = (HashMap)session.getAttribute("destnRootNodeHashMap");
             
                      

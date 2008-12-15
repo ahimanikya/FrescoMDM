@@ -227,12 +227,17 @@ public  class NavigationHandler {
         session.removeAttribute("singleSystemObjectLID");   
         session.removeAttribute("soHashMapArrayList");
         session.removeAttribute("eocomparision");
+        session.removeAttribute("eoMultiMergePreview"); //Fix for 20		
+        session.removeAttribute("destnRootNodeHashMap"); //Fix for 20		
 
-        //Fix for 221 start
+
+        //Fix for 20 start
         HttpSession session1 = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         SourceAddHandler  sourceAddHandler   = (SourceAddHandler)session1.getAttribute("SourceAddHandler");
-        sourceAddHandler.getNewSOHashMap().clear();
-        sourceAddHandler.getNewSOMinorObjectsHashMapArrayList().clear();
+        if(sourceAddHandler != null ) {
+           sourceAddHandler.getNewSOHashMap().clear();
+           sourceAddHandler.getNewSOMinorObjectsHashMapArrayList().clear();
+        }
         //Fix for 221 ends
         
 

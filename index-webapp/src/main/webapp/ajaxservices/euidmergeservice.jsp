@@ -224,7 +224,23 @@ boolean isSessionActive = true;
     destnRootNodeHashMap.put(POPULATE_KEY,POPULATE_VALUE);
 	//set the key and values in the session for updating the EO root node values
 	session.setAttribute("destnRootNodeHashMap",destnRootNodeHashMap);
-  
+
+	//Fix for #20 start
+	String[] srcDestnEuids = request.getParameter("PREVIEW_SRC_DESTN_EUIDS").split(",");
+     
+	 eoMultiMergePreview = (session.getAttribute("eoMultiMergePreview") != null) ? (HashMap) session.getAttribute("eoMultiMergePreview"):null;
+	
+	 if( eoMultiMergePreview != null  && eoMultiMergePreview.get("ENTERPRISE_OBJECT_CODES") != null) {
+      ((HashMap) eoMultiMergePreview.get("ENTERPRISE_OBJECT_CODES")).put(POPULATE_KEY,POPULATE_VALUE);
+      ((HashMap) eoMultiMergePreview.get("ENTERPRISE_OBJECT")).put(POPULATE_KEY,POPULATE_VALUE_DESC);
+	}
+
+	session.setAttribute("eoMultiMergePreview",eoMultiMergePreview);
+	
+	for(int i = 0;i< srcDestnEuids.length;i++) {
+		previewEuidsHashMap.put(srcDestnEuids[i],srcDestnEuids[i]);
+	}
+    //Fix for #20 ends here
  %>
  <%}%>
  
@@ -234,11 +250,14 @@ boolean isSessionActive = true;
 <%		boolean isMergedEuid = false;
  	     if(isMergePreview) {              
 			  String[] srcDestnEuids = request.getParameter("PREVIEW_SRC_DESTN_EUIDS").split(",");
- 
-              eoMultiMergePreview = recordDetailsHandler.previewMultiMergeEnterpriseObject(srcDestnEuids);
+           
+              eoMultiMergePreview = (session.getAttribute("eoMultiMergePreview") != null) ? (HashMap) session.getAttribute("eoMultiMergePreview"):recordDetailsHandler.previewMultiMergeEnterpriseObject(srcDestnEuids);
+
 			  messagesIter = FacesContext.getCurrentInstance().getMessages(); 
  		   %>
-           <% if(eoMultiMergePreview != null ) {%>
+           <% if(eoMultiMergePreview != null ) {
+			   session.setAttribute("eoMultiMergePreview",eoMultiMergePreview); //Fix for #20
+			   %>
 				<%if(eoMultiMergePreview.get("Merged_EUID") != null ) {
 					isMergedEuid  = true;
 				%>
@@ -274,7 +293,9 @@ boolean isSessionActive = true;
              
              <%} else {%>
 
-			<%    for(int i = 0;i< srcDestnEuids.length;i++) {
+			<%  
+				
+				for(int i = 0;i< srcDestnEuids.length;i++) {
 				  previewEuidsHashMap.put(srcDestnEuids[i],srcDestnEuids[i]);
 			    }
               
@@ -414,6 +435,7 @@ boolean isSessionActive = true;
              <%} else {%>
 
             <%  session.removeAttribute("destnRootNodeHashMap");
+			    session.removeAttribute("eoMultiMergePreview"); //Fix for 20
               
 			%>
             <!-- Initialize the all global euids js varaibles here -->
@@ -507,7 +529,9 @@ boolean isSessionActive = true;
         <%}%>
 		<%}%>
 
-    <%if(isResolveDuplicate) {%>
+    <%if(isResolveDuplicate) {
+		session.removeAttribute("eoMultiMergePreview"); //Fix for 20		
+	%>
      <%    
            eoArrayList = recordDetailsHandler.resolvePotentialDuplicate(request.getParameter("resolvePotentialDuplicateId"),request.getParameter("resolveType")) ;
 		   messagesIter = FacesContext.getCurrentInstance().getMessages(); 
@@ -552,6 +576,7 @@ boolean isSessionActive = true;
    <%}%>  <!-- if resolve condition ends here  -->
 
     <%if(isUnResolveDuplicate) {
+		   session.removeAttribute("eoMultiMergePreview"); //Fix for 20		
            eoArrayList = recordDetailsHandler.unresolvePotentialDuplicate(request.getParameter("unresolvePotentialDuplicateId")) ;
 		   messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 		%>
@@ -612,7 +637,18 @@ boolean isSessionActive = true;
 				   <td>
 				<tr>
 			</table>
-            <%} else if (!alreadyMerged && !isPopulateMergeFields && eoArrayList != null ) {
+
+            <%} else if (!alreadyMerged && eoArrayList != null ) { %>
+
+				<% if(isPopulateMergeFields) {			 
+						  eoMultiMergePreview = (HashMap) session.getAttribute("eoMultiMergePreview");
+				 } else if(isMergePreview) {
+						  eoMultiMergePreview = (session.getAttribute("eoMultiMergePreview") != null) ? (HashMap) session.getAttribute("eoMultiMergePreview"):null;
+
+				 } else {
+						  eoMultiMergePreview = null;
+				 }
+         
             %>  
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
@@ -900,7 +936,7 @@ boolean isSessionActive = true;
                                                                                  <%if (previewEuidsHashMap.get((String) personfieldValuesMapEO.get("EUID")) != null) {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
 
                                                                                     <%if ((resultArrayMapCompare.get(epathValue) != null  && resultArrayMapMain.get(epathValue) != null)  && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
-                                                                                    <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&EUID=<%=personfieldValuesMapEO.get("EUID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','populatePreviewDiv','');"   >
+                                                                                    <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&EUID=<%=personfieldValuesMapEO.get("EUID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','mainDupSource','');"   >
                                                                                         <font class="highlight">
                                                                                             <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
@@ -910,7 +946,7 @@ boolean isSessionActive = true;
                                                                                     </a>  
                                                                                     <%} else {%>
  																					<%if(resultArrayMapMain.get(epathValue) == null) { %>
-                                                                                    <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=personfieldValuesMapEO.get("SYSTEM_CODE")%>&LID=<%=personfieldValuesMapEO.get("EUID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','populatePreviewDiv','');"   >
+                                                                                    <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=personfieldValuesMapEO.get("SYSTEM_CODE")%>&LID=<%=personfieldValuesMapEO.get("EUID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','mainDupSource','');"   >
 																					  <font class="highlight">
 																				         <%if(eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
 																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
@@ -970,7 +1006,7 @@ boolean isSessionActive = true;
                                                                                         <%if (previewEuidsHashMap.get((String) personfieldValuesMapEO.get("EUID")) != null) {%>
  		                                                                                <%if(mergePersonfieldValuesMapEO.get(epathValue) != null) { %> 
                                                                                         <div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">		
-                                                                                          <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=personfieldValuesMapEO.get("SYSTEM_CODE")%>&LID=<%=personfieldValuesMapEO.get("EUID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','populatePreviewDiv','');"   >
+                                                                                          <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>');ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+queryStr+'&populateMergeFields=true&SYSTEM_CODE=<%=personfieldValuesMapEO.get("SYSTEM_CODE")%>&LID=<%=personfieldValuesMapEO.get("EUID")%>&POPULATE_KEY=<%=epathValue%>&POPULATE_VALUE=<%=codesValuesMapEO.get(epathValue)%>&POPULATE_VALUE_DESC=<%=personfieldValuesMapEO.get(epathValue)%>&rand=<%=rand%>','mainDupSource','');"   >
                                                                                                 <font class="highlight">
                                                                                                      <!-- blank image -->
                                                                                                      <img src="./images/calup.gif" border="0" alt="<%=bundle.getString("blank_value_text")%>"/>
