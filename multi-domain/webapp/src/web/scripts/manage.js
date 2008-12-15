@@ -255,7 +255,7 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
                options.data = null;
             } else {
                 if(getBoolean(tempData.isRequired) == true && showRequiredSymbol){
-                   options.data = "<span class='label'>" + tempData.name + " *" +  "</span>"; 
+                   options.data = "<span class='label'>" + tempData.name + getMessageForI18N("mandatorySymbol") +  "</span>"; 
                 }else{
                    options.data = "<span class='label'>" + tempData.name +  "</span>";
                 }
@@ -315,11 +315,11 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRow.insertCell(2);
         SecondRow.insertCell(3);
         SecondRow.insertCell(4);
-        SecondRow.cells[0].innerHTML="Effective";
+        SecondRow.cells[0].innerHTML=getMessageForI18N("effective");
         if(startDateRequired == true && showRequiredSymbol){
-          SecondRow.cells[1].innerHTML="From *";   
+          SecondRow.cells[1].innerHTML=getMessageForI18N("from") + " " + getMessageForI18N("mandatorySymbol");   
         }else{
-          SecondRow.cells[1].innerHTML="From";      
+          SecondRow.cells[1].innerHTML=getMessageForI18N("from");      
         }
         var startDate_textBox = document.createElement("input");
         startDate_textBox.type = "text";
@@ -337,9 +337,9 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         }
         startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
         if(endDateRequired == true && showRequiredSymbol){
-          SecondRow.cells[3].innerHTML="To *";   
+          SecondRow.cells[3].innerHTML=getMessageForI18N("to") + " " + getMessageForI18N("mandatorySymbol");   
         }else{
-          SecondRow.cells[3].innerHTML="To";      
+          SecondRow.cells[3].innerHTML=getMessageForI18N("to");      
         }
         
         var endDate_textBox = document.createElement("input");
@@ -362,11 +362,11 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRowStart.insertCell(1);
         SecondRowStart.insertCell(2);
         
-        SecondRowStart.cells[0].innerHTML="Effective";
+        SecondRowStart.cells[0].innerHTML=getMessageForI18N("effective");
         if(startDateRequired == true && showRequiredSymbol){
-          SecondRowStart.cells[1].innerHTML="From *";   
+          SecondRowStart.cells[1].innerHTML=getMessageForI18N("from") + " " + getMessageForI18N("mandatorySymbol");   
         }else{
-          SecondRowStart.cells[1].innerHTML="From";      
+          SecondRowStart.cells[1].innerHTML=getMessageForI18N("from");      
         }
         var start_date = document.createElement("input");
         start_date.type="text";
@@ -390,11 +390,11 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRowEnd.insertCell(1);
         SecondRowEnd.insertCell(2);
         
-        SecondRowEnd.cells[0].innerHTML="Effective";
+        SecondRowEnd.cells[0].innerHTML=getMessageForI18N("effective");
         if(endDateRequired == true && showRequiredSymbol){
-          SecondRowEnd.cells[1].innerHTML="To *";   
+          SecondRowEnd.cells[1].innerHTML=getMessageForI18N("to") + " " + getMessageForI18N("mandatorySymbol");      
         }else{
-          SecondRowEnd.cells[1].innerHTML="To";      
+          SecondRowEnd.cells[1].innerHTML=getMessageForI18N("to");      
         }
         var end_date = document.createElement("input");
         end_date.type="text";
@@ -418,11 +418,10 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         ThirdRow.insertCell(0);
         ThirdRow.insertCell(1);
         ThirdRow.insertCell(2);
-        ThirdRow.cells[0].innerHTML="Purge Date";
         if(purgeDateRequired == true && showRequiredSymbol){
-          ThirdRow.cells[0].innerHTML="Purge Date *";
+          ThirdRow.cells[0].innerHTML=getMessageForI18N("purgeDate") + " " + getMessageForI18N("mandatorySymbol");
         }else{
-          ThirdRow.cells[0].innerHTML="Purge Date";
+          ThirdRow.cells[0].innerHTML=getMessageForI18N("purgeDate");
         }
         ThirdRow.cells[1].innerHTML=" ";
         var Purge_date= document.createElement("input");

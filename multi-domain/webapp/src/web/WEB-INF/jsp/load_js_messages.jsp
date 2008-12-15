@@ -21,10 +21,26 @@ JSP files loads all the messages from message.properties, which will be used in 
     }
 
     var messages = {};
-    messages ["effectiveFrom"] = "Effective From";
-    messages ["enterValueFor"] = "Enter value for";    
+    messages ["effectiveFrom"] = '<f:message key="effective_from_text" />';
+    messages ["enterValueFor"] = '<f:message key="enter_value_for_text" />';
+    messages ["effectiveTo"] = '<f:message key="effective_to_text" />';
+    messages ["purgeDate"] = '<f:message key="purge_date_text" />';
+    messages ["isnotavalidvaluefor"] = '<f:message key="valid_value_text" />';
+    messages ["attribute"] = '<f:message key="lower_attribute_text" />';
+    messages ["SelectAtleastOneRecord"] = '<f:message key="select_atleast_one_record_text" />';
+    messages ["fromSourceDomain"] = '<f:message key="lower_from_text" />' + '<f:message key="source_domain_text" />' + '<f:message key="period_symbol" />';
+    messages ["fromTargetDomain"] = '<f:message key="lower_from_text" />' + '<f:message key="target_domain_text" />' + '<f:message key="period_symbol" />';
+    messages ["selectsourcedomain"] = '<f:message key="select_text" />' + '<f:message key="source_domain_text" />' + '<f:message key="period_symbol" />';
+    messages ["selecttargetdomain"] = '<f:message key="select_text" />' + '<f:message key="target_domain_text" />' + '<f:message key="period_symbol" />';
+    messages ["selectarelationshipDef"] = '<f:message key="select_relationshipDef_text" />';
+    messages ["fromthelist"] = '<f:message key="from_the_list_text" />' + '<f:message key="period_symbol" />';
+    messages ["effective"] = '<f:message key="effective_text" />';
+    messages ["from"] = '<f:message key="from_text" />';
+    messages ["to"] = '<f:message key="to_text" />';
+    messages ["mandatorySymbol"] = '<f:message key="mandatory_symbol" />';
+    messages ["period"] = '<f:message key="period_symbol" />';
     
     
-
+   messages ["exception"] = '<f:message key="exception_text" />' + '<f:message key="colon_symbol" />';
 
 </script>
