@@ -34,7 +34,6 @@ public class Attribute {
     private String columnName;
     private boolean isSearchable;
     private boolean isRequired;
-    private boolean isIncluded;
     private AttributeType type; 
     private String defaultValue;
   
@@ -156,22 +155,6 @@ public class Attribute {
      */
     public void setIsRequired(boolean isRequired) {
         this.isRequired = isRequired;;
-    }
-
-     /**
-     * Get isIncluded attribute.
-     * @return boolean IsIncluded attribute.
-     */
-    public boolean getIsIncluded() {
-        return isIncluded;
-    }
-
-    /**
-     * Set isIncluded attribute.
-     * @param isIncluded IsIncluded attribute.
-     */
-    public void setIsIncluded(boolean isIncluded) {
-        this.isIncluded = isIncluded;
     }
 
     /**

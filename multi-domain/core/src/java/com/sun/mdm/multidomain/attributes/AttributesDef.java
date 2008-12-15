@@ -41,10 +41,13 @@ public abstract class AttributesDef {
     private boolean effectiveFromRequired;
     private boolean effectiveToRequired;
     private boolean purgeDateRequired;
+    private boolean effectiveFromIncluded;
+    private boolean effectiveToIncluded;
+    private boolean purgeDateIncluded;
     private String plugIn;
     private boolean effectiveFrom;
     private boolean effectiveTo;
-    private boolean purgeDate; 
+    private boolean purgeDate;
     private List<Attribute> attributes; //extended attributes.
 
     /**
@@ -65,6 +68,9 @@ public abstract class AttributesDef {
         this.effectiveFromRequired = true;
         this.effectiveToRequired = true;
         this.purgeDateRequired = true;
+        this.effectiveFromIncluded = true;
+        this.effectiveToIncluded = true;
+        this.purgeDateIncluded = true;
         this.attributes = new ArrayList<Attribute>();
 
     }
@@ -85,8 +91,7 @@ public abstract class AttributesDef {
         this.name = name;
     }
 
-    
-     /**
+    /**
      * Get relationship type description.
      * @return String relationship type description.
      */
@@ -101,7 +106,7 @@ public abstract class AttributesDef {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * Get effectiveFromRequired attribute.
      * @return boolean EffectiveFromRequired attribute.
@@ -155,49 +160,97 @@ public abstract class AttributesDef {
      * @return boolean EffectiveFromRequired attribute.
      */
     public boolean getEffectiveFrom() {
-    	return effectiveFrom;
+        return effectiveFrom;
     }
-    
+
     /**
      * Set effectiveFrom attribute.
      * @param effectiveFrom EffectiveFrom attribute.
      */
     public void setEffectiveFrom(boolean effectiveFrom) {
-    	this.effectiveFrom = effectiveFrom;
-    }    
-    
+        this.effectiveFrom = effectiveFrom;
+    }
+
     /**
      * Get effectiveTo attribute.
      * @return boolean effectiveTo attribute.
      */
     public boolean getEffectiveTo() {
-    	return effectiveTo;
+        return effectiveTo;
     }
-    
+
     /**
      * Set effectiveTo attribute.
      * @param effectiveTo EffectiveTo attribute.
      */
     public void setEffectiveTo(boolean effectiveTo) {
-    	this.effectiveTo = effectiveTo; 
-    }    
-    
+        this.effectiveTo = effectiveTo;
+    }
+
+    /**
+     * Get effectiveFromIncluded attribute.
+     * @return boolean effectiveFromIncluded attribute.
+     */
+    public boolean getEffectiveFromIncluded() {
+        return effectiveFromIncluded;
+    }
+
+    /**
+     * Set effectiveFromIncluded attribute.
+     * @param effectiveFromIncluded EffectiveFromIncluded attribute.
+     */
+    public void setEffectiveFromIncluded(boolean effectiveFromIncluded) {
+        this.effectiveFromIncluded = effectiveFromIncluded;
+    }
+
+    /**
+     * Get effectiveToIncluded attribute.
+     * @return boolean effectiveToIncluded attribute.
+     */
+    public boolean getEffectiveToIncluded() {
+        return effectiveToIncluded;
+    }
+
+    /**
+     * Set effectiveToIncluded attribute.
+     * @param effectiveToIncluded EffectiveToIncluded attribute.
+     */
+    public void setEffectiveToIncluded(boolean effectiveToIncluded) {
+        this.effectiveToIncluded = effectiveToIncluded;
+    }
+
+    /**
+     * Get purgeDateIncluded attribute.
+     * @return boolean PurgeDateIncluded attribute.
+     */
+    public boolean getPurgeDateIncluded() {
+        return purgeDateIncluded;
+    }
+
+    /**
+     * Set purgeDateIncluded attribute.
+     * @param purgeDateIncluded PurgeDateIncluded attribute.
+     */
+    public void setPurgeDateIncluded(boolean purgeDateIncluded) {
+        this.purgeDateIncluded = purgeDateIncluded;
+    }
+
     /**
      * Get purgeDate attribute.
      * @return boolean PurgeDate attribute.
      */
     public boolean getPurgeDate() {
-    	return purgeDate;
+        return purgeDate;
     }
-         
+
     /**
      * Set purgeDate attribute.
      * @param purgeDate PurgeDate attribute.
      */
     public void setPurgeDate(boolean purgeDate) {
-    	this.purgeDate = purgeDate;
-    }   
-      
+        this.purgeDate = purgeDate;
+    }
+
     /**
      * Get plugIn name.
      * @return String Plug-in name.
