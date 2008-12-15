@@ -24,6 +24,10 @@ package com.sun.mdm.multidomain.hierarchy.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.sql.Connection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import com.sun.mdm.multidomain.hierarchy.ops.exceptions.HierarchyDefDaoException;
 import com.sun.mdm.multidomain.hierarchy.ops.exceptions.HierarchyEaDaoException;
 import com.sun.mdm.multidomain.hierarchy.ops.factory.AbstractDaoFactory;
@@ -37,18 +41,15 @@ import com.sun.mdm.multidomain.hierarchy.ops.dao.HierarchyDefDao;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyDefDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeEaDto;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
- * @author davidp
+ * @author David Peh
  */
 public class HierarchyDefService implements Serializable {
 
     private DatabaseType mDbType = null;
     private HierarchyDefDao mHierDef = null;
+    private Connection mConn = null;
 
     /**
      * Method 'HierarchyDefService'
@@ -65,6 +66,11 @@ public class HierarchyDefService implements Serializable {
 
     }
 
+    public HierarchyDefService(Connection conn) {
+        this.mConn = conn;
+        getDaoInstances();
+    }
+
     /**
      * Method 'getDaoInstances'
      *
@@ -72,7 +78,7 @@ public class HierarchyDefService implements Serializable {
     private void getDaoInstances() {
         if (mHierDef == null) {
             mHierDef = (HierarchyDefDaoImpl) AbstractDaoFactory.getDoaFactory(mDbType).getHierarchyDefDao();
-        }  
+        }
     }
 
     /**
@@ -87,7 +93,7 @@ public class HierarchyDefService implements Serializable {
         copyToHierDto(hier, hierDto);
 
         long hierDefID = 0;
-        HierarchyDefDaoImpl hierDefDao = new HierarchyDefDaoImpl();
+        HierarchyDefDaoImpl hierDefDao = new HierarchyDefDaoImpl(mConn);
         try {
             hierDefID = hierDefDao.insert(hierDto);
         } catch (HierarchyDefDaoException ex) {
@@ -98,19 +104,18 @@ public class HierarchyDefService implements Serializable {
         /* HierarchyDef Extend Attributes */
         HierarchyNodeEaDto attDto = new HierarchyNodeEaDto();
         ArrayList<Attribute> attrList = (ArrayList<Attribute>) hier.getAttributes();
-        HierarchyNodeEaDaoImpl hierEaDao = new HierarchyNodeEaDaoImpl();
+        HierarchyNodeEaDaoImpl hierEaDao = new HierarchyNodeEaDaoImpl(mConn);
         for (Attribute att : attrList) {
             attDto.setHierarchyDefId(hierDefID);
             attDto.setAttributeName(att.getName());
             attDto.setColumnName(att.getColumnName());
             attDto.setColumnType(att.getType().name());
             attDto.setDefaultValue(att.getDefaultValue());
-            attDto.setIsIncluded(att.getIsIncluded());
             attDto.setIsRequired(att.getIsRequired());
             attDto.setIsSearchable(att.getIsSearchable());
             hierEaDao.insert(attDto);
         }
-        
+
         return hierDefID;
     }
 
@@ -119,7 +124,7 @@ public class HierarchyDefService implements Serializable {
      *
      */
     public void delete(HierarchyDef hier) throws HierarchyDefDaoException {
-        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl();
+        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl(mConn);
         dao.delete(hier.getId());
     }
 
@@ -131,7 +136,7 @@ public class HierarchyDefService implements Serializable {
         /* HierarchyDef object */
         HierarchyDefDto dto = new HierarchyDefDto();
         copyToHierDto(hier, dto);
-        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl();
+        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl(mConn);
         dao.update(dto);
     }
 
@@ -141,7 +146,7 @@ public class HierarchyDefService implements Serializable {
      * @return HierarchyDef
      */
     public List<HierarchyDef> search(String domain) throws HierarchyDefDaoException {
-        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl();
+        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl(mConn);
         ArrayList hierDefList = new ArrayList();
         for (HierarchyDefDto hierDto : dao.search(domain)) {
             HierarchyDef hierDef = new HierarchyDef();
@@ -150,14 +155,14 @@ public class HierarchyDefService implements Serializable {
         }
         return hierDefList;
     }
-    
+
     public HierarchyDef searchById(long hierarchyId) throws HierarchyDefDaoException {
-        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl();
+        HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl(mConn);
         HierarchyDef hierarchyDef = new HierarchyDef();
-        
+
         HierarchyDefDto hierarchyDefDto = dao.searchById(hierarchyId);
         copyFromHierDto(hierarchyDef, hierarchyDefDto);
-        
+
         return hierarchyDef;
     }
 
@@ -172,6 +177,10 @@ public class HierarchyDefService implements Serializable {
         dto.setDomain(hier.getDomain());
         dto.setEffectiveFromDate(hier.getEffectiveFromDate());
         dto.setEffectiveToDate(hier.getEffectiveToDate());
+        dto.setEffectiveFromReq(hier.getEffectiveFromRequired() ? "T" : "F");
+        dto.setEffectiveToReq(hier.getEffectiveToRequired() ? "T" : "F");
+        dto.setEffectiveFromInc(hier.getEffectiveFromIncluded() ? "T" : "F");
+        dto.setEffectiveToInc(hier.getEffectiveToIncluded() ? "T" : "F");
         dto.setPlugIn(hier.getPlugin());
     }
 
@@ -186,7 +195,10 @@ public class HierarchyDefService implements Serializable {
         hier.setDomain(dto.getDomain());
         hier.setEffectiveFromDate(dto.getEffectiveFromDate());
         hier.setEffectiveToDate(dto.getEffectiveToDate());
-       
+        hier.setEffectiveFromRequired(dto.getEffectiveFromReq().equalsIgnoreCase("T") ? true : false);
+        hier.setEffectiveToRequired(dto.getEffectiveToReq().equalsIgnoreCase("T") ? true : false);
+        hier.setEffectiveFromIncluded(dto.getEffectiveFromInc().equalsIgnoreCase("T") ? true : false);
+        hier.setEffectiveToIncluded(dto.getEffectiveToInc().equalsIgnoreCase("T") ? true : false);
         hier.setPlugin(dto.getPlugIn());
         List<HierarchyNodeEaDto> eaDto = dto.getAttributeDefs();
         for (HierarchyNodeEaDto ea : eaDto) {
@@ -194,11 +206,10 @@ public class HierarchyDefService implements Serializable {
             att.setId(ea.getHierarchyDefId());
             att.setName(ea.getAttributeName());
             att.setColumnName(ea.getColumnName());
-            att.setType(AttributeType.valueOf(ea.getColumnType()));
+            att.setType(AttributeType.valueOf(ea.getColumnType().toUpperCase()));
             att.setDefaultValue(ea.getDefaultValue());
             att.setIsSearchable(ea.getIsSearchable());
             att.setIsRequired(ea.getIsRequired());
-            att.setIsIncluded(ea.getIsIncluded());
             hier.getAttributes().add(att);
         }
     }

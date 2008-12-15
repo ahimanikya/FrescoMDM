@@ -29,18 +29,14 @@ import com.sun.mdm.multidomain.hierarchy.ops.exceptions.HierarchyEavDaoException
 import com.sun.mdm.multidomain.hierarchy.ops.factory.AbstractDaoFactory;
 import com.sun.mdm.multidomain.hierarchy.ops.factory.AbstractDaoFactory.DatabaseType;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
-import com.sun.mdm.multidomain.attributes.Attribute;
-import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.hierarchy.HierarchyTree;
 import com.sun.mdm.multidomain.hierarchy.ops.impl.HierarchyNodeDaoImpl;
 import com.sun.mdm.multidomain.hierarchy.ops.dao.HierarchyNodeDao;
-import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyDefDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeEaDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeEavDto;
 import com.sun.mdm.multidomain.hierarchy.ops.impl.HierarchyNodeEavDaoImpl;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -48,7 +44,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author davidp
+ * @author David Peh
  */
 public class HierarchyNodeService implements Serializable {
 
@@ -101,7 +97,7 @@ public class HierarchyNodeService implements Serializable {
         copyToHierDto(hierNode, hierDto);
 
         long hierID = 0;
-        HierarchyNodeDaoImpl hierDao = new HierarchyNodeDaoImpl();
+        HierarchyNodeDaoImpl hierDao = new HierarchyNodeDaoImpl(mConn);
         try {
             hierID = hierDao.insert(hierNode);
         } catch (HierarchyDaoException ex) {
@@ -167,7 +163,7 @@ public class HierarchyNodeService implements Serializable {
      *
      */
     public void deleteHierarchy(long nodeId) throws HierarchyDaoException {
-        HierarchyNodeDaoImpl hierDao = new HierarchyNodeDaoImpl();
+        HierarchyNodeDaoImpl hierDao = new HierarchyNodeDaoImpl(mConn);
         hierDao.delete(nodeId);
     }
     
@@ -240,7 +236,7 @@ public class HierarchyNodeService implements Serializable {
         /* Hierarchy object */
         HierarchyNodeDto dto = new HierarchyNodeDto();
         copyToHierDto(hier, dto);
-        HierarchyNodeDaoImpl dao = new HierarchyNodeDaoImpl();
+        HierarchyNodeDaoImpl dao = new HierarchyNodeDaoImpl(mConn);
     //dao.update(dto);
     }
 
@@ -250,7 +246,7 @@ public class HierarchyNodeService implements Serializable {
      * @return HierarchyDto
      */
     public List<HierarchyNode> search(String euid) throws HierarchyDaoException {
-        HierarchyNodeDaoImpl dao = new HierarchyNodeDaoImpl();
+        HierarchyNodeDaoImpl dao = new HierarchyNodeDaoImpl(mConn);
         ArrayList<HierarchyNode> hierList = new ArrayList<HierarchyNode>();
         for (HierarchyNodeDto hierDto : dao.search(euid)) {
             HierarchyNode hier = new HierarchyNode();
