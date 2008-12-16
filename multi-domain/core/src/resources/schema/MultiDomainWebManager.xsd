@@ -62,6 +62,7 @@
 			<xs:element name="input-mask" type="xs:string" minOccurs="0"/>
 			<xs:element name="value-mask" type="xs:string" minOccurs="0"/>
 			<xs:element name="is-sensitive" type="xs:string" minOccurs="0"/>
+			<xs:element name="is-range-search" type="xs:string" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PageDefinitionType">
@@ -120,12 +121,13 @@
 	</xs:complexType>
 	<xs:complexType name="DomainsType">
 		<xs:sequence>
-			<xs:element name="domain" type="DomainType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="domain" type="DomainType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DomainType">
 		<xs:sequence>
 			<xs:element name="name" type="xs:string"/>
+			<xs:element name="midm-location" type="xs:string"/>
 			<xs:element name="search-pages" type="SearchPagesType"/>
 			<xs:element name="search-result-pages" type="SearchResultPageType"/>
 			<xs:element name="record-detail-pages" type="RecordDetailPageType"/>
