@@ -737,6 +737,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>","SBR");
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
@@ -913,6 +915,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>","SBR");
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
@@ -1222,6 +1226,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>","SBR");
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 
@@ -1467,6 +1473,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 {
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","SBR");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>","SBR");
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSBRInEditMode("SBR");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")
 											 }'> 

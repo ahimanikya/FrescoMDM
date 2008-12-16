@@ -245,7 +245,11 @@ if(session!=null){
 
                               <td align="left" colspan="2">
  			               		<a href="javascript:void(0)"
-								onclick="javascript:if(editMinorObjectType.length<1){window.location='<%=URL%>'}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}" 
+								onclick="javascript:if(editMinorObjectType.length<1){
+								if(unsavedRootNodeValues.length<1){
+									window.location='<%=URL%>'
+								 }else{showUnSavedRootNodeTabAlert(event);}
+								}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}" 
 								class="button" 
 								title="<h:outputText  value="#{msgs.back_button_text}"/>" >
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
@@ -367,7 +371,9 @@ if(session!=null){
 														style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
 														value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT_CODES'][fieldConfigPer.fullFieldName]}" 
                                                                          disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }" 
-                                                                         readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}">
+                                                                         readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+																		 onchange="javascript:unsavedRootNodeValues='true';
+																		 hideDivs('activeHeaders');showDivs('inactiveHeaders');">
                                                             <f:selectItem itemLabel="" itemValue="" />
                                                             <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
@@ -405,8 +411,11 @@ if(session!=null){
 																	 disabled="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
                                                                      readonly="#{!fieldConfigPer.updateable ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
                                                                      onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
-																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)"                    
+																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}');unsavedRootNodeValues='true';
+																		 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
+                                                                     onkeyup="javascript:qws_field_on_key_up(this);
+																	 unsavedRootNodeValues='true';
+																     hideDivs('activeHeaders');showDivs('inactiveHeaders');"                    
                                                                  />
                                                          </div>            
                                                     </h:column>
@@ -453,7 +462,9 @@ if(session!=null){
                                                             <input type="text" 
 															       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                    id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
-                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');
+																   unsavedRootNodeValues='true';
+																   hideDivs('activeHeaders');showDivs('inactiveHeaders');"
                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
 													               value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
@@ -743,6 +754,9 @@ if(session!=null){
 								getFormValues('<h:outputText value="#{childNodesName}"/>EOInnerForm');
 								sbrInEdit='';
 								editMinorObjectType = '';
+								unsavedEuidEditMinorObjectType='';unsavedEuidEditObjectType='';
+								if(unsavedRootNodeValues.length<1){
+							     hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 								ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event);
 								}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                              <span id="EO<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
@@ -757,6 +771,9 @@ if(session!=null){
                                  <div style="visibility:hidden;display:none;" id="EO<h:outputText value='#{childNodesName}'/>cancelEdit">
                                          <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:
 										 editMinorObjectType = '';
+									     unsavedEuidEditMinorObjectType='';unsavedEuidEditObjectType='';
+										 if(unsavedRootNodeValues.length<1){
+									      hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 										 sbrInEdit='';
  										 setEOEditIndex('-1');cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', 'EO<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>','EO<h:outputText value='#{childNodesName}'/>buttonspan')">
                                           <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
@@ -799,7 +816,11 @@ if(session!=null){
                                             <table style="background-color:#efefef" width="100%">
                                                 <tr>
                                                     <td>
-                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event);}else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){
+												   if(unsavedRootNodeValues.length<1){
+												     ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event);
+												   }else{showUnSavedRootNodeTabAlert(event);}
+												  }else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                                              <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
                                                         </a> 
                                                     </td>
@@ -923,7 +944,9 @@ if(session!=null){
 																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
 																			disabled="#{!fieldConfigPer.updateable}"
 																			readonly="#{ !fieldConfigPer.updateable}"
-																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}">
+																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" onchange="javascript:unsavedRootNodeValues='true';
+																		        hideDivs('activeHeaders');showDivs('inactiveHeaders');"
+>
                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                                 <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                                             </h:selectOneMenu>
@@ -955,8 +978,11 @@ if(session!=null){
                                                                         <!--Rendering Updateable HTML Text boxes-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6 && !fieldConfigPer.sensitive}" >
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
-                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
-																	                     onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}');
+																						 unsavedRootNodeValues='true';
+																		                 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
+																	                     onkeyup="javascript:qws_field_on_key_up(this);unsavedRootNodeValues='true';
+																		                 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
 																			             title="#{fieldConfigPer.fullFieldName}"
                                                                                          id="fieldConfigIdTextbox"
 																						 maxlength="#{fieldConfigPer.maxSize}" 
@@ -1039,7 +1065,8 @@ if(session!=null){
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
-                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');"
+                                                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');unsavedRootNodeValues='true';
+																		            hideDivs('activeHeaders');showDivs('inactiveHeaders');"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
@@ -1555,6 +1582,9 @@ if(session!=null){
 									   systemcodeInEdit ='';
 									   lidInEdit = '';
 									   editMinorObjectType = '';
+									   unsavedEuidEditMinorObjectType='';unsavedEuidEditObjectType='';
+									   if(unsavedRootNodeValues.length<1){
+									    hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 									   editSOflag = 'false';								   
  								    }">
 									   <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>  <h:outputText value='#{childNodesName}'/> </span>
@@ -1571,6 +1601,9 @@ if(session!=null){
 											 systemcodeInEdit ='';
 											 lidInEdit = '';
 											 editMinorObjectType = '';
+											 unsavedEuidEditMinorObjectType='';unsavedEuidEditObjectType='';
+										     if(unsavedRootNodeValues.length<1){
+											   hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 											 setEOEditIndex('-1');
 											 cancelEdit('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm', '<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>cancelEdit', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan')">
 											  <span><h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/></span>
@@ -1622,7 +1655,11 @@ if(session!=null){
 							 
 				            </script>
                          <%}%>
-                         <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){document.getElementById('DEACTIVATE_SOLID').value='<h:outputText value="#{eoSystemObjectMap['LID']}"/>';document.getElementById('DEACTIVATE_SOSYS').value='<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>';showExtraDivs('deactivateSODiv',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+                         <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){
+						  if(unsavedRootNodeValues.length<1){
+						   document.getElementById('DEACTIVATE_SOLID').value='<h:outputText value="#{eoSystemObjectMap['LID']}"/>';document.getElementById('DEACTIVATE_SOSYS').value='<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>';showExtraDivs('deactivateSODiv',event);
+						  }else{showUnSavedRootNodeTabAlert(event);}
+						 }else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                <span><h:outputText value="#{msgs.source_rec_deactivate_but}"/></span>
                             </a>
 						<%} else if("New".equalsIgnoreCase(soStatus)){%>
@@ -1671,10 +1708,16 @@ if(session!=null){
 							<tr style="background-color:#efefef">
                                 <td>
 								 <nobr>
-                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}" />" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ editMinorObjectType = '';ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
+                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}" />" href="javascript:void(0);" class="button" onclick="javascript:if(editMinorObjectType.length<1){ editMinorObjectType = '';
+								 	unsavedEuidEditMinorObjectType='';unsavedEuidEditObjectType='';unsavedRootNodeValues='';
+									hideDivs('inactiveHeaders');showDivs('activeHeaders');
+									ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event);} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}">
                                        <span><h:outputText value="#{msgs.source_rec_save_but}" /></span>
                                     </a>
-                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
+                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="javascript:editMinorObjectType = '';
+									   unsavedEuidEditMinorObjectType='';unsavedEuidEditObjectType='';unsavedRootNodeValues='';
+									   hideDivs('inactiveHeaders');showDivs('activeHeaders');
+									   setEOEditIndex('-1');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
                                        <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                    </a>  
 								   <!-- Start Added by Anil, fix for  CR 6709864 -->

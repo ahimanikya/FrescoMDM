@@ -947,6 +947,8 @@ if (isCancel){
 											 }else{
 											 setNewSOInEditMode("NewSO");
 											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");
+											setEuidEditMinorObjectAddressType("<%=minorObjType%>","<%=bundle.getString("new_so_text")%>");
+											hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -1234,7 +1236,11 @@ if (isCancel){
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{ 
 											 setNewSOInEditMode("NewSO");
-											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>"
+											 );
+											setEuidEditMinorObjectAddressType("<%=minorObjType%>","<%=bundle.getString("new_so_text")%>");
+											hideDivs("activeHeaders");showDivs("inactiveHeaders");
+											 setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
@@ -1439,7 +1445,10 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 											 showUnSavedAlert(event,editMinorObjectType,editObjectType);
 											 }else{ 
 											 setNewSOInEditMode("NewSO");											 
-											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
+											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>","<%=bundle.getString("new_so_text")%>");
+											setEuidEditMinorObjectAddressType("<%=minorObjType%>","<%=bundle.getString("new_so_text")%>");
+											hideDivs("activeHeaders");showDivs("inactiveHeaders");
+											 setEOEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>SOEditMessages","");}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>

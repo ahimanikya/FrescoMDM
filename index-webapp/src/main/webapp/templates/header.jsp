@@ -49,11 +49,32 @@
  var tabTitles=[];
  var unsavedEditMinorObjectType = '';
  var unsavedRootNodeValues='';
+ var unsavedEuidEditMinorObjectType='';
+ var unsavedEuidEditObjectType='';
+	// setting values when putting edit euid minor objects in to edit mode
+	function setEuidEditMinorObjectAddressType(MinorObjectType,objectType){
+		unsavedEuidEditMinorObjectType=MinorObjectType;
+		unsavedEuidEditObjectType=objectType;
+	}
+
+	//unsaved root node fileds (sourcerecords edit) alert
 	function showUnSavedRootNodeTabAlert(thisEvent){
 			document.getElementById("unsavedMessageTopTabDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_root_node_message}"/>";
 		    showExtraTopTabDivs("unsavedTopTabDiv",thisEvent);
 	}
-		
+	// added on 08-12-08 as fix of 221 and 219	//unsaved edit euid minorobject alert
+	function showUnSavedEditEuidTopTabAlert(thisEvent,unsavedEuidEditMinorObjectType,unsavedEuidEditObjectType){
+		 if(unsavedEuidEditObjectType.length == 0) {
+			document.getElementById("unsavedMessageTopTabDiv").innerHTML = '<h:outputText value="#{msgs.unsaved_message_part_I}"/> \''+unsavedEuidEditMinorObjectType+'\'<h:outputText value="#{msgs.unsaved_message_part_III}"/>';
+		     showExtraTopTabDivs("unsavedTopTabDiv",thisEvent);
+
+		 } else {
+			document.getElementById("unsavedMessageTopTabDiv").innerHTML = '<h:outputText value="#{msgs.unsaved_message_part_I}"/> \' '+unsavedEuidEditMinorObjectType+' \' <h:outputText value="#{msgs.unsaved_message_part_II}"/> ('+unsavedEuidEditObjectType+') <h:outputText value="#{msgs.unsaved_message_part_III}"/>';
+ 		    showExtraTopTabDivs("unsavedTopTabDiv",thisEvent);
+		}
+	}
+	
+	//unsaved source record edit/add minor object alert
 	function showUnSavedTopTabAlert(thisEvent,unsavedEditMinorObjectType){
 		document.getElementById("unsavedMessageTopTabDiv").innerHTML = "<h:outputText value="#{msgs.unsaved_message_part_I}"/> '"+unsavedEditMinorObjectType+"' <h:outputText value="#{msgs.unsaved_message_part_III}"/>";
 		showExtraTopTabDivs("unsavedTopTabDiv",thisEvent);
@@ -453,16 +474,20 @@ String  dateFormat = ConfigManager.getDateFormat();
 										 <a href="#" title="<%=displayTitleVE%>" class ="navbuttonselected" 
 											   onclick="javascript:if(unsavedEditMinorObjectType.length>0){
 											                         showUnSavedTopTabAlert(event,unsavedEditMinorObjectType);}
-											                       else if(unsavedRootNodeValues.length>0){
-												                       showUnSavedRootNodeAlert(event);}"> 
+																   else if(unsavedEuidEditMinorObjectType.length>0){
+																       showUnSavedEditEuidTopTabAlert(thisEvent,unsavedEuidEditMinorObjectType,unsavedEuidEditObjectType);}
+																    else if(unsavedRootNodeValues.length>0){
+												                       showUnSavedRootNodeTabAlert(event);}"> 
  												  <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" title="<%=allScreensArrayOrdered[i].getDisplayTitle()%>" ><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
 										</a>
 									<%}else{%>
 										   <a href="#" class ="navbutton" title = "<%=allScreensArrayOrdered[i].getDisplayTitle()%>"
 											   onclick="javascript:if(unsavedEditMinorObjectType.length>0){
 											                         showUnSavedTopTabAlert(event,unsavedEditMinorObjectType);}
-											                       else if(unsavedRootNodeValues.length>0){
-												                       showUnSavedRootNodeAlert(event);}"> 
+											                       else if(unsavedEuidEditMinorObjectType.length>0){
+																       showUnSavedEditEuidTopTabAlert(thisEvent,unsavedEuidEditMinorObjectType,unsavedEuidEditObjectType);}
+																   else if(unsavedRootNodeValues.length>0){
+												                       showUnSavedRootNodeTabAlert(event);}"> 
  											  <span id="<%=allScreensArrayOrdered[i].getDisplayTitle()%>">
 											  <%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
 										  </a>

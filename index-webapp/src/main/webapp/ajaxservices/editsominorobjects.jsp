@@ -491,6 +491,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											else{
  											editSOMinorflag = "false";
 											setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											setEuidEditMinorObjectAddressType("<%=minorObjType%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -688,6 +690,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											else{
 											 editSOMinorflag = "false";
 											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
@@ -1015,6 +1019,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											else{
 											editSOMinorflag = "false";											
 											 setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 
@@ -1272,6 +1278,8 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											else{
 											editSOMinorflag = "false";											 
 											  setMinorObjectAddressType("<%=minorObjType%>","<%=i%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											 setEuidEditMinorObjectAddressType("<%=minorObjType%>",systemCodeDesc["<%=selectedSoSystemCode%>"]+"/<%=selectedSoLID%>");
+											 hideDivs("activeHeaders");showDivs("inactiveHeaders");
 											 setSOInEditMode("<%=selectedSoSystemCode%>","<%=selectedSoLID%>");
 											 setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")
 											 }'> 

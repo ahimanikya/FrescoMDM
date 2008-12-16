@@ -68,7 +68,7 @@
 if(session!=null){
  LocaleHandler localeHandler = new LocaleHandler();
  localeHandler.setChangedLocale((String) session.getAttribute("selectedLocale"));
-
+ session.removeAttribute("eoBrandNewSystemObjects"); //fixof 140
 }
 %>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
@@ -135,6 +135,15 @@ if(session!=null){
 				document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(buttonID).innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/>  '+ minorObject;
 		      }
+			   function hideDivs(thisDiv){
+					document.getElementById(thisDiv).style.visibility = 'hidden';
+					document.getElementById(thisDiv).style.display  = 'none';
+			   }
+			   function showDivs(thisDiv){
+					document.getElementById(thisDiv).style.visibility = 'visible';
+					document.getElementById(thisDiv).style.display  = 'block';
+			   }   
+
 			// added  on 22-09-08  
 			function setMinorObjectAddressType(MinorObjectType,editIndex,objectType){
 				editMinorObjectType = MinorObjectType;

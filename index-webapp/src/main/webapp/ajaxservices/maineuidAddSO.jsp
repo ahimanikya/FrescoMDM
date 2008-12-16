@@ -444,6 +444,9 @@ boolean isSessionActive = true;
 									else{								   
 									   getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');
 									   ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event);
+									   unsavedEuidEditMinorObjectType='';
+									   if(unsavedRootNodeValues.length<1){
+ 									    hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 									   editMinorObjectType = '';
 									   newSoInEdit = '';											   
 									   addSOflag = 'false';
@@ -460,6 +463,9 @@ boolean isSessionActive = true;
 								   <div style="visibility:hidden;display:none;" id="AddSo<h:outputText value="#{childNodesName}"/>">
 											 <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:
 											 editMinorObjectType = '';
+									         unsavedEuidEditMinorObjectType='';
+											 if(unsavedRootNodeValues.length<1){
+									          hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 											 setEOEditIndex('-1');
  											 newSoInEdit = '';											 
 											 cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', 'AddSo<h:outputText value="#{childNodesName}"/>', '<h:outputText value='#{childNodesName}'/>','<h:outputText value="#{childNodesName}"/>buttonspan')">
@@ -509,7 +515,11 @@ boolean isSessionActive = true;
      <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:enableFormFields('RootNodeInnerForm');ClearContents('RootNodeInnerForm');">
         <span><h:outputText value="#{msgs.clear_button_label}"/></span>
      </h:outputLink>    
-	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:editMinorObjectType = '';setEOEditIndex('-1');ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
+	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:editMinorObjectType = '';
+	 unsavedEuidEditMinorObjectType='';
+	 if(unsavedRootNodeValues.length<1){
+		 hideDivs('inactiveHeaders');showDivs('activeHeaders');}
+	 setEOEditIndex('-1');ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
      </a>    
 	 </nobr>
