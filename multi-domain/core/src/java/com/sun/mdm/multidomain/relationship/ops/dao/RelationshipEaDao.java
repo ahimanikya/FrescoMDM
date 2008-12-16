@@ -34,9 +34,9 @@ public interface RelationshipEaDao
 	public long insert(RelationshipEaDto dto) throws RelationshipEaDaoException;
 
 	/** 
-	 * Updates a single row in the relationship_ea table.
+	 * Updates rows in the relationship_ea table.
 	 */
-	public void update(long pk, RelationshipEaDto dto) throws RelationshipEaDaoException;
+	public void update(RelationshipEaDto dto) throws RelationshipEaDaoException;
 
 	/** 
 	 * Deletes a single row in the relationship_ea table.
