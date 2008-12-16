@@ -201,6 +201,13 @@ ArrayList fcArrayList  = new ArrayList();
 	     labelsList.add("EUID");
 	     fullFieldNamesList.add("EUID");
 	    
+		//Fix for 54 start here
+		if (potDupText.equalsIgnoreCase(reportName))  {     	
+	        keys.add("Status");
+    	    labelsList.add("Status");
+	        fullFieldNamesList.add("Status");
+		}
+		//Fix for 54 ends here
 		if (assumedText.equalsIgnoreCase(reportName))  {     	
 	        keys.add("LID");
     	    labelsList.add("LID");

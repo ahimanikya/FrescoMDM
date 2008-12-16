@@ -167,8 +167,9 @@ public class DuplicateReportHandler    {
    private ReportDataRow[] getPDRRows() throws Exception {
         ArrayList dataRowList = new ArrayList();
         while (pdIter.hasNext()) {
-            PotentialDuplicateReportRow reportRow = new PotentialDuplicateReportRow(pdIter.next(), pdrConfig);
-            ArrayList newArrayList = getOutPutValuesMap(pdrConfig, reportRow);
+            PotentialDuplicateReportRow potentialDuplicateReportRow = new PotentialDuplicateReportRow(pdIter.next(), pdrConfig);
+            
+            ArrayList newArrayList = getOutPutValuesMap(pdrConfig, potentialDuplicateReportRow);
             //Add arraylist of hashvalues with values
             resultArrayList.add(newArrayList);
         }            
@@ -186,7 +187,7 @@ public class DuplicateReportHandler    {
         }
         return dataRows;
     }
-     private ArrayList getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+     private ArrayList getOutPutValuesMap(MultirowReportConfig1 reportConfig, PotentialDuplicateReportRow reportRow) throws Exception {
         HashMap newValuesMap = new HashMap();
         List transactionFields = reportConfig.getTransactionFields();
 
@@ -209,7 +210,11 @@ public class DuplicateReportHandler    {
             while (iter.hasNext()) {
                 String field = (String) iter.next();
                 String val = reportRow.getValue(field).toString();
-                if (field.equalsIgnoreCase("EUID1")) {
+                String potDupStatus = ValidationService.getInstance().getDescription("RESOLVETYPE", reportRow.getStatus());
+                euid1Map.put("Status", potDupStatus);
+                euid2Map.put("Status", potDupStatus);
+                
+               if (field.equalsIgnoreCase("EUID1")) {
                     newValuesMap.put("EUID", val);
                     euid1Map.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
