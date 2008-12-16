@@ -138,7 +138,7 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
             for (HIERARCHY_DEF rel : HIERARCHY_DEF.values()) {
                 switch (rel) {
                     case HIERARCHY_DEF_ID:
-                        builder.addCriteria(rel.columnName);
+                        builder.addCriteria(new Parameter(rel.columnName));
                         break;
                     default:
                         builder.addColumns(rel.columnName);
