@@ -1382,8 +1382,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                          thisFrm.elements[<%=k%>].readOnly = true;
 				       <%}%>
 				     <%}%>
-				   <%} //Fix for #257 ends here %>
+				   <%} //Fix for #257 ends here
+					%>
                     
+                   <%
+				int countReadonlyFields = 0;
+				for(int k=0;k<fcArray.length;k++) {			//Fix for #231 starts
+				    System.out.println("fcArray[k].isUpdateable()---> " + fcArray[k].isUpdateable());
+                    if(!thisminorObjectType.equalsIgnoreCase(MasterControllerService.MINOR_OBJECT_BRAND_NEW) && !fcArray[k].isUpdateable()) {
+						countReadonlyFields++;
+					}
+                }%>
+
+					<%if(countReadonlyFields == fcArray.length ){%>
+						editIndex = "-1";
+						editIndexid = "-1";
+						editMinorObjectType = "";
+				   <%}%>
+
 			   </script>
 	<!-- Validate System Object and LID -->
 <% } else if (isValidate) {  %> 
