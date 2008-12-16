@@ -34,7 +34,6 @@ import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipDefDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipEaDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDefDao;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEaDto;
 
 import java.util.List;
