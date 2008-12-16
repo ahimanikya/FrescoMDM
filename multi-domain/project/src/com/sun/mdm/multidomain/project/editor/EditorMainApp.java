@@ -372,7 +372,11 @@ public class EditorMainApp {
                 if (domainsFolder == null) {
                     domainsFolder = srcFolder.createFolder(MultiDomainProjectProperties.DOMAINS_FOLDER);
                 }
-                FileObject newDomainFolder = domainsFolder.createFolder(domainName);
+                FileObject newDomainFolder = domainsFolder.getFileObject(domainName);
+                if (newDomainFolder != null) {
+                    newDomainFolder.delete();
+                }
+                newDomainFolder = domainsFolder.createFolder(domainName);
                 FileUtil.copyFile(objectXml, newDomainFolder, objectXml.getName());
                 FileUtil.copyFile(queryXml, newDomainFolder, queryXml.getName());
                 FileUtil.copyFile(midmXml, newDomainFolder, midmXml.getName());
