@@ -15,10 +15,7 @@
   dojo.require("dijit.Dialog");
   dojo.require("dojo.parser");
   dojo.require("dijit.form.FilteringSelect");
-
 </script>
-
-
 
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
     
@@ -28,6 +25,9 @@
             <table  cellspacing="0" cellpadding="0">
                 <tr>
                     <td>
+                       <input id="relationship_edit_id" name="id" value="" style="display:none;width:0px"/>
+                   </td>
+                   <td>
                        <input id="relationship_edit_name" name="Name" value="" dojoType="dijit.form.TextBox" style="width:150px"/>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
@@ -67,8 +67,7 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr>
                             <td>
-                                <!-- Pre-defined attributes section -->
-                                
+                                <!-- Pre-defined attributes section -->                               
                                 <jsp:include page="/WEB-INF/jsp/administration/predefined_attributes.jsp?prefix=editrelationship" flush="true" />
                             </td>
                         </tr>
@@ -99,10 +98,12 @@
   type="text/javascript">
 var editRelationshipPrefix = "<%=prefixToUse%>";
 function validateEditRelationshipForm() {
-    var relationshipDefName = dojo.byId("relationship_edit_name").value;
-    var direction = dojo.byId("relationship_edit_direction").value;
-    var pluginName = dojo.byId("relationship_edit_plugin").value;
-    var description = dojo.byId("relationship_edit_description").value;
+  var relationshipDefId = dojo.byId("relationship_edit_id").value;  
+  var relationshipDefName = dojo.byId("relationship_edit_name").value;
+  var direction = dojo.byId("relationship_edit_direction").value;
+  var pluginName = dojo.byId("relationship_edit_plugin").value;
+  var description = dojo.byId("relationship_edit_description").value;
+   
   if(dojo.byId('relationship_edit_name').value=='') 
    {
        alert(getMessageForI18N("select_name"));
@@ -127,6 +128,7 @@ function validateEditRelationshipForm() {
     var sourceDomain = dojo.byId("selectSourceDomain").value;
     var targetDomain = dojo.byId("selectTargetDomain").value;
     relationshipdef = {name:relationshipDefName };
+    relationshipdef.id = relationshipDefId;
     relationshipdef.sourceDomain = sourceDomain;
     relationshipdef.targetDomain = targetDomain;
     relationshipdef.plugin = pluginName;
@@ -181,9 +183,10 @@ function validateEditRelationshipForm() {
 
 
 function populateEditRelationshipDefForm(data) {
-    //alert("data got for edit " + data);
-
-    if(data != null) {      
+   
+    if(data != null) {   
+       
+        dojo.byId("relationship_edit_id").value = data.id;
         dojo.byId("relationship_edit_name").value = data.name;
         dojo.byId("relationship_edit_direction").value = data.biDirection;
         
@@ -216,6 +219,5 @@ function populateEditRelationshipDefForm(data) {
     }
     showRelationshipDialog('editrelationship');  
 }
-
 
 </script>
