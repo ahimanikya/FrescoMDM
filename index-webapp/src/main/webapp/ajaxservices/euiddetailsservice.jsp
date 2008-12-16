@@ -154,7 +154,18 @@ boolean isSessionActive = true;
 			String mergedRecord = request.getParameter("mergedrecord"); //fix for 158 on 27-11-08
 			boolean isMergedRecord = (null == mergedRecord?false:true);
 
-			ArrayList eoArrayList = new ArrayList();
+			String checkLatest = request.getParameter("checkLatest"); // Fix for 671089
+			boolean isCheckLatest = (null == checkLatest?false:true);
+			String historysize = "";
+			String cnt = "";
+			String objectslength = "";
+			String sourcesize = "";
+			String revEuid = "";
+			%>
+			<%if(!isCheckLatest){ //Fix for 671089%>
+
+			<%
+				ArrayList eoArrayList = new ArrayList();
 			 ArrayList eoMergeRecords = new ArrayList();
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
     
@@ -231,9 +242,17 @@ boolean isSessionActive = true;
 				    </td>
 				 </tr>
 			  </table>
-			<%} else {%>
+			<%} else {
+	            MasterControllerService masterControllerService = new MasterControllerService();
+				
+				EnterpriseObject eoeuidReq = masterControllerService.getEnterpriseObject(euidReq);
+						  
+						  %>
                 <div id="mainDupSource" class="compareResults">
-                    <table cellspacing="0" cellpadding="0" border="0">
+				<%
+				 String sessionRevNumber = (session.getAttribute("SBR_REVISION_NUMBER"+euidReq)!=null)?session.getAttribute("SBR_REVISION_NUMBER"+euidReq).toString():"0";
+ 				%>
+                      <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td>
                                 <div style="height:700px;overflow:auto;">
@@ -1128,8 +1147,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 													  Operations ops = new Operations();
 												     if(ops.isTransLog_SearchView()){
 												  %>
-                                                      <td valign="top">
-                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>','true',euidValueArray)" >  
+                                                      <td valign="top"><!-- Fix for 671089-->
+                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&checkLatest=true&historysize=<%=eoHistory.size()%>&cnt=<%=countEnt%>&objectslength=<%=eoArrayListObjects.length%>&sourcesize=<%=eoSources.size()%>&sessionrevnumber=<%=sessionRevNumber%>','checkLatest','');" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
@@ -1421,6 +1440,40 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 		 </td></tr></table>
 		 <%}%>
 		 <!-- Fix for bug #247 end-->
+   <%} else {%> <!-- Fix for 671089-->
+
+				<%
+				historysize = request.getParameter("historysize");
+				cnt = request.getParameter("cnt");
+				objectslength = request.getParameter("objectslength");
+				sourcesize = request.getParameter("sourcesize");
+				revEuid = request.getParameter("euid");
+				MasterControllerService masterControllerService = new MasterControllerService();
+				int oldRevisionNumber = (request.getParameter("sessionrevnumber")!=null)?(Integer.parseInt(request.getParameter("sessionrevnumber").toString())):0;
+				EnterpriseObject eo = masterControllerService.getEnterpriseObject(revEuid);
+				Integer dbRevisionNumber = eo.getSBR().getRevisionNumber();
+				if(oldRevisionNumber == dbRevisionNumber.intValue()){
+			%>
+					<table><tr><td><script>
+ 					 showViewHistory('mainDupHistory','<%=historysize%>','<%=cnt%>','<%=objectslength%>','<%=sourcesize%>','true',euidValueArray);
+					</script></td></tr></table>
+			<%}else{%>
+					<table>
+						 <tr><td>
+							  <script>
+								 window.location="#top";
+								 document.getElementById("activemessageDiv").innerHTML="<%=bundle.getString("concurrent_mod_text")%>";
+								 document.getElementById('activeDiv').style.visibility='visible';
+								 document.getElementById('activeDiv').style.display='block';
+								 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=revEuid%>';
+							  </script>
+							</td>
+						 </tr>
+					  </table>
+ 			   <%} %>
+
+   <%}%>
+   <div id="checkLatest"></div><!-- Fix for 671089-->
  <%}%> <!-- if session is active -->
 
 

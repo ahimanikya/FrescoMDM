@@ -168,7 +168,16 @@ boolean isSessionActive = true;
 			String  populateMergeFieldsStr = request.getParameter("populateMergeFields");
 			boolean isPopulateMergeFields = (null == populateMergeFieldsStr?false:true);
 
+			String checkLatest = request.getParameter("checkLatest"); // Fix for 671089 
+			boolean isCheckLatest = (null == checkLatest?false:true);
+			String historysize = "";
+			String cnt = "";
+			String objectslength = "";
+			String sourcesize = "";
+			String revEuid = "";
 			%>
+			<%if(!isCheckLatest){ //Fix for 671089%>
+
             <%if(isCancelMultiMerge) {%>
              <%if(request.getParameter("euids") != null) {%>
              	<script>
@@ -1732,8 +1741,10 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                 String euid = (String) personfieldValuesMapEO.get("EUID");
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
-                                                                                     
-                                                ValueExpression euidValueExpression = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());        
+												  //Fix for 671089
+												 String sessionRevNumber = (session.getAttribute("SBR_REVISION_NUMBER"+euid)!=null)?session.getAttribute("SBR_REVISION_NUMBER"+euid).toString():"0";
+ 
+ 												ValueExpression euidValueExpression = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());        
                                                 
                                                 ValueExpression potDupIdValueExpression = null;
                                                 ValueExpression eoArrayListValueExpression = null;
@@ -1794,8 +1805,8 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 												        if(ops.isTransLog_SearchView()){
 
 												         %>
-                                                      <td valign="top">
-                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:void(0)" onclick="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>','false',euidValueArrayHis)" >  
+                                                      <td valign="top"><!-- Fix for 671089-->
+                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:void(0)" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euidmergeservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&checkLatest=true&historysize=<%=eoHistory.size()%>&cnt=<%=countEnt%>&objectslength=<%=eoArrayListObjects.length%>&sourcesize=<%=eoSources.size()%>&euid=<%=euid%>&sessionrevnumber=<%=sessionRevNumber%>','checkLatest','');"  >  
  															  <%=bundle.getString("view_history_text")%>
                                                           </a>
                                                       </td>    
@@ -1891,7 +1902,37 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                      <!--AFTER-->
                       </table>
                    <%}%>
- 
+				<%}else{%> 
+ 				<%
+				historysize = request.getParameter("historysize");
+				cnt = request.getParameter("cnt");
+				objectslength = request.getParameter("objectslength");
+				sourcesize = request.getParameter("sourcesize");
+				revEuid = request.getParameter("euid");
+				MasterControllerService masterControllerService = new MasterControllerService();
+				int oldRevisionNumber = (request.getParameter("sessionrevnumber")!=null)?(Integer.parseInt(request.getParameter("sessionrevnumber").toString())):0;
+				EnterpriseObject eo = masterControllerService.getEnterpriseObject(revEuid);
+				Integer dbRevisionNumber = eo.getSBR().getRevisionNumber();
+ 				if(oldRevisionNumber == dbRevisionNumber.intValue()){
+			%>
+					<table><tr><td><script>
+ 					 showViewHistory('mainDupHistory','<%=historysize%>','<%=cnt%>','<%=objectslength%>','<%=sourcesize%>','false',euidValueArrayHis);
+					</script></td></tr></table>
+			<%}else{%>
+					<table>
+						 <tr><td>
+ 								  <script>
+  										document.getElementById("viewHistoryActivemessageDiv").innerHTML = "<%=revEuid%> <%=bundle.getString("concurrent_mod_text")%>";
+										document.getElementById("viewHistoryActiveDiv").style.visibility="visible";
+										document.getElementById("viewHistoryActiveDiv").style.display="block";
+ 							  </script>
+							</td>
+						 </tr>
+					  </table>
+ 			   <%} %>
+
+				<%} //isCheckLatest){ //Fix for 671089%>
+   <div id="checkLatest"></div>
  <%}%> <!-- if session is active -->
 
 </html>
