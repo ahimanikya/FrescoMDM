@@ -172,7 +172,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
                     String messages = localIdDesignation + " " + bundle.getString("lid_format_error_text") + " " +(String)getUpdateableFeildsMap().get("lidmask");
                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, messages,messages));
-                   return null;
+                   ArrayList lidErrorList = new ArrayList();            
+                   HashMap lidError = new HashMap();                   //fix of 6703149
+                   lidError.put("LID_SYSTEM_CODE_ERROR",messages);
+                   lidErrorList.add(lidError);
+                   return lidErrorList;
                 }                  
             }
             //if user enters LID ONLY 
@@ -180,7 +184,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString ("enter_LID");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                 mLogger.info(mLocalizer.x("ASM003: LID/SystemCode Validation failed: Please Enter LID value" ));
-                return null;
+               ArrayList lidErrorList = new ArrayList();            
+               HashMap lidError = new HashMap();                   //fix of 6703149
+               lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+               lidErrorList.add(lidError);
+               return lidErrorList;
             }
             //if user enters LID and SystemCode Validate the LID 
             if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
@@ -190,7 +198,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     errorMessage = bundle.getString ("enter_LID");//"Please Enter LID Value";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                     mLogger.info(mLocalizer.x("ASM004: LID/SystemCode Validation failed: Please Enter LID Value" ));
-                    return null;
+               ArrayList lidErrorList = new ArrayList();            
+               HashMap lidError = new HashMap();                   //fix of 6703149
+               lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+               lidErrorList.add(lidError);
+               return lidErrorList;
                 }
             }
             //if user enters LID and SystemCode Validate the LID 
@@ -206,7 +218,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                             mLogger.info(mLocalizer.x("ASM005: LID/SYSTEM CODE Validation failed : {0}" ,errorMessage));
-                            return null;
+                               ArrayList lidErrorList = new ArrayList();            
+                               HashMap lidError = new HashMap();                   //fix of 6703149
+                               lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+                               lidErrorList.add(lidError);
+                               return lidErrorList;
                         }
 
                     } catch (Exception ex) {

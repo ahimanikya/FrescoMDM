@@ -620,9 +620,14 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
  
  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
  
-%>
+%><!-- fix of 6703149 -->
 <% if (!iscompareEuids && finalArrayList != null)   {%>
-
+<%	HashMap lidErrorMap = new HashMap(); 
+	if(finalArrayList.size()>0 && finalArrayList.get(0) instanceof HashMap){
+		lidErrorMap = (finalArrayList.get(0)!=null)?(HashMap)finalArrayList.get(0):new HashMap();
+	}
+  	if(lidErrorMap.get("LID_SYSTEM_CODE_ERROR")==null){
+%>
  <table border="0" cellpadding="0" cellspacing="0" style="font-size:12px;align:right;width:100%;border: 1px solid #6B757B;"> 
          <tr>
            <td  align="left" >
@@ -640,8 +645,8 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
             </td>
 			</tr>
        </table>    
+	<% } %>
 <% } %>
-
 <%if (!isEuidValueNotEntered && iscompareEuids && finalArrayList != null && finalArrayList.size() == 0) {%>
    <div class="ajaxalert">
 		   <table cellpadding="0" cellspacing="0" border="0">
@@ -655,6 +660,31 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
    <%}%> 
 
 <% if (finalArrayList != null && finalArrayList.size() > 0 )   {%>
+<% 	//fix of 6703149
+	HashMap lidErorMap = new HashMap(); 
+	if(finalArrayList.size()>0 && finalArrayList.get(0) instanceof HashMap){
+		lidErorMap = (finalArrayList.get(0)!=null)?(HashMap)finalArrayList.get(0):new HashMap();
+	}
+	if(lidErorMap!=null && lidErorMap.get("LID_SYSTEM_CODE_ERROR")!=null){
+%>
+ 		   <table cellpadding="0" cellspacing="0" border="0">
+			 <tr>
+				 <td>
+					<script>
+						 var messages = document.getElementById("messages");
+						 messages.innerHTML= "<ul><li><%=lidErorMap.get("LID_SYSTEM_CODE_ERROR")%></li></ul>";
+						 var formNameValue = document.forms['advancedformData'];
+                         var lidField =  getDateFieldName(formNameValue.name,'LID');
+			             if(lidField != null) {
+                          document.getElementById(lidField).focus();
+			            }
+	   			   </script>
+ 				 </td>
+			 </tr>
+		   </table>
+ <%
+ 	}else{
+%>
 <%if(iscompareEuids) {%>
    <%String finalEuidsString = searchDuplicatesHandler.buildDuplicateEuids(finalArrayList);%> 
     <table><tr><td>
@@ -1229,9 +1259,9 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 			window.location = "#row<%=row%>";
 	</script></td></tr>
 	</table>
-<%}%>
-
-<% } else { %> <!-- End results!= null -->
+ <%}%>
+<%} //end of else (if not lidError )%>
+<%} else { %> <!-- End results!= null -->
     <div class="ajaxalert">
     <table>
 	   <tr>

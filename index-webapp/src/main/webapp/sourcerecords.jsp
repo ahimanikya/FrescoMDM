@@ -992,7 +992,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                         </tr>
                                                     </table>
 													<table><tr><td>	<div id="lidAlreadyfoundDiv" class="ajaxalert"></td></tr></table>
-
+													<table><tr><td><div id="errormessages" class="ajaxalert"> </div></td></tr></table>
 													</div>
 													<div id="saveButtons" style="visibility:hidden;display:none">
                                                     <table>

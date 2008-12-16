@@ -147,6 +147,31 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 results = transactionHandler.transactionSearch();
 ArrayList resultConfigArray = transactionHandler.getResultsConfigArray();
 if (results != null)   {
+	  //fix of 6703149
+	HashMap lidErorMap = new HashMap(); 
+	if(results.size()>0 && results.get(0) instanceof HashMap){
+		lidErorMap = (results.get(0)!=null)?(HashMap)results.get(0):new HashMap();
+	}
+
+	if(lidErorMap!=null && lidErorMap.get("LID_SYSTEM_CODE_ERROR")!=null){
+%>
+ 		   <table cellpadding="0" cellspacing="0" border="0">
+			 <tr>
+				 <td>
+					<script>
+						 var messages = document.getElementById("messages");
+						 messages.innerHTML= "<ul><li><%=lidErorMap.get("LID_SYSTEM_CODE_ERROR")%></li></ul>";
+						 var formNameValue = document.forms['advancedformData'];
+                         var lidField =  getDateFieldName(formNameValue.name,'LID');
+			             if(lidField != null) {
+                          document.getElementById(lidField).focus();
+			            }
+	   			   </script>
+ 				 </td>
+			 </tr>
+		   </table>
+ <%
+ 	}else{
 	for (int i=0;i<resultConfigArray.size();i++)    {
        	FieldConfig fieldConfig = (FieldConfig)resultConfigArray.get(i);
 		//keys.add(fieldConfig.getDisplayName());
@@ -170,7 +195,13 @@ if (results != null)   {
     myColumnDefs.append("]");
 
 %>
-
+<%	//fix of 6703149
+	HashMap lidErrorMap = new HashMap(); 
+	if(results.size()>0 && results.get(0) instanceof HashMap){
+		lidErrorMap = (results.get(0)!=null)?(HashMap)results.get(0):new HashMap();
+	}
+  	if(lidErrorMap.get("LID_SYSTEM_CODE_ERROR")==null){
+%>
      <table border="0" cellpadding="0" cellspacing="0"> 
          <tr>
             <td style="width:87%;text-align:right">
@@ -185,6 +216,7 @@ if (results != null)   {
 				<% } %>
             </td>
          </tr>
+<%}%>
          <tr>
          <td colspan="2">
          <% if (results != null && results.size() > 0 )   {%>
@@ -261,7 +293,7 @@ if (results != null)   {
 	     messages.innerHTML= "";
 		 messages.style.visibility="hidden";
 	 </script>
-
+ <%} //fix of 6703149 %>
 <% } else { %> <!-- End results!= null -->
     <div class="ajaxalert">
     <table>

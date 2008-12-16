@@ -456,6 +456,11 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 		 var messages = document.getElementById("messages");
 	     messages.innerHTML= "<ul><li><%=messages%></li></ul>";
 		 messages.style.visibility="visible";
+		 var formNameValue = document.forms['advancedformData'];
+		 var lidField =  getDateFieldName(formNameValue.name,'LID');
+ 		 if(lidField != null) {
+		  document.getElementById(lidField).focus();
+		 }
 	 </script>
 	   </td>
 	   </tr>
@@ -476,6 +481,11 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 		 var messages = document.getElementById("messages");
 	     messages.innerHTML= "<ul><li><%=messages%></li></ul>";
 		 messages.style.visibility="visible";
+		 var formNameValue = document.forms['advancedformData'];
+		 var lidField =  getDateFieldName(formNameValue.name,'LID');
+ 		 if(lidField != null) {
+		  document.getElementById(lidField).focus();
+		 }
 	 </script>
 	   </td>
 	   </tr>
@@ -673,7 +683,6 @@ if (results != null)   {
 	     messages.innerHTML= "";
 		 messages.style.visibility="hidden";
 	 </script>
-
 <% } else { %> <!-- End results!= null -->
     <div class="ajaxalert">
 <p style="text-align:left;color:red;">

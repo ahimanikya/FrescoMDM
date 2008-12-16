@@ -394,6 +394,13 @@ boolean isSessionActive = true;
 												<%= facesMessage.getSummary() %>												 
 											 </li>
 										 <% } %>
+										 <script>
+											 var formNameValue = document.forms['basicViewformData'];
+											 var lidField =  getDateFieldName(formNameValue.name,'LID');
+											 if(lidField != null) {
+											  document.getElementById(lidField).focus();
+											}
+										 </script>
 									  </ul>
 								<td>
 							<tr>

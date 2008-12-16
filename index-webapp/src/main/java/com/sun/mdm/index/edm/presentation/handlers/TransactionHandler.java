@@ -169,7 +169,11 @@ public class TransactionHandler extends ScreenConfiguration {
                     String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
                     String messages = localIdDesignation + " " + bundle.getString("lid_format_error_text") + " " +(String)getUpdateableFeildsMap().get("lidmask");
                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, messages,messages));
-                   return null;
+                   ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                   HashMap lidError = new HashMap();                   
+                   lidError.put("LID_SYSTEM_CODE_ERROR",messages);
+                   lidErrorList.add(lidError);
+                   return lidErrorList;                
                 }                  
             }
 
@@ -179,7 +183,11 @@ public class TransactionHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString("LID_only");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                  mLogger.info(mLocalizer.x("TRS002: {0}",errorMessage));
-                return null;
+                   ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                   HashMap lidError = new HashMap();                   
+                   lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+                   lidErrorList.add(lidError);
+                   return lidErrorList; 
             }
             
             //if user enters LID and SystemCode Validate the LID 
@@ -190,7 +198,11 @@ public class TransactionHandler extends ScreenConfiguration {
                     errorMessage = bundle.getString("enter_LID");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     mLogger.info(mLocalizer.x("TRS003: {0}",errorMessage));
-                    return null;
+                   ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                   HashMap lidError = new HashMap();                   
+                   lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+                   lidErrorList.add(lidError);
+                   return lidErrorList; 
                 }
             }
 
@@ -208,7 +220,11 @@ public class TransactionHandler extends ScreenConfiguration {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                             mLogger.info(mLocalizer.x("TRS004: {0}",errorMessage));
-                            return null;
+                           ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                           HashMap lidError = new HashMap();                   
+                           lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+                           lidErrorList.add(lidError);
+                           return lidErrorList; 
                         }
                     } catch (Exception ex) {
                         if (ex instanceof ValidationException) {

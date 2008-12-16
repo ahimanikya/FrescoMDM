@@ -212,7 +212,11 @@ public class AuditLogHandler extends ScreenConfiguration {
                     String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
                     String messages = localIdDesignation + " " + bundle.getString("lid_format_error_text") + " " +(String)getUpdateableFeildsMap().get("lidmask");
                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, messages,messages));
-                   return null;
+                   ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                   HashMap lidError = new HashMap();                   
+                   lidError.put("LID_SYSTEM_CODE_ERROR",messages);
+                   lidErrorList.add(lidError);
+                   return lidErrorList; 
                 }                  
             }
             
@@ -222,9 +226,11 @@ public class AuditLogHandler extends ScreenConfiguration {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                 mLogger.info(mLocalizer.x("AUD002: {0} ",errorMessage ));
-                return null;
-
-            }
+               ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+               HashMap lidError = new HashMap();                   
+               lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+               lidErrorList.add(lidError);
+               return lidErrorList;             }
             //if user enters LID and SystemCode Validate the LID 
             if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
                 String LID = (String) super.getUpdateableFeildsMap().get("LID");
@@ -234,7 +240,11 @@ public class AuditLogHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                    // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                     mLogger.info(mLocalizer.x("AUD003: LID/SystemCode Validation failed : {0}" , errorMessage));
-                    return null;
+                   ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                   HashMap lidError = new HashMap();                   
+                   lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+                   lidErrorList.add(lidError);
+                   return lidErrorList;  
 
                 }
             }
@@ -254,7 +264,11 @@ public class AuditLogHandler extends ScreenConfiguration {
                             String msg = bundle.getString("LID_SYSTEM_CODE");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
                             mLogger.info(mLocalizer.x("AUD004: LID Validation failed : {0}", LID, errorMessage));
-                            return null;
+                           ArrayList lidErrorList = new ArrayList();           //fix of 6703149 
+                           HashMap lidError = new HashMap();                   
+                           lidError.put("LID_SYSTEM_CODE_ERROR",errorMessage);
+                           lidErrorList.add(lidError);
+                           return lidErrorList;  
                         }
                     } 
 
