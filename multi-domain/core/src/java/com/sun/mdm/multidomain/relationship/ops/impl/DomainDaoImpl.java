@@ -76,12 +76,11 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
             }
             String sqlStr = SQLBuilder.buildSQL(builder);
             stmt = mConn.prepareStatement(sqlStr);
-            int index = 1;
-            stmt.setString(index++, dto.getDomainName());
-            stmt.setString(index++, dto.getContextFactory());
-            stmt.setString(index++, dto.getUrl());
-            stmt.setString(index++, dto.getPrincipal());
-            stmt.setString(index++, dto.getCredential());
+            stmt.setString(DOMAINS.DOMAIN_NAME.ordinal() + 1, dto.getDomainName());
+            stmt.setString(DOMAINS.CONTEXT_FACTORY.ordinal() + 1, dto.getContextFactory());
+            stmt.setString(DOMAINS.URL.ordinal() + 1, dto.getUrl());
+            stmt.setString(DOMAINS.PRINCIPAL.ordinal() + 1, dto.getPrincipal());
+            stmt.setString(DOMAINS.CREDENTIAL.ordinal() + 1, dto.getCredential());
             int rows = stmt.executeUpdate();
             stmt.close();
             return rows;
@@ -98,7 +97,7 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
     /**
      * Updates a single row in the DOMAINS table.
      */
-    public void update(long pk, Domain dto) throws DaoException {
+    public int update(Domain dto) throws DaoException {
 
         PreparedStatement stmt = null;
         try {
@@ -107,7 +106,7 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
             updateBld.setTable(DOMAINS.getTableName());
             for (DOMAINS d : DOMAINS.values()) {
                 if (d.columnName.equalsIgnoreCase(DOMAINS.getPKColumName())) {
-                    updateBld.addCriteria(d.columnName);
+                    updateBld.addCriteria(new Parameter(d.columnName));
                 } else {
                     updateBld.addColumns(d.columnName);
                 }
@@ -115,13 +114,15 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
             String sqlStr = SQLBuilder.buildSQL(updateBld);
             stmt = mConn.prepareStatement(sqlStr);
             int index = 1;
-            stmt.setString(index++, dto.getDomainName());
             stmt.setString(index++, dto.getContextFactory());
             stmt.setString(index++, dto.getUrl());
             stmt.setString(index++, dto.getPrincipal());
             stmt.setString(index++, dto.getCredential());
+            // Primary key
+            stmt.setString(index++, dto.getDomainName());
 
             int rows = stmt.executeUpdate();
+            return rows;
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new DaoException("Exception: " + _e.getMessage(), _e);
@@ -132,7 +133,7 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
     /**
      * Deletes a single row in the DOMAINS table.
      */
-    public void delete(long pk) throws DaoException {
+    public void delete(Domain dto) throws DaoException {
 
         PreparedStatement stmt = null;
         try {
@@ -146,7 +147,7 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
             }
             String sqlStr = SQLBuilder.buildSQL(deleteBld);
             stmt = mConn.prepareStatement(sqlStr);
-            stmt.setLong(1, pk);
+            stmt.setString(1, dto.getDomainName());
             int rows = stmt.executeUpdate();
         } catch (Exception _e) {
             _e.printStackTrace();
@@ -173,7 +174,6 @@ public class DomainDaoImpl extends AbstractDAO implements DomainDao {
             throw new DaoException("Exception: " + _e.getMessage(), _e);
         }
     }
-
 
     /**
      * Sets the value of maxRows

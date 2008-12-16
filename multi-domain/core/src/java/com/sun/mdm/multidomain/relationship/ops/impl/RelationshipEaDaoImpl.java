@@ -113,7 +113,7 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
             updateBld.setTable(RELATIONSHIP_EA.getTableName());
             for (RELATIONSHIP_EA ea : RELATIONSHIP_EA.values()) {
                 if (ea.columnName.equalsIgnoreCase(RELATIONSHIP_DEF.getPKColumName())) {
-                    updateBld.addCriteria(ea.columnName);
+                    updateBld.addCriteria(new Parameter(ea.columnName));
                 } else {
                     updateBld.addColumns(ea.columnName);
                 }

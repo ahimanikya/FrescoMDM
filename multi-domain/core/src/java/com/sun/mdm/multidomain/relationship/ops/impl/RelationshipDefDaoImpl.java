@@ -35,7 +35,6 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.RelationshipDef.DirectionMode;
 import com.sun.mdm.multidomain.relationship.ops.dao.AbstractDAO;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDefDao;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipDefDaoException;
 import com.sun.mdm.multidomain.sql.AND;
 import com.sun.mdm.multidomain.sql.Criteria;
@@ -100,7 +99,7 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             stmt.setString(RELATIONSHIP_DEF.EFFECTIVE_FROM_REQ.ordinal() + 1, relDef.getEffectiveFromRequired() ? "T" : "F");
             stmt.setString(RELATIONSHIP_DEF.EFFECTIVE_TO_REQ.ordinal() + 1, relDef.getEffectiveToRequired() ? "T" : "F");
             stmt.setString(RELATIONSHIP_DEF.PURGE_DATE_REQ.ordinal() + 1, relDef.getPurgeDateRequired() ? "T" : "F");
-            stmt.setString(RELATIONSHIP_DEF.EFFECTIVE_FROM_INCL.ordinal()+ 1, relDef.getEffectiveFromIncluded() ? "T" : "F");
+            stmt.setString(RELATIONSHIP_DEF.EFFECTIVE_FROM_INCL.ordinal() + 1, relDef.getEffectiveFromIncluded() ? "T" : "F");
             stmt.setString(RELATIONSHIP_DEF.EFFECTIVE_TO_INCL.ordinal() + 1, relDef.getEffectiveToIncluded() ? "T" : "F");
             stmt.setString(RELATIONSHIP_DEF.PURGE_DATE_INCL.ordinal() + 1, relDef.getPurgeDateIncluded() ? "T" : "F");
             stmt.setString(RELATIONSHIP_DEF.PLUGIN.ordinal() + 1, relDef.getPlugin());
@@ -127,40 +126,39 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
     /**
      * Updates a single row in the relationship_def table.
      */
-    public int update(RelationshipDefDto dto) throws RelationshipDefDaoException {
+    public int update(RelationshipDef relDef) throws RelationshipDefDaoException {
         PreparedStatement stmt = null;
 
         try {
             UpdateBuilder builder = new UpdateBuilder();
             builder.setTable(RELATIONSHIP_DEF.getTableName());
             for (RELATIONSHIP_DEF rel : RELATIONSHIP_DEF.values()) {
-                switch (rel) {
-                    case RELATIONSHIP_DEF_ID:
-                        builder.addCriteria(rel.columnName);
-                        break;
-                    default:
-                        builder.addColumns(rel.columnName);
+                if (rel.columnName.equalsIgnoreCase(RELATIONSHIP_DEF.getPKColumName())) {
+
+                    builder.addCriteria(new Parameter(rel.columnName));
+                } else {
+                    builder.addColumns(rel.columnName);
                 }
             }
             String sqlStr = SQLBuilder.buildSQL(builder);
             stmt = userConn.prepareStatement(sqlStr);
 
             int index = 1;
-            stmt.setString(index++, dto.getRelationshipName());
-            stmt.setString(index++, dto.getDescription());
-            stmt.setString(index++, dto.getSourceDomain());
-            stmt.setString(index++, dto.getTargetDomain());
-            stmt.setString(index++, dto.getBidirectional());
-            stmt.setString(index++, dto.getEffectiveFromReq());
-            stmt.setString(index++, dto.getEffectiveToReq());
-            stmt.setString(index++, dto.getPurgeDateReq());
-            stmt.setString(index++, dto.getEffectiveToInc());
-            stmt.setString(index++, dto.getEffectiveFromInc());
-            stmt.setString(index++, dto.getPurgeDateInc());
-            stmt.setString(index++, dto.getPlugIn());
+            stmt.setString(index++, relDef.getName());
+            stmt.setString(index++, relDef.getDescription());
+            stmt.setString(index++, relDef.getSourceDomain());
+            stmt.setString(index++, relDef.getTargetDomain());
+            stmt.setString(index++, relDef.getDirection().IsBidirectional() ? "T" : "F");
+            stmt.setString(index++, relDef.getEffectiveFromRequired() ? "T" : "F");
+            stmt.setString(index++, relDef.getEffectiveToRequired() ? "T" : "F");
+            stmt.setString(index++, relDef.getPurgeDateRequired() ? "T" : "F");
+            stmt.setString(index++, relDef.getEffectiveFromIncluded() ? "T" : "F");
+            stmt.setString(index++, relDef.getEffectiveToIncluded() ? "T" : "F");
+            stmt.setString(index++, relDef.getPurgeDateIncluded() ? "T" : "F");
+            stmt.setString(index++, relDef.getPlugin());
 
-            /* set update SQL criteria */
-            stmt.setLong(index++, dto.getRelationshipDefId());
+            /* set primary key column */
+            stmt.setLong(index++, relDef.getId());
             int rows = stmt.executeUpdate();
 
             return rows;
