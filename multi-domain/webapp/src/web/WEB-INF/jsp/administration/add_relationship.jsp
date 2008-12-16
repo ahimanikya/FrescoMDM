@@ -99,22 +99,7 @@
     </tr>
     
 </table>
-<!--
-<div id="errorDialog" class="MainBox" dojoType="dijit.Dialog" title="Error Message" style="display:none;width:500px;">
-    <table>
-        <tr>
-            <td>
-                <b>Please Enter the Name</b>
-            </td>
-        </tr>
-        <tr>
-            <td align="center">
-               <input type="button" value="ok" onclick="dijit.byId('errorDialog').hide();"/>
-            </td>
-        </tr>
-    </table>
-</div>
--->
+
 
 
 
@@ -130,19 +115,19 @@ function validateRelationshipForm() {
     var pluginName = dojo.byId("relationship_add_plugin").value;
     var description = dojo.byId("relationship_add_description").value;
     if(relationshipDefName == '') {
-       alert("Please Enter the Name.");
+       alert(getMessageForI18N("enter_name"));
        dojo.byId('relationship_add_name').focus();
        return false;
     }
 
     if(direction == '') {
-       alert("Please Select the Direction.");
+       alert(getMessageForI18N("select_direction"));
        dojo.byId('relationship_add_direction').focus();
        return false;
     }
 
     if(pluginName == '') {
-       alert("Please Select the Plugin.");
+       alert(getMessageForI18N("select_plugin"));
        dojo.byId('relationship_add_plugin').focus();
        return false;
     }           

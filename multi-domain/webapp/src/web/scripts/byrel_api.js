@@ -246,15 +246,15 @@ function searchRelationships() {
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
     
    if(sourceDomain == null || sourceDomain == "") {
-       alert(getMessageForI18N("selectsourcedomain")+ " " +getMessageForI18N("fromthelist"));
+       alert(getMessageForI18N("select_source_record"));
        return false;
    }
    if(targetDomain == null || targetDomain == "") {
-       alert(getMessageForI18N("selecttargetdomain")+ " " +getMessageForI18N("fromthelist"));
+       alert(getMessageForI18N("select_destination_record"));
        return false;
    }   
    if(relationshipDef == null || relationshipDef == "") {
-       alert(getMessageForI18N("selectarelationshipDef")+ " " +getMessageForI18N("fromthelist"));
+       alert(getMessageForI18N("select_relationshipDef"));
        return false;
    }
    currentSelectedSourceDomain = sourceDomain ;
@@ -1123,13 +1123,13 @@ function ByRelAddRelationship(){
         }       
    } 
     if(s == 0) {
-       alert(getMessageForI18N("SelectAtleastOneRecord") + " " + getMessageForI18N("fromSourceDomain"));    
+       alert(getMessageForI18N("select_atleast_one_source_record"));    
     }else if(t == 0 ){
-        alert(getMessageForI18N("SelectAtleastOneRecord") + " " + getMessageForI18N("fromTargetDomain"));    
+       alert(getMessageForI18N("select_atleast_one_destination_record"));    
     }        
 }
 function addRelationshipCB(data) {
-    alert("New relationship record added, id is : " + data);
+  alert("New relationship record added, id is : " + data);
     hideByRelAddDialog();
     
     // refresh the relationship listing 

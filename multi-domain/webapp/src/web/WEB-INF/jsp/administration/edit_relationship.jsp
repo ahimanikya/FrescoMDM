@@ -105,21 +105,21 @@ function validateEditRelationshipForm() {
     var description = dojo.byId("relationship_edit_description").value;
   if(dojo.byId('relationship_edit_name').value=='') 
    {
-       alert("Please Enter the Name.");
+       alert(getMessageForI18N("select_name"));
        dojo.byId('relationship_edit_name').focus();
        return false;
    }
 
    if(dojo.byId('relationship_edit_direction').value=='') 
    {
-       alert("Please Select the Direction.");
+       alert(getMessageForI18N("select_direction"));
        dojo.byId('relationship_edit_direction').focus();
        return false;
    }
 
    if(dojo.byId('relationship_edit_plugin').value=='') 
    {
-       alert("Please Select the Plugin.");
+       alert(getMessageForI18N("select_plugin"));
        dojo.byId('relationship_edit_plugin').focus();
        return false;
    }

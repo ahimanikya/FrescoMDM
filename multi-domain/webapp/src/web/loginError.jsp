@@ -29,9 +29,6 @@
      
     <c:url var="url" value="/index.jsp"/>
     <h2><f:message key="login_failure_message" /></h2>
-    <p>Please enter a user name or password that is authorized to access this application.  
-  For this application, this means a user that has been created 
-in the <code>file</code> realm and has been assigned to the <em>group</em> of <code>user</
-code>.  Click here to <a href="login.jsp">Try Again</a></h2>
+    <p> <f:message key="login_failure_long" /> <f:message key="click_here" /> <a href="login.jsp"><f:message key="try_again" /></a></p>
     </body>
 </html>

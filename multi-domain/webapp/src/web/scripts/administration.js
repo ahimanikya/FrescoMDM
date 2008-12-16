@@ -57,20 +57,20 @@ function validateRelationshipForm() {
     var direction = dojo.byId("relationship_add_direction").value;
     var pluginName = dojo.byId("relationship_add_plugin").value;
     var description = dojo.byId("relationship_add_description").value;
-    if(relationshipDefName == '') {
-       alert("Please Enter the Name.");
+    if(relationshipDefName == '') { 
+       alert(getMessageForI18N("enter_name"));
        dojo.byId('relationship_add_name').focus();
        return false;
     }
 
     if(direction == "") {
-       alert("Please Select the Direction.");
+       alert(getMessageForI18N("select_direction"));
        dojo.byId('relationship_add_direction').focus();
        return false;
     }
 
     if(pluginName == '') {
-       alert("Please Select the Plugin.");
+       alert(getMessageForI18N("select_plugin"));
        dojo.byId('relationship_add_plugin').focus();
        return false;
     }           
@@ -169,13 +169,13 @@ function validateHierarchyForm() {
       * dijit.byId("hierarchy_add_description").attr("value");
       * */
     if(dojo.byId('hierarchy_add_name').value=='') {
-       alert("Please Enter the Name.");
+       alert(getMessageForI18N("select_name"));
        dojo.byId('hierarchy_add_name').focus();
        return false;
     }
 
     if(dojo.byId('hierarchy_add_plugin').value=='') {
-       alert("Please Select the Plugin.");
+       alert(getMessageForI18N("select_plugin"));
        dojo.byId('hierarchy_add_plugin').focus();
        return false;
     }
@@ -272,14 +272,14 @@ function validateEditHierarchyForm() {
     
       if(dojo.byId('hierarchy_edit_name').value=='') 
        {
-           alert("Please Enter the Name.");
+           alert(getMessageForI18N("select_name"));
            dojo.byId('hierarchy_edit_name').focus();
            return false;
        }
        
        if(dojo.byId('hierarchy_edit_plugin').value=='') 
        {
-           alert("Please Select the Plugin.");
+           alert(getMessageForI18N("select_plugin"));
            dojo.byId('hierarchy_edit_plugin').focus();
            return false;
        }

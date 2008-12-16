@@ -30,16 +30,22 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["SelectAtleastOneRecord"] = '<f:message key="select_atleast_one_record_text" />';
     messages ["fromSourceDomain"] = '<f:message key="lower_from_text" />' + '<f:message key="source_domain_text" />' + '<f:message key="period_symbol" />';
     messages ["fromTargetDomain"] = '<f:message key="lower_from_text" />' + '<f:message key="target_domain_text" />' + '<f:message key="period_symbol" />';
-    messages ["selectsourcedomain"] = '<f:message key="select_text" />' + '<f:message key="source_domain_text" />' + '<f:message key="period_symbol" />';
-    messages ["selecttargetdomain"] = '<f:message key="select_text" />' + '<f:message key="target_domain_text" />' + '<f:message key="period_symbol" />';
-    messages ["selectarelationshipDef"] = '<f:message key="select_relationshipDef_text" />';
+    messages ["selectsourcedomain"] = '<f:message key="select_source_domain" />';
+    messages ["selecttargetdomain"] = '<f:message key="select_target_domain" />';
+    messages ["select_relationshipDef"] = '<f:message key="select_relationshipDef" />';
     messages ["fromthelist"] = '<f:message key="from_the_list_text" />' + '<f:message key="period_symbol" />';
     messages ["effective"] = '<f:message key="effective_text" />';
     messages ["from"] = '<f:message key="from_text" />';
     messages ["to"] = '<f:message key="to_text" />';
     messages ["mandatorySymbol"] = '<f:message key="mandatory_symbol" />';
     messages ["period"] = '<f:message key="period_symbol" />';
-    
+    messages ["enter_name"] = '<f:message key="enter_name" />';
+    messages ["select_direction"] = '<f:message key="select_direction" />';
+    messages ["select_plugin"] = '<f:message key="select_plugin" />';
+    messages ["select_source_record"] = '<f:message key="select_source_record" />';
+    messages ["select_destination_record"] = '<f:message key="select_destination_record" />';
+    messages ["select_atleast_one_source_record"] = '<f:message key="select_atleast_one_source_record" />';
+    messages ["select_atleast_one_destination_record"] = '<f:message key="select_atleast_one_destination_record" />';
     
    messages ["exception"] = '<f:message key="exception_text" />' + '<f:message key="colon_symbol" />';
 
