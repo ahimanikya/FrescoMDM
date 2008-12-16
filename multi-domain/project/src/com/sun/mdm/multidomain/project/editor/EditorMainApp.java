@@ -51,7 +51,11 @@ import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileLock;
+
 
 /**
  * Main application class for Multi-Domain MDM Configuration Editor
@@ -298,6 +302,7 @@ public class EditorMainApp {
      */
     public void loadDomains() {
         // Load mMapDomainObjectXmls and mMapDomainNodes
+        
         FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
         FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
         FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
@@ -368,6 +373,7 @@ public class EditorMainApp {
                 FileObject midmXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.MIDM_XML);
                 FileObject projectDir = mMultiDomainApplication.getProjectDirectory();
                 FileObject srcFolder = projectDir.getFileObject(MultiDomainProjectProperties.SRC_FOLDER);
+                FileObject configFolder = srcFolder.getFileObject(MultiDomainProjectProperties.CONFIGURATION_FOLDER);
                 FileObject domainsFolder = srcFolder.getFileObject(MultiDomainProjectProperties.DOMAINS_FOLDER);
                 if (domainsFolder == null) {
                     domainsFolder = srcFolder.createFolder(MultiDomainProjectProperties.DOMAINS_FOLDER);
@@ -387,6 +393,18 @@ public class EditorMainApp {
                 mMapDomainNodes.put(domainName, domainNode);
                 mMapDomainNodesSaved.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToOverview(domainNode, true);
+                FileObject midmDomainFolder = configFolder.getFileObject(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_FOLDER);
+                if (midmDomainFolder == null) {
+                    midmDomainFolder = configFolder.createFolder(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_FOLDER);
+                }
+                FileObject file = midmDomainFolder.getFileObject(domainName + MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
+
+                if (file == null) {
+                    file = midmDomainFolder.createData(domainName + MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
+                }
+
+                String midmNodeXml = domainNode.writeDomainObject();
+                writeMidmObjectNodeFile(file, midmNodeXml);
                 if (mMultiDomainWebManager.getDomains().getDomain(domainNode.getName()) == null) {
                     mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
                 }
@@ -397,6 +415,21 @@ public class EditorMainApp {
         return added;
     }
     
+    private void writeMidmObjectNodeFile(FileObject file, String str) {
+        if (file != null) {
+            try {
+                FileLock fileLock = file.lock();
+                OutputStream out = file.getOutputStream(fileLock);
+                OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+                writer.write(str);
+                writer.close();
+                fileLock.releaseLock();
+            } catch (Exception ex) {
+                mLog.severe(ex.getMessage());
+            }
+        }
+    }
+
     /** Called from save()
      *  Do actual remove when save
      * @return

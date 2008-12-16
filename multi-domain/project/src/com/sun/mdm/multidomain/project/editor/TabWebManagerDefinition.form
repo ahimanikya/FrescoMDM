@@ -62,7 +62,7 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="89" max="32767" attributes="0"/>
+              <EmptySpace pref="91" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -128,25 +128,30 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jRBSensitive" alignment="0" pref="150" max="32767" attributes="0"/>
-                      <Component id="jLabelValueMask" alignment="0" pref="150" max="32767" attributes="1"/>
-                      <Component id="jLabelInputMask" alignment="0" pref="150" max="32767" attributes="1"/>
-                      <Component id="jLabelMaxLength" alignment="0" pref="150" max="32767" attributes="0"/>
-                      <Component id="jLabelDataType" alignment="0" pref="150" max="32767" attributes="0"/>
-                      <Component id="jLabelDisplayName" alignment="0" pref="150" max="32767" attributes="1"/>
-                      <Component id="jLabelDisplayOrder" pref="150" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jTxtDisplayOrder" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jTxtDisplayName" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jTxtDataType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jTxtInputMask" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jTxtValueMask" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jSpinnerMaxLength" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="jRBRange" alignment="0" pref="274" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jRBSensitive" alignment="0" pref="150" max="32767" attributes="0"/>
+                              <Component id="jLabelValueMask" alignment="0" pref="150" max="32767" attributes="1"/>
+                              <Component id="jLabelInputMask" alignment="0" pref="150" max="32767" attributes="1"/>
+                              <Component id="jLabelMaxLength" alignment="0" pref="150" max="32767" attributes="0"/>
+                              <Component id="jLabelDataType" alignment="0" pref="150" max="32767" attributes="0"/>
+                              <Component id="jLabelDisplayName" alignment="0" pref="150" max="32767" attributes="1"/>
+                              <Component id="jLabelDisplayOrder" pref="150" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jTxtDisplayOrder" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="jTxtDisplayName" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="jTxtDataType" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="jTxtInputMask" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="jTxtValueMask" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="jSpinnerMaxLength" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -192,7 +197,9 @@
                           <Component id="jRBSensitive" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jRBRange" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -272,6 +279,16 @@
               <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="jRBRange">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="com/sun/mdm/multidomain/project/editor/Bundle.properties" key="LBL_FIELD_REF_IS_RANGE" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRBRange"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

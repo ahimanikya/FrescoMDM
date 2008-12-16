@@ -49,6 +49,7 @@ import com.sun.mdm.multidomain.parser.MiNodeDef;
 import com.sun.mdm.multidomain.parser.MiFieldDef;
 import com.sun.mdm.multidomain.parser.MiObject;
 import com.sun.mdm.multidomain.parser.Utils;
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.EditorMainApp;
 import com.sun.mdm.multidomain.project.editor.TabDomainSearch;
@@ -206,6 +207,26 @@ public class DomainNode extends AbstractNode {
         return domainWebObject;
     }
     
+    public String writeDomainObject() {
+        
+        String domainMidmXml = null;
+        try {
+            //mEditorMainApp.getDomainMidmXml(PROP_NAME)
+            FileObject objectXml = mEditorMainApp.getDomainMidmXml(mSelectedDomain.getName());
+            if (objectXml != null) {
+                InputStream objectdef = objectXml.getInputStream();
+                InputSource source = new InputSource(objectdef);
+                domainMidmXml = Utils.parseMidmNodeObject(source);
+//                domainWebObject = Utils.parseMidmObject(source);
+            }
+        } catch (Exception ex) {
+                mLog.severe(ex.getMessage());
+        }
+        
+        return domainMidmXml;
+        
+    }
+    
     private void addChildren(MiNodeDef node) {
         ArrayList children = node.getChildren();
         if (children != null) {
@@ -308,6 +329,7 @@ public class DomainNode extends AbstractNode {
             DomainForWebManager domain = mEditorMainApp.getMultiDomainWebManager(false).getDomains().getDomain(this.getName());
             if (domain == null) {
                 domain = getMidmObject();
+                domain.setMidmXMLLocation(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_FOLDER + File.separator + domain.getDomainName() + MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
                 mEditorMainApp.getMultiDomainWebManager(false).getDomains().addDomain(domain);
             }
             mTabDomainSearch = new TabDomainSearch(mEditorMainApp, domain);
@@ -320,6 +342,8 @@ public class DomainNode extends AbstractNode {
             DomainForWebManager domain = mEditorMainApp.getMultiDomainWebManager(false).getDomains().getDomain(this.getName());
             if (domain == null) {
                 domain = getMidmObject();
+                domain.setMidmXMLLocation(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_FOLDER + File.separator + domain.getDomainName() + MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
+                //writeDomainObject();
                 mEditorMainApp.getMultiDomainWebManager(false).getDomains().addDomain(domain);
             }
             mTabDomainView = new TabDomainView(mEditorMainApp, domain);

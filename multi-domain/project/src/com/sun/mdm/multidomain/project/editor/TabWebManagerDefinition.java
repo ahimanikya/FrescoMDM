@@ -167,6 +167,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                     this.jTxtInputMask.setText(mSelectedRow.getInputMask());
                     this.jTxtValueMask.setText(mSelectedRow.getValueMask());
                     this.jRBSensitive.setSelected(mSelectedRow.isSensitive());
+                    this.jRBRange.setSelected(mSelectedRow.isRangeSearch());
                     mRelationFieldReference = mMapRelationFieldReference.get(fieldName);
                 }
             }
@@ -208,9 +209,10 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             boolean senstive = field.isSensitive();
             String inputMask = field.getInputMask();
             String valueMask = field.getOutputMask();
+            boolean range = field.isRangeSearch();
 
             FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
-                        maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask);
+                        maxLen, true, guiType, valueList, valueType, senstive, inputMask, valueMask, range);
             attrs.add(row);
             
             mMapRelationFieldReference.put(fieldName, field);
@@ -233,9 +235,10 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
             boolean senstive = field.isSensitive();
             String inputMask = field.getInputMask();
             String valueMask = field.getOutputMask();
+            boolean range = field.isRangeSearch();
 
             FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
-                        maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask);
+                        maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask, range);
             attrs.add(row);
             mMapRelationFieldReference.put(fieldName, field);
         }
@@ -257,8 +260,9 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         boolean senstive = field.isSensitive();
         String inputMask = field.getInputMask();
         String valueMask = field.getOutputMask();
+        boolean isRange = false;
         FieldAttributeRow row = new FieldAttributeRow(fieldName, displayName, displayFieldOrder, 
-                        maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask);
+                        maxLen, false, guiType, valueList, valueType, senstive, inputMask, valueMask, isRange);
         
         TableModelRelationshipField model = (TableModelRelationshipField) mTableExtendedAttrs.getModel();
         int rowCount = model.getRowCount();
@@ -331,6 +335,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
         jTxtValueMask = new javax.swing.JTextField();
         jRBSensitive = new javax.swing.JRadioButton();
         jSpinnerMaxLength = new javax.swing.JSpinner();
+        jRBRange = new javax.swing.JRadioButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -379,28 +384,38 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
 
         jSpinnerMaxLength.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
+        jRBRange.setText(org.openide.util.NbBundle.getMessage(TabWebManagerDefinition.class, "LBL_FIELD_REF_IS_RANGE")); // NOI18N
+        jRBRange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onRBRange(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanelFieldPropertiesLayout = new org.jdesktop.layout.GroupLayout(jPanelFieldProperties);
         jPanelFieldProperties.setLayout(jPanelFieldPropertiesLayout);
         jPanelFieldPropertiesLayout.setHorizontalGroup(
             jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelFieldPropertiesLayout.createSequentialGroup()
+            .add(jPanelFieldPropertiesLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jRBSensitive, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .add(jLabelMaxLength, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .add(jLabelDataType, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .add(jLabelDisplayOrder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jTxtDisplayOrder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTxtDisplayName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTxtDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTxtInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTxtValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jSpinnerMaxLength, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jRBRange, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                    .add(jPanelFieldPropertiesLayout.createSequentialGroup()
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jRBSensitive, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .add(jLabelMaxLength, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .add(jLabelDataType, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .add(jLabelDisplayOrder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanelFieldPropertiesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jTxtDisplayOrder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jTxtDisplayName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jTxtDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jTxtInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jTxtValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jSpinnerMaxLength, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanelFieldPropertiesLayout.setVerticalGroup(
@@ -435,7 +450,9 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                             .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jRBSensitive)))
-                .add(82, 82, 82))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jRBRange)
+                .add(57, 57, 57))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -473,7 +490,7 @@ public class TabWebManagerDefinition extends javax.swing.JPanel {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(jScrollPaneExtendedAttrs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 179, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .add(12, 12, 12)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -482,6 +499,7 @@ private void onRBSensitive(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
     TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
     FieldAttributeRow fieldRef = model.getRow(selectedRow);
     fieldRef.setSensitive(this.jRBSensitive.isSelected());
+    mRelationFieldReference.setSensitive(jRBSensitive.isSelected());
     mEditorMainApp.enableSaveAction(true);
 }//GEN-LAST:event_onRBSensitive
 
@@ -526,6 +544,16 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
     mEditorMainApp.enableSaveAction(true);
 }//GEN-LAST:event_onUpBtn
 
+private void onRBRange(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRBRange
+    int selectedRow = mTableOnFocus.getSelectedRow();
+    TableModelRelationshipField model = (TableModelRelationshipField) mTableOnFocus.getModel();
+    FieldAttributeRow fieldRef = model.getRow(selectedRow);
+    fieldRef.setRangeSearch(this.jRBRange.isSelected());
+    mRelationFieldReference.setRangeSearch(this.jRBRange.isSelected());
+    mEditorMainApp.enableSaveAction(true);
+
+}//GEN-LAST:event_onRBRange
+
     private void setRelFieldRefs(JTable table) {
         TableModelRelationshipField model = (TableModelRelationshipField) table.getModel();
         int rowCount = model.getRowCount();
@@ -541,9 +569,10 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
             boolean isSensitive = row.isSensitive();
             String inputMask = row.getInputMask();
             String valueMask = row.getValueMask();
+            boolean isRange = row.isRangeSearch();
             
             RelationFieldReference field = new RelationFieldReference(name, displayName, displayOrder,
-                    maxLen, guiType, valueList, valueType, inputMask, valueMask, isSensitive);
+                    maxLen, guiType, valueList, valueType, inputMask, valueMask, isSensitive, isRange);
             if (row.isPredefined()) {
                 ((WebDefinition) mDefinition).getPredefinedFieldRefs().add(field);
             } else {
@@ -598,12 +627,13 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
         private boolean sensitive;
         private String inputMask;
         private String valueMask;
+        private boolean rangeSearch;
 
 
 
         public FieldAttributeRow(String name, String displayName, int displayOrder, 
                 int maxLength, boolean isPredefined, String guiType, String valueList, String valueType,
-                boolean sensitive, String inputMask, String valueMask) {
+                boolean sensitive, String inputMask, String valueMask, boolean isRange) {
             this.name = name;
             this.displayName = displayName;
             this.displayOrder = displayOrder;
@@ -615,6 +645,7 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
             this.sensitive = sensitive;
             this.inputMask = inputMask;
             this.valueMask = valueMask;
+            this.rangeSearch = isRange;
             
         }
 
@@ -704,6 +735,14 @@ private void onUpBtn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpBtn
 
         public void setValueMask(String valueMask) {
             this.valueMask = valueMask;
+        }
+
+        public boolean isRangeSearch() {
+            return rangeSearch;
+        }
+
+        public void setRangeSearch(boolean rangeSearch) {
+            this.rangeSearch = rangeSearch;
         }
 
     }
@@ -834,6 +873,7 @@ class TableModelRelationshipField extends AbstractTableModel {
     private javax.swing.JLabel jLabelMaxLength;
     private javax.swing.JLabel jLabelValueMask;
     private javax.swing.JPanel jPanelFieldProperties;
+    private javax.swing.JRadioButton jRBRange;
     private javax.swing.JRadioButton jRBSensitive;
     private javax.swing.JScrollPane jScrollPaneExtendedAttrs;
     private javax.swing.JScrollPane jScrollPanePredefinedAttrs;
