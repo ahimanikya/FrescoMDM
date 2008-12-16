@@ -39,4 +39,8 @@ public class DomainService {
     public Domain[] getDomains() throws DaoException {
         return new DomainDaoImpl(mConn).getDomains();
     }
+
+    public int update(Domain dom) throws DaoException{
+        return new DomainDaoImpl(mConn).update(dom);
+    }
 }
