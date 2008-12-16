@@ -44,7 +44,6 @@ public class DeleteBuilder extends AbstractBuilder {
         return "";
     }
 
-   
     @Override
     public String getCriteria() {
         if (criteria.size() == 0) {
@@ -57,7 +56,7 @@ public class DeleteBuilder extends AbstractBuilder {
         return sb.toString();
     }
 
-       public void addCriteria(Criteria crit) {
+    public void addCriteria(Criteria crit) {
         if (crit != null) {
             criteria.add(crit);
         }

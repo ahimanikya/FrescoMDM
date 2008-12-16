@@ -20,19 +20,19 @@
  * fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
 package com.sun.mdm.multidomain.sql;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * @author davidp
+ * @author David Peh
  */
 public class UpdateBuilder extends AbstractBuilder {
 
-    private ArrayList<String> columnList = new ArrayList<String>();
-    private ArrayList<String> criteriaList = new ArrayList<String>();
+    private final List<Parameter> columns = new ArrayList<Parameter>();
+    private final List<Criteria> criteria = new ArrayList<Criteria>();
 
     @Override
     public String getCommand() {
@@ -41,50 +41,41 @@ public class UpdateBuilder extends AbstractBuilder {
 
     @Override
     public String getCriteria() {
-        StringBuffer criteria = new StringBuffer();
-        String columnName = null;
-        for (int i = 0; i < criteriaList.size(); i++) {
-            columnName = criteriaList.get(i);
-            criteria.append(columnName);
-            criteria.append("=?");
-            if (i < criteriaList.size() - 1) {
-                criteria.append(" AND ");
-            }
+        if (criteria.size() == 0) {
+            return "";
         }
-        StringBuffer whereClause = new StringBuffer(" WHERE ");
-        whereClause.append(criteria);
-        return whereClause.toString();
+        StringBuffer sb = new StringBuffer("WHERE ");
+        for (Criteria crit : criteria) {
+            sb.append(crit.write());
+        }
+        return sb.toString();
     }
 
     @Override
     public String getColumns() {
-        StringBuffer what = new StringBuffer();
-        StringBuffer columns = new StringBuffer();
-
-        String columnName = null;
-        for (int i = 0; i < columnList.size(); i++) {
-            columnName = columnList.get(i);
-            columns.append(columnName);
-            columns.append("=?");
-            if (i < columnList.size() - 1) {
-                columns.append(',');
+        if (columns.size() == 0) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer(" SET ");
+        for (int i = 0; i < columns.size(); i++) {
+            Parameter col = columns.get(i);
+            sb.append(col.write());
+            if (i < columns.size() - 1) {
+                sb.append(", ");
+            } else {
+                sb.append(' ');
             }
         }
-        what.append(" SET ");
-        what.append(columns);
-
-        return what.toString();
+        return sb.toString();
     }
 
-    public void addColumns(String columnName) {
-        if (columnName != null) {
-            columnList.add(columnName);
-        }
+    public void addColumns(String colName) {
+        columns.add(new Parameter(colName));
     }
 
-    public void addCriteria(String criterion) {
-        if (criterion != null) {
-            criteriaList.add(criterion);
+    public void addCriteria(Criteria crit) {
+        if (crit != null) {
+            criteria.add(crit);
         }
     }
 }
