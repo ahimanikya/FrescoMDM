@@ -36,12 +36,12 @@ public interface DomainDao
 	/** 
 	 * Updates a single row in the Domains table.
 	 */
-	public void update(long pk, Domain dto) throws DaoException;
+	public int update(Domain dto) throws DaoException;
 
 	/** 
 	 * Deletes a single row in the Domains table.
 	 */
-	public void delete(long pk) throws DaoException;
+	public void delete(Domain dto) throws DaoException;
 
 	/** 
 	 * Sets the value of maxRows

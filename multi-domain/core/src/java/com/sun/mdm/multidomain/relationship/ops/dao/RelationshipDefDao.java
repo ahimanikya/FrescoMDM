@@ -37,7 +37,7 @@ public interface RelationshipDefDao {
     /**
      * Updates a single row in the relationship_def table.
      */
-    public int update(RelationshipDefDto dto) throws RelationshipDefDaoException;
+    public int update(RelationshipDef dto) throws RelationshipDefDaoException;
 
     /**
      * Deletes a single row in the relationship_def table.
