@@ -116,6 +116,20 @@ ArrayList fullFieldNamesList  = new ArrayList();
 %>
 <table cellspacing="0" cellpadding="0" class="printresultssearch">
 <tr>
+<% int colsspan = auditLogHandler.getScreenConfigArray().size();
+if(auditLogHandler.getParametersMap().get("selectedSearchType")!= null) {
+  colsspan = colsspan+1;
+}%>
+<td colspan="<%=colsspan+1%>">
+<span style="font-size:15px;">
+ &nbsp;<b><%=screenObject.getDisplayTitle()%> <%=bundle.getString("report")%></b>
+ </span>
+</td>
+</tr>
+<tr><td colspan="<%=colsspan+1%>">
+&nbsp;</td></tr>
+
+<tr>
 <td>
 <span>
  <h:outputText value="#{msgs.SEARCH_CRITERIA}"/>:&nbsp;

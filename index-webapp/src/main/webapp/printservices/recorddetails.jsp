@@ -122,7 +122,16 @@ ArrayList collectedEuidsList = new ArrayList();
 %>
 
 
-<table cellspacing="0" cellpadding="0" class="printresultssearch">
+<table cellspacing="0" cellpadding="0" class="printresultssearch" border="0">
+<tr>
+<td colspan="2">
+<span style="font-size:15px;">
+ &nbsp;<b><%=screenObject.getDisplayTitle()%> <%=bundle.getString("report")%></b>
+ </span>
+</td>
+</tr>
+<tr><td  colspan="2">&nbsp;</td></tr>
+
 <tr>
 <td>
 <span>

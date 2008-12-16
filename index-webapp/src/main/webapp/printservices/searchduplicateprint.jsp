@@ -228,6 +228,15 @@ ArrayList collectedEuidsList = new ArrayList();
 
 <table>
 <tr>
+<td colspan="2">
+<span style="font-size:15px;">
+ &nbsp;<b><%=screenObject.getDisplayTitle()%> <%=bundle.getString("report")%></b>
+ </span>
+</td>
+</tr>
+<tr><td  colspan="2">&nbsp;</td></tr>
+
+<tr>
 <%
 	
   if(searchDuplicatesHandler.getParametersMap().get("selectedSearchType") != null) {
