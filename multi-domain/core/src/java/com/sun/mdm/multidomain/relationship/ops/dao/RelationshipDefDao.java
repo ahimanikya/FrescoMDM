@@ -24,7 +24,6 @@
 package com.sun.mdm.multidomain.relationship.ops.dao;
 
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 
 public interface RelationshipDefDao {
